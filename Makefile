@@ -1,5 +1,5 @@
 # Lean 4 + Mathlib project. `make` builds the library; `make check FILE=...`
-# elaborates a single file without going through Lake.
+# elaborates a single file against the built library.
 
 .PHONY: all build check sorry clean
 
@@ -8,11 +8,11 @@ all: build
 build:
 	lake build
 
-# Fast single-file check using the ambient LEAN_PATH (Mathlib is prebuilt at
-# /opt/mathlib), e.g. make check FILE=Project/Basic.lean
+# Elaborate a single file with the project's lean path, e.g.
+# make check FILE=SpecialTransformations/Basic.lean
 check:
-	@test -n '$(FILE)' || { echo 'usage: make check FILE=Project/Basic.lean' >&2; exit 2; }
-	lean '$(FILE)'
+	@test -n '$(FILE)' || { echo 'usage: make check FILE=SpecialTransformations/Basic.lean' >&2; exit 2; }
+	lake env lean '$(FILE)'
 
 # Fail if a source still contains a whole-word sorry or admit.
 sorry:
@@ -24,4 +24,4 @@ clean:
 	lake clean
 	rm -rf .scratch
 
-SOURCES := SpecialTransformations SpecialTransformations.lean Project Project.lean
+SOURCES := SpecialTransformations SpecialTransformations.lean

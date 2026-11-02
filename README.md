@@ -11,7 +11,7 @@ the separate foundation repository [`hilbert-mathlib`](https://github.com/davidd
 ## Environment
 
 - Lean 4.33.1, Mathlib prebuilt read-only at `/opt/mathlib`.
-- `lakefile.lean` depends on Mathlib by path, so builds use the VM's prebuilt
+- `lakefile.toml` depends on Mathlib by path, so builds use the VM's prebuilt
   Mathlib and do not rebuild it.
 - `.lake/packages` is populated on first build (about 400 MB of dependency
   sources; no Mathlib oleans are downloaded).
@@ -31,9 +31,6 @@ the separate foundation repository [`hilbert-mathlib`](https://github.com/davidd
 | `SpecialTransformations/Differentiation.lean` | Non-archimedean derivatives and Jacobians |
 | `SpecialTransformations/VolumeForms.lean` | Volume-form categories, Section 10 |
 | `SpecialTransformations/Main.lean` | Target theorem list and formal status |
-
-`Project/` is a leftover placeholder sanity-check from the initial environment
-test; it can be deleted once the paper library is established.
 
 ## Build
 
