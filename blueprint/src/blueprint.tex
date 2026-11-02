@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\title{Blueprint: Special transformations in algebraically closed valued fields}
+\author{Yimu Yin}
+\begin{document}
+\maketitle
+
+\section{Paper}
+Yimu Yin, \emph{Special transformations in algebraically closed valued fields},
+Annals of Pure and Applied Logic (2010), arXiv:1006.2467.
+
+\section{Formalization target}
+Formalize the two steps of the Hrushovski--Kazhdan construction presented in
+the paper:
+\begin{enumerate}
+  \item every definable subset admits a special bijection to an RV-pullback
+        (Theorem 5.5, Corollary 5.6);
+  \item isomorphic RV-objects have isomorphic lifts (Theorem 7.6,
+        Corollary 7.7),
+\end{enumerate}
+and the volume-form refinements of Section 10 (Theorems 10.4, 10.5,
+Corollary 10.6).
+
+\section{Status}
+See \texttt{SpecialTransformations/Main.lean} for the item-by-item status table.
+
+\end{document}
