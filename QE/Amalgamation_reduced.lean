@@ -229,8 +229,9 @@ lemma IsValEmbedding.mem_iff (O : ValuationSubring K) (O' : ValuationSubring K')
     x ∈ O ↔ i x ∈ O' := by
   have h2 : ∀ y : K, O.valuation y ≤ 1 ↔ O'.valuation (i y) ≤ 1 := by
     intro y
-    rw [show (1 : O.ValueGroup) = O.valuation 1 from (map_one _).symm,
-      show (1 : O'.ValueGroup) = O'.valuation (i 1) from by rw [map_one, map_one]]
+    have e1 : (1 : O.ValueGroup) = O.valuation 1 := (map_one _).symm
+    have e2 : (1 : O'.ValueGroup) = O'.valuation (i 1) := by rw [map_one, map_one]
+    rw [e1, e2]
     exact hi.2 y 1
   rw [← ValuationSubring.valuation_le_one_iff O x,
     ← ValuationSubring.valuation_le_one_iff O' (i x)]
