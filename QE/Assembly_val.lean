@@ -19838,3 +19838,27 @@ end SpecialTransformations.Milestone0.Transfer
 
 open scoped FirstOrder in
 #print axioms SpecialTransformations.Milestone0.Transfer.hasQEb_of_hasQE
+
+namespace SpecialTransformations.Milestone0.Transfer
+
+open SpecialTransformations.Milestone0.Axioms
+
+/-- The semantic content of the repaired residue-equality axiom: the sentence `rvEqLink` is an
+axiom of `ACVF`, so every model satisfies it.  This is what discharges the `hlink` hypothesis of
+`RepairFixed.leEqF_iff_pEq_of_link`. -/
+theorem correctedLink_of_model {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {a b : M}
+    (ha : iVF a) (hb : iVF b) (hb0 : b ≠ iVFZero) :
+    (iRv a = iRv b ↔ ¬ iLe (iRv (iVFAdd a (iVFNeg b))) (iRv b)) := by
+  have hmem : Axioms.rvEqLink ∈ Axioms.ACVF :=
+    mem_ACVF_repair (by simp [Axioms.repairRV, Axioms.ofList])
+  have h := allSorted_realize hM hmem ![a, b] (by intro i; fin_cases i <;> simp [ha, hb])
+  have h' : b ≠ iVFZero → (iRv a = iRv b ↔
+      ¬ iLe (iRv (iVFAdd a (iVFNeg b))) (iRv b)) := by
+    simpa [Axioms.rvEqLink, pEq, BoundedFormula.realize_bdEqual, realize_tRv, realize_tVFAdd,
+      realize_tVFNeg, realize_tVFZero, realize_pLe, realize_tv, Term.realize_var, Sum.elim_inr,
+      Function.comp_apply, Matrix.cons_val_zero, Matrix.cons_val_one] using h
+  exact h' hb0
+
+end SpecialTransformations.Milestone0.Transfer
+
+#print axioms SpecialTransformations.Milestone0.Transfer.correctedLink_of_model
