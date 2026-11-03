@@ -139,3 +139,50 @@ So layer (A) is now reachable in two steps, neither of them Shoenfield's:
    Recommendation: (T1), because it uses QE in `L_val` — which step 1 delivers — and reduces
    the remaining work to a term-by-term syntactic translation plus one axiom question, instead
    of an extension theory for monomorphisms.
+
+### The twelfth defect is now the last obstacle, and it may affect the *truth* of the target
+
+Checked against `Milestone0/Encoding.lean` and `Milestone0/DECISION.md`:
+
+* the frozen `rvSurj` is `allSorted ![.rv] (pUnits &0 ⟹ exSorted .vf (pEq (tRv &1) &0))`, i.e.
+  `rv` is onto `pUnits` = `K^×` = the class of `1` (the residue-field units);
+* the paper's Definition 2.2(6) says `rv : VF^× → RV^×` is surjective, where `RV^× = RV ∖ {∞}`
+  — onto the *value classes* as well, not only the units.
+
+Two consequences, in increasing order of seriousness:
+
+1. **It blocks (T1).** The translation of an `RV`-quantifier is
+   `∃ y (RV), … ↦ y = 0 ∨ ∃ x (VF), …[rv x]`, and that needs every `RV`-element other than `0`
+   to be in the image of `rv`. With the frozen guard the translation is not justified. The fix
+   recorded in `DECISION.md` — guard `rvSurj` by `t ≠ rvZero ∧ t ≠ rvInfty` instead of by
+   `pUnits` — is exactly the missing axiom, and the intended model satisfies it
+   (`RV = K^×/(1+𝔪)` is by construction a quotient of `VF^×`, so every element is `rv x`).
+
+2. **It may make the frozen `HasQE ACVF` false**, which is the serious one. The frozen axioms
+   confine `RV` only through the preorder, the multiplicative structure, `K ⊆ RV` as a field and
+   the guard above, so a model plausibly admits **junk**: an element `z ∈ RV`, `z ≠ 0`,
+   `z ≠ ∞`, `¬ pUnits z`, with `z` absorbing (`z · t = z`), placed in a fresh preorder class
+   between `1` and `∞`, and with the residue-field operations defined arbitrarily off `K`. On
+   such a model the formula
+
+   ```
+   φ(x) := ∃ y (VF), rv y = x
+   ```
+
+   defines `image(rv) = pUnits ∪ {∞}`, whereas in the intended (junk-free) model it defines
+   `RV ∖ {0}` — and no quantifier-free formula can tell a value class from junk `z`, because
+   every quantifier-free test available on `RV` is `pUnits`, `= 0`, `= ∞`, `≤`, `·` and the
+   operations on `K`. If such a model exists, no quantifier-free `ψ` has `ACVF ⊨ φ ↔ ψ`, i.e.
+   the frozen statement is unprovable as frozen.
+
+What settles it, in either direction:
+
+* **a junk model**: a structure on the frozen language with `VF` unchanged and `RV` extended by
+  one absorbing element in a fresh preorder class, all axioms checked. This is a mechanical
+  (if long) construction, and existing models in `Milestone0/accepted/` give the junk-free part;
+* **or an invisibility proof**: that junk is not distinguishable by quantifier-free formulas and
+  that `φ` is nevertheless QF-equivalent (this would need `image(rv)` to be QF-definable in every
+  model, which is what the defect denies).
+
+Either way the outcome is a decision about the frozen encoding, not about the mathematics: the
+paper's theory is junk-free, and the repaired axiom is the paper's own.
