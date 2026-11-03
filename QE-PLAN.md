@@ -2414,3 +2414,41 @@ step that `QE/FailProbe.lean` had localized as the obstruction and that §3/§4 
 Three directions of the swarm died without a solution (m1 d8 fragment compactness, m6 d7 the
 mixed-context QF cover, m7 d2 sort soundness); m2 (parameter bridge), m3 (`mul` normal form) and m4
 (`TransferWS` plumbing) were still running when this was written.
+
+### `smw1bwjo2` bookkeeping, and a caveat on the `QFStep` frontier
+
+The two reminder events for m5 and m8 fired *after* their verdicts; both had already been accepted
+and merged (`QE/JunkTrue.lean`, `QE/FragmentTransfer.lean`, commit `801cef4`).  Nothing was owed.
+
+m8's extra artifact `.ultramath/smw1bwjo2/m8/Check_bridge.lean` compiles (0 errors): it restates
+`QE/TransferWS.lean`'s definitions and closes
+
+```
+example : TransferComp.NontrivialTransferWS Axioms.ACVF = NontrivialTransferWS Axioms.ACVF := rfl
+```
+
+**but both sides are the file's own copies** — `TransferWS.lean` is not imported (it carries the two
+frozen `sorry`s and no module name), so the `rfl` compares copy to copy, not copy to tree.  What it
+does establish is that the copies are definitionally the same as each other; I checked by `diff` that
+the definitions in `Check_bridge.lean` and in `QE/TransferWS.lean` are textually identical, which is
+what the claim needs.
+
+**The caveat, in m8's own words and it is right:** `QFStep` "is a QF-type-realisation/saturation
+statement, false for some model pairs, so not derivable from `Axioms.ACVF`; it needs the monster
+model or the RV-side QF analysis."  That is consistent with what this file already records elsewhere:
+`TransferAtWS` is *equivalent* to fragment QE (so it is true if the theorem is), while `QFStep` is a
+**strengthening** of it — for a fixed pair of tuples with equal QF type, the transfer can be settled
+by QE without ever finding a QF-mate for a new element.  So `transferAtWS_of_qfStep` is a correct
+composition whose hypothesis is stronger than the conclusion's, and the frontier is one of:
+
+1. **`QFStep` at monster models** — then the compactness step (`QFComp.hasQE_of_qfTypeDetermines` in
+   `Assembly_val`, and `W1.exists_list_of_models_bounded`) has to carry the result back to arbitrary
+   models.  This is the route that joins §3's saturation interface (`MonsterModel.realizes`,
+   `Milestone0/Saturation.lean`) to the main line, and it is the reason the §3 work is not a
+   side-quest.
+2. **The direct transfer by the paper's §4 special transformations**, which is what the paper does and
+   what the `smw18ygko/m1/Sec5.lean` skeleton is for.
+
+Either way the junk-truth half is closed (`QE/JunkTrue.lean`) and the composition is available for
+free, so the work that remains is the RV-side content and nothing else — the same conclusion the
+second route reached from the criterion side.
