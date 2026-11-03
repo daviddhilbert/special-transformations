@@ -572,3 +572,42 @@ Status of the edit: **not yet applied.**  `Milestone0/Encoding.lean` remains at 
 same commit that changes it, since the two copies are separate declarations.  The `wellSorted_*`
 API in `Encoding.lean` (25 lemmas) and m1's `W1.lean` are the call sites that will need the new
 obligation discharged.
+
+### The four call sites: what the repair actually needs (found, not yet applied)
+
+`Occurs` in `Encoding.lean` is **not** "the atom occurs somewhere in the formula".  It is
+
+```
+| .imp (.imp a (.imp b .falsum)) .falsum => Occurs i s a ∨ Occurs i s b   -- a ⊓ b
+| φ => φ = sortPredG s (Term.var (Sum.inr i))
+```
+
+i.e. *the atom is a top-level conjunct* of the conjunction tree, and nothing weaker.  So
+`Occurs` already is the junk-truth property that the new `GuardTrue` asks for, and the repair of
+the four broken lemmas needs **no change to their statements** — only a bridge lemma
+
+```
+theorem inAntecedent_of_occurs {η} : Occurs i s η → InAntecedent s i η
+```
+
+(by the same two-case match as `Occurs`: the conjunct case goes to `and_left`/`and_right`, the
+atom case to `atom`), with `guardAtom` *defined* as `sortPredG s (Term.var (Sum.inr i))` so the
+atom case is definitional.  Then each of the four sites supplies one extra argument
+`GuardTrue.of_inAntecedent (inAntecedent_of_occurs hg)`:
+
+| lemma | the `GuardTrue` it needs |
+| --- | --- |
+| `wellSorted_all_guarded` | `η ⟹ ψ`, from `hg : Occurs (last m) s η` |
+| `wellSorted_exSortedG` | `(sortPredG ⊓ ψ) ⟹ ⊥`, from `InAntecedent.and_left .atom` |
+| `wellSorted_alls` | from the `hg (Fin.last k)` conjunct hypothesis at the `.all` step |
+| `wellSorted_ex_guarded` | like `exSortedG`, with `η ⊓ ψ` |
+
+This also *vindicates* the frozen predicate rather than weakening it: nothing that was well-sorted
+before becomes ill-sorted, because every `.all` in the tree was introduced through `Occurs` at a
+conjunct position already.  What m1's `WSg` adds over `WellSorted` is therefore not the
+conjunct-position requirement but the *paper's* single-guard bookkeeping around it.
+
+State of the tree: `Milestone0/Encoding.lean` currently does **not** compile (commit `604f968`,
+marked WIP): 5 errors in the four lemmas above.  `QE/Assembly_val.lean` has not been re-synced, so
+it still carries the *old* `WellSorted` and remains green on its own copy — the two copies must be
+brought back into step in the same commit that applies `inAntecedent_of_occurs`.
