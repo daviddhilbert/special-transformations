@@ -489,3 +489,46 @@ the residue-field operations `kAdd`/`kNeg`, the preorder `rvLe`).  Route (T1) ne
    preorder are `v x = 1`-shaped, hence QF in `L_val` given the `rv`-identification.
 3. **Composition**, and then models: an `LRV`-model of `ACVF` restricts to an `L_val`-structure on
    its `VF` sort, which is where `hasQE_ACVF_val` applies.
+
+## The model correspondence: what exactly has to be extracted
+
+The transfer's remaining crux is: from `M ⊨ Axioms.ACVF` (an `L_RV`-structure), produce an
+`L_val`-structure modelling `ValPM.ACVF_val`.  Reading the axiomatisation in
+`Milestone0/Encoding.lean` (now copied into `Assembly_val`), the shape is:
+
+* `Axioms.sortAxioms = sortClosure ∪ {sdCover, sdDisjoint}`.  **`sdDisjoint`** says the two sort
+  predicates are disjoint (so an element is in at most one sort) and **`sdCover`** that every
+  element is in one of them or is the RV-zero; `sortClosure` gives closure: `sdVFZero`,
+  `sdVFOne`, `sdVFAdd`, `sdVFNeg`, `sdVFMul` (VF is a ring **and** closed under its own symbols),
+  `sdRv` (`rv : VF → RV`), `sdRVZero`, `sdRVOne`, `sdRVMul`, `sdUnits`, `sdKAdd`, `sdKNeg`,
+  `sdKMul` (K = K^× ∪ {0} closed under the residue operations).
+* `Axioms.vfField` is `fieldAxioms .vf tVFZero tVFOne tVFAdd tVFMul tVFNeg`, a `List` of nine
+  `allSorted`-guarded sentences: associativity, commutativity, neutrality of `0` and `1`,
+  inverses, distributivity, `0 ≠ 1`, and "every nonzero element is invertible" (the language has
+  no inverse symbol, so invertibility is `∃ y, x·y = 1`).
+* `Axioms.vfAlgClosed` is the scheme `{acfScheme .vf … k | 1 ≤ k}`, i.e.
+  `∀ a₀ … a_{k-1} ∃ x (VF), x^k + a_{k-1}x^{k-1} + … + a₀ = 0` — this is what must become
+  `IsAlgClosed` of the `VF`-sort field, by the same argument as `isAlgClosed_of_model` but with
+  `hornerPoly` in place of `Field.genericMonicPolyHasRoot`.
+* `Axioms.rvAxioms = {rvZeroEq, rvEqInfty, rvMulHom, rvSurj, rvUltrametric}` and
+  `Axioms.preorderRV`.  The predicate to use on VF is `fun x y => iLe (iRv x) (iRv y)`;
+  `preorderRV` gives reflexivity/transitivity/totality, `rvUltrametric` the ultrametric
+  inequality, `rvMulHom` multiplicativity (hence `IsValPred.scale`), `rvZeroEq` the absorbing
+  behaviour of `rv 0`.  Nontriviality of the valuation for `OneECIn` comes from the same place:
+  an element with `¬ (vv 1 ≤ vv x)` and `x ≠ 0`.
+
+**The gateway lemma, which does not exist yet and should be written first:**
+
+```
+sortedHyps_realize : (sortedHyps ss).Realize v x ↔ ∀ i, sortPred (ss i) (x i)
+```
+
+`sortedHyps` is a `List.finRange k`-`foldr` of `⊓`-conjunctions, so the proof is an induction on
+that list (generalised to an arbitrary enumerating list) together with the realisation lemmas for
+`⊓` and `⊤`.  With it, every `allSorted ss φ ∈ ACVF` gives its semantic content
+`∀ x̄, (∀ i, x i ∈ s_i) → φ.Realize`, and the whole extraction becomes uniform.
+
+Then, in order: the subtype `{x // iVF x}` with the ring operations (closure from `sortClosure`,
+laws from `vfField`); `Field` on it; `IsValPred (fun x y => iLe (iRv x) (iRv y))`; `IsAlgClosed`
+from `vfAlgClosed`; the `ACVF_val` model; instantiate `hasQE_ACVF_val`; translate back through
+`valFormulaToRV`; conclude `HasQE Axioms.ACVF` and discharge `theorem_2_3_quantifier_elimination`.
