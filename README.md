@@ -31,6 +31,7 @@ the separate foundation repository [`hilbert-mathlib`](https://github.com/davidd
 | `SpecialTransformations/Differentiation.lean` | Non-archimedean derivatives and Jacobians |
 | `SpecialTransformations/VolumeForms.lean` | Volume-form categories, Section 10 |
 | `SpecialTransformations/Main.lean` | Target theorem list and formal status |
+| `Milestone0/` | Language decision and artifacts — start at `Milestone0/DECISION.md` |
 
 ## Build
 
@@ -38,6 +39,7 @@ the separate foundation repository [`hilbert-mathlib`](https://github.com/davidd
 lake build
 make check FILE=SpecialTransformations/Basic.lean
 make sorry
+make milestone0   # elaborate the standalone Milestone 0 artifacts
 ```
 
 ## Formalization status

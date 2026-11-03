@@ -47,26 +47,32 @@ and, for the public GitHub build, switch to a git requirement.
 
 ## What exists
 
+- `Milestone0/`: the language decision and its artifacts. Read
+  `Milestone0/DECISION.md` first — it fixes the encoding (`L_RV` in Mathlib's
+  one-sorted `FirstOrder.Language` on a tagged carrier, `Γ` imaginary), the
+  semantics (`RVModel.lean`), partiality (`Partiality.lean`), the C-relation
+  (`Balls.lean`), and states Theorems 2.3 and 2.8 in `Encoding.lean`. These files
+  are standalone (`import Mathlib` only; `make milestone0`); they are not yet part
+  of the library below.
 - `SpecialTransformations/Basic.lean`: `RVUnit`, `RV`, `RV0`, `rv`.
 - `SpecialTransformations/Language.lean` … `VolumeForms.lean`: module skeleton
   with the paper reference and TODO list for each section.
 - `SpecialTransformations/Main.lean`: item-by-item target table (all “not started”).
 - `blueprint/src/blueprint.tex`: minimal blueprint.
 
-Everything compiles; no theorem is proved yet. `Basic.lean` is the only file
-with real Lean content.
+Everything compiles; no theorem is proved yet. `Basic.lean` is the only library
+file with real Lean content; the real content lives in `Milestone0/`.
 
 ## Recommended next steps
 
-### Milestone 0 — language and syntax
+### Milestone 0 — language and syntax — **done**
 
-- Decide between Mathlib's one-sorted model theory and the many-sorted
-  framework at <https://github.com/Mathias-Stout/Many-sorted-model-theory>
-  (Apache-2.0).
-- Define the sorts `VF`, `RV`, the symbols of `L_RV`, the theory `ACVF`, and
-  `ACVF_S(0,0)`.
-- State quantifier elimination (Theorem 2.3) and C-minimality (Theorem 2.8) as
-  targets. Do not prove them yet.
+Decided: `L_RV` in Mathlib's one-sorted `FirstOrder.Language` on a tagged
+carrier, `Γ` imaginary; the many-sorted framework was measured and rejected
+(it builds here after 3–4 renames, but has no definability layer). Symbols,
+`ACVF`, `ACVF_S(0,0)`, Theorem 2.3 and Theorem 2.8 are in
+`Milestone0/Encoding.lean`; evidence and the settled traps (`0` vs `∞`, `rv` onto
+units only, orientation of `≤`) are in `Milestone0/DECISION.md`.
 
 ### Milestone 1 — algebraic layer
 

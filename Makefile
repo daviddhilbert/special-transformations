@@ -1,7 +1,7 @@
 # Lean 4 + Mathlib project. `make` builds the library; `make check FILE=...`
 # elaborates a single file against the built library.
 
-.PHONY: all build check sorry clean
+.PHONY: all build check sorry milestone0 clean
 
 all: build
 
@@ -19,6 +19,11 @@ sorry:
 	@if grep -rnwE --include='*.lean' 'sorry|admit' $(SOURCES); then \
 		echo 'error: sorry/admit found (see above)' >&2; exit 1; \
 	else echo 'no sorry/admit'; fi
+
+# Milestone 0 artifacts are standalone files (`import Mathlib` only), not part of
+# the Lake library, so they are elaborated one by one.
+milestone0:
+	@for f in Milestone0/*.lean; do echo "== $$f"; lean "$$f" || exit 1; done
 
 clean:
 	lake clean

@@ -1,0 +1,142 @@
+# Milestone 0 — how `L_RV` is represented in Lean
+
+Decision and evidence. Everything asserted below was checked in this repository's
+environment (Lean 4.33.1, Mathlib prebuilt at `/opt/mathlib`); the Lean files named are the
+artifacts, and each one elaborates with `lean <file>` and `import Mathlib` as its only
+import.
+
+## Decision
+
+**Represent `L_RV` in Mathlib's one-sorted `FirstOrder.Language`, on a tagged carrier, with
+`Γ` kept out of the syntax.** Concretely:
+
+* the carrier is a disjoint union (`VF ⊕ RV`, or a three-way tag when `Γ` is adjoined);
+* each sort is a unary relation symbol, and quantifiers over a sort are guarded by it;
+* `Γ` is *not* a sort (see below): it is model data, or a definitional expansion by the
+  definable quotient `RV/K^×`;
+* the paper's partial `+`, `−` on `K` are total functions whose values off `K` are a fixed
+  junk element, and the axioms are relativised to `K`.
+
+Candidates (b) (vendor `Mathias-Stout/Many-sorted-model-theory`) and (c) (write a
+many-sorted layer in-repo) are rejected, with reasons in "Why not (b)".
+
+## Why (a)
+
+1. **The API the later milestones need is Mathlib's, and only (a) has it.**
+   `FirstOrder.Language`, `Structure`, `Term`, `BoundedFormula`, `BoundedFormula.IsQF`,
+   `Theory`, `Theory.Model`, `Set.Definable`, `Language.DefinableSet` all exist there.
+   Mathlib has *no* quantifier-elimination notion and *no* C-minimality
+   (`grep -ri 'QuantifierElim'` and `CMinimal` over `/opt/mathlib/Mathlib`: no hits), so the
+   two targets are new statements either way — but statements *about definable sets* are
+   native to (a) and must be built from scratch in (b).
+
+2. **The tagging is faithful, not a hack.** `Milestone0/Tagging.lean` builds many-sorted
+   syntax with Tarski semantics and a translation into the tagged one-sorted language, and
+   proves `BForm.realize_translate : (translate φ).Realize (tagFree v) (sigA xs) ↔
+   Realize M v φ xs`, with the quantifier case `∀x^s` ↦ `∀x, S_s x → φ'` discharged by a
+   genuine argument (`forall_sigma_eq` + `snoc_sigA`). The only hypothesis is that every
+   sort is inhabited, which holds for `L_RV` (`0 ∈ VF`, `0, ∞ ∈ RV`). Axiom footprint:
+   `propext, Classical.choice, Quot.sound`.
+
+3. **It carries the whole milestone.** `Milestone0/Encoding.lean` (862 lines, two `sorry`s,
+   both the targets) has: the twelve function and two relation symbols of Definition 2.1;
+   `ACVF` as Definition 2.2 items 1–6; `ACVF(0,0)`; `ACVF_S(0,0)` as the constant expansion
+   of `S` plus its atomic diagram; `HasQE` with Theorem 2.3 as `HasQE ACVF`; C-minimality
+   with Theorem 2.8 as `∀ M, M ⊨ ACVF → IsCMinimal M`; and the mixed definable sets of
+   Notation 2.10 on the index type `Fin n ⊕ Fin m`, which is exactly `VF^n × RV^m` with no
+   junk values and no sort hypotheses.
+
+4. **Partial symbols cost nothing.** `Milestone0/Partiality.lean` proves that totalising the
+   paper's partial `+`, `−` with a junk value is conservative: a partial term is defined
+   exactly when its totalised value differs from junk (`exists_iff_realize_ne_junk`), under
+   two hypotheses (`JunkFresh`, `JunkProp`) that are each *necessary* (counterexamples
+   included) and each *derivable* from Definition 2.1(2d) with junk `= ∞`
+   (`spec_gives_hypotheses`), because `∞` is already a constant and the paper says the
+   symbols "should all be relations". So (a) needs no extra axiom for partiality.
+
+5. **The intended structure exists in Lean.** `Milestone0/RVModel.lean` builds the model
+   over a Mathlib `Valuation K Γ₀`: `RV = Option (Kˣ ⧸ (1+𝔪))`, `rv`, `vrv`,
+   `t ≤ s ↔ vrv s ≤ vrv t`; proves the RV-part of Definition 2.2 for it (group axioms,
+   divisibility under `IsAlgClosed K`, `∞`/`0` augmentation, `≤` a preorder with `∞` top and
+   `K^×` the class of `1`, `𝒪 = rv⁻¹(RV^{≥1})`, `𝔪 = rv⁻¹(RV^{>1})`, `ker vrv ≅ k^×`), and
+   instantiates the axiomatisation at it (`rvGroupAxioms_intended`), which is the test that
+   distinguishes a theory from a table.
+
+6. **Theorem 2.8 has real mathematics behind it.** `Milestone0/Balls.lean` defines the
+   valuation C-relation `C x y z := v (y - z) < v (x - y)`, proves the four C-relation
+   axioms for it (`isCrelation_Crel`), the ball-nesting and `rv`-fibre lemmas, and the
+   Boolean closure of ball combinations.
+
+## Why not (b)
+
+Measured, not assumed. `Mathias-Stout/Many-sorted-model-theory` at `4d15933` **does build**
+in this environment after three or four mechanical Mathlib renames (two `Set.mem_setOf_eq →
+Set.mem_ofPred_eq`, one `Set.coe_setOf → Set.coe_ofPred`, one `simp only` repair);
+`lake build` then reports `Build completed successfully (3049 jobs)` against
+`/opt/mathlib`. Three members independently attempted the port and two stopped one rename
+short, so early reports that it "does not build" are wrong.
+
+It is still the wrong dependency:
+
+* **no definability layer** — `grep -ri definable` over its 23,222 lines returns nothing,
+  while every remaining milestone is about definable subsets, dimensions, special
+  bijections and Jacobians;
+* **it replaces Mathlib's syntax** with its own `MSFirstOrder`, so `Set.Definable`,
+  `IsQF`, `Theory.Model` and `Language.DefinableSet` are lost — the very API (a) is being
+  chosen for;
+* its concrete valued-field example is a *three*-sorted `VF / Γ∪{∞} / residue` language,
+  not `L_RV`, so it does not even supply the paper's signature;
+* the one thing it buys — sorted contexts `VF^n × RV^m` instead of a guarded tuple — is
+  recovered in (a) by the index type `Fin n ⊕ Fin m`, as `Encoding.lean`'s downstream
+  section shows.
+
+Candidate (c) would re-derive (b)'s syntax inside the repository at a measured cost of
+roughly 1.5–6k lines, for no gain over (a).
+
+## The points that decide correctness (each one cost a member a rejection)
+
+* **`Γ` is not a sort.** The paper treats it as imaginary: "syntactically any reference to
+  `Γ` may be eliminated". An encoding may adjoin it, but then it is a definitional
+  expansion (`RV/K^×` by the definable relation `t ~ s ↔ ∃u ∈ K^×, t = u·s`), and Theorem
+  2.3 as printed concerns `L_RV` alone.
+* **`0` and `∞` are different points.** `K = K^× ∪ {0}` uses the constant `0` as the
+  residue field's zero; `∞ = rv(0_VF)` is the top of `≤` and is absorbing on `RV₀`
+  (`t × ∞ = ∞` for all `t`), while `t × 0 = 0` only for `t ∈ K`. Identifying them — one
+  member's first axiomatisation did — forces `0 = ∞`, and then `le_top` + `le_zero` +
+  `0 ≠ 1` make the theory inconsistent, so both target theorems become vacuous. A referee
+  proof of that inconsistency is what rejected the first version.
+* **`rv` is onto the units only.** `rv : VF^× → RV^×` is surjective onto
+  `RV^× = RV ∖ {0, ∞}`; the residue zero is *not* in its image (it is absorbing, hence not
+  a group element). An axiom saying "every `t ≠ ∞` is `rv x`" excludes the intended model.
+* **Orientation of `≤`.** With `t ≤ s ↔ vrv s ≤ vrv t`, the ultrametric inequality reads
+  `rv a ≤ rv (a+b) ∨ rv b ≤ rv (a+b)`. The tempting "`val (a+b)` equals one of
+  `val a`, `val b`" is strictly weaker and admits non-valuations.
+* **Quantifier elimination is a statement about a theory**, `T ⊨ᵇ (φ ⇔ ψ)`, not a
+  per-structure claim with parameters; C-minimality quantifies over all models of
+  `ACVF_S(0,0)` and over parametrically definable sets produced by the syntax.
+
+## Open (Milestone 1)
+
+* **No proved model of the full `ACVF`.** `RVModel.lean` covers the RV-part; the field
+  structure on `K` (transported from `ValuationSubring.ResidueField` along
+  `(𝒪∖𝔪)/(1+𝔪) ≅ k^×`) and the `Γ` quotient are not constructed. Until one model exists,
+  the two target theorems are statements that *could* be vacuous, and this is the first
+  thing to close.
+* **Theorems 2.3 and 2.8 are stated, not proved** — as this milestone requires.
+  `Balls.lean` also carries one unproved auxiliary (`infinite_boolComb_contains_openBall`),
+  labelled as such.
+* **The files are standalone.** Each is `import Mathlib` with its own copies of the RV
+  definitions, so they are not yet part of the `SpecialTransformations` library: their
+  top-level names collide with `SpecialTransformations/Basic.lean`. Merging under one
+  namespace is Milestone 1 work, as is wiring `Language.lean` and `Main.lean` to them.
+
+## Files
+
+| File | What it is | Checks |
+| --- | --- | --- |
+| `Encoding.lean` | `L_RV`, `ACVF`, `ACVF_S(0,0)`, QE and C-minimality targets, mixed definable sets | `lean`, 2 target `sorry`s |
+| `RVModel.lean` | the intended structure over a Mathlib valuation; RV axioms instantiated | `lean`, no `sorry` |
+| `Partiality.lean` | conservativity of junk-value totalisation for the partial symbols | `lean`, no `sorry` |
+| `Tagging.lean` | many-sorted syntax and its satisfaction-preserving translation to the tagged language | `lean`, no `sorry` |
+| `Balls.lean` | the valuation C-relation, ball combinatorics, C-minimality definitions | `lean`, 1 unproved auxiliary |
+| `SPEC.md` | transcription of Definition 2.1, Definition 2.2, Theorems 2.3 and 2.8 from the arXiv sources, with line numbers | machine-checked tables |
