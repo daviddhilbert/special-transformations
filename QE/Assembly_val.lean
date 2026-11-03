@@ -13459,6 +13459,8 @@ set_option linter.style.haveILetI false
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder
 
+end TrivCase
+
 namespace Smw1541fr.M1
 
 universe u v
