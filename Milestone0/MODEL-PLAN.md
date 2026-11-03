@@ -124,6 +124,22 @@ depend on it and must be redone.
 So: `ACVF` minus the two residue-field summands is realised with a nontrivial value group, and
 the `(0,0)` refinement is proved out of reach at the only concrete field Mathlib offers.
 
+## The residue-field transport is in place
+
+`accepted/ACVF_residue_ops.lean` reinterprets `kAdd`/`kNeg` on `C v` by the actual residue
+field operations, transported along `ACVFResidue.kEquiv` (`kOf`, `ofK`, `kOf_ofK`, `ofK_inj`,
+`iKAdd_ofK`, `iKNeg_ofK`, `iRVMul_ofK`), and proves `model_ACVF_of_components`: `(C v) ⊨ ACVF`
+follows from exactly three obligations —
+
+```
+⊨ kField        ⊨ kAlgClosed        ∀ k ≥ 1, ⊨ rvDivisible k
+```
+
+It also proves the general criterion `model_residueCharZero_iff k : ⊨ residueCharZero k ↔ 1 ≤ v k`,
+which together with `PadicComplex.valuation_p` gives `padicComplex_not_model_ACVF00` — the
+clean form of the `ℂ_[p]` obstruction: residue characteristic zero is exactly "the valuation
+of every positive integer is at least `1`", which the p-adic valuation fails at `p`.
+
 ## What is still missing
 
 Of the eight blocks of `Axioms.ACVF` at the general carrier `K ⊕ RV₀ v`, four are done against
