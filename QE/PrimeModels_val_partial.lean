@@ -1394,3 +1394,68 @@ end Universal
 #print axioms ValPM.pred_gHom_iff
 #print axioms ValPM.predM_lift_iff
 #print axioms ValPM.model_field_of_valField
+
+/-! ## 11. `HasPrimeModels valField valField` -/
+
+/-- Copy of `JohnsonCriterion.HasPrimeModels` (`QE/Johnson_criterion.lean`), specialised to
+`L_val`: every structure `S` that embeds into a model of `T` has an extension `S'` modelling `T₀`
+which embeds into every model of `T₀` under `S`. -/
+def HasPrimeModels (T₀ T : Language.val.Theory) : Prop :=
+  ∀ (S : Type) [Language.val.Structure S],
+    (∃ (M : T₀.ModelType.{0, 0, 0}), M ⊨ T ∧ Nonempty (S ↪[Language.val] M)) →
+    ∃ (S' : T₀.ModelType.{0, 0, 0}) (e : S ↪[Language.val] S'),
+      ∀ (N : T₀.ModelType.{0, 0, 0}) (f : S ↪[Language.val] N),
+        ∃ g : S' ↪[Language.val] N, g.comp e = f
+
+/-- A `valField`-model becomes a field: the ring structure is `ringStructOfVal`, `Theory.field`
+is inherited from `valField`, and `IsValPred predM` is the dictionary. -/
+theorem isValPred_of_valFieldModel (M : valField.ModelType) :
+    ∃ (_ : CommRing M) (_ : IsDomain M) (_ : CompatibleRing M)
+      (_ : valRingHom.IsExpansionOn M), @IsValPred M _ (predM : M → M → Prop) := by
+  letI : Language.ring.Structure M := ringStructOfVal M
+  haveI hexp : valRingHom.IsExpansionOn M := ringStructOfVal.expansion M
+  have hfield : M ⊨ Theory.field := model_field_of_valField M M.is_model
+  letI : Field M := FirstOrder.Field.fieldOfModelField M
+  letI : CompatibleRing M := FirstOrder.Field.compatibleRingOfModelField M
+  exact ⟨inferInstance, inferInstance, inferInstance, hexp, isValPred_of_model M.is_model⟩
+
+/-- **The prime model property for the theory of valued fields in `L_val`.** -/
+theorem hasPrimeModels_valField : HasPrimeModels valField valField := by
+  intro S instS hS
+  letI := instS
+  -- `S` has the ring structure read off its `L_val` structure
+  letI : Language.ring.Structure S := ringStructOfVal S
+  haveI hexpS : valRingHom.IsExpansionOn S := ringStructOfVal.expansion S
+  obtain ⟨M, _hMT, ⟨e⟩⟩ := hS
+  -- the composite ring/field structure on `M` and the valued predicate there
+  letI : Language.ring.Structure M := ringStructOfVal M
+  haveI hexpM : valRingHom.IsExpansionOn M := ringStructOfVal.expansion M
+  have hfieldM : M ⊨ Theory.field := model_field_of_valField M M.is_model
+  letI : Field M := FirstOrder.Field.fieldOfModelField M
+  letI : CompatibleRing M := FirstOrder.Field.compatibleRingOfModelField M
+  have hMpred : @IsValPred M _ (predM : M → M → Prop) := isValPred_of_model M.is_model
+  -- the prime model
+  haveI : valPrimeField e ⊨ valField := valPrimeField_model e hMpred
+  refine ⟨Theory.ModelType.of (T := valField) (valPrimeField e), valPrimeEmbedding e hMpred, ?_⟩
+  intro N f
+  -- the same on `N`
+  letI : Language.ring.Structure N := ringStructOfVal N
+  haveI hexpN : valRingHom.IsExpansionOn N := ringStructOfVal.expansion N
+  have hfieldN : N ⊨ Theory.field := model_field_of_valField N N.is_model
+  letI : Field N := FirstOrder.Field.fieldOfModelField N
+  letI : CompatibleRing N := FirstOrder.Field.compatibleRingOfModelField N
+  have hNpred : @IsValPred N _ (predM : N → N → Prop) := isValPred_of_model N.is_model
+  exact valPrimeField_universal e f hMpred hNpred
+
+/-- A smaller target theory makes the prime model property easier: the hypothesis `M ⊨ T`
+that has to be met is weaker. -/
+theorem hasPrimeModels_mono {T₀ T T' : Language.val.Theory} (hTT' : T' ⊆ T)
+    (h : HasPrimeModels T₀ T') : HasPrimeModels T₀ T := by
+  intro S instS hS
+  letI := instS
+  obtain ⟨M, hM, he⟩ := hS
+  exact h S ⟨M, ⟨fun φ hφ => hM.realize_of_mem φ (hTT' hφ)⟩, he⟩
+
+#print axioms ValPM.hasPrimeModels_valField
+#print axioms ValPM.hasPrimeModels_mono
+#print axioms ValPM.isValPred_of_valFieldModel
