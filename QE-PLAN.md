@@ -939,3 +939,48 @@ allSortedK_realize, kHyps_realize, exSortedK_realize   -- extraction for the pIn
 The first is exactly the `RV`-quantifier elimination step of the cover, from `rvSurj` alone; the
 last three fill a real gap, since the preamble had no extraction lemma for the `K`-guarded axioms
 and every residue-field argument needs one.
+
+### The assembly skeleton, and the fragment that is already fully transferred
+
+Two more directions came back (both accepted).  Together they turn the endgame into three named
+hypotheses.
+
+**`hasQE_ACVFplus_of_transfers`** (`.ultramath/smw1541fr/m6/FinalAssembly.lean`, in the tree's
+`SpecialTransformations.Milestone0.HasQE` shape, proved not postulated):
+
+```lean
+NontrivialTransfer ACVFplus → TrivialTransfer ACVFplus → CaseSeparation ACVFplus →
+  CaseSplit ACVFplus → SpecialTransformations.Milestone0.HasQE ACVFplus
+```
+
+with
+
+* `NontrivialTransfer T`: models of `T` with the same quantifier-free `L_RV`-type satisfy the same
+  formulas, *provided both are nontrivially valued* — this is where the cover (`L_val` + QE +
+  `transfer_of_isQF`) plugs in;
+* `TrivialTransfer T`: the same for the fine-trivial case, where the residue operations and `rv` are
+  the field's own (`FineTriv`), so the `L_val` reading of every atom is quantifier-free and `ACF`'s
+  QE suffices;
+* `CaseSeparation T`: QF-equivalent models agree on triviality;
+* `CaseSplit T`: every model is nontrivial or fine-trivial.
+
+The compactness step `QFTypeDetermines → HasQE` is **closed** (`m6/QFComp.lean`): the step
+`Assembly_val.lean` recorded as missing (`QFExDetermined → QEExStep`) already exists in the repo as
+`QE/Bounded_compactness.lean`, whose `IffB` is the same `Prop` as `Theory.Iff`.
+
+**Caveat on `CaseSeparation`, which is not bookkeeping.**  `IsTrivialVF` says every nonzero
+`VF`-element has `v x ≤ v 1` — that quantifies over `VF`, so triviality is not a
+quantifier-free condition, and QF-equivalent models need not agree on it.  The hypothesis is
+therefore doing real work and must be justified (or eliminated) before the assembly counts as
+complete; `m6/REPORT.md` says the same, and the plan records it here so it does not get lost.
+
+**`frag_QE_sentence`** (`.ultramath/smw1541fr/m5/Cover.lean`): for every `L_RV`-formula in the
+*image* of `L_val`, QE is proved outright — `hasQE_ACVF_val` plus `VFRestrict.transfer_of_isQF`,
+with the model hypothesis `S ⊨ ValPM.ACVF_val` explicit.  So the transfer is complete on the
+fragment, and what remains is precisely that every `L_RV`-formula lies in it — which is what the
+`kAdd` defect blocks.
+
+**A new fact worth having:** `Cover.rv_one : iRv iVFOne = iRVOne` — `rv (1) = 1` is not an axiom and
+had been assumed by m4's `FineTriv` and by m1's docstrings.  It follows from the frozen axioms
+through the group laws (`iRVOne` is idempotent, `rvSurj` gives a preimage, `iUnits` gives an
+inverse).
