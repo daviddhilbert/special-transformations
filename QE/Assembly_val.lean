@@ -10465,6 +10465,94 @@ theorem allOne_realize {M : Type} [LRV.Structure M] {T : LRV.Theory} (hM : M ⊨
 theorem sentence_realize {M : Type} [LRV.Structure M] {T : LRV.Theory} (hM : M ⊨ T)
     {φ : LRV.Sentence} (hmem : φ ∈ T) : M ⊨ φ :=
   hM.realize_of_mem φ hmem
+/-! ### Membership of the axioms, and closure of the `VF` sort -/
+
+/-- A member of the sort closure is an axiom of `ACVF`. -/
+theorem mem_ACVF_sortClosure {s : LRV.Sentence} (h : s ∈ Axioms.sortClosure) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.sortAxioms, Set.mem_union]
+  tauto
+
+/-- A member of `vfField` is an axiom of `ACVF`. -/
+theorem mem_ACVF_vfField {s : LRV.Sentence} (h : s ∈ Axioms.vfField) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
+  tauto
+
+/-- A member of `vfAlgClosed` is an axiom of `ACVF`. -/
+theorem mem_ACVF_vfAlgClosed {s : LRV.Sentence} (h : s ∈ Axioms.vfAlgClosed) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
+  tauto
+
+/-- A member of `preorderRV` is an axiom of `ACVF`. -/
+theorem mem_ACVF_preorderRV {s : LRV.Sentence} (h : s ∈ Axioms.preorderRV) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
+  tauto
+
+/-- A member of `rvAxioms` is an axiom of `ACVF`. -/
+theorem mem_ACVF_rvAxioms {s : LRV.Sentence} (h : s ∈ Axioms.rvAxioms) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
+  tauto
+
+theorem mem_ACVF_sdVFZero : Axioms.sdVFZero ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+theorem mem_ACVF_sdVFOne : Axioms.sdVFOne ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+theorem mem_ACVF_sdVFAdd : Axioms.sdVFAdd ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+theorem mem_ACVF_sdVFNeg : Axioms.sdVFNeg ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+theorem mem_ACVF_sdVFMul : Axioms.sdVFMul ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+/-- `0` of the ring language lies in the `VF` sort. -/
+theorem vf_zero_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iVF (iVFZero (M := M)) := by
+  have h := sentence_realize hM (φ := Axioms.sdVFZero) mem_ACVF_sdVFZero
+  rw [Axioms.sdVFZero, Sentence.Realize] at h
+  simp only [Formula.Realize] at h
+  rw [pVF_realize, realize_tVFZero] at h
+  exact h
+
+/-- `1` of the ring language lies in the `VF` sort. -/
+theorem vf_one_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iVF (iVFOne (M := M)) := by
+  have h := sentence_realize hM (φ := Axioms.sdVFOne) mem_ACVF_sdVFOne
+  rw [Axioms.sdVFOne, Sentence.Realize] at h
+  simp only [Formula.Realize] at h
+  rw [pVF_realize, realize_tVFOne] at h
+  exact h
+
+/-- The `VF` sort is closed under `+`. -/
+theorem vf_add_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) : iVF (iVFAdd x y) := by
+  have h := allSorted_realize hM (T := Axioms.ACVF) mem_ACVF_sdVFAdd ![x, y] (by
+    intro i
+    fin_cases i <;> simp [hx, hy])
+  rw [pVF_realize, realize_tVFAdd] at h
+  simpa using h
+
+/-- The `VF` sort is closed under `-`. -/
+theorem vf_neg_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : iVF (iVFNeg x) := by
+  have h := allSorted_realize hM (T := Axioms.ACVF) mem_ACVF_sdVFNeg ![x] (by
+    intro i
+    fin_cases i
+    simpa using hx)
+  rw [pVF_realize, realize_tVFNeg] at h
+  simpa using h
+
+/-- The `VF` sort is closed under `×`. -/
+theorem vf_mul_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) : iVF (iVFMul x y) := by
+  have h := allSorted_realize hM (T := Axioms.ACVF) mem_ACVF_sdVFMul ![x, y] (by
+    intro i
+    fin_cases i <;> simp [hx, hy])
+  rw [pVF_realize, realize_tVFMul] at h
+  simpa using h
+
 end SpecialTransformations.Milestone0.Transfer
 
 #print axioms SpecialTransformations.Milestone0.Transfer.valTermToRV_realize
