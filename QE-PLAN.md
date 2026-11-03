@@ -1275,3 +1275,27 @@ frozen `HasQE` quantifies over *all* `BoundedFormula`s, so as it stands it needs
 Theorem 2.3 needs only (1).  This is a decision about the target statement, and it is the same
 decision as the trivial-valuation one in kind: how much of the one-sorted encoding the theorem is
 supposed to be about.
+
+## Constraints any model of the repaired `ACVF` must satisfy (swarm `smw16q93m` m1)
+
+Nobody has built a model yet, but the necessary conditions are now machine-checked, and one of them
+kills the obvious construction:
+
+* **The order cannot be `u ≠ ∞ ∧ vrv u ≤ vrv v`.**  `rvUltrametric` at `x = y = 0` forces
+  `iLe ∞ ∞` (`le_infty_self`), and with `leInftyEq` the first column is exactly `{∞}`
+  (`le_infty_iff`).  The correct reading of `≤` on `RV` is
+
+  ```
+  iLe u v  :=  (u = ∞ → v = ∞) ∧ vrv u ≤ vrv v
+  ```
+
+  which is reflexive at `∞` — the naive form is *inconsistent* with the frozen axioms.
+* `kAddLink` is well posed only because, at units, `rv x = rv y` with `x ≠ y` forces `rv (x - y)` to
+  be a non-unit.  That is the lemma the residue-addition construction must prove, and it is now
+  available from the axioms.
+* Nontriviality gives a strictly positive `RV`-element, hence `Kˣ ⊊ RV ∖ {0}`; `Kˣ` is closed under
+  negation and `rv (-1)` is a unit.
+* The junk conventions do force `0` off `K`, as intended.
+* **`ACVF(0,0) ≠ ACVF`**: the characteristic-0 schemes are *not* derivable from the rest, since
+  `rv (n·1)` remembers the residue of `n`.  The repository's `ACVF(0,0)` and `ACVF_S(0,0)` are
+  genuinely stronger theories, not notation.
