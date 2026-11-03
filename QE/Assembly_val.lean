@@ -5770,8 +5770,69 @@ end Transport
 
 end ValOneEC
 
+namespace ValOneEC
+
+/-! ## 16b. A model of `ACVF_val` is algebraically closed -/
+
+section IsAlgClosedModel
+
+open FirstOrder FirstOrder.Language FirstOrder.Ring
+
+/-- **A model of `ACVF_val` is algebraically closed.**  This is the piece that connects the theory's
+`genericMonicPolyHasRoot` sentences, which are `L_val` sentences transported along `valRingHom`, to
+Mathlib's `IsAlgClosed`; without it the algebraically-closedness half of `ACVF_val` is never used.
+The proof is Mathlib's `isAlgClosed_of_model_ACF` with `LHom.realize_onBoundedFormula` inserted. -/
+theorem isAlgClosed_of_model (M : ValPM.valField.ModelType) [Field M] [CompatibleRing M]
+    [valRingHom.IsExpansionOn M] (hM : M ⊨ ValPM.ACVF_val) : IsAlgClosed M := by
+  refine IsAlgClosed.of_exists_root _ ?_
+  intro p hpm hpi
+  have hpos : 0 < p.natDegree :=
+    Polynomial.natDegree_pos_iff_degree_pos.2 (Polynomial.degree_pos_of_irreducible hpi)
+  have hmem : ValPM.genericMonicPolyHasRoot p.natDegree ∈ ValPM.ACVF_val :=
+    Or.inl (Or.inr ⟨p.natDegree, hpos, rfl⟩)
+  have h : M ⊨ ValPM.genericMonicPolyHasRoot p.natDegree := hM.realize_of_mem _ hmem
+  have h2 : M ⊨ Field.genericMonicPolyHasRoot p.natDegree := by
+    simpa only [Sentence.Realize, Formula.Realize, LHom.realize_onBoundedFormula,
+      ValPM.genericMonicPolyHasRoot] using h
+  rw [Field.realize_genericMonicPolyHasRoot] at h2
+  exact h2 ⟨p, hpm, rfl⟩
+
+end IsAlgClosedModel
+
+/-! ## 16c. Hypothesis (iii) at the level of `valField.ModelType` -/
+
+section ModelType
+
+open FirstOrder FirstOrder.Language FirstOrder.Ring
+
+variable {M : ValPM.valField.ModelType.{0, 0, 0}}
+
+/-- A model of `valField` as a field, with the ring structure read off its `L_val` structure. -/
+noncomputable def fieldOfModelValField (M : ValPM.valField.ModelType) : Field M := by
+  letI : Language.ring.Structure M := ValPM.ringStructOfVal M
+  haveI : valRingHom.IsExpansionOn M := ValPM.ringStructOfVal.expansion M
+  haveI : M ⊨ Theory.field := ValPM.model_field_of_valField M M.is_model
+  exact FirstOrder.Field.fieldOfModelField M
+
+end ModelType
+
+-- The transport to `valField.ModelType` is blocked on one specific thing, recorded with the exact
+-- error in QE-PLAN.md: the structure equality `M.struc = FirstOrder.valStructure v` cannot be
+-- *stated* without Lean reporting "synthesized type class instance is not definitionally equal to
+-- expression inferred by typing rules, synthesized M.struc, inferred valStructure v" -- with
+-- `Language.val.Structure` being a class, the equation itself trips instance checking, whichever
+-- side is written first and whether or not the instance is first named by `letI`.  Everything else
+-- in the proof is in place: `ValPM.valStruct_ext`, `ValPM.valStructOf_eq_valStructure`,
+-- `embeddingCast`, `oneECIn_congr'`, `oneECIn_of_nontrivial`, `isAlgClosed_of_model`, and the
+-- nontriviality transfer (`ValPM.axNontrivial_realize` plus `hord`).
+
+
+end ValOneEC
 #print axioms ValOneEC.oneECIn_congr
 #print axioms ValOneEC.oneECIn_congr'
 #print axioms ValOneEC.embeddingCast_heq
 #print axioms ValOneEC.oneECIn_of_nontrivial
 #print axioms ValOneEC.atomGood_of_isAlgClosed
+
+#print axioms ValOneEC.isAlgClosed_of_model
+#print axioms ValOneEC.fieldOfModelValField
