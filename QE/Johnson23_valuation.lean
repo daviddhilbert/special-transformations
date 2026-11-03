@@ -1401,3 +1401,910 @@ end Johnson
 #print axioms Johnson.univ_ne_finite_union_closedBall
 #print axioms Johnson.openBall_zero_ne_finite_union_closedBall
 #print axioms Johnson.lemma_2_3_6
+
+/-! ## Johnson, Lemma 2.3.2: Boolean combinations of balls are finite unions of swiss cheeses
+
+The content added here is:
+
+* `Johnson.iUnion_equiv_reindex`, `Johnson.iUnion_finset_eq_iUnion_subtype` (index bookkeeping);
+* `Johnson.diff_iUnion_swissCheese` — the normalisation step of Johnson's proof of 2.3.2: for a
+  ball `B₀` and finitely many balls `bᵢ`, the set `B₀ \ ⋃ᵢ bᵢ` is `B₀ \ ⋃ⱼ Cⱼ` with every `Cⱼ` a
+  ball *contained in* `B₀` (balls meeting `B₀` are comparable with it; balls disjoint from `B₀`
+  contribute nothing);
+* `Johnson.cell_eq_swissCheese` — each cell of the pattern of a finite family of balls is a swiss
+  cheese;
+* `Johnson.isBoolCombOfBalls_eq_iUnion_swissCheese` — **Lemma 2.3.2**: every Boolean combination
+  of balls of `vK`-radius is a finite union of swiss cheeses `B₀ \ ⋃ⱼ Bⱼ` with `Bⱼ ⊆ B₀`.
+
+Everything is proved in the framework of `QE/Johnson23_valuation.lean` (`Valuation K Γ₀`, `Γ₀` a
+`LinearOrderedCommGroupWithZero`, `IsValBall` = closed balls / open balls of radius in `vK`,
+singletons and `K`), using only the comparability of balls `isValBall_subset_or_subset`.
+-/
+
+namespace Johnson
+
+variable {K : Type*} [Field K] {Γ₀ : Type*} [LinearOrderedCommGroupWithZero Γ₀]
+
+/-- Reindexing a union along an equivalence. -/
+theorem iUnion_equiv_reindex {α β : Type*} (e : α ≃ β) (f : β → Set K) :
+    (⋃ i : α, f (e i)) = ⋃ j : β, f j := by
+  ext x
+  simp only [Set.mem_iUnion]
+  constructor
+  · rintro ⟨i, hi⟩; exact ⟨e i, hi⟩
+  · rintro ⟨j, hj⟩; exact ⟨e.symm j, by simpa using hj⟩
+
+/-- A union over a `Finset` is a union over the corresponding subtype. -/
+theorem iUnion_finset_eq_iUnion_subtype {ι : Type*} (b : ι → Set K) (s : Finset ι) :
+    (⋃ i ∈ s, b i) = ⋃ i : {i : ι // i ∈ s}, b i := by
+  ext x; simp
+
+/-- **The normalisation behind Johnson's Lemma 2.3.2.**  Given a ball `B₀` and finitely many
+balls `bᵢ`, the set `B₀ \ ⋃ᵢ bᵢ` can be written as `B₀ \ ⋃ⱼ Cⱼ` with every `Cⱼ` a ball
+contained in `B₀`. -/
+theorem diff_iUnion_swissCheese (v : Valuation K Γ₀) {ι : Type*} [Fintype ι]
+    {B₀ : Set K} (hB₀ : IsValBall v B₀) (b : ι → Set K) (hb : ∀ i, IsValBall v (b i)) :
+    ∃ (m : ℕ) (C : Fin m → Set K), (∀ j, IsValBall v (C j)) ∧
+      (∀ j, C j ⊆ B₀) ∧ B₀ \ (⋃ i, b i) = B₀ \ (⋃ j, C j) := by
+  classical
+  by_cases hP : ∃ i, B₀ ⊆ b i
+  · -- some `bᵢ` swallows `B₀`, so both sides are empty
+    obtain ⟨i₀, hi₀⟩ := hP
+    refine ⟨1, fun _ => B₀, fun _ => hB₀, fun _ => subset_rfl, ?_⟩
+    have hcover : B₀ ⊆ ⋃ i, b i := (hi₀.trans (Set.subset_iUnion b i₀))
+    have h1 : B₀ \ (⋃ i, b i) = ∅ := Set.sdiff_eq_empty.mpr hcover
+    have h2 : (⋃ _j : Fin 1, (B₀ : Set K)) = B₀ := by
+      refine Set.Subset.antisymm (Set.iUnion_subset fun _ => subset_rfl) ?_
+      intro x hx
+      exact Set.mem_iUnion.mpr ⟨0, hx⟩
+    rw [h1, h2, Set.sdiff_self]
+  · -- keep exactly the balls contained in `B₀`
+    push_neg at hP
+    let κ := {i : ι // b i ⊆ B₀}
+    haveI : Fintype κ := inferInstance
+    let e := Fintype.equivFin κ
+    refine ⟨Fintype.card κ, fun j => b (e.symm j).1, fun j => hb _,
+      fun j => (e.symm j).2, ?_⟩
+    rw [iUnion_equiv_reindex (e := e.symm) (f := fun i : κ => b i.1)]
+    have hEq : B₀ ∩ (⋃ i : ι, b i) = B₀ ∩ (⋃ i : κ, b i.1) := by
+      refine Set.Subset.antisymm ?_ ?_
+      · rintro x ⟨hx, hxU⟩
+        obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hxU
+        have hsub : b i ⊆ B₀ := by
+          rcases isValBall_subset_or_subset v (hb i) hB₀ ⟨x, hi, hx⟩ with h | h
+          · exact h
+          · exact absurd h (hP i)
+        exact ⟨hx, Set.mem_iUnion.mpr ⟨⟨i, hsub⟩, hi⟩⟩
+      · rintro x ⟨hx, hxU⟩
+        obtain ⟨⟨i, _⟩, hi⟩ := Set.mem_iUnion.mp hxU
+        exact ⟨hx, Set.mem_iUnion.mpr ⟨i, hi⟩⟩
+    ext x
+    simp only [Set.mem_sdiff]
+    constructor
+    · rintro ⟨hx, hxU⟩
+      refine ⟨hx, ?_⟩
+      intro hxV
+      have hmem : x ∈ B₀ ∩ (⋃ i : κ, b i.1) := ⟨hx, hxV⟩
+      rw [← hEq] at hmem
+      exact hxU hmem.2
+    · rintro ⟨hx, hxV⟩
+      refine ⟨hx, ?_⟩
+      intro hxU
+      have hmem : x ∈ B₀ ∩ (⋃ i : ι, b i) := ⟨hx, hxU⟩
+      rw [hEq] at hmem
+      exact hxV hmem.2
+
+/-- The empty set as a swiss cheese (needed for the cells the Boolean function rejects). -/
+theorem empty_swissCheese : (∅ : Set K) = Set.univ \ (⋃ _j : Fin 1, (Set.univ : Set K)) := by
+  have hone : (⋃ _j : Fin 1, (Set.univ : Set K)) = Set.univ :=
+    Set.eq_univ_iff_forall.mpr fun x => Set.mem_iUnion.mpr ⟨0, Set.mem_univ x⟩
+  rw [hone, Set.sdiff_self]
+
+/-- **Johnson, Lemma 2.3.2, one cell.**  The cell of a pattern `S` in a finite family of balls is
+a swiss cheese (or empty). -/
+theorem cell_eq_swissCheese (v : Valuation K Γ₀) {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {b : ι → Set K} (hb : ∀ i, IsValBall v (b i)) (S : Finset ι) :
+    ∃ (m : ℕ) (B₀ : Set K) (C : Fin m → Set K),
+      IsValBall v B₀ ∧ (∀ j, IsValBall v (C j)) ∧ (∀ j, C j ⊆ B₀) ∧
+      cell b S = B₀ \ (⋃ j, C j) := by
+  classical
+  rcases eq_or_ne S ∅ with hS | hS
+  · subst hS
+    have hcell : cell b (∅ : Finset ι) = Set.univ \ (⋃ i : ι, b i) := by
+      have h1 : (⋂ i ∈ (∅ : Finset ι), b i) = Set.univ := by ext x; simp
+      have h2 : (⋃ i ∈ (∅ : Finset ι)ᶜ, b i) = ⋃ i : ι, b i := by
+        rw [Finset.compl_empty]
+        ext x; simp
+      rw [cell, h1, h2]
+    obtain ⟨m, C, hC, hCsub, heq⟩ :=
+      diff_iUnion_swissCheese v (B₀ := Set.univ) IsValBall.univ b hb
+    exact ⟨m, Set.univ, C, IsValBall.univ, hC, fun j => Set.subset_univ _,
+      by rw [hcell, heq]⟩
+  · by_cases hne : (⋂ i ∈ S, b i).Nonempty
+    · -- the intersection of the balls of the pattern is one of them
+      obtain ⟨j, hjS, hjeq⟩ :=
+        exists_mem_of_iInter_finset v hb (Finset.nonempty_iff_ne_empty.mpr hS) hne
+      have hcell : cell b S = b j \ (⋃ i : {i : ι // i ∈ Sᶜ}, b i.1) := by
+        rw [cell, hjeq, iUnion_finset_eq_iUnion_subtype]
+      obtain ⟨m, C, hC, hCsub, heq⟩ :=
+        diff_iUnion_swissCheese v (B₀ := b j) (hb j) (fun i : {i : ι // i ∈ Sᶜ} => b i.1)
+          (fun i => hb i.1)
+      exact ⟨m, b j, C, hb j, hC, hCsub, by rw [hcell, heq]⟩
+    · -- the cell is empty
+      have hcell : cell b S = ∅ := by
+        rw [cell, Set.not_nonempty_iff_eq_empty.mp hne, Set.empty_sdiff]
+      refine ⟨1, Set.univ, fun _ => Set.univ, IsValBall.univ, fun _ => IsValBall.univ,
+        fun _ => subset_rfl, ?_⟩
+      rw [hcell]
+      exact empty_swissCheese (K := K)
+
+/-- **Johnson, Lemma 2.3.2.**  Every Boolean combination of balls of `vK`-radius is a finite union
+of swiss cheeses: `⋃ᵢ (B₀ᵢ \ ⋃ⱼ Bᵢⱼ)` with each `Bᵢⱼ` a ball contained in `B₀ᵢ`. -/
+theorem isBoolCombOfBalls_eq_iUnion_swissCheese (v : Valuation K Γ₀) {D : Set K}
+    (hD : IsBoolCombOfBalls v D) :
+    ∃ (n : ℕ) (B₀ : Fin n → Set K) (m : Fin n → ℕ) (C : ∀ i, Fin (m i) → Set K),
+      (∀ i, IsValBall v (B₀ i)) ∧ (∀ i j, IsValBall v (C i j)) ∧
+      (∀ i j, C i j ⊆ B₀ i) ∧ D = ⋃ i, (B₀ i \ (⋃ j, C i j)) := by
+  classical
+  obtain ⟨ι, hι, b, t, hb, hDdef⟩ := hD
+  haveI := hι
+  have key : ∀ S : Finset ι, ∃ (m : ℕ) (B₀ : Set K) (C : Fin m → Set K),
+      IsValBall v B₀ ∧ (∀ j, IsValBall v (C j)) ∧ (∀ j, C j ⊆ B₀) ∧
+      cellIf b t S = B₀ \ (⋃ j, C j) := by
+    intro S
+    by_cases ht : t (S : Set ι) = true
+    · rw [cellIf, if_pos ht]
+      exact cell_eq_swissCheese v hb S
+    · refine ⟨1, Set.univ, fun _ => Set.univ, IsValBall.univ, fun _ => IsValBall.univ,
+        fun _ => subset_rfl, ?_⟩
+      rw [cellIf, if_neg ht]
+      exact empty_swissCheese (K := K)
+  choose m B₀ C hP using key
+  have hB₀ : ∀ S, IsValBall v (B₀ S) := fun S => (hP S).1
+  have hC : ∀ S j, IsValBall v (C S j) := fun S => (hP S).2.1
+  have hCsub : ∀ S j, C S j ⊆ B₀ S := fun S => (hP S).2.2.1
+  have hEq : ∀ S, cellIf b t S = B₀ S \ (⋃ j, C S j) := fun S => (hP S).2.2.2
+  let e : Finset ι ≃ Fin (Fintype.card (Finset ι)) := Fintype.equivFin (Finset ι)
+  let m' : Fin (Fintype.card (Finset ι)) → ℕ := fun i => m (e.symm i)
+  refine ⟨Fintype.card (Finset ι), fun i => B₀ (e.symm i), m',
+    fun i => C (e.symm i), fun i => hB₀ _, fun i j => hC _ _, fun i j => hCsub _ _, ?_⟩
+  have hD' : D = ⋃ S : Finset ι, (B₀ S \ (⋃ j, C S j)) := by
+    rw [show D = {x : K | t {i | x ∈ b i} = true} from Set.ext hDdef, eq_iUnion_cell b t]
+    simp only [hEq]
+  rw [hD']
+  exact (iUnion_equiv_reindex (e := e.symm)
+    (f := fun S : Finset ι => B₀ S \ (⋃ j, C S j))).symm
+
+#print axioms Johnson.diff_iUnion_swissCheese
+#print axioms Johnson.cell_eq_swissCheese
+#print axioms Johnson.isBoolCombOfBalls_eq_iUnion_swissCheese
+
+end Johnson
+
+/-! ## Johnson, Lemmas 2.3.3 and 2.3.8: points of `K` in `K`-balls
+
+`K` is a valued field embedded in a valued field `L` by `φ : K →+* L`; the valuation of `K` is
+`v.comap φ`.  A *K-ball* of `L` is a ball of `L` whose centre and radius come from `K`.
+
+* `isValBallK_trace`: the trace on `K` of a K-ball is a ball of `K`;
+* `lemma_2_3_3`: if `B₁ ⊊ B₂` are K-balls and `vK` is a dense linear order (true when
+  `K ⊨ ACVF`), then `B₂ \ B₁` contains a point of `K`;
+* `lemma_2_3_8`: if `C = B₀ \ ⋃ᵢ Bᵢ` is nonempty, with `B₀` a K-ball and the `Bᵢ` subballs of
+  `B₀` with centre and radius in `K`, then `C` contains a point of `K`.
+-/
+
+namespace Johnson
+
+variable {K : Type*} [Field K] {Γ₀ : Type*} [LinearOrderedCommGroupWithZero Γ₀]
+variable {L : Type*} [Field L]
+
+/-- The closed ball of radius `0` is a singleton. -/
+theorem closedBall_eq_singleton_zero (v : Valuation K Γ₀) (c : K) :
+    closedBall v c 0 = {c} := by
+  ext x
+  rw [mem_closedBall, Set.mem_singleton_iff]
+  constructor
+  · intro h
+    by_contra hx
+    have hne : v (x - c) ≠ 0 := v.ne_zero_iff.mpr (sub_ne_zero.mpr hx)
+    exact absurd h (not_le.mpr (pos_iff_ne_zero.mpr hne))
+  · rintro rfl
+    simp
+
+/-- The open ball of radius `0` is empty. -/
+theorem openBall_eq_empty_zero (v : Valuation K Γ₀) (c : K) :
+    openBall v c 0 = ∅ := by
+  ext x
+  rw [mem_openBall, Set.mem_empty_iff_false, iff_false]
+  exact not_lt.mpr zero_le
+
+/-- Two closed balls of the same radius that meet are equal. -/
+theorem closedBall_eq_of_val_sub_le (v : Valuation K Γ₀) {c₁ c₂ : K} {γ : Γ₀}
+    (h : v (c₁ - c₂) ≤ γ) : closedBall v c₁ γ = closedBall v c₂ γ := by
+  refine Set.Subset.antisymm (closedBall_mono v h le_rfl) ?_
+  refine closedBall_mono v ?_ le_rfl
+  rwa [show c₂ - c₁ = -(c₁ - c₂) by ring, Valuation.map_neg]
+
+/-- Some element of value strictly between `0` and `1`. -/
+theorem exists_val_between_zero_one (w : Valuation K Γ₀)
+    (hnt : ∃ x : K, x ≠ 0 ∧ w x < 1) : ∃ u : K, 0 < w u ∧ w u < 1 := by
+  obtain ⟨x, hx0, hx1⟩ := hnt
+  exact ⟨x, pos_iff_ne_zero.mpr (w.ne_zero_iff.mpr hx0), hx1⟩
+
+/-- Between two values, the lower one possibly `0`, there is a third one. -/
+theorem exists_val_between' [IsAlgClosed K] (w : Valuation K Γ₀)
+    (hnt : ∃ x : K, x ≠ 0 ∧ w x < 1) {a c : K} (h : w a < w c) :
+    ∃ t : K, w a < w t ∧ w t < w c := by
+  have hc0 : 0 < w c := lt_of_le_of_lt zero_le h
+  have hc : c ≠ 0 := fun hc => by rw [hc, map_zero] at hc0; exact lt_irrefl _ hc0
+  rcases eq_or_lt_of_le (zero_le (a := w a)) with ha | ha
+  · obtain ⟨u, hu0, hu1⟩ := exists_val_between_zero_one w hnt
+    refine ⟨c * u, ?_, ?_⟩
+    · rw [map_mul, ← ha]
+      exact mul_pos hc0 hu0
+    · rw [map_mul]
+      simpa using mul_lt_mul_of_pos_left hu1 hc0
+  · have ha0 : a ≠ 0 := fun h => by rw [h, map_zero] at ha; exact lt_irrefl _ ha
+    obtain ⟨t, -, h1, h2⟩ := exists_val_between w ha0 hc h
+    exact ⟨t, h1, h2⟩
+
+/-- Above finitely many values there is another one. -/
+theorem exists_val_gt_finset [IsAlgClosed K] (w : Valuation K Γ₀)
+    (hnt : ∃ x : K, x ≠ 0 ∧ w x < 1) (s : Finset K) :
+    ∃ x : K, ∀ a ∈ s, w a < w x := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => exact ⟨1, by simp⟩
+  | insert a₀ s ha ih =>
+    obtain ⟨x₀, hx₀⟩ := ih
+    rcases le_or_gt (w a₀) (w x₀) with hle | hlt
+    · rcases eq_or_lt_of_le (zero_le (a := w x₀)) with h0 | hpos
+      · refine ⟨1, ?_⟩
+        intro a ha'
+        have h1 : w a ≤ w x₀ := by
+          rcases Finset.mem_insert.mp ha' with rfl | hmem
+          · exact hle
+          · exact le_of_lt (hx₀ a hmem)
+        have h2 : w a = 0 := by rw [← h0] at h1; exact le_antisymm h1 zero_le
+        rw [h2, Valuation.map_one]
+        exact zero_lt_one
+      · have hx0ne : x₀ ≠ 0 := fun h => by
+          rw [h, map_zero] at hpos; exact lt_irrefl _ hpos
+        obtain ⟨x, -, hx⟩ := exists_val_lt_val w hnt hx0ne
+        refine ⟨x, ?_⟩
+        intro a ha'
+        rcases Finset.mem_insert.mp ha' with rfl | hmem
+        · exact lt_of_le_of_lt hle hx
+        · exact lt_trans (hx₀ a hmem) hx
+    · have ha0 : a₀ ≠ 0 := fun h => by
+        rw [h, map_zero] at hlt; exact absurd hlt (not_lt_of_ge zero_le)
+      obtain ⟨x, -, hx⟩ := exists_val_lt_val w hnt ha0
+      refine ⟨x, ?_⟩
+      intro a ha'
+      rcases Finset.mem_insert.mp ha' with rfl | hmem
+      · exact hx
+      · exact lt_trans (lt_trans (hx₀ a hmem) hlt) hx
+
+/-- K-balls of `L`: balls with centre and radius coming from `K`. -/
+inductive IsValBallK (v : Valuation L Γ₀) (φ : K →+* L) : Set L → Prop
+  | closed (c b : K) : IsValBallK v φ (closedBall v (φ c) ((v.comap φ) b))
+  | openball (c b : K) : IsValBallK v φ (openBall v (φ c) ((v.comap φ) b))
+  | singleton (c : K) : IsValBallK v φ {φ c}
+  | univ : IsValBallK v φ Set.univ
+
+/-- The trace on `K` of a K-ball is a ball of `K`. -/
+theorem isValBallK_trace (v : Valuation L Γ₀) (φ : K →+* L) {B : Set L}
+    (hB : IsValBallK v φ B) : IsValBall (v.comap φ) {x : K | φ x ∈ B} := by
+  cases hB with
+  | closed c b =>
+    have h : {x : K | φ x ∈ closedBall v (φ c) ((v.comap φ) b)}
+        = closedBall (v.comap φ) c ((v.comap φ) b) := by
+      ext x
+      simp only [Set.mem_setOf_eq, mem_closedBall, Valuation.comap_apply, map_sub]
+    rw [h]; exact IsValBall.closed c b
+  | openball c b =>
+    have h : {x : K | φ x ∈ openBall v (φ c) ((v.comap φ) b)}
+        = openBall (v.comap φ) c ((v.comap φ) b) := by
+      ext x
+      simp only [Set.mem_setOf_eq, mem_openBall, Valuation.comap_apply, map_sub]
+    rw [h]; exact IsValBall.openball c b
+  | singleton c =>
+    have h : {x : K | φ x ∈ ({φ c} : Set L)} = {c} := by
+      ext x
+      simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+      exact ⟨fun h => φ.injective h, fun h => by rw [h]⟩
+    rw [h]; exact IsValBall.singleton c
+  | univ =>
+    have h : {x : K | φ x ∈ (Set.univ : Set L)} = Set.univ := by
+      ext x; simp
+    rw [h]; exact IsValBall.univ
+
+/-- A nonempty K-ball has a point of `K`. -/
+theorem isValBallK_exists_point (v : Valuation L Γ₀) (φ : K →+* L) {B : Set L}
+    (hB : IsValBallK v φ B) (hne : B.Nonempty) : ∃ x : K, φ x ∈ B := by
+  cases hB with
+  | closed c b => exact ⟨c, closedBall_self_mem v (φ c) ((v.comap φ) b)⟩
+  | openball c b =>
+    rcases eq_or_ne b 0 with hb | hb
+    · rw [hb, map_zero, openBall_eq_empty_zero] at hne ⊢
+      obtain ⟨y, hy⟩ := hne
+      exact absurd hy (by simp)
+    · refine ⟨c, openBall_self_mem (v := v) ?_⟩
+      rw [Valuation.comap_apply, v.ne_zero_iff]
+      exact fun h => hb (φ.injective (by simpa using h))
+  | singleton c => exact ⟨c, Set.mem_singleton _⟩
+  | univ => exact ⟨0, Set.mem_univ _⟩
+
+/-! ## Johnson, Lemma 2.3.3
+
+If `B₁ ⊊ B₂` are K-balls of `L` and `vK` is a dense linear order (which holds when `K ⊨ ACVF`),
+then `B₂ \ B₁` contains a point of `K`.
+-/
+
+/-- `c + 1 ≠ c` in a field. -/
+theorem add_one_ne_self (c : K) : c + 1 ≠ c := by
+  intro h
+  exact one_ne_zero (add_left_cancel (a := c) (b := 1) (c := 0) (by rw [add_zero]; exact h))
+
+/-- The value of `x - c` in `K` is the value of `φ x - φ c` in `L`. -/
+theorem comap_apply_sub (v : Valuation L Γ₀) (φ : K →+* L) (x c : K) :
+    (v.comap φ) (x - c) = v (φ x - φ c) := by
+  rw [Valuation.comap_apply, map_sub φ x c]
+
+/-- `v (φ c₂ - φ c₁)` is the value of `c₁ - c₂` in `K`. -/
+theorem comap_sub_swap (v : Valuation L Γ₀) (φ : K →+* L) (c₁ c₂ : K) :
+    v (φ c₂ - φ c₁) = (v.comap φ) (c₁ - c₂) := by
+  rw [show φ c₂ - φ c₁ = -(φ c₁ - φ c₂) by ring, Valuation.map_neg, Valuation.comap_apply,
+    map_sub φ c₁ c₂]
+
+/-- A closed K-ball of positive radius contains points of `K` other than any prescribed one. -/
+theorem exists_mem_closedBall_ne [IsAlgClosed K] (v : Valuation L Γ₀) (φ : K →+* L)
+    (hnt : ∃ x : K, x ≠ 0 ∧ (v.comap φ) x < 1) {c b : K} (hb : b ≠ 0) (c' : K) :
+    ∃ x : K, (v.comap φ) (x - c) ≤ (v.comap φ) b ∧ x ≠ c' := by
+  classical
+  obtain ⟨u, hu0, hu1⟩ := exists_val_between_zero_one (v.comap φ) hnt
+  have hu : (v.comap φ) (1 + u) ≤ 1 := by
+    have h := map_add_le_max (f := v.comap φ) (1 : K) u
+    rw [(v.comap φ).map_one] at h
+    exact le_trans h (max_le le_rfl hu1.le)
+  by_cases h : c' - c = b
+  · refine ⟨c + b * (1 + u), ?_, ?_⟩
+    · rw [show c + b * (1 + u) - c = b * (1 + u) by ring, map_mul]
+      calc (v.comap φ) b * (v.comap φ) (1 + u) ≤ (v.comap φ) b * 1 :=
+            mul_le_mul_of_nonneg_left hu zero_le
+        _ = (v.comap φ) b := mul_one _
+    · intro hx
+      have h1 : b * (1 + u) = c' - c := by rw [← hx]; ring
+      rw [h] at h1
+      have h2 : b * (1 + u) = b * 1 := by rw [mul_one]; exact h1
+      have h3 : 1 + u = 1 := mul_left_cancel₀ hb h2
+      have h4 : u = 0 := add_left_cancel (a := 1) (b := u) (c := 0) (by rw [add_zero]; exact h3)
+      rw [h4, map_zero] at hu0
+      exact absurd hu0 (lt_irrefl 0)
+  · refine ⟨c + b, ?_, ?_⟩
+    · rw [show c + b - c = b by ring]
+    · intro hx
+      exact h (by rw [← hx]; ring)
+
+/-- An open K-ball of positive radius contains points of `K` other than any prescribed one. -/
+theorem exists_mem_openBall_ne [IsAlgClosed K] (v : Valuation L Γ₀) (φ : K →+* L)
+    (hnt : ∃ x : K, x ≠ 0 ∧ (v.comap φ) x < 1) {c b : K} (hb : 0 < (v.comap φ) b) (c' : K) :
+    ∃ x : K, (v.comap φ) (x - c) < (v.comap φ) b ∧ x ≠ c' := by
+  classical
+  by_cases h : c = c'
+  · subst h
+    obtain ⟨u, hu0, hu1⟩ := exists_val_between_zero_one (v.comap φ) hnt
+    refine ⟨c + b * u, ?_, ?_⟩
+    · rw [show c + b * u - c = b * u by ring, map_mul]
+      simpa using mul_lt_mul_of_pos_left hu1 hb
+    · intro hx
+      have h1 : b * u = 0 :=
+        add_left_cancel (a := c) (b := b * u) (c := 0) (by rw [add_zero]; exact hx)
+      rcases mul_eq_zero.mp h1 with h2 | h2
+      · exact absurd h2 ((v.comap φ).ne_zero_iff.mp (ne_of_gt hb))
+      · rw [h2, map_zero] at hu0
+        exact absurd hu0 (lt_irrefl 0)
+  · exact ⟨c, by rw [show c - c = 0 by ring, map_zero]; exact hb, h⟩
+
+/-- **Johnson, Lemma 2.3.3.**  If `B₁ ⊊ B₂` are K-balls of `L`, then `B₂ \ B₁` contains a point
+of `K`.  (`K` algebraically closed and nontrivially valued is used through the density of the
+value group and the unboundedness of the values.) -/
+theorem lemma_2_3_3 [IsAlgClosed K] (v : Valuation L Γ₀) (φ : K →+* L)
+    (hnt : ∃ x : K, x ≠ 0 ∧ (v.comap φ) x < 1)
+    {B₁ B₂ : Set L} (h₁ : IsValBallK v φ B₁) (h₂ : IsValBallK v φ B₂)
+    (hsub : B₁ ⊆ B₂) (hne : B₁ ≠ B₂) :
+    ∃ x : K, φ x ∈ B₂ ∧ φ x ∉ B₁ := by
+  classical
+  have hmem : ∀ (y c : K) (γ : Γ₀),
+      φ y ∈ closedBall v (φ c) γ ↔ (v.comap φ) (y - c) ≤ γ := by
+    intro y c γ
+    rw [mem_closedBall, comap_apply_sub]
+  have hmemO : ∀ (y c : K) (γ : Γ₀),
+      φ y ∈ openBall v (φ c) γ ↔ (v.comap φ) (y - c) < γ := by
+    intro y c γ
+    rw [mem_openBall, comap_apply_sub]
+  have hmemS : ∀ (y c : K), φ y ∈ ({φ c} : Set L) ↔ y = c := by
+    intro y c
+    rw [Set.mem_singleton_iff]
+    exact ⟨fun h => φ.injective h, fun h => by rw [h]⟩
+  revert hsub hne
+  cases h₂ with
+  | univ =>
+    intro _ hne
+    cases h₁ with
+    | univ => exact absurd rfl hne
+    | singleton c =>
+      exact ⟨c + 1, Set.mem_univ _, by rw [hmemS]; exact add_one_ne_self c⟩
+    | closed c b =>
+      rcases eq_or_ne b 0 with hb | hb
+      · rw [hb, map_zero, closedBall_eq_singleton_zero]
+        exact ⟨c + 1, Set.mem_univ _, by rw [hmemS]; exact add_one_ne_self c⟩
+      · obtain ⟨b', -, hb'⟩ := exists_val_lt_val (v.comap φ) hnt hb
+        refine ⟨c + b', Set.mem_univ _, ?_⟩
+        rw [hmem, show c + b' - c = b' by ring]
+        exact not_le.mpr hb'
+    | openball c b =>
+      rcases eq_or_ne b 0 with hb | hb
+      · rw [hb, map_zero, openBall_eq_empty_zero]
+        exact ⟨0, Set.mem_univ _, Set.notMem_empty _⟩
+      · obtain ⟨b', -, hb'⟩ := exists_val_lt_val (v.comap φ) hnt hb
+        refine ⟨c + b', Set.mem_univ _, ?_⟩
+        rw [hmemO, show c + b' - c = b' by ring]
+        exact not_lt.mpr hb'.le
+  | singleton c₂ =>
+    intro hsub hne
+    rcases Set.subset_singleton_iff_eq.mp hsub with h | h
+    · exact ⟨c₂, Set.mem_singleton _, by rw [h]; exact Set.notMem_empty _⟩
+    · exact absurd h hne
+  | closed c₂ b₂ =>
+    intro hsub hne
+    rcases eq_or_ne b₂ 0 with hb₂ | hb₂
+    · rw [hb₂, map_zero, closedBall_eq_singleton_zero] at hsub hne ⊢
+      rcases Set.subset_singleton_iff_eq.mp hsub with h | h
+      · exact ⟨c₂, Set.mem_singleton _, by rw [h]; exact Set.notMem_empty _⟩
+      · exact absurd h hne
+    · have hβpos : 0 < (v.comap φ) b₂ :=
+        pos_iff_ne_zero.mpr ((v.comap φ).ne_zero_iff.mpr hb₂)
+      cases h₁ with
+      | univ =>
+        exfalso
+        obtain ⟨b', -, hb'⟩ := exists_val_lt_val (v.comap φ) hnt hb₂
+        have hmem' : φ (c₂ + b') ∈ closedBall v (φ c₂) ((v.comap φ) b₂) :=
+          hsub (Set.mem_univ _)
+        rw [hmem, show c₂ + b' - c₂ = b' by ring] at hmem'
+        exact absurd hmem' (not_le.mpr hb')
+      | singleton c₁ =>
+        obtain ⟨x, hx1, hx2⟩ := exists_mem_closedBall_ne v φ hnt hb₂ c₁
+        exact ⟨x, by rw [hmem]; exact hx1, by rw [hmemS]; exact hx2⟩
+      | closed c₁ b₁ =>
+        have hc₁ : (v.comap φ) (c₁ - c₂) ≤ (v.comap φ) b₂ := by
+          have h := hsub (closedBall_self_mem v (φ c₁) ((v.comap φ) b₁))
+          rwa [hmem] at h
+        have hγ : (v.comap φ) b₁ < (v.comap φ) b₂ := by
+          by_contra hcon
+          push Not at hcon
+          have hEq : closedBall v (φ c₁) ((v.comap φ) b₁)
+              = closedBall v (φ c₂) ((v.comap φ) b₂) := by
+            refine Set.Subset.antisymm hsub ?_
+            refine closedBall_mono v ?_ hcon
+            rw [comap_sub_swap]
+            exact le_trans hc₁ hcon
+          exact hne hEq
+        obtain ⟨t, ht1, ht2⟩ := exists_val_between' (v.comap φ) hnt hγ
+        refine ⟨c₁ + t, ?_, ?_⟩
+        · rw [hmem, show c₁ + t - c₂ = (c₁ - c₂) + t by ring]
+          exact le_trans (map_add_le_max (f := v.comap φ) (c₁ - c₂) t)
+            (max_le hc₁ ht2.le)
+        · rw [hmem, show c₁ + t - c₁ = t by ring]
+          exact not_le.mpr ht1
+      | openball c₁ b₁ =>
+        rcases eq_or_ne b₁ 0 with hb₁ | hb₁
+        · rw [hb₁, map_zero, openBall_eq_empty_zero]
+          refine ⟨c₂, ?_, Set.notMem_empty _⟩
+          rw [hmem, show c₂ - c₂ = 0 by ring, map_zero]
+          exact zero_le
+        · have hc₁ : (v.comap φ) (c₁ - c₂) ≤ (v.comap φ) b₂ := by
+            have h := hsub (openBall_self_mem (v := v) (c := φ c₁) (γ := (v.comap φ) b₁)
+              ((v.comap φ).ne_zero_iff.mpr hb₁))
+            rwa [hmem] at h
+          have hγ : (v.comap φ) b₁ ≤ (v.comap φ) b₂ := by
+            by_contra hcon
+            push Not at hcon
+            obtain ⟨t, ht1, ht2⟩ := exists_val_between' (v.comap φ) hnt hcon
+            have hmemB₁ : φ (c₁ + t) ∈ openBall v (φ c₁) ((v.comap φ) b₁) := by
+              rw [hmemO, show c₁ + t - c₁ = t by ring]; exact ht2
+            have hmemB₂ := hsub hmemB₁
+            rw [hmem, show c₁ + t - c₂ = (c₁ - c₂) + t by ring] at hmemB₂
+            have hlt : (v.comap φ) t ≤
+                max ((v.comap φ) ((c₁ - c₂) + t)) ((v.comap φ) (c₁ - c₂)) := by
+              have hh := val_sub_le_max (v.comap φ) ((c₁ - c₂) + t) 0 (c₁ - c₂)
+              rw [sub_zero, zero_sub, Valuation.map_neg,
+                show ((c₁ - c₂) + t) - (c₁ - c₂) = t by ring] at hh
+              exact hh
+            exact absurd (le_trans hlt (max_le hmemB₂ hc₁)) (not_le.mpr ht1)
+          rcases eq_or_lt_of_le hγ with hγ' | hγ'
+          · refine ⟨c₁ + b₂, ?_, ?_⟩
+            · rw [hmem, show c₁ + b₂ - c₂ = (c₁ - c₂) + b₂ by ring]
+              exact le_trans (map_add_le_max (f := v.comap φ) (c₁ - c₂) b₂)
+                (max_le hc₁ le_rfl)
+            · rw [hmemO, show c₁ + b₂ - c₁ = b₂ by ring]
+              exact not_lt.mpr hγ'.le
+          · obtain ⟨t, ht1, ht2⟩ := exists_val_between' (v.comap φ) hnt hγ'
+            refine ⟨c₁ + t, ?_, ?_⟩
+            · rw [hmem, show c₁ + t - c₂ = (c₁ - c₂) + t by ring]
+              exact le_trans (map_add_le_max (f := v.comap φ) (c₁ - c₂) t)
+                (max_le hc₁ ht2.le)
+            · rw [hmemO, show c₁ + t - c₁ = t by ring]
+              exact not_lt.mpr ht1.le
+  | openball c₂ b₂ =>
+    intro hsub hne
+    rcases eq_or_ne b₂ 0 with hb₂ | hb₂
+    · rw [hb₂, map_zero, openBall_eq_empty_zero] at hsub hne ⊢
+      exact absurd (Set.subset_empty_iff.mp hsub) hne
+    · have hβpos : 0 < (v.comap φ) b₂ :=
+        pos_iff_ne_zero.mpr ((v.comap φ).ne_zero_iff.mpr hb₂)
+      cases h₁ with
+      | univ =>
+        exfalso
+        have hmem' : φ (c₂ + b₂) ∈ openBall v (φ c₂) ((v.comap φ) b₂) := hsub (Set.mem_univ _)
+        rw [hmemO, show c₂ + b₂ - c₂ = b₂ by ring] at hmem'
+        exact absurd hmem' (not_lt.mpr le_rfl)
+      | singleton c₁ =>
+        obtain ⟨x, hx1, hx2⟩ := exists_mem_openBall_ne v φ hnt hβpos c₁
+        exact ⟨x, by rw [hmemO]; exact hx1, by rw [hmemS]; exact hx2⟩
+      | closed c₁ b₁ =>
+        have hc₁lt : (v.comap φ) (c₁ - c₂) < (v.comap φ) b₂ := by
+          have h := hsub (closedBall_self_mem v (φ c₁) ((v.comap φ) b₁))
+          rwa [hmemO] at h
+        have hγ : (v.comap φ) b₁ < (v.comap φ) b₂ := by
+          by_contra hcon
+          push Not at hcon
+          have hmemB₁ : φ (c₁ + b₂) ∈ closedBall v (φ c₁) ((v.comap φ) b₁) := by
+            rw [hmem, show c₁ + b₂ - c₁ = b₂ by ring]; exact hcon
+          have hmemB₂ := hsub hmemB₁
+          rw [hmemO, show c₁ + b₂ - c₂ = (c₁ - c₂) + b₂ by ring] at hmemB₂
+          have hh : (v.comap φ) b₂ ≤
+              max ((v.comap φ) ((c₁ - c₂) + b₂)) ((v.comap φ) (c₁ - c₂)) := by
+            have hvv := val_sub_le_max (v.comap φ) ((c₁ - c₂) + b₂) 0 (c₁ - c₂)
+            rw [sub_zero, zero_sub, Valuation.map_neg,
+              show ((c₁ - c₂) + b₂) - (c₁ - c₂) = b₂ by ring] at hvv
+            exact hvv
+          exact absurd (lt_of_le_of_lt hh (max_lt hmemB₂ hc₁lt)) (lt_irrefl _)
+        obtain ⟨t, ht1, ht2⟩ := exists_val_between' (v.comap φ) hnt hγ
+        refine ⟨c₁ + t, ?_, ?_⟩
+        · rw [hmemO, show c₁ + t - c₂ = (c₁ - c₂) + t by ring]
+          exact lt_of_le_of_lt (map_add_le_max (f := v.comap φ) (c₁ - c₂) t)
+            (max_lt hc₁lt ht2)
+        · rw [hmem, show c₁ + t - c₁ = t by ring]
+          exact not_le.mpr ht1
+      | openball c₁ b₁ =>
+        rcases eq_or_ne b₁ 0 with hb₁ | hb₁
+        · rw [hb₁, map_zero, openBall_eq_empty_zero]
+          refine ⟨c₂, ?_, Set.notMem_empty _⟩
+          rw [hmemO, show c₂ - c₂ = 0 by ring, map_zero]
+          exact hβpos
+        · have hc₁lt : (v.comap φ) (c₁ - c₂) < (v.comap φ) b₂ := by
+            have h := hsub (openBall_self_mem (v := v) (c := φ c₁) (γ := (v.comap φ) b₁)
+              ((v.comap φ).ne_zero_iff.mpr hb₁))
+            rwa [hmemO] at h
+          have hγ : (v.comap φ) b₁ < (v.comap φ) b₂ := by
+            rcases lt_trichotomy ((v.comap φ) b₁) ((v.comap φ) b₂) with h | h | h
+            · exact h
+            · exfalso
+              apply hne
+              have hsub' : openBall v (φ c₁) ((v.comap φ) b₂) ⊆
+                  openBall v (φ c₂) ((v.comap φ) b₂) := by
+                have hh2 := hsub
+                rw [h] at hh2
+                exact hh2
+              rw [h]
+              refine Set.Subset.antisymm hsub' ?_
+              intro z hz
+              rw [mem_openBall] at hz ⊢
+              refine lt_of_le_of_lt (val_sub_le_max v z (φ c₂) (φ c₁)) (max_lt hz ?_)
+              rw [comap_sub_swap]
+              exact hc₁lt
+            · obtain ⟨t, ht1, ht2⟩ := exists_val_between' (v.comap φ) hnt h
+              have hmemB₁ : φ (c₁ + t) ∈ openBall v (φ c₁) ((v.comap φ) b₁) := by
+                rw [hmemO, show c₁ + t - c₁ = t by ring]; exact ht2
+              have hmemB₂ := hsub hmemB₁
+              rw [hmemO, show c₁ + t - c₂ = (c₁ - c₂) + t by ring] at hmemB₂
+              have hh : (v.comap φ) t ≤
+                  max ((v.comap φ) ((c₁ - c₂) + t)) ((v.comap φ) (c₁ - c₂)) := by
+                have hvv := val_sub_le_max (v.comap φ) ((c₁ - c₂) + t) 0 (c₁ - c₂)
+                rw [sub_zero, zero_sub, Valuation.map_neg,
+                  show ((c₁ - c₂) + t) - (c₁ - c₂) = t by ring] at hvv
+                exact hvv
+              exact absurd (lt_of_le_of_lt hh (max_lt hmemB₂ hc₁lt)) (not_lt.mpr ht1.le)
+          obtain ⟨t, ht1, ht2⟩ := exists_val_between' (v.comap φ) hnt hγ
+          refine ⟨c₁ + t, ?_, ?_⟩
+          · rw [hmemO, show c₁ + t - c₂ = (c₁ - c₂) + t by ring]
+            exact lt_of_le_of_lt (map_add_le_max (f := v.comap φ) (c₁ - c₂) t)
+              (max_lt hc₁lt ht2)
+          · rw [hmemO, show c₁ + t - c₁ = t by ring]
+            exact not_lt.mpr ht1.le
+
+#print axioms Johnson.lemma_2_3_3
+
+/-! ## Johnson, Lemma 2.3.8
+
+A nonempty swiss cheese cut out by K-balls meets `K`.
+-/
+
+/-- **Johnson, Lemma 2.3.8.**  Let `B₀` be a K-ball of `L` and `B₁, …, B_{n-1}` K-balls contained
+in `B₀`.  If `B₀ \ ⋃ᵢ Bᵢ` is nonempty, then it contains a point of `K`. -/
+theorem lemma_2_3_8 [IsAlgClosed K] (v : Valuation L Γ₀) (φ : K →+* L)
+    (hnt : ∃ x : K, x ≠ 0 ∧ (v.comap φ) x < 1)
+    {B₀ : Set L} (h₀ : IsValBallK v φ B₀) {n : ℕ} (B : Fin n → Set L)
+    (hB : ∀ i, IsValBallK v φ (B i)) (hBsub : ∀ i, B i ⊆ B₀)
+    (hne : (B₀ \ ⋃ i, B i).Nonempty) :
+    ∃ x : K, φ x ∈ B₀ ∧ ∀ i, φ x ∉ B i := by
+  classical
+  obtain ⟨z, hz₀, hzU⟩ := hne
+  have hzU' : ∀ i, z ∉ B i := fun i h => hzU (Set.mem_iUnion.mpr ⟨i, h⟩)
+  -- every `Bᵢ` is strictly smaller than `B₀`
+  have hproper : ∀ i, B i ≠ B₀ := by
+    intro i hi
+    exact hzU' i (hi ▸ hz₀)
+  -- the traces on `K`
+  set T : Fin n → Set K := fun i => {x : K | φ x ∈ B i} with hT
+  set T₀ : Set K := {x : K | φ x ∈ B₀} with hT₀
+  have hTball : ∀ i, IsValBall (v.comap φ) (T i) := fun i => isValBallK_trace v φ (hB i)
+  have hT₀ball : IsValBall (v.comap φ) T₀ := isValBallK_trace v φ h₀
+  have hTsub : ∀ i, T i ⊆ T₀ := fun i x hx => hBsub i hx
+  -- each trace is properly contained in the trace of `B₀` (Lemma 2.3.3)
+  have hTne : ∀ i, T i ≠ T₀ := by
+    intro i hi
+    obtain ⟨x, hx₀, hxi⟩ := lemma_2_3_3 v φ hnt (hB i) h₀ (hBsub i) (hproper i)
+    have hxT₀ : x ∈ T₀ := hx₀
+    rw [← hi] at hxT₀
+    exact hxi hxT₀
+  have hT₀ne : T₀.Nonempty := by
+    obtain ⟨x, hx⟩ := isValBallK_exists_point v φ h₀ ⟨z, hz₀⟩
+    exact ⟨x, hx⟩
+  have hnt' : ∃ x : K, 1 < (v.comap φ) x := (exists_ne_zero_val_lt_one_iff (v.comap φ)).mp hnt
+  -- Lemma 2.3.7 in `K`
+  have hcover : T₀ ≠ ⋃ i ∈ (Finset.univ : Finset (Fin n)), T i :=
+    ne_finite_union_of_proper_subballs (v.comap φ) hnt' hT₀ball hT₀ne Finset.univ T
+      (fun i _ => hTball i) (fun i _ => hTsub i) (fun i _ => hTne i)
+  have hwit : ∃ x : K, x ∈ T₀ ∧ x ∉ ⋃ i ∈ (Finset.univ : Finset (Fin n)), T i := by
+    by_contra hcon
+    push Not at hcon
+    refine hcover (Set.Subset.antisymm hcon ?_)
+    intro x hx
+    have hx' : ∃ i : Fin n, x ∈ T i := by simpa using hx
+    obtain ⟨i, hxi⟩ := hx'
+    exact hTsub i hxi
+  obtain ⟨x, hx₀, hxU⟩ := hwit
+  refine ⟨x, hx₀, ?_⟩
+  intro i hxi
+  exact hxU (Set.mem_iUnion.mpr ⟨i, Set.mem_iUnion.mpr ⟨Finset.mem_univ i, hxi⟩⟩)
+
+#print axioms Johnson.lemma_2_3_8
+
+/-! ## The combination of 2.3.2 and 2.3.8: a nonempty Boolean combination of K-balls meets `K`
+
+This is the geometric heart of Johnson's Lemma 2.3.9: a nonempty quantifier-free `K`-definable
+subset of `L¹` is a Boolean combination of `K`-balls (Lemma 2.3.1, not formalised here), hence a
+finite union of swiss cheeses (Lemma 2.3.2), and each nonempty swiss cheese meets `K`
+(Lemma 2.3.8).  So only Lemma 2.3.1 is missing from the 1-ec step.
+-/
+
+/-- A K-ball of `L` is a ball of `L`. -/
+theorem IsValBallK.toIsValBall {v : Valuation L Γ₀} {φ : K →+* L} {B : Set L}
+    (h : IsValBallK v φ B) : IsValBall v B := by
+  cases h with
+  | closed c b => exact IsValBall.closed (φ c) (φ b)
+  | openball c b => exact IsValBall.openball (φ c) (φ b)
+  | singleton c => exact IsValBall.singleton (φ c)
+  | univ => exact IsValBall.univ
+
+/-- Two K-balls of `L` that meet are comparable. -/
+theorem isValBallK_subset_or_subset (v : Valuation L Γ₀) (φ : K →+* L) {B₁ B₂ : Set L}
+    (h₁ : IsValBallK v φ B₁) (h₂ : IsValBallK v φ B₂) (h : (B₁ ∩ B₂).Nonempty) :
+    B₁ ⊆ B₂ ∨ B₂ ⊆ B₁ :=
+  isValBall_subset_or_subset v h₁.toIsValBall h₂.toIsValBall h
+
+/-- A nonempty finite intersection of K-balls is one of them. -/
+theorem exists_mem_of_iInter_finsetK [DecidableEq ι] (v : Valuation L Γ₀) (φ : K →+* L)
+    {b : ι → Set L} (hb : ∀ i, IsValBallK v φ (b i)) {S : Finset ι} (hS : S.Nonempty)
+    (hne : (⋂ i ∈ S, b i).Nonempty) :
+    ∃ j ∈ S, (⋂ i ∈ S, b i) = b j := by
+  classical
+  revert hS hne
+  induction S using Finset.induction_on with
+  | empty => intro hS; exact absurd hS Finset.not_nonempty_empty
+  | insert i S hiS ih =>
+    intro hS hne
+    by_cases hS' : S.Nonempty
+    · have hne' : (⋂ k ∈ S, b k).Nonempty := by
+        obtain ⟨x, hx⟩ := hne
+        have hx' : ∀ k : ι, k ∈ insert i S → x ∈ b k := by
+          simpa only [Set.mem_iInter] using hx
+        exact ⟨x, (mem_iInter_finset b S x).mpr fun k hk =>
+          hx' k (Finset.mem_insert_of_mem hk)⟩
+      obtain ⟨j, hjS, hj⟩ := ih hS' hne'
+      have hinter : (⋂ k ∈ insert i S, b k) = b i ∩ b j := by
+        rw [show (⋂ k ∈ insert i S, b k) = b i ∩ (⋂ k ∈ S, b k) from by
+          ext x; simp [Finset.mem_insert], hj]
+      have hne2 : (b i ∩ b j).Nonempty := hinter ▸ hne
+      rcases isValBallK_subset_or_subset v φ (hb i) (hb j) hne2 with h | h
+      · exact ⟨i, Finset.mem_insert_self i S, by rw [hinter, Set.inter_eq_left.mpr h]⟩
+      · exact ⟨j, Finset.mem_insert_of_mem hjS, by rw [hinter, Set.inter_eq_right.mpr h]⟩
+    · have hSe : S = ∅ := Finset.not_nonempty_iff_eq_empty.mp hS'
+      subst hSe
+      refine ⟨i, Finset.mem_singleton_self i, ?_⟩
+      simp
+
+/-- The normalisation behind Lemma 2.3.2 for K-balls. -/
+theorem diff_iUnion_swissCheeseK (v : Valuation L Γ₀) (φ : K →+* L) {ι : Type*} [Fintype ι]
+    {B₀ : Set L} (hB₀ : IsValBallK v φ B₀) (b : ι → Set L)
+    (hb : ∀ i, IsValBallK v φ (b i)) :
+    ∃ (m : ℕ) (C : Fin m → Set L), (∀ j, IsValBallK v φ (C j)) ∧
+      (∀ j, C j ⊆ B₀) ∧ B₀ \ (⋃ i, b i) = B₀ \ (⋃ j, C j) := by
+  classical
+  by_cases hP : ∃ i, B₀ ⊆ b i
+  · obtain ⟨i₀, hi₀⟩ := hP
+    refine ⟨1, fun _ => B₀, fun _ => hB₀, fun _ => subset_rfl, ?_⟩
+    have hcover : B₀ ⊆ ⋃ i, b i := (hi₀.trans (Set.subset_iUnion b i₀))
+    have h1 : B₀ \ (⋃ i, b i) = ∅ := Set.sdiff_eq_empty.mpr hcover
+    have h2 : (⋃ _j : Fin 1, (B₀ : Set L)) = B₀ := by
+      refine Set.Subset.antisymm (Set.iUnion_subset fun _ => subset_rfl) ?_
+      intro x hx
+      exact Set.mem_iUnion.mpr ⟨0, hx⟩
+    rw [h1, h2, Set.sdiff_self]
+  · push Not at hP
+    let κ := {i : ι // b i ⊆ B₀}
+    haveI : Fintype κ := inferInstance
+    let e := Fintype.equivFin κ
+    refine ⟨Fintype.card κ, fun j => b (e.symm j).1, fun j => hb _,
+      fun j => (e.symm j).2, ?_⟩
+    rw [iUnion_equiv_reindex (e := e.symm) (f := fun i : κ => b i.1)]
+    have hEq : B₀ ∩ (⋃ i : ι, b i) = B₀ ∩ (⋃ i : κ, b i.1) := by
+      refine Set.Subset.antisymm ?_ ?_
+      · rintro x ⟨hx, hxU⟩
+        obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hxU
+        have hsub : b i ⊆ B₀ := by
+          rcases isValBallK_subset_or_subset v φ (hb i) hB₀ ⟨x, hi, hx⟩ with h | h
+          · exact h
+          · exact absurd h (hP i)
+        exact ⟨hx, Set.mem_iUnion.mpr ⟨⟨i, hsub⟩, hi⟩⟩
+      · rintro x ⟨hx, hxU⟩
+        obtain ⟨⟨i, _⟩, hi⟩ := Set.mem_iUnion.mp hxU
+        exact ⟨hx, Set.mem_iUnion.mpr ⟨i, hi⟩⟩
+    ext x
+    simp only [Set.mem_sdiff]
+    constructor
+    · rintro ⟨hx, hxU⟩
+      refine ⟨hx, ?_⟩
+      intro hxV
+      have hmem : x ∈ B₀ ∩ (⋃ i : κ, b i.1) := ⟨hx, hxV⟩
+      rw [← hEq] at hmem
+      exact hxU hmem.2
+    · rintro ⟨hx, hxV⟩
+      refine ⟨hx, ?_⟩
+      intro hxU
+      have hmem : x ∈ B₀ ∩ (⋃ i : ι, b i) := ⟨hx, hxU⟩
+      rw [hEq] at hmem
+      exact hxV hmem.2
+
+/-- Lemma 2.3.2 for one cell of a family of K-balls. -/
+theorem cell_eq_swissCheeseK (v : Valuation L Γ₀) (φ : K →+* L) {ι : Type*} [Fintype ι]
+    [DecidableEq ι] {b : ι → Set L} (hb : ∀ i, IsValBallK v φ (b i)) (S : Finset ι) :
+    ∃ (m : ℕ) (B₀ : Set L) (C : Fin m → Set L),
+      IsValBallK v φ B₀ ∧ (∀ j, IsValBallK v φ (C j)) ∧ (∀ j, C j ⊆ B₀) ∧
+      cell b S = B₀ \ (⋃ j, C j) := by
+  classical
+  rcases eq_or_ne S ∅ with hS | hS
+  · subst hS
+    have hcell : cell b (∅ : Finset ι) = Set.univ \ (⋃ i : ι, b i) := by
+      have h1 : (⋂ i ∈ (∅ : Finset ι), b i) = Set.univ := by ext x; simp
+      have h2 : (⋃ i ∈ (∅ : Finset ι)ᶜ, b i) = ⋃ i : ι, b i := by
+        rw [Finset.compl_empty]
+        ext x; simp
+      rw [cell, h1, h2]
+    obtain ⟨m, C, hC, hCsub, heq⟩ :=
+      diff_iUnion_swissCheeseK v φ (B₀ := Set.univ) IsValBallK.univ b hb
+    exact ⟨m, Set.univ, C, IsValBallK.univ, hC, fun j => Set.subset_univ _,
+      by rw [hcell, heq]⟩
+  · by_cases hne : (⋂ i ∈ S, b i).Nonempty
+    · obtain ⟨j, hjS, hjeq⟩ :=
+        exists_mem_of_iInter_finsetK v φ hb (Finset.nonempty_iff_ne_empty.mpr hS) hne
+      have hcell : cell b S = b j \ (⋃ i : {i : ι // i ∈ Sᶜ}, b i.1) := by
+        rw [cell, hjeq, iUnion_finset_eq_iUnion_subtype]
+      obtain ⟨m, C, hC, hCsub, heq⟩ :=
+        diff_iUnion_swissCheeseK v φ (B₀ := b j) (hb j) (fun i : {i : ι // i ∈ Sᶜ} => b i.1)
+          (fun i => hb i.1)
+      exact ⟨m, b j, C, hb j, hC, hCsub, by rw [hcell, heq]⟩
+    · have hcell : cell b S = ∅ := by
+        rw [cell, Set.not_nonempty_iff_eq_empty.mp hne, Set.empty_sdiff]
+      refine ⟨1, Set.univ, fun _ => Set.univ, IsValBallK.univ, fun _ => IsValBallK.univ,
+        fun _ => subset_rfl, ?_⟩
+      rw [hcell]
+      exact empty_swissCheese (K := L)
+
+/-- `D` is a Boolean combination of K-balls: a Boolean function of the pattern of K-balls
+containing a point. -/
+def IsBoolCombOfBallsK (v : Valuation L Γ₀) (φ : K →+* L) (D : Set L) : Prop :=
+  ∃ (ι : Type) (_ : Fintype ι) (b : ι → Set L) (t : Set ι → Bool),
+    (∀ i, IsValBallK v φ (b i)) ∧ ∀ x : L, (x ∈ D ↔ t {i | x ∈ b i} = true)
+
+/-- **Johnson, Lemma 2.3.2 for K-balls.**  A Boolean combination of K-balls is a finite union of
+swiss cheeses `B₀ \ ⋃ⱼ Bⱼ` with `Bⱼ ⊆ B₀` K-balls. -/
+theorem isBoolCombOfBallsK_eq_iUnion_swissCheese (v : Valuation L Γ₀) (φ : K →+* L)
+    {D : Set L} (hD : IsBoolCombOfBallsK v φ D) :
+    ∃ (n : ℕ) (B₀ : Fin n → Set L) (m : Fin n → ℕ) (C : ∀ i, Fin (m i) → Set L),
+      (∀ i, IsValBallK v φ (B₀ i)) ∧ (∀ i j, IsValBallK v φ (C i j)) ∧
+      (∀ i j, C i j ⊆ B₀ i) ∧ D = ⋃ i, (B₀ i \ (⋃ j, C i j)) := by
+  classical
+  obtain ⟨ι, hι, b, t, hb, hDdef⟩ := hD
+  haveI := hι
+  have key : ∀ S : Finset ι, ∃ (m : ℕ) (B₀ : Set L) (C : Fin m → Set L),
+      IsValBallK v φ B₀ ∧ (∀ j, IsValBallK v φ (C j)) ∧ (∀ j, C j ⊆ B₀) ∧
+      cellIf b t S = B₀ \ (⋃ j, C j) := by
+    intro S
+    by_cases ht : t (S : Set ι) = true
+    · rw [cellIf, if_pos ht]
+      exact cell_eq_swissCheeseK v φ hb S
+    · refine ⟨1, Set.univ, fun _ => Set.univ, IsValBallK.univ, fun _ => IsValBallK.univ,
+        fun _ => subset_rfl, ?_⟩
+      rw [cellIf, if_neg ht]
+      exact empty_swissCheese (K := L)
+  choose m B₀ C hP using key
+  have hB₀ : ∀ S, IsValBallK v φ (B₀ S) := fun S => (hP S).1
+  have hC : ∀ S j, IsValBallK v φ (C S j) := fun S => (hP S).2.1
+  have hCsub : ∀ S j, C S j ⊆ B₀ S := fun S => (hP S).2.2.1
+  have hEq : ∀ S, cellIf b t S = B₀ S \ (⋃ j, C S j) := fun S => (hP S).2.2.2
+  let e : Finset ι ≃ Fin (Fintype.card (Finset ι)) := Fintype.equivFin (Finset ι)
+  let m' : Fin (Fintype.card (Finset ι)) → ℕ := fun i => m (e.symm i)
+  refine ⟨Fintype.card (Finset ι), fun i => B₀ (e.symm i), m',
+    fun i => C (e.symm i), fun i => hB₀ _, fun i j => hC _ _, fun i j => hCsub _ _, ?_⟩
+  have hD' : D = ⋃ S : Finset ι, (B₀ S \ (⋃ j, C S j)) := by
+    rw [show D = {x : L | t {i | x ∈ b i} = true} from Set.ext hDdef, eq_iUnion_cell b t]
+    simp only [hEq]
+  rw [hD']
+  exact (iUnion_equiv_reindex (e := e.symm)
+    (f := fun S : Finset ι => B₀ S \ (⋃ j, C S j))).symm
+
+/-- **The geometric heart of Johnson, Lemma 2.3.9.**  If `K` is algebraically closed and
+nontrivially valued and `D ⊆ L` is a nonempty Boolean combination of K-balls, then `D` contains a
+point of `K`.  (Up to Lemma 2.3.1, which converts quantifier-free formulas into Boolean
+combinations of balls, this is 1-existential closedness of `K` in `L`.) -/
+theorem exists_point_of_isBoolCombOfBallsK [IsAlgClosed K] (v : Valuation L Γ₀) (φ : K →+* L)
+    (hnt : ∃ x : K, x ≠ 0 ∧ (v.comap φ) x < 1) {D : Set L}
+    (hD : IsBoolCombOfBallsK v φ D) (hne : D.Nonempty) :
+    ∃ x : K, φ x ∈ D := by
+  classical
+  obtain ⟨n, B₀, m, C, hB₀, hC, hCsub, hDeq⟩ := isBoolCombOfBallsK_eq_iUnion_swissCheese v φ hD
+  obtain ⟨z, hz⟩ := hne
+  rw [hDeq] at hz
+  obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hz
+  obtain ⟨x, hx₀, hxU⟩ := lemma_2_3_8 v φ hnt (hB₀ i) (C i) (hC i) (hCsub i) ⟨z, hi⟩
+  refine ⟨x, ?_⟩
+  rw [hDeq]
+  refine Set.mem_iUnion.mpr ⟨i, hx₀, ?_⟩
+  intro hc
+  obtain ⟨j, hj⟩ := Set.mem_iUnion.mp hc
+  exact hxU j hj
+
+#print axioms Johnson.isBoolCombOfBallsK_eq_iUnion_swissCheese
+#print axioms Johnson.exists_point_of_isBoolCombOfBallsK
+
+/-! ## Johnson, Lemma 2.3.3 in the trace form stated by Johnson
+
+Johnson states 2.3.3 as: if `B₁ ⊊ B₂` are K-balls of `L` then `B₁ ∩ K ⊊ B₂ ∩ K`.
+-/
+
+/-- **Johnson, Lemma 2.3.3** (the form stated in the paper): for K-balls `B₁ ⊆ B₂` with
+`B₁ ≠ B₂`, the traces on `K` satisfy `B₁ ∩ K ⊊ B₂ ∩ K`. -/
+theorem lemma_2_3_3_trace [IsAlgClosed K] (v : Valuation L Γ₀) (φ : K →+* L)
+    (hnt : ∃ x : K, x ≠ 0 ∧ (v.comap φ) x < 1)
+    {B₁ B₂ : Set L} (h₁ : IsValBallK v φ B₁) (h₂ : IsValBallK v φ B₂)
+    (hsub : B₁ ⊆ B₂) (hne : B₁ ≠ B₂) :
+    {x : K | φ x ∈ B₁} ⊂ {x : K | φ x ∈ B₂} := by
+  obtain ⟨x, hx₂, hx₁⟩ := lemma_2_3_3 v φ hnt h₁ h₂ hsub hne
+  refine ⟨fun y hy => hsub hy, ?_⟩
+  intro hBA
+  exact hx₁ (hBA hx₂)
+
+#print axioms Johnson.lemma_2_3_3_trace

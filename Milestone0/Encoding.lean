@@ -213,8 +213,12 @@ def pLe (t u : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₂ R
 def pEq (t u : Tm n) : Bf n := t =' u
 /-- the paper's `RV = RV-sort ∖ {0}` -/
 def pRV (t : Tm n) : Bf n := ∼(pEq t tRVZero)
-/-- the paper's `K = RV-sort ∖ {∞}`.  Since `∞ = rv(0) = 0` this is the same predicate as
-`pRV`; it is kept as a separate name so that statements read as in the paper. -/
+/-- the paper's `RV-sort ∖ {∞}`.
+
+**Caution.**  Since `∞ = rv(0) = 0`, this predicate is `RV ∖ {0}` — the multiplicative group
+`RV^×` — and *not* the residue field `K`: `K = K^× ∪ {0}` is `pInK`, which does contain the
+absorbing element.  The name is kept only because the paper's own notation `RV ∖ {∞}` appears
+in its statements; `pK` is the same predicate as `pRV`. -/
 def pK (t : Tm n) : Bf n := ∼(pEq t tRVInfty)
 /-- the paper's `RV₀ = RV ∪ {0}`, i.e. the whole `RV` sort -/
 def pRV0 (_t : Tm n) : Bf n := ⊤
