@@ -1503,3 +1503,29 @@ campaign splits:
 So the meaning of the `sorry` in `Encoding.lean` has changed from "the target of the campaign" to
 "the one statement whose proof is in flight, while its consequences are being developed".  The
 paper's Theorem 2.8 work can now proceed on that basis.
+
+## The repaired axiom set has a model — proved
+
+`.ultramath/smw18cfdk/m1/ACVFModel_full.lean` (3,820 lines, self-contained, green, no sorry/axiom):
+
+```
+IModel.model_ACVF (v : Valuation K Γ₀) [IsAlgClosed K] {x : K} (hx : x ≠ 0) (hv : v x < 1) :
+  (C v) ⊨ Axioms.ACVF,      C v = K ⊕ Option (Kˣ/(1+𝔪))
+```
+
+unconditionally in everything but the field.  So the axiom set of `Milestone0/Encoding.lean` — the
+frozen Definition 2.2 axioms plus `repairRV` — **is satisfiable**, and the caveat that everything
+proved from `repairRV` was conditional on consistency is retired.
+
+How it was done, and why it is credible: it stays entirely on m4's carrier and m4's `Repair2`
+residue bridge, so no two files' `C`/`kAdd`/`rv` were mixed — the reconciliation risk I flagged when
+setting the direction was avoided rather than papered over.  It does the case analysis over the
+literal list `Axioms.repairRV` (nine sentences), then `rw [Axioms.ACVFpaper]` with eight
+`model_union`s (`repairRV` occurs twice in that union), then `Axioms.ACVF = sortAxioms ∪ ACVFpaper`.
+The only divergence from the repository text is `abbrev LRV` for `def LRV` in the copied prefix —
+the same term, with `LRV_eq_mk` by `rfl` and no axioms; the diff of lines 17–650 is exactly that
+line.  `model_ACVF'` takes nontriviality as an existential instead.
+
+Missing: instantiation at `PadicComplex p` (`m3/Base.lean` has `padic_valuation_lt_one`), which is
+the other direction of that swarm and would make the consistency statement closed — no hypotheses
+at all.
