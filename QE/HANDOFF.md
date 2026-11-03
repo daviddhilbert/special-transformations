@@ -239,3 +239,37 @@ survive the meet/join folds.  Also: the partial-isomorphism (Shoenfield-embeddin
 in this encoding, because junk values lie outside the fragment — the QF-type form is the only one
 available.  That settles the comparison question: there is no second, independent formulation to
 check against; there is the criterion, sharp, in atom form.
+
+## State after the guard repair (this session)
+
+| file | status |
+| --- | --- |
+| `Milestone0/Encoding.lean` | **repaired**, sha256 `86d7ea7e…`, `lean` exit 0, 0 errors, 2 frozen `sorry`s |
+| `QE/Assembly_val.lean` | green, 0 errors, 2 frozen `sorry`s; embedded encoding re-spliced verbatim |
+| `QE/TransferWS.lean` | green against the repaired encoding (2 `sorry`s, by design) |
+| `QE/FailProbe.lean` | green; the transfer's first failure point, machine-checked |
+
+The repair: `Occurs := InAntecedent`; `GuardTrue` is an inductive family with an `.all` clause;
+`WellSorted.all`, `wellSorted_alls`, `wellSorted_allOne` carry it; every `wellSorted_allSorted*` /
+`exSorted*` signature is unchanged.  Details and the reasons in `DECISION.md` §"The guard repair:
+applied, green, and what it changed".
+
+**The endgame lost three of its four hypotheses.**  `TrivialHalf.allNontrivial_ACVF` (every model of
+`Axioms.ACVF` is `IsNontrivialVF`, from `Transfer.isNontrivialVF_of_model`, now checked) gives
+`caseSplit_ACVF`, `caseSeparation_ACVF`, and
+
+```
+Transfer.hasQE_ACVF_of_nontrivialTransfer : FinalAssembly.NontrivialTransfer Axioms.ACVF
+    → QECriterion.HasQE Axioms.ACVF
+```
+
+So there is **no two-case question for the frozen theory**, and `TrivCase.FineTriv` is empty over it
+(`TrivialHalf.not_fineTriv`) — the trivially valued model of §10 above satisfies a weaker axiom set.
+
+**The transfer's first failure is located** (`QE/FailProbe.lean`): the induction on `WellSorted` has
+an immediate atom/`imp` case, and its `all` case splits on the bound element into (i) junk-truth of
+the body — the repair's payload, now an unproved semantic lemma rather than an obstruction — and
+(ii) for a *sorted* bound element, a sorted `a : M` with the same QF type over the parameters, i.e.
+realization of a QF type in a fixed model, which `TransferAtWS`'s hypothesis does not supply.  This
+is why the transfer is a reformulation of QE rather than a reduction, and why the atom form above is
+the target.
