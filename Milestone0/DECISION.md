@@ -154,9 +154,28 @@ roughly 1.5–6k lines, for no gain over (a).
   per-structure claim with parameters; C-minimality quantifies over all models of
   `ACVF_S(0,0)` and over parametrically definable sets produced by the syntax.
 
+## The model (closed)
+
+`accepted/ACVFModel.lean` proves `model_ACVF : (M K) ⊨ Axioms.ACVF` and
+`exists_model_ACVF : ∃ M, LRV.Structure M ∧ M ⊨ ACVF`, at `K = ℂ` and
+`M K = K ⊕ RV₀ K` with the **trivial valuation**: every element of `K` is a unit,
+`𝒪 = ⊤`, `𝔪 = ⊥`, the residue field is `K` itself and `Γ` is trivial. It also proves
+`model_ACVF00`. So `ACVF` and `ACVF(0,0)` are consistent, and Theorems 2.3 and 2.8 as
+stated are not vacuous.
+
+The trivial valuation is what makes this cheap: `K^× = RV ∖ {0, ∞}`, so the residue
+field is `K` rather than the residue field of a valuation ring, and no integrality
+argument is needed. `isAlgClosed_residueField` in `accepted/ResidueField.lean` covers the
+general case.
+
+What this does *not* give: a model of `ACVF_S(0,0)` with `Γ(S)` nontrivial, which is the
+setting of the paper's theorems. That needs the general model over a nontrivial valuation,
+of which `rvGroup` (`accepted/` — m8's block) and `vfAlgClosed`
+(`accepted/VFAlgClosed.lean`) are done.
+
 ## Open (Milestone 1)
 
-* **No proved model of the full `ACVF`.** `RVModel.lean` covers the RV-part; the field
+* **No proved model of the general `ACVF` over a nontrivial valuation.** `RVModel.lean` covers the RV-part; the field
   structure on `K` (transported from `ValuationSubring.ResidueField` along
   `(𝒪∖𝔪)/(1+𝔪) ≅ k^×`) and the `Γ` quotient are not constructed. Until one model exists,
   the two target theorems are statements that *could* be vacuous, and this is the first
