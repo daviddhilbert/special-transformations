@@ -298,9 +298,18 @@ but it is **not** needed for the QE transfer: stated with the guards on `a`, `b`
 `c ≠ 0` kept, item 5 alone carries `axScale` (`paperScale_of_vfPred_scale` in
 `.ultramath/smw14elno/m1/Scale.lean` proves the two are equivalent), whereas a `pRV`-guarded form
 would force `axScale`'s zero cases into a cancellation argument that needs the missing inverses.
-So the minimal repair is **one** sentence.  A separate gap, unrelated to the repair, is that the
+So the minimal repair of item 5 is **one** sentence.  A separate gap, unrelated to it, is that the
 frozen axioms admit trivially valued models while `L_val`'s `ACVF_val` requires `axNontrivial`; the
-final theorem therefore needs a case split on triviality.  `QE-PLAN.md` carries both.
+final theorem therefore needs a case split on triviality.
+
+Two further defects of the same family were found later (swarm `smw1541fr`) and are recorded in
+`QE-PLAN.md`: item 2's group laws are `pUnits`-guarded (so `RV^×` is never a group, and
+`rv a = rv b` is not equivalent to any `v`-comparison), and — worse — `iKAdd`/`iKNeg` are not tied
+to the field's addition at all, so twisting them by an automorphism of `(K^×, ·)` gives a model of
+the frozen axioms in which `HasQE` fails for a reason disjoint from the order. **The frozen
+`theorem_2_3_quantifier_elimination` is therefore false for at least two independent reasons**, and
+the repair is four items: `leMulCompat` (item 5), `rvMulOne`/`rvMulInv` (item 2), and
+`kAddLink`/`rvEqLink` plus junk conventions for the residue symbols.  All four await the ruling.
 
 The repair restores the paper's item 5:
 

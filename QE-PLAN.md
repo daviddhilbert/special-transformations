@@ -865,3 +865,47 @@ model_ACVF_val_of_model_ACVFplus (hM : M ⊨ ACVFplus) (hnontriv : HasNontrivVal
 | `HasQE Axioms.ACVF` | needs the ruling on the one-axiom repair, plus the two rows above |
 
 The one-axiom repair is the only thing on this list that is not a piece of work.
+
+### The residue field is not tied to `rv`: a fourth member of the family, and a second refutation
+
+Swarm `smw1541fr` member m3 (`m3/KAdd.lean`, green, axioms clean) found that `iKAdd` and `iKNeg`
+are constrained **only** by `sdKAdd`, `sdKNeg`, `kField`, `kAlgClosed` — all `pInK`-guarded — and
+that no axiom links them to the field's addition through `rv`.  The three gaps, with their status:
+
+1. **No `kAddLink`.** `kAdd (rv x) (rv y)` is unconstrained by `rv (x + y)`.  m3 proves the
+   conditional form: given `KAddAdditive` (the link), `kAdd (rv x) (rv y) = rv u` is
+   `(iUnits (rv (x+y)) ∧ rv (x+y) = rv u) ∨ (¬ iUnits (rv (x+y)) ∧ rv u = ∞)` — the case split is
+   real, since at `x = 1 + t, y = -1` in `k((t))` the sum is `t`, not a unit, while the residue sum
+   is `0`.
+2. **No `rvEqLink`.** `rv a = rv b` is `¬ (v b ≤ v (a - b))` in the intended model; m3 proves the
+   equivalence *from* the link and shows the link is what is missing.  This one is the same defect
+   as the `RV^×` group-law weakness recorded earlier, since `rv a = rv b ↔ rv (a/b) = 1` needs
+   cancellation.
+3. **Junk conventions off `K`.** `kAdd`/`kNeg` values outside `K` are free; m3's `kJunkZero`,
+   `kNegJunkZero` pin them to `∞`, and `kAdd_off_K`/`kNeg_off_K` show what that buys.
+
+**This is a second, independent refutation of the frozen `HasQE`, and it is worth stating in full.**
+Take any model of `ACVF` and replace `iKAdd` by `σ`-twist of the field addition, where `σ` is an
+automorphism of `(K^×, ·)` that is not field-theoretic (for `K = ℂ` or `ℚ̄` there are many).  All
+axioms survive: `kField` and `kAlgClosed` because `(K, +_σ, ·)` is again an algebraically closed
+field with the *same* multiplication and `1`, `sdKAdd`/`sdKNeg` because `σ` permutes `K^×`, and
+`leClassOne` because inside `K^×` the order of `RV` is trivial — every unit is `≤`-equivalent to
+`1`, so the twist is invisible to `≤`.  In that model the *true* residue addition is definable by a
+quantified formula, `∃ x y (VF), rv x = a ∧ rv y = b ∧ rv (x + y) = c`, but not by a
+quantifier-free one built from `iKAdd_σ` and `·` — that is what makes the twist a twist.  So
+`HasQE ACVF` fails here too, for a reason disjoint from the coarsening above: not "the order is too
+weak" but "the residue-field symbols are not tied to the field".
+
+**The repair list is therefore four items, not one**, and each is a "say what the paper means"
+edit rather than a change of mathematics:
+
+| # | axiom(s) | what it restores | needed for |
+| --- | --- | --- | --- |
+| 1 | `leMulCompat` with `pRV` and `⇔`, guards on `a`, `b` dropped (**landed as `leMulCompatFull`**) | item 5: `RV/Kˣ` an ordered group | `axScale`, i.e. `S_M ⊨ valField` |
+| 2 | `rvMulOne`, `rvMulInv` guarded by `pRV` | item 2: `(RV^×, 1, ×)` is a group | `rv a = rv b ↔ v (a-b) ≤ v b`, cancellation |
+| 3 | `kAddLink`, `rvEqLink` (m3's `Axioms`) | the residue field is the residue field | the cover: `rv`-equality and residue atoms in `L_val` |
+| 4 | `kJunkZero`, `kNegJunkZero` (or any fixed convention) | totality of the residue symbols | harmless, pins the junk |
+
+Items 1 and 2 are one-sentence edits to existing axioms; items 3 and 4 are two new sentences plus
+two conventions.  All four are decisions about the frozen encoding, and all four need the author's
+ruling before the target `HasQE Axioms.ACVF` can be true, let alone proved.
