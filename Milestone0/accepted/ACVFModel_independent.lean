@@ -10,14 +10,20 @@ This file contains:
   rewriting).  In particular the residue-field guard is the current one,
   `pInK t = pUnits t ⊔ pEq t tRVZero`, i.e. `K = K^× ∪ {0}` (commit `dfef4ca` used
   `pK t = ∼(pEq t tRVInfty)` instead);
-* an `LRV.Structure` on the carrier `K ⊕ RV₀`, where `K` is an algebraically closed field of
-  characteristic zero and `RV₀ = Option (Option Kˣ)` is the `RV₀` of the *trivial* valuation
-  (`RVUnit = Kˣ ⧸ (1+𝔪) = Kˣ` since `𝔪 = ⊥`);
-* the semantic counterpart `InK` of the guard `pInK` — on `RV`-sorted elements `pInK` is the
-  old test `t ≠ ∞`, but the `VF` elements of the carrier are in neither — together with the
-  closure of `K` under `kAdd`, `kNeg`, `rvMul` that the guard-carrying axioms need;
+* an `LRV.Structure` on the carrier `K ⊕ RV`, where `K` is an algebraically closed field of
+  characteristic zero and `RV = Option Kˣ = Kˣ ∪ {rv 0}` is the `RV` of the *trivial*
+  valuation (`RVUnit = Kˣ ⧸ (1+𝔪) = Kˣ` since `𝔪 = ⊥`); `Sum.inr none` is `rv 0`, the residue
+  zero, the absorbing element and the paper's `∞` — ONE element;
+* the semantic counterpart `InK` of the guard `pInK`.  On `RV`-sorted elements `pInK` is
+  vacuous in this carrier (`0 = ∞`), so `InK (mkRV t)` holds for *every* `t : RV`;
 * proofs that this structure satisfies every sentence of `ACVF` and of `ACVF(0,0)`, and the
   corollary that `ACVF` has a model.
+
+**Conversion (author's ruling: the paper's `0` and `∞` are ONE element).**  `Fn.rvInfty` is
+deleted, `tRVInfty`/`iRVInfty` are definitions of `rvZero`/`iRVZero`, `rvSurj` is the paper's
+unguarded surjectivity `t ≠ rv(0) → ∃ x, rv x = t`, `sdRVInfty`/`rvMulInfty`/`leTop`/
+`leInftyEq` are stated at `tRVZero`, and the carrier of the model is the **two-layer**
+`RV = Kˣ ∪ {rv 0} = Option Kˣ` (`none` is `rv 0`, which is the residue zero *and* `∞`).
 -/
 
 open FirstOrder FirstOrder.Language
@@ -92,10 +98,10 @@ inductive Fn : ℕ → Type where
   | vfMul : Fn 2
   /-- `1` of the group language of the `RV` sort -/
   | rvOne : Fn 0
-  /-- the constant `0` of the `RV` sort (an element of `K`) -/
+  /-- the constant `0` of the `RV` sort: the residue field's zero, which is also `rv(0)` and
+  the absorbing element of `RV`.  The paper writes this element both as `0` and as `∞`; it is
+  one element, so the language has one constant. -/
   | rvZero : Fn 0
-  /-- the constant `∞` of the `RV` sort -/
-  | rvInfty : Fn 0
   /-- `×` of the `RV` sort -/
   | rvMul : Fn 2
   /-- `+ : K² → K` of the `RV` sort -/
@@ -149,8 +155,10 @@ def tVFMul (t u : Tm n) : Tm n := Term.func Fn.vfMul ![t, u]
 def tRVOne : Tm n := Term.func Fn.rvOne fun i => i.elim0
 /-- `0` of the `RV` sort -/
 def tRVZero : Tm n := Term.func Fn.rvZero fun i => i.elim0
-/-- `∞` of the `RV` sort -/
-def tRVInfty : Tm n := Term.func Fn.rvInfty fun i => i.elim0
+/-- The paper's `∞` is `rv(0)`, i.e. the absorbing element `rvZero` of the `RV` sort: the
+paper's two symbols `0` and `∞` name one element.  Kept as a definition so that the axioms can
+be read in the paper's notation. -/
+def tRVInfty : Tm n := tRVZero
 /-- `×` of the `RV` sort -/
 def tRVMul (t u : Tm n) : Tm n := Term.func Fn.rvMul ![t, u]
 /-- `+ : K² → K` of the `RV` sort -/
@@ -192,7 +200,8 @@ def pLe (t u : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₂ R
 def pEq (t u : Tm n) : Bf n := t =' u
 /-- the paper's `RV = RV-sort ∖ {0}` -/
 def pRV (t : Tm n) : Bf n := ∼(pEq t tRVZero)
-/-- the paper's `K = RV-sort ∖ {∞}` -/
+/-- the paper's `K = RV-sort ∖ {∞}`.  Since `∞ = rv(0) = 0` this is the same predicate as
+`pRV`; it is kept as a separate name so that statements read as in the paper. -/
 def pK (t : Tm n) : Bf n := ∼(pEq t tRVInfty)
 /-- the paper's `RV₀ = RV ∪ {0}`, i.e. the whole `RV` sort -/
 def pRV0 (_t : Tm n) : Bf n := ⊤
@@ -322,8 +331,8 @@ def sdVFMul : LRV.Sentence := allSorted ![.vf, .vf] (pVF (tVFMul &0 &1))
 def sdRv : LRV.Sentence := allSorted ![.vf] (pRVsort (tRv &0))
 /-- `0` of the `RV` sort lies in the `RV` sort -/
 def sdRVZero : LRV.Sentence := pRVsort tRVZero
-/-- `∞` lies in the `RV` sort -/
-def sdRVInfty : LRV.Sentence := pRVsort tRVInfty
+/-- `∞`, i.e. `rv(0) = 0`, lies in the `RV` sort -/
+def sdRVInfty : LRV.Sentence := pRVsort tRVZero
 /-- `1` of the `RV` sort lies in the `RV` sort -/
 def sdRVOne : LRV.Sentence := pRVsort tRVOne
 /-- the `RV` sort is closed under `×` -/
@@ -459,7 +468,7 @@ def rvDivisible (k : ℕ) : LRV.Sentence :=
 /-- `t × 0 = 0` for `t ∈ K` -/
 def rvMulZeroK : LRV.Sentence := allSorted ![.rv] (pInK &0 ⟹ pEq (tRVMul &0 tRVZero) tRVZero)
 /-- `t × ∞ = ∞` for `t ∈ RV₀`, i.e. for every `t` of the `RV` sort -/
-def rvMulInfty : LRV.Sentence := allSorted ![.rv] (pEq (tRVMul &0 tRVInfty) tRVInfty)
+def rvMulInfty : LRV.Sentence := allSorted ![.rv] (pEq (tRVMul &0 tRVZero) tRVZero)
 
 /-- Definition 2.2 item 2: `(RV^×, 1, ×)` is a divisible abelian group, with `×`
 augmented by `t × 0 = 0` and `t × ∞ = ∞`. -/
@@ -477,10 +486,10 @@ def leTrans : LRV.Sentence :=
   allSorted ![.rv, .rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pLe &0 &1 ⟹ (pLe &1 &2 ⟹ pLe &0 &2)))))
 /-- `≤` is total on `RV` -/
 def leTotal : LRV.Sentence := allSorted ![.rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pLe &0 &1 ⊔ pLe &1 &0)))
-/-- `∞` is the top element of `RV` -/
-def leTop : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ pLe &0 tRVInfty)
+/-- `∞ = rv(0) = 0` is the top element of `RV` -/
+def leTop : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ pLe &0 tRVZero)
 /-- `∞ ≤ x` forces `x = ∞`, i.e. `∞` is alone in its class -/
-def leInftyEq : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ (pLe tRVInfty &0 ⟹ pEq &0 tRVInfty))
+def leInftyEq : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ (pLe tRVZero &0 ⟹ pEq &0 tRVZero))
 /-- `Kˣ` is the equivalence class of `1` -/
 def leClassOne : LRV.Sentence :=
   allSorted ![.rv] (pRV &0 ⟹ (pUnits &0 ⇔ (pLe tRVOne &0 ⊓ pLe &0 tRVOne)))
@@ -503,9 +512,10 @@ def rvEqInfty : LRV.Sentence := allSorted ![.vf] (pEq (tRv &0) tRVInfty ⟹ pEq 
 /-- `rv` is a group homomorphism on `VF^×` -/
 def rvMulHom : LRV.Sentence :=
   allSorted ![.vf, .vf] (pEq (tRv (tVFMul &0 &1)) (tRVMul (tRv &0) (tRv &1)))
-/-- `rv : VF^× → RV^×` is surjective -/
+/-- **`rv` is surjective**: every element of the `RV` sort other than `rv(0)` is `rv(x)` for
+some `x ∈ VF`.  (With `RV^× = RV ∖ {0}` this is `RV = rv(VF) ∪ {0}`.) -/
 def rvSurj : LRV.Sentence :=
-  allSorted ![.rv] (pUnits &0 ⟹ exSorted .vf (pEq (tRv &1) &0))
+  allSorted ![.rv] (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))
 /-- the ultrametric inequality for `vv = vrv ∘ rv`: `vv(x+y) ≥ min(vv x, vv y)` -/
 def rvUltrametric : LRV.Sentence :=
   allSorted ![.vf, .vf] (pLe (tRv &0) (tRv (tVFAdd &0 &1)) ⊔ pLe (tRv &1) (tRv (tVFAdd &0 &1)))
@@ -565,68 +575,68 @@ namespace TrivialModel
 
 open FirstOrder FirstOrder.Language
 
-/-- The multiplicity of `RV₀`: `Option (Option Kˣ)`, i.e. `RV₀` at the trivial valuation. -/
-abbrev RV0 (K : Type*) [Field K] : Type _ := Option (Option Kˣ)
+/-- The `RV` sort at the trivial valuation, with **two** layers as in the paper:
+`RV = Kˣ ∪ {rv 0}`, i.e. `Option Kˣ`.  `none` is `rv 0`, which is the residue field's zero,
+the absorbing element of `RV`, *and* the paper's top element `∞`: one element, not three. -/
+abbrev RV (K : Type*) [Field K] : Type _ := Option Kˣ
 
 /-- The carrier of the model: the disjoint union of the `VF` sort and the `RV` sort. -/
-abbrev M (K : Type*) [Field K] : Type _ := K ⊕ RV0 K
+abbrev M (K : Type*) [Field K] : Type _ := K ⊕ RV K
 
 variable {K : Type*} [Field K]
 
 /-- the `VF`-tag -/
 def mkVF (x : K) : M K := Sum.inl x
 /-- the `RV`-tag -/
-def mkRV (t : RV0 K) : M K := Sum.inr t
-/-- the residue-field zero -/
+def mkRV (t : RV K) : M K := Sum.inr t
+/-- the residue-field zero, i.e. `rv 0`, i.e. the paper's `∞` -/
 def cZero : M K := Sum.inr none
-/-- the point `∞ = rv 0` -/
-def cInfty : M K := Sum.inr (some none)
+/-- the paper's `∞ = rv 0`: the *same* carrier element as `0` -/
+def cInfty : M K := Sum.inr none
 /-- the paper's `1` in the `RV` sort -/
-def cOneRV : M K := Sum.inr (some (some 1))
-/-- an element of `Kˣ`, i.e. of `RV ∖ {0, ∞}` -/
-def cUnit (u : Kˣ) : M K := Sum.inr (some (some u))
+def cOneRV : M K := Sum.inr (some 1)
+/-- an element of `Kˣ`, i.e. of `RV ∖ {0}` -/
+def cUnit (u : Kˣ) : M K := Sum.inr (some u)
 
 /-- Read an element of the `RV` sort as an element of the residue field `K = Kˣ ∪ {0}`;
-this is junk (`0`) at `∞`. -/
-def toK : RV0 K → K
+`∞ = rv 0` reads as `0`. -/
+def toK : RV K → K
   | none => 0
-  | some none => 0
-  | some (some u) => (u : K)
+  | some u => (u : K)
 
-/-- The inverse of `toK` on `K = Kˣ ∪ {0}`: `0 ↦ 0`, `x ≠ 0 ↦` the unit `x`. -/
-noncomputable def fromK (x : K) : RV0 K := by
+/-- The inverse of `toK` on `K = Kˣ ∪ {0}`: `0 ↦ rv 0`, `x ≠ 0 ↦` the unit `x`. -/
+noncomputable def fromK (x : K) : RV K := by
   classical
-  exact if h : x = 0 then none else some (some (Units.mk0 x h))
+  exact if h : x = 0 then none else some (Units.mk0 x h)
 
-@[simp] theorem toK_none : toK (none : RV0 K) = 0 := rfl
-@[simp] theorem toK_infty : toK (some none : RV0 K) = 0 := rfl
-@[simp] theorem toK_unit (u : Kˣ) : toK (some (some u)) = (u : K) := rfl
+@[simp] theorem toK_none : toK (none : RV K) = 0 := rfl
+/-- `toK` at `∞ = rv 0`, which is `0` itself -/
+@[simp] theorem toK_infty : toK (none : RV K) = 0 := rfl
+@[simp] theorem toK_unit (u : Kˣ) : toK (some u) = (u : K) := rfl
 
 @[simp] theorem fromK_zero : fromK (K := K) 0 = none := by
   rw [fromK, dif_pos rfl]
 
-theorem fromK_of_ne {x : K} (h : x ≠ 0) : fromK x = some (some (Units.mk0 x h)) := by
+theorem fromK_of_ne {x : K} (h : x ≠ 0) : fromK x = some (Units.mk0 x h) := by
   rw [fromK, dif_neg h]
 
-theorem fromK_ne_infty (x : K) : fromK (K := K) x ≠ some none := by
-  rw [fromK]; split_ifs with h
-  · simp
-  · simp
+/-- `fromK x ≠ rv 0` for `x ≠ 0`.  (The old `fromK_ne_infty : fromK x ≠ none` said that
+`fromK` never takes the value `∞`; with `∞ = rv 0` that is false at `x = 0`, and the useful
+statement is this one.) -/
+theorem fromK_ne_none {x : K} (h : x ≠ 0) : fromK (K := K) x ≠ none := by
+  rw [fromK_of_ne h]; simp
 
 @[simp] theorem toK_fromK (x : K) : toK (fromK x) = x := by
   rw [fromK]; split_ifs with h
   · rw [h]; rfl
   · rw [toK_unit]; rfl
 
-theorem fromK_toK {t : RV0 K} (h : t ≠ some none) : fromK (toK t) = t := by
+theorem fromK_toK (t : RV K) : fromK (toK t) = t := by
   cases t with
   | none => simp [fromK]
-  | some t =>
-    cases t with
-    | none => exact absurd rfl h
-    | some u =>
-      have hu : (u : K) ≠ 0 := u.ne_zero
-      rw [toK_unit, fromK_of_ne hu, Units.mk0_val]
+  | some u =>
+    have hu : (u : K) ≠ 0 := u.ne_zero
+    rw [toK_unit, fromK_of_ne hu, Units.mk0_val]
 
 theorem fromK_injective : Function.Injective (fromK (K := K)) := by
   intro x y h
@@ -640,89 +650,73 @@ theorem fromK_eq_none_iff {x : K} : fromK x = none ↔ x = 0 := by
     simpa using this
   · intro h; subst h; simp
 
-theorem toK_eq_zero_iff {t : RV0 K} (h : t ≠ some none) : toK t = 0 ↔ t = none := by
+theorem toK_eq_zero_iff {t : RV K} (_h : t ≠ none) : toK t = 0 ↔ t = none := by
   cases t with
   | none => simp
-  | some t =>
-    cases t with
-    | none => exact absurd rfl h
-    | some u => simp [toK, u.ne_zero]
+  | some u => simp [toK, u.ne_zero]
 
-theorem toK_ne_zero {t : RV0 K} (h0 : t ≠ none) (h1 : t ≠ some none) : toK t ≠ 0 := by
+theorem toK_ne_zero {t : RV K} (h0 : t ≠ none) (h1 : t ≠ none) : toK t ≠ 0 := by
   intro h
   exact h0 ((toK_eq_zero_iff h1).mp h)
 
 /-- The `vrv`-decoration of the `RV` sort at the trivial valuation: `∞ ↦ 0`, units `↦ 1`
 (the junk value at the residue zero is `0`).  It induces the preorder of Definition 2.2.4 by
 `t ≤ s ⟺ vrv s ≤ vrv t`. -/
-def vval : RV0 K → ℕ
+def vval : RV K → ℕ
   | none => 0
-  | some none => 0
-  | some (some _) => 1
+  | some _ => 1
 
 /-- The preorder `≤` of the `RV` sort: `t ≤ s ⟺ vval s ≤ vval t`. -/
-def vle (t s : RV0 K) : Prop := vval s ≤ vval t
+def vle (t s : RV K) : Prop := vval s ≤ vval t
 
-@[simp] theorem vval_infty : vval (K := K) (some none) = 0 := rfl
+/-- `vval` at `∞ = rv 0`, the same element as `0` -/
+@[simp] theorem vval_infty : vval (K := K) none = 0 := rfl
 @[simp] theorem vval_zero : vval (K := K) none = 0 := rfl
-@[simp] theorem vval_unit (u : Kˣ) : vval (K := K) (some (some u)) = 1 := rfl
+@[simp] theorem vval_unit (u : Kˣ) : vval (K := K) (some u) = 1 := rfl
 
-theorem vval_eq_zero_iff {t : RV0 K} (h : t ≠ none) : vval t = 0 ↔ t = some none := by
+theorem vval_eq_zero_iff {t : RV K} (_h : t ≠ none) : vval t = 0 ↔ t = none := by
   cases t with
-  | none => exact absurd rfl h
-  | some t => cases t with
-    | none => simp
-    | some u => simp
+  | none => simp
+  | some u => simp
 
-/-- multiplication on `RV₀`: `∞` absorbing, then the group law on `Kˣ`, with `0` absorbing
-for the remaining cases.  On `K = Kˣ ∪ {0}` this is the multiplication of the residue field. -/
-noncomputable def rvMul (t s : RV0 K) : RV0 K := by
-  classical
-  exact if t = some none ∨ s = some none then some none else fromK (toK t * toK s)
+/-- Multiplication on the `RV` sort: transported from the field `K` along `toK`/`fromK`.
+With `0 = ∞ = rv 0` one element, the old case distinction "`∞` absorbing, else the group law"
+collapses into `fromK (0 * x) = fromK 0 = rv 0`, so this is the residue field's multiplication
+on the whole of `RV = Kˣ ∪ {0}`, and the group law on `Kˣ`. -/
+noncomputable def rvMul (t s : RV K) : RV K := fromK (toK t * toK s)
 
-/-- addition on `K = Kˣ ∪ {0}`, junk `∞` off `K`. -/
-noncomputable def kAdd (t s : RV0 K) : RV0 K := by
-  classical
-  exact if t = some none ∨ s = some none then some none else fromK (toK t + toK s)
+/-- Addition on `K = Kˣ ∪ {0}`, transported from the field `K`; there is no junk value left,
+because `K` is now the whole `RV` sort. -/
+noncomputable def kAdd (t s : RV K) : RV K := fromK (toK t + toK s)
 
-/-- negation on `K = Kˣ ∪ {0}`, junk `∞` off `K`. -/
-noncomputable def kNeg (t : RV0 K) : RV0 K := by
-  classical
-  exact if t = some none then some none else fromK (-(toK t))
+/-- Negation on `K = Kˣ ∪ {0}`, transported from the field `K`. -/
+noncomputable def kNeg (t : RV K) : RV K := fromK (-(toK t))
 
-/-- the map `rv : VF → RV`, `0 ↦ ∞`, `x ≠ 0 ↦` the unit `x`. -/
-noncomputable def rvMap (x : K) : RV0 K := by
-  classical
-  exact if x = 0 then some none else fromK x
+/-- the map `rv : VF → RV`, the tautological `x ↦ fromK x` (so `0 ↦ rv 0 = ∞ = 0`) -/
+noncomputable def rvMap (x : K) : RV K := fromK x
 
-@[simp] theorem rvMap_zero : rvMap (K := K) 0 = some none := by rw [rvMap, if_pos rfl]
+@[simp] theorem rvMap_zero : rvMap (K := K) 0 = none := by rw [rvMap, fromK_zero]
 
-theorem rvMap_of_ne {x : K} (h : x ≠ 0) : rvMap x = fromK x := by rw [rvMap, if_neg h]
+theorem rvMap_of_ne {x : K} (_h : x ≠ 0) : rvMap x = fromK x := rfl
 
-theorem rvMap_eq_infty_iff {x : K} : rvMap x = some none ↔ x = 0 := by
-  rw [rvMap]; split_ifs with h
-  · simp [h]
-  · constructor
-    · intro hh; exact absurd hh (fromK_ne_infty x)
-    · intro hh; exact absurd hh h
+theorem rvMap_eq_infty_iff {x : K} : rvMap x = none ↔ x = 0 := fromK_eq_none_iff
 
-theorem rvMap_ne_none (x : K) : rvMap x ≠ none := by
-  rw [rvMap]; split_ifs with h
-  · simp
-  · exact fun hh => absurd (fromK_eq_none_iff.mp hh) h
+/-- `rv x ≠ rv 0` for `x ≠ 0` (the old `rvMap_ne_none x : rvMap x ≠ none` is false at `x = 0`
+now that `rv 0 = ∞` is the residue zero itself). -/
+theorem rvMap_ne_none {x : K} (h : x ≠ 0) : rvMap (K := K) x ≠ none := fromK_ne_none h
 
-theorem toK_rvMap {x : K} (h : x ≠ 0) : toK (rvMap x) = x := by
-  rw [rvMap_of_ne h, toK_fromK]
+theorem toK_rvMap {x : K} (_h : x ≠ 0) : toK (rvMap x) = x := by
+  rw [rvMap, toK_fromK]
 
 theorem rvMap_injective : Function.Injective (rvMap (K := K)) := by
   intro x y h
   by_cases hx : x = 0
   · subst hx
-    have : rvMap y = some none := h.symm ▸ rvMap_zero
+    have : rvMap y = none := h.symm ▸ rvMap_zero
     exact (rvMap_eq_infty_iff.mp this).symm
   · by_cases hy : y = 0
     · subst hy
-      have : rvMap x = some none := h ▸ rvMap_zero
+      have : rvMap x = none := h ▸ rvMap_zero
       exact absurd (rvMap_eq_infty_iff.mp this) hx
     · rw [rvMap_of_ne hx, rvMap_of_ne hy] at h
       exact fromK_injective h
@@ -744,7 +738,6 @@ noncomputable def fMap : {n : ℕ} → Fn n → (Fin n → M K) → M K
       | _, _ => cInfty
   | _, .rvOne, _ => cOneRV
   | _, .rvZero, _ => cZero
-  | _, .rvInfty, _ => cInfty
   | _, .rvMul, xs => match xs 0, xs 1 with
       | Sum.inr t, Sum.inr s => mkRV (rvMul t s)
       | _, _ => cInfty
@@ -763,12 +756,12 @@ carrier: `∞` is the top, the residue zero `0` is the bottom, and every unit is
 element of the `RV` sort.  On `RV ∖ {0}` this is `t ≤ s ⟺ vrv s ≤ vrv t` for the trivial
 valuation (`vrv` sends units to `1` and `∞` to `0`); it is stated in this *direct* form, with
 no existential over representatives, so that the axioms of `preorderRV` are case splits. -/
-def rvLeC (x y : M K) : Prop := y = cInfty ∨ x = cZero ∨ ∃ u : Kˣ, x = cUnit u
+def rvLeC (x y : M K) : Prop := y = cInfty ∨ ∃ u : Kˣ, x = cUnit u
 
 /-- The interpretation of the four relation symbols. -/
 def rMap : {n : ℕ} → Rel n → (Fin n → M K) → Prop
   | _, .memVF, xs => ∃ x : K, xs 0 = mkVF x
-  | _, .memRV, xs => ∃ t : RV0 K, xs 0 = mkRV t
+  | _, .memRV, xs => ∃ t : RV K, xs 0 = mkRV t
   | _, .memUnits, xs => ∃ u : Kˣ, xs 0 = cUnit u
   | _, .rvLe, xs => rvLeC (xs 0) (xs 1)
 
@@ -811,21 +804,23 @@ which are not in `K` at all; so the semantic counterpart of `pInK` is `InK` belo
 /-- The residue field `K = K^× ∪ {0}` inside the carrier, as a predicate. -/
 def InK (z : M K) : Prop := (∃ u : Kˣ, z = cUnit u) ∨ z = cZero
 
-theorem cZero_ne_cInfty : (cZero : M K) ≠ cInfty := fun h => nomatch Sum.inr.inj h
+/-- `∞ = rv 0 = 0` and the residue zero are one carrier element, so `0` and `∞` are not
+distinct; the old `cZero_ne_cInfty` is false and is replaced by `cZero_eq_cInfty`. -/
+theorem cZero_eq_cInfty : (cZero : M K) = cInfty := rfl
 
 theorem cUnit_ne_cInfty (u : Kˣ) : (cUnit u : M K) ≠ cInfty := fun h => nomatch Sum.inr.inj h
 
-/-- every element of `K` avoids `∞` -/
-theorem InK_ne_cInfty {z : M K} (h : InK z) : z ≠ cInfty := by
-  rcases h with ⟨u, rfl⟩ | rfl
-  · exact cUnit_ne_cInfty u
-  · exact cZero_ne_cInfty
+/-- every `RV`-sorted element satisfies the guard `pInK = pUnits ⊔ (t = 0)`: in the two-layer
+carrier the residue zero *is* `∞`, so `pInK` is now vacuous on the `RV` sort -/
+theorem InK_mkRV (s : RV K) : InK (mkRV s) := by
+  cases s with
+  | none => exact Or.inr rfl
+  | some u => exact Or.inl ⟨u, rfl⟩
 
-/-- on `RV`-sorted elements the guard `pInK` is exactly the test `t ≠ ∞` -/
-theorem InK_mkRV_iff {s : RV0 K} : InK (mkRV s) ↔ s ≠ some none := by
-  rcases s with _ | ⟨_ | u⟩ <;> simp [InK, mkRV, cZero, cInfty, cUnit]
-
-theorem InK_mkRV {s : RV0 K} (h : s ≠ some none) : InK (mkRV s) := InK_mkRV_iff.mpr h
+theorem InK_mkRV_iff {s : RV K} : InK (mkRV s) ↔ True := by
+  cases s with
+  | none => simp [InK, mkRV, cZero]
+  | some u => simp [InK, mkRV, cUnit]
 
 /-- the guard `pInK`, unfolded to the carrier predicate `InK` -/
 theorem realize_pInK {m : ℕ} (t : LRV.Tm m) (xs : Fin m → M K) :
@@ -856,7 +851,7 @@ theorem realize_sortPred_vf {n : ℕ} (i : Fin n) (xs : Fin n → M K) :
 /-- the `RV` sort predicate at a variable, in terms of the carrier -/
 theorem realize_sortPred_rv {n : ℕ} (i : Fin n) (xs : Fin n → M K) :
     (LRV.sortPred .rv (LRV.tv i.val i.isLt)).Realize (dflt) xs ↔
-      ∃ t : RV0 K, xs i = mkRV t := by
+      ∃ t : RV K, xs i = mkRV t := by
   simp only [LRV.sortPred, LRV.pRVsort, LRV.tv, BoundedFormula.realize_rel₁, RelMap_def, rMap,
     Matrix.cons_val_fin_one, Term.realize_var, Sum.elim_inr, Fin.eta]
 
@@ -875,7 +870,7 @@ theorem realize_foldr_inf {ι : Type*} {n : ℕ} (l : List ι)
 theorem realize_sortedHyps {k : ℕ} (ss : Fin k → SortTag) (xs : Fin k → M K) :
     (LRV.sortedHyps ss).Realize (dflt) xs ↔
       ∀ i : Fin k, ((ss i = .vf → ∃ x : K, xs i = mkVF x) ∧
-        (ss i = .rv → ∃ t : RV0 K, xs i = mkRV t)) := by
+        (ss i = .rv → ∃ t : RV K, xs i = mkRV t)) := by
   rw [LRV.sortedHyps, realize_foldr_inf]
   constructor
   · intro h i
@@ -899,7 +894,7 @@ theorem realize_sortedHyps {k : ℕ} (ss : Fin k → SortTag) (xs : Fin k → M 
 theorem model_allSorted {k : ℕ} (ss : Fin k → SortTag) (φ : LRV.BoundedFormula Empty k) :
     ((M K) ⊨ LRV.allSorted ss φ) ↔
       ∀ xs : Fin k → M K, (∀ i : Fin k, ((ss i = .vf → ∃ x : K, xs i = mkVF x) ∧
-        (ss i = .rv → ∃ t : RV0 K, xs i = mkRV t))) →
+        (ss i = .rv → ∃ t : RV K, xs i = mkRV t))) →
         φ.Realize (dflt) xs := by
   rw [LRV.allSorted, model_alls]
   refine forall_congr' (fun xs => ?_)
@@ -926,7 +921,7 @@ in `K = K^× ∪ {0}` (on `RV`-sorted entries this is the same as `≠ ∞`) -/
 theorem model_allSortedK {k : ℕ} (ss : Fin k → SortTag) (φ : LRV.BoundedFormula Empty k) :
     ((M K) ⊨ LRV.allSortedK ss φ) ↔
       ∀ xs : Fin k → M K, (∀ i : Fin k, ((ss i = .vf → ∃ x : K, xs i = mkVF x) ∧
-        (ss i = .rv → ∃ t : RV0 K, xs i = mkRV t))) →
+        (ss i = .rv → ∃ t : RV K, xs i = mkRV t))) →
         (∀ i : Fin k, InK (xs i)) → φ.Realize (dflt) xs := by
   rw [LRV.allSortedK, model_alls]
   refine forall_congr' (fun xs => ?_)
@@ -958,7 +953,7 @@ macro "prep" : tactic => `(tactic|
     Function.comp_apply,
     LRV.allOne, LRV.sortedHyps, LRV.kHyps, LRV.sortPred, LRV.tv, LRV.exSorted,
     LRV.exSortedK, LRV.allSortedK, LRV.allSorted,
-    LRV.pVF, LRV.pRVsort, LRV.pUnits, LRV.pLe, LRV.pEq, LRV.pRV, LRV.pK, LRV.pRV0,
+    LRV.pVF, LRV.pRVsort, LRV.pUnits, LRV.pLe, LRV.pEq, LRV.pRV, LRV.pK, LRV.pRV,
     LRV.pGtOne, LRV.tVFZero, LRV.tVFOne, LRV.tVFAdd, LRV.tVFNeg, LRV.tVFMul,
     LRV.tRVOne, LRV.tRVZero, LRV.tRVInfty, LRV.tRVMul, LRV.tKAdd, LRV.tKNeg, LRV.tRv,
     RelMap_def, funMap_def, rMap, fMap, mkVF, mkRV, cInfty, cZero, cOneRV, cUnit,
@@ -973,12 +968,12 @@ macro "prep" : tactic => `(tactic|
 @[simp] theorem mkVF_eq_mkVF {x y : K} : mkVF x = mkVF (K := K) y ↔ x = y :=
   ⟨fun h => Sum.inl.inj h, fun h => by rw [h]⟩
 
-theorem mkVF_ne_mkRV (x : K) (t : RV0 K) : mkVF x ≠ mkRV t := by simp [mkVF, mkRV]
-theorem mkRV_ne_mkVF (t : RV0 K) (x : K) : mkRV t ≠ mkVF x := by simp [mkVF, mkRV]
-theorem mkRV_inj {t s : RV0 K} : mkRV t = mkRV s ↔ t = s := ⟨fun h => Sum.inr.inj h, fun h => by rw [h]⟩
+theorem mkVF_ne_mkRV (x : K) (t : RV K) : mkVF x ≠ mkRV t := by simp [mkVF, mkRV]
+theorem mkRV_ne_mkVF (t : RV K) (x : K) : mkRV t ≠ mkVF x := by simp [mkVF, mkRV]
+theorem mkRV_inj {t s : RV K} : mkRV t = mkRV s ↔ t = s := ⟨fun h => Sum.inr.inj h, fun h => by rw [h]⟩
 
 theorem exists_mkVF_iff {z : M K} : (∃ x : K, z = mkVF x) ↔ ∃ x, z = Sum.inl x := Iff.rfl
-theorem exists_mkRV_iff {z : M K} : (∃ t : RV0 K, z = mkRV t) ↔ ∃ t, z = Sum.inr t := Iff.rfl
+theorem exists_mkRV_iff {z : M K} : (∃ t : RV K, z = mkRV t) ↔ ∃ t, z = Sum.inr t := Iff.rfl
 
 /-! ### The sort discipline of the encoding -/
 
@@ -1024,11 +1019,11 @@ theorem model_sdRVZero : (M K) ⊨ Axioms.sdRVZero := by
 
 theorem model_sdRVOne : (M K) ⊨ Axioms.sdRVOne := by
   simp only [Axioms.sdRVOne]; prep
-  exact ⟨some (some 1), rfl⟩
+  exact ⟨some (1), rfl⟩
 
 theorem model_sdRVInfty : (M K) ⊨ Axioms.sdRVInfty := by
   simp only [Axioms.sdRVInfty]; prep
-  exact ⟨some none, rfl⟩
+  exact ⟨none, rfl⟩
 
 theorem model_sdRVMul : (M K) ⊨ Axioms.sdRVMul := by
   simp only [Axioms.sdRVMul]; rw [model_allSorted]; intro xs h; prep
@@ -1044,7 +1039,7 @@ theorem model_sdUnits : (M K) ⊨ Axioms.sdUnits := by
   prep
   rintro ⟨u, hu⟩
   rw [hu]
-  exact ⟨some (some u), rfl⟩
+  exact ⟨some (u), rfl⟩
 
 theorem model_sdCover : (M K) ⊨ Axioms.sdCover := by
   simp only [Axioms.sdCover, LRV.allOne]
@@ -1064,69 +1059,34 @@ theorem model_sdDisjoint : (M K) ⊨ Axioms.sdDisjoint := by
   rw [hx] at ht
   exact nomatch ht
 
-/-- `kAdd` never produces `∞` when both arguments avoid it -/
-theorem kAdd_ne_infty {t s : RV0 K} (ht : t ≠ some none) (hs : s ≠ some none) :
-    kAdd (K := K) t s ≠ some none := by
-  classical
-  have key : kAdd (K := K) t s =
-      if t = some none ∨ s = some none then some none else fromK (toK t + toK s) := rfl
-  rw [key, if_neg (by simp [ht, hs])]
-  exact fromK_ne_infty _
-
-/-- `kNeg` never produces `∞` when the argument avoids it -/
-theorem kNeg_ne_infty {t : RV0 K} (ht : t ≠ some none) : kNeg (K := K) t ≠ some none := by
-  classical
-  have key : kNeg (K := K) t =
-      if t = some none then some none else fromK (-(toK t)) := rfl
-  rw [key, if_neg (by simpa using ht)]
-  exact fromK_ne_infty _
-
-/-- `rvMul` never produces `∞` when both arguments avoid it -/
-theorem rvMul_ne_infty {t s : RV0 K} (ht : t ≠ some none) (hs : s ≠ some none) :
-    rvMul (K := K) t s ≠ some none := by
-  classical
-  have key : rvMul (K := K) t s =
-      if t = some none ∨ s = some none then some none else fromK (toK t * toK s) := rfl
-  rw [key, if_neg (by simp [ht, hs])]
-  exact fromK_ne_infty _
-
 theorem model_sdKAdd : (M K) ⊨ Axioms.sdKAdd := by
   simp only [Axioms.sdKAdd]; rw [model_allSorted]; intro xs h; prep
   obtain ⟨s, hs⟩ := (h 0).2 rfl
   obtain ⟨t, ht⟩ := (h 1).2 rfl
-  intro h1 h2
-  simp only [realize_pInK, Term.realize_var, Sum.elim_inr, hs, ht, InK_mkRV_iff] at h1 h2
+  intro _ _
   rw [realize_pInK]
   simp only [LRV.tKAdd, Term.realize_func, funMap_def, fMap, Term.realize_var, Sum.elim_inr,
-    Matrix.cons_val_zero, Matrix.cons_val_one]
-  rw [hs, ht]
-  simp only [mkRV]
-  exact InK_mkRV (kAdd_ne_infty (K := K) h1 h2)
+    Matrix.cons_val_zero, Matrix.cons_val_one, hs, ht, mkRV]
+  exact InK_mkRV _
 
 theorem model_sdKNeg : (M K) ⊨ Axioms.sdKNeg := by
   simp only [Axioms.sdKNeg]; rw [model_allSorted]; intro xs h; prep
   obtain ⟨s, hs⟩ := (h 0).2 rfl
-  intro h1
-  simp only [realize_pInK, Term.realize_var, Sum.elim_inr, hs, InK_mkRV_iff] at h1
+  intro _
   rw [realize_pInK]
   simp only [LRV.tKNeg, Term.realize_func, funMap_def, fMap, Term.realize_var, Sum.elim_inr,
-    Matrix.cons_val_zero]
-  rw [hs]
-  simp only [mkRV]
-  exact InK_mkRV (kNeg_ne_infty (K := K) h1)
+    Matrix.cons_val_zero, hs, mkRV]
+  exact InK_mkRV _
 
 theorem model_sdKMul : (M K) ⊨ Axioms.sdKMul := by
   simp only [Axioms.sdKMul]; rw [model_allSorted]; intro xs h; prep
   obtain ⟨s, hs⟩ := (h 0).2 rfl
   obtain ⟨t, ht⟩ := (h 1).2 rfl
-  intro h1 h2
-  simp only [realize_pInK, Term.realize_var, Sum.elim_inr, hs, ht, InK_mkRV_iff] at h1 h2
+  intro _ _
   rw [realize_pInK]
   simp only [LRV.tRVMul, Term.realize_func, funMap_def, fMap, Term.realize_var, Sum.elim_inr,
-    Matrix.cons_val_zero, Matrix.cons_val_one]
-  rw [hs, ht]
-  simp only [mkRV]
-  exact InK_mkRV (rvMul_ne_infty (K := K) h1 h2)
+    Matrix.cons_val_zero, Matrix.cons_val_one, hs, ht, mkRV]
+  exact InK_mkRV _
 
 end SortDiscipline
 
@@ -1136,102 +1096,56 @@ section Axioms
 
 variable {K : Type*} [Field K]
 
-@[simp] theorem fromK_one : fromK (K := K) 1 = some (some 1) := by
+@[simp] theorem fromK_one : fromK (K := K) 1 = some (1) := by
   rw [fromK_of_ne one_ne_zero]
-  exact congrArg (fun u => some (some u)) (Units.ext rfl)
+  exact congrArg (fun u => some (u)) (Units.ext rfl)
 
-theorem fromK_coe_unit (u : Kˣ) : fromK (K := K) (u : K) = some (some u) := by
+theorem fromK_coe_unit (u : Kˣ) : fromK (K := K) (u : K) = some (u) := by
   rw [fromK_of_ne u.ne_zero]
-  exact congrArg (fun w => some (some w)) (Units.mk0_val u u.ne_zero)
+  exact congrArg (fun w => some (w)) (Units.mk0_val u u.ne_zero)
 
 theorem fromK_add (a b : K) : kAdd (fromK a) (fromK b) = fromK (a + b) := by
-  classical
-  have key : kAdd (K := K) (fromK a) (fromK b) =
-      if fromK a = some none ∨ fromK b = some none then some none
-        else fromK (toK (fromK a) + toK (fromK b)) := rfl
-  rw [key, if_neg (by simp [fromK_ne_infty]), toK_fromK, toK_fromK]
+  rw [kAdd, toK_fromK, toK_fromK]
 
 theorem fromK_mul (a b : K) : rvMul (fromK a) (fromK b) = fromK (a * b) := by
-  classical
-  have key : rvMul (K := K) (fromK a) (fromK b) =
-      if fromK a = some none ∨ fromK b = some none then some none
-        else fromK (toK (fromK a) * toK (fromK b)) := rfl
-  rw [key, if_neg (by simp [fromK_ne_infty]), toK_fromK, toK_fromK]
+  rw [rvMul, toK_fromK, toK_fromK]
 
 theorem fromK_neg (a : K) : kNeg (fromK a) = fromK (-a) := by
-  classical
-  have key : kNeg (K := K) (fromK a) =
-      if fromK a = some none then some none else fromK (-(toK (fromK a))) := rfl
-  rw [key, if_neg (by simp [fromK_ne_infty]), toK_fromK]
+  rw [kNeg, toK_fromK]
 
-theorem rvMul_infty_any (t : RV0 K) : rvMul t (some none) = some none := by
-  classical
-  have key : rvMul (K := K) t (some none) =
-      if t = some none ∨ some none = some none then some none
-        else fromK (toK t * toK (some none)) := rfl
-  rw [key, if_pos (Or.inr rfl)]
+theorem rvMul_infty_any (t : RV K) : rvMul t (none) = none := by
+  rw [rvMul, toK_none, mul_zero, fromK_zero]
 
-theorem rvMul_infty_any' (t : RV0 K) : rvMul (some none) t = some none := by
-  classical
-  have key : rvMul (K := K) (some none) t =
-      if some none = some none ∨ t = some none then some none
-        else fromK (toK (some none) * toK t) := rfl
-  rw [key, if_pos (Or.inl rfl)]
+theorem rvMul_infty_any' (t : RV K) : rvMul (none) t = none := by
+  rw [rvMul, toK_none, zero_mul, fromK_zero]
 
-theorem rvMul_eq_fromK {t s : RV0 K} (ht : t ≠ some none) (hs : s ≠ some none) :
-    rvMul t s = fromK (toK t * toK s) := by
-  classical
-  have key : rvMul (K := K) t s =
-      if t = some none ∨ s = some none then some none else fromK (toK t * toK s) := rfl
-  rw [key, if_neg (by simp [ht, hs])]
+theorem rvMul_eq_fromK {t s : RV K} (_ht : t ≠ none) (_hs : s ≠ none) :
+    rvMul t s = fromK (toK t * toK s) := rfl
 
 theorem rvMul_unit (u v : Kˣ) :
-    rvMul (some (some u)) (some (some v)) = some (some (u * v)) := by
-  rw [← fromK_coe_unit u, ← fromK_coe_unit v, fromK_mul, ← Units.val_mul, fromK_coe_unit]
+    rvMul (some (u)) (some (v)) = some ((u * v)) := by
+  rw [rvMul, toK_unit, toK_unit, fromK_of_ne (mul_ne_zero u.ne_zero v.ne_zero)]
+  exact congrArg some (Units.ext rfl)
 
-theorem kAdd_unit_toK {t s : RV0 K} (ht : t ≠ some none) (hs : s ≠ some none) :
-    kAdd t s = fromK (toK t + toK s) := by
-  classical
-  have key : kAdd (K := K) t s =
-      if t = some none ∨ s = some none then some none else fromK (toK t + toK s) := rfl
-  rw [key, if_neg (by simp [ht, hs])]
+theorem kAdd_unit_toK {t s : RV K} (_ht : t ≠ none) (_hs : s ≠ none) :
+    kAdd t s = fromK (toK t + toK s) := rfl
 
-theorem kNeg_toK {t : RV0 K} (ht : t ≠ some none) : kNeg t = fromK (-(toK t)) := by
-  classical
-  have key : kNeg (K := K) t =
-      if t = some none then some none else fromK (-(toK t)) := rfl
-  rw [key, if_neg (by simpa using ht)]
+theorem kNeg_toK {t : RV K} (_ht : t ≠ none) : kNeg t = fromK (-(toK t)) := rfl
 
 /-! ### `rv`-side arithmetic -/
 
-theorem rvMul_comm (t s : RV0 K) : rvMul t s = rvMul s t := by
-  classical
-  by_cases ht : t = some none
-  · subst ht; rw [rvMul_infty_any', rvMul_infty_any]
-  by_cases hs : s = some none
-  · subst hs; rw [rvMul_infty_any', rvMul_infty_any]
-  rw [rvMul_eq_fromK ht hs, rvMul_eq_fromK hs ht, mul_comm]
+theorem rvMul_comm (t s : RV K) : rvMul t s = rvMul s t := by
+  rw [rvMul, rvMul, mul_comm]
 
-theorem rvMul_assoc (t s r : RV0 K) : rvMul (rvMul t s) r = rvMul t (rvMul s r) := by
-  classical
-  by_cases ht : t = some none
-  · subst ht; rw [rvMul_infty_any', rvMul_infty_any', rvMul_infty_any']
-  by_cases hs : s = some none
-  · subst hs; rw [rvMul_infty_any, rvMul_infty_any', rvMul_infty_any]
-  by_cases hr : r = some none
-  · subst hr; rw [rvMul_infty_any, rvMul_infty_any, rvMul_infty_any]
-  have h1 : rvMul t s = fromK (toK t * toK s) := rvMul_eq_fromK ht hs
-  have h2 : rvMul s r = fromK (toK s * toK r) := rvMul_eq_fromK hs hr
-  rw [h1, h2, rvMul_eq_fromK (fromK_ne_infty _) hr,
-    rvMul_eq_fromK ht (fromK_ne_infty _), toK_fromK, toK_fromK, mul_assoc]
+theorem rvMul_assoc (t s r : RV K) : rvMul (rvMul t s) r = rvMul t (rvMul s r) := by
+  simp only [rvMul, toK_fromK, mul_assoc]
 
-theorem none_ne_infty : (none : RV0 K) ≠ some none := fun h => nomatch h
 
-theorem rvMul_one_left (u : Kˣ) : rvMul (some (some 1)) (some (some u)) = some (some u) := by
+theorem rvMul_one_left (u : Kˣ) : rvMul (some (1)) (some (u)) = some (u) := by
   rw [rvMul_unit, one_mul]
 
 theorem rvMul_inv_left (u : Kˣ) :
-    rvMul (some (some u⁻¹)) (some (some u)) = some (some 1) := by
+    rvMul (some (u⁻¹)) (some (u)) = some (1) := by
   rw [rvMul_unit, inv_mul_cancel]
 
 end Axioms
@@ -1460,18 +1374,18 @@ theorem coefOf_spec {n : ℕ} (xs : Fin (n + 1) → M K)
 
 /-- the coefficient of the `i`-th variable of a `K`-sorted coefficient tuple -/
 noncomputable def coefOfRV {n : ℕ} (xs : Fin (n + 1) → M K)
-    (h : ∀ i : Fin (n + 1), ∃ t : RV0 K, xs i = mkRV t ∧ t ≠ some none)
+    (h : ∀ i : Fin (n + 1), ∃ t : RV K, xs i = mkRV t)
     (i : ℕ) : K :=
   if hi : i < n + 1 then toK ((h ⟨i, hi⟩).choose) else 0
 
 theorem coefOfRV_spec {n : ℕ} (xs : Fin (n + 1) → M K)
-    (h : ∀ i : Fin (n + 1), ∃ t : RV0 K, xs i = mkRV t ∧ t ≠ some none)
+    (h : ∀ i : Fin (n + 1), ∃ t : RV K, xs i = mkRV t)
     {i : ℕ} (hi : i < n + 1) : xs ⟨i, hi⟩ = mkRV (fromK (coefOfRV xs h i)) := by
   have hspec := (h ⟨i, hi⟩).choose_spec
   have hc : coefOfRV xs h i = toK (h ⟨i, hi⟩).choose := by
     rw [coefOfRV, dif_pos hi]
-  rw [hc, fromK_toK hspec.2]
-  exact hspec.1
+  rw [hc, fromK_toK]
+  exact hspec
 
 theorem realize_hornerPoly_vf_snoc {n : ℕ} (c : ℕ → K) (r : K) (xs : Fin (n + 1) → M K)
     (hc : ∀ i : ℕ, ∀ (h : i < n + 1), xs ⟨i, h⟩ = mkVF (c i)) :
@@ -1544,10 +1458,7 @@ theorem model_acfScheme_k [IsAlgClosed K] (n : ℕ) :
   rw [model_allSortedK]
   intro xs h hne
   prep
-  have hcoe : ∀ i : Fin (n + 1), ∃ t : RV0 K, xs i = mkRV t ∧ t ≠ some none := by
-    intro i
-    obtain ⟨t, ht⟩ := (h i).2 rfl
-    exact ⟨t, ht, fun hh => InK_ne_cInfty (z := xs i) (hne i) (by rw [ht, hh]; rfl)⟩
+  have hcoe : ∀ i : Fin (n + 1), ∃ t : RV K, xs i = mkRV t := fun i => (h i).2 rfl
   obtain ⟨r, hr⟩ := exists_root_foldl (K := K) (coefOfRV (n := n) xs hcoe) n
   refine ⟨mkRV (fromK r), ⟨⟨fromK r, ?_⟩, ?_⟩, ?_⟩
   · rw [show (⟨n + 1, by omega⟩ : Fin (n + 1 + 1)) = Fin.last (n + 1) from Fin.ext rfl,
@@ -1557,7 +1468,7 @@ theorem model_acfScheme_k [IsAlgClosed K] (n : ℕ) :
     simp only [Term.realize_var, Sum.elim_inr]
     rw [show (⟨n + 1, by omega⟩ : Fin (n + 1 + 1)) = Fin.last (n + 1) from Fin.ext rfl,
       Fin.snoc_last]
-    exact InK_mkRV (fromK_ne_infty r)
+    exact InK_mkRV _
   · rw [realize_hornerPoly_rv_snoc (coefOfRV (n := n) xs hcoe) r xs
       (fun i hi => coefOfRV_spec (n := n) xs hcoe hi), hr]
     rw [fromK_zero]
@@ -1575,18 +1486,15 @@ variable {K : Type*} [Field K]
 
 /-- an `RV`-element of the `K`-sort, read as `mkRV (fromK a)` -/
 theorem rvK_rep {m : ℕ} {xs : Fin m → M K} {i : Fin m}
-    (h : ∃ t : RV0 K, xs i = mkRV t) (hne : xs i ≠ cInfty) :
+    (h : ∃ t : RV K, xs i = mkRV t) (_hK : InK (xs i)) :
     ∃ a : K, xs i = mkRV (fromK a) := by
   obtain ⟨t, ht⟩ := h
-  have hne' : t ≠ some none := fun hh => hne (by rw [ht, hh]; rfl)
-  exact ⟨toK t, by rw [ht, fromK_toK hne']⟩
+  cases t with
+  | none => exact ⟨0, by rw [ht, fromK_zero]⟩
+  | some u => exact ⟨toK (some u), by rw [ht, fromK_toK]⟩
 
-theorem rvMul_zero_right {t : RV0 K} (ht : t ≠ some none) : rvMul t none = none := by
-  classical
-  have key : rvMul (K := K) t none =
-      if t = some none ∨ none = some none then some none else fromK (toK t * toK none) := rfl
-  rw [key, if_neg (by simp [ht])]
-  simp
+theorem rvMul_zero_right {t : RV K} (_ht : t ≠ none) : rvMul t none = none :=
+  rvMul_infty_any t
 
 /-! #### the field axioms of the `VF` sort -/
 
@@ -1653,43 +1561,43 @@ theorem model_kField : (M K) ⊨ Axioms.kField := by
     Function.comp_apply] at hs
   obtain rfl | h2 := hs
   · rw [model_allSortedK]; intro xs h hne; prep
-    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (InK_ne_cInfty (z := xs 0) (hne 0))
-    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (InK_ne_cInfty (z := xs 1) (hne 1))
-    obtain ⟨c, hc⟩ := rvK_rep ((h 2).2 rfl) (InK_ne_cInfty (z := xs 2) (hne 2))
+    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (hne 0)
+    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (hne 1)
+    obtain ⟨c, hc⟩ := rvK_rep ((h 2).2 rfl) (hne 2)
     simp only [mkRV, ha, hb, hc, fromK_add, add_assoc]
   obtain rfl | h3 := h2
   · rw [model_allSortedK]; intro xs h hne; prep
-    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (InK_ne_cInfty (z := xs 0) (hne 0))
-    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (InK_ne_cInfty (z := xs 1) (hne 1))
+    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (hne 0)
+    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (hne 1)
     simp only [mkRV, ha, hb, fromK_add, add_comm]
   obtain rfl | h4 := h3
   · rw [model_allSortedK]; intro xs h hne; prep
-    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (InK_ne_cInfty (z := xs 0) (hne 0))
+    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (hne 0)
     simp only [mkRV, ha, ← fromK_zero, fromK_add, add_zero]
   obtain rfl | h5 := h4
   · rw [model_allSortedK]; intro xs h hne; prep
-    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (InK_ne_cInfty (z := xs 0) (hne 0))
+    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (hne 0)
     simp only [mkRV, ha, kAdd_self_kNeg]
   obtain rfl | h6 := h5
   · rw [model_allSortedK]; intro xs h hne; prep
-    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (InK_ne_cInfty (z := xs 0) (hne 0))
-    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (InK_ne_cInfty (z := xs 1) (hne 1))
-    obtain ⟨c, hc⟩ := rvK_rep ((h 2).2 rfl) (InK_ne_cInfty (z := xs 2) (hne 2))
+    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (hne 0)
+    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (hne 1)
+    obtain ⟨c, hc⟩ := rvK_rep ((h 2).2 rfl) (hne 2)
     simp only [mkRV, ha, hb, hc, fromK_mul, mul_assoc]
   obtain rfl | h7 := h6
   · rw [model_allSortedK]; intro xs h hne; prep
-    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (InK_ne_cInfty (z := xs 0) (hne 0))
-    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (InK_ne_cInfty (z := xs 1) (hne 1))
+    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (hne 0)
+    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (hne 1)
     simp only [mkRV, ha, hb, fromK_mul, mul_comm]
   obtain rfl | h8 := h7
   · rw [model_allSortedK]; intro xs h hne; prep
-    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (InK_ne_cInfty (z := xs 0) (hne 0))
+    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (hne 0)
     simp only [mkRV, ha, ← fromK_one, fromK_mul, mul_one]
   obtain rfl | h9 := h8
   · rw [model_allSortedK]; intro xs h hne; prep
-    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (InK_ne_cInfty (z := xs 0) (hne 0))
-    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (InK_ne_cInfty (z := xs 1) (hne 1))
-    obtain ⟨c, hc⟩ := rvK_rep ((h 2).2 rfl) (InK_ne_cInfty (z := xs 2) (hne 2))
+    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (hne 0)
+    obtain ⟨b, hb⟩ := rvK_rep ((h 1).2 rfl) (hne 1)
+    obtain ⟨c, hc⟩ := rvK_rep ((h 2).2 rfl) (hne 2)
     simp only [mkRV, ha, hb, hc, fromK_add, fromK_mul, mul_add]
   obtain rfl | h10 := h9
   · prep
@@ -1697,7 +1605,7 @@ theorem model_kField : (M K) ⊨ Axioms.kField := by
     exact nomatch (Sum.inr.inj hh)
   · obtain rfl := by simpa using h10
     rw [model_allSortedK]; intro xs h hne; prep
-    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (InK_ne_cInfty (z := xs 0) (hne 0))
+    obtain ⟨a, ha⟩ := rvK_rep ((h 0).2 rfl) (hne 0)
     rcases eq_or_ne a 0 with rfl | ha0
     · left
       rw [ha, fromK_zero]
@@ -1706,7 +1614,7 @@ theorem model_kField : (M K) ⊨ Axioms.kField := by
       refine ⟨mkRV (fromK a⁻¹), ⟨⟨fromK a⁻¹, rfl⟩, ?_⟩, ?_⟩
       · rw [realize_pInK]
         simp only [Term.realize_var, Sum.elim_inr, Fin.snoc_last]
-        exact InK_mkRV (fromK_ne_infty a⁻¹)
+        exact InK_mkRV _
       · have h1' : (1 : Fin 2) = Fin.last 1 := rfl
         have h0' : (0 : Fin 2) = Fin.castSucc (0 : Fin 1) := rfl
         rw [h1', h0', Fin.snoc_castSucc, Fin.snoc_last, ha]
@@ -1721,16 +1629,16 @@ section RVGroupPreorder
 variable {K : Type*} [Field K]
 
 /-- powers in the `RV` sort -/
-noncomputable def rvpow (s : RV0 K) : ℕ → RV0 K
-  | 0 => some (some 1)
+noncomputable def rvpow (s : RV K) : ℕ → RV K
+  | 0 => some (1)
   | k + 1 => rvMul (rvpow s k) s
 
-theorem rvpow_unit (u : Kˣ) : ∀ k : ℕ, rvpow (some (some u)) k = some (some (u ^ k))
+theorem rvpow_unit (u : Kˣ) : ∀ k : ℕ, rvpow (some (u)) k = some ((u ^ k))
   | 0 => by simp [rvpow]
   | k + 1 => by
     rw [rvpow, rvpow_unit u k, rvMul_unit, pow_succ]
 
-theorem realize_tRVMul' {m : ℕ} (xs : Fin m → M K) (A B : LRV.Tm m) (s t : RV0 K)
+theorem realize_tRVMul' {m : ℕ} (xs : Fin m → M K) (A B : LRV.Tm m) (s t : RV K)
     (hA : Term.realize (Sum.elim dflt xs) A = mkRV s)
     (hB : Term.realize (Sum.elim dflt xs) B = mkRV t) :
     Term.realize (Sum.elim dflt xs) (LRV.tRVMul A B) = mkRV (rvMul s t) := by
@@ -1739,7 +1647,7 @@ theorem realize_tRVMul' {m : ℕ} (xs : Fin m → M K) (A B : LRV.Tm m) (s t : R
   rw [hA, hB]
   simp only [mkRV]
 
-theorem realize_tRVPow {m : ℕ} (xs : Fin m → M K) (i : ℕ) (hi : i < m) (s : RV0 K)
+theorem realize_tRVPow {m : ℕ} (xs : Fin m → M K) (i : ℕ) (hi : i < m) (s : RV K)
     (hs : xs ⟨i, hi⟩ = mkRV s) (k : ℕ) :
     Term.realize (Sum.elim dflt xs) (LRV.tRVPow (LRV.tv i hi) k) = mkRV (rvpow s k) := by
   induction k with
@@ -1783,7 +1691,7 @@ theorem model_rvMulOne : (M K) ⊨ Axioms.rvMulOne := by
 theorem model_rvMulInv : (M K) ⊨ Axioms.rvMulInv := by
   simp only [Axioms.rvMulInv]; rw [model_allSorted]; intro xs h; prep
   rintro ⟨u, hu⟩
-  refine ⟨mkRV (some (some u⁻¹)), ⟨some (some u⁻¹), ?_⟩, ⟨u⁻¹, ?_⟩, ?_⟩
+  refine ⟨mkRV (some (u⁻¹)), ⟨some (u⁻¹), ?_⟩, ⟨u⁻¹, ?_⟩, ?_⟩
   · rw [show (⟨1, Nat.one_lt_two⟩) = Fin.last 1 from Fin.ext rfl, Fin.snoc_last]
     rfl
   · rw [show (1 : Fin 2) = Fin.last 1 from Fin.ext rfl, Fin.snoc_last]
@@ -1795,15 +1703,11 @@ theorem model_rvMulInv : (M K) ⊨ Axioms.rvMulInv := by
 
 theorem model_rvMulZeroK : (M K) ⊨ Axioms.rvMulZeroK := by
   simp only [Axioms.rvMulZeroK]; rw [model_allSorted]; intro xs h; prep
-  intro hne
   obtain ⟨s, hs⟩ := (h 0).2 rfl
-  have hne' : s ≠ some none := by
-    have h1 : InK (xs 0) := by
-      simpa only [realize_pInK, Term.realize_var, Sum.elim_inr] using hne
-    rwa [hs, InK_mkRV_iff] at h1
+  intro _
   simp only [LRV.tRVMul, LRV.tRVZero, Term.realize_func, funMap_def, fMap,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_eq, hs, mkRV]
-  rw [rvMul_zero_right hne']
+  rw [rvMul_infty_any]
 
 theorem model_rvMulInfty : (M K) ⊨ Axioms.rvMulInfty := by
   simp only [Axioms.rvMulInfty]; rw [model_allSorted]; intro xs h; prep
@@ -1814,8 +1718,8 @@ theorem model_rvMulInfty : (M K) ⊨ Axioms.rvMulInfty := by
 
 /-! #### the preorder -/
 
-theorem le_of_rel {s t : RV0 K}
-    (h : ∃ a b : RV0 K, (Sum.inr s : M K) = Sum.inr a ∧ (Sum.inr t : M K) = Sum.inr b ∧ vle a b) :
+theorem le_of_rel {s t : RV K}
+    (h : ∃ a b : RV K, (Sum.inr s : M K) = Sum.inr a ∧ (Sum.inr t : M K) = Sum.inr b ∧ vle a b) :
     vle s t := by
   obtain ⟨a, b, e1, e2, hv⟩ := h
   simp only [Sum.inr.injEq] at e1 e2
@@ -1922,110 +1826,71 @@ section Preorder
 
 variable {K : Type*} [Field K]
 
-theorem rvLeC_refl_mk {t : RV0 K} (h : t ≠ none) : rvLeC (mkRV t) (mkRV t) := by
-  classical
+theorem rvLeC_refl_mk {t : RV K} (_h : t ≠ none) : rvLeC (mkRV t) (mkRV t) := by
   cases t with
-  | none => exact absurd rfl h
-  | some t => cases t with
-    | none => exact Or.inl rfl
-    | some u => exact Or.inr (Or.inr ⟨u, rfl⟩)
+  | none => exact Or.inl rfl
+  | some u => exact Or.inr ⟨u, rfl⟩
 
-theorem rvLeC_top_mk (t : RV0 K) : rvLeC (mkRV t) (cInfty) := Or.inl rfl
-
-theorem cInfty_ne_cZero : (cInfty : M K) ≠ cZero := fun h => nomatch (Sum.inr.inj h)
+theorem rvLeC_top_mk (t : RV K) : rvLeC (mkRV t) (cInfty) := Or.inl rfl
 
 theorem cInfty_ne_cUnit (u : Kˣ) : (cInfty : M K) ≠ cUnit u := fun h => nomatch (Sum.inr.inj h)
 
 theorem cOneRV_ne_cInfty : (cOneRV : M K) ≠ cInfty := fun h => nomatch (Sum.inr.inj h)
 
-theorem mkRV_ne_cZero {t : RV0 K} (h : t ≠ none) : (mkRV t : M K) ≠ cZero :=
+theorem mkRV_ne_cZero {t : RV K} (h : t ≠ none) : (mkRV t : M K) ≠ cZero :=
   fun hh => h (Sum.inr.inj hh)
 
-theorem rvLeC_infty_mk {t : RV0 K} (h : rvLeC cInfty (mkRV t)) : mkRV t = cInfty := by
-  rcases h with h | h | h
+/-- `∞ ≤ x` forces `x = ∞`: the first disjunct of `rvLeC` is the only way to be below `∞` -/
+theorem rvLeC_infty_mk {t : RV K} (h : rvLeC cInfty (mkRV t)) : mkRV t = cInfty := by
+  rcases h with h | ⟨u, hu⟩
   · exact h
-  · exact absurd h cInfty_ne_cZero
-  · obtain ⟨u, hu⟩ := h
-    exact absurd hu (cInfty_ne_cUnit u)
+  · exact absurd hu (cInfty_ne_cUnit u)
 
-theorem rvLeC_trans_mk {t s r : RV0 K} (ht : t ≠ none)
-    (h1 : rvLeC (mkRV t) (mkRV s)) (h2 : rvLeC (mkRV s) (mkRV r)) :
+theorem rvLeC_trans_mk {t s r : RV K} (ht : t ≠ none)
+    (_h1 : rvLeC (mkRV t) (mkRV s)) (_h2 : rvLeC (mkRV s) (mkRV r)) :
     rvLeC (mkRV t) (mkRV r) := by
-  classical
   cases t with
   | none => exact absurd rfl ht
-  | some t =>
-    cases t with
-    | none =>
-      have hs : s = some none := by
-        rcases h1 with h | h | h
-        · exact Sum.inr.inj h
-        · exact absurd h (fun hh => nomatch hh)
-        · obtain ⟨u, hu⟩ := h
-          exact absurd hu (fun hh => nomatch hh)
-      subst hs
-      rw [rvLeC_infty_mk h2]
-      exact Or.inl rfl
-    | some u => exact Or.inr (Or.inr ⟨u, rfl⟩)
+  | some u => exact Or.inr ⟨u, rfl⟩
 
-theorem rvLeC_total_mk {t s : RV0 K} (ht : t ≠ none) :
+theorem rvLeC_total_mk {t s : RV K} (ht : t ≠ none) :
     rvLeC (mkRV t) (mkRV s) ∨ rvLeC (mkRV s) (mkRV t) := by
-  classical
   cases t with
   | none => exact absurd rfl ht
-  | some t =>
-    cases t with
-    | none => exact Or.inr (Or.inl rfl)
-    | some u => exact Or.inl (Or.inr (Or.inr ⟨u, rfl⟩))
+  | some u => exact Or.inl (Or.inr ⟨u, rfl⟩)
 
-theorem rvLeC_one_iff_unit {t : RV0 K} (ht : t ≠ none) :
+theorem rvLeC_one_iff_unit {t : RV K} (_ht : t ≠ none) :
     (∃ u : Kˣ, mkRV t = cUnit u) ↔ (rvLeC cOneRV (mkRV t) ∧ rvLeC (mkRV t) cOneRV) := by
-  classical
   constructor
   · rintro ⟨u, hu⟩
     rw [hu]
-    exact ⟨Or.inr (Or.inr ⟨1, rfl⟩), Or.inr (Or.inr ⟨u, rfl⟩)⟩
-  · rintro ⟨h1, h2⟩
-    rcases h2 with h | h | h
+    exact ⟨Or.inr ⟨1, rfl⟩, Or.inr ⟨u, rfl⟩⟩
+  · rintro ⟨_h1, h2⟩
+    rcases h2 with h | h
     · exact absurd h cOneRV_ne_cInfty
-    · exact absurd (Sum.inr.inj h) ht
     · exact h
 
-theorem rvMul_zero_unit (u : Kˣ) : rvMul (none : RV0 K) (some (some u)) = none := by
-  classical
-  have key : rvMul (K := K) none (some (some u)) =
-      if none = some none ∨ some (some u) = some none then some none
-        else fromK (toK none * toK (some (some u))) := rfl
-  rw [key, if_neg (by simp), toK_none, zero_mul, fromK_zero]
+theorem rvMul_zero_unit (u : Kˣ) : rvMul (none : RV K) (some (u)) = none :=
+  rvMul_infty_any' _
 
-theorem rvLeC_mulCompat_mk {t s : RV0 K} (h : rvLeC (mkRV t) (mkRV s)) (u : Kˣ) :
-    rvLeC (mkRV (rvMul t (some (some u)))) (mkRV (rvMul s (some (some u)))) := by
-  classical
+theorem rvLeC_mulCompat_mk {t s : RV K} (h : rvLeC (mkRV t) (mkRV s)) (u : Kˣ) :
+    rvLeC (mkRV (rvMul t (some (u)))) (mkRV (rvMul s (some (u)))) := by
   cases t with
   | none =>
-    refine Or.inr (Or.inl ?_)
-    show mkRV (rvMul none (some (some u))) = cZero
+    have hs : s = none := by
+      rcases h with h | ⟨w, hw⟩
+      · exact Sum.inr.inj h
+      · exact absurd hw (fun hh => nomatch hh)
+    subst hs
+    refine Or.inl ?_
+    show mkRV (rvMul (none) (some (u))) = cInfty
     rw [rvMul_zero_unit]
     rfl
-  | some t =>
-    cases t with
-    | none =>
-      have hs : s = some none := by
-        rcases h with h | h | h
-        · exact Sum.inr.inj h
-        · exact absurd h (fun hh => nomatch hh)
-        · obtain ⟨w, hw⟩ := h
-          exact absurd hw (fun hh => nomatch hh)
-      subst hs
-      refine Or.inl ?_
-      show mkRV (rvMul (some none) (some (some u))) = cInfty
-      rw [rvMul_infty_any']
-      rfl
-    | some w =>
-      refine Or.inr (Or.inr ⟨w * u, ?_⟩)
-      show mkRV (rvMul (some (some w)) (some (some u))) = cUnit (w * u)
-      rw [rvMul_unit]
-      rfl
+  | some w =>
+    refine Or.inr ⟨w * u, ?_⟩
+    show mkRV (rvMul (some (w)) (some (u))) = cUnit (w * u)
+    rw [rvMul_unit]
+    rfl
 
 theorem model_leRefl : (M K) ⊨ Axioms.leRefl := by
   simp only [Axioms.leRefl]; rw [model_allSorted]; intro xs h; prep
@@ -2129,17 +1994,17 @@ theorem model_rvDivisible [IsAlgClosed K] (n : ℕ) (hn : 1 ≤ n) :
     apply Units.ext
     rw [Units.val_pow_eq_pow_val]
     exact hr
-  refine ⟨mkRV (some (some (Units.mk0 r hr0))), ⟨some (some (Units.mk0 r hr0)), ?_⟩,
+  refine ⟨mkRV (some ((Units.mk0 r hr0))), ⟨some ((Units.mk0 r hr0)), ?_⟩,
     ⟨Units.mk0 r hr0, ?_⟩, ?_⟩
   · rw [show (⟨1, Nat.one_lt_two⟩) = Fin.last 1 from Fin.ext rfl, Fin.snoc_last]
     rfl
   · rw [show (1 : Fin 2) = Fin.last 1 from Fin.ext rfl, Fin.snoc_last]
     rfl
-  · have hpt : (Fin.snoc xs (mkRV (some (some (Units.mk0 r hr0)))) : Fin 2 → M K) ⟨1, Nat.one_lt_two⟩ =
-        mkRV (some (some (Units.mk0 r hr0))) := by
+  · have hpt : (Fin.snoc xs (mkRV (some ((Units.mk0 r hr0)))) : Fin 2 → M K) ⟨1, Nat.one_lt_two⟩ =
+        mkRV (some ((Units.mk0 r hr0))) := by
       rw [show (⟨1, Nat.one_lt_two⟩) = Fin.last 1 from Fin.ext rfl, Fin.snoc_last]
-    have hpow := realize_tRVPow (Fin.snoc xs (mkRV (some (some (Units.mk0 r hr0)))) :
-      Fin 2 → M K) 1 Nat.one_lt_two (some (some (Units.mk0 r hr0))) hpt n
+    have hpow := realize_tRVPow (Fin.snoc xs (mkRV (some ((Units.mk0 r hr0)))) :
+      Fin 2 → M K) 1 Nat.one_lt_two (some ((Units.mk0 r hr0))) hpt n
     rw [show (0 : Fin 2) = Fin.castSucc (0 : Fin 1) from Fin.ext rfl, Fin.snoc_castSucc, hu]
     refine hpow.trans ?_
     rw [rvpow_unit, hkey]
@@ -2169,7 +2034,7 @@ theorem model_rvEqInfty : (M K) ⊨ Axioms.rvEqInfty := by
   rw [ha]
   simp only [mkVF]
   intro h
-  have h' : rvMap a = some none := Sum.inr.inj h
+  have h' : rvMap a = none := Sum.inr.inj h
   rw [rvMap_eq_infty_iff] at h'
   rw [h']
 
@@ -2189,14 +2054,14 @@ theorem model_rvMulHom : (M K) ⊨ Axioms.rvMulHom := by
 
 theorem model_rvSurj : (M K) ⊨ Axioms.rvSurj := by
   simp only [Axioms.rvSurj]; rw [model_allSorted]; intro xs h; prep
-  intro hunit
-  obtain ⟨u, hu⟩ := hunit
-  refine ⟨mkVF (u : K), ⟨(u : K), ?_⟩, ?_⟩
-  · rw [show (⟨1, Nat.one_lt_two⟩) = Fin.last 1 from Fin.ext rfl, Fin.snoc_last]
-    rfl
-  · rw [show (1 : Fin 2) = Fin.last 1 from Fin.ext rfl, Fin.snoc_last,
-      show (0 : Fin 2) = Fin.castSucc (0 : Fin 1) from Fin.ext rfl, Fin.snoc_castSucc, hu]
-    simp only [mkVF, rvMap_of_ne u.ne_zero, fromK_coe_unit]
+  obtain ⟨t, ht⟩ := (h 0).2 rfl
+  intro hne
+  have ht0 : t ≠ none := fun hh => hne (by rw [ht, hh]; rfl)
+  refine ⟨mkVF (toK t), ⟨toK t, rfl⟩, ?_⟩
+  rw [show (1 : Fin 2) = Fin.last 1 from Fin.ext rfl, Fin.snoc_last,
+    show (0 : Fin 2) = Fin.castSucc (0 : Fin 1) from Fin.ext rfl, Fin.snoc_castSucc, ht]
+  simp only [mkVF, rvMap]
+  exact congrArg Sum.inr (fromK_toK t)
 
 theorem model_rvUltrametric : (M K) ⊨ Axioms.rvUltrametric := by
   simp only [Axioms.rvUltrametric]; rw [model_allSorted]; intro xs h; prep
@@ -2212,10 +2077,10 @@ theorem model_rvUltrametric : (M K) ⊨ Axioms.rvUltrametric := by
     · refine Or.inr ?_
       subst ha0
       rw [zero_add]
-      exact rvLeC_refl_mk (rvMap_ne_none b)
+      exact rvLeC_refl_mk (fun hh => hab (by rw [zero_add]; exact rvMap_eq_infty_iff.mp hh))
     · refine Or.inl ?_
       rw [rvMap_of_ne ha0]
-      exact Or.inr (Or.inr ⟨Units.mk0 a ha0, by rw [cUnit, fromK_of_ne ha0]⟩)
+      exact Or.inr ⟨Units.mk0 a ha0, by rw [cUnit, fromK_of_ne ha0]⟩
 
 theorem model_rvAxioms : (M K) ⊨ Axioms.rvAxioms := by
   rw [Theory.model_iff]
@@ -2293,7 +2158,7 @@ theorem model_residueCharZero {p : ℕ} (hp : p.Prime) :
   have hp0 : ((p : ℕ) : K) ≠ 0 := by
     exact_mod_cast hp.ne_zero
   rw [rvMap_of_ne hp0]
-  exact Or.inr (Or.inr ⟨Units.mk0 ((p : ℕ) : K) hp0, by rw [cUnit, fromK_of_ne hp0]⟩)
+  exact Or.inr ⟨Units.mk0 ((p : ℕ) : K) hp0, by rw [cUnit, fromK_of_ne hp0]⟩
 
 /-- **`M` is a model of `ACVF(0,0)`** (pure characteristic zero) -/
 theorem model_ACVF00 : (M K) ⊨ Axioms.ACVF00 := by

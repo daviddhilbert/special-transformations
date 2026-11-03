@@ -8,6 +8,19 @@ the same definitions — that is deliberate: they are evidence, not code to be l
 
 `make accepted` elaborates all of them.
 
+**Conversion status (one axiom set, the paper's).**  The paper's `RV` sort has ONE absorbing
+element, `rv(0) = 0`, which the paper also writes `∞`, and `rvSurj` is the paper's surjectivity
+onto `RV ∖ {rv 0}` (see the revision section of `../DECISION.md`).  The snapshots below have been
+converted to that transcription: `ACVF_general_model`, `ACVF_general_model_gamma`,
+`ACVFS_conservative`, `RepairedTheory`, `ACVFModel`, `ACVFModel_independent`, `IntendedModel`,
+`Obstruction`, `VFAlgClosed`, `ACVF_gamma_padic`, `ACVF_fragment` — each recompiled and
+axiom-checked after the conversion, with the original theorems preserved (the discrepancies are
+carrier-typed: `RV0` → `RV`, `cKZero = cInfty`, `some (some q)` → `some q`, and the lemmas that
+only existed to separate `0` from `∞`).  **`ACVF_residue_ops` remains to be converted**; its
+"encoding snapshot" column below therefore still names the earlier commit, as do the columns of
+the files whose conversion is recorded here but whose evidence runs against the current axioms.
+`make accepted` covers all of them in either case.
+
 | File | What it proves | Encoding snapshot |
 | --- | --- | --- |
 | `ACVFModel.lean` | **`ACVF` has a model.** `model_ACVF : (M K) ⊨ Axioms.ACVF` and `exists_model_ACVF : ∃ M, M ⊨ ACVF` at `K = ℂ`, on `M K = K ⊕ RV₀ K` with the trivial valuation; also `model_ACVF00`. So the theory is consistent and Theorems 2.3 and 2.8 are **not vacuous**. | `d608de6` — the current axioms, byte-identical apart from `def`→`abbrev LRV` and the two `sorry`ed targets |

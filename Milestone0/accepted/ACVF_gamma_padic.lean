@@ -108,10 +108,10 @@ inductive Fn : ℕ → Type where
   | vfMul : Fn 2
   /-- `1` of the group language of the `RV` sort -/
   | rvOne : Fn 0
-  /-- the constant `0` of the `RV` sort (an element of `K`) -/
+  /-- the constant `0` of the `RV` sort: the residue field's zero, which is also `rv(0)` and
+  the absorbing element of `RV`.  The paper writes this element both as `0` and as `∞`; it is
+  one element, so the language has one constant. -/
   | rvZero : Fn 0
-  /-- the constant `∞` of the `RV` sort -/
-  | rvInfty : Fn 0
   /-- `×` of the `RV` sort -/
   | rvMul : Fn 2
   /-- `+ : K² → K` of the `RV` sort -/
@@ -165,8 +165,10 @@ def tVFMul (t u : Tm n) : Tm n := Term.func Fn.vfMul ![t, u]
 def tRVOne : Tm n := Term.func Fn.rvOne fun i => i.elim0
 /-- `0` of the `RV` sort -/
 def tRVZero : Tm n := Term.func Fn.rvZero fun i => i.elim0
-/-- `∞` of the `RV` sort -/
-def tRVInfty : Tm n := Term.func Fn.rvInfty fun i => i.elim0
+/-- The paper's `∞` is `rv(0)`, i.e. the absorbing element `rvZero` of the `RV` sort: the paper's
+two symbols `0` and `∞` name one element.  Kept as a definition so that the axioms can be read
+in the paper's notation. -/
+def tRVInfty : Tm n := tRVZero
 /-- `×` of the `RV` sort -/
 def tRVMul (t u : Tm n) : Tm n := Term.func Fn.rvMul ![t, u]
 /-- `+ : K² → K` of the `RV` sort -/
@@ -208,7 +210,8 @@ def pLe (t u : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₂ R
 def pEq (t u : Tm n) : Bf n := t =' u
 /-- the paper's `RV = RV-sort ∖ {0}` -/
 def pRV (t : Tm n) : Bf n := ∼(pEq t tRVZero)
-/-- the paper's `K = RV-sort ∖ {∞}` -/
+/-- the paper's `K = RV-sort ∖ {∞}`.  Since `∞ = rv(0) = 0` this is the same predicate as
+`pRV`; it is kept as a separate name so that statements read as in the paper. -/
 def pK (t : Tm n) : Bf n := ∼(pEq t tRVInfty)
 /-- the paper's `RV₀ = RV ∪ {0}`, i.e. the whole `RV` sort -/
 def pRV0 (_t : Tm n) : Bf n := ⊤
@@ -216,9 +219,10 @@ def pRV0 (_t : Tm n) : Bf n := ⊤
 def pGtOne (t : Tm n) : Bf n := pLe tRVOne t ⊓ ∼(pLe t tRVOne)
 /-- `t ∈ K = K^× ∪ {0}`, the residue field inside the `RV` sort.
 
-Not the same as `t ≠ ∞`: when `Γ` is nontrivial the elements of `RV ∖ {0, ∞}` of value
-`≠ 1` are not in `K`, and the residue-field operations are junk there.  Definition 2.1(d)
-defines `K` as `K^× ∪ {0}`, with `K^×` the predicate, i.e. axiom (4)'s class of `1`. -/
+Not the same as `t ≠ 0`: when `Γ` is nontrivial the elements of `RV ∖ {0}` of value `≠ 1`
+are not in `K`, and the residue-field operations are junk there.  Definition 2.1(d)
+defines `K` as `K^× ∪ {0}`, with `K^×` the predicate, i.e. axiom (4)'s class of `1`.  The
+`0` here is `rv(0)`, the absorbing element of `RV`. -/
 def pInK (t : Tm n) : Bf n := pUnits t ⊔ pEq t tRVZero
 
 end LRV
@@ -347,10 +351,10 @@ def sdRVMul : LRV.Sentence := allSorted ![.rv, .rv] (pRVsort (tRVMul &0 &1))
 /-- The predicate `Kˣ` holds only of elements of the `RV` sort.
 
 Its actual content is axiom (4)'s `leClassOne`, which makes `Kˣ` the class of `1` — a
-*proper* subgroup of the multiplicative group `RV ∖ {0, ∞}` whenever `Γ` is nontrivial.
-Identifying `Kˣ` with all of `RV ∖ {0, ∞}` (as an earlier version did) puts every
-`x ∉ {0, ∞}` in the class of `1`, hence `1 ≤ x ≤ 1`, hence makes the preorder trivial and
-`Γ` trivial — contradicting the paper's standing hypothesis that `Γ(S)` is nontrivial. -/
+*proper* subgroup of the multiplicative group `RV ∖ {0}` whenever `Γ` is nontrivial.
+Identifying `Kˣ` with all of `RV ∖ {0}` puts every `x ≠ 0` in the class of `1`, hence
+`1 ≤ x ≤ 1`, hence makes the preorder trivial and `Γ` trivial — contradicting the paper's
+standing hypothesis that `Γ(S)` is nontrivial. -/
 def sdUnits : LRV.Sentence := allOne (pUnits &0 ⟹ pRVsort &0)
 /-- `K = Kˣ ∪ {0}` is closed under `+` -/
 def sdKAdd : LRV.Sentence :=
@@ -519,9 +523,12 @@ def rvEqInfty : LRV.Sentence := allSorted ![.vf] (pEq (tRv &0) tRVInfty ⟹ pEq 
 /-- `rv` is a group homomorphism on `VF^×` -/
 def rvMulHom : LRV.Sentence :=
   allSorted ![.vf, .vf] (pEq (tRv (tVFMul &0 &1)) (tRVMul (tRv &0) (tRv &1)))
-/-- `rv : VF^× → RV^×` is surjective -/
+/-- **`rv` is surjective**: every element of the `RV` sort other than `rv(0)` is `rv(x)` for
+some `x ∈ VF`.  (Definition 2.2(6): `rv : VF^× → RV^×` is surjective, augmented by
+`rv(0) = ∞ = 0`.  With `RV^× = RV ∖ {0}` this says: `RV = rv(VF) ∪ {0}`, so there are no
+`RV`-elements outside the image of `rv`.) -/
 def rvSurj : LRV.Sentence :=
-  allSorted ![.rv] (pUnits &0 ⟹ exSorted .vf (pEq (tRv &1) &0))
+  allSorted ![.rv] (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))
 /-- the ultrametric inequality for `vv = vrv ∘ rv`: `vv(x+y) ≥ min(vv x, vv y)` -/
 def rvUltrametric : LRV.Sentence :=
   allSorted ![.vf, .vf] (pLe (tRv &0) (tRv (tVFAdd &0 &1)) ⊔ pLe (tRv &1) (tRv (tVFAdd &0 &1)))
@@ -950,6 +957,23 @@ theorem le0_infty (t : RV0 v) : le0 v t (some none) := by
   | none => trivial
   | some none => exact le_infty v none
   | some (some q) => exact le_infty v (some q)
+
+/-! ### The two-layer `RV v` form of the same lemmas
+
+With `0 = ∞` the carrier is `RV v = Option (RVUnit v)`: `none` is the single absorbing
+element, the top of the preorder and the value of `rv 0`.  The `RV0`-level lemmas above are
+still true statements about the (no longer used) three-layer alias; the intended structure
+`C v` below is built on `RV v` and uses the lemmas below. -/
+theorem rvLe_refl (t : RV v) : rvLe v t t := le_rfl
+
+theorem rvLe_total (t s : RV v) : rvLe v t s ∨ rvLe v s t := le_total (vrv v s) (vrv v t)
+
+theorem rvLe_trans {t s r : RV v} (h1 : rvLe v t s) (h2 : rvLe v s r) : rvLe v t r :=
+  le_trans h2 h1
+
+theorem rvLe_infty (t : RV v) : rvLe v t none := by
+  rw [rvLe]; simp
+
 end Extra
 end RVM
 end SpecialTransformations
@@ -963,22 +987,24 @@ open SpecialTransformations.RVM
 variable {K Γ₀ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ₀] (v : Valuation K Γ₀)
 
 /-- The carrier of the intended `L_RV`-structure of the valued field `(K, v)`:
-`M = VF ⊕ RV₀` with `VF = K` and `RV₀ = Option (Option (Kˣ ⧸ (1+𝔪)))`. -/
-abbrev C : Type _ := K ⊕ RVM.RV0 v
+`M = VF ⊕ RV` with `VF = K` and `RV = Option (Kˣ ⧸ (1+𝔪))`, i.e. the paper's `RV` sort
+whose single absorbing element `0 = ∞ = rv(0)` is `none`. -/
+abbrev C : Type _ := K ⊕ RVM.RV v
 
 /-- the `VF`-tag -/
 def mkVF (x : K) : C v := Sum.inl x
 /-- the `RV`-tag -/
-def mkRV (t : RVM.RV0 v) : C v := Sum.inr t
+def mkRV (t : RVM.RV v) : C v := Sum.inr t
 
-/-- the paper's `0` (the residue field's zero) -/
+/-- the paper's `0`, the residue field's zero — which is `∞ = rv 0` and the absorbing
+element of the `RV` sort: one element, `none` of `RV v` -/
 def cKZero : C v := Sum.inr none
-/-- the paper's `∞ = rv 0` -/
-def cInfty : C v := Sum.inr (some none)
+/-- the paper's `∞ = rv 0`, the *same* element as `cKZero` -/
+def cInfty : C v := Sum.inr none
 /-- an element of `RV^×`, i.e. the class of a unit -/
-def cUnit (q : RVM.RVUnit v) : C v := Sum.inr (some (some q))
+def cUnit (q : RVM.RVUnit v) : C v := Sum.inr (some q)
 /-- the paper's `1` in the `RV` sort -/
-noncomputable def cRVOne : C v := Sum.inr (some (RVM.rvOne v))
+noncomputable def cRVOne : C v := Sum.inr (RVM.rvOne v)
 
 /-- The interpretation of the twelve function symbols.  The junk value for the partial
 symbols is `∞` (`Milestone0/Partiality.lean`) off the intended sort; `kAdd`, `kNeg` (the
@@ -1000,22 +1026,21 @@ noncomputable def fMap : {n : ℕ} → Fn n → (Fin n → C v) → C v
       | _, _ => cInfty v
   | _, .rvOne, _ => cRVOne v
   | _, .rvZero, _ => cKZero v
-  | _, .rvInfty, _ => cInfty v
   | _, .rvMul, xs => match xs 0, xs 1 with
-      | Sum.inr t, Sum.inr s => mkRV v (RVM.rv0Mul v t s)
+      | Sum.inr t, Sum.inr s => mkRV v (RVM.rvMul t s)
       | _, _ => cInfty v
   | _, .kAdd, _ => cKZero v
   | _, .kNeg, _ => cKZero v
   | _, .rvMap, xs => match xs 0 with
-      | Sum.inl a => mkRV v (some (RVM.rv v a))
+      | Sum.inl a => mkRV v (RVM.rv v a)
       | _ => cInfty v
 
 /-- The interpretation of the four relation symbols. -/
 noncomputable def rMap : {n : ℕ} → Rel n → (Fin n → C v) → Prop
   | _, .memVF, xs => ∃ x : K, xs 0 = mkVF v x
-  | _, .memRV, xs => ∃ t : RVM.RV0 v, xs 0 = mkRV v t
+  | _, .memRV, xs => ∃ t : RVM.RV v, xs 0 = mkRV v t
   | _, .memUnits, xs => ∃ q : RVM.RVUnit v, xs 0 = cUnit v q ∧ RVM.vrv v (some q) = 1
-  | _, .rvLe, xs => ∃ t s : RVM.RV0 v, xs 0 = mkRV v t ∧ xs 1 = mkRV v s ∧ RVM.le0 v t s
+  | _, .rvLe, xs => ∃ t s : RVM.RV v, xs 0 = mkRV v t ∧ xs 1 = mkRV v s ∧ RVM.rvLe v t s
 
 noncomputable instance instStructure : LRV.Structure (C v) where
   funMap := fMap v
@@ -1056,7 +1081,7 @@ theorem realize_sortPred_vf {n : ℕ} (i : Fin n) (xs : Fin n → C v) :
 /-- the `RV` sort predicate at a variable, in terms of the carrier -/
 theorem realize_sortPred_rv {n : ℕ} (i : Fin n) (xs : Fin n → C v) :
     (LRV.sortPred .rv (LRV.tv i.val i.isLt)).Realize (dflt v) xs ↔
-      ∃ t : RVM.RV0 v, xs i = mkRV v t := by
+      ∃ t : RVM.RV v, xs i = mkRV v t := by
   simp only [LRV.sortPred, LRV.pRVsort, LRV.tv, BoundedFormula.realize_rel₁, RelMap_def, rMap,
     Matrix.cons_val_fin_one, Term.realize_var, Sum.elim_inr, Fin.eta]
 
@@ -1075,7 +1100,7 @@ theorem realize_foldr_inf {ι : Type*} {n : ℕ} (l : List ι)
 theorem realize_sortedHyps {k : ℕ} (ss : Fin k → SortTag) (xs : Fin k → C v) :
     (LRV.sortedHyps ss).Realize (dflt v) xs ↔
       ∀ i : Fin k, ((ss i = .vf → ∃ x : K, xs i = mkVF v x) ∧
-        (ss i = .rv → ∃ t : RVM.RV0 v, xs i = mkRV v t)) := by
+        (ss i = .rv → ∃ t : RVM.RV v, xs i = mkRV v t)) := by
   rw [LRV.sortedHyps, realize_foldr_inf]
   constructor
   · intro h i
@@ -1099,7 +1124,7 @@ theorem realize_sortedHyps {k : ℕ} (ss : Fin k → SortTag) (xs : Fin k → C 
 theorem model_allSorted {k : ℕ} (ss : Fin k → SortTag) (φ : LRV.BoundedFormula Empty k) :
     ((C v) ⊨ LRV.allSorted ss φ) ↔
       ∀ xs : Fin k → C v, (∀ i : Fin k, ((ss i = .vf → ∃ x : K, xs i = mkVF v x) ∧
-        (ss i = .rv → ∃ t : RVM.RV0 v, xs i = mkRV v t))) →
+        (ss i = .rv → ∃ t : RVM.RV v, xs i = mkRV v t))) →
         φ.Realize (dflt v) xs := by
   rw [LRV.allSorted, model_alls v]
   refine forall_congr' (fun xs => ?_)
@@ -1175,7 +1200,7 @@ theorem model_sdRv : (C v) ⊨ Axioms.sdRv := by
   simp only [Axioms.sdRv]; rw [model_allSorted v]; intro xs h; prep
   obtain ⟨a, ha⟩ := (h 0).1 rfl
   rw [ha]
-  exact ⟨some (RVM.rv v a), rfl⟩
+  exact ⟨RVM.rv v a, rfl⟩
 
 theorem model_sdRVZero : (C v) ⊨ Axioms.sdRVZero := by
   simp only [Axioms.sdRVZero]; prep
@@ -1183,18 +1208,19 @@ theorem model_sdRVZero : (C v) ⊨ Axioms.sdRVZero := by
 
 theorem model_sdRVOne : (C v) ⊨ Axioms.sdRVOne := by
   simp only [Axioms.sdRVOne]; prep
-  exact ⟨some (RVM.rvOne v), rfl⟩
+  exact ⟨RVM.rvOne v, rfl⟩
 
+/-- `∞ = rv(0) = 0`: the same sentence as `sdRVZero` -/
 theorem model_sdRVInfty : (C v) ⊨ Axioms.sdRVInfty := by
   simp only [Axioms.sdRVInfty]; prep
-  exact ⟨some none, rfl⟩
+  exact ⟨none, rfl⟩
 
 theorem model_sdRVMul : (C v) ⊨ Axioms.sdRVMul := by
   simp only [Axioms.sdRVMul]; rw [model_allSorted v]; intro xs h; prep
   obtain ⟨s, hs⟩ := (h 0).2 rfl
   obtain ⟨t, ht⟩ := (h 1).2 rfl
   rw [hs, ht]
-  exact ⟨RVM.rv0Mul v s t, rfl⟩
+  exact ⟨RVM.rvMul s t, rfl⟩
 
 theorem model_sdCover : (C v) ⊨ Axioms.sdCover := by
   simp only [Axioms.sdCover, LRV.allOne]
@@ -1282,9 +1308,7 @@ theorem model_rvEqInfty : (C v) ⊨ Axioms.rvEqInfty := by
   rw [ha]
   intro hh
   have h1 : RVM.rv v a = none := by
-    have h2 : some (RVM.rv v a) = (some (none : Option (RVM.RVUnit v))) := by
-      simpa [mkVF, fMap] using hh
-    exact Option.some.inj h2
+    simpa [mkVF, fMap, cInfty] using hh
   rw [RVM.rv_eq_none_iff] at h1
   rw [h1]
   rfl
@@ -1294,22 +1318,31 @@ theorem model_rvMulHom : (C v) ⊨ Axioms.rvMulHom := by
   obtain ⟨a, ha⟩ := (h 0).1 rfl
   obtain ⟨b, hb⟩ := (h 1).1 rfl
   rw [ha, hb]
-  show Sum.inr (some (RVM.rv v (a * b))) = Sum.inr (RVM.rv0Mul v (some (RVM.rv v a)) (some (RVM.rv v b)))
-  rw [RVM.rv0Mul_some_rv]
+  show Sum.inr (RVM.rv v (a * b)) = Sum.inr (RVM.rvMul (RVM.rv v a) (RVM.rv v b))
+  rw [RVM.rv_mul]
 
 theorem model_rvSurj : (C v) ⊨ Axioms.rvSurj := by
   simp only [Axioms.rvSurj]; rw [model_allSorted v]; intro xs h; prep
-  rintro ⟨q, hq, -⟩
+  obtain ⟨t, ht⟩ := (h 0).2 rfl
+  rw [ht]
+  intro hne
+  have ht0 : t ≠ none := by
+    rintro rfl
+    exact hne rfl
+  obtain ⟨q, rfl⟩ : ∃ q : RVM.RVUnit v, t = some q := by
+    rcases t with _ | q
+    · exact absurd rfl ht0
+    · exact ⟨q, rfl⟩
   obtain ⟨x, -, hxq⟩ := RVM.rv_surjective (v := v) (t := some q) (by simp)
   refine ⟨mkVF v x, ⟨x, rfl⟩, ?_⟩
-  show Sum.inr (some (RVM.rv v x)) = xs 0
-  rw [hxq, hq]
+  show Sum.inr (RVM.rv v x) = xs 0
+  rw [hxq, ht]
   rfl
 
 theorem le0_rv_add (a b : K) :
-    RVM.le0 v (some (RVM.rv v a)) (some (RVM.rv v (a + b))) ∨
-      RVM.le0 v (some (RVM.rv v b)) (some (RVM.rv v (a + b))) := by
-  simp only [show ∀ x y : K, RVM.le0 v (some (RVM.rv v x)) (some (RVM.rv v y)) =
+    RVM.rvLe v (RVM.rv v a) (RVM.rv v (a + b)) ∨
+      RVM.rvLe v (RVM.rv v b) (RVM.rv v (a + b)) := by
+  simp only [show ∀ x y : K, RVM.rvLe v (RVM.rv v x) (RVM.rv v y) =
       (RVM.vrv v (RVM.rv v y) ≤ RVM.vrv v (RVM.rv v x)) from fun x y => rfl, RVM.vrv_rv]
   exact Valuation.map_add' v a b
 
@@ -1319,20 +1352,18 @@ theorem model_rvUltrametric : (C v) ⊨ Axioms.rvUltrametric := by
   obtain ⟨b, hb⟩ := (h 1).1 rfl
   rw [ha, hb]
   rcases le0_rv_add v a b with h | h
-  · exact Or.inl ⟨some (RVM.rv v a), some (RVM.rv v (a + b)), rfl, rfl, h⟩
-  · exact Or.inr ⟨some (RVM.rv v b), some (RVM.rv v (a + b)), rfl, rfl, h⟩
+  · exact Or.inl ⟨RVM.rv v a, RVM.rv v (a + b), rfl, rfl, h⟩
+  · exact Or.inr ⟨RVM.rv v b, RVM.rv v (a + b), rfl, rfl, h⟩
 
 
 /-! ### the multiplicative monoid of the `RV` sort (Definition 2.2 item 2), partial -/
 
-theorem rv0Mul_comm (t s : RVM.RV0 v) : RVM.rv0Mul v t s = RVM.rv0Mul v s t := by
-  rcases t with _ | (_ | a) <;> rcases s with _ | (_ | b) <;> simp only [RVM.rv0Mul] <;>
-    (first | rfl | rw [mul_comm a b])
+theorem rv0Mul_comm (t s : RVM.RV v) : RVM.rvMul t s = RVM.rvMul s t :=
+  RVM.rvMul_comm t s
 
-theorem rv0Mul_assoc (t s r : RVM.RV0 v) :
-    RVM.rv0Mul v (RVM.rv0Mul v t s) r = RVM.rv0Mul v t (RVM.rv0Mul v s r) := by
-  rcases t with _ | (_ | a) <;> rcases s with _ | (_ | b) <;> rcases r with _ | (_ | c) <;>
-    simp only [RVM.rv0Mul] <;> (first | rfl | rw [mul_assoc a b c])
+theorem rv0Mul_assoc (t s r : RVM.RV v) :
+    RVM.rvMul (RVM.rvMul t s) r = RVM.rvMul t (RVM.rvMul s r) :=
+  RVM.rvMul_assoc t s r
 
 theorem model_rvOneMem : (C v) ⊨ Axioms.rvOneMem := by
   simp only [Axioms.rvOneMem]; prep
@@ -1345,7 +1376,7 @@ theorem model_rvMulMem : (C v) ⊨ Axioms.rvMulMem := by
   rintro ⟨q1, hq1, hv1⟩ ⟨q2, hq2, hv2⟩
   rw [hq1, hq2]
   refine ⟨q1 * q2, ?_, ?_⟩
-  · simp only [cUnit, RVM.rv0Mul_some_some]
+  · simp only [cUnit, RVM.rvMul_some_some]
   · rw [← RVM.rvMul_some_some, RVM.vrv_mul, hv1, hv2, mul_one]
 
 theorem model_rvMulComm : (C v) ⊨ Axioms.rvMulComm := by
@@ -1367,7 +1398,7 @@ theorem model_rvMulOne : (C v) ⊨ Axioms.rvMulOne := by
   simp only [Axioms.rvMulOne]; rw [model_allSorted v]; intro xs h; prep
   rintro ⟨q, hq, -⟩
   rw [hq]
-  simp only [cUnit, RVM.rvOne_eq, RVM.rv0Mul_some_some, mul_one, mkRV, Sum.inr.injEq,
+  simp only [cUnit, RVM.rvOne_eq, RVM.rvMul_some_some, mul_one, mkRV, Sum.inr.injEq,
     Option.some.injEq]
   exact one_mul q
 
@@ -1377,8 +1408,8 @@ theorem model_rvMulZeroK : (C v) ⊨ Axioms.rvMulZeroK := by
   intro hpK
   rw [ht] at hpK ⊢
   rcases hpK with ⟨q, hq, -⟩ | hzero
-  · rw [hq]; simp [cUnit, cKZero, RVM.rv0Mul]
-  · rw [hzero]; simp [cKZero, RVM.rv0Mul]
+  · rw [hq]; simp [cUnit, cKZero, RVM.rvMul]
+  · rw [hzero]; simp [cKZero, RVM.rvMul]
 
 /-- **`sdUnits` holds at the intended structure**: the predicate `K^×` is borne by
 `RV`-sort elements (its actual content is `leClassOne`, i.e. `K^× = ker vrv`). -/
@@ -1388,13 +1419,13 @@ theorem models_sdUnits : (C v) ⊨ Axioms.sdUnits := by
   intro xs
   prep
   rintro ⟨q, hq, -⟩
-  exact ⟨some (some q), hq⟩
+  exact ⟨some q, hq⟩
 
 /-! ### the preorder on `RV` (Definition 2.2 item 4) -/
 
-theorem le0_mkRV_iff {t s : RVM.RV0 v} :
-    (∃ a b : RVM.RV0 v, mkRV v t = mkRV v a ∧ mkRV v s = mkRV v b ∧ RVM.le0 v a b) ↔
-      RVM.le0 v t s := by
+theorem le0_mkRV_iff {t s : RVM.RV v} :
+    (∃ a b : RVM.RV v, mkRV v t = mkRV v a ∧ mkRV v s = mkRV v b ∧ RVM.rvLe v a b) ↔
+      RVM.rvLe v t s := by
   constructor
   · rintro ⟨a, b, h1, h2, h3⟩
     simp only [mkRV, Sum.inr.injEq] at h1 h2
@@ -1407,7 +1438,7 @@ theorem model_leRefl : (C v) ⊨ Axioms.leRefl := by
   intro _
   obtain ⟨t, ht⟩ := (h 0).2 rfl
   rw [ht]
-  exact ⟨t, t, rfl, rfl, RVM.le0_refl v t⟩
+  exact ⟨t, t, rfl, rfl, RVM.rvLe_refl v t⟩
 
 theorem model_leTotal : (C v) ⊨ Axioms.leTotal := by
   simp only [Axioms.leTotal]; rw [model_allSorted v]; intro xs h; prep
@@ -1415,7 +1446,7 @@ theorem model_leTotal : (C v) ⊨ Axioms.leTotal := by
   obtain ⟨t, ht⟩ := (h 0).2 rfl
   obtain ⟨s, hs⟩ := (h 1).2 rfl
   rw [ht, hs]
-  rcases RVM.le0_total v t s with h' | h'
+  rcases RVM.rvLe_total v t s with h' | h'
   · exact Or.inl ⟨t, s, rfl, rfl, h'⟩
   · exact Or.inr ⟨s, t, rfl, rfl, h'⟩
 
@@ -1424,7 +1455,7 @@ theorem model_leTop : (C v) ⊨ Axioms.leTop := by
   intro _
   obtain ⟨t, ht⟩ := (h 0).2 rfl
   rw [ht]
-  exact ⟨t, some none, rfl, rfl, RVM.le0_infty v t⟩
+  exact ⟨t, none, rfl, rfl, RVM.rvLe_infty v t⟩
 
 theorem model_leInftyEq : (C v) ⊨ Axioms.leInftyEq := by
   simp only [Axioms.leInftyEq]; rw [model_allSorted v]; intro xs h; prep
@@ -1435,8 +1466,7 @@ theorem model_leInftyEq : (C v) ⊨ Axioms.leInftyEq := by
   simp only [mkRV, Sum.inr.injEq] at ha hb
   subst ha
   rw [hb]
-  rcases b with _ | _ | q
-  · exact absurd hab (by simp [RVM.le0])
+  rcases b with _ | q
   · rfl
   · exfalso
     have hne : RVM.vrv v (some q) ≠ 0 := by simp [RVM.vrv_some]
@@ -1469,12 +1499,12 @@ theorem model_sdKMul : (C v) ⊨ Axioms.sdKMul := by
       · rfl
       · rw [← RVM.rvMul_some_some, RVM.vrv_mul, hq, hq', mul_one]
     · refine Or.inr ?_
-      simp only [mkRV, cKZero, RVM.rv0Mul]
+      simp only [mkRV, cKZero, RVM.rvMul]
   · rcases h2 with ⟨q', rfl, hq'⟩ | rfl
     · refine Or.inr ?_
-      simp only [mkRV, cKZero, RVM.rv0Mul]
+      simp only [mkRV, cKZero, RVM.rvMul]
     · refine Or.inr ?_
-      simp only [mkRV, cKZero, RVM.rv0Mul]
+      simp only [mkRV, cKZero, RVM.rvMul]
 
 /-! ### the assembly: which axioms of the encoded `ACVF` hold at the intended structure -/
 
@@ -1577,8 +1607,8 @@ def iUnits (x : M) : Prop := FirstOrder.Language.Structure.RelMap (L := LRV) Rel
 def iLe (x y : M) : Prop := FirstOrder.Language.Structure.RelMap (L := LRV) Rel.rvLe ![x, y]
 /-- the interpretation of `0` of the `RV` sort -/
 def iRVZero : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvZero fun i => i.elim0
-/-- the interpretation of `∞` -/
-def iRVInfty : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvInfty fun i => i.elim0
+/-- The interpretation of the paper's `∞`, which is the interpretation of `0` of the `RV` sort -/
+def iRVInfty : M := iRVZero (M := M)
 /-- the interpretation of `1` of the `RV` sort -/
 def iRVOne : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvOne fun i => i.elim0
 
@@ -1652,19 +1682,19 @@ theorem realize_tRVPow_cUnit (xs : Fin 1 → C v) (c : RVM.RVUnit v) (k : ℕ) :
       · exact hx
     rw [hmat]
     simp only [fMap, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, cUnit,
-      mkRV, RVM.rv0Mul_some_some, pow_succ]
+      mkRV, RVM.rvMul_some_some, pow_succ]
 /-- the last `rvGroup` sentence: every element of `Kˣ` is invertible in `Kˣ` -/
 theorem model_rvMulInv : (C v) ⊨ Axioms.rvMulInv := by
   simp only [Axioms.rvMulInv]; rw [model_allSorted v]; intro xs h; prep
   rintro ⟨q, hq, hq1⟩
-  refine ⟨Sum.inr (some (some q⁻¹)), ⟨some (some q⁻¹), snoc_last_fin2 xs _⟩,
+  refine ⟨Sum.inr (some q⁻¹), ⟨some q⁻¹, snoc_last_fin2 xs _⟩,
     ⟨q⁻¹, snoc_last_fin2 xs _, ?_⟩, ?_⟩
   · have h : RVM.vrv v (some q) * RVM.vrv v (some q⁻¹) = 1 := by
       rw [← RVM.vrv_mul, RVM.rvMul_some_some (v := v), mul_inv_cancel, vrv_cUnit_one v]
     rw [hq1, one_mul] at h
     exact h
   · rw [snoc_last_fin2, snoc_zero_fin2, hq]
-    simp only [cUnit, RVM.rv0Mul_some_some, mul_comm q⁻¹ q, mul_inv_cancel, RVM.rvOne_eq]
+    simp only [cUnit, RVM.rvMul_some_some, mul_comm q⁻¹ q, mul_inv_cancel, RVM.rvOne_eq]
 
 /-- divisibility of `Kˣ`, which needs `K` algebraically closed -/
 theorem model_rvDivisible [IsAlgClosed K] (k : ℕ) (hk : 1 ≤ k) :
@@ -1673,12 +1703,12 @@ theorem model_rvDivisible [IsAlgClosed K] (k : ℕ) (hk : 1 ≤ k) :
   rintro ⟨q, hq, hq1⟩
   have hk0 : k ≠ 0 := by omega
   obtain ⟨c, hc⟩ := RVM.rvUnit_divisible (v := v) k hk0 q
-  refine ⟨Sum.inr (some (some c)), ⟨some (some c), snoc_last_fin2 xs _⟩,
+  refine ⟨Sum.inr (some c), ⟨some c, snoc_last_fin2 xs _⟩,
     ⟨c, snoc_last_fin2 xs _, ?_⟩, ?_⟩
   · have h : RVM.vrv v (some c) ^ k = 1 := by
       rw [← vrv_cUnit_pow v c k, hc, hq1]
     exact eq_one_of_pow_eq_one (Γ₀ := Γ₀) hk0 h
-  · rw [show (Sum.inr (some (some c)) : C v) = cUnit v c from rfl, realize_tRVPow_cUnit,
+  · rw [show (Sum.inr (some c) : C v) = cUnit v c from rfl, realize_tRVPow_cUnit,
       snoc_zero_fin2, hc, hq]
 
 end SpecialTransformations.Milestone0.Ob.RVGroup
@@ -1692,16 +1722,16 @@ end SpecialTransformations.Milestone0.Ob.RVGroup
 These are m7's proofs (finding f2, `.ultramath/smw06c8tw/m7/Body.lean`), restated here so
 that this file is self-contained. -/
 
-theorem mkRV_inj {t s : RVM.RV0 v} (h : mkRV v t = Sum.inr s) : t = s := by
+theorem mkRV_inj {t s : RVM.RV v} (h : mkRV v t = Sum.inr s) : t = s := by
   simpa [mkRV] using h
 
-theorem exists_mkRV_of_le0 {t s : RVM.RV0 v} (h : RVM.le0 v t s) :
-    ∃ a b : RVM.RV0 v, mkRV v t = mkRV v a ∧ mkRV v s = mkRV v b ∧ RVM.le0 v a b :=
+theorem exists_mkRV_of_le0 {t s : RVM.RV v} (h : RVM.rvLe v t s) :
+    ∃ a b : RVM.RV v, mkRV v t = mkRV v a ∧ mkRV v s = mkRV v b ∧ RVM.rvLe v a b :=
   ⟨t, s, rfl, rfl, h⟩
 
-theorem le0_of_exists_mkRV {t s : RVM.RV0 v}
-    (h : ∃ a b : RVM.RV0 v, mkRV v t = mkRV v a ∧ mkRV v s = mkRV v b ∧ RVM.le0 v a b) :
-    RVM.le0 v t s := by
+theorem le0_of_exists_mkRV {t s : RVM.RV v}
+    (h : ∃ a b : RVM.RV v, mkRV v t = mkRV v a ∧ mkRV v s = mkRV v b ∧ RVM.rvLe v a b) :
+    RVM.rvLe v t s := by
   obtain ⟨a, b, h1, h2, h3⟩ := h
   simp only [mkRV, Sum.inr.injEq] at h1 h2
   rw [← h1, ← h2] at h3
@@ -1717,23 +1747,27 @@ theorem model_leTrans : (C v) ⊨ Axioms.leTrans := by
   rw [hs, hr] at h12
   rw [ht, hr]
   exact exists_mkRV_of_le0 v
-    (RVM.le0_trans v (le0_of_exists_mkRV v h01) (le0_of_exists_mkRV v h12))
+    (RVM.rvLe_trans v (le0_of_exists_mkRV v h01) (le0_of_exists_mkRV v h12))
 
-/-- multiplying on the right by an element of `K^×` preserves `≤` -/
-theorem le0_mul_unit_right (t s : RVM.RV0 v) (q : RVM.RVUnit v)
-    (hq : RVM.vrv v (some q) = 1) (h : RVM.le0 v t s) :
-    RVM.le0 v (RVM.rv0Mul v t (some (some q))) (RVM.rv0Mul v s (some (some q))) := by
-  have key : ∀ a : RVM.RV v,
-      RVM.rv0Mul v (some a) (some (some q)) = some (RVM.rvMul a (some q)) := by
-    intro a; cases a <;> rfl
-  match t, s with
-  | none, _ => exact trivial
-  | some a, none => exact absurd h (by simp [RVM.le0])
-  | some a, some b =>
-    rw [key a, key b]
-    show RVM.vrv v (RVM.rvMul b (some q)) ≤ RVM.vrv v (RVM.rvMul a (some q))
-    rw [RVM.vrv_mul v, RVM.vrv_mul v, hq, mul_one, mul_one]
-    exact h
+/-- multiplying on the right by an element of `K^×` preserves `≤`
+
+In the two-layer carrier `none` is the *top* of the preorder (the old `∞`), not the bottom,
+so the two elements compared must be `≠ none`: `pRV` in `leMulCompat` supplies exactly that. -/
+theorem le0_mul_unit_right (t s : RVM.RV v) (q : RVM.RVUnit v)
+    (ht : t ≠ none) (hs : s ≠ none)
+    (hq : RVM.vrv v (some q) = 1) (h : RVM.rvLe v t s) :
+    RVM.rvLe v (RVM.rvMul t (some q)) (RVM.rvMul s (some q)) := by
+  obtain ⟨a, rfl⟩ : ∃ a : RVM.RVUnit v, t = some a := by
+    rcases t with _ | a
+    · exact absurd rfl ht
+    · exact ⟨a, rfl⟩
+  obtain ⟨b, rfl⟩ : ∃ b : RVM.RVUnit v, s = some b := by
+    rcases s with _ | b
+    · exact absurd rfl hs
+    · exact ⟨b, rfl⟩
+  rw [RVM.rvLe] at h ⊢
+  rw [RVM.vrv_mul, RVM.vrv_mul, hq, mul_one, mul_one]
+  exact h
 
 theorem model_leClassOne : (C v) ⊨ Axioms.leClassOne := by
   simp only [Axioms.leClassOne]; rw [model_allSorted v]; intro xs h; prep
@@ -1742,38 +1776,41 @@ theorem model_leClassOne : (C v) ⊨ Axioms.leClassOne := by
   rw [ht]
   constructor
   · rintro ⟨q, hq, hq1⟩
-    have htq : t = some (some q) := mkRV_inj v hq
+    have htq : t = some q := mkRV_inj v hq
     subst htq
     have hcl := (RVM.le_class_of_one_iff v (t := some q)).mpr hq1
-    exact ⟨⟨some (RVM.rvOne v), some (some q), rfl, rfl, hcl.1⟩,
-      ⟨some (some q), some (RVM.rvOne v), rfl, rfl, hcl.2⟩⟩
+    exact ⟨⟨RVM.rvOne v, some q, rfl, rfl, hcl.1⟩,
+      ⟨some q, RVM.rvOne v, rfl, rfl, hcl.2⟩⟩
   · rintro ⟨⟨a1, b1, ha1, hb1, hl1⟩, ⟨a2, b2, ha2, hb2, hl2⟩⟩
     simp only [mkRV, Sum.inr.injEq] at ha1 hb1 ha2 hb2
     rw [← ha1, ← hb1] at hl1
     rw [← ha2, ← hb2] at hl2
     cases t with
-    | none => exact absurd hl1 (by simp [RVM.le0])
-    | some b =>
-      cases b with
-      | none =>
-        exact absurd ((RVM.le_class_of_one_iff v (t := none)).mp ⟨hl1, hl2⟩) (by simp [RVM.vrv])
-      | some q =>
-        exact ⟨q, rfl, (RVM.le_class_of_one_iff v (t := some q)).mp ⟨hl1, hl2⟩⟩
+    | none =>
+      exact absurd ((RVM.le_class_of_one_iff v (t := none)).mp ⟨hl1, hl2⟩) (by simp [RVM.vrv])
+    | some q =>
+      exact ⟨q, rfl, (RVM.le_class_of_one_iff v (t := some q)).mp ⟨hl1, hl2⟩⟩
 
 theorem model_leMulCompat : (C v) ⊨ Axioms.leMulCompat := by
   simp only [Axioms.leMulCompat]; rw [model_allSorted v]; intro xs h; prep
-  intro _ _ _ hunit hle
+  intro h0 h1 _ hunit hle
   obtain ⟨t0, ht0⟩ := (h 0).2 rfl
   obtain ⟨t1, ht1⟩ := (h 1).2 rfl
   obtain ⟨t2, ht2⟩ := (h 2).2 rfl
   obtain ⟨q, hq, hq1⟩ := hunit
   rw [ht2] at hq
-  have ht2q : t2 = some (some q) := mkRV_inj v hq
+  have ht2q : t2 = some q := mkRV_inj v hq
   subst ht2q
+  have ht0' : t0 ≠ none := by
+    intro h
+    exact h0 (by rw [ht0, h]; rfl)
+  have ht1' : t1 ≠ none := by
+    intro h
+    exact h1 (by rw [ht1, h]; rfl)
   rw [ht0, ht1] at hle
   rw [ht0, ht1, ht2]
-  exact ⟨RVM.rv0Mul v t0 (some (some q)), RVM.rv0Mul v t1 (some (some q)), rfl, rfl,
-    le0_mul_unit_right v t0 t1 q hq1 (le0_of_exists_mkRV v hle)⟩
+  exact ⟨RVM.rvMul t0 (some q), RVM.rvMul t1 (some q), rfl, rfl,
+    le0_mul_unit_right v t0 t1 q ht0' ht1' hq1 (le0_of_exists_mkRV v hle)⟩
 
 /-- **`preorderRV` holds at the intended structure** (Definition 2.2 item 4) -/
 theorem model_preorderRV : (C v) ⊨ Axioms.preorderRV := by
@@ -1801,7 +1838,7 @@ theorem model_rvMulInfty : (C v) ⊨ Axioms.rvMulInfty := by
   simp only [Axioms.rvMulInfty]; rw [model_allSorted v]; intro xs h; prep
   obtain ⟨t, ht⟩ := (h 0).2 rfl
   rw [ht]
-  exact congrArg (fun z => mkRV v z) (RVM.rv0Mul_infty v t)
+  exact congrArg (fun z => mkRV v z) (RVM.rvMul_infty t)
 
 /-- **`rvGroup` holds at the intended structure** (Definition 2.2 item 2) -/
 theorem model_rvGroup [IsAlgClosed K] : (C v) ⊨ Axioms.rvGroup := by
@@ -2178,8 +2215,8 @@ variable {K Γ₀ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ₀]
 
 /-- the reading of "`t` has value `≠ 1`" in `L_RV`: `¬ (1 ≤ t ∧ t ≤ 1)` -/
 theorem not_class_one_iff (v : Valuation K Γ₀) (x : K) (hx : v x < 1) :
-    ¬ (iLe (iRVOne (M := C v)) (mkRV v (some (RVM.rv v x))) ∧
-        iLe (mkRV v (some (RVM.rv v x))) (iRVOne (M := C v))) := by
+    ¬ (iLe (iRVOne (M := C v)) (mkRV v (RVM.rv v x)) ∧
+        iLe (mkRV v (RVM.rv v x)) (iRVOne (M := C v))) := by
   rintro ⟨-, h2⟩
   obtain ⟨a2, b2, ha2, hb2, hl2⟩ := h2
   simp only [iRVOne, funMap_def, fMap, cRVOne, mkRV, Matrix.cons_val_fin_one,
@@ -2197,13 +2234,16 @@ theorem exists_gamma_nontrivial (v : Valuation K Γ₀) (x : K) (hx0 : x ≠ 0) 
     ∃ (S : LRV.Substructure (C v)),
       ∃ t, (S : Set (C v)) t ∧ iRV t ∧ t ≠ iRVZero (M := C v) ∧ t ≠ iRVInfty (M := C v) ∧
         ¬ (iLe (iRVOne (M := C v)) t ∧ iLe t (iRVOne (M := C v))) := by
-  refine ⟨⊤, mkRV v (some (RVM.rv v x)), trivial, ⟨some (RVM.rv v x), rfl⟩, ?_, ?_,
+  refine ⟨⊤, mkRV v (RVM.rv v x), trivial, ⟨RVM.rv v x, rfl⟩, ?_, ?_,
     not_class_one_iff v x hx⟩
-  · simp [iRVZero, funMap_def, fMap, cKZero, mkRV]
   · intro h
-    simp only [iRVInfty, funMap_def, fMap, cInfty, mkRV, Sum.inr.injEq, Option.some.injEq] at h
-    rw [RVM.rv_of_ne (v := v) hx0] at h
-    exact absurd h (by simp)
+    have h1 : RVM.rv v x = none := by
+      simpa [iRVZero, funMap_def, fMap, cKZero, mkRV] using h
+    exact hx0 (RVM.rv_eq_none_iff.mp h1)
+  · intro h
+    have h1 : RVM.rv v x = none := by
+      simpa [iRVInfty, iRVZero, funMap_def, fMap, cKZero, mkRV] using h
+    exact hx0 (RVM.rv_eq_none_iff.mp h1)
 
 
 end SpecialTransformations.Milestone0.Ob.Gamma

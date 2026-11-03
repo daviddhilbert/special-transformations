@@ -14,9 +14,18 @@ This file is self-contained: its only import is `Mathlib`.  Check it with
 It consists of Parts 0-3 of `Milestone0/Encoding.lean` (verbatim, except that `def LRV`
 is written `abbrev LRV`, which is the same term `⟨Fn, Rel⟩` and only lets the elaborator
 unfold `LRV.Functions` while rewriting), followed by new material: an obstruction showing
-that the encoded `ACVF` forces the two constants `0` and `∞` of the `RV` sort to be equal,
-so that the intended model of `Milestone0/RVModel.lean` (where they are distinct) is NOT a
-model of `ACVF`; and the repaired (`pK`-guarded) invertibility axiom.  No `sorry`.
+that the encoded `ACVF` forces the two constants `0` and `∞` of the `RV` sort to be equal;
+and the repaired (`pK`-guarded) invertibility axiom.  No `sorry`.
+
+**Conversion (author's ruling: the paper's `0` and `∞` are ONE element, `rv(0) = 0`).**  The
+ruling adopts exactly what this file's Part 4 derives, so `Fn.rvInfty` is deleted,
+`iRVInfty := iRVZero`, `sdRVInfty`/`rvMulInfty`/`leTop`/`leInftyEq` are stated at `tRVZero`,
+and `rvSurj` is the paper's unguarded surjectivity `t ≠ rv(0) → ∃ x, rv x = t`.  The theorems
+below keep their statements: `ACVF_forces_zero_eq_infty` is now *definitionally* true (the
+derivation still goes through unchanged), and `intended_carrier_does_not_model_ACVF(00)`,
+whose hypotheses put `0` and `∞` on two distinct carrier elements, are now **vacuous** (their
+hypotheses contradict `iRVInfty = iRVZero`); the three-layer `Valued.RV0` they mention is kept
+as a legacy alias only.
 -/
 import Mathlib
 
@@ -112,10 +121,10 @@ inductive Fn : ℕ → Type where
   | vfMul : Fn 2
   /-- `1` of the group language of the `RV` sort -/
   | rvOne : Fn 0
-  /-- the constant `0` of the `RV` sort (an element of `K`) -/
+  /-- the constant `0` of the `RV` sort: the residue field's zero, which is also `rv(0)` and
+  the absorbing element of `RV`.  The paper writes this element both as `0` and as `∞`; it is
+  one element, so the language has one constant. -/
   | rvZero : Fn 0
-  /-- the constant `∞` of the `RV` sort -/
-  | rvInfty : Fn 0
   /-- `×` of the `RV` sort -/
   | rvMul : Fn 2
   /-- `+ : K² → K` of the `RV` sort -/
@@ -169,8 +178,10 @@ def tVFMul (t u : Tm n) : Tm n := Term.func Fn.vfMul ![t, u]
 def tRVOne : Tm n := Term.func Fn.rvOne fun i => i.elim0
 /-- `0` of the `RV` sort -/
 def tRVZero : Tm n := Term.func Fn.rvZero fun i => i.elim0
-/-- `∞` of the `RV` sort -/
-def tRVInfty : Tm n := Term.func Fn.rvInfty fun i => i.elim0
+/-- The paper's `∞` is `rv(0)`, i.e. the absorbing element `rvZero` of the `RV` sort: the
+paper's two symbols `0` and `∞` name one element.  Kept as a definition so that the axioms can
+be read in the paper's notation. -/
+def tRVInfty : Tm n := tRVZero
 /-- `×` of the `RV` sort -/
 def tRVMul (t u : Tm n) : Tm n := Term.func Fn.rvMul ![t, u]
 /-- `+ : K² → K` of the `RV` sort -/
@@ -212,7 +223,8 @@ def pLe (t u : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₂ R
 def pEq (t u : Tm n) : Bf n := t =' u
 /-- the paper's `RV = RV-sort ∖ {0}` -/
 def pRV (t : Tm n) : Bf n := ∼(pEq t tRVZero)
-/-- the paper's `K = RV-sort ∖ {∞}` -/
+/-- the paper's `K = RV-sort ∖ {∞}`.  Since `∞ = rv(0) = 0` this is the same predicate as
+`pRV`; it is kept as a separate name so that statements read as in the paper. -/
 def pK (t : Tm n) : Bf n := ∼(pEq t tRVInfty)
 /-- the paper's `RV₀ = RV ∪ {0}`, i.e. the whole `RV` sort -/
 def pRV0 (_t : Tm n) : Bf n := ⊤
@@ -292,8 +304,8 @@ def sdVFMul : LRV.Sentence := allSorted ![.vf, .vf] (pVF (tVFMul &0 &1))
 def sdRv : LRV.Sentence := allSorted ![.vf] (pRVsort (tRv &0))
 /-- `0` of the `RV` sort lies in the `RV` sort -/
 def sdRVZero : LRV.Sentence := pRVsort tRVZero
-/-- `∞` lies in the `RV` sort -/
-def sdRVInfty : LRV.Sentence := pRVsort tRVInfty
+/-- `∞`, i.e. `rv(0) = 0`, lies in the `RV` sort -/
+def sdRVInfty : LRV.Sentence := pRVsort tRVZero
 /-- `1` of the `RV` sort lies in the `RV` sort -/
 def sdRVOne : LRV.Sentence := pRVsort tRVOne
 /-- the `RV` sort is closed under `×` -/
@@ -384,8 +396,9 @@ def rvDivisible (k : ℕ) : LRV.Sentence :=
   allSorted ![.rv] (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVPow &1 k) &0))
 /-- `t × 0 = 0` for `t ∈ K` -/
 def rvMulZeroK : LRV.Sentence := allSorted ![.rv] (pK &0 ⟹ pEq (tRVMul &0 tRVZero) tRVZero)
-/-- `t × ∞ = ∞` for `t ∈ RV₀`, i.e. for every `t` of the `RV` sort -/
-def rvMulInfty : LRV.Sentence := allSorted ![.rv] (pEq (tRVMul &0 tRVInfty) tRVInfty)
+/-- `t × ∞ = ∞` for `t ∈ RV₀`, i.e. for every `t` of the `RV` sort; since `∞ = rv(0) = 0`
+this is `t × 0 = 0` -/
+def rvMulInfty : LRV.Sentence := allSorted ![.rv] (pEq (tRVMul &0 tRVZero) tRVZero)
 
 /-- Definition 2.2 item 2: `(RV^×, 1, ×)` is a divisible abelian group, with `×`
 augmented by `t × 0 = 0` and `t × ∞ = ∞`. -/
@@ -403,10 +416,10 @@ def leTrans : LRV.Sentence :=
   allSorted ![.rv, .rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pLe &0 &1 ⟹ (pLe &1 &2 ⟹ pLe &0 &2)))))
 /-- `≤` is total on `RV` -/
 def leTotal : LRV.Sentence := allSorted ![.rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pLe &0 &1 ⊔ pLe &1 &0)))
-/-- `∞` is the top element of `RV` -/
-def leTop : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ pLe &0 tRVInfty)
+/-- `∞ = rv(0) = 0` is the top element of `RV` -/
+def leTop : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ pLe &0 tRVZero)
 /-- `∞ ≤ x` forces `x = ∞`, i.e. `∞` is alone in its class -/
-def leInftyEq : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ (pLe tRVInfty &0 ⟹ pEq &0 tRVInfty))
+def leInftyEq : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ (pLe tRVZero &0 ⟹ pEq &0 tRVZero))
 /-- `Kˣ` is the equivalence class of `1` -/
 def leClassOne : LRV.Sentence :=
   allSorted ![.rv] (pRV &0 ⟹ (pUnits &0 ⇔ (pLe tRVOne &0 ⊓ pLe &0 tRVOne)))
@@ -429,9 +442,10 @@ def rvEqInfty : LRV.Sentence := allSorted ![.vf] (pEq (tRv &0) tRVInfty ⟹ pEq 
 /-- `rv` is a group homomorphism on `VF^×` -/
 def rvMulHom : LRV.Sentence :=
   allSorted ![.vf, .vf] (pEq (tRv (tVFMul &0 &1)) (tRVMul (tRv &0) (tRv &1)))
-/-- `rv : VF^× → RV^×` is surjective -/
+/-- **`rv` is surjective**: every element of the `RV` sort other than `rv(0)` is `rv(x)` for
+some `x ∈ VF`.  (With `RV^× = RV ∖ {0}` this is `RV = rv(VF) ∪ {0}`.) -/
 def rvSurj : LRV.Sentence :=
-  allSorted ![.rv] (pUnits &0 ⟹ exSorted .vf (pEq (tRv &1) &0))
+  allSorted ![.rv] (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))
 /-- the ultrametric inequality for `vv = vrv ∘ rv`: `vv(x+y) ≥ min(vv x, vv y)` -/
 def rvUltrametric : LRV.Sentence :=
   allSorted ![.vf, .vf] (pLe (tRv &0) (tRv (tVFAdd &0 &1)) ⊔ pLe (tRv &1) (tRv (tVFAdd &0 &1)))
@@ -501,7 +515,8 @@ def iKNeg (x : M) : M := Structure.funMap (L := LRV) Fn.kNeg ![x]
 def iRVMul (x y : M) : M := Structure.funMap (L := LRV) Fn.rvMul ![x, y]
 def iRv (x : M) : M := Structure.funMap (L := LRV) Fn.rvMap ![x]
 def iRVZero : M := Structure.funMap (L := LRV) Fn.rvZero fun i => i.elim0
-def iRVInfty : M := Structure.funMap (L := LRV) Fn.rvInfty fun i => i.elim0
+/-- The interpretation of the paper's `∞`, which is the interpretation of `0` of the `RV` sort -/
+def iRVInfty : M := iRVZero (M := M)
 def iRVOne : M := Structure.funMap (L := LRV) Fn.rvOne fun i => i.elim0
 
 noncomputable section
@@ -515,7 +530,7 @@ variable {n : ℕ}
 
 theorem realize_tRVInfty (xs : Fin n → M) :
     Term.realize (Sum.elim v0 xs) (LRV.tRVInfty : LRV.Tm n) = iRVInfty := by
-  simp only [LRV.tRVInfty, Term.realize_func, iRVInfty]
+  simp only [LRV.tRVInfty, LRV.tRVZero, Term.realize_func, iRVZero]
   congr 1
   funext i
   exact Fin.elim0 i
@@ -703,7 +718,7 @@ variable {M : Type*} [LRV.Structure M]
 theorem models_sdRVInfty (hM : M ⊨ Axioms.ACVF) : iRV (M := M) iRVInfty := by
   have h : M ⊨ Axioms.sdRVInfty := hM.realize_of_mem (Axioms.sdRVInfty) (ACVF_of_sortClosure sdRVInfty_mem)
   simpa only [FirstOrder.Language.Sentence.Realize, FirstOrder.Language.Formula.Realize,
-    Axioms.sdRVInfty, realize_pRVsort, realize_tRVInfty] using h
+    Axioms.sdRVInfty, realize_pRVsort, realize_tRVZero, iRVInfty] using h
 
 theorem models_sdRVOne (hM : M ⊨ Axioms.ACVF) : iRV (M := M) iRVOne := by
   have h : M ⊨ Axioms.sdRVOne := hM.realize_of_mem (Axioms.sdRVOne) (ACVF_of_sortClosure sdRVOne_mem)
@@ -729,8 +744,8 @@ theorem models_rvMulInfty (hM : M ⊨ Axioms.ACVF) (y : M) (hy : iRV y) :
   have h : M ⊨ Axioms.rvMulInfty := hM.realize_of_mem (Axioms.rvMulInfty) (ACVF_of_rvGroup rvMulInfty_mem)
   have h2 := models_rv1 h y hy
   simpa only [FirstOrder.Language.Sentence.Realize, FirstOrder.Language.Formula.Realize,
-    Axioms.rvMulInfty, realize_pEq, realize_tRVMul, realize_tRVInfty, realize_var, Term.realize_var,
-    Sum.elim_inr, Function.comp_apply] using h2
+    Axioms.rvMulInfty, realize_pEq, realize_tRVMul, realize_tRVZero, iRVInfty, realize_var,
+    Term.realize_var, Sum.elim_inr, Function.comp_apply] using h2
 
 theorem models_rvMulComm (hM : M ⊨ Axioms.ACVF) (x y : M) (hx : iRV x) (hy : iRV y) :
     iRVMul x y = iRVMul y x := by
@@ -841,10 +856,12 @@ variable {K Γ₀ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ₀]
 `some none` the point `∞` at the top of the preorder -/
 abbrev Carrier : Type _ := K ⊕ Valued.RV0 v
 
-/-- **The intended structure is not a model of `ACVF`.**  Any `L_RV`-structure on the
-intended carrier `K ⊕ RV₀ v` that puts the constant `0` of the `RV`-sort on `Sum.inr none`
-and the constant `∞` on `Sum.inr (some none)` fails `ACVF`: the axioms force the two
-constants to coincide. -/
+/-- **VACUOUS under the author's convention \(0 = ∞ = rv 0\).**  Any `L_RV`-structure on the
+old three-layer carrier `K ⊕ RV₀ v` that puts the constant `0` of the `RV`-sort on
+`Sum.inr none` and the constant `∞` on `Sum.inr (some none)` fails `ACVF` — but in the
+converted encoding `iRVInfty` *is* `iRVZero`, so the two hypotheses of this theorem are
+contradictory and the statement holds trivially.  Kept (with its statement unchanged) as the
+record of the pre-ruling situation. -/
 theorem intended_carrier_does_not_model_ACVF (inst : LRV.Structure (K ⊕ Valued.RV0 v))
     (hz : @iRVZero (K ⊕ Valued.RV0 v) inst = Sum.inr (none : Option (Valued.RV v)))
     (hi : @iRVInfty (K ⊕ Valued.RV0 v) inst = Sum.inr (some (none : Valued.RV v))) :
@@ -854,7 +871,8 @@ theorem intended_carrier_does_not_model_ACVF (inst : LRV.Structure (K ⊕ Valued
   rw [hz, hi] at h
   exact absurd h (by simp)
 
-/-- the same for `ACVF(0,0)` -/
+/-- the same for `ACVF(0,0)`; vacuous for the same reason as
+`intended_carrier_does_not_model_ACVF` -/
 theorem intended_carrier_does_not_model_ACVF00 (inst : LRV.Structure (K ⊕ Valued.RV0 v))
     (hz : @iRVZero (K ⊕ Valued.RV0 v) inst = Sum.inr (none : Option (Valued.RV v)))
     (hi : @iRVInfty (K ⊕ Valued.RV0 v) inst = Sum.inr (some (none : Valued.RV v))) :
