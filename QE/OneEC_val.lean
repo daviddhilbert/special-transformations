@@ -1076,3 +1076,57 @@ theorem atomGood_Q_zero (P : K[X]) :
   exact good_of_finite_range (finite_rootSet f P hP).1 (finite_rootSet f P hP).2
 
 end Atom
+
+/-! ### Closure of `Good` and the regions of the cluster induction -/
+
+section Master
+
+variable {K : Type} [Field K] [IsAlgClosed K] {N : Type} [Field N]
+variable {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
+variable {f : K →+* N} {w : Valuation N Γ'}
+
+/-- A single `K`-ball is a `Good` set. -/
+theorem good_of_isKBall {B : Set N} (h : IsKBall f w B) : Good f w B := by
+  refine ⟨PUnit, inferInstance, fun _ => B, fun S => decide S.Nonempty, fun _ => h, ?_⟩
+  intro x
+  show (x ∈ B) ↔ (decide {i : PUnit | x ∈ B}.Nonempty = true)
+  rw [decide_eq_true_iff]
+  exact ⟨fun hx => ⟨PUnit.unit, hx⟩, fun ⟨_, hx⟩ => hx⟩
+
+theorem good_inter {D₁ D₂ : Set N} (h₁ : Good f w D₁) (h₂ : Good f w D₂) :
+    Good f w (D₁ ∩ D₂) := by
+  have h : (D₁ᶜ ∪ D₂ᶜ)ᶜ = D₁ ∩ D₂ := by
+    ext x; simp
+  rw [← h]
+  exact good_compl (good_union (good_compl h₁) (good_compl h₂))
+
+theorem good_diff {D₁ D₂ : Set N} (h₁ : Good f w D₁) (h₂ : Good f w D₂) :
+    Good f w (D₁ \ D₂) := by
+  rw [Set.diff_eq]
+  exact good_inter h₁ (good_compl h₂)
+
+/-- **The near region of a root**: for `a ≠ b`, `{x : w (x - f a) < w (f a - f b)}` is a `K`-ball. -/
+theorem good_near {a b : K} : Good f w (openBall w (f a) (w (f a - f b))) := by
+  have h : openBall w (f a) (w (f (a - b))) = openBall w (f a) (w (f a - f b)) := by
+    rw [map_sub]
+  rw [← h]
+  exact good_of_isKBall (IsKBall.openball a (a - b))
+
+/-- **The far region**: `{x : w (x - f a) ≥ w (f a - f b)}`. -/
+theorem good_far {a b : K} :
+    Good f w ((openBall w (f a) (w (f a - f b)))ᶜ) :=
+  good_compl good_near
+
+/-- **The sphere**: `{x : w (x - f a) = w (f a - f b)}`, a Boolean combination of `K`-balls. -/
+theorem good_sphere {a b : K} :
+    Good f w (closedBall w (f a) (w (f a - f b)) \ openBall w (f a) (w (f a - f b))) := by
+  have h : closedBall w (f a) (w (f (a - b))) = closedBall w (f a) (w (f a - f b)) := by
+    rw [map_sub]
+  rw [← h]
+  exact good_diff (good_of_isKBall (IsKBall.closed a (a - b))) good_near
+
+/-- A closed `K`-ball of a value radius is `Good`. -/
+theorem good_closed {c b : K} : Good f w (closedBall w (f c) (w (f b))) :=
+  good_of_isKBall (IsKBall.closed c b)
+
+end Master
