@@ -407,6 +407,36 @@ def GuardsLast {α : Type} (s : SortTag) :
   | _, i, .all χ => GuardsLast s (Fin.castSucc i) χ
   | _, _, _ => False
 
+/-! #### The junk-truth condition on a guard (the author's ruling of this session)
+
+`WellSorted.all` used to accept an arbitrary body `χ` as long as `GuardsLast` fired somewhere in
+it.  That is too weak: `(x ∈ s ⟹ ⊥) ⟹ ψ` satisfies `GuardsLast` and is false at an element
+outside the sort `s`, while `BoundedFormula.all` quantifies over the whole carrier.  The
+condition added here is *syntactic* (`WellSorted` has no model parameter): the bound variable's
+sort predicate occurs as a top-level conjunct of the antecedent of `χ`.  At an element outside `s`
+that conjunct is false, so `χ` holds — `junkTrueAt_of_guardTrue` below. -/
+
+/-- The guard atom `xᵢ ∈ s`, for an arbitrary parameter type `α`. -/
+def guardAtom {α : Type} {n : ℕ} (s : SortTag) (i : Fin n) : LRV.BoundedFormula α n :=
+  FirstOrder.Language.Relations.boundedFormula₁
+    (match s with | .vf => Rel.memVF | .rv => Rel.memRV) (FirstOrder.Language.Term.var (Sum.inr i))
+
+/-- `a` occurs as a top-level conjunct of `η` (the antecedents of `ACVF`'s axioms are
+`sortedHyps`-shaped, i.e. right-nested `⊓`). -/
+inductive InAntecedent {α : Type} {n : ℕ} (s : SortTag) (i : Fin n) :
+    LRV.BoundedFormula α n → Prop
+  | atom : InAntecedent s i (guardAtom s i)
+  | and_left {a b : LRV.BoundedFormula α n} :
+      InAntecedent s i a → InAntecedent s i (a ⊓ b)
+  | and_right {a b : LRV.BoundedFormula α n} :
+      InAntecedent s i b → InAntecedent s i (a ⊓ b)
+
+/-- **The junk-truth condition on a guard**: `χ` is an implication whose antecedent contains the
+sort predicate of the bound variable. -/
+def GuardTrue {α : Type} {n : ℕ} (s : SortTag) (i : Fin n)
+    (χ : LRV.BoundedFormula α n) : Prop :=
+  ∃ η ψ : LRV.BoundedFormula α n, χ = (η ⟹ ψ) ∧ InAntecedent s i η
+
 /-! #### Well-sorted formulas -/
 
 /-- **`WellSorted sα sn φ`**: `φ` is a formula of the paper's two-sorted `L_RV`, with the free
@@ -436,7 +466,8 @@ inductive WellSorted {α : Type} (sα : α → SortTag) :
       WellSorted sα sn a → WellSorted sα sn b → WellSorted sα sn (.imp a b)
   /-- the guarded universal quantifier `∀ x ∈ s, ψ` -/
   | all {n : ℕ} (sn : Fin n → SortTag) {s : SortTag} {χ : LRV.BoundedFormula α (n + 1)}
-      (hχ : WellSorted sα (Fin.snoc sn s) χ) (hg : GuardsLast s (Fin.last n) χ) :
+      (hχ : WellSorted sα (Fin.snoc sn s) χ) (hg : GuardsLast s (Fin.last n) χ)
+      (hj : GuardTrue s (Fin.last n) χ) :
       WellSorted sα sn (.all χ)
 /-! #### The sort of a term, symbol by symbol
 
