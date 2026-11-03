@@ -1,7 +1,7 @@
 # Lean 4 + Mathlib project. `make` builds the library; `make check FILE=...`
 # elaborates a single file against the built library.
 
-.PHONY: all build check sorry milestone0 accepted clean
+.PHONY: all build check sorry milestone0 accepted qe clean
 
 all: build
 
@@ -28,6 +28,10 @@ milestone0:
 # The accepted model-building artifacts are standalone snapshots (`import Mathlib` only).
 accepted:
 	@for f in Milestone0/accepted/*.lean; do echo "== $$f"; lean "$$f" || exit 1; done
+
+# Quantifier-elimination artifacts are standalone snapshots as well.
+qe:
+	@for f in QE/*.lean; do echo "== $$f"; lean "$$f" || exit 1; done
 
 clean:
 	lake clean
