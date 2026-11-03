@@ -207,7 +207,10 @@ in this revision:
   element in the axioms is `rvZero`.  `rvGroupAxioms_intended` compiles, i.e. the intended
   model satisfies the corrected RV layer with `0 = ∞`.
 * sha256 of `Encoding.lean` after the revision:
-  `3c14aa7cd8e9b2ae8d9bbb20f8e241aa280f0a9f2a7ee0ec77f81fbc9a30f2d0`.
+  **`63e92fcad29d88df874a22f3f83a45b6736f70c4f89e7d2977bac16282976d12`**.  (An intermediate
+  state had `3c14aa7c…`; the difference is the docstrings only — the `K`-guard commentary,
+  `RV₀` and `rv 0 = 0` were still phrased for the old two-element reading.  No definition or
+  axiom changed, so the propagation to the snapshots is unaffected.)
 
 Still to propagate (in progress): the standalone copies of the encoding inside
 `Milestone0/accepted/*.lean` and inside the `QE/` snapshots that embed it, then `make accepted`

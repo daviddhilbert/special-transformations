@@ -44,7 +44,8 @@ namespace Milestone0
 /-! ## Part 0. The paper's `RV` sort (conventions of `SpecialTransformations/Basic.lean`) -/
 
 /- The algebraic layer of the paper, as it exists in the repository: `RV^× = Kˣ/(1+M)`,
-`RV = RV^× ∪ {∞}`, `RV₀ = RV ∪ {0}` and `rv : K → RV`. -/
+`RV = RV^× ∪ {rv 0}` and `rv : K → RV`.  The paper's `∞` is `rv 0`; the `RV` sort has one
+absorbing element, which is also the residue field's zero. -/
 namespace Valued
 
 open Valuation
@@ -55,13 +56,15 @@ variable {K Γ₀ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ₀]
 /-- `RV× = Kˣ / (1 + M)`, the multiplicative RV sort. -/
 abbrev RVUnit : Type _ := Kˣ ⧸ v.valuationSubring.principalUnitGroup
 
-/-- The RV sort with the point at infinity: `RV = RV× ∪ {∞}`.  `none` is `∞`. -/
+/-- The `RV` sort: `RV = RV^× ∪ {rv 0}`.  `none` is `rv 0`, the absorbing element — the paper's
+`∞`, which is also the residue field's zero `0`. -/
 abbrev RV : Type _ := Option (RVUnit v)
 
-/-- `RV0 = RV ∪ {0}`.  The outer `none` is the added `0`. -/
-abbrev RV0 : Type _ := Option (RV v)
+/-- The paper's `RV₀ = RV ∪ {0}`.  Since `0 = ∞ = rv 0` is already the element `none` of `RV`,
+`RV₀` is the same type; the alias is kept for the paper's notation. -/
+abbrev RV0 : Type _ := RV v
 
-/-- The quotient map `rv : K → RV`, with `rv 0 = ∞`. -/
+/-- The quotient map `rv : K → RV`, with `rv 0 = 0` (the paper's `∞`). -/
 noncomputable def rv (x : K) : RV v := by
   classical
   exact if h : x = 0 then none else some (QuotientGroup.mk (Units.mk0 x h))
@@ -257,14 +260,14 @@ def exSorted {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
 
 /-! ### Quantification over the residue field `K = K^× ∪ {0}`
 
-The `RV` sort's carrier holds the residue zero `0`, the multiplicative group `K^×`, *and* the
-point `∞`.  The paper's field `K = K^× ∪ {0}` is therefore the *definable* subset
-`RV-sort ∖ {∞}` — the constant `∞` is the marker of "not in `K`".  Axioms about the field `K`
-must be relativised to it: with the sort predicate alone they would also be asserted at `∞`,
-where `×` is absorbing (`t × ∞ = ∞`), and the field axiom "every nonzero element is
-invertible" would then force `0 = ∞`. -/
+The `RV` sort's carrier is the multiplicative group `RV^×` together with one absorbing element,
+`rv 0 = 0 = ∞`, which is also the residue field's zero.  The paper's field is
+`K = K^× ∪ {0}` — the units together with the absorbing element — and that is *not* the same as
+`RV ∖ {0}`, which is the group `RV^×`: when `Γ` is nontrivial there are elements of value
+`≠ 1` in `RV^×` at which the residue operations are junk.  Axioms about the field `K` are
+therefore relativised to `pInK t = (t ∈ K^×) ⊔ (t = 0)`, not to `t ≠ ∞ = 0`. -/
 
-/-- `⋀ i < k, x_i ≠ ∞`: the tuple lies in `K = RV-sort ∖ {∞}` -/
+/-- `⋀ i < k, x_i ∈ K`: the tuple lies in `K = K^× ∪ {0}` -/
 def kHyps {k : ℕ} : Bf k :=
   (List.finRange k).foldr (fun i acc => pInK (tv i.val i.isLt) ⊓ acc) ⊤
 
@@ -419,12 +422,12 @@ def vfField : LRV.Theory :=
 def vfAlgClosed : LRV.Theory := {s | ∃ k, 1 ≤ k ∧ s = acfScheme .vf tVFZero tVFAdd tVFMul k}
 
 /-- Definition 2.2 item 3: `(K, 0, 1, +, -, ×)` is an algebraically closed field, where
-`K = K^× ∪ {0} = RV-sort ∖ {∞}`.
+`K = K^× ∪ {0}`, the units of `RV` together with the absorbing element `0 = ∞ = rv 0`.
 
 Every quantifier is relativised to `K` (`allSortedK`, `exSortedK`), not merely to the `RV`
-sort.  This is not cosmetic: the `RV` sort's carrier also contains `∞`, where `×` is
-absorbing, so asserting the field axioms — in particular "every nonzero element is
-invertible" — at `∞` forces `0 = ∞` and destroys the theory. -/
+sort.  This is not cosmetic: `RV^×` also contains the elements of value `≠ 1`, where the
+residue operations are junk, so asserting the field axioms at every element of `RV`
+(equivalently at every `t ≠ ∞`, since `RV ∖ {0}` *is* the group) would force `Γ` trivial. -/
 def kField : LRV.Theory :=
   ofList
     [ /- associativity of `+` -/
@@ -478,11 +481,12 @@ def rvDivisible (k : ℕ) : LRV.Sentence :=
   allSorted ![.rv] (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVPow &1 k) &0))
 /-- `t × 0 = 0` for `t ∈ K` -/
 def rvMulZeroK : LRV.Sentence := allSorted ![.rv] (pInK &0 ⟹ pEq (tRVMul &0 tRVZero) tRVZero)
-/-- `t × ∞ = ∞` for `t ∈ RV₀`, i.e. for every `t` of the `RV` sort -/
+/-- `t × 0 = 0` for every `t` of the `RV` sort: the absorbing element.  (This is the paper's
+`t × ∞ = ∞`; `∞ = rv 0 = 0`.) -/
 def rvMulInfty : LRV.Sentence := allSorted ![.rv] (pEq (tRVMul &0 tRVInfty) tRVInfty)
 
 /-- Definition 2.2 item 2: `(RV^×, 1, ×)` is a divisible abelian group, with `×`
-augmented by `t × 0 = 0` and `t × ∞ = ∞`. -/
+augmented by `t × 0 = 0`, i.e. `0 = ∞ = rv 0` absorbing. -/
 def rvGroup : LRV.Theory :=
   ofList [rvOneMem, rvMulMem, rvMulAssoc, rvMulComm, rvMulOne, rvMulInv, rvMulZeroK,
       rvMulInfty] ∪
