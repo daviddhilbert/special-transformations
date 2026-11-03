@@ -10120,3 +10120,127 @@ exactly Mathlib's index type for `Definable`-sets of tuples: no translation is n
 
 
 end SpecialTransformations.Milestone0
+
+/-! ## 23. The transfer `L_val → L_RV`: the syntactic translation -/
+
+namespace SpecialTransformations.Milestone0.Transfer
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 LRV
+
+/-! ### Terms -/
+
+/-- `L_val`-terms with variables among `Fin n` translate into `L_RV`-terms: the ring symbols
+become the `VF`-sorted symbols of `L_RV`.  There are no parameters, so this is complete. -/
+def valTermToRV {n : ℕ} : Language.val.Term (Empty ⊕ Fin n) → Tm n
+  | .var v => Sum.rec (fun e => e.elim) (fun i => tv i.1 i.2) v
+  | .func f args =>
+    match f with
+    | ValFunc.add => tVFAdd (valTermToRV (args 0)) (valTermToRV (args 1))
+    | ValFunc.mul => tVFMul (valTermToRV (args 0)) (valTermToRV (args 1))
+    | ValFunc.neg => tVFNeg (valTermToRV (args 0))
+    | ValFunc.zero => tVFZero
+    | ValFunc.one => tVFOne
+
+/-- `0` of the `VF` sort, as an element of an `L_RV`-structure. -/
+def iVFZero {M : Type} [LRV.Structure M] : M :=
+  FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfZero fun i => i.elim0
+
+/-- `1` of the `VF` sort, as an element of an `L_RV`-structure. -/
+def iVFOne {M : Type} [LRV.Structure M] : M :=
+  FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfOne fun i => i.elim0
+
+/-- The same term read in an `L_RV`-structure, using the `VF`-sorted operations. -/
+def valTermEval {M : Type} [LRV.Structure M] {n : ℕ} (x : Fin n → M) :
+    Language.val.Term (Empty ⊕ Fin n) → M
+  | .var v => Sum.rec (fun e => e.elim) (fun i => x i) v
+  | .func f args =>
+    match f with
+    | ValFunc.add => iVFAdd (valTermEval x (args 0)) (valTermEval x (args 1))
+    | ValFunc.mul => iVFMul (valTermEval x (args 0)) (valTermEval x (args 1))
+    | ValFunc.neg => iVFNeg (valTermEval x (args 0))
+    | ValFunc.zero => iVFZero
+    | ValFunc.one => iVFOne
+
+/-! ### How `L_RV` reads the translated symbols -/
+
+theorem realize_tVFZero {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M) :
+    (tVFZero (n := n)).realize v = iVFZero := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfZero
+      (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i)) = iVFZero
+  rw [show (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i))
+      = (fun i => i.elim0) from by funext i; exact i.elim0]
+  rfl
+
+theorem realize_tVFOne {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M) :
+    (tVFOne (n := n)).realize v = iVFOne := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfOne
+      (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i)) = iVFOne
+  rw [show (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i))
+      = (fun i => i.elim0) from by funext i; exact i.elim0]
+  rfl
+
+theorem realize_tVFAdd {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M)
+    (a b : Tm n) : (tVFAdd a b).realize v = iVFAdd (a.realize v) (b.realize v) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfAdd
+      (fun i => Term.realize (L := LRV) v (![a, b] i)) = iVFAdd (a.realize v) (b.realize v)
+  rw [show (fun i => Term.realize (L := LRV) v (![a, b] i)) = ![a.realize v, b.realize v] from by
+    funext i
+    fin_cases i <;> simp]
+  rfl
+
+theorem realize_tVFMul {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M)
+    (a b : Tm n) : (tVFMul a b).realize v = iVFMul (a.realize v) (b.realize v) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfMul
+      (fun i => Term.realize (L := LRV) v (![a, b] i)) = iVFMul (a.realize v) (b.realize v)
+  rw [show (fun i => Term.realize (L := LRV) v (![a, b] i)) = ![a.realize v, b.realize v] from by
+    funext i
+    fin_cases i <;> simp]
+  rfl
+
+theorem realize_tVFNeg {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M)
+    (a : Tm n) : (tVFNeg a).realize v = iVFNeg (a.realize v) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfNeg
+      (fun i => Term.realize (L := LRV) v (![a] i)) = iVFNeg (a.realize v)
+  rw [show (fun i => Term.realize (L := LRV) v (![a] i)) = ![a.realize v] from by
+    funext i
+    fin_cases i
+    simp]
+  rfl
+
+/-- **A translated term realises as the `L_val`-evaluation**: this is where the two languages'
+ring symbols are matched up. -/
+theorem valTermToRV_realize {M : Type} [LRV.Structure M] {n : ℕ} (x : Fin n → M)
+    (t : Language.val.Term (Empty ⊕ Fin n)) :
+    (valTermToRV t).realize (Sum.elim (default : Empty → M) x) = valTermEval x t := by
+  induction t with
+  | var v =>
+    rcases v with e | i
+    · exact e.elim
+    · simp [valTermToRV, valTermEval, tv, Term.realize]
+  | func f args ih =>
+    cases f with
+    | add => simp only [valTermToRV, valTermEval, realize_tVFAdd, ih 0, ih 1]
+    | mul => simp only [valTermToRV, valTermEval, realize_tVFMul, ih 0, ih 1]
+    | neg => simp only [valTermToRV, valTermEval, realize_tVFNeg, ih 0]
+    | zero => simp only [valTermToRV, valTermEval, realize_tVFZero]
+    | one => simp only [valTermToRV, valTermEval, realize_tVFOne]
+
+/-! ### Formulas -/
+
+/-- **The syntactic translation of `L_val`-formulas into `L_RV`.**  The predicate `v x ≤ v y`
+becomes `rv x ≤ rv y`, which is the paper's identification `vv = vrv ∘ rv`; everything else is
+symbol-for-symbol.  `BoundedFormula` has five constructors, so `⊓`, `⊔`, `∃` and `¬` are handled
+through their definitions. -/
+def valFormulaToRV {n : ℕ} : Language.val.BoundedFormula Empty n → Bf n
+  | BoundedFormula.falsum => BoundedFormula.falsum
+  | BoundedFormula.equal t u => BoundedFormula.equal (valTermToRV t) (valTermToRV u)
+  | BoundedFormula.rel r ts =>
+    match r with
+    | ValRel.le => pLe (tRv (valTermToRV (ts 0))) (tRv (valTermToRV (ts 1)))
+  | BoundedFormula.imp φ ψ => BoundedFormula.imp (valFormulaToRV φ) (valFormulaToRV ψ)
+  | BoundedFormula.all φ => BoundedFormula.all (valFormulaToRV φ)
+
+end SpecialTransformations.Milestone0.Transfer
+
+#print axioms SpecialTransformations.Milestone0.Transfer.valTermToRV_realize
