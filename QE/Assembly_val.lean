@@ -15004,3 +15004,658 @@ end CoverBridge
 #print axioms Cover.frag_QE_sentence
 #print axioms CoverBridge.exists_qf_of_coverVF
 #print axioms CoverBridge.transfer_at_vf_tuples
+
+
+set_option linter.style.haveILetI false
+
+open FirstOrder FirstOrder.Language
+
+universe u v
+
+namespace BCompCore
+
+variable {L : FirstOrder.Language.{u, v}}
+
+/-!
+# The compactness argument for bounded formulas
+
+`BoundedFormula.toFormula : BoundedFormula α n → Formula (α ⊕ Fin n)` has no converse in
+Mathlib, and the formula-level compactness argument produces its output on the `Formula` side
+while `QEExStep` consumes `BoundedFormula α n`. This file removes that obstruction by running
+the whole argument in `BoundedFormula α n`, using `toFormula` **only on the way into**
+compactness: given a finite set of `Formula`s in the image, the corresponding bounded formulas
+are chosen by `Finset.attach` plus choice, and the witness is pushed forward again. No inverse
+of `toFormula` is needed.
+
+Contents, all in `BoundedFormula α n`:
+* `exists_realize_bounded` — compactness for bounded formulas;
+* `lifsup`/`liinf` with `isQF_lifsup`/`isQF_liinf` and `realize_lifsup`/`realize_liinf`;
+* `exists_qf_imp_bounded` — isolation: under QF-type invariance for `β`, an assignment
+  satisfying `β` is separated from its complement by a QF formula implying `β`.
+
+Not yet done: the cover and the final `QEExStep` assembly, which is mechanical given
+`exists_qf_imp_bounded` and `exists_realize_bounded`.
+-/
+
+/-! ## Quantifier elimination, formula level
+
+`HasQE T` is the formula-level statement that every `L`-formula is `T`-equivalent to a
+quantifier-free one.  It has the same shape as `SpecialTransformations.Milestone0.HasQE`
+(`Milestone0/Encoding.lean`), only at a general language `L`. -/
+
+/-- `T` admits quantifier elimination. -/
+def HasQE (T : L.Theory) : Prop :=
+  ∀ (α : Type u) (φ : L.Formula α), ∃ ψ : L.Formula α, ψ.IsQF ∧ T ⊨ᵇ (φ ⇔ ψ)
+
+/-! ## Finite conjunctions and disjunctions -/
+
+section Finite
+
+variable {α : Type u} {β : Type*}
+
+lemma isQF_listFoldr_sup (l : List β) (f : β → L.Formula α) (h : ∀ b ∈ l, (f b).IsQF) :
+    (l.map f).foldr (· ⊔ ·) ⊥ |>.IsQF := by
+  induction l with
+  | nil => exact BoundedFormula.isQF_bot
+  | cons a l ih =>
+      rw [List.map_cons, List.foldr_cons]
+      exact (h a (by simp)).sup (ih (fun b hb => h b (by simp [hb])))
+
+lemma isQF_listFoldr_inf (l : List β) (f : β → L.Formula α)
+    (h : ∀ b ∈ l, (f b).IsQF) : (l.map f).foldr (· ⊓ ·) ⊤ |>.IsQF := by
+  induction l with
+  | nil => exact BoundedFormula.IsQF.top
+  | cons a l ih =>
+      rw [List.map_cons, List.foldr_cons]
+      exact (h a (by simp)).inf (ih (fun b hb => h b (by simp [hb])))
+
+/-- A finite disjunction of quantifier-free formulas is quantifier-free. -/
+lemma isQF_iSup {β : Type*} [Finite β] (f : β → L.Formula α) (h : ∀ b, (f b).IsQF) :
+    (Formula.iSup f).IsQF := by
+  classical
+  rw [Formula.iSup, BoundedFormula.iSup]
+  exact isQF_listFoldr_sup _ f (fun b _ => h b)
+
+/-- A finite conjunction of quantifier-free formulas is quantifier-free. -/
+lemma isQF_iInf {β : Type*} [Finite β] (f : β → L.Formula α) (h : ∀ b, (f b).IsQF) :
+    (Formula.iInf f).IsQF := by
+  classical
+  rw [Formula.iInf, BoundedFormula.iInf]
+  exact isQF_listFoldr_inf _ f (fun b _ => h b)
+
+/-- The realization of a finite disjunction of formulas. -/
+lemma realize_iSup {β : Type*} [Finite β] (f : β → L.Formula α) {M : Type*} [L.Structure M]
+    (v : α → M) : (Formula.iSup f).Realize v ↔ ∃ b, (f b).Realize v :=
+  BoundedFormula.realize_iSup
+
+/-- The realization of a finite conjunction of formulas. -/
+lemma realize_iInf {β : Type*} [Finite β] (f : β → L.Formula α) {M : Type*} [L.Structure M]
+    (v : α → M) : (Formula.iInf f).Realize v ↔ ∀ b, (f b).Realize v :=
+  BoundedFormula.realize_iInf
+
+end Finite
+
+/-! ## Compactness for a set of formulas with free variables -/
+
+/-- **Compactness, realization form.** If every finite set of formulas taken from `Γ` can be
+realized together with `φ` in a model of `T`, then `Γ` itself can be realized together with `φ`. -/
+theorem exists_model_realize_of_finset {α : Type u} {T : L.Theory} {Γ : Set (L.Formula α)}
+    {φ : L.Formula α}
+    (h : ∀ Γ0 : Finset (L.Formula α), (∀ ψ ∈ Γ0, ψ ∈ Γ) →
+      ∃ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier),
+        (∀ ψ ∈ Γ0, ψ.Realize v) ∧ φ.Realize v) :
+    ∃ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier),
+      (∀ ψ ∈ Γ, ψ.Realize v) ∧ φ.Realize v := by
+  classical
+  set U : (L[[α]]).Theory :=
+    (L.lhomWithConstants α).onTheory T ∪ Formula.equivSentence '' Γ ∪
+      {Formula.equivSentence φ} with hUdef
+  have hfin : U.IsFinitelySatisfiable := by
+    intro U0 hU0
+    -- the part of `Γ` that shows up in `U0`
+    set Γ0 : Finset (L.Formula α) :=
+      (U0.filter (fun s => s ∈ Formula.equivSentence '' Γ)).image
+        (fun s => Formula.equivSentence.symm s) with hΓ0def
+    have hΓ0 : ∀ ψ ∈ Γ0, ψ ∈ Γ := by
+      intro ψ hψ
+      obtain ⟨s, hs, hseq⟩ := Finset.mem_image.mp hψ
+      obtain ⟨-, hs2⟩ := Finset.mem_filter.mp hs
+      obtain ⟨ψ', hψ', hψ'eq⟩ := (Set.mem_image _ _ _).mp hs2
+      rw [← hseq, ← hψ'eq, Equiv.symm_apply_apply]
+      exact hψ'
+    obtain ⟨M, v, hv, hφv⟩ := h Γ0 hΓ0
+    letI : (constantsOn α).Structure M.Carrier := constantsOn.structure v
+    have hmem : ∀ s ∈ U0, M.Carrier ⊨ s := by
+      intro s hs
+      have hsU : s ∈ U := hU0 hs
+      simp only [hUdef, Set.mem_union, Set.mem_image, Set.mem_singleton_iff] at hsU
+      rcases hsU with (hsT | ⟨ψ, hψ, hψs⟩) | hφs
+      · exact ((LHom.onTheory_model (L.lhomWithConstants α) T).2 M.is_model).realize_of_mem s hsT
+      · rw [← hψs] at hs ⊢
+        refine (Formula.realize_equivSentence M.Carrier ψ).2 (hv ψ ?_)
+        rw [hΓ0def]
+        exact Finset.mem_image.mpr
+          ⟨Formula.equivSentence ψ, Finset.mem_filter.mpr ⟨hs, ⟨ψ, hψ, rfl⟩⟩, by simp⟩
+      · rw [hφs]
+        exact (Formula.realize_equivSentence M.Carrier φ).2 hφv
+    haveI : M.Carrier ⊨ (U0 : (L[[α]]).Theory) := ⟨fun s hs => hmem s hs⟩
+    exact Theory.Model.isSatisfiable M.Carrier
+  obtain ⟨N⟩ := Theory.isSatisfiable_iff_isFinitelySatisfiable.2 hfin
+  have hNU : ∀ s ∈ U, N.Carrier ⊨ s := fun s hs => N.is_model.realize_of_mem s hs
+  letI : L.Structure N.Carrier := (L.lhomWithConstants α).reduct N.Carrier
+  have hNT : N.Carrier ⊨ T :=
+    (LHom.onTheory_model (L.lhomWithConstants α) T).1
+      ⟨fun s hs => hNU s (by rw [hUdef]; exact Or.inl (Or.inl hs))⟩
+  refine ⟨Theory.ModelType.of T N.Carrier, fun a => (L.con a : N.Carrier), ?_, ?_⟩
+  · intro ψ hψ
+    refine (Formula.realize_equivSentence N.Carrier ψ).1 (hNU _ ?_)
+    rw [hUdef]
+    exact Or.inl (Or.inr ⟨ψ, hψ, rfl⟩)
+  · refine (Formula.realize_equivSentence N.Carrier φ).1 (hNU _ ?_)
+    rw [hUdef]
+    exact Or.inr rfl
+
+
+end BCompCore
+
+namespace BComp
+
+open BCompCore
+
+variable {L : FirstOrder.Language.{u, v}}
+
+/-- `T`-equivalence of bounded formulas with the same context. -/
+def IffB (T : L.Theory) {α : Type u} {n : ℕ} (φ ψ : L.BoundedFormula α n) : Prop :=
+  ∀ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier) (xs : Fin n → M.Carrier),
+    (φ.Realize v xs ↔ ψ.Realize v xs)
+
+/-- One existential quantifier in front of a quantifier-free formula can be removed. -/
+def QEExStep (T : L.Theory) : Prop :=
+  ∀ (α : Type u) (n : ℕ) (θ : L.BoundedFormula α (n + 1)), θ.IsQF →
+    ∃ ψ : L.BoundedFormula α n, ψ.IsQF ∧ IffB T θ.ex ψ
+
+/-- **Compactness for bounded formulas.** Only the *forward* map `toFormula` is used: finite sets
+are pulled back along membership in its image by choice, which needs no inverse. -/
+theorem exists_realize_bounded {α : Type u} {n : ℕ} {T : L.Theory}
+    {Γ : Set (L.BoundedFormula α n)} {β : L.BoundedFormula α n}
+    (h : ∀ Γ0 : Finset (L.BoundedFormula α n), (∀ ψ ∈ Γ0, ψ ∈ Γ) →
+      ∃ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier) (xs : Fin n → M.Carrier),
+        (∀ ψ ∈ Γ0, ψ.Realize v xs) ∧ β.Realize v xs) :
+    ∃ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier) (xs : Fin n → M.Carrier),
+      (∀ ψ ∈ Γ, ψ.Realize v xs) ∧ β.Realize v xs := by
+  classical
+  set Γ' : Set (L.Formula (α ⊕ Fin n)) := BoundedFormula.toFormula '' Γ with hΓ'def
+  have hfin : ∀ Γ0 : Finset (L.Formula (α ⊕ Fin n)), (∀ ψ ∈ Γ0, ψ ∈ Γ') →
+      ∃ (M : Theory.ModelType.{u, v, max u v} T) (V : α ⊕ Fin n → M.Carrier),
+        (∀ ψ ∈ Γ0, ψ.Realize V) ∧ β.toFormula.Realize V := by
+    intro Γ0 hΓ0
+    choose f hfΓ hfeq using fun (ψ : ↥Γ0) => (Set.mem_image _ _ _).mp (hΓ0 ψ.1 ψ.2)
+    set Γ0' : Finset (L.BoundedFormula α n) := Γ0.attach.image f with hΓ0'def
+    have hΓ0'mem : ∀ ψ ∈ Γ0', ψ ∈ Γ := by
+      intro ψ hψ
+      obtain ⟨j, -, rfl⟩ := Finset.mem_image.mp hψ
+      exact hfΓ j
+    obtain ⟨M, v, xs, hall, hβ⟩ := h Γ0' hΓ0'mem
+    refine ⟨M, Sum.elim v xs, ?_, ?_⟩
+    · intro ψ hψ
+      have hmem : f ⟨ψ, hψ⟩ ∈ Γ0' :=
+        Finset.mem_image.mpr ⟨⟨ψ, hψ⟩, Finset.mem_attach _ _, rfl⟩
+      have h1 := hall _ hmem
+      have h2 : (f ⟨ψ, hψ⟩).toFormula = ψ := hfeq ⟨ψ, hψ⟩
+      rw [← h2, BoundedFormula.realize_toFormula]
+      simpa using h1
+    · rw [BoundedFormula.realize_toFormula]
+      simpa using hβ
+  obtain ⟨M, V, hV, hβV⟩ :=
+    BCompCore.exists_model_realize_of_finset (T := T) (Γ := Γ') (φ := β.toFormula) hfin
+  refine ⟨M, V ∘ Sum.inl, V ∘ Sum.inr, ?_, ?_⟩
+  · intro ψ hψ
+    have h1 := hV _ (Set.mem_image_of_mem _ hψ)
+    rwa [BoundedFormula.realize_toFormula] at h1
+  · have h1 := hβV
+    rwa [BoundedFormula.realize_toFormula] at h1
+
+end BComp
+
+namespace BComp
+
+open BCompCore
+
+variable {L : FirstOrder.Language.{u, v}}
+
+/-- Finite disjunction of bounded formulas, by a list fold. -/
+noncomputable def lifsup {α : Type u} {n : ℕ} (l : List (L.BoundedFormula α n)) :
+    L.BoundedFormula α n :=
+  l.foldr (· ⊔ ·) ⊥
+
+/-- Finite conjunction of bounded formulas, by a list fold. -/
+noncomputable def liinf {α : Type u} {n : ℕ} (l : List (L.BoundedFormula α n)) :
+    L.BoundedFormula α n :=
+  l.foldr (· ⊓ ·) ⊤
+
+theorem isQF_lifsup {α : Type u} {n : ℕ} {l : List (L.BoundedFormula α n)}
+    (h : ∀ ψ ∈ l, ψ.IsQF) : (lifsup l).IsQF := by
+  induction l with
+  | nil => exact BoundedFormula.isQF_bot
+  | cons a t ih =>
+    exact BoundedFormula.IsQF.sup (h a (List.mem_cons_self))
+      (ih fun ψ hψ => h ψ (List.mem_cons_of_mem _ hψ))
+
+theorem isQF_liinf {α : Type u} {n : ℕ} {l : List (L.BoundedFormula α n)}
+    (h : ∀ ψ ∈ l, ψ.IsQF) : (liinf l).IsQF := by
+  induction l with
+  | nil => exact BoundedFormula.IsQF.top
+  | cons a t ih =>
+    exact BoundedFormula.IsQF.inf (h a (List.mem_cons_self))
+      (ih fun ψ hψ => h ψ (List.mem_cons_of_mem _ hψ))
+
+theorem realize_lifsup {α : Type u} {n : ℕ} {l : List (L.BoundedFormula α n)}
+    {M : Type*} [L.Structure M] (v : α → M) (xs : Fin n → M) :
+    (lifsup l).Realize v xs ↔ ∃ ψ ∈ l, ψ.Realize v xs := by
+  induction l with
+  | nil => simp [lifsup, BoundedFormula.realize_bot]
+  | cons a t ih =>
+    rw [show lifsup (a :: t) = a ⊔ lifsup t from rfl, BoundedFormula.realize_sup, ih]
+    simp only [List.mem_cons]
+    constructor
+    · rintro (h | ⟨ψ, hψ, hreal⟩)
+      · exact ⟨a, Or.inl rfl, h⟩
+      · exact ⟨ψ, Or.inr hψ, hreal⟩
+    · rintro ⟨ψ, (rfl | hψ), hreal⟩
+      · exact Or.inl hreal
+      · exact Or.inr ⟨ψ, hψ, hreal⟩
+
+theorem realize_liinf {α : Type u} {n : ℕ} {l : List (L.BoundedFormula α n)}
+    {M : Type*} [L.Structure M] (v : α → M) (xs : Fin n → M) :
+    (liinf l).Realize v xs ↔ ∀ ψ ∈ l, ψ.Realize v xs := by
+  induction l with
+  | nil => simp [liinf, BoundedFormula.realize_top]
+  | cons a t ih =>
+    rw [show liinf (a :: t) = a ⊓ liinf t from rfl, BoundedFormula.realize_inf, ih]
+    simp only [List.mem_cons]
+    constructor
+    · rintro ⟨h, ht⟩ ψ (rfl | hψ)
+      · exact h
+      · exact ht ψ hψ
+    · intro h
+      exact ⟨h a (Or.inl rfl), fun ψ hψ => h ψ (Or.inr hψ)⟩
+
+/-- **Isolation**, bounded form. -/
+theorem exists_qf_imp_bounded {α : Type u} {n : ℕ} {T : L.Theory} {β : L.BoundedFormula α n}
+    (Hβ : ∀ (M N : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier)
+      (xs : Fin n → M.Carrier) (w : α → N.Carrier) (ys : Fin n → N.Carrier),
+      (∀ ψ : L.BoundedFormula α n, ψ.IsQF → (ψ.Realize v xs ↔ ψ.Realize w ys)) →
+      (β.Realize v xs ↔ β.Realize w ys))
+    (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier) (xs : Fin n → M.Carrier)
+    (hβ : β.Realize v xs) :
+    ∃ ψ : L.BoundedFormula α n, ψ.IsQF ∧ ψ.Realize v xs ∧
+      ∀ (N : Theory.ModelType.{u, v, max u v} T) (w : α → N.Carrier) (ys : Fin n → N.Carrier),
+        ψ.Realize w ys → β.Realize w ys := by
+  classical
+  by_contra hcon
+  push Not at hcon
+  set Γ : Set (L.BoundedFormula α n) := {ψ | ψ.IsQF ∧ ψ.Realize v xs} with hΓdef
+  have hfin : ∀ Γ0 : Finset (L.BoundedFormula α n), (∀ ψ ∈ Γ0, ψ ∈ Γ) →
+      ∃ (N : Theory.ModelType.{u, v, max u v} T) (w : α → N.Carrier) (ys : Fin n → N.Carrier),
+        (∀ ψ ∈ Γ0, ψ.Realize w ys) ∧ β.not.Realize w ys := by
+    intro Γ0 hΓ0
+    have hq : ∀ ψ ∈ Γ0.val.toList, ψ.IsQF :=
+      fun ψ hψ => (hΓ0 ψ (Finset.mem_val.mp (Multiset.mem_toList.mp hψ))).1
+    have hr : ∀ ψ ∈ Γ0.val.toList, ψ.Realize v xs :=
+      fun ψ hψ => (hΓ0 ψ (Finset.mem_val.mp (Multiset.mem_toList.mp hψ))).2
+    obtain ⟨N, w, ys, h1, h2⟩ :=
+      hcon _ (isQF_liinf hq) ((realize_liinf v xs).2 hr)
+    exact ⟨N, w, ys,
+      fun ψ hψ => (realize_liinf w ys).1 h1 ψ
+        (Multiset.mem_toList.mpr (Finset.mem_val.mpr hψ)),
+      (BoundedFormula.realize_not).2 h2⟩
+  obtain ⟨N, w, ys, hw, hnβ⟩ := exists_realize_bounded (T := T) hfin
+  have htypes : ∀ ψ : L.BoundedFormula α n, ψ.IsQF → (ψ.Realize v xs ↔ ψ.Realize w ys) := by
+    intro ψ hψ
+    constructor
+    · intro hvψ
+      exact hw ψ ⟨hψ, hvψ⟩
+    · intro hwψ
+      by_contra hvψ
+      have hcontr := hw ψ.not ⟨hψ.not, (BoundedFormula.realize_not).2 hvψ⟩
+      rw [BoundedFormula.realize_not] at hcontr
+      exact hcontr hwψ
+  have hiff := Hβ M N v xs w ys htypes
+  rw [BoundedFormula.realize_not] at hnβ
+  exact hnβ (hiff.mp hβ)
+
+/-! ## The cover and the assembly -/
+
+/-- **`QFExDetermined` gives `QEExStep`.** The cover is produced by contradiction: if no finite
+set of quantifier-free consequences covered `θ.ex`, bounded compactness would give a tuple
+satisfying `θ.ex` and falsifying every quantifier-free consequence of it, contradicting the
+isolation lemma. -/
+theorem qeExStep_of_qfDet {T : L.Theory}
+    (H : ∀ (α : Type u) (n : ℕ) (θ : L.BoundedFormula α (n + 1)), θ.IsQF →
+      ∀ (M N : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier)
+        (xs : Fin n → M.Carrier) (w : α → N.Carrier) (ys : Fin n → N.Carrier),
+        (∀ ψ : L.BoundedFormula α n, ψ.IsQF → (ψ.Realize v xs ↔ ψ.Realize w ys)) →
+        ((θ.ex).Realize v xs ↔ (θ.ex).Realize w ys)) :
+    QEExStep (L := L) T := by
+  intro α n θ hθ
+  classical
+  have Hβ := H α n θ hθ
+  set Ψ : Set (L.BoundedFormula α n) :=
+    {ψ | ψ.IsQF ∧ ∀ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier)
+      (xs : Fin n → M.Carrier), ψ.Realize v xs → (θ.ex).Realize v xs} with hΨdef
+  have hcov : ∃ Ψ0 : Finset (L.BoundedFormula α n), (∀ ψ ∈ Ψ0, ψ ∈ Ψ) ∧
+      ∀ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier) (xs : Fin n → M.Carrier),
+        (θ.ex).Realize v xs → (lifsup Ψ0.val.toList).Realize v xs := by
+    by_contra hno
+    push Not at hno
+    set Γ : Set (L.BoundedFormula α n) := {η | ∃ ψ ∈ Ψ, ψ.not = η} with hΓdef
+    have hfin : ∀ Γ0 : Finset (L.BoundedFormula α n), (∀ η ∈ Γ0, η ∈ Γ) →
+        ∃ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier)
+          (xs : Fin n → M.Carrier),
+          (∀ η ∈ Γ0, η.Realize v xs) ∧ (θ.ex).Realize v xs := by
+      intro Γ0 hΓ0
+      have hchoice : ∀ η : ↥Γ0, ∃ ψ ∈ Ψ, ψ.not = η.1 := fun η => hΓ0 η.1 η.2
+      choose f hfΨ hfeq using hchoice
+      set Ψ0 : Finset (L.BoundedFormula α n) := Γ0.attach.image f with hΨ0def
+      have hΨ0 : ∀ ψ ∈ Ψ0, ψ ∈ Ψ := by
+        intro ψ hψ
+        obtain ⟨j, -, rfl⟩ := Finset.mem_image.mp hψ
+        exact hfΨ j
+      obtain ⟨M, v, xs, hθex, hnoψ⟩ := hno Ψ0 hΨ0
+      refine ⟨M, v, xs, ?_, hθex⟩
+      intro η hη
+      have hmem : f ⟨η, hη⟩ ∈ Ψ0 :=
+        Finset.mem_image.mpr ⟨⟨η, hη⟩, Finset.mem_attach _ _, rfl⟩
+      have hfalse : ¬ (f ⟨η, hη⟩).Realize v xs := by
+        intro htrue
+        exact hnoψ ((realize_lifsup v xs).2 ⟨_, Multiset.mem_toList.mpr hmem, htrue⟩)
+      have heq : (f ⟨η, hη⟩).not = η := hfeq ⟨η, hη⟩
+      rw [← heq, BoundedFormula.realize_not]
+      exact hfalse
+    obtain ⟨M, v, xs, hΓ0, hθex⟩ := exists_realize_bounded (T := T) hfin
+    obtain ⟨ψ0, hqf0, htrue0, himp0⟩ := exists_qf_imp_bounded (T := T) Hβ M v xs hθex
+    have hmemΨ : ψ0 ∈ Ψ := ⟨hqf0, himp0⟩
+    have hnotmem : ψ0.not ∈ Γ := ⟨ψ0, hmemΨ, rfl⟩
+    have hcontra := hΓ0 ψ0.not hnotmem
+    rw [BoundedFormula.realize_not] at hcontra
+    exact hcontra htrue0
+  obtain ⟨Ψ0, hΨ0, hcov⟩ := hcov
+  refine ⟨lifsup Ψ0.val.toList,
+    isQF_lifsup (fun ψ hψ => (hΨ0 ψ (Multiset.mem_toList.mp hψ)).1), ?_⟩
+  intro M v xs
+  constructor
+  · intro h
+    exact hcov M v xs h
+  · intro h
+    obtain ⟨ψ, hψl, hψtrue⟩ := (realize_lifsup v xs).1 h
+    exact (hΨ0 ψ (Multiset.mem_toList.mp hψl)).2 M v xs hψtrue
+
+end BComp
+
+
+#print axioms BComp.exists_realize_bounded
+#print axioms BComp.exists_qf_imp_bounded
+#print axioms BComp.isQF_lifsup
+#print axioms BComp.realize_liinf
+
+#print axioms BComp.qeExStep_of_qfDet
+
+
+/-!
+# `QFTypeDetermines ⟹ HasQE`: the compactness step
+
+`QE/Assembly_val.lean` records this as *the* missing implication between the semantic
+Shoenfield/back-and-forth machinery and the syntactic `QEExStep`:
+
+> What is still missing is `QFExDetermined → QEExStep`, and the obstruction is concrete:
+> `BoundedFormula.toFormula : BoundedFormula α n → Formula (α ⊕ Fin n)` has no converse in
+> Mathlib.
+
+`QE/Bounded_compactness.lean` (compiled here as the module `BComp`, namespaces renamed to
+`BCompCore`/`BComp` to avoid a clash with the copy of `ShoenfieldQE` inside `Assembly_val`) proves
+exactly that implication, at the level of bounded formulas, by running the compactness argument
+through `toFormula` only on the way *into* compactness.  This file supplies the missing glue: the
+`IffB` of that file is the `Theory.Iff` of Mathlib (the universes match on the nose), so
+`QEExStep` transfers, and `QECriterion.HasQE_of_QEExStep` turns it into quantifier elimination.
+
+Nothing here is specific to `L_RV`; it is the general step, and it lets the final assembly take
+`QFTypeDetermines` (the two-model QF-type criterion, which is what the back-and-forth produces)
+as its only model-theoretic hypothesis.
+-/
+
+open FirstOrder FirstOrder.Language
+
+namespace QFComp
+
+variable {L : FirstOrder.Language.{0, 0}} {T : L.Theory}
+
+/-- `IffB` (the bounded-formula equivalence of `QE/Bounded_compactness.lean`) is `Theory.Iff`. -/
+theorem iffB_iff {α : Type} {n : ℕ} {φ ψ : L.BoundedFormula α n} :
+    BComp.IffB T φ ψ ↔ Theory.Iff T φ ψ where
+  mp h M v xs := by
+    rw [BoundedFormula.realize_iff]
+    exact h M v xs
+  mpr h M v xs := by
+    have := h M v xs
+    rwa [BoundedFormula.realize_iff] at this
+
+/-- The universal QE step from QF-type determination. -/
+theorem qeExStep_of_qfTypeDetermines (h : QECriterion.QFTypeDetermines T) :
+    QECriterion.QEExStep T := by
+  intro α n θ hθ
+  obtain ⟨ψ, hψ, hiff⟩ :=
+    BComp.qeExStep_of_qfDet (T := T)
+      (fun α n θ _ M N v xs w ys hQF =>
+        h α n (M : Type) (inferInstance : (M : Type) ⊨ T) (N : Type)
+          (inferInstance : (N : Type) ⊨ T) v xs w ys hQF θ.ex)
+      α n θ hθ
+  exact ⟨ψ, hψ, (iffB_iff).1 hiff⟩
+
+/-- **The compactness step**: QF-type determination gives quantifier elimination. -/
+theorem hasQE_of_qfTypeDetermines (h : QECriterion.QFTypeDetermines T) :
+    QECriterion.HasQE T :=
+  QECriterion.HasQE_of_QEExStep (qeExStep_of_qfTypeDetermines h)
+
+end QFComp
+
+#print axioms QFComp.hasQE_of_qfTypeDetermines
+
+
+/-!
+# Final assembly of the `L_RV` quantifier-elimination target, with named hypotheses
+
+The frozen target is `SpecialTransformations.Milestone0.HasQE Axioms.ACVF`
+(`theorem_2_3_quantifier_elimination`).  `QE-PLAN.md` records that it cannot be reached against
+the frozen axioms as they stand (two defects: item 5 transcribed as multiplication by `Kˣ`
+instead of scaling, and no nontriviality axiom, so trivially valued models are models too), and
+that the repair is the one sentence `leMulCompatFull` below.  This file assembles the reduction
+for the repaired theory
+
+  `ACVFplus = ACVF ∪ {leMulCompatFull}`
+
+into three named model-theoretic hypotheses, and proves every step in between, so that what
+remains missing is exactly the cover `L_RV → L_val` (direction e1), the trivial-valuation case
+(direction e4), and the separation of the two cases.
+
+Shape, in the house style of `theorem_2_3_of_hypotheses` (`QE/Reduction_assembly.lean`):
+
+  `NontrivialTransfer` + `TrivialTransfer` + `CaseSeparation` + `CaseSplit`
+      ⟹ `QECriterion.QFTypeDetermines ACVFplus`      (proved here)
+      ⟹ `QECriterion.HasQE ACVFplus`                  (**proved here** from
+                                                        `QFComp.hasQE_of_qfTypeDetermines`)
+
+`QFComp.hasQE_of_qfTypeDetermines` is the compactness step that `QE/Assembly_val.lean` records as
+missing (`QFExDetermined → QEExStep`); it is proved there from `QE/Bounded_compactness.lean`.
+
+## Why the hypothesis is *not* "every model has QE"
+
+The natural-looking *per-model* statement — "for each `M ⊨ T` and each tuple, every formula is
+equivalent at that tuple to a quantifier-free formula" — does **not** imply `HasQE T`.  Take
+`T = ∅` in a language with a single unary predicate `P` and the one-point model: every formula is
+equivalent there to `⊤`, `⊥` or `P(x)`, but `∀ x, P x` has no quantifier-free equivalent modulo
+`∅`.  What the transfer must supply is the *two-model* statement (`QFTypeDetermines`): models
+with the same quantifier-free type at a tuple satisfy the same formulas there.  That is the shape
+of `NontrivialTransfer`/`TrivialTransfer` below.
+
+Everything is stated at universe `0` for the carrier, because the transfer lemmas of
+`Assembly_val.lean` (`le_self`, `rv_mem`, `vf_one_mem`, …) are stated for `{M : Type}`.
+-/
+
+set_option linter.unusedVariables false
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+namespace FinalAssembly
+
+/-! ## 1. The repaired theory -/
+
+/-- Definition 2.2 item 5 in the form the ruling has it: the ordering on `RV/Kˣ = Γ` is
+translation-invariant, i.e. scaling by *any* nonzero `RV`-element (`pRV`), both directions.  The
+frozen `Axioms.leMulCompat` has `pUnits` (i.e. `Kˣ`) in place of `pRV`, which makes it a statement
+about the trivial translation and forces nothing. -/
+def leMulCompatFull : LRV.Sentence :=
+  allSorted ![.rv, .rv, .rv]
+    (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))
+
+/-- The repaired theory. -/
+def ACVFplus : LRV.Theory := Axioms.ACVF ∪ {leMulCompatFull}
+
+theorem ACVF_subset_ACVFplus : Axioms.ACVF ⊆ ACVFplus := fun _ h => Or.inl h
+
+theorem leMulCompatFull_mem : leMulCompatFull ∈ ACVFplus := Or.inr (Set.mem_singleton _)
+
+/-- Models of `ACVFplus` are models of the frozen `ACVF`. -/
+theorem model_ACVF_of_model_ACVFplus {M : Type} [LRV.Structure M] (hM : M ⊨ ACVFplus) :
+    M ⊨ Axioms.ACVF :=
+  ⟨fun φ hφ => hM.realize_of_mem φ (ACVF_subset_ACVFplus hφ)⟩
+
+/-! ## 2. Trivial and nontrivial valuations -/
+
+/-- The valuation is **nontrivial in the paper's sense** (the hypothesis `axNontrivial` of
+`ValPM.ACVF_val`): some nonzero `x ∈ VF` has value strictly below the value of `1`. -/
+def IsNontrivialVF (M : Type) [LRV.Structure M] : Prop :=
+  ∃ x : M, iVF x ∧ x ≠ iVFZero ∧ ¬ iLe (iRv iVFOne) (iRv x)
+
+/-- The valuation is **trivial**: every element of the `VF` sort is `0` or has the value of `1`. -/
+def IsTrivialVF (M : Type) [LRV.Structure M] : Prop :=
+  ∀ x : M, iVF x → x = iVFZero ∨ iRv x = iRv iVFOne
+
+/-- Trivial valuations are not nontrivial. -/
+theorem not_nontrivial_of_trivial {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF)
+    (h : IsTrivialVF M) : ¬ IsNontrivialVF M := by
+  rintro ⟨x, hxVF, hx0, hlt⟩
+  rcases h x hxVF with hzero | heq
+  · exact hx0 hzero
+  · rw [heq] at hlt
+    exact hlt (le_self hM (rv_mem hM (vf_one_mem hM)))
+
+/-- Nontrivial valuations are not trivial (the form used below). -/
+theorem not_trivial_of_nontrivial {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF)
+    (h : IsNontrivialVF M) : ¬ IsTrivialVF M :=
+  fun ht => not_nontrivial_of_trivial hM ht h
+
+/-! ## 3. The named hypotheses -/
+
+/-- **The transfer hypothesis for a class of models `P`**: two models of `T` in the class which
+agree on all quantifier-free formulas at a tuple agree there on every formula. -/
+def TransferAt (P : (M : Type) → [LRV.Structure M] → Prop) (T : LRV.Theory) : Prop :=
+  ∀ (α : Type) (n : ℕ) (M : Type) [LRV.Structure M] [Nonempty M] (hM : M ⊨ T), P M →
+  ∀ (N : Type) [LRV.Structure N] [Nonempty N] (hN : N ⊨ T), P N →
+  ∀ (v : α → M) (xs : Fin n → M) (w : α → N) (ys : Fin n → N),
+    (∀ ψ : LRV.BoundedFormula α n, ψ.IsQF → (ψ.Realize v xs ↔ ψ.Realize w ys)) →
+    ∀ φ : LRV.BoundedFormula α n, (φ.Realize v xs ↔ φ.Realize w ys)
+
+/-- **The nontrivial half** (directions e1-e3 + `hasQE_ACVF_val`). -/
+def NontrivialTransfer (T : LRV.Theory) : Prop := TransferAt IsNontrivialVF T
+
+/-- **The trivial half** (direction e4). -/
+def TrivialTransfer (T : LRV.Theory) : Prop := TransferAt IsTrivialVF T
+
+/-- **Separation of the two cases by quantifier-free types**: a tuple in a nontrivial model and a
+tuple in a trivial model never have the same quantifier-free type.  (Without this the two
+transfers do not compose: `QFTypeDetermines` compares models in the *same* class only.) -/
+def CaseSeparation (T : LRV.Theory) : Prop :=
+  ∀ (α : Type) (n : ℕ) (M : Type) [LRV.Structure M] [Nonempty M] (hM : M ⊨ T)
+    (N : Type) [LRV.Structure N] [Nonempty N] (hN : N ⊨ T)
+    (v : α → M) (xs : Fin n → M) (w : α → N) (ys : Fin n → N),
+    (∀ ψ : LRV.BoundedFormula α n, ψ.IsQF → (ψ.Realize v xs ↔ ψ.Realize w ys)) →
+    (IsNontrivialVF M ↔ IsNontrivialVF N)
+
+/-- **The case split**: every model has a nontrivial or a trivial valuation. -/
+def CaseSplit (T : LRV.Theory) : Prop :=
+  ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ T → IsNontrivialVF M ∨ IsTrivialVF M
+
+/-! ## 4. The composition -/
+
+/-- **The hypotheses give QF-type determination.** -/
+theorem qfTypeDetermines_of_transfers {T : LRV.Theory} (hsub : Axioms.ACVF ⊆ T)
+    (hnt : NontrivialTransfer T) (htr : TrivialTransfer T)
+    (hsep : CaseSeparation T) (hsplit : CaseSplit T) :
+    QECriterion.QFTypeDetermines T := by
+  intro α n M _ _ hM N _ _ hN v xs w ys hQF φ
+  rcases hsplit M hM with hMn | hMt
+  · -- `M` nontrivial, so `N` is nontrivial by separation, and the nontrivial transfer applies
+    have hNn : IsNontrivialVF N := (hsep α n M hM N hN v xs w ys hQF).1 hMn
+    exact hnt α n M hM hMn N hN hNn v xs w ys hQF φ
+  · rcases hsplit N hN with hNn | hNt
+    · -- mixed: excluded by separation
+      have hMn : IsNontrivialVF M := (hsep α n M hM N hN v xs w ys hQF).2 hNn
+      have hACVF : M ⊨ Axioms.ACVF := ⟨fun φ hφ => hM.realize_of_mem φ (hsub hφ)⟩
+      exact absurd hMn (not_nontrivial_of_trivial hACVF hMt)
+    · exact htr α n M hM hMt N hN hNt v xs w ys hQF φ
+
+/-- **The assembly**: the three named hypotheses and the case split give quantifier elimination
+for the repaired theory — with the compactness step proved, not assumed. -/
+theorem hasQE_of_transfers {T : LRV.Theory} (hsub : Axioms.ACVF ⊆ T)
+    (hnt : NontrivialTransfer T) (htr : TrivialTransfer T)
+    (hsep : CaseSeparation T) (hsplit : CaseSplit T) :
+    QECriterion.HasQE T :=
+  QFComp.hasQE_of_qfTypeDetermines (qfTypeDetermines_of_transfers hsub hnt htr hsep hsplit)
+
+/-- The assembled theorem for the repaired theory, in the frozen shape
+(`SpecialTransformations.Milestone0.HasQE`). -/
+theorem hasQE_ACVFplus_of_transfers
+    (hnt : NontrivialTransfer ACVFplus) (htr : TrivialTransfer ACVFplus)
+    (hsep : CaseSeparation ACVFplus) (hsplit : CaseSplit ACVFplus) :
+    SpecialTransformations.Milestone0.HasQE ACVFplus :=
+  hasQE_of_transfers ACVF_subset_ACVFplus hnt htr hsep hsplit
+
+/-! ## 5. What each hypothesis is, precisely
+
+* `NontrivialTransfer`: given `M, N ⊨ ACVFplus` with nontrivial valuations, tuples with the same
+  quantifier-free `L_RV`-type satisfy the same formulas.  Intended proof: the cover
+  `L_RV → L_val` (e1, with the atoms of e2 and the residue-field symbols of e3) identifies an
+  `L_RV`-formula with the image `valFormulaToRVvf θ` of an `L_val`-formula `θ`;
+  `hasQE_ACVF_val` replaces `θ` by a quantifier-free `θ'` in the `L_val`-structure on the `VF`
+  sort — which needs that structure to be a model of `ValPM.ACVF_val`: the repaired axiom
+  `leMulCompatFull` for `IsValPred.scale` (`m1/Scale.lean`), `m5/VFAlgClosed.lean` for
+  `IsAlgClosed`, and nontriviality; then `VFRestrict.transfer_of_isQF`
+  (`.ultramath/smw14elno/m6/ValEvalVF.lean`) reads `θ'` back into `L_RV` at `VF`-tuples.  The
+  `RV`-valued coordinates are turned into `VF`-coordinates by `Axioms.rvSurj`.
+
+* `TrivialTransfer`: the same for trivially valued models, where `rv` is injective on
+  `VF ∖ {0}` and the `L_RV`-structure is a definitional expansion of the algebraically closed
+  field on `VF`; this should be a *uniform* translation, with the quantifier-free witness supplied
+  by `HasQE acf`.
+
+* `CaseSeparation`: quantifier-free `L_RV`-formulas separate the two classes.
+
+* `CaseSplit`: `IsNontrivialVF M ∨ IsTrivialVF M`.  Genuine content: from `x ≠ 0` and
+  `rv x ≠ rv 1` one must produce `y ≠ 0` with `¬ (rv 1 ≤ rv y)` — take `y = x` or `y = x⁻¹`,
+  which needs antisymmetry of the `RV`-preorder (only a preorder is axiomatised) plus the repaired
+  scaling law.  Not proved here.
+-/
+
+end FinalAssembly
+
+#print axioms FinalAssembly.leMulCompatFull
+#print axioms FinalAssembly.not_nontrivial_of_trivial
+#print axioms FinalAssembly.qfTypeDetermines_of_transfers
+#print axioms FinalAssembly.hasQE_of_transfers
+#print axioms FinalAssembly.hasQE_ACVFplus_of_transfers
+
+#print axioms QFComp.qeExStep_of_qfTypeDetermines
+#print axioms QFComp.hasQE_of_qfTypeDetermines
+#print axioms FinalAssembly.hasQE_ACVFplus_of_transfers
