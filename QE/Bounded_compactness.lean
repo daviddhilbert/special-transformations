@@ -318,9 +318,78 @@ theorem exists_qf_imp_bounded {α : Type u} {n : ℕ} {T : L.Theory} {β : L.Bou
   rw [BoundedFormula.realize_not] at hnβ
   exact hnβ (hiff.mp hβ)
 
+/-! ## The cover and the assembly -/
+
+/-- **`QFExDetermined` gives `QEExStep`.** The cover is produced by contradiction: if no finite
+set of quantifier-free consequences covered `θ.ex`, bounded compactness would give a tuple
+satisfying `θ.ex` and falsifying every quantifier-free consequence of it, contradicting the
+isolation lemma. -/
+theorem qeExStep_of_qfDet {T : L.Theory}
+    (H : ∀ (α : Type u) (n : ℕ) (θ : L.BoundedFormula α (n + 1)), θ.IsQF →
+      ∀ (M N : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier)
+        (xs : Fin n → M.Carrier) (w : α → N.Carrier) (ys : Fin n → N.Carrier),
+        (∀ ψ : L.BoundedFormula α n, ψ.IsQF → (ψ.Realize v xs ↔ ψ.Realize w ys)) →
+        ((θ.ex).Realize v xs ↔ (θ.ex).Realize w ys)) :
+    QEExStep (L := L) T := by
+  intro α n θ hθ
+  classical
+  have Hβ := H α n θ hθ
+  set Ψ : Set (L.BoundedFormula α n) :=
+    {ψ | ψ.IsQF ∧ ∀ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier)
+      (xs : Fin n → M.Carrier), ψ.Realize v xs → (θ.ex).Realize v xs} with hΨdef
+  have hcov : ∃ Ψ0 : Finset (L.BoundedFormula α n), (∀ ψ ∈ Ψ0, ψ ∈ Ψ) ∧
+      ∀ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier) (xs : Fin n → M.Carrier),
+        (θ.ex).Realize v xs → (lifsup Ψ0.val.toList).Realize v xs := by
+    by_contra hno
+    push Not at hno
+    set Γ : Set (L.BoundedFormula α n) := {η | ∃ ψ ∈ Ψ, ψ.not = η} with hΓdef
+    have hfin : ∀ Γ0 : Finset (L.BoundedFormula α n), (∀ η ∈ Γ0, η ∈ Γ) →
+        ∃ (M : Theory.ModelType.{u, v, max u v} T) (v : α → M.Carrier)
+          (xs : Fin n → M.Carrier),
+          (∀ η ∈ Γ0, η.Realize v xs) ∧ (θ.ex).Realize v xs := by
+      intro Γ0 hΓ0
+      have hchoice : ∀ η : ↥Γ0, ∃ ψ ∈ Ψ, ψ.not = η.1 := fun η => hΓ0 η.1 η.2
+      choose f hfΨ hfeq using hchoice
+      set Ψ0 : Finset (L.BoundedFormula α n) := Γ0.attach.image f with hΨ0def
+      have hΨ0 : ∀ ψ ∈ Ψ0, ψ ∈ Ψ := by
+        intro ψ hψ
+        obtain ⟨j, -, rfl⟩ := Finset.mem_image.mp hψ
+        exact hfΨ j
+      obtain ⟨M, v, xs, hθex, hnoψ⟩ := hno Ψ0 hΨ0
+      refine ⟨M, v, xs, ?_, hθex⟩
+      intro η hη
+      have hmem : f ⟨η, hη⟩ ∈ Ψ0 :=
+        Finset.mem_image.mpr ⟨⟨η, hη⟩, Finset.mem_attach _ _, rfl⟩
+      have hfalse : ¬ (f ⟨η, hη⟩).Realize v xs := by
+        intro htrue
+        exact hnoψ ((realize_lifsup v xs).2 ⟨_, Multiset.mem_toList.mpr hmem, htrue⟩)
+      have heq : (f ⟨η, hη⟩).not = η := hfeq ⟨η, hη⟩
+      rw [← heq, BoundedFormula.realize_not]
+      exact hfalse
+    obtain ⟨M, v, xs, hΓ0, hθex⟩ := exists_realize_bounded (T := T) hfin
+    obtain ⟨ψ0, hqf0, htrue0, himp0⟩ := exists_qf_imp_bounded (T := T) Hβ M v xs hθex
+    have hmemΨ : ψ0 ∈ Ψ := ⟨hqf0, himp0⟩
+    have hnotmem : ψ0.not ∈ Γ := ⟨ψ0, hmemΨ, rfl⟩
+    have hcontra := hΓ0 ψ0.not hnotmem
+    rw [BoundedFormula.realize_not] at hcontra
+    exact hcontra htrue0
+  obtain ⟨Ψ0, hΨ0, hcov⟩ := hcov
+  refine ⟨lifsup Ψ0.val.toList,
+    isQF_lifsup (fun ψ hψ => (hΨ0 ψ (Multiset.mem_toList.mp hψ)).1), ?_⟩
+  intro M v xs
+  constructor
+  · intro h
+    exact hcov M v xs h
+  · intro h
+    obtain ⟨ψ, hψl, hψtrue⟩ := (realize_lifsup v xs).1 h
+    exact (hΨ0 ψ (Multiset.mem_toList.mp hψl)).2 M v xs hψtrue
+
 end BoundedQE
+
 
 #print axioms BoundedQE.exists_realize_bounded
 #print axioms BoundedQE.exists_qf_imp_bounded
 #print axioms BoundedQE.isQF_lifsup
 #print axioms BoundedQE.realize_liinf
+
+#print axioms BoundedQE.qeExStep_of_qfDet
