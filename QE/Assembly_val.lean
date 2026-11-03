@@ -15786,3 +15786,72 @@ end SpecialTransformations.Milestone0.Transfer
 #print axioms SpecialTransformations.Milestone0.Transfer.paperScale_of_model
 #print axioms SpecialTransformations.Milestone0.Transfer.hasNontrivVal_of_model
 #print axioms SpecialTransformations.Milestone0.Transfer.model_ACVF_val_of_model
+
+namespace SpecialTransformations.Milestone0.Transfer
+
+open SpecialTransformations.Milestone0.Axioms
+
+/-- Realisation of the constant `1` of the `RV` sort (local copy). -/
+theorem realize_tRVOne' {M : Type} [LRV.Structure M] {k : ℕ} (v : Empty ⊕ Fin k → M) :
+    (tRVOne (n := k)).realize v = iRVOne := by
+  show Structure.funMap (L := LRV) Fn.rvOne
+      (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i)) = iRVOne
+  rw [show (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i))
+      = (fun i => i.elim0) from by funext i; exact i.elim0]
+  rfl
+
+theorem mem_ACVF_rvMulOneRV : Axioms.rvMulOneRV ∈ Axioms.ACVF :=
+  mem_ACVF_repair (by simp [Axioms.repairRV, Axioms.ofList])
+
+theorem mem_ACVF_rvMulInvRV : Axioms.rvMulInvRV ∈ Axioms.ACVF :=
+  mem_ACVF_repair (by simp [Axioms.repairRV, Axioms.ofList])
+
+/-- The neutral law for `×` on `RV^×`, from the repaired item 2. -/
+theorem rv_mul_one_ne {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {a : M}
+    (ha : iRV a) (ha0 : a ≠ iRVZero) : iRVMul iRVOne a = a := by
+  have hu := allSorted_realize hM mem_ACVF_rvMulOneRV ![a]
+    (by intro i; fin_cases i; simpa using ha)
+  have hu' : a ≠ iRVZero → iRVMul iRVOne a = a := by
+    simpa [pRV_realize, pEq, BoundedFormula.realize_bdEqual, realize_tRVMul, realize_tRVOne',
+      realize_tv, Matrix.cons_val_zero] using hu
+  exact hu' ha0
+
+/-- Inverses in `RV^×`, from the repaired item 2. -/
+theorem rv_mul_inv_ne {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {a : M}
+    (ha : iRV a) (ha0 : a ≠ iRVZero) :
+    ∃ b : M, iRV b ∧ b ≠ iRVZero ∧ iRVMul b a = iRVOne := by
+  have hu := allSorted_realize hM mem_ACVF_rvMulInvRV ![a]
+    (by intro i; fin_cases i; simpa using ha)
+  have hu' : a ≠ iRVZero → ∃ b : M, iRV b ∧ b ≠ iRVZero ∧ iRVMul b a = iRVOne := by
+    simpa [pRV_realize, exSorted, sortPred, sortPred_realize, pRVsort_realize,
+      BoundedFormula.realize_ex, BoundedFormula.realize_inf, pEq, BoundedFormula.realize_bdEqual,
+      realize_tRVMul, realize_tRVOne', realize_tv, Function.comp_apply, Matrix.cons_val_zero,
+      Matrix.cons_val_one] using hu
+  exact hu' ha0
+
+/-- **Nontriviality in the `IsNontrivialVF` form.**  `axNontrivialRV` gives `a ≠ 0` with
+`¬ (v a ≤ v 1)`; an inverse of `rv a` in `RV^×` lifts to a `VF`-element by `rvSurj`, and scaling
+`v 1 ≤ v x` by `v a` contradicts `¬ (v a ≤ v 1)`. -/
+theorem isNontrivialVF_of_model {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    ∃ x : M, iVF x ∧ x ≠ iVFZero ∧ ¬ iLe (iRv iVFOne) (iRv x) := by
+  obtain ⟨a, haVF, ha0, hlt⟩ := hasNontrivVal_of_model hM
+  have har : iRv a ≠ iRVZero := fun h => ha0 (rv_eq_infty hM haVF h)
+  have hone : iRv iVFOne = iRVOne := Cover.rv_one hM
+  have hlt' : ¬ iLe (iRv a) iRVOne := by rwa [hone] at hlt
+  obtain ⟨b, hbRV, hb0, hbinv⟩ := rv_mul_inv_ne hM (rv_mem hM haVF) har
+  obtain ⟨x, hxVF, hx⟩ := rv_surj (M := M) hM hbRV hb0
+  refine ⟨x, hxVF, ?_, ?_⟩
+  · intro hx0
+    exact hb0 (by rw [← hx, hx0, rv_zero_eq hM])
+  · intro hle
+    have hs := (paperScale_of_model hM (iRv iVFOne) (iRv x) (iRv a)
+      (rv_mem hM (vf_one_mem hM)) (rv_mem hM hxVF) (rv_mem hM haVF) har).1 hle
+    rw [hone, rv_mul_one_ne hM (rv_mem hM haVF) har] at hs
+    rw [hx, hbinv] at hs
+    exact hlt' hs
+
+end SpecialTransformations.Milestone0.Transfer
+
+#print axioms SpecialTransformations.Milestone0.Transfer.rv_mul_one_ne
+#print axioms SpecialTransformations.Milestone0.Transfer.rv_mul_inv_ne
+#print axioms SpecialTransformations.Milestone0.Transfer.isNontrivialVF_of_model
