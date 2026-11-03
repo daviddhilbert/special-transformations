@@ -1251,3 +1251,35 @@ theorem good_pow_le_pow_same {a cP cQ : K} (m : ℕ) :
       rw [hset]; exact good_singleton f w a
 
 end MasterClaim
+
+section GammaAlgebra
+
+variable {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
+
+/-- Multiplying by a nonzero power is an order embedding. -/
+theorem le_mul_pow_iff {a b δ : Γ'} (hδ : δ ≠ 0) (m : ℕ) :
+    a * δ ^ m ≤ b * δ ^ m ↔ a ≤ b := by
+  have hcancel : b * δ ^ m * (δ ^ m)⁻¹ = b := by
+    rw [mul_assoc, mul_inv_cancel₀ (pow_ne_zero m hδ), mul_one]
+  have hcancel' : a * δ ^ m * (δ ^ m)⁻¹ = a := by
+    rw [mul_assoc, mul_inv_cancel₀ (pow_ne_zero m hδ), mul_one]
+  constructor
+  · intro h
+    have h' := mul_le_mul_left h ((δ ^ m)⁻¹)
+    rwa [hcancel, hcancel'] at h'
+  · intro h; exact mul_le_mul_left h _
+
+/-- Multiplying by a nonzero constant: `a / c ≤ b ↔ a ≤ b * c`. -/
+theorem le_mul_iff_div {a b c : Γ'} (hc : c ≠ 0) :
+    a * c⁻¹ ≤ b ↔ a ≤ b * c := by
+  have hcancel : a * c⁻¹ * c = a := by rw [mul_assoc, inv_mul_cancel₀ hc, mul_one]
+  have hcancel' : b * c * c⁻¹ = b := by rw [mul_assoc, mul_inv_cancel₀ hc, mul_one]
+  constructor
+  · intro h
+    have h' := mul_le_mul_left h c
+    rwa [hcancel] at h'
+  · intro h
+    have h' := mul_le_mul_left h c⁻¹
+    rwa [hcancel'] at h'
+
+end GammaAlgebra
