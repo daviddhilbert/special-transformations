@@ -101,8 +101,14 @@ So layer (A) is now reachable in two steps, neither of them Shoenfield's:
 
 1. **QE in `L_val`** by `hasQE_of_johnson` at `L = Language.val`, `T₀` = valued fields,
    `T` = nontrivially valued algebraically closed fields. Hypotheses: (i) prime models —
-   `QE/PrimeModels_valued.lean` has the mathematics (`vFrac`, `prime_model_property`) and needs
-   repackaging into `HasPrimeModels`; (ii) amalgamation — `QE/Amalgamation_reduced.lean` modulo
+   `QE/PrimeModels_valued.lean` has the mathematics in Mathlib terms (`vFrac`,
+   `prime_model_property`), and `QE/PrimeModels_val_partial.lean` now has the `Language.val`
+   theory `valField`, the `isValPred` dictionary, the fraction-field predicate and the
+   coordinate ring with `coordEmbedding : S ↪[val] coordRing e`; **the one step still missing is
+   the universal property** (`primeField = FractionRing (coordRing e)` as a `valField.ModelType`,
+   the embedding into it, and `IsFractionRing.lift`, with `v x ≤ v y` preserved and reflected —
+   `predFrac_iff` gives that by cross multiplication) and the packaging into
+   `HasPrimeModels`. `QE/PrimeModels_full.lean` is the `Language.ring` skeleton; (ii) amalgamation — `QE/Amalgamation_reduced.lean` modulo
    ★ alone (Johnson 2.2.4/2.2.6 on `O₁ ⊗_{O₀} O₂`); (iii) 1-ec — Johnson §2.3, where
    `QE/Johnson23_valuation.lean` now has 2.3.4, 2.3.5, 2.3.6, 2.3.7 in full generality, ball
    comparability, and the cell decomposition behind 2.3.2; missing are `cell_swissCheese`

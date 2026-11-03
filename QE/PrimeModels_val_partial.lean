@@ -1,0 +1,1068 @@
+ /-
+**Partial**: hypothesis (i) of Johnson's criterion for the one-sorted `Language.val`.
+
+What this file proves (all compiled, axioms clean):
+
+* `Language.val` (ring language plus the binary predicate `v x ≤ v y`), the theory `valField` of
+  valued fields with its seven predicate axioms (`axRefl`, `axTrans`, `axTotal`, `axZeroLe`,
+  `axZeroEq`, `axUltra`, `axScale`), each with its semantic form;
+* `isValPred_iff_model`, the dictionary between a `Language.val`-model of `valField` and a field
+  with a `v x ≤ v y` predicate satisfying the semantic axioms, both directions;
+* `valStructure_model`: every Mathlib `Valuation v` gives a model of `valField`;
+* the **fraction-field step**: `predFrac` (cross multiplication) on `FractionRing R`,
+  `predFrac_iff`, `predFrac_isValPred`, `valField_model` — no value group needed;
+* the **coordinate ring** of an abstract `Language.val`-structure `S` embedded in a model:
+  `relIdeal e = ker (FreeCommRing.lift e)`, `ker_lift_eq` (the relations are intrinsic to `S`),
+  `coordRing e = FreeCommRing S ⧸ relIdeal e` with its ring/domain/compatible structure,
+  the injective `coordEval`, `mk_of_valFunMap` (the language's function symbols agree with the
+  quotient ring) and **`coordEmbedding : S ↪[val] coordRing e`**, plus `predCoord_isValPred`.
+
+What it does **not** prove: `JohnsonCriterion.HasPrimeModels valField T`.  Missing exactly four
+things, and no mathematics: `primeField e = FractionRing (coordRing e)` as a `valField.ModelType`
+with the predicate `predFrac (predCoord e)`, the embedding `S ↪[val] primeField e`, the universal
+property through `IsFractionRing.lift` (the only new obligation is that an `L_val`-embedding
+preserves and reflects `v x ≤ v y`, which `pred_frac_iff` gives by cross multiplication), and the
+packaging into `HasPrimeModels`.  The `Language.ring` skeleton of all four is
+`QE/PrimeModels_full.lean`.
+
+From swarm `smw0c60wk` member m4; compiled and axiom-checked by the reviewer, not edited.
+
+Only import: Mathlib.
+-/
+
+/-
+  **The theory of valued fields in Johnson's language `L_val`, and the fraction field of a
+  valued domain** — infrastructure for Johnson (*Fun with Fields*, Chapter 2, §2.1),
+  Lemma 2.1.4, hypothesis (i) "prime models over substructures", for valued fields.
+
+  WHAT IS PROVED HERE (all unconditional, no `sorry`, no `axiom`):
+
+  * §1 the one-sorted language `L_val` (`Language.val`, a verbatim copy of
+    `FracValued.Language.val` from `QE/PrimeModels_valued.lean`), the `L_val`-structure
+    `valStructure v` of a Mathlib valuation, the language inclusion `valRingHom : L_ring →ᴸ L_val`,
+    and **the theory of valued fields** `valField` (`= valFieldCore ∪ {axTotal}`) in `L_val`:
+    `valFieldCore = fieldPart ∪ valAxioms`, where `fieldPart` is the image of Mathlib's
+    `Theory.field` under `valRingHom` and `valAxioms` is
+    `{axRefl, axTrans, axZeroLe, axZeroEq, axUltra, axScale}`, the axioms of a valuation written
+    with the predicate `v x ≤ v y` alone (§1b).
+  * §2 realization lemmas: `M ⊨ axScale ↔ ∀ x y z, z ≠ 0 → (v x ≤ v y ↔ v (x z) ≤ v (y z))`,
+    and similarly for the other five axioms (`axRefl_realize` … `axScale_realize`,
+    `axTotal_realize`), for any `L_val`-structure whose field symbols are the ring operations
+    (`[CommRing M] [CompatibleRing M] [valRingHom.IsExpansionOn M]`).
+  * §3 **the fraction field of a valued domain is a valued field**: `IsValPred p` bundles the six
+    semantic axioms for a predicate `p` on a commutative ring; `predFrac p` is the predicate on
+    `FractionRing R` defined by cross multiplication, `predFrac_iff` characterizes it on
+    representatives, and `predFrac_isValPred : IsValPred p → IsValPred (predFrac p)`.
+  * §4 `valStructOf K p` (the `L_val`-structure attached to a predicate `p` on a field) and
+    `valField_model : IsValPred p → valStructOf K p ⊨ valField`; `isValPred_of_valuation` and
+    `valStructure_model : valStructure v ⊨ valField` for every Mathlib valuation `v`, i.e. the
+    theory `valField` really is the theory of valued fields.
+
+  NOT PROVED HERE (the remaining part of hypothesis (i)): the coordinate-ring construction that
+  turns an abstract `L_val`-structure `S` embedded in a valued field into a *prime model* `S'`
+  (the fraction field of `FreeCommRing S` modulo the polynomial relations of `S`), and hence
+  `JohnsonCriterion.HasPrimeModels valField T`.  §3 is the algebraic heart of that step: `S'`
+  inherits its predicate from `M` by cross multiplication, which is exactly what
+  `predFrac_isValPred` verifies.  What is missing is Lean plumbing (assembling the
+  `CompatibleRing`/`IsExpansionOn` instances for the divisor ring and the `L_val`-embedding of
+  `S` into it), not mathematics.
+
+  Everything is proved for `L_val`-structures of the form `valStructOf` / `valStructure`, and
+  §1-§3 are independent of any valuation target (`Γ₀`), so they can be reused for the
+  amalgamation reduction (`QE/Amalgamation_reduced.lean`) as well.
+
+  Only import: Mathlib.  Check: `cd repo && lean .ultramath/smw0c60wk/m4/ValPrimeModels.lean`.
+-/
+import Mathlib
+
+open FirstOrder FirstOrder.Language
+open scoped FirstOrder
+
+set_option linter.style.haveILetI false
+set_option backward.isDefEq.respectTransparency false
+
+/-! ## 1. The one-sorted language `L_val`
+
+`L_val` is the language of rings together with a binary relation symbol `v x ≤ v y`.
+This is a verbatim copy of `FracValued.Language.val` (`QE/PrimeModels_valued.lean`). -/
+
+namespace FirstOrder
+
+inductive ValFunc : ℕ → Type
+  | add : ValFunc 2
+  | mul : ValFunc 2
+  | neg : ValFunc 1
+  | zero : ValFunc 0
+  | one : ValFunc 0
+  deriving DecidableEq
+
+inductive ValRel : ℕ → Type
+  | le : ValRel 2
+  deriving DecidableEq
+
+namespace Language
+
+/-- **Johnson's language `L_val`**: the language of rings expanded by a binary predicate for the
+relation `v x ≤ v y`. -/
+def val : FirstOrder.Language := ⟨ValFunc, ValRel⟩
+
+end Language
+
+/-- **The `L_val`-structure of a valued field.** -/
+@[instance_reducible]
+def valStructure {K : Type*} [Field K] {Γ₀ : Type*} [LinearOrderedCommGroupWithZero Γ₀]
+    (v : Valuation K Γ₀) : Language.val.Structure K where
+  funMap := fun {_} f x =>
+    match f with
+    | ValFunc.add => x 0 + x 1
+    | ValFunc.mul => x 0 * x 1
+    | ValFunc.neg => - x 0
+    | ValFunc.zero => 0
+    | ValFunc.one => 1
+  RelMap := fun {_} r x =>
+    match r with
+    | ValRel.le => v (x 0) ≤ v (x 1)
+
+/-- The language inclusion `L_ring → L_val`. -/
+def valRingHom : Language.ring →ᴸ Language.val where
+  onFunction := fun {_} f => match f with
+    | ringFunc.add => ValFunc.add
+    | ringFunc.mul => ValFunc.mul
+    | ringFunc.neg => ValFunc.neg
+    | ringFunc.zero => ValFunc.zero
+    | ringFunc.one => ValFunc.one
+  onRelation := fun {_} r => isEmptyElim r
+
+end FirstOrder
+
+namespace ValPM
+
+open FirstOrder FirstOrder.Language FirstOrder.Ring
+
+
+/-! ## 1b. Term notation and the axioms of the theory of valued fields -/
+
+section Terms
+
+variable {α : Type*}
+
+instance instZeroTerm : Zero (Language.val.Term α) := ⟨Term.func ValFunc.zero fun i => i.elim0⟩
+instance instOneTerm : One (Language.val.Term α) := ⟨Term.func ValFunc.one fun i => i.elim0⟩
+instance instAddTerm : Add (Language.val.Term α) := ⟨fun a b => Term.func ValFunc.add ![a, b]⟩
+instance instMulTerm : Mul (Language.val.Term α) := ⟨fun a b => Term.func ValFunc.mul ![a, b]⟩
+instance instNegTerm : Neg (Language.val.Term α) := ⟨fun a => Term.func ValFunc.neg ![a]⟩
+
+end Terms
+
+/-- The atomic formula `v a ≤ v b` of `L_val`. -/
+abbrev leF {α : Type*} {n : ℕ} (a b : Language.val.Term (α ⊕ Fin n)) :
+    Language.val.BoundedFormula α n :=
+  Relations.boundedFormula ValRel.le (l := n) ![a, b]
+
+/-- The valuation predicate of an `L_val`-structure. -/
+abbrev predM {M : Type*} [Language.val.Structure M] (x y : M) : Prop :=
+  @Structure.RelMap Language.val M _ 2 ValRel.le ![x, y]
+
+/-! The axioms, each written as a formula with `k` free bound variables and then universally
+closed with `BoundedFormula.alls`; this keeps the realization lemmas small. -/
+
+/-- The relation `v x ≤ v y` is reflexive. -/
+def axReflF : Language.val.BoundedFormula Empty 1 := leF (&0) (&0)
+def axRefl : Language.val.Sentence := axReflF.alls
+
+/-- The relation `v x ≤ v y` is transitive. -/
+def axTransF : Language.val.BoundedFormula Empty 3 :=
+  leF (&0) (&1) ⟹ leF (&1) (&2) ⟹ leF (&0) (&2)
+def axTrans : Language.val.Sentence := axTransF.alls
+
+/-- The relation `v x ≤ v y` is total. -/
+def axTotalF : Language.val.BoundedFormula Empty 2 := leF (&0) (&1) ⊔ leF (&1) (&0)
+def axTotal : Language.val.Sentence := axTotalF.alls
+
+/-- `v 0` is minimal. -/
+def axZeroLeF : Language.val.BoundedFormula Empty 1 := leF 0 (&0)
+def axZeroLe : Language.val.Sentence := axZeroLeF.alls
+
+/-- `v x ≤ v 0` only for `x = 0`. -/
+def axZeroEqF : Language.val.BoundedFormula Empty 1 := leF (&0) 0 ⟹ (&0 =' 0)
+def axZeroEq : Language.val.Sentence := axZeroEqF.alls
+
+/-- The ultrametric inequality `v (x + y) ≤ max (v x) (v y)`, as a disjunction. -/
+def axUltraF : Language.val.BoundedFormula Empty 2 :=
+  leF (&0 + &1) &0 ⊔ leF (&0 + &1) &1
+def axUltra : Language.val.Sentence := axUltraF.alls
+
+/-- Multiplication by a nonzero element preserves and reflects the order: `v (x z) ≤ v (y z) ↔
+v x ≤ v y`.  This is the multiplicative behaviour of `v`, expressed by the predicate alone. -/
+def axScaleF : Language.val.BoundedFormula Empty 3 :=
+  ∼(&2 =' 0) ⟹ (leF (&0) (&1) ⇔ leF (&0 * &2) (&1 * &2))
+def axScale : Language.val.Sentence := axScaleF.alls
+
+/-- The theory of fields, transported to `L_val`. -/
+def fieldPart : Language.val.Theory := valRingHom.onBoundedFormula '' Theory.field
+
+/-- The axioms of a valuation, expressed by the predicate `v x ≤ v y` alone. -/
+def valAxioms : Language.val.Theory :=
+  {axRefl, axTrans, axZeroLe, axZeroEq, axUltra, axScale}
+
+/-- The part of the theory of valued fields which the arguments below actually use. -/
+def valFieldCore : Language.val.Theory := fieldPart ∪ valAxioms
+
+/-- **The theory of valued fields** in the language `L_val`: a field, together with a predicate
+`v x ≤ v y` which behaves like comparison of valuations. -/
+def valField : Language.val.Theory := valFieldCore ∪ {axTotal}
+
+/-! ## 2. Realization of the axioms -/
+
+section AxRealize
+
+variable {M : Type*} [Language.val.Structure M]
+
+@[simp] theorem realize_zeroTerm (v : M → M) :
+    ((0 : Language.val.Term M)).realize v
+      = @Structure.funMap Language.val M _ 0 ValFunc.zero (fun i => i.elim0) := by
+  show Term.realize (L := Language.val) v (Term.func ValFunc.zero (fun i => i.elim0)) = _
+  rw [Term.realize_func]
+  congr 1
+  funext i
+  exact i.elim0
+
+end AxRealize
+
+section AxRealize2
+
+variable {M : Type*} [Language.val.Structure M] {α : Type*}
+
+@[simp] theorem realize_zeroTerm' (v : α → M) :
+    ((0 : Language.val.Term α)).realize v
+      = @Structure.funMap Language.val M _ 0 ValFunc.zero (fun i => i.elim0) := by
+  show Term.realize (L := Language.val) v (Term.func ValFunc.zero (fun i => i.elim0)) = _
+  rw [Term.realize_func]
+  congr 1
+  funext i
+  exact i.elim0
+
+@[simp] theorem realize_oneTerm' (v : α → M) :
+    ((1 : Language.val.Term α)).realize v
+      = @Structure.funMap Language.val M _ 0 ValFunc.one (fun i => i.elim0) := by
+  show Term.realize (L := Language.val) v (Term.func ValFunc.one (fun i => i.elim0)) = _
+  rw [Term.realize_func]
+  congr 1
+  funext i
+  exact i.elim0
+
+@[simp] theorem realize_addTerm' (a b : Language.val.Term α) (v : α → M) :
+    (a + b).realize v
+      = @Structure.funMap Language.val M _ 2 ValFunc.add ![a.realize v, b.realize v] := by
+  show Term.realize (L := Language.val) v (Term.func ValFunc.add ![a, b]) = _
+  rw [Term.realize_func]
+  congr 1
+  funext i
+  fin_cases i <;> simp
+
+@[simp] theorem realize_mulTerm' (a b : Language.val.Term α) (v : α → M) :
+    (a * b).realize v
+      = @Structure.funMap Language.val M _ 2 ValFunc.mul ![a.realize v, b.realize v] := by
+  show Term.realize (L := Language.val) v (Term.func ValFunc.mul ![a, b]) = _
+  rw [Term.realize_func]
+  congr 1
+  funext i
+  fin_cases i <;> simp
+
+@[simp] theorem realize_varTerm' {n : ℕ} (i : Fin n) (v : α → M) (xs : Fin n → M) :
+    (Term.var (Sum.inr i) : Language.val.Term (α ⊕ Fin n)).realize (Sum.elim v xs) = xs i := rfl
+
+end AxRealize2
+
+section AxIff
+
+variable {M : Type*} [CommRing M] [Language.val.Structure M] [CompatibleRing M]
+  [valRingHom.IsExpansionOn M]
+
+theorem valFunMap_add (x y : M) :
+    @Structure.funMap Language.val M _ 2 ValFunc.add ![x, y] = x + y := by
+  have h : @Structure.funMap Language.val M _ 2
+      (valRingHom.onFunction (ringFunc.add : Language.ring.Functions 2)) ![x, y]
+      = @Structure.funMap Language.ring M _ 2 (ringFunc.add : Language.ring.Functions 2) ![x, y] :=
+    LHom.map_onFunction (ϕ := valRingHom) (f := (ringFunc.add : Language.ring.Functions 2))
+      (x := ![x, y])
+  refine h.trans ?_
+  simpa using CompatibleRing.funMap_add (R := M) ![x, y]
+
+theorem valFunMap_mul (x y : M) :
+    @Structure.funMap Language.val M _ 2 ValFunc.mul ![x, y] = x * y := by
+  have h : @Structure.funMap Language.val M _ 2
+      (valRingHom.onFunction (ringFunc.mul : Language.ring.Functions 2)) ![x, y]
+      = @Structure.funMap Language.ring M _ 2 (ringFunc.mul : Language.ring.Functions 2) ![x, y] :=
+    LHom.map_onFunction (ϕ := valRingHom) (f := (ringFunc.mul : Language.ring.Functions 2))
+      (x := ![x, y])
+  refine h.trans ?_
+  simpa using CompatibleRing.funMap_mul (R := M) ![x, y]
+
+theorem valFunMap_zero :
+    @Structure.funMap Language.val M _ 0 ValFunc.zero (fun i => i.elim0) = 0 := by
+  have h : @Structure.funMap Language.val M _ 0
+      (valRingHom.onFunction (ringFunc.zero : Language.ring.Functions 0)) (fun i => i.elim0)
+      = @Structure.funMap Language.ring M _ 0
+        (ringFunc.zero : Language.ring.Functions 0) (fun i => i.elim0) :=
+    LHom.map_onFunction (ϕ := valRingHom) (f := (ringFunc.zero : Language.ring.Functions 0))
+      (x := (fun i => i.elim0))
+  refine h.trans ?_
+  simpa using CompatibleRing.funMap_zero (R := M) (fun i => i.elim0)
+
+theorem valFunMap_one :
+    @Structure.funMap Language.val M _ 0 ValFunc.one (fun i => i.elim0) = 1 := by
+  have h : @Structure.funMap Language.val M _ 0
+      (valRingHom.onFunction (ringFunc.one : Language.ring.Functions 0)) (fun i => i.elim0)
+      = @Structure.funMap Language.ring M _ 0
+        (ringFunc.one : Language.ring.Functions 0) (fun i => i.elim0) :=
+    LHom.map_onFunction (ϕ := valRingHom) (f := (ringFunc.one : Language.ring.Functions 0))
+      (x := (fun i => i.elim0))
+  refine h.trans ?_
+  simpa using CompatibleRing.funMap_one (R := M) (fun i => i.elim0)
+
+theorem relMap_val_two (r : Fin 2 → M) :
+    Structure.RelMap (L := Language.val) ValRel.le r ↔ predM (r 0) (r 1) := by
+  have h : ∀ (f : Fin 2 → M),
+      Structure.RelMap (L := Language.val) ValRel.le f = predM (f 0) (f 1) := by
+    intro f
+    have h2 : f = ![f 0, f 1] := by funext i; fin_cases i <;> simp
+    rw [h2]
+    simp
+  rw [h r]
+
+theorem leF_realize {α : Type*} {n : ℕ} (a b : Language.val.Term (α ⊕ Fin n))
+    (v : α → M) (xs : Fin n → M) :
+    (leF a b).Realize v xs ↔
+      predM (a.realize (Sum.elim v xs)) (b.realize (Sum.elim v xs)) := by
+  rw [show leF a b = Relations.boundedFormula ValRel.le ![a, b] from rfl,
+    BoundedFormula.realize_rel, relMap_val_two]
+  simp
+
+theorem axRefl_realize : (M ⊨ axRefl) ↔ ∀ x : M, predM x x := by
+  simp only [axRefl, axReflF, Sentence.Realize, BoundedFormula.realize_alls, leF_realize,
+    realize_varTerm', Function.comp_apply, Sum.elim_inr]
+  constructor
+  · intro h x; simpa using h ![x]
+  · intro h xs; simpa using h (xs 0)
+
+theorem axTrans_realize :
+    (M ⊨ axTrans) ↔ ∀ x y z : M, predM x y → predM y z → predM x z := by
+  simp only [axTrans, axTransF, Sentence.Realize, BoundedFormula.realize_alls,
+    BoundedFormula.realize_imp, leF_realize, realize_varTerm', Function.comp_apply, Sum.elim_inr]
+  constructor
+  · intro h x y z; simpa using h ![x, y, z]
+  · intro h xs; simpa using h (xs 0) (xs 1) (xs 2)
+
+theorem axTotal_realize : (M ⊨ axTotal) ↔ ∀ x y : M, predM x y ∨ predM y x := by
+  simp only [axTotal, axTotalF, Sentence.Realize, BoundedFormula.realize_alls,
+    BoundedFormula.realize_sup, leF_realize, realize_varTerm', Function.comp_apply, Sum.elim_inr]
+  constructor
+  · intro h x y; simpa using h ![x, y]
+  · intro h xs; simpa using h (xs 0) (xs 1)
+
+theorem axZeroLe_realize : (M ⊨ axZeroLe) ↔ ∀ x : M, predM 0 x := by
+  simp only [axZeroLe, axZeroLeF, Sentence.Realize, BoundedFormula.realize_alls, leF_realize,
+    realize_varTerm', realize_zeroTerm', Function.comp_apply, Sum.elim_inr, valFunMap_zero]
+  constructor
+  · intro h x; simpa using h ![x]
+  · intro h xs; simpa using h (xs 0)
+
+theorem axZeroEq_realize : (M ⊨ axZeroEq) ↔ ∀ x : M, predM x 0 → x = 0 := by
+  simp only [axZeroEq, axZeroEqF, Sentence.Realize, BoundedFormula.realize_alls,
+    BoundedFormula.realize_imp, BoundedFormula.realize_bdEqual, leF_realize, realize_varTerm',
+    realize_zeroTerm', Function.comp_apply, Sum.elim_inr, valFunMap_zero]
+  constructor
+  · intro h x; simpa using h ![x]
+  · intro h xs; simpa using h (xs 0)
+
+theorem axUltra_realize :
+    (M ⊨ axUltra) ↔ ∀ x y : M, predM (x + y) x ∨ predM (x + y) y := by
+  simp only [axUltra, axUltraF, Sentence.Realize, BoundedFormula.realize_alls,
+    BoundedFormula.realize_sup, leF_realize, realize_varTerm', realize_addTerm',
+    realize_zeroTerm', Function.comp_apply, Sum.elim_inr, valFunMap_zero, valFunMap_add]
+  constructor
+  · intro h x y; simpa using h ![x, y]
+  · intro h xs; simpa using h (xs 0) (xs 1)
+
+theorem axScale_realize :
+    (M ⊨ axScale) ↔ ∀ x y z : M, z ≠ 0 → (predM x y ↔ predM (x * z) (y * z)) := by
+  simp only [axScale, axScaleF, Sentence.Realize, BoundedFormula.realize_alls,
+    BoundedFormula.realize_imp, BoundedFormula.realize_not, BoundedFormula.realize_iff,
+    BoundedFormula.realize_bdEqual, leF_realize, realize_varTerm', realize_mulTerm',
+    realize_zeroTerm', Function.comp_apply, Sum.elim_inr, valFunMap_zero, valFunMap_mul]
+  constructor
+  · intro h x y z
+    simpa using h ![x, y, z]
+  · intro h xs
+    simpa using h (xs 0) (xs 1) (xs 2)
+
+end AxIff
+
+/-! ## 3. The predicate on a fraction field
+
+A domain `R` carrying a predicate `p` satisfying the valuation axioms gets a predicate on its
+fraction field by cross multiplication, `v (a/s) ≤ v (c/t) ↔ v (a t) ≤ v (c s)`.  This section
+proves that the fraction field satisfies the same axioms. -/
+
+/-- The semantic axioms of a valued field, stated for a predicate `p` on a commutative ring.
+They are exactly the sentences of `valFieldCore` (`axRefl`, `axTrans`, `axZeroLe`, `axZeroEq`,
+`axUltra`, `axScale`), read in a ring with the ring operations in place of the function symbols. -/
+structure IsValPred {R : Type*} [CommRing R] (p : R → R → Prop) : Prop where
+  refl : ∀ x, p x x
+  trans : ∀ x y z, p x y → p y z → p x z
+  zero_le : ∀ x, p 0 x
+  zero_eq : ∀ x, p x 0 → x = 0
+  ultra : ∀ x y, p (x + y) x ∨ p (x + y) y
+  total : ∀ x y, p x y ∨ p y x
+  scale : ∀ x y z, z ≠ 0 → (p x y ↔ p (x * z) (y * z))
+
+section FracPred
+
+variable {R : Type*} [CommRing R] [IsDomain R] {p : R → R → Prop}
+
+/-- The predicate induced on the fraction field: `v (a/s) ≤ v (c/t)` iff `v (a t) ≤ v (c s)`. -/
+def predFrac (p : R → R → Prop) (x y : FractionRing R) : Prop :=
+  ∃ (a c : R) (s t : nonZeroDivisors R),
+    x = IsLocalization.mk' (FractionRing R) a s ∧ y = IsLocalization.mk' (FractionRing R) c t ∧
+      p (a * (t : R)) (c * (s : R))
+
+/-- Two fractions are equal iff the cross products agree in `R`. -/
+theorem mk'_cross {a c : R} {s t : nonZeroDivisors R}
+    (h : IsLocalization.mk' (FractionRing R) a s = IsLocalization.mk' (FractionRing R) c t) :
+    a * (t : R) = c * (s : R) :=
+  IsFractionRing.injective R (FractionRing R) (IsLocalization.mk'_eq_iff_eq'.mp h)
+
+/-- Two fractions are equal if the cross products agree in `R`. -/
+theorem mk'_of_cross {a c : R} {s t : nonZeroDivisors R} (h : a * (t : R) = c * (s : R)) :
+    IsLocalization.mk' (FractionRing R) a s = IsLocalization.mk' (FractionRing R) c t :=
+  IsLocalization.mk'_eq_iff_eq'.mpr (by rw [h])
+
+theorem predFrac_iff (hscale : ∀ x y z : R, z ≠ 0 → (p x y ↔ p (x * z) (y * z)))
+    {a c : R} {s t : nonZeroDivisors R} :
+    predFrac p (IsLocalization.mk' (FractionRing R) a s)
+        (IsLocalization.mk' (FractionRing R) c t) ↔
+      p (a * (t : R)) (c * (s : R)) := by
+  constructor
+  · rintro ⟨a', c', s', t', hx, hy, hp⟩
+    have ha : a * (s' : R) = a' * (s : R) := mk'_cross hx
+    have hc : c * (t' : R) = c' * (t : R) := mk'_cross hy
+    have hs : (s : R) ≠ 0 := nonZeroDivisors.ne_zero s.2
+    have ht : (t : R) ≠ 0 := nonZeroDivisors.ne_zero t.2
+    have hs' : (s' : R) ≠ 0 := nonZeroDivisors.ne_zero s'.2
+    have ht' : (t' : R) ≠ 0 := nonZeroDivisors.ne_zero t'.2
+    have h1 : p ((a' * t') * ((s : R) * t)) ((c' * s') * ((s : R) * t)) :=
+      (hscale (a' * t') (c' * s') ((s : R) * t) (mul_ne_zero hs ht)).1 hp
+    have e1 : (a' * t') * ((s : R) * t) = (a * t) * ((s' : R) * t') := by
+      rw [show (a' * t') * ((s : R) * t) = (a' * (s : R)) * (t' * t) from by ring, ha.symm]
+      ring
+    have e2 : (c' * s') * ((s : R) * t) = (c * s) * ((s' : R) * t') := by
+      rw [show (c' * s') * ((s : R) * t) = (c' * (t : R)) * (s' * s) from by ring, hc.symm]
+      ring
+    rw [e1, e2] at h1
+    exact (hscale (a * t) (c * s) ((s' : R) * t') (mul_ne_zero hs' ht')).2 h1
+  · exact fun h => ⟨a, c, s, t, rfl, rfl, h⟩
+
+/-- Changing the denominator of a fraction: `a/s = (a t)/(s t)`. -/
+theorem mk'_denom_mul (a : R) (s t : nonZeroDivisors R) :
+    IsLocalization.mk' (FractionRing R) a s
+      = IsLocalization.mk' (FractionRing R) (a * (t : R)) (s * t) :=
+  mk'_of_cross (by simp only [Submonoid.coe_mul]; ring)
+
+/-- A fraction is zero iff its numerator is zero. -/
+theorem mk'_eq_zero_iff' (a : R) (s : nonZeroDivisors R) :
+    IsLocalization.mk' (FractionRing R) a s = 0 ↔ a = 0 := by
+  constructor
+  · intro h
+    have h' : a * (s : R) = 0 * (s : R) :=
+      mk'_cross (by rw [h, IsLocalization.mk'_zero])
+    rw [zero_mul] at h'
+    rcases mul_eq_zero.mp h' with h0 | h0
+    · exact h0
+    · exact absurd h0 (nonZeroDivisors.ne_zero s.2)
+  · intro h
+    subst h
+    exact IsLocalization.mk'_zero s
+
+/-- Sums of fractions with a common denominator. -/
+theorem mk'_add_same (u v : R) (w : nonZeroDivisors R) :
+    IsLocalization.mk' (FractionRing R) u w + IsLocalization.mk' (FractionRing R) v w
+      = IsLocalization.mk' (FractionRing R) (u + v) w := by
+  rw [← IsLocalization.mk'_add (M := nonZeroDivisors R) (S := FractionRing R) u v w w]
+  exact mk'_of_cross (by simp only [Submonoid.coe_mul]; ring)
+
+/-- The predicate on the fraction field, on a common denominator. -/
+theorem predFrac_same_denom {h : IsValPred p} {a c : R} {w : nonZeroDivisors R} :
+    predFrac p (IsLocalization.mk' (FractionRing R) a w)
+        (IsLocalization.mk' (FractionRing R) c w) ↔ p a c := by
+  rw [predFrac_iff h.scale]
+  exact (h.scale a c (w : R) (nonZeroDivisors.ne_zero w.2)).symm
+
+/-- **The fraction field of a domain with a valued predicate is again a valued predicate.** -/
+theorem predFrac_isValPred (h : IsValPred p) : IsValPred (predFrac p) where
+  refl := by
+    intro x
+    obtain ⟨a, s, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) x
+    exact (predFrac_same_denom (h := h)).2 (h.refl a)
+  trans := by
+    intro x y z hxy hyz
+    obtain ⟨a, s, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) x
+    obtain ⟨b, t, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) y
+    obtain ⟨c, u, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) z
+    rw [predFrac_iff h.scale] at hxy hyz ⊢
+    have hs : (s : R) ≠ 0 := nonZeroDivisors.ne_zero s.2
+    have ht : (t : R) ≠ 0 := nonZeroDivisors.ne_zero t.2
+    have hu : (u : R) ≠ 0 := nonZeroDivisors.ne_zero u.2
+    have h1 : p ((a * t) * u) ((b * s) * u) := (h.scale (a * t) (b * s) u hu).1 hxy
+    have h2 : p ((b * u) * s) ((c * t) * s) := (h.scale (b * u) (c * t) s hs).1 hyz
+    have h1' : p (a * t * u) (b * u * s) := by
+      rw [show b * s * u = b * u * s from by ring] at h1
+      exact h1
+    have h3 : p (a * t * u) (c * t * s) := h.trans _ _ _ h1' h2
+    have h3' : p ((a * u) * t) ((c * s) * t) := by
+      rw [show a * u * t = a * t * u from by ring, show c * s * t = c * t * s from by ring]
+      exact h3
+    exact (h.scale (a * u) (c * s) t ht).2 h3'
+  zero_le := by
+    intro x
+    obtain ⟨a, s, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) x
+    rw [show (0 : FractionRing R) = IsLocalization.mk' (FractionRing R) 0 s from
+      (IsLocalization.mk'_zero s).symm, predFrac_iff h.scale]
+    simpa using h.zero_le (a * (s : R))
+  zero_eq := by
+    intro x hx
+    obtain ⟨a, s, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) x
+    rw [show (0 : FractionRing R) = IsLocalization.mk' (FractionRing R) 0 s from
+      (IsLocalization.mk'_zero s).symm, predFrac_iff h.scale] at hx
+    have hzero : a * (s : R) = 0 := h.zero_eq _ (by simpa using hx)
+    have ha : a = 0 := by
+      rcases mul_eq_zero.mp hzero with h0 | h0
+      · exact h0
+      · exact absurd h0 (nonZeroDivisors.ne_zero s.2)
+    rw [ha, IsLocalization.mk'_zero]
+  ultra := by
+    intro x y
+    obtain ⟨a, s, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) x
+    obtain ⟨b, t, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) y
+    rw [show IsLocalization.mk' (FractionRing R) a s
+        = IsLocalization.mk' (FractionRing R) (a * (t : R)) (s * t) from mk'_denom_mul a s t,
+      show IsLocalization.mk' (FractionRing R) b t
+        = IsLocalization.mk' (FractionRing R) (b * (s : R)) (s * t) from
+        mk'_of_cross (by simp only [Submonoid.coe_mul]; ring),
+      mk'_add_same (a * (t : R)) (b * (s : R)) (s * t)]
+    simp only [predFrac_same_denom (h := h)]
+    exact h.ultra _ _
+  total := by
+    intro x y
+    obtain ⟨a, s, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) x
+    obtain ⟨b, t, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) y
+    rw [predFrac_iff h.scale, predFrac_iff h.scale]
+    exact h.total _ _
+  scale := by
+    intro x y z hz
+    obtain ⟨a, s, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) x
+    obtain ⟨b, t, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) y
+    obtain ⟨c, u, rfl⟩ := IsLocalization.exists_mk'_eq (M := nonZeroDivisors R)
+      (S := FractionRing R) z
+    have hc : c ≠ 0 := by
+      intro hc0
+      rw [hc0, IsLocalization.mk'_zero] at hz
+      exact hz rfl
+    have hu : (u : R) ≠ 0 := nonZeroDivisors.ne_zero u.2
+    rw [← IsLocalization.mk'_mul (M := nonZeroDivisors R) (S := FractionRing R) a c s u,
+    ← IsLocalization.mk'_mul (M := nonZeroDivisors R) (S := FractionRing R) b c t u,
+      predFrac_iff h.scale, predFrac_iff h.scale]
+    rw [show a * c * ((t * u : nonZeroDivisors R) : R) = (a * t * c) * u from by
+        simp only [Submonoid.coe_mul]; ring,
+      show b * c * ((s * u : nonZeroDivisors R) : R) = (b * s * c) * u from by
+        simp only [Submonoid.coe_mul]; ring]
+    rw [← h.scale (a * t * c) (b * s * c) u hu, ← h.scale (a * t) (b * s) c hc]
+
+end FracPred
+
+
+/-! ## 4. Every Mathlib valuation satisfies the axioms -/
+
+/-- The `L_val`-structure on a field given by a predicate `p` playing the role of `v x ≤ v y`. -/
+@[instance_reducible]
+def valStructOf (K : Type*) [Field K] (p : K → K → Prop) : Language.val.Structure K where
+  funMap := fun {_} f x =>
+    match f with
+    | ValFunc.add => x 0 + x 1
+    | ValFunc.mul => x 0 * x 1
+    | ValFunc.neg => - x 0
+    | ValFunc.zero => 0
+    | ValFunc.one => 1
+  RelMap := fun {_} r x =>
+    match r with
+    | ValRel.le => p (x 0) (x 1)
+
+/-- **A predicate satisfying the axioms makes its field a model of the theory of valued
+fields.**  In particular `valStructOf K (fun x y => v x ≤ v y)` is a model of `valField` for any
+Mathlib valuation `v`. -/
+theorem valField_model {K : Type*} [Field K] {p : K → K → Prop} (h : IsValPred p) :
+    @Theory.Model Language.val K (valStructOf K p) valField := by
+  letI : Language.val.Structure K := valStructOf K p
+  letI : CompatibleRing K := compatibleRingOfRing K
+  haveI : LHom.IsExpansionOn valRingHom K :=
+    { map_onFunction := by
+        intro n f x
+        cases f <;> rfl
+      map_onRelation := by
+        intro n r x
+        exact isEmptyElim r }
+  refine ⟨fun φ hφ => ?_⟩
+  simp only [valField, valFieldCore, Set.mem_union, Set.mem_singleton_iff] at hφ
+  rcases hφ with ((hφ | hφ) | rfl)
+  · rw [fieldPart, Set.mem_image] at hφ
+    obtain ⟨ψ, hψ, rfl⟩ := hφ
+    simpa only [Sentence.Realize, Formula.Realize, LHom.realize_onBoundedFormula] using
+      (Theory.realize_sentence_of_mem Theory.field hψ)
+  · rw [valAxioms, Set.mem_insert_iff, Set.mem_insert_iff, Set.mem_insert_iff,
+      Set.mem_insert_iff, Set.mem_insert_iff, Set.mem_singleton_iff] at hφ
+    rcases hφ with rfl | rfl | rfl | rfl | rfl | rfl
+    · exact axRefl_realize.2 h.refl
+    · exact axTrans_realize.2 h.trans
+    · exact axZeroLe_realize.2 h.zero_le
+    · exact axZeroEq_realize.2 h.zero_eq
+    · exact axUltra_realize.2 h.ultra
+    · exact axScale_realize.2 h.scale
+  · exact axTotal_realize.2 h.total
+
+
+/-! ## 4b. The dictionary: models of `valField` are exactly valued predicates -/
+
+/-- **A model of the theory of valued fields is a field with a valued predicate**, at the level
+of the ring operations and the binary predicate, with no value group in sight. -/
+theorem isValPred_of_model {K : Type*} [Field K] [Language.val.Structure K]
+    [CompatibleRing K] [valRingHom.IsExpansionOn K] (h : K ⊨ valField) :
+    @IsValPred K _ (predM : K → K → Prop) := by
+  have hcore : K ⊨ valFieldCore := Theory.Model.mono h (by simp [valField, valFieldCore])
+  haveI : K ⊨ valFieldCore := hcore
+  haveI : K ⊨ valField := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · exact axRefl_realize.1
+      (Theory.realize_sentence_of_mem valFieldCore (by simp [valFieldCore, valAxioms]))
+  · exact axTrans_realize.1
+      (Theory.realize_sentence_of_mem valFieldCore (by simp [valFieldCore, valAxioms]))
+  · exact axZeroLe_realize.1
+      (Theory.realize_sentence_of_mem valFieldCore (by simp [valFieldCore, valAxioms]))
+  · exact axZeroEq_realize.1
+      (Theory.realize_sentence_of_mem valFieldCore (by simp [valFieldCore, valAxioms]))
+  · exact axUltra_realize.1
+      (Theory.realize_sentence_of_mem valFieldCore (by simp [valFieldCore, valAxioms]))
+  · exact axTotal_realize.1
+      (Theory.realize_sentence_of_mem valField (by simp [valField]))
+  · exact axScale_realize.1
+      (Theory.realize_sentence_of_mem valFieldCore (by simp [valFieldCore, valAxioms]))
+
+/-- **The dictionary in the other direction**: a valued predicate makes the field a model of the
+theory of valued fields. -/
+theorem model_of_isValPred {K : Type*} [Field K] [Language.val.Structure K]
+    [CompatibleRing K] [valRingHom.IsExpansionOn K] (h : @IsValPred K _ (predM : K → K → Prop)) :
+    K ⊨ valField := by
+  refine ⟨fun φ hφ => ?_⟩
+  simp only [valField, valFieldCore, Set.mem_union, Set.mem_singleton_iff] at hφ
+  rcases hφ with (hφ | hφ) | rfl
+  · rw [fieldPart, Set.mem_image] at hφ
+    obtain ⟨ψ, hψ, rfl⟩ := hφ
+    simpa only [Sentence.Realize, Formula.Realize, LHom.realize_onBoundedFormula] using
+      (Theory.realize_sentence_of_mem Theory.field hψ)
+  · rw [valAxioms, Set.mem_insert_iff, Set.mem_insert_iff, Set.mem_insert_iff,
+      Set.mem_insert_iff, Set.mem_insert_iff, Set.mem_singleton_iff] at hφ
+    rcases hφ with rfl | rfl | rfl | rfl | rfl | rfl
+    · exact axRefl_realize.2 h.refl
+    · exact axTrans_realize.2 h.trans
+    · exact axZeroLe_realize.2 h.zero_le
+    · exact axZeroEq_realize.2 h.zero_eq
+    · exact axUltra_realize.2 h.ultra
+    · exact axScale_realize.2 h.scale
+  · exact axTotal_realize.2 h.total
+
+/-- **A field with ring operations and a binary predicate is a model of the theory of valued
+fields iff the predicate is a valued predicate.** -/
+theorem isValPred_iff_model {K : Type*} [Field K] [Language.val.Structure K]
+    [CompatibleRing K] [valRingHom.IsExpansionOn K] :
+    K ⊨ valField ↔ IsValPred (predM : K → K → Prop) :=
+  ⟨fun h => isValPred_of_model h, fun h => model_of_isValPred h⟩
+
+
+
+/-! ## 5. A valuation gives a model of `valField` -/
+
+/-- A nonzero element has nonzero value. -/
+theorem val_ne_zero {K : Type*} [Field K] {Γ₀ : Type*} [LinearOrderedCommGroupWithZero Γ₀]
+    (v : Valuation K Γ₀) {z : K} (hz : z ≠ 0) : v z ≠ 0 := by
+  intro h
+  have h1 : v z * v z⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel₀ hz, map_one]
+  rw [h, zero_mul] at h1
+  exact zero_ne_one h1
+
+/-- The predicate of a genuine valuation satisfies the axioms. -/
+theorem isValPred_of_valuation {K : Type*} [Field K] {Γ₀ : Type*}
+    [LinearOrderedCommGroupWithZero Γ₀] (v : Valuation K Γ₀) :
+    @IsValPred K _ (fun x y => v x ≤ v y) where
+  refl := fun _ => le_refl _
+  trans := fun _ _ _ h1 h2 => le_trans h1 h2
+  zero_le := fun x => by
+    rw [Valuation.map_zero]
+    exact zero_le
+  zero_eq := fun x hx => by
+    by_contra h
+    have h1 : v x = 0 := le_antisymm (by simpa using hx) zero_le
+    have h2 : v x * v x⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel₀ h, map_one]
+    rw [h1, zero_mul] at h2
+    exact zero_ne_one h2
+  ultra := fun x y => (le_max_iff.mp (Valuation.map_add_le_max' v x y))
+  total := fun x y => le_total (v x) (v y)
+  scale := fun x y z hz => by
+    rw [map_mul, map_mul, mul_comm (v x) (v z), mul_comm (v y) (v z)]
+    exact (mul_le_mul_iff_right₀ (zero_lt_iff.mpr (val_ne_zero v hz))).symm
+
+/-- **Every valued field is a model of `valField`.**  The `L_val`-structure `valStructure v` of a
+field with a Mathlib valuation satisfies the theory of valued fields. -/
+theorem valStructure_model {K : Type*} [Field K] {Γ₀ : Type*}
+    [LinearOrderedCommGroupWithZero Γ₀] (v : Valuation K Γ₀) :
+    @Theory.Model Language.val K (valStructure v) valField :=
+  valField_model (isValPred_of_valuation v)
+
+/-! ## 6. The coordinate ring of an abstract `L_val`-structure -/
+
+section RingBridge
+
+variable {A B : Type*} [CommRing A] [CompatibleRing A] [CommRing B] [CompatibleRing B]
+
+theorem ringHom_map_fun (f : A →+* B) {n : ℕ} (g : Language.ring.Functions n)
+    (x : Fin n → A) : f (Structure.funMap g x) = Structure.funMap g (f ∘ x) := by
+  cases g <;> simp
+
+end RingBridge
+
+/-- The zero of a ring structure, described intrinsically (no `CommRing` needed). -/
+def zeroOf (T : Type*) [Language.ring.Structure T] : T :=
+  @Structure.funMap Language.ring T _ 0 (ringFunc.zero : Language.ring.Functions 0)
+    (fun i => i.elim0)
+
+section Kernel
+
+variable {S : Type} [Language.val.Structure S] [Language.ring.Structure S]
+  [valRingHom.IsExpansionOn S]
+variable {M : Type} [CommRing M] [Language.val.Structure M] [CompatibleRing M]
+  [valRingHom.IsExpansionOn M]
+
+/-- An `L_val`-embedding is in particular an `L_ring`-embedding. -/
+def ringEmbOfVal (e : S ↪[Language.val] M) : S ↪[Language.ring] M where
+  toFun := e
+  inj' := e.inj'
+  map_fun' := by
+    intro n g x
+    rw [← LHom.map_onFunction (ϕ := valRingHom) (M := M) (f := g) (x := ⇑e ∘ x),
+      ← LHom.map_onFunction (ϕ := valRingHom) (M := S) (f := g) (x := x)]
+    exact e.map_fun (valRingHom.onFunction g) x
+
+/-- An embedding of valued structures preserves and reflects the predicate. -/
+theorem pred_emb_iff (e : S ↪[Language.val] M) (u v : S) :
+    predM (e u) (e v) ↔ predM u v := by
+  have h := e.map_rel' ValRel.le ![u, v]
+  rw [show (e.toFun ∘ ![u, v]) = ![e u, e v] from by funext i; fin_cases i <;> rfl] at h
+  exact h
+
+theorem map_zeroOf (e : S ↪[Language.val] M) : e (zeroOf S) = zeroOf M := by
+  have h := e.map_fun (valRingHom.onFunction (ringFunc.zero : Language.ring.Functions 0))
+    (fun i => i.elim0)
+  have h1 : @Structure.funMap Language.val S _ 0
+      (valRingHom.onFunction (ringFunc.zero : Language.ring.Functions 0)) (fun i => i.elim0)
+      = zeroOf S :=
+    LHom.map_onFunction (ϕ := valRingHom) (f := (ringFunc.zero : Language.ring.Functions 0))
+      (x := (fun i => i.elim0))
+  have h2 : @Structure.funMap Language.val M _ 0
+      (valRingHom.onFunction (ringFunc.zero : Language.ring.Functions 0))
+      (fun i => (i.elim0 : M)) = zeroOf M :=
+    LHom.map_onFunction (ϕ := valRingHom) (f := (ringFunc.zero : Language.ring.Functions 0))
+      (x := (fun i => i.elim0))
+  have hcomp : (⇑e ∘ (fun i => i.elim0 : Fin 0 → S)) = (fun i => i.elim0 : Fin 0 → M) := by
+    funext i
+    exact i.elim0
+  rw [hcomp, h1, h2] at h
+  exact h
+
+theorem zeroOf_eq_zero : zeroOf M = 0 := by
+  rw [zeroOf]
+  exact CompatibleRing.funMap_zero (fun i => i.elim0)
+
+/-- The polynomial relations of `S`, computed in `M`. -/
+noncomputable abbrev relIdeal (e : S ↪[Language.val] M) : Ideal (FreeCommRing S) :=
+  RingHom.ker (FreeCommRing.lift (fun s => e s))
+
+/-- `FreeCommRing.lift` evaluates at a term of the language of rings. -/
+theorem lift_eq_apply_term (e : S ↪[Language.val] M) (p : FreeCommRing S) :
+    FreeCommRing.lift (fun s => e s) p
+      = e (Term.realize (L := Language.ring) (fun s => s) (Ring.termOfFreeCommRing p)) := by
+  rw [← Ring.realize_termOfFreeCommRing p (fun s => e s)]
+  exact HomClass.realize_term (ringEmbOfVal e) (v := fun s => s)
+
+/-- The ideal of relations is the set of polynomials whose value in `S` is the zero of `S`: it is
+intrinsic to `S`. -/
+theorem mem_relIdeal_iff (e : S ↪[Language.val] M) (p : FreeCommRing S) :
+    p ∈ relIdeal e ↔
+      Term.realize (L := Language.ring) (fun s => s) (Ring.termOfFreeCommRing p) = zeroOf S := by
+  rw [relIdeal, RingHom.mem_ker, lift_eq_apply_term]
+  constructor
+  · intro h
+    apply e.injective
+    rw [h, map_zeroOf, zeroOf_eq_zero]
+  · intro h
+    rw [h, map_zeroOf, zeroOf_eq_zero]
+
+/-- **The polynomial relations of `S` do not depend on the valued field it is embedded in.** -/
+theorem ker_lift_eq (e : S ↪[Language.val] M) {N : Type} [CommRing N]
+    [Language.val.Structure N] [CompatibleRing N] [valRingHom.IsExpansionOn N]
+    (f : S ↪[Language.val] N) : relIdeal e = relIdeal f := by
+  ext p
+  rw [mem_relIdeal_iff e p, mem_relIdeal_iff f p]
+
+end Kernel
+
+/-! ## 6b. Bridging the value-symbols to the ring symbols -/
+
+/-- The function symbols of `L_val` are those of `L_ring`. -/
+def valToRing : ∀ {n : ℕ}, Language.val.Functions n → Language.ring.Functions n
+  | _, ValFunc.add => ringFunc.add
+  | _, ValFunc.mul => ringFunc.mul
+  | _, ValFunc.neg => ringFunc.neg
+  | _, ValFunc.zero => ringFunc.zero
+  | _, ValFunc.one => ringFunc.one
+
+theorem valFunMap_eq_ringVal {N : Type*} [Language.val.Structure N] [Language.ring.Structure N]
+    [valRingHom.IsExpansionOn N] {n : ℕ} (g : Language.val.Functions n) (x : Fin n → N) :
+    Structure.funMap (L := Language.val) g x
+      = Structure.funMap (L := Language.ring) (valToRing g) x := by
+  cases g with
+  | add => exact LHom.map_onFunction (ϕ := valRingHom) (f := ringFunc.add) (x := x)
+  | mul => exact LHom.map_onFunction (ϕ := valRingHom) (f := ringFunc.mul) (x := x)
+  | neg => exact LHom.map_onFunction (ϕ := valRingHom) (f := ringFunc.neg) (x := x)
+  | zero => exact LHom.map_onFunction (ϕ := valRingHom) (f := ringFunc.zero) (x := x)
+  | one => exact LHom.map_onFunction (ϕ := valRingHom) (f := ringFunc.one) (x := x)
+
+theorem valToRing_onFunction {n : ℕ} (f : Language.ring.Functions n) :
+    valToRing (valRingHom.onFunction f) = f := by
+  cases f <;> rfl
+
+/-- A ring homomorphism is compatible with the valuation symbols. -/
+theorem valFunMap_ringHom_map {A B : Type*} [CommRing A] [CompatibleRing A]
+    [Language.val.Structure A] [valRingHom.IsExpansionOn A]
+    [CommRing B] [CompatibleRing B] [Language.val.Structure B]
+    [valRingHom.IsExpansionOn B]
+    (φ : A →+* B) {n : ℕ} (g : Language.val.Functions n) (x : Fin n → A) :
+    φ (Structure.funMap (L := Language.val) g x)
+      = Structure.funMap (L := Language.val) g (φ ∘ x) := by
+  rw [valFunMap_eq_ringVal (g := g) (x := x),
+    valFunMap_eq_ringVal (g := g) (x := ⇑φ ∘ x), ringHom_map_fun]
+
+/-- Cross multiplication for a valued predicate in a field. -/
+theorem pred_div_iff {K : Type*} [Field K] {p : K → K → Prop} (h : IsValPred p)
+    {x y b d : K} (hb : b ≠ 0) (hd : d ≠ 0) :
+    p (x / b) (y / d) ↔ p (x * d) (y * b) := by
+  have hbd : b * d ≠ 0 := mul_ne_zero hb hd
+  rw [div_eq_mul_inv x b, div_eq_mul_inv y d,
+    h.scale (x * b⁻¹) (y * d⁻¹) (b * d) hbd]
+  have e1 : x * b⁻¹ * (b * d) = x * d := by field_simp
+  have e2 : y * d⁻¹ * (b * d) = y * b := by field_simp
+  rw [e1, e2]
+
+/-- The binary predicate on any `L_val`-structure, in components. -/
+theorem relMap_two {N : Type*} [Language.val.Structure N] (r : Fin 2 → N) :
+    Structure.RelMap (L := Language.val) ValRel.le r ↔ predM (r 0) (r 1) := by
+  have h : ∀ (f : Fin 2 → N),
+      Structure.RelMap (L := Language.val) ValRel.le f = predM (f 0) (f 1) := by
+    intro f
+    have h2 : f = ![f 0, f 1] := by funext i; fin_cases i <;> simp
+    rw [h2]
+    simp
+  rw [h r]
+
+/-! ## 7. The coordinate ring of `S` and the embedding of `S` into it -/
+
+section Construction
+
+variable {S : Type} [Language.val.Structure S] [Language.ring.Structure S]
+  [valRingHom.IsExpansionOn S]
+variable {M : Type} [CommRing M] [Language.val.Structure M] [CompatibleRing M]
+  [valRingHom.IsExpansionOn M] [IsDomain M]
+
+/-- The coordinate ring of `S` relative to an embedding into a valued domain `M`. -/
+noncomputable abbrev coordRing (e : S ↪[Language.val] M) : Type :=
+  FreeCommRing S ⧸ relIdeal e
+
+noncomputable instance coordRing.instCommRing (e : S ↪[Language.val] M) :
+    CommRing (coordRing e) :=
+  inferInstanceAs (CommRing (FreeCommRing S ⧸ relIdeal e))
+
+instance coordRing.relIdealIsPrime (e : S ↪[Language.val] M) : (relIdeal e).IsPrime :=
+  RingHom.ker_isPrime _
+
+noncomputable instance coordRing.instIsDomain (e : S ↪[Language.val] M) :
+    IsDomain (coordRing e) :=
+  inferInstanceAs (IsDomain (FreeCommRing S ⧸ relIdeal e))
+
+noncomputable instance coordRing.instCompatibleRing (e : S ↪[Language.val] M) :
+    CompatibleRing (coordRing e) :=
+  compatibleRingOfRing _
+
+/-- Evaluation of the coordinate ring in `M`. -/
+noncomputable abbrev coordEval (e : S ↪[Language.val] M) : coordRing e →+* M :=
+  Ideal.Quotient.lift (relIdeal e) (FreeCommRing.lift (fun s => e s)) (fun a ha => ha)
+
+theorem coordEval_mk (e : S ↪[Language.val] M) (p : FreeCommRing S) :
+    coordEval e (Ideal.Quotient.mk (relIdeal e) p) = FreeCommRing.lift (fun s => e s) p := rfl
+
+theorem coordEval_injective (e : S ↪[Language.val] M) : Function.Injective (coordEval e) := by
+  intro x y hxy
+  obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective (I := relIdeal e) x
+  obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective (I := relIdeal e) y
+  rw [coordEval_mk, coordEval_mk] at hxy
+  rw [Ideal.Quotient.mk_eq_mk_iff_sub_mem, RingHom.mem_ker, map_sub, hxy, sub_self]
+
+/-- The `L_val`-structure of the coordinate ring: ring operations, and the predicate pulled back
+from `M`. -/
+@[instance_reducible]
+noncomputable instance coordValStruct (e : S ↪[Language.val] M) :
+    Language.val.Structure (coordRing e) where
+  funMap := fun {_} f x => Structure.funMap (L := Language.ring) (valToRing f) x
+  RelMap := fun {_} r x =>
+    match r with
+    | ValRel.le => predM (coordEval e (x 0)) (coordEval e (x 1))
+
+instance coordValStruct.expansion (e : S ↪[Language.val] M) :
+    @LHom.IsExpansionOn Language.ring Language.val valRingHom (coordRing e) _ (coordValStruct e) where
+  map_onFunction := by
+    intro n f x
+    cases f <;> rfl
+  map_onRelation := fun {n} r x => isEmptyElim r
+
+/-- The predicate of the coordinate ring. -/
+def predCoord (e : S ↪[Language.val] M) (a c : coordRing e) : Prop :=
+  predM (coordEval e a) (coordEval e c)
+
+theorem mk_of_funMap (e : S ↪[Language.val] M) {n : ℕ}
+    (g : Language.ring.Functions n) (x : Fin n → S) :
+    Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (Structure.funMap (L := Language.ring) g x))
+      = Structure.funMap (L := Language.ring) g
+          (fun i => Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x i))) := by
+  letI : CompatibleRing (FreeCommRing S) := compatibleRingOfRing _
+  have hq := ringHom_map_fun (Ideal.Quotient.mk (relIdeal e)) g
+    (fun i => FreeCommRing.of (x i))
+  simp only [Function.comp_def] at hq
+  rw [← hq, Ideal.Quotient.mk_eq_mk_iff_sub_mem, RingHom.mem_ker, map_sub, FreeCommRing.lift_of]
+  have h2 : FreeCommRing.lift (fun s => e s)
+      (Structure.funMap (L := Language.ring) g (fun i => FreeCommRing.of (x i)))
+        = e (Structure.funMap (L := Language.ring) g x) := by
+    have he := ringHom_map_fun (FreeCommRing.lift (fun s => e s)) g
+      (fun i => FreeCommRing.of (x i))
+    simp only [Function.comp_def, FreeCommRing.lift_of] at he
+    have he2 := (ringEmbOfVal e).map_fun g x
+    simp only [Function.comp_def] at he2
+    exact he.trans he2.symm
+  rw [h2, sub_self]
+
+theorem mk_of_valFunMap (e : S ↪[Language.val] M) {n : ℕ}
+    (g : Language.val.Functions n) (x : Fin n → S) :
+    Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (Structure.funMap (L := Language.val) g x))
+      = Structure.funMap (L := Language.val) g
+          (fun i => Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x i))) := by
+  rw [valFunMap_eq_ringVal (g := g) (x := x)]
+  exact mk_of_funMap e (valToRing g) x
+
+theorem coordMap_injective (e : S ↪[Language.val] M) :
+    Function.Injective
+      (fun s : S => Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of s)) := by
+  intro a b hab
+  have h1 : FreeCommRing.of a - FreeCommRing.of b ∈ relIdeal e :=
+    (Ideal.Quotient.mk_eq_mk_iff_sub_mem (I := relIdeal e) (x := FreeCommRing.of a)
+      (y := FreeCommRing.of b)).mp hab
+  have h2 : FreeCommRing.lift (fun s => e s) (FreeCommRing.of a - FreeCommRing.of b) = 0 := h1
+  rw [map_sub, FreeCommRing.lift_of, FreeCommRing.lift_of, sub_eq_zero] at h2
+  exact e.injective h2
+
+/-- **`S` embeds in its coordinate ring as an `L_val`-structure.** -/
+noncomputable def coordEmbedding (e : S ↪[Language.val] M) :
+    S ↪[Language.val] coordRing e where
+  toFun := fun s => Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of s)
+  inj' := coordMap_injective e
+  map_fun' := fun {n} g x => mk_of_valFunMap e g x
+  map_rel' := by
+    intro n r x
+    cases r with
+    | le =>
+      rw [show ((fun s => Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of s)) ∘ x)
+          = (fun i => Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x i))) from rfl]
+      rw [relMap_two (r := (fun i => Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x i)))),
+        relMap_two (r := x)]
+      show predM (coordEval e (Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x 0))))
+             (coordEval e (Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x 1))))
+          ↔ predM (x 0) (x 1)
+      rw [coordEval_mk, coordEval_mk, FreeCommRing.lift_of, FreeCommRing.lift_of]
+      exact pred_emb_iff e (x 0) (x 1)
+
+/-- The predicate of the coordinate ring is a valued predicate. -/
+theorem predCoord_isValPred (e : S ↪[Language.val] M)
+    (h : @IsValPred M _ (predM : M → M → Prop)) :
+    @IsValPred (coordRing e) _ (predCoord e) where
+  refl := fun x => h.refl (coordEval e x)
+  trans := fun x y z hxy hyz => h.trans _ _ _ hxy hyz
+  zero_le := fun x => by
+    simp only [predCoord, map_zero]
+    exact h.zero_le (coordEval e x)
+  zero_eq := fun x hx => by
+    simp only [predCoord, map_zero] at hx
+    apply coordEval_injective e
+    rw [map_zero]
+    exact h.zero_eq (coordEval e x) hx
+  ultra := fun x y => by
+    simp only [predCoord, map_add]
+    exact h.ultra (coordEval e x) (coordEval e y)
+  total := fun x y => h.total (coordEval e x) (coordEval e y)
+  scale := fun x y z hz => by
+    have hz' : coordEval e z ≠ 0 := fun h0 =>
+      hz (coordEval_injective e (by rw [h0, map_zero]))
+    simp only [predCoord, map_mul]
+    exact h.scale (coordEval e x) (coordEval e y) (coordEval e z) hz'
+
+end Construction
+
+/-! ## Axiom checks -/
+
+#print axioms ValPM.axRefl_realize
+#print axioms ValPM.axTrans_realize
+#print axioms ValPM.axZeroLe_realize
+#print axioms ValPM.axZeroEq_realize
+#print axioms ValPM.axUltra_realize
+#print axioms ValPM.axScale_realize
+#print axioms ValPM.axTotal_realize
+#print axioms ValPM.predFrac_iff
+#print axioms ValPM.predFrac_isValPred
+#print axioms ValPM.valField_model
+#print axioms ValPM.isValPred_of_valuation
+#print axioms ValPM.valStructure_model
+#print axioms ValPM.isValPred_of_model
+#print axioms ValPM.model_of_isValPred
+#print axioms ValPM.isValPred_iff_model
+#print axioms ValPM.ker_lift_eq
+#print axioms ValPM.mem_relIdeal_iff
+#print axioms ValPM.valFunMap_ringHom_map
+#print axioms ValPM.pred_div_iff
+#print axioms ValPM.mk_of_valFunMap
+#print axioms ValPM.coordEmbedding
+#print axioms ValPM.predCoord_isValPred
