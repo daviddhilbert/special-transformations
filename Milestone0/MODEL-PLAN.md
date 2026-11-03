@@ -140,6 +140,24 @@ which together with `PadicComplex.valuation_p` gives `padicComplex_not_model_ACV
 clean form of the `ℂ_[p]` obstruction: residue characteristic zero is exactly "the valuation
 of every positive integer is at least `1`", which the p-adic valuation fails at `p`.
 
+## The general model exists
+
+`accepted/ACVF_general_model.lean` proves, against the frozen axioms,
+
+```
+model_ACVF [IsAlgClosed K] (v : Valuation K Γ₀) : (C v) ⊨ Axioms.ACVF
+```
+
+at `C v = K ⊕ RV₀ v` for an **arbitrary** valuation — all eight summands, with `kAdd`/`kNeg`
+defined as the residue-field operations transported through `KUnits ≅ k^×`, and `rvGroup`
+including divisibility. `model_ACVF00` additionally needs `[CharZero K]` and
+`∀ n ≠ 0, 1 ≤ v n`, so `ACVF(0,0)` is a strictly stronger requirement and fails at `ℂ_[p]`.
+
+So `ACVF` — the theory over which Theorems 2.3 and 2.8 are stated — has a model at every
+algebraically closed valued field, trivial or not. What the milestone still needs is the
+substructure `S` with nontrivial `Γ(S)` at a nontrivially valued field, which is now a choice
+of `S` rather than a theorem about `ACVF`.
+
 ## What is still missing
 
 Of the eight blocks of `Axioms.ACVF` at the general carrier `K ⊕ RV₀ v`, four are done against
