@@ -338,3 +338,28 @@ have 0 errors, and there are exactly **three** real `sorry`s in it —
    `∃ y' (VF), y' ≠ 0 ∧ ψ[y'/y]`, with `rv (t)` read as `t` and `rv t ≤ rv s` as `v t ≤ v s`.
    The work is the recursion through the *tagged* encoding of `Milestone0/Encoding.lean`
    (`allSorted`, `tRVZero`, the junk conventions of each function symbol), not the mathematics.
+
+## Cross-checks that exist but are not in `QE/`
+
+Two hard results in this development have more than one formal proof.  The second proofs live in
+the swarm records (`.ultramath/`) and are not copied into `QE/`, because this repo's files are
+standalone snapshots and copying them would duplicate several hundred lines for no gain.  They are
+recorded here so that a reader knows the evidence exists.
+
+* **`star`** (Johnson 2.2.7 for valuation rings).  Landed proof: `QE/Amalgamation_reduced.lean`,
+  Johnson's route via 2.2.5 and 2.2.6 (minimal primes of `B₁ ⊗_B B₂`, transported along
+  `B₁ ⊗_B B₂ ↪ A₁ ⊗_B A₂`).  **Independent second proof**:
+  `.ultramath/smw0fcnxx/m2/Star.lean` (781 lines), same statement verbatim, axioms
+  `{propext, Classical.choice, Quot.sound}`, by a different route — two going-down steps for flat
+  maps (`Ideal.exists_ideal_le_liesOver_of_le`) replace both 2.2.5 and 2.2.6, so the argument
+  never mentions minimal primes.  Both proofs reduce to Mathlib's
+  `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout`.
+* **`CheeseMeetsBase`** (Johnson 2.3.8).  Landed: `QE/CheeseMeetsBase.lean` and, merged,
+  `QE/OneEC_val.lean`.  One independent attempt
+  (`.ultramath/smw0fobjd/m2/CheeseMeetsBase.lean`) turned out to be a *copy of the landed file*
+  rather than a second proof; its own design was unused.  So 2.3.8 currently has one proof, not
+  two, and that is worth knowing before trusting it.
+
+`AtomGood` (2.3.1(ii)) does have two independent proofs: the landed cell decomposition
+(`QE/OneEC_val.lean`, member m4 of swarm `smw0f42v0`) and an erase-recursion proof
+(`.ultramath/smw0f42v0/m8/AtomGood.lean`, member m8), both checked.
