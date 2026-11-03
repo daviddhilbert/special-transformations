@@ -18,6 +18,20 @@ Contents.
   `Prop`s, and Proposition 3.9 (`lrv:mono:lift`) and Theorem 3.10 (`qe:acvf`) are *proved* from
   them.
 
+Converted to the project's ruling that the paper's `0` and `∞` are ONE element (the element
+`rv(0)`, which is the residue field's zero and the absorbing element of `RV`).  As in
+`QE/Reduction_Lv.lean`: the constructor `Fn.rvInfty` is deleted, `tRVInfty`/`iRVInfty` are
+definitions of `tRVZero`/`iRVZero`, `Axioms.rvSurj` is the paper's surjectivity
+(`∀ t ≠ rv(0), ∃ x, rv x = t`), the axioms that name the top through `tRVInfty` are unchanged
+textually and are now the `rvZero`-versions, and the `RV0` alias is the two-layer `RV`.
+The only theorem whose statement changed is `Axioms.rvSurj`.
+
+The unrestricted `rvSurj` has content: with it, `RV = rv(VF) ∪ {0}` is a *theorem* about models
+of `ACVF` (`RVeqRvVF_of_model`, proved here from the realization lemmas in the `Realize`
+section), whereas the old `Kˣ`-guarded axiom could not exclude "junk" `RV`-elements.  The
+hypothesis `AlgIngredients.rv` is therefore discharged: `theorem_2_3_of_three` is Theorem 3.10
+with only the three remaining ingredients.
+
 Nothing is assumed as an `axiom`; every unproved ingredient is a named hypothesis of the
 theorem that uses it.  See the report for the list.
 -/
@@ -34,7 +48,8 @@ namespace Milestone0
 /-! ## Part 0. The paper's `RV` sort (conventions of `SpecialTransformations/Basic.lean`) -/
 
 /- The algebraic layer of the paper, as it exists in the repository: `RV^× = Kˣ/(1+M)`,
-`RV = RV^× ∪ {∞}`, `RV₀ = RV ∪ {0}` and `rv : K → RV`. -/
+`RV = RV^× ∪ {rv 0}` and `rv : K → RV`.  The paper's `∞` is `rv 0`; the `RV` sort has one
+absorbing element, which is also the residue field's zero. -/
 namespace Valued
 
 open Valuation
@@ -45,13 +60,15 @@ variable {K Γ₀ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ₀]
 /-- `RV× = Kˣ / (1 + M)`, the multiplicative RV sort. -/
 abbrev RVUnit : Type _ := Kˣ ⧸ v.valuationSubring.principalUnitGroup
 
-/-- The RV sort with the point at infinity: `RV = RV× ∪ {∞}`.  `none` is `∞`. -/
+/-- The `RV` sort: `RV = RV^× ∪ {rv 0}`.  `none` is `rv 0`, the absorbing element — the paper's
+`∞`, which is also the residue field's zero `0`. -/
 abbrev RV : Type _ := Option (RVUnit v)
 
-/-- `RV0 = RV ∪ {0}`.  The outer `none` is the added `0`. -/
-abbrev RV0 : Type _ := Option (RV v)
+/-- The paper's `RV₀ = RV ∪ {0}`.  Since `0 = ∞ = rv 0` is already the element `none` of `RV`,
+`RV₀` is the same type; the alias is kept for the paper's notation. -/
+abbrev RV0 : Type _ := RV v
 
-/-- The quotient map `rv : K → RV`, with `rv 0 = ∞`. -/
+/-- The quotient map `rv : K → RV`, with `rv 0 = 0` (the paper's `∞`). -/
 noncomputable def rv (x : K) : RV v := by
   classical
   exact if h : x = 0 then none else some (QuotientGroup.mk (Units.mk0 x h))
@@ -98,10 +115,10 @@ inductive Fn : ℕ → Type where
   | vfMul : Fn 2
   /-- `1` of the group language of the `RV` sort -/
   | rvOne : Fn 0
-  /-- the constant `0` of the `RV` sort (an element of `K`) -/
+  /-- the constant `0` of the `RV` sort: the residue field's zero, which is also `rv(0)` and
+  the absorbing element of `RV`.  The paper writes this element both as `0` and as `∞`; it is
+  one element, so the language has one constant. -/
   | rvZero : Fn 0
-  /-- the constant `∞` of the `RV` sort -/
-  | rvInfty : Fn 0
   /-- `×` of the `RV` sort -/
   | rvMul : Fn 2
   /-- `+ : K² → K` of the `RV` sort -/
@@ -155,8 +172,10 @@ def tVFMul (t u : Tm n) : Tm n := Term.func Fn.vfMul ![t, u]
 def tRVOne : Tm n := Term.func Fn.rvOne fun i => i.elim0
 /-- `0` of the `RV` sort -/
 def tRVZero : Tm n := Term.func Fn.rvZero fun i => i.elim0
-/-- `∞` of the `RV` sort -/
-def tRVInfty : Tm n := Term.func Fn.rvInfty fun i => i.elim0
+/-- The paper's `∞` is `rv(0)`, i.e. the absorbing element `rvZero` of the `RV` sort: the paper's
+two symbols `0` and `∞` name one element.  Kept as a definition so that the axioms can be read
+in the paper's notation. -/
+def tRVInfty : Tm n := tRVZero
 /-- `×` of the `RV` sort -/
 def tRVMul (t u : Tm n) : Tm n := Term.func Fn.rvMul ![t, u]
 /-- `+ : K² → K` of the `RV` sort -/
@@ -198,7 +217,12 @@ def pLe (t u : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₂ R
 def pEq (t u : Tm n) : Bf n := t =' u
 /-- the paper's `RV = RV-sort ∖ {0}` -/
 def pRV (t : Tm n) : Bf n := ∼(pEq t tRVZero)
-/-- the paper's `K = RV-sort ∖ {∞}` -/
+/-- the paper's `RV-sort ∖ {∞}`.
+
+**Caution.**  Since `∞ = rv(0) = 0`, this predicate is `RV ∖ {0}` — the multiplicative group
+`RV^×` — and *not* the residue field `K`: `K = K^× ∪ {0}` is `pInK`, which does contain the
+absorbing element.  The name is kept only because the paper's own notation `RV ∖ {∞}` appears
+in its statements; `pK` is the same predicate as `pRV`. -/
 def pK (t : Tm n) : Bf n := ∼(pEq t tRVInfty)
 /-- the paper's `RV₀ = RV ∪ {0}`, i.e. the whole `RV` sort -/
 def pRV0 (_t : Tm n) : Bf n := ⊤
@@ -206,9 +230,10 @@ def pRV0 (_t : Tm n) : Bf n := ⊤
 def pGtOne (t : Tm n) : Bf n := pLe tRVOne t ⊓ ∼(pLe t tRVOne)
 /-- `t ∈ K = K^× ∪ {0}`, the residue field inside the `RV` sort.
 
-Not the same as `t ≠ ∞`: when `Γ` is nontrivial the elements of `RV ∖ {0, ∞}` of value
-`≠ 1` are not in `K`, and the residue-field operations are junk there.  Definition 2.1(d)
-defines `K` as `K^× ∪ {0}`, with `K^×` the predicate, i.e. axiom (4)'s class of `1`. -/
+Not the same as `t ≠ 0`: when `Γ` is nontrivial the elements of `RV ∖ {0}` of value `≠ 1`
+are not in `K`, and the residue-field operations are junk there.  Definition 2.1(d)
+defines `K` as `K^× ∪ {0}`, with `K^×` the predicate, i.e. axiom (4)'s class of `1`.  The
+`0` here is `rv(0)`, the absorbing element of `RV`. -/
 def pInK (t : Tm n) : Bf n := pUnits t ⊔ pEq t tRVZero
 
 end LRV
@@ -243,14 +268,14 @@ def exSorted {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
 
 /-! ### Quantification over the residue field `K = K^× ∪ {0}`
 
-The `RV` sort's carrier holds the residue zero `0`, the multiplicative group `K^×`, *and* the
-point `∞`.  The paper's field `K = K^× ∪ {0}` is therefore the *definable* subset
-`RV-sort ∖ {∞}` — the constant `∞` is the marker of "not in `K`".  Axioms about the field `K`
-must be relativised to it: with the sort predicate alone they would also be asserted at `∞`,
-where `×` is absorbing (`t × ∞ = ∞`), and the field axiom "every nonzero element is
-invertible" would then force `0 = ∞`. -/
+The `RV` sort's carrier is the multiplicative group `RV^×` together with one absorbing element,
+`rv 0 = 0 = ∞`, which is also the residue field's zero.  The paper's field is
+`K = K^× ∪ {0}` — the units together with the absorbing element — and that is *not* the same as
+`RV ∖ {0}`, which is the group `RV^×`: when `Γ` is nontrivial there are elements of value
+`≠ 1` in `RV^×` at which the residue operations are junk.  Axioms about the field `K` are
+therefore relativised to `pInK t = (t ∈ K^×) ⊔ (t = 0)`, not to `t ≠ ∞ = 0`. -/
 
-/-- `⋀ i < k, x_i ≠ ∞`: the tuple lies in `K = RV-sort ∖ {∞}` -/
+/-- `⋀ i < k, x_i ∈ K`: the tuple lies in `K = K^× ∪ {0}` -/
 def kHyps {k : ℕ} : Bf k :=
   (List.finRange k).foldr (fun i acc => pInK (tv i.val i.isLt) ⊓ acc) ⊤
 
@@ -337,10 +362,10 @@ def sdRVMul : LRV.Sentence := allSorted ![.rv, .rv] (pRVsort (tRVMul &0 &1))
 /-- The predicate `Kˣ` holds only of elements of the `RV` sort.
 
 Its actual content is axiom (4)'s `leClassOne`, which makes `Kˣ` the class of `1` — a
-*proper* subgroup of the multiplicative group `RV ∖ {0, ∞}` whenever `Γ` is nontrivial.
-Identifying `Kˣ` with all of `RV ∖ {0, ∞}` (as an earlier version did) puts every
-`x ∉ {0, ∞}` in the class of `1`, hence `1 ≤ x ≤ 1`, hence makes the preorder trivial and
-`Γ` trivial — contradicting the paper's standing hypothesis that `Γ(S)` is nontrivial. -/
+*proper* subgroup of the multiplicative group `RV ∖ {0}` whenever `Γ` is nontrivial.
+Identifying `Kˣ` with all of `RV ∖ {0}` puts every `x ≠ 0` in the class of `1`, hence
+`1 ≤ x ≤ 1`, hence makes the preorder trivial and `Γ` trivial — contradicting the paper's
+standing hypothesis that `Γ(S)` is nontrivial. -/
 def sdUnits : LRV.Sentence := allOne (pUnits &0 ⟹ pRVsort &0)
 /-- `K = Kˣ ∪ {0}` is closed under `+` -/
 def sdKAdd : LRV.Sentence :=
@@ -405,12 +430,12 @@ def vfField : LRV.Theory :=
 def vfAlgClosed : LRV.Theory := {s | ∃ k, 1 ≤ k ∧ s = acfScheme .vf tVFZero tVFAdd tVFMul k}
 
 /-- Definition 2.2 item 3: `(K, 0, 1, +, -, ×)` is an algebraically closed field, where
-`K = K^× ∪ {0} = RV-sort ∖ {∞}`.
+`K = K^× ∪ {0}`, the units of `RV` together with the absorbing element `0 = ∞ = rv 0`.
 
 Every quantifier is relativised to `K` (`allSortedK`, `exSortedK`), not merely to the `RV`
-sort.  This is not cosmetic: the `RV` sort's carrier also contains `∞`, where `×` is
-absorbing, so asserting the field axioms — in particular "every nonzero element is
-invertible" — at `∞` forces `0 = ∞` and destroys the theory. -/
+sort.  This is not cosmetic: `RV^×` also contains the elements of value `≠ 1`, where the
+residue operations are junk, so asserting the field axioms at every element of `RV`
+(equivalently at every `t ≠ ∞`, since `RV ∖ {0}` *is* the group) would force `Γ` trivial. -/
 def kField : LRV.Theory :=
   ofList
     [ /- associativity of `+` -/
@@ -464,11 +489,12 @@ def rvDivisible (k : ℕ) : LRV.Sentence :=
   allSorted ![.rv] (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVPow &1 k) &0))
 /-- `t × 0 = 0` for `t ∈ K` -/
 def rvMulZeroK : LRV.Sentence := allSorted ![.rv] (pInK &0 ⟹ pEq (tRVMul &0 tRVZero) tRVZero)
-/-- `t × ∞ = ∞` for `t ∈ RV₀`, i.e. for every `t` of the `RV` sort -/
+/-- `t × 0 = 0` for every `t` of the `RV` sort: the absorbing element.  (This is the paper's
+`t × ∞ = ∞`; `∞ = rv 0 = 0`.) -/
 def rvMulInfty : LRV.Sentence := allSorted ![.rv] (pEq (tRVMul &0 tRVInfty) tRVInfty)
 
 /-- Definition 2.2 item 2: `(RV^×, 1, ×)` is a divisible abelian group, with `×`
-augmented by `t × 0 = 0` and `t × ∞ = ∞`. -/
+augmented by `t × 0 = 0`, i.e. `0 = ∞ = rv 0` absorbing. -/
 def rvGroup : LRV.Theory :=
   ofList [rvOneMem, rvMulMem, rvMulAssoc, rvMulComm, rvMulOne, rvMulInv, rvMulZeroK,
       rvMulInfty] ∪
@@ -509,9 +535,12 @@ def rvEqInfty : LRV.Sentence := allSorted ![.vf] (pEq (tRv &0) tRVInfty ⟹ pEq 
 /-- `rv` is a group homomorphism on `VF^×` -/
 def rvMulHom : LRV.Sentence :=
   allSorted ![.vf, .vf] (pEq (tRv (tVFMul &0 &1)) (tRVMul (tRv &0) (tRv &1)))
-/-- `rv : VF^× → RV^×` is surjective -/
+/-- **`rv` is surjective**: every element of the `RV` sort other than `rv(0)` is `rv(x)` for
+some `x ∈ VF`.  (Definition 2.2(6): `rv : VF^× → RV^×` is surjective, augmented by
+`rv(0) = ∞ = 0`.  With `RV^× = RV ∖ {0}` this says: `RV = rv(VF) ∪ {0}`, so there are no
+`RV`-elements outside the image of `rv`.) -/
 def rvSurj : LRV.Sentence :=
-  allSorted ![.rv] (pUnits &0 ⟹ exSorted .vf (pEq (tRv &1) &0))
+  allSorted ![.rv] (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))
 /-- the ultrametric inequality for `vv = vrv ∘ rv`: `vv(x+y) ≥ min(vv x, vv y)` -/
 def rvUltrametric : LRV.Sentence :=
   allSorted ![.vf, .vf] (pLe (tRv &0) (tRv (tVFAdd &0 &1)) ⊔ pLe (tRv &1) (tRv (tVFAdd &0 &1)))
@@ -961,8 +990,8 @@ def iRv (x : M) : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvMap 
 /-- the interpretation of `0` of the `RV` sort -/
 def iRVZero : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvZero fun i => i.elim0
 
-/-- the interpretation of `∞` of the `RV` sort -/
-def iRVInfty : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvInfty fun i => i.elim0
+/-- The interpretation of the paper's `∞`, which is the interpretation of `0` of the `RV` sort -/
+def iRVInfty : M := iRVZero (M := M)
 
 /-- the interpretation of `1` of the `RV` sort -/
 def iRVOne : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvOne fun i => i.elim0
@@ -1010,20 +1039,201 @@ def GammaDivisible (S : LRV.Substructure M) : Prop :=
 def Standing (S : LRV.Substructure M) : Prop := KEqTop S ∧ GammaDivisible S
 
 /-- `S` is `VF`-generated (the paper's `rv(VF(S)) = RV(S)`): every element of the `RV` sort in
-`S` is `rv` of an element of the `VF` sort in `S` — except the residue-field zero `0`, which is
-not in the image of `rv`. -/
+`S` is `rv` of an element of the `VF` sort in `S`, except possibly the absorbing element
+`0 = rv(0)`, which is handled by the second disjunct.  (In a model of `ACVF` even that element
+has a witness, namely `0` of the `VF` sort — see `RVeqRvVF_of_model`.) -/
 def IsVFGen (S : LRV.Substructure M) : Prop :=
   ∀ x : M, x ∈ S → iRV x → (∃ y : M, y ∈ S ∧ iVF y ∧ iRv y = x) ∨ x = iRVZero
 
 /-- In a model of `ACVF` every element of the `RV` sort is `rv` of an element of the `VF` sort,
-up to the residue zero: `RV = Kˣ ∪ {0} ∪ {∞}` with `Kˣ = rv(VFˣ)`.  This holds in the paper's
-models, where `RV` *is* `Kˣ/(1+𝔪) ∪ {∞}`.  It is **not** a consequence of the frozen axiom list
-as it stands: `Axioms.rvSurj` gives surjectivity of `rv` onto the *units* only and
-`Axioms.rvZeroEq` gives `rv 0 = ∞`, but no axiom of `Milestone0/Encoding.lean` excludes extra
-("junk") elements in the `RV` sort.  So this is an explicit hypothesis, not an unfolding of the
-axioms; adding the missing axiom `∀ x ∈ RV, Kˣ x ∨ x = 0 ∨ x = ∞` would discharge it. -/
+up to the residue zero: `RV = rv(VF) ∪ {0}`, where `0 = ∞ = rv(0)`.  This is the content of the
+axiom `Axioms.rvSurj` (the paper's surjectivity of `rv : VF^× → RV^×`, which since the
+identification of `0` with `∞` reads "every `RV`-element other than `rv(0)` is `rv(x)`"), so it
+is a theorem about models of `ACVF`; `RVeqRvVF_of_model` below proves it.  It is kept as a
+named `Prop` because the Section 3.1 argument (Proposition 3.9) uses it as an explicit
+hypothesis: the paper derives it from the model-theoretic description of `RV`, the encoding
+derives it from the axiom. -/
 def RVeqRvVF (M : Type*) [LRV.Structure M] : Prop :=
   ∀ x : M, iRV x → (∃ y : M, iVF y ∧ iRv y = x) ∨ x = iRVZero
+
+/-! ### Reading an encoded axiom off a model
+
+`allSorted ss φ` abbreviates `∀ x̄ ∈ s̄, φ`.  To extract the content of an axiom from a model one
+has to unfold `BoundedFormula.alls`, `sortedHyps` and the term constructors; the lemmas below do
+that.  They are used once, for `Axioms.rvSurj`. -/
+
+section Realize
+
+open FirstOrder FirstOrder.Language
+
+/-- the assignment that sends the variables `Fin k` to the values `xs` -/
+abbrev rho {k : ℕ} (xs : Fin k → M) : Empty ⊕ Fin k → M := Sum.elim default xs
+
+theorem ev_tv {k : ℕ} (xs : Fin k → M) (i : Fin k) :
+    Term.realize (rho xs) (LRV.tv i.val i.isLt) = xs i := by
+  simp [LRV.tv, rho]
+
+/-- evaluation of an arity-`0` function symbol -/
+theorem ev_fun0 {k : ℕ} (xs : Fin k → M) (f : Fn 0) :
+    Term.realize (rho xs) (Term.func f (fun i => i.elim0) : LRV.Tm k)
+      = Structure.funMap (L := LRV) f (fun i : Fin 0 => i.elim0) := by
+  have key : Term.realize (rho xs) (Term.func f (fun i => i.elim0) : LRV.Tm k)
+      = Structure.funMap (L := LRV) f
+        (fun i : Fin 0 => Term.realize (rho xs) (Fin.elim0 i)) := rfl
+  rw [key]
+  congr 1
+  funext i
+  exact i.elim0
+
+@[simp] theorem ev_rvZero {k : ℕ} (xs : Fin k → M) :
+    Term.realize (rho xs) (LRV.tRVZero (n := k)) = iRVZero := by
+  rw [LRV.tRVZero, ev_fun0]
+  rfl
+
+/-- the value of a unary term constructor -/
+theorem ev_un {k : ℕ} (xs : Fin k → M) (f : Fn 1) (t : LRV.Tm k) :
+    Term.realize (rho xs) (Term.func f ![t] : LRV.Tm k)
+      = Structure.funMap (L := LRV) f ![Term.realize (rho xs) t] := by
+  have key : Term.realize (rho xs) (Term.func f ![t] : LRV.Tm k)
+      = Structure.funMap (L := LRV) f
+        (fun i : Fin 1 => Term.realize (rho xs) (![t] i)) := rfl
+  rw [key]
+  have h1 : (fun i : Fin 1 => Term.realize (rho xs) (![t] i))
+      = ![Term.realize (rho xs) t] := by
+    funext i
+    fin_cases i
+    rfl
+  rw [h1]
+
+@[simp] theorem ev_rvMap {k : ℕ} (xs : Fin k → M) (t : LRV.Tm k) :
+    Term.realize (rho xs) (LRV.tRv t) = iRv (Term.realize (rho xs) t) :=
+  ev_un xs Fn.rvMap t
+
+@[simp] theorem real_memRV {k : ℕ} (xs : Fin k → M) (t : LRV.Tm k) :
+    (LRV.pRVsort t).Realize (default : Empty → M) xs ↔ iRV (Term.realize (rho xs) t) := by
+  have key : (LRV.pRVsort t).Realize (default : Empty → M) xs
+      = iRV (Term.realize (rho xs) t) := by
+    show Structure.RelMap (L := LRV) Rel.memRV (fun i : Fin 1 => Term.realize (rho xs) (![t] i))
+      = Structure.RelMap (L := LRV) Rel.memRV ![Term.realize (rho xs) t]
+    have h1 : (fun i : Fin 1 => Term.realize (rho xs) (![t] i))
+        = ![Term.realize (rho xs) t] := by
+      funext i
+      fin_cases i
+      rfl
+    rw [h1]
+  rw [key]
+
+@[simp] theorem real_memVF {k : ℕ} (xs : Fin k → M) (t : LRV.Tm k) :
+    (LRV.pVF t).Realize (default : Empty → M) xs ↔ iVF (Term.realize (rho xs) t) := by
+  have key : (LRV.pVF t).Realize (default : Empty → M) xs
+      = iVF (Term.realize (rho xs) t) := by
+    show Structure.RelMap (L := LRV) Rel.memVF (fun i : Fin 1 => Term.realize (rho xs) (![t] i))
+      = Structure.RelMap (L := LRV) Rel.memVF ![Term.realize (rho xs) t]
+    have h1 : (fun i : Fin 1 => Term.realize (rho xs) (![t] i))
+        = ![Term.realize (rho xs) t] := by
+      funext i
+      fin_cases i
+      rfl
+    rw [h1]
+  rw [key]
+
+@[simp] theorem real_eq {k : ℕ} (xs : Fin k → M) (t u : LRV.Tm k) :
+    (LRV.pEq t u).Realize (default : Empty → M) xs ↔
+      Term.realize (rho xs) t = Term.realize (rho xs) u := by
+  rw [LRV.pEq, FirstOrder.Language.BoundedFormula.realize_bdEqual]
+
+theorem real_sortPred_rv {k : ℕ} (xs : Fin k → M) (t : LRV.Tm k) :
+    (LRV.sortPred .rv t).Realize (default : Empty → M) xs ↔ iRV (Term.realize (rho xs) t) :=
+  real_memRV xs t
+
+theorem real_sortPred_vf {k : ℕ} (xs : Fin k → M) (t : LRV.Tm k) :
+    (LRV.sortPred .vf t).Realize (default : Empty → M) xs ↔ iVF (Term.realize (rho xs) t) :=
+  real_memVF xs t
+
+theorem realize_sortedHyps_aux {k : ℕ} (ss : Fin k → SortTag) (l : List (Fin k))
+    (xs : Fin k → M) :
+    (l.foldr (fun i acc => LRV.sortPred (ss i) (LRV.tv i.val i.isLt) ⊓ acc) ⊤).Realize
+        (default : Empty → M) xs ↔
+      ∀ i ∈ l, (LRV.sortPred (ss i) (LRV.tv i.val i.isLt)).Realize (default : Empty → M) xs := by
+  induction l with
+  | nil => simp
+  | cons a t ih => simp [ih]
+
+theorem realize_sortedHyps {k : ℕ} (ss : Fin k → SortTag) (xs : Fin k → M) :
+    (LRV.sortedHyps ss).Realize (default : Empty → M) xs ↔
+      ∀ i : Fin k, (LRV.sortPred (ss i) (LRV.tv i.val i.isLt)).Realize (default : Empty → M) xs := by
+  rw [LRV.sortedHyps, realize_sortedHyps_aux]
+  exact ⟨fun h i => h i (List.mem_finRange i), fun h i _ => h i⟩
+
+/-- **`M ⊨ allSorted ss φ` unfolded**: for every tuple from the sorts `ss`, `φ` holds. -/
+theorem model_allSorted_iff {k : ℕ} (ss : Fin k → SortTag) (φ : LRV.Bf k) :
+    M ⊨ LRV.allSorted ss φ ↔
+      ∀ xs : Fin k → M,
+        (∀ i : Fin k, (LRV.sortPred (ss i) (LRV.tv i.val i.isLt)).Realize
+          (default : Empty → M) xs) →
+        φ.Realize (default : Empty → M) xs := by
+  have h1 : M ⊨ LRV.allSorted ss φ ↔
+      ∀ xs : Fin k → M, (LRV.sortedHyps ss ⟹ φ).Realize (default : Empty → M) xs :=
+    FirstOrder.Language.BoundedFormula.realize_alls
+  refine h1.trans (forall_congr' fun xs => ?_)
+  exact (FirstOrder.Language.BoundedFormula.realize_imp).trans
+    (imp_congr (realize_sortedHyps ss xs) Iff.rfl)
+
+@[simp] theorem real_exSorted_vf {k : ℕ} (xs : Fin k → M) (φ : LRV.Bf (k + 1)) :
+    (LRV.exSorted .vf φ).Realize (default : Empty → M) xs ↔
+      ∃ a : M, iVF a ∧ φ.Realize (default : Empty → M) (Fin.snoc xs a) := by
+  have h := FirstOrder.Language.BoundedFormula.realize_ex
+    (θ := LRV.sortPred .vf (LRV.tv k (Nat.lt_succ_self k)) ⊓ φ)
+    (v := (default : Empty → M)) (xs := xs)
+  refine h.trans (exists_congr fun a => ?_)
+  have h2 : (LRV.sortPred .vf (LRV.tv k (Nat.lt_succ_self k))).Realize
+      (default : Empty → M) (Fin.snoc xs a) ↔ iVF a := by
+    rw [real_sortPred_vf]
+    have htv : Term.realize (rho (Fin.snoc xs a)) (LRV.tv k (Nat.lt_succ_self k)) = a := by
+      simp only [LRV.tv, rho, Term.realize_var, Sum.elim_inr]
+      exact Fin.snoc_last (α := fun _ => M) a xs
+    rw [htv]
+  have h3 : ((LRV.sortPred .vf (LRV.tv k (Nat.lt_succ_self k)) ⊓ φ).Realize
+      (default : Empty → M) (Fin.snoc xs a)) ↔
+      (iVF a ∧ φ.Realize (default : Empty → M) (Fin.snoc xs a)) := by
+    rw [FirstOrder.Language.BoundedFormula.realize_inf, h2]
+  exact h3
+
+/-- **`RV = rv(VF) ∪ {0}` in every model of `ACVF`**: read off the axiom `Axioms.rvSurj`, which
+says that every `RV`-element other than `rv(0)` is `rv(x)`. -/
+theorem RVeqRvVF_of_model : RVeqRvVF M := by
+  intro x hxRV
+  by_cases hx0 : x = iRVZero
+  · exact Or.inr hx0
+  · left
+    have hmem : Axioms.rvSurj ∈ Axioms.ACVF := by
+      simp [Axioms.ACVF, Axioms.ACVFpaper, Axioms.rvAxioms, Axioms.ofList]
+    have hreal : M ⊨ Axioms.rvSurj := Theory.realize_sentence_of_mem (T := Axioms.ACVF) hmem
+    have hbody := (model_allSorted_iff ![SortTag.rv] _).mp hreal ![x]
+      (fun i => by
+        have hi : ![SortTag.rv] i = SortTag.rv := by fin_cases i; rfl
+        rw [hi, real_sortPred_rv, ev_tv]
+        fin_cases i
+        exact hxRV)
+    rw [FirstOrder.Language.BoundedFormula.realize_imp,
+      FirstOrder.Language.BoundedFormula.realize_not, real_eq, ev_rvZero] at hbody
+    have hx0' : Term.realize (rho ![x]) ((&0 : LRV.Tm 1)) ≠ iRVZero := by
+      have hx : Term.realize (rho ![x]) ((&0 : LRV.Tm 1)) = x := by simp [rho]
+      rwa [hx]
+    have hex := hbody hx0'
+    rw [real_exSorted_vf] at hex
+    obtain ⟨a, haVF, ha⟩ := hex
+    refine ⟨a, haVF, ?_⟩
+    rw [real_eq, ev_rvMap] at ha
+    have h1 : Term.realize (rho (Fin.snoc ![x] a)) ((&1 : LRV.Tm 2)) = a := by
+      simp only [rho, Term.realize_var, Sum.elim_inr]
+      exact Fin.snoc_last (α := fun _ => M) a ![x]
+    have h0 : Term.realize (rho (Fin.snoc ![x] a)) ((&0 : LRV.Tm 2)) = x := by
+      simp [rho]
+    rw [h1, h0] at ha
+    exact ha
+
+end Realize
 
 end Assembly
 
@@ -1187,8 +1397,10 @@ def ShoenfieldTest : Prop :=
 the models.  (Weispfenning's QE theorem for `L_v` enters through `vfgen`, via Remark 3.1;
 saturation enters each of them.) -/
 structure AlgIngredients : Prop where
-  /-- `RV = rv(VF) ∪ {0}`: true in the paper's models, not derivable from the frozen
-  axioms (see `RVeqRvVF`) -/
+  /-- `RV = rv(VF) ∪ {0}`: this is the content of the axiom `Axioms.rvSurj` (the paper's
+  surjectivity of `rv`), so it is a *theorem* (`RVeqRvVF_of_model`).  It is kept as a field so
+  that `theorem_2_3_of_hypotheses` keeps the shape it had; `theorem_2_3_of_three` discharges
+  it. -/
   rv : ∀ (M : Type) [LRV.Structure M], M ⊨ ACVF → RVeqRvVF M
   /-- Lemma 3.3 + henselization -/
   prep : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF]
@@ -1208,11 +1420,32 @@ theorem theorem_2_3_of_hypotheses (hShoen : ShoenfieldTest) (hAlg : AlgIngredien
   intro M N _ _ hM hN hSat S f
   exact prop39 hSat (hAlg.rv M hM) (hAlg.prep M N hSat) (hAlg.one M N hSat) (hAlg.vfgen M N) S f
 
+/-- **Theorem 3.10 with the `RV = rv(VF) ∪ {0}` hypothesis discharged.**  Since the axiom
+`Axioms.rvSurj` is the paper's surjectivity of `rv` (every `RV`-element other than `rv(0)` is
+`rv(x)`), the first ingredient of `AlgIngredients` is a theorem (`RVeqRvVF_of_model`), and only
+the three remaining ingredients are needed.  (Before the identification of `0` with `∞` the axiom
+was guarded by `Kˣ` and this hypothesis could not be discharged.) -/
+theorem theorem_2_3_of_three (hShoen : ShoenfieldTest)
+    (hPrep : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF]
+      (hSat : Saturated N), PrepStep (M := M) (N := N) hSat)
+    (hOne : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF]
+      (hSat : Saturated N), OneStepVF (M := M) (N := N) hSat)
+    (hVFGen : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF],
+      VFGenCase (M := M) (N := N)) :
+    HasQE ACVF :=
+  theorem_2_3_of_hypotheses hShoen
+    { rv := fun M _ _ => RVeqRvVF_of_model (M := M)
+      prep := hPrep
+      one := hOne
+      vfgen := hVFGen }
+
 end Assembly
 
 
 end Milestone0
 end SpecialTransformations
 
+#print axioms SpecialTransformations.Milestone0.Assembly.RVeqRvVF_of_model
 #print axioms SpecialTransformations.Milestone0.Assembly.prop39
 #print axioms SpecialTransformations.Milestone0.Assembly.theorem_2_3_of_hypotheses
+#print axioms SpecialTransformations.Milestone0.Assembly.theorem_2_3_of_three

@@ -8,7 +8,7 @@ Source: Yimu Yin, *Special transformations in algebraically closed valued fields
 Lemma `rv:root:lift:vf` in Section 3.
 
 The paper's statement, decoded into valuation-theoretic terms.  `(K, v)` is a valued field,
-`F ∈ K[X]`, `F(X) = Σ_i b_i X^i`.  Choose `t ∈ RV` (Yin's quotient `K^×/(1+𝔪)`, with `∞`
+`F ∈ K[X]`, `F(X) = Σ_i b_i X^i`.  Choose `t ∈ RV` (Yin's quotient `K^×/(1+𝔪)`, with `0 = ∞`
 for `rv 0`) and let `I ⊆ supp F` be the support of the `RV`-polynomial
 `F̄ = Σ_i t_i X^i`, i.e. the set of `i` with `t_i ≠ 0`; for those `i`, `t_i = rv b_i`, and the
 side condition says that for `i ∉ I` the term `rv b_i · t^i` lies in the maximal ideal.  Then
@@ -50,6 +50,13 @@ i.e. an `RV`-root of the reduction lifts to a `VF`-root.  Passing to a represent
   the conclusion.
 * `rv_eq_of_val_eq` — the first half of Remark 3.1 (`L:v:and:L:RV`): `rv` is determined by the
   valuation, so an `L_v`-embedding of valued fields preserves `rv`-classes.
+
+Converted to the project's ruling that the paper's `0` and `∞` are ONE element.  This snapshot
+carries no copy of the `Fn` language and its `RV` is already the two-layer
+`Option (RVUnit v)` with `none = rv 0`, so the ruling is a renaming here: the absorbing element
+`none` is called `rvZero` (it used to be called `rvInfty`), and `rv_zero : rv v 0 = rvZero v`.
+The statements of `rv_zero`, `rv_eq_none_iff`, `rv_surjective` and `rv_root_lift_rv` are the
+same up to that renaming; `rv_surjective` is the paper's surjectivity of `rv` off `rv(0)`.
 
 No `sorry`, no `axiom`, no `admit`; `import Mathlib` is the only import.
 -/
@@ -178,33 +185,35 @@ def princUnits (v : Valuation K Γ₀) : Subgroup Kˣ where
 /-- Yin's `RV×`: `Kˣ/(1+𝔪)`. -/
 abbrev RVUnit (v : Valuation K Γ₀) : Type _ := Kˣ ⧸ princUnits v
 
-/-- Yin's `RV`-sort: `RV× ∪ {∞}`, with `∞` the value of `rv 0`. -/
+/-- Yin's `RV`-sort: `RV = RV× ∪ {0}`, where `0` is the residue field's zero, the value
+`rv 0` of `rv` at `0`, and the absorbing (top) element of `RV`.  The paper also writes this
+one element as `∞`. -/
 abbrev RV (v : Valuation K Γ₀) : Type _ := Option (RVUnit v)
 
-/-- Yin's `rv : VF → RV`, with `rv 0 = ∞`. -/
+/-- Yin's `rv : VF → RV`, with `rv 0 = 0` (the absorbing element, written `∞` in the paper). -/
 noncomputable def rv (v : Valuation K Γ₀) (x : K) : RV v := by
   classical
   exact if h : x = 0 then none else some (QuotientGroup.mk' _ (Units.mk0 x h))
 
-/-- The paper's `∞`. -/
-abbrev rvInfty (v : Valuation K Γ₀) : RV v := none
+/-- The paper's `0` (and `∞`): `rv(0)`, the absorbing element of `RV`. -/
+abbrev rvZero (v : Valuation K Γ₀) : RV v := none
 
 variable {v : Valuation K Γ₀}
 
-theorem rv_zero : rv v (0 : K) = rvInfty v := by
+theorem rv_zero : rv v (0 : K) = rvZero v := by
   classical exact dif_pos rfl
 
 theorem rv_of_ne {x : K} (h : x ≠ 0) : rv v x = some (QuotientGroup.mk' _ (Units.mk0 x h)) := by
   classical exact dif_neg h
 
-theorem rv_eq_none_iff {x : K} : rv v x = rvInfty v ↔ x = 0 := by
+theorem rv_eq_none_iff {x : K} : rv v x = rvZero v ↔ x = 0 := by
   classical
-  unfold rv rvInfty
+  unfold rv rvZero
   split_ifs with h
   · exact ⟨fun _ => h, fun _ => rfl⟩
   · simp [h]
 
-/-- Multiplication in `RV×`, extended by `∞` absorbing. -/
+/-- Multiplication in `RV×`, extended by the absorbing element `0 = ∞`. -/
 def rvMul : RV v → RV v → RV v
   | none, _ => none
   | some _, none => none
@@ -235,8 +244,8 @@ theorem rv_one : rv v (1 : K) = some (QuotientGroup.mk' _ (1 : Kˣ)) := by
   congr 2
   exact Units.ext rfl
 
-/-- `rv` is surjective onto `RV ∖ {∞}`. -/
-theorem rv_surjective {t : RV v} (h : t ≠ rvInfty v) : ∃ x : K, x ≠ 0 ∧ rv v x = t := by
+/-- `rv` is surjective onto `RV ∖ {0}`: the paper's surjectivity of `rv : VF^× → RV^×`. -/
+theorem rv_surjective {t : RV v} (h : t ≠ rvZero v) : ∃ x : K, x ≠ 0 ∧ rv v x = t := by
   cases t with
   | none => exact absurd rfl h
   | some q =>
@@ -933,7 +942,7 @@ theorem rv_root_lift [IsAlgClosed K]
 
 /-- Lemma 3.2 in the `RV`-form of the paper: the conclusion is stated with `t ∈ RV`. -/
 theorem rv_root_lift_rv [IsAlgClosed K] {F : K[X]} (hF : F ≠ 0) {b : K} {t : RV v}
-    (ht : t ≠ rvInfty v) (hb : rv v b = t)
+    (ht : t ≠ rvZero v) (hb : rv v b = t)
     (huniv : ∀ i ∈ F.support, v (F.coeff i * b ^ i) = 1)
     (hred : v (∑ i ∈ F.support, F.coeff i * b ^ i) < 1) :
     ∃ b' : K, rv v b' = t ∧ F.IsRoot b' := by
