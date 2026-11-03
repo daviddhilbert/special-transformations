@@ -435,3 +435,57 @@ so the equation itself trips instance checking, whichever side is written first,
 `axNontrivial_realize`.  The likely way round it is not to state the equation at all but to
 restate `OneECIn`, or the goal, with the `valStructure` instances supplied by `letI` from the
 start, so that no equation between instances is ever needed.
+
+## Layer (A) for `L_val` is DONE
+
+Commit `feb1415`:
+
+```
+hasQE_ACVF_val : QECriterion.HasQE (L := Language.val) ValPM.ACVF_val
+```
+
+in `QE/Assembly_val.lean` (9455 lines), by `HQEDerive.hasQE_of_johnson` with all four hypotheses
+proved in the same file:
+
+| hypothesis | lemma |
+|---|---|
+| `valField ⊆ ACVF_val` | `ValPM.valField_subset_ACVF_val` |
+| prime models over substructures | `ValPM.hasPrimeModels_ACVF_val` |
+| amalgamation | `ValOneEC.hasAmalgamation_valField` |
+| 1-ec | `ValOneEC.oneECIn_of_modelType` |
+
+So quantifier elimination for the theory of nontrivially valued algebraically closed fields **in
+the one-sorted language `L_val`** is a theorem, unconditionally.  That is layer (A).
+
+`Assembly_val` now carries, in one file: `valField` and its model theory; the coordinate ring,
+the prime model and its universal property; `ACVF_val`; the `ModelType` bridge (`valStruct_ext`,
+`valStructOf_eq_valStructure`, `isAlgClosed_of_model`, `embeddingCast`/`oneECIn_congr`);
+`OneEC_val`'s whole machinery (syntax bridge, `Good`/`IsKBall`, 2.3.1(i)(ii), 2.3.2, 2.3.8,
+`oneECIn_of_nontrivial`); `star` (Johnson 2.2.1–2.2.7) and `hasAmalgamation_valField`; and
+Johnson's criterion.  Three merges were needed (`OneEC_val`, `Amalgamation_reduced`, `ACF_HasQE`)
+because the repo's files are standalone snapshots.
+
+The key step of `hasAmalgamation_valField` is `le_iff_valuationSubring_valuation_le`: the order of
+a valuation is the order of its valuation subring's canonical valuation.  That is what lets
+Johnson's §2.2 theorem, stated for `ValuationSubring`s, apply to the valuations that
+`exists_valuation_of_isValPred` produces, and the amalgam is then repackaged as a model of
+`valField` through `valStructure_model`.
+
+## What is left: the transfer `L_val → L_RV`
+
+`Milestone0/Encoding.lean`'s `theorem_2_3_quantifier_elimination : HasQE ACVF` is stated in the
+frozen tagged language `L_RV` (sorts `VF`/`RV` as the relations `memVF`/`memRV`, `rv : VF → RV`,
+the residue-field operations `kAdd`/`kNeg`, the preorder `rvLe`).  Route (T1) needs:
+
+1. **QF `L_val` → QF `L_RV`.**  Purely syntactic: `v x ≤ v y` becomes `rvLe (rvMap x) (rvMap y)`,
+   and the ring symbols go to `vfAdd`/`vfMul`/`vfNeg`/`vfZero`/`vfOne`.  This direction is easy
+   and is where the transfer should start.
+2. **`L_RV` → `L_val`.**  An `RV`-quantifier `∃ y (RV), ψ` becomes `y = 0 ∨ ∃ x (VF), x ≠ 0 ∧ ψ[rv x / y]`
+   using the paper's `rvSurj`, which the frozen encoding now has.  `rv t ≤ rv s` becomes
+   `v t ≤ v s`; `rvMul` is multiplication.  The subtle symbol is `kAdd`, the *residue field's*
+   addition: on units `kAdd a b = c` is `∃ x y, rv x = a ∧ rv y = b ∧ rv (x + y) = c` — the
+   quantifiers are needed because `rv (x + y)` depends on the residues, and when `a + b = 0` the
+   value of `x + y` drops and the junk conventions of `kAdd` take over.  `memUnits` and the
+   preorder are `v x = 1`-shaped, hence QF in `L_val` given the `rv`-identification.
+3. **Composition**, and then models: an `LRV`-model of `ACVF` restricts to an `L_val`-structure on
+   its `VF` sort, which is where `hasQE_ACVF_val` applies.
