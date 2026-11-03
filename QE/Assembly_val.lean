@@ -10241,6 +10241,68 @@ def valFormulaToRV {n : ℕ} : Language.val.BoundedFormula Empty n → Bf n
   | BoundedFormula.imp φ ψ => BoundedFormula.imp (valFormulaToRV φ) (valFormulaToRV ψ)
   | BoundedFormula.all φ => BoundedFormula.all (valFormulaToRV φ)
 
+/-! ### Realization of translated formulas -/
+
+theorem realize_tRv {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M) (a : Tm n) :
+    (tRv a).realize v = iRv (a.realize v) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvMap
+      (fun i => Term.realize (L := LRV) v (![a] i)) = iRv (a.realize v)
+  rw [show (fun i => Term.realize (L := LRV) v (![a] i)) = ![a.realize v] from by
+    funext i
+    fin_cases i
+    simp]
+  rfl
+
+theorem realize_pLe {M : Type} [LRV.Structure M] {n : ℕ} (a b : Tm n) (v : Empty → M)
+    (x : Fin n → M) :
+    (pLe a b).Realize v x ↔ iLe (a.realize (Sum.elim v x)) (b.realize (Sum.elim v x)) := by
+  have h : (fun i => Term.realize (L := LRV) (Sum.elim v x) (![a, b] i))
+      = ![a.realize (Sum.elim v x), b.realize (Sum.elim v x)] := by
+    funext i
+    fin_cases i <;> simp
+  show FirstOrder.Language.Structure.RelMap (L := LRV) Rel.rvLe
+      (fun i => Term.realize (L := LRV) (Sum.elim v x) (![a, b] i)) ↔ iLe
+        (a.realize (Sum.elim v x)) (b.realize (Sum.elim v x))
+  rw [h]
+  rfl
+
+/-- Reading an `L_val`-formula in an `L_RV`-structure: variables are elements of the carrier, the
+ring symbols are the `VF`-sorted ones, and the predicate is `vv x ≤ vv y` with `vv = vrv ∘ rv`. -/
+def valFormulaEval {M : Type} [LRV.Structure M] {n : ℕ} (x : Fin n → M) :
+    Language.val.BoundedFormula Empty n → Prop
+  | BoundedFormula.falsum => False
+  | BoundedFormula.equal t u => valTermEval x t = valTermEval x u
+  | BoundedFormula.rel r ts =>
+    match r with
+    | ValRel.le => iLe (iRv (valTermEval x (ts 0))) (iRv (valTermEval x (ts 1)))
+  | BoundedFormula.imp φ ψ => valFormulaEval x φ → valFormulaEval x ψ
+  | BoundedFormula.all φ => ∀ a : M, valFormulaEval (Fin.snoc x a) φ
+
+/-- **A translated formula realises exactly as the `L_val`-formula does**, read in the `L_RV`-
+structure.  This is the semantic half of step 1 of the transfer. -/
+theorem valFormulaToRV_realize {M : Type} [LRV.Structure M] {n : ℕ}
+    (φ : Language.val.BoundedFormula Empty n) (x : Fin n → M) :
+    (valFormulaToRV φ).Realize (default : Empty → M) x ↔ valFormulaEval x φ := by
+  induction φ with
+  | falsum => exact Iff.rfl
+  | equal t u =>
+    show (valTermToRV t).realize (Sum.elim (default : Empty → M) x)
+        = (valTermToRV u).realize (Sum.elim (default : Empty → M) x)
+      ↔ valTermEval x t = valTermEval x u
+    rw [valTermToRV_realize x t, valTermToRV_realize x u]
+  | rel r ts =>
+    cases r with
+    | le =>
+      rw [valFormulaToRV, realize_pLe, realize_tRv, realize_tRv, valTermToRV_realize,
+        valTermToRV_realize]
+      exact Iff.rfl
+  | imp φ ψ ihφ ihψ =>
+    simp only [valFormulaToRV, valFormulaEval, BoundedFormula.realize_imp, ihφ, ihψ]
+  | all φ ih =>
+    simp only [valFormulaToRV, valFormulaEval, BoundedFormula.realize_all, ih]
+
 end SpecialTransformations.Milestone0.Transfer
 
 #print axioms SpecialTransformations.Milestone0.Transfer.valTermToRV_realize
+
+#print axioms SpecialTransformations.Milestone0.Transfer.valFormulaToRV_realize
