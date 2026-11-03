@@ -716,3 +716,27 @@ That is the whole repair: it removes a fragile compiled match rather than adding
 lemmas.  `Milestone0/Encoding.lean` is back at sha `851d6a98…` (green) because the attempt above
 left it red and the tree has to stay usable; the work is in commits `604f968`/`35be8be` and the
 analysis above is the specification for finishing it.
+
+### `Occurs := InAntecedent`: applied, and the exact error inventory
+
+The reordering edit was applied on top of `35be8be`: the `guardAtom`/`InAntecedent` block moved
+above `Occurs`, and `Occurs i s η` redefined as `InAntecedent s i η`.  Result: **17 errors**, all
+of a mechanical kind, which is the useful information:
+
+* one stray docstring left where the block was cut (`unexpected token '/--'; expected 'lemma'`);
+* `inAntecedent_of_occurs` is now dead — with `Occurs := InAntecedent` it must be *deleted*, and
+  its `.elim` reference is one of the errors;
+* `occurs_self` (and the two `occurs_*_hyps` lemmas) still try to prove `Occurs i s (guardAtom s i)`
+  by `rfl`/equation, which no longer holds definitionally: each becomes `InAntecedent.atom`
+  (and `occurs_foldr_hyps`/`occurs_sortedHyps` become `InAntecedent.and_left`/`.and_right` chains);
+* the four `wellSorted_alls` callers need the extra argument
+  `fun d => GuardTrue.of_inAntecedent (occurs_sortedHyps ss d)`, which now typechecks
+  definitionally;
+* the three sites already patched keep working, with `GuardTrue.of_inAntecedent hg` where
+  `hg : Occurs …` is now literally `InAntecedent …`.
+
+So the repair is a 17-error mechanical pass, not a conceptual problem — but it is a pass, and it
+was not finished here.  `Milestone0/Encoding.lean` is restored to sha `851d6a98…` (green) again so
+the tree stays usable.  `nontrivialTransferWS_ACVF` was therefore not attempted; its first failure
+point is unknown, and guessing it would be worthless.  The blast radius is exactly the
+`wellSorted_*` API plus the three `occurs_*` lemmas — no statement in Part 6 moves.
