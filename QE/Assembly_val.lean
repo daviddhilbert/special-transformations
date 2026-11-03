@@ -17933,3 +17933,40 @@ end RepairFixed
 #print axioms RVElim.exists_VFQ
 #print axioms RVElim.coverVF_of_atoms
 #print axioms RepairFixed.leEqF_iff_pEq_of_link
+
+namespace SpecialTransformations.Milestone0.Transfer
+
+open SpecialTransformations.Milestone0.Axioms
+
+/-- A `VF`-element is not an `RV`-element (`sdDisjoint`). -/
+theorem not_iRV_of_iVF {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : ¬ iRV x := by
+  have h := allOne_realize (T := Axioms.ACVF) hM RVElim.mem_ACVF_sdDisjoint ![x]
+  simp only [Axioms.sdDisjoint, BoundedFormula.realize_inf, BoundedFormula.realize_not,
+    pVF_realize, pRVsort_realize, realize_tv, Matrix.cons_val_zero] at h
+  exact fun hrv => h ⟨hx, hrv⟩
+
+/-- An `RV`-element is not a `VF`-element. -/
+theorem not_iVF_of_iRV {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iRV x) : ¬ iVF x :=
+  fun hvf => not_iRV_of_iVF hM hvf hx
+
+/-- A `VF`-element is not a unit of `K`: `sdUnits` puts every unit in the `RV` sort. -/
+theorem not_iUnits_of_iVF {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : ¬ iUnits x := by
+  have h := allOne_realize (T := Axioms.ACVF) hM TrivCase.mem_ACVF_sdUnits ![x]
+  simp only [Axioms.sdUnits, BoundedFormula.realize_imp, pUnits_realize, pRVsort_realize,
+    realize_tv, Matrix.cons_val_zero] at h
+  exact fun hu => not_iRV_of_iVF hM hx (h hu)
+
+/-- Cross-sort equality is false: a `VF`-element never equals an `RV`-element. -/
+theorem ne_of_iVF_of_iRV {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iRV y) : x ≠ y := by
+  rintro rfl
+  exact not_iRV_of_iVF hM hx hy
+
+end SpecialTransformations.Milestone0.Transfer
+
+#print axioms SpecialTransformations.Milestone0.Transfer.not_iRV_of_iVF
+#print axioms SpecialTransformations.Milestone0.Transfer.not_iUnits_of_iVF
+#print axioms SpecialTransformations.Milestone0.Transfer.ne_of_iVF_of_iRV
