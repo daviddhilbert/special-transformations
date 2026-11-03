@@ -2043,3 +2043,45 @@ fragment's image lies inside the frozen `WellSorted` unconditionally — a futur
 from `Axioms.ACVF` alone, independently of w5's route. Not proved, and correctly diagnosed: no
 `qfq_cover` in a mixed context (an `RV` free variable has no `L_val` image — the same obstruction
 from the other side), and the `mul`-cancellation normal form for off-`K` elements.
+
+**w4 (m2, accepted, half) — the shrink side of the parameter bridge.** `Shrink.lean` and
+`SortTransport.lean` are both green (0 errors, no `sorry`). After one rejection the blocking item
+was cleared, and the diagnosis was the useful part: with the index as a *type* (not the composite
+`m + (n + k)`) and the sort `s` quantified inside the motive, `induction t` goes through, giving
+`tmSort_shrink` outright. Also proved: `shrink_sortPredG` (the sort *guard* survives the relabel,
+without which every quantifier case would fail for a reason unrelated to the mathematics), and
+`wellSorted_shrink_of_isQF` — the lemma the assembly consumes, with no `GuardsLast` obligation
+because QF formulas have none. Plus `realize_shrinkAux` and `tupleAt_snoc` from the first attempt.
+
+**Not delivered:** `hasQE_of_hasQE_empty` and `Forward.lean`. The remaining route is
+`occurs_relabel` (needs an explicit 5×5 `rcases`: `Occurs` decomposes only the conjunction shape,
+so `split` will not fire in `.imp`), then `guardsLast_relabel`, `tmSort_relabel`,
+`wellSorted_relabel` (`Fin.natAdd m'`), finite support, assembly. **Check before writing those
+four:** they are only needed for the finite-support extraction, and if the witness can be produced
+by `exists_toFrag` directly at the shrunk context without being relabelled forward, the whole
+forward direction is unnecessary.
+
+## Swarm `smw19wtoj` closed: board and state
+
+Five directions, five accepted (one of them half). The QE route now stands as:
+
+1. `exists_toFrag` **for the paper's guarded discipline** `WSg` (m1) — all cases, `.vf` and `.rv`;
+2. the `rv`-substitution `substLastRv` with `TmSort`/`WellSorted` preservation (m4);
+3. the mixed-context fragment `QF2`/`QFq2` indexed by the sorted context, with the image inside
+   `WellSorted` proved with no model hypothesis (m3);
+4. the assembly `exists_toFrag → qf_witness_of_exists_toFrag → hasQEws_of_exists_toFrag`, a
+   `Downstream.HasQEws` instance (m5);
+5. the shrink side of the parameter bridge (m2).
+
+Three things block `theorem_2_3_quantifier_elimination` itself, in order of decisiveness:
+
+* **`Encoding.lean`'s `WellSorted.all`/`.ex` are too weak.** `WSg → WellSorted` but not back: the
+  frozen rule admits `(x ∈ s ⟹ ⊥) ⟹ ψ`, which `GuardsLast` accepts and which fails at junk
+  elements, so the induction needs `JunkTrueAt` on the guard. Either the frozen predicate gets a
+  junk-truth condition on the guard (third revision of `Encoding.lean`) or the target is stated
+  over `WSg`. **Author's decision.**
+* **No `qfq_cover` in a mixed context** (an `RV` free variable has no `L_val` image) and the
+  `mul`-cancellation normal form for elements off `K`. This is what a mixed-context elimination of
+  the `RV` quantifier needs beyond `QFq2`.
+* **The forward half of the parameter bridge** (`hasQE_of_hasQE_empty`), unless the shortcut above
+  works.
