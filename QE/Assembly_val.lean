@@ -10237,7 +10237,7 @@ def valFormulaToRV {n : ℕ} : Language.val.BoundedFormula Empty n → Bf n
   | BoundedFormula.equal t u => BoundedFormula.equal (valTermToRV t) (valTermToRV u)
   | BoundedFormula.rel r ts =>
     match r with
-    | ValRel.le => pLe (tRv (valTermToRV (ts 0))) (tRv (valTermToRV (ts 1)))
+    | ValRel.le => pLe (tRv (valTermToRV (ts 1))) (tRv (valTermToRV (ts 0)))
   | BoundedFormula.imp φ ψ => BoundedFormula.imp (valFormulaToRV φ) (valFormulaToRV ψ)
   | BoundedFormula.all φ => BoundedFormula.all (valFormulaToRV φ)
 
@@ -10274,7 +10274,7 @@ def valFormulaEval {M : Type} [LRV.Structure M] {n : ℕ} (x : Fin n → M) :
   | BoundedFormula.equal t u => valTermEval x t = valTermEval x u
   | BoundedFormula.rel r ts =>
     match r with
-    | ValRel.le => iLe (iRv (valTermEval x (ts 0))) (iRv (valTermEval x (ts 1)))
+    | ValRel.le => iLe (iRv (valTermEval x (ts 1))) (iRv (valTermEval x (ts 0)))
   | BoundedFormula.imp φ ψ => valFormulaEval x φ → valFormulaEval x ψ
   | BoundedFormula.all φ => ∀ a : M, valFormulaEval (Fin.snoc x a) φ
 
@@ -10319,7 +10319,7 @@ def valStructOfLRV (M : Type) [LRV.Structure M] : Language.val.Structure M where
     | ValFunc.one => iVFOne
   RelMap := fun {_} r x =>
     match r with
-    | ValRel.le => iLe (iRv (x 0)) (iRv (x 1))
+    | ValRel.le => iLe (iRv (x 1)) (iRv (x 0))
 
 /-- **Terms evaluate the same way** in `valStructOfLRV M` as by `valTermEval`. -/
 theorem realize_valTermEval {M : Type} [LRV.Structure M] {n : ℕ} (x : Fin n → M)
