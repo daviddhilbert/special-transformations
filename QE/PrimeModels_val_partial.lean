@@ -1526,3 +1526,51 @@ theorem exists_valuation_of_isValPred {K : Type} [Field K] {p : K → K → Prop
   letI : ValuativeRel K := valuativeRelOfIsValPred h
   exact ⟨ValuativeRel.ValueGroupWithZero K, inferInstance, ValuativeRel.valuation K,
     fun x y => Valuation.vle_iff_le (ValuativeRel.valuation K)⟩
+
+/-! ## 14. The `L_val`-structure of a model of `valField` is `valStructOf` -/
+
+section StructEq
+
+/-- The `L_val`-structure of a `valField`-model agrees with the one built from its predicate: the
+function symbols are the ring operations, which is exactly what `valRingHom.IsExpansionOn` says,
+and the relation symbol is `predM` by definition.  This is what lets the concrete-field results,
+which are all stated for `valStructOf`, be applied to `valField.ModelType`s. -/
+theorem valStruct_ext (M : Type) [s : Language.val.Structure M] [Field M] [CompatibleRing M]
+    [hexp : valRingHom.IsExpansionOn M] :
+    s = valStructOf M (predM : M → M → Prop) := by
+  haveI := hexp
+  -- on the ring symbols, `valStructOf` and the ambient structure both give the ring operations
+  have hval : ∀ {n : ℕ} (f : Language.ring.Functions n) (y : Fin n → M),
+      @Structure.funMap Language.val M (valStructOf M (predM : M → M → Prop)) n
+          (valRingHom.onFunction f) y
+        = @Structure.funMap Language.ring M _ n f y := by
+    intro n f y
+    cases f <;> simp only [CompatibleRing.funMap_add, CompatibleRing.funMap_mul,
+      CompatibleRing.funMap_neg, CompatibleRing.funMap_zero, CompatibleRing.funMap_one] <;> rfl
+  have hfun : ∀ {n : ℕ} (g : Language.val.Functions n) (x : Fin n → M),
+      @Structure.funMap Language.val M s n g x
+        = @Structure.funMap Language.val M (valStructOf M (predM : M → M → Prop)) n g x := by
+    intro n g x
+    have hg : valRingHom.onFunction (valToRing g) = g := by cases g <;> rfl
+    rw [← hg, LHom.map_onFunction (ϕ := valRingHom) (f := valToRing g) (x := x)]
+    exact (hval (valToRing g) x).symm
+  have hrel : ∀ {n : ℕ} (r : Language.val.Relations n) (x : Fin n → M),
+      @Structure.RelMap Language.val M s n r x
+        = @Structure.RelMap Language.val M (valStructOf M (predM : M → M → Prop)) n r x := by
+    intro n r x
+    cases r with
+    | le =>
+      have hx : x = ![x 0, x 1] := by funext i; fin_cases i <;> rfl
+      rw [hx]
+      rfl
+  obtain ⟨fm, rm⟩ := s
+  simp only [valStructOf]
+  congr 1
+  · funext n g x
+    exact hfun g x
+  · funext n r x
+    exact hrel r x
+
+end StructEq
+
+#print axioms ValPM.valStruct_ext
