@@ -1481,3 +1481,25 @@ is checked rather than assumed.  `not_isQF_exSorted` gives non-vacuity, `sortedH
 gives that every sort assignment is realised in every model, and `isBoolComb_of_HasQEws` reduces
 Theorem 2.8 (C-minimality) to the restated QE plus the tree's missing fact that quantifier-free
 one-variable formulas define Boolean combinations of balls.
+
+## The statement of QE is frozen; the proof runs in parallel (author's ruling)
+
+Only the *statement* of Theorem 2.3 is needed for the paper's downstream development, so the
+campaign splits:
+
+* **The statement is frozen and green.**  `Milestone0/Encoding.lean`'s `HasQE` is the restated,
+  well-sorted form (`d01d590b7bdc0b8912617aea0eb44e9fb2acf7349db2535f9ee7f84961ddf995`, and the
+  hash moves again when the `sorry` is replaced).  See `DECISION.md`.
+* **Everything downstream is developed against it as a hypothesis**, not against its proof:
+  `Downstream.hasQEws_iff_semantic` (the guarded and semantic forms of the statement agree),
+  `qf_sentence_of_HasQEws` (at sentences it is the old form), `vf_tuple_version` (at `VF`-tuples it
+  is exactly `exists_qf_of_coverVF`'s conclusion), `hasQEws_of_hasQEws_param`, plus
+  `isBoolComb_of_HasQEws`, which reduces Theorem 2.8 (C-minimality) to `HasQE` together with the
+  statement that quantifier-free one-variable formulas define Boolean combinations of balls.  Those
+  are merged into `QE/Assembly_val.lean` (20,833 lines, green).
+* **The proof of QE keeps running** — h4's quantifier step in swarm `smw17pts2`, and the model
+  gluing in `smw18cfdk`.
+
+So the meaning of the `sorry` in `Encoding.lean` has changed from "the target of the campaign" to
+"the one statement whose proof is in flight, while its consequences are being developed".  The
+paper's Theorem 2.8 work can now proceed on that basis.
