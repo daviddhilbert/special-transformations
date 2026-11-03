@@ -1368,3 +1368,30 @@ Two findings recorded with it:
 Still not claimed: `kField`, `kAlgClosed`, `rvDivisible` — the three hypotheses of the accepted
 `model_ACVF_of_components` — so `(C v) ⊨ Axioms.ACVF` is not yet asserted.  With `PadicComplex p`
 those concern an algebraically closed residue field and a divisible value group.
+
+## Decision: the target is restated over the well-sorted fragment
+
+The author's ruling: `HasQE` is restated over the well-sorted fragment rather than adding junk
+conventions for every symbol at every wrong sort.  So the target becomes
+
+```
+HasQE T := ∀ (α) (sα : α → SortTag) (n) (sn : Fin n → SortTag) (φ : LRV.BoundedFormula α n),
+  WellSorted sα sn φ → ∃ ψ, ψ.IsQF ∧ WellSorted sα sn ψ ∧
+    T ⊨ᵇ (sortedHyps sα sn ⟹ (φ ⇔ ψ))
+```
+
+with `WellSorted` the syntactic sort discipline for the one-sorted encoding: terms carry a sort
+(`rv t` needs `t : VF` and gives `RV`; the `VF` ring symbols need `VF` and give `VF`; `·`, `kAdd`,
+`kNeg` on `RV` need `RV` and give `RV`; the constants have their sorts), atoms are formed only
+between terms of one sort and with the relations' declared sorts (`memVF`/`memRV`/`memUnits` need
+`RV`-sorted arguments except `memVF`, which needs a `VF` one; `rvLe` needs two `RV` ones), and a
+quantifier is admitted only in guarded form, `∀ x, x ∈ s → ψ`, so no quantification over the
+carrier escapes the sorts.  The equivalence is relativised to tuples of the declared sorts
+(`sortedHyps`, already in the file), which is what makes it a statement about the paper's two-sorted
+language rather than about junk.
+
+Why this is the right choice: the paper's `L_RV` **is** two-sorted, so ill-sorted terms are not its
+formulas at all; freezing them would be axiomatising the encoding's artefact rather than the
+mathematics.  And the well-sorted fragment is exactly what the merged cover covers — `QFCover`/
+`QFRes` build sorted terms (`VFT`/`RVT`) and sorted quantifier-free formulas, and `RVElim.exists_VFQ`
+does the quantifier step — so this restatement is what the existing proofs already establish.
