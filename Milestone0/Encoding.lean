@@ -245,6 +245,28 @@ def allSorted {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence :=
 def exSorted {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
   BoundedFormula.ex (sortPred s (tv k (Nat.lt_succ_self k)) ⊓ φ)
 
+/-! ### Quantification over the residue field `K = K^× ∪ {0}`
+
+The `RV` sort's carrier holds the residue zero `0`, the multiplicative group `K^×`, *and* the
+point `∞`.  The paper's field `K = K^× ∪ {0}` is therefore the *definable* subset
+`RV-sort ∖ {∞}` — the constant `∞` is the marker of "not in `K`".  Axioms about the field `K`
+must be relativised to it: with the sort predicate alone they would also be asserted at `∞`,
+where `×` is absorbing (`t × ∞ = ∞`), and the field axiom "every nonzero element is
+invertible" would then force `0 = ∞`. -/
+
+/-- `⋀ i < k, x_i ≠ ∞`: the tuple lies in `K = RV-sort ∖ {∞}` -/
+def kHyps {k : ℕ} : Bf k :=
+  (List.finRange k).foldr (fun i acc => pK (tv i.val i.isLt) ⊓ acc) ⊤
+
+/-- the universal sentence `∀ x̄ ∈ s̄ ∩ K, φ` -/
+def allSortedK {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence :=
+  BoundedFormula.alls ((sortedHyps ss ⊓ kHyps) ⟹ φ)
+
+/-- the guarded existential formula `∃ x ∈ s ∩ K, φ`, with `x` the variable of index `k` -/
+def exSortedK {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
+  BoundedFormula.ex (sortPred s (tv k (Nat.lt_succ_self k)) ⊓
+    pK (tv k (Nat.lt_succ_self k)) ⊓ φ)
+
 /-- the universal closure of a formula in a single variable -/
 def allOne (φ : Bf 1) : LRV.Sentence := BoundedFormula.alls φ
 
@@ -353,11 +375,44 @@ def vfField : LRV.Theory :=
 /-- algebraic closedness of the `VF` sort -/
 def vfAlgClosed : LRV.Theory := {s | ∃ k, 1 ≤ k ∧ s = acfScheme .vf tVFZero tVFAdd tVFMul k}
 
-/-- Definition 2.2 item 3: `(K, 0, 1, +, -, ×)` is an algebraically closed field. -/
+/-- Definition 2.2 item 3: `(K, 0, 1, +, -, ×)` is an algebraically closed field, where
+`K = K^× ∪ {0} = RV-sort ∖ {∞}`.
+
+Every quantifier is relativised to `K` (`allSortedK`, `exSortedK`), not merely to the `RV`
+sort.  This is not cosmetic: the `RV` sort's carrier also contains `∞`, where `×` is
+absorbing, so asserting the field axioms — in particular "every nonzero element is
+invertible" — at `∞` forces `0 = ∞` and destroys the theory. -/
 def kField : LRV.Theory :=
-  ofList (fieldAxioms .rv tRVZero tRVOne tKAdd tRVMul tKNeg)
-/-- algebraic closedness of `K = Kˣ ∪ {0}` -/
-def kAlgClosed : LRV.Theory := {s | ∃ k, 1 ≤ k ∧ s = acfScheme .rv tRVZero tKAdd tRVMul k}
+  ofList
+    [ /- associativity of `+` -/
+      allSortedK ![.rv, .rv, .rv] (pEq (tKAdd (tKAdd &0 &1) &2) (tKAdd &0 (tKAdd &1 &2))),
+      /- commutativity of `+` -/
+      allSortedK ![.rv, .rv] (pEq (tKAdd &0 &1) (tKAdd &1 &0)),
+      /- `0` is neutral for `+` -/
+      allSortedK ![.rv] (pEq (tKAdd &0 tRVZero) &0),
+      /- additive inverses -/
+      allSortedK ![.rv] (pEq (tKAdd &0 (tKNeg &0)) tRVZero),
+      /- associativity of `×` -/
+      allSortedK ![.rv, .rv, .rv] (pEq (tRVMul (tRVMul &0 &1) &2) (tRVMul &0 (tRVMul &1 &2))),
+      /- commutativity of `×` -/
+      allSortedK ![.rv, .rv] (pEq (tRVMul &0 &1) (tRVMul &1 &0)),
+      /- `1` is neutral for `×` -/
+      allSortedK ![.rv] (pEq (tRVMul &0 tRVOne) &0),
+      /- distributivity -/
+      allSortedK ![.rv, .rv, .rv]
+        (pEq (tRVMul &0 (tKAdd &1 &2)) (tKAdd (tRVMul &0 &1) (tRVMul &0 &2))),
+      /- `0 ≠ 1` -/
+      ∼(pEq tRVZero tRVOne),
+      /- every nonzero element of `K` is invertible -/
+      allSortedK ![.rv] (pEq &0 tRVZero ⊔ exSortedK .rv (pEq (tRVMul &0 &1) tRVOne)) ]
+
+/-- the algebraic-closedness scheme for `K = K^× ∪ {0}`: coefficients and root in `K` -/
+def acfSchemeK (k : ℕ) : LRV.Sentence :=
+  allSortedK (fun _ : Fin k => .rv)
+    (exSortedK .rv (pEq (hornerPoly tKAdd tRVMul) tRVZero))
+
+/-- algebraic closedness of `K = K^× ∪ {0}` -/
+def kAlgClosed : LRV.Theory := {s | ∃ k, 1 ≤ k ∧ s = acfSchemeK k}
 
 /-! ### 3.3 The multiplicative structure of the `RV` sort (Definition 2.2 items 2 and 4) -/
 

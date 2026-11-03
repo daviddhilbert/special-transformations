@@ -105,6 +105,16 @@ roughly 1.5–6k lines, for no gain over (a).
   member's first axiomatisation did — forces `0 = ∞`, and then `le_top` + `le_zero` +
   `0 ≠ 1` make the theory inconsistent, so both target theorems become vacuous. A referee
   proof of that inconsistency is what rejected the first version.
+* **Guard the residue-field axioms by `x ≠ ∞`, not by the sort predicate.** The `RV` sort's
+  carrier contains `0`, `K^×` *and* `∞`, so `∀x ∈ RV-sort` includes `∞`; the paper's field
+  is `K = K^× ∪ {0} = RV-sort ∖ {∞}`. Asserting Definition 2.2(3) at `∞` — in particular
+  "every nonzero element is invertible", together with `t × ∞ = ∞` and commutativity —
+  derives `1 = ∞`, hence `0 = ∞` (via the same disjunction), and no intended model
+  survives. The encoding therefore relativises every `K`-quantifier with `allSortedK` /
+  `exSortedK` (`x ≠ ∞`). This was a genuine defect in the first committed version of
+  `Encoding.lean`; it was found by a member proving the *negative* result
+  (`¬ (K ⊕ RV₀) ⊨ ACVF` for any placement of the constants) and is fixed in
+  `Axioms.kField`, `Axioms.acfSchemeK`, `Axioms.kAlgClosed`.
 * **`rv` is onto the units only.** `rv : VF^× → RV^×` is surjective onto
   `RV^× = RV ∖ {0, ∞}`; the residue zero is *not* in its image (it is absorbing, hence not
   a group element). An axiom saying "every `t ≠ ∞` is `rv x`" excludes the intended model.
