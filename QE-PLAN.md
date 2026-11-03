@@ -1459,3 +1459,25 @@ The two `WellSorted` constructions (mine in `Encoding.lean` by the image of the 
 by a recursive `TmSort` with a guard predicate) agree on content; mine relativises the sorts
 semantically (`sortEval` on the assignments), which avoids the ill-sorted-parameter defect m1 flags
 in the syntactic-guard formulation.
+
+## The two formulations of the restatement agree, and the axiom audit is machine-checked
+
+m3 (accepted, `Downstream.lean`/`AuditAxioms.lean`, green):
+
+* `hasQEws_iff_semantic` — the guarded formulation `T ⊨ᵇ (sortedHyps ⟹ (φ ⇔ ψ))` and the semantic
+  one ("agree at every declared-sort tuple in every model") are **equivalent**.  So the
+  `Encoding.lean` patch (semantic, `sortEval`) and the swarm's guarded version are the same
+  statement, and the ill-sorted-parameter defect m1 flagged cannot arise in either.
+* `qf_sentence_of_HasQEws` — at `Fin 0` the restated conclusion is literally the old one.
+* `vf_tuple_version` — at `sn ≡ .vf` it is exactly `exists_qf_of_coverVF`'s conclusion, with no
+  cover hypothesis.
+* `hasQEws_of_hasQEws_param` — the general `α`/`sα` statement implies the `Empty`-parameter one.
+
+**Axiom audit, machine-checked**: `sdCover`, `sdDisjoint`, `sdUnits` are *not well-sorted* — and they
+are exactly the three sentences that axiomatise the **one-sorted carrier**, not the paper's
+two-sorted language.  The other ~55 axioms are well-sorted.  So `ACVF` contains statements outside
+the fragment, which is correct (they describe the encoding's carrier) and must be said, and now it
+is checked rather than assumed.  `not_isQF_exSorted` gives non-vacuity, `sortedHyps_satisfiable`
+gives that every sort assignment is realised in every model, and `isBoolComb_of_HasQEws` reduces
+Theorem 2.8 (C-minimality) to the restated QE plus the tree's missing fact that quantifier-free
+one-variable formulas define Boolean combinations of balls.
