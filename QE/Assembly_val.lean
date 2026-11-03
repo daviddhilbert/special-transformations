@@ -17970,3 +17970,1845 @@ end SpecialTransformations.Milestone0.Transfer
 #print axioms SpecialTransformations.Milestone0.Transfer.not_iRV_of_iVF
 #print axioms SpecialTransformations.Milestone0.Transfer.not_iUnits_of_iVF
 #print axioms SpecialTransformations.Milestone0.Transfer.ne_of_iVF_of_iRV
+
+/-
+  **f2 — the quantifier-free cover with `RV`-coordinates** (swarm `smw163dd5`, member m2)
+
+  `Cover.Frag` (`QE/Assembly_val.lean`) covers the fragment whose `RV`-atoms are `pLe` and
+  `pUnits` on *single* `rv`-terms, at tuples of `VF`-elements.  This file extends that to a
+  genuinely larger class: **all quantifier-free `L_RV`-formulas that are well sorted**, at
+  tuples of `VF`-elements, with all `RV`-terms built from `1`, `0`, `×` and `rv` (the
+  *multiplicative* `RV`-terms: everything except the residue symbols `kAdd`, `kNeg`).
+
+  Why "well sorted" is not an artificial restriction: `L_RV` is a *one-sorted* encoding of a
+  two-sorted language, so `BoundedFormula` admits ill-sorted terms such as `rv (rv x)` or
+  `vfAdd (kAdd (rv x) (rv y)) 1`.  No axiom of `Axioms.ACVF` constrains `rv` at an element of
+  the `RV` sort nor `vfAdd` at an `RV`-element, so the truth value of an atom containing them is
+  not a function of the `L_val`-structure: **no** cover can hold for those, in any extension of
+  `ACVF` that does not add axioms about junk values.  The cover is therefore stated for the
+  sorted sublanguage, which is what the paper's two-sorted `L_RV` is.
+
+  Contents:
+
+  * `VFT`, `RVT` — well-sorted `VF`- and `RV`-terms with `VF`-sorted free variables (mutually
+    recursive, because `rv` crosses the sorts).
+  * `VFT.toVal`, `VFT.realize_toLRV`, `VFT.realize_mem` — a `VF`-term has the same value read as
+    an `L_RV`-term and as an `L_val`-term, and is a `VF`-element at a `VF`-tuple.
+  * `RVT.toLRV`, `RVT.norm`, `RVT.realize_norm` — **the term normal form**: every multiplicative
+    `RV`-term `u` has a companion `L_val`-term `u.norm` with
+    `u.toLRV.realize x = iRv (valTermEval x u.norm)` at every `VF`-tuple.  Uses `rvMulHom`
+    (`×`), `rvZeroEq` (`0`) and `rv 1 = 1` (`Cover.rv_one`, itself derived).
+  * `QF` — the fragment: `⊥`, `=`, `≤`, `Kˣ`, `≠ 0`, the two sort predicates, implication.
+  * `QF.toRV`, `QF.toVal`, `QF.realize_iff`: the **cover** at `VF`-tuples, model-uniform.
+    `=` on `RV` uses `Transfer.M2.leEqF`, hence the repair sentence `rvFibreIff`; `≤`, `Kˣ`
+    and `≠ 0` need only the frozen `ACVF`.
+
+  Not covered here (and why): `kAdd`, `kNeg` — see the closing section.  They need the repair
+  axioms of `.ultramath/smw1541fr/m3/KAdd.lean` (`kAddLink`, `kJunkZero`, `kNegJunkZero`), and,
+  because the value of a residue sum is `rv (s + t)` or `0` depending on whether `s + t` is a
+  unit, a *case-splitting* presentation of `RV`-terms instead of a single `L_val`-term.
+-/
+
+set_option linter.unusedVariables false
+set_option linter.style.haveILetI false
+set_option backward.isDefEq.respectTransparency false
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+namespace QFCover
+
+/-! ## 1. Well-sorted terms -/
+
+/- Well-sorted `VF`- and `RV`-terms of `L_RV`, with all free variables of the `VF` sort.  `RVT` is
+defined *after* `VFT` (rather than mutually with it) so that both carry usable induction
+principles; `rv` is the only symbol that crosses the sorts.  There is no `RV`-sorted variable
+because the cover is needed at tuples of `VF`-elements (`CoverBridge.CoverVF`'s tuple shape). -/
+/-- Well-sorted `VF`-terms of `L_RV` over a `VF`-tuple. -/
+inductive VFT (n : ℕ) : Type
+  /-- the variable `i`, of the `VF` sort -/
+  | var : Fin n → VFT n
+  /-- `0` of the `VF` sort -/
+  | zero : VFT n
+  /-- `1` of the `VF` sort -/
+  | one : VFT n
+  /-- `+` of the `VF` sort -/
+  | add : VFT n → VFT n → VFT n
+  /-- `-` of the `VF` sort -/
+  | neg : VFT n → VFT n
+  /-- `×` of the `VF` sort -/
+  | mul : VFT n → VFT n → VFT n
+
+/-- Well-sorted `RV`-terms of `L_RV` over a `VF`-tuple. -/
+inductive RVT (n : ℕ) : Type
+  /-- `1` of the `RV` sort -/
+  | one : RVT n
+  /-- `0` of the `RV` sort (the absorbing element, `rv 0`) -/
+  | zero : RVT n
+  /-- `×` of the `RV` sort -/
+  | mul : RVT n → RVT n → RVT n
+  /-- the projection `rv` applied to a `VF`-term -/
+  | rv : VFT n → RVT n
+
+namespace VFT
+
+variable {n : ℕ}
+
+/-- The `L_RV`-term underlying a `VF`-term. -/
+def toLRV : VFT n → Tm n
+  | var i => tv i.1 i.2
+  | zero => tVFZero
+  | one => tVFOne
+  | add a b => tVFAdd a.toLRV b.toLRV
+  | neg a => tVFNeg a.toLRV
+  | mul a b => tVFMul a.toLRV b.toLRV
+
+/-- The `L_val`-term underlying a `VF`-term. -/
+def toVal : VFT n → Language.val.Term (Empty ⊕ Fin n)
+  | var i => Term.var (Sum.inr i)
+  | zero => (0 : Language.val.Term (Empty ⊕ Fin n))
+  | one => (1 : Language.val.Term (Empty ⊕ Fin n))
+  | add a b => a.toVal + b.toVal
+  | neg a => -a.toVal
+  | mul a b => a.toVal * b.toVal
+
+/-- `+` on `L_val`-terms, evaluated. -/
+theorem valTermEval_add' {M : Type} [LRV.Structure M] (x : Fin n → M)
+    (a b : Language.val.Term (Empty ⊕ Fin n)) :
+    valTermEval x (a + b) = iVFAdd (valTermEval x a) (valTermEval x b) := rfl
+
+/-- `×` on `L_val`-terms, evaluated. -/
+theorem valTermEval_mul' {M : Type} [LRV.Structure M] (x : Fin n → M)
+    (a b : Language.val.Term (Empty ⊕ Fin n)) :
+    valTermEval x (a * b) = iVFMul (valTermEval x a) (valTermEval x b) := rfl
+
+/-- `-` on `L_val`-terms, evaluated. -/
+theorem valTermEval_neg' {M : Type} [LRV.Structure M] (x : Fin n → M)
+    (a : Language.val.Term (Empty ⊕ Fin n)) :
+    valTermEval x (-a) = iVFNeg (valTermEval x a) := rfl
+
+variable {M : Type} [LRV.Structure M]
+
+/-- **The term-level cover for `VF`-terms**: read as an `L_RV`-term and as an `L_val`-term, a
+`VF`-term has the same value.  No axiom is used. -/
+theorem realize_toLRV (s : VFT n) (x : Fin n → M) :
+    (s.toLRV).realize (Sum.elim (default : Empty → M) x) = valTermEval x s.toVal := by
+  induction s with
+  | var i => rfl
+  | zero => simp [toLRV, toVal, realize_tVFZero]
+  | one => simp [toLRV, toVal, realize_tVFOne]
+  | add a b iha ihb =>
+    simp only [toLRV, toVal, realize_tVFAdd, iha, ihb, valTermEval_add']
+  | neg a iha =>
+    simp only [toLRV, toVal, realize_tVFNeg, iha, valTermEval_neg']
+  | mul a b iha ihb =>
+    simp only [toLRV, toVal, realize_tVFMul, iha, ihb, valTermEval_mul']
+
+/-- A `VF`-term at a `VF`-tuple is a `VF`-element. -/
+theorem realize_mem (hM : M ⊨ Axioms.ACVF) (s : VFT n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) : iVF ((s.toLRV).realize (Sum.elim (default : Empty → M) x)) := by
+  induction s with
+  | var i => simpa [toLRV, realize_tv] using hx i
+  | zero => simpa [toLRV, realize_tVFZero] using vf_zero_mem hM
+  | one => simpa [toLRV, realize_tVFOne] using vf_one_mem hM
+  | add a b iha ihb =>
+    simp only [toLRV, realize_tVFAdd]
+    exact vf_add_mem hM iha ihb
+  | neg a iha =>
+    simp only [toLRV, realize_tVFNeg]
+    exact vf_neg_mem hM iha
+  | mul a b iha ihb =>
+    simp only [toLRV, realize_tVFMul]
+    exact vf_mul_mem hM iha ihb
+
+end VFT
+
+namespace RVT
+
+variable {n : ℕ}
+
+/-- The `L_RV`-term underlying an `RV`-term. -/
+def toLRV : RVT n → Tm n
+  | one => tRVOne
+  | zero => tRVZero
+  | mul a b => tRVMul a.toLRV b.toLRV
+  | rv s => tRv s.toLRV
+
+/-- **The multiplicative normal form**: an `RV`-term built from `1`, `0`, `×` and `rv` is `rv` of
+an `L_val`-term.  (`kAdd`/`kNeg` are deliberately absent: their value depends on a model-dependent
+case split, see the closing section.) -/
+def norm : RVT n → Language.val.Term (Empty ⊕ Fin n)
+  | one => (1 : Language.val.Term (Empty ⊕ Fin n))
+  | zero => (0 : Language.val.Term (Empty ⊕ Fin n))
+  | mul a b => a.norm * b.norm
+  | rv s => s.toVal
+
+variable {M : Type} [LRV.Structure M]
+
+/-- **The `RV`-term normal form, semantically**: at every `VF`-tuple, an `RV`-term and its
+`L_val` normal form have `rv`-related values.  Axioms used: `rvMulHom` (`×`), `rvZeroEq` (`0`)
+and `rv 1 = 1` (`Cover.rv_one`, derived from `rvMulHom` + `rvSurj` + `rvMulInv` + `kField`). -/
+theorem realize_norm (hM : M ⊨ Axioms.ACVF) (u : RVT n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) :
+    (u.toLRV).realize (Sum.elim (default : Empty → M) x) = iRv (valTermEval x u.norm) := by
+  induction u with
+  | one =>
+    simp only [toLRV, norm, M2.valTermEval_one, M2.realize_tRVOne]
+    exact (Cover.rv_one hM).symm
+  | zero =>
+    simp only [toLRV, norm, M2.valTermEval_zero, realize_tRVZero]
+    exact (rv_zero_eq hM).symm
+  | mul a b iha ihb =>
+    simp only [toLRV, norm, realize_tRVMul, iha, ihb, VFT.valTermEval_mul']
+    exact (rv_mul_hom hM (M2.valTermEval_mem hM hx a.norm)
+      (M2.valTermEval_mem hM hx b.norm)).symm
+  | rv s =>
+    simp only [toLRV, norm, realize_tRv, VFT.realize_toLRV]
+
+end RVT
+
+/-! ## 2. The fragment: all quantifier-free, well-sorted `L_RV`-atoms -/
+
+/-- **The quantifier-free fragment covered here.**  `n` free variables, all of them of the `VF`
+sort, and `RV`-terms restricted to the multiplicative ones.  Every constructor is an atom of the
+paper's two-sorted `L_RV`:
+`eqVF` is `=` on the field, `inVF` its sort predicate, `eqRV`/`leRV`/`unitRV` are `=`/`≤`/`Kˣ`
+on `RV`, `neRV` is the paper's `x ≠ ∞` (`pRV`, i.e. `x ∈ RV ∖ {0}`), `inRV` the `RV`-sort
+predicate, and `imp` gives all Boolean structure. -/
+inductive QF (n : ℕ) : Type
+  /-- `⊥` -/
+  | falsum : QF n
+  /-- `=` of the `VF` sort -/
+  | eqVF : VFT n → VFT n → QF n
+  /-- the `VF`-sort predicate -/
+  | inVF : VFT n → QF n
+  /-- `=` of the `RV` sort (needs the repair `rvFibreIff`) -/
+  | eqRV : RVT n → RVT n → QF n
+  /-- `≤` of the `RV` sort -/
+  | leRV : RVT n → RVT n → QF n
+  /-- `Kˣ` on the `RV` sort -/
+  | unitRV : RVT n → QF n
+  /-- `≠ 0` on the `RV` sort (the encoding's `pRV`, i.e. "not `∞`") -/
+  | neRV : RVT n → QF n
+  /-- the `RV`-sort predicate -/
+  | inRV : RVT n → QF n
+  /-- implication -/
+  | imp : QF n → QF n → QF n
+
+namespace QF
+
+variable {n : ℕ}
+
+/-- The image of a fragment formula in `L_RV`. -/
+def toRV : QF n → Bf n
+  | falsum => BoundedFormula.falsum
+  | eqVF a b => pEq a.toLRV b.toLRV
+  | inVF a => pVF a.toLRV
+  | eqRV u w => pEq u.toLRV w.toLRV
+  | leRV u w => pLe u.toLRV w.toLRV
+  | unitRV u => pUnits u.toLRV
+  | neRV u => pRV u.toLRV
+  | inRV u => pRVsort u.toLRV
+  | imp a b => BoundedFormula.imp a.toRV b.toRV
+
+/-- An `L_val`-formula that is always true, in the `equal` constructor so that it is
+quantifier-free in the sense of `VFRestrict.IsQFVal`. -/
+def tt (n : ℕ) : Language.val.BoundedFormula Empty n :=
+  ((0 : Language.val.Term (Empty ⊕ Fin n)) =' 0)
+
+/-- **The image of a fragment formula in `L_val`**: the cover, syntactically.  Model-independent:
+the same `L_val`-formula serves in every model of the repaired theory. -/
+def toVal : QF n → Language.val.BoundedFormula Empty n
+  | falsum => BoundedFormula.falsum
+  | eqVF a b => (a.toVal =' b.toVal)
+  | inVF _ => tt n
+  | eqRV u w => M2.leEqF u.norm w.norm
+  | leRV u w => ValPM.leF w.norm u.norm
+  | unitRV u => ∼(u.norm =' (0 : Language.val.Term (Empty ⊕ Fin n))) ⊓
+      (ValPM.leF u.norm 1 ⊓ ValPM.leF 1 u.norm)
+  | neRV u => ∼(u.norm =' (0 : Language.val.Term (Empty ⊕ Fin n)))
+  | inRV _ => tt n
+  | imp a b => BoundedFormula.imp a.toVal b.toVal
+
+/-- `leF` is quantifier-free. -/
+theorem isQF_leF (a b : Language.val.Term (Empty ⊕ Fin n)) : (ValPM.leF a b).IsQF :=
+  (BoundedFormula.IsAtomic.rel (l := 2) ValRel.le ![a, b]).isQF
+
+/-- Negation preserves quantifier-freeness. -/
+theorem isQF_not {ψ : Language.val.BoundedFormula Empty n} (h : ψ.IsQF) : (∼ψ).IsQF :=
+  BoundedFormula.IsQF.imp h BoundedFormula.IsQF.falsum
+
+/-- `t ≠ 0` is quantifier-free. -/
+theorem isQF_ne_zero (t : Language.val.Term (Empty ⊕ Fin n)) :
+    (∼(t =' (0 : Language.val.Term (Empty ⊕ Fin n)))).IsQF :=
+  isQF_not (BoundedFormula.IsAtomic.equal _ _).isQF
+
+/-- The repair formula `leEqF s t` is quantifier-free. -/
+theorem isQF_leEqF (s t : Language.val.Term (Empty ⊕ Fin n)) : (M2.leEqF s t).IsQF :=
+  ((isQF_leF s t).inf (isQF_leF t s)).inf
+    ((BoundedFormula.IsAtomic.equal _ _).isQF.sup
+      ((isQF_leF (s + -t) s).inf (isQF_not (isQF_leF s (s + -t)))))
+
+/-- `toVal` never introduces a quantifier. -/
+theorem isQF_toVal (φ : QF n) : (φ.toVal).IsQF := by
+  induction φ with
+  | falsum => exact BoundedFormula.IsQF.falsum
+  | eqVF a b => exact (BoundedFormula.IsAtomic.equal _ _).isQF
+  | inVF a => exact (BoundedFormula.IsAtomic.equal _ _).isQF
+  | eqRV u w => exact isQF_leEqF u.norm w.norm
+  | leRV u w => exact isQF_leF w.norm u.norm
+  | unitRV u => exact (isQF_ne_zero u.norm).inf ((isQF_leF u.norm 1).inf (isQF_leF 1 u.norm))
+  | neRV u => exact isQF_ne_zero u.norm
+  | inRV a => exact (BoundedFormula.IsAtomic.equal _ _).isQF
+  | imp a b iha ihb => exact iha.imp ihb
+
+/-- `toVal` never introduces a quantifier (bespoke `IsQFVal` form). -/
+theorem isQFVal_toVal (φ : QF n) : VFRestrict.IsQFVal φ.toVal :=
+  VFRestrict.isQFVal_of_isQF (isQF_toVal φ)
+
+/-- `tt` is true in every model. -/
+theorem valFormulaEval_tt {M : Type} [LRV.Structure M] (x : Fin n → M) :
+    valFormulaEval x (tt n) := by
+  show valTermEval x (0 : Language.val.Term (Empty ⊕ Fin n)) = valTermEval x 0
+  rfl
+
+section Realize
+
+variable {M : Type} [LRV.Structure M]
+
+/-- **The cover on the fragment, atom by atom**: at a tuple of `VF`-elements, an `L_RV`-formula
+of the fragment and its `L_val` image agree.  `eqRV` is the step that needs the repair sentence
+`rvFibreIff` (`Transfer.M2.leEqF_iff_pEq`); everything else uses only `Axioms.ACVF`. -/
+theorem realize_iff (hM : M ⊨ Axioms.ACVF) (hfib : M ⊨ ({M2.rvFibreIff} : LRV.Theory))
+    (φ : QF n) (x : Fin n → M) (hx : ∀ i, iVF (x i)) :
+    (φ.toRV).Realize (default : Empty → M) x ↔ valFormulaEval x φ.toVal := by
+  induction φ with
+  | falsum => exact Iff.rfl
+  | eqVF a b =>
+    simp only [toRV, toVal, pEq, BoundedFormula.realize_bdEqual, M2.valFormulaEval_equal,
+      VFT.realize_toLRV]
+  | inVF a =>
+    rw [toRV, toVal, pVF_realize]
+    exact ⟨fun _ => valFormulaEval_tt x,
+      fun _ => VFT.realize_mem hM a x hx⟩
+  | eqRV u w =>
+    have hu := RVT.realize_norm hM u x hx
+    have hw := RVT.realize_norm hM w x hx
+    simp only [toRV, toVal, pEq, BoundedFormula.realize_bdEqual, hu, hw,
+      M2.leEqF_iff_pEq hM hfib u.norm w.norm hx, pEq, BoundedFormula.realize_bdEqual,
+      realize_tRv, valTermToRV_realize]
+  | leRV u w =>
+    have hu := RVT.realize_norm hM u x hx
+    have hw := RVT.realize_norm hM w x hx
+    simp only [toRV, toVal, realize_pLe, hu, hw]
+    exact (M2.leF_valTerm_iff w.norm u.norm x).symm
+  | unitRV u =>
+    have ha : iVF (valTermEval x u.norm) := M2.valTermEval_mem hM hx u.norm
+    have hu := RVT.realize_norm hM u x hx
+    rw [toRV, toVal, pUnits_realize, hu, M2.valFormulaEval_inf, M2.valFormulaEval_inf,
+      M2.valFormulaEval_not, M2.valFormulaEval_equal, M2.valTermEval_zero,
+      M2.leF_valTerm_iff, M2.leF_valTerm_iff, M2.valTermEval_one]
+    constructor
+    · intro hu'
+      have hne : valTermEval x u.norm ≠ iVFZero := by
+        intro h
+        exact M2.units_ne_infty hM hu' (by rw [h, rv_zero_eq hM])
+      exact ⟨hne, (Cover.units_atom hM ha hne).1 hu'⟩
+    · rintro ⟨hne, h1, h2⟩
+      exact (Cover.units_atom hM ha hne).2 ⟨h1, h2⟩
+  | neRV u =>
+    have ha : iVF (valTermEval x u.norm) := M2.valTermEval_mem hM hx u.norm
+    have hu := RVT.realize_norm hM u x hx
+    rw [toRV, toVal, pRV_realize, hu, M2.valFormulaEval_not, M2.valFormulaEval_equal,
+      M2.valTermEval_zero]
+    constructor
+    · intro h h0
+      exact h (by rw [h0, rv_zero_eq hM])
+    · intro h h0
+      exact h (rv_eq_infty hM ha h0)
+  | inRV u =>
+    have ha : iVF (valTermEval x u.norm) := M2.valTermEval_mem hM hx u.norm
+    have hu := RVT.realize_norm hM u x hx
+    rw [toRV, toVal, pRVsort_realize, hu]
+    exact ⟨fun _ => valFormulaEval_tt x, fun _ => rv_mem hM ha⟩
+  | imp a b iha ihb =>
+    simp only [toRV, toVal, BoundedFormula.realize_imp, valFormulaEval]
+    exact ⟨fun h ha' => ihb.mp (h (iha.mpr ha')), fun h ha => ihb.mpr (h (iha.mp ha))⟩
+
+/-- The same, read through the guarded translation `valFormulaToRVvf` — i.e. in the exact shape
+of `CoverBridge.CoverVF`. -/
+theorem realize_iff_vf (hM : M ⊨ Axioms.ACVF) (hfib : M ⊨ ({M2.rvFibreIff} : LRV.Theory))
+    (φ : QF n) (x : Fin n → M) (hx : ∀ i, iVF (x i)) :
+    (φ.toRV).Realize (default : Empty → M) x
+      ↔ (VFRestrict.valFormulaToRVvf φ.toVal).Realize (default : Empty → M) x :=
+  (realize_iff hM hfib φ x hx).trans
+    ((VFRestrict.valFormulaEvalVF_eq_of_QF x (isQFVal_toVal φ)).symm.trans
+      (VFRestrict.valFormulaToRVvf_realize φ.toVal x).symm)
+
+end Realize
+
+end QF
+
+/-! ## 3. The repair theory on which the fragment is covered -/
+
+/-- `Axioms.ACVF` together with the repair sentence `rvFibreIff` of
+`.ultramath/smw1541fr/m2/PLeUnits.lean`.  The cover below holds in every model of this theory;
+this is the only repair the multiplicative fragment needs. -/
+def ACVFC : LRV.Theory := Axioms.ACVF ∪ {M2.rvFibreIff}
+
+theorem model_ACVF_of_ACVFC {M : Type} [LRV.Structure M] (h : M ⊨ ACVFC) : M ⊨ Axioms.ACVF :=
+  Theory.Model.mono h (by intro s hs; exact Or.inl hs)
+
+theorem model_rvFibreIff_of_ACVFC {M : Type} [LRV.Structure M] (h : M ⊨ ACVFC) :
+    M ⊨ ({M2.rvFibreIff} : LRV.Theory) :=
+  Theory.Model.mono h (by intro s hs; exact Or.inr hs)
+
+/-! ## 4. `qf_cover`: the quantifier-free cover at every `VF`-tuple, model-uniform -/
+
+/-- **The quantifier-free cover of the fragment.**  For every formula of the fragment there is a
+single `L_val`-formula `θ = φ.toVal`, independent of the model and of the tuple, such that in
+every model of the repaired theory `ACVFC` and at every tuple of `VF`-elements, `φ.toRV` and the
+guarded image `valFormulaToRVvf θ` agree. -/
+theorem qf_cover (φ : QF n) :
+    ∃ θ : Language.val.BoundedFormula Empty n,
+      ∀ (M : Type) [LRV.Structure M], ∀ (_hM : M ⊨ ACVFC), ∀ x : Fin n → M,
+        (∀ i, iVF (x i)) →
+        ((φ.toRV).Realize (default : Empty → M) x
+          ↔ (VFRestrict.valFormulaToRVvf θ).Realize (default : Empty → M) x) :=
+  ⟨φ.toVal, fun M _ hM x hx => QF.realize_iff_vf (model_ACVF_of_ACVFC hM)
+    (model_rvFibreIff_of_ACVFC hM) φ x hx⟩
+
+/-- The pointwise form of the cover, with the two repair theories exhibited separately. -/
+theorem qf_cover_at (φ : QF n) :
+    ∃ θ : Language.val.BoundedFormula Empty n,
+      ∀ (M : Type) [LRV.Structure M], ∀ (_hM : M ⊨ Axioms.ACVF),
+        M ⊨ ({M2.rvFibreIff} : LRV.Theory) → ∀ x : Fin n → M, (∀ i, iVF (x i)) →
+        ((φ.toRV).Realize (default : Empty → M) x
+          ↔ (VFRestrict.valFormulaToRVvf θ).Realize (default : Empty → M) x) :=
+  ⟨φ.toVal, fun M _ hM hfib x hx => QF.realize_iff_vf hM hfib φ x hx⟩
+
+
+/-! ## 5. What the cover buys: quantifier elimination output read back, for the fragment
+
+`CoverBridge.exists_qf_of_coverVF` turns the *hypothesis* `CoverVF` plus quantifier elimination in
+`L_val` into a uniform quantifier-free `L_RV`-formula at `VF`-tuples.  For the fragment of this
+file that hypothesis is not needed: `qf_cover` discharges it.  The corollary below records this,
+so that the fragment can be used without carrying `CoverVF`. -/
+
+/-- **Quantifier elimination output read back on the fragment**, unconditionally in the cover: at
+every `VF`-tuple of every model of `ACVF` + `rvFibreIff` whose `VF` sort models `ACVF_val`, a
+fragment formula is equivalent to a quantifier-free `L_RV`-formula that depends only on the
+fragment formula and on `ACVF_val` (not on the model or the tuple). -/
+theorem exists_qf_of_covered
+    (hQEb : QECriterion.HasQEb (L := Language.val) ValPM.ACVF_val) (φ : QF n) :
+    ∃ ψ : Bf n, ψ.IsQF ∧
+      ∀ (M : Type) [LRV.Structure M], ∀ (_hM : M ⊨ Axioms.ACVF),
+        M ⊨ ({M2.rvFibreIff} : LRV.Theory) →
+        ∀ (_hS : @Theory.Model Language.val (VFType (M := M))
+            (VFRestrict.vfStruct _hM) ValPM.ACVF_val)
+          (x : Fin n → M), (∀ i, iVF (x i)) →
+        ((φ.toRV).Realize (default : Empty → M) x ↔ ψ.Realize (default : Empty → M) x) := by
+  obtain ⟨θ', hθ'QF, hθ'⟩ := hQEb Empty n φ.toVal
+  refine ⟨valFormulaToRV θ', CoverBridge.isQF_valFormulaToRV hθ'QF, ?_⟩
+  intro M _ hM hfib hS x hx
+  haveI : Nonempty (VFType (M := M)) := ⟨⟨iVFZero, vf_zero_mem hM⟩⟩
+  letI : Language.val.Structure (VFType (M := M)) := VFRestrict.vfStruct hM
+  haveI : @Theory.Model Language.val (VFType (M := M)) inferInstance ValPM.ACVF_val := hS
+  have hiff : ∀ y : Fin n → VFType (M := M),
+      (@BoundedFormula.Realize Language.val (VFType (M := M)) inferInstance Empty n φ.toVal
+        (default : Empty → VFType (M := M)) y)
+      ↔ (@BoundedFormula.Realize Language.val (VFType (M := M)) inferInstance Empty n θ'
+        (default : Empty → VFType (M := M)) y) :=
+    fun y => hθ'.realize_bd_iff
+  exact (QF.realize_iff_vf hM hfib φ x hx).trans
+    (VFRestrict.transfer_of_isQF hM hθ'QF hiff x hx)
+
+/-! ## 4b. Guarded `VF`-quantifiers
+
+`CoverBridge.CoverVF` quantifies over *all* `L_RV`-formulas, and `valFormulaToRVvf` reads a
+quantifier of `L_val` as a `pVF`-guarded quantifier of `L_RV`.  The fragment above is
+quantifier-free; this section adds exactly the quantifier that the translation produces, so that
+the cover survives universal quantification over the field.  (Quantification over the `RV` sort is
+a different matter: it needs the substitution of an `RV`-variable by `rv` of a `VF`-variable,
+which is direction f3.) -/
+
+/-- The fragment closed under `VF`-guarded universal quantification.  Indexed (not
+parameterised) by the number of free variables, because the quantifier changes it. -/
+inductive QFq : ℕ → Type
+  /-- a quantifier-free formula of the fragment -/
+  | ofQF {n : ℕ} : QF n → QFq n
+  /-- implication -/
+  | imp {n : ℕ} : QFq n → QFq n → QFq n
+  /-- universal quantification over the `VF` sort -/
+  | allVF {n : ℕ} : QFq (n + 1) → QFq n
+
+namespace QFq
+
+/-- The image in `L_RV`. -/
+def toRV : {n : ℕ} → QFq n → Bf n
+  | _, ofQF φ => φ.toRV
+  | _, imp a b => BoundedFormula.imp a.toRV b.toRV
+  | _, allVF ψ => BoundedFormula.all (pVF (tv _ (Nat.lt_succ_self _)) ⟹ ψ.toRV)
+
+/-- The image in `L_val`. -/
+def toVal : {n : ℕ} → QFq n → Language.val.BoundedFormula Empty n
+  | _, ofQF φ => φ.toVal
+  | _, imp a b => BoundedFormula.imp a.toVal b.toVal
+  | _, allVF ψ => BoundedFormula.all ψ.toVal
+
+section Realize
+
+variable {M : Type} [LRV.Structure M]
+
+/-- **The cover survives `VF`-guarded quantifiers.**  Same statement as `QF.realize_iff_vf`,
+extended with the quantifier case. -/
+theorem realize_iff_vf (hM : M ⊨ Axioms.ACVF) (hfib : M ⊨ ({M2.rvFibreIff} : LRV.Theory))
+    {n : ℕ} (φ : QFq n) (x : Fin n → M) (hx : ∀ i, iVF (x i)) :
+    (φ.toRV).Realize (default : Empty → M) x
+      ↔ (VFRestrict.valFormulaToRVvf φ.toVal).Realize (default : Empty → M) x := by
+  induction φ with
+  | ofQF φ => exact QF.realize_iff_vf hM hfib φ x hx
+  | imp a b iha ihb =>
+    simp only [toRV, toVal, BoundedFormula.realize_imp, VFRestrict.valFormulaToRVvf]
+    exact ⟨fun h ha => (ihb x hx).mp (h ((iha x hx).mpr ha)),
+      fun h ha => (ihb x hx).mpr (h ((iha x hx).mp ha))⟩
+  | allVF ψ ih =>
+    simp only [toRV, toVal, BoundedFormula.realize_all, BoundedFormula.realize_imp,
+      VFRestrict.realize_pVF_last, Fin.snoc_last, VFRestrict.valFormulaToRVvf]
+    constructor
+    · intro h a ha
+      exact (ih (Fin.snoc x a) (by
+        intro i
+        refine Fin.lastCases ?_ (fun j => ?_) i
+        · simpa using ha
+        · simpa using hx j)).mp (h a ha)
+    · intro h a ha
+      exact (ih (Fin.snoc x a) (by
+        intro i
+        refine Fin.lastCases ?_ (fun j => ?_) i
+        · simpa using ha
+        · simpa using hx j)).mpr (h a ha)
+
+end Realize
+
+end QFq
+
+/-- **The quantifier-free-plus-`VF`-quantifier cover**, in the shape of `CoverBridge.CoverVF`
+restricted to the syntax class: one `L_val`-formula, independent of the model and the tuple. -/
+theorem qfq_cover {n : ℕ} (φ : QFq n) :
+    ∃ θ : Language.val.BoundedFormula Empty n,
+      ∀ (M : Type) [LRV.Structure M], ∀ (_hM : M ⊨ ACVFC), ∀ x : Fin n → M,
+        (∀ i, iVF (x i)) →
+        ((φ.toRV).Realize (default : Empty → M) x
+          ↔ (VFRestrict.valFormulaToRVvf θ).Realize (default : Empty → M) x) :=
+  ⟨φ.toVal, fun M _ hM x hx => QFq.realize_iff_vf (model_ACVF_of_ACVFC hM)
+    (model_rvFibreIff_of_ACVFC hM) φ x hx⟩
+
+end QFCover
+
+/-! ## Axiom checks -/
+
+#print axioms QFCover.VFT.realize_toLRV
+#print axioms QFCover.VFT.realize_mem
+#print axioms QFCover.RVT.realize_norm
+#print axioms QFCover.QF.isQFVal_toVal
+#print axioms QFCover.QF.realize_iff
+#print axioms QFCover.QF.realize_iff_vf
+#print axioms QFCover.qf_cover
+#print axioms QFCover.qf_cover_at
+#print axioms QFCover.exists_qf_of_covered
+
+#print axioms QFCover.QFq.realize_iff_vf
+#print axioms QFCover.qfq_cover
+
+/-
+  **f2, second half — the residue symbols `kAdd`, `kNeg`** (swarm `smw163dd5`, member m2)
+
+  Companion to `QFCover.lean`, which covers the *multiplicative* `RV`-terms.  Here the `RV`-terms
+  also carry the residue-field symbols `kAdd` and `kNeg`.  The obstruction is that there is no
+  *single* `L_val`-term describing such a term: by m3's `kAdd_units_iff` (`.ultramath/smw1541fr/m3/KAdd.lean`),
+
+      kAdd (rv s) (rv t) = rv (s + t)   if `s + t` is a unit of the valuation ring,
+      kAdd (rv s) (rv t) = 0            if `v (s + t) > 0`,
+
+  and off `K = Kˣ ∪ {0}` the operation is junk, pinned to `0` by `kJunkZero`.  So an `RV`-term is
+  presented by a **finite list of cases**: pairs `(guard, L_val-term)` such that every guard implies
+  `u = rv (term)`.  Two invariants are proved (`RVT.Q1`, `RVT.Q2`):
+
+  * `Q1`: every case's guard implies `u = rv` of the case's term;
+  * `Q2`: the disjunction of the guards holds exactly when `u ≠ 0`.
+
+  Atoms are then folds over the list: `u = w` is `⋁` over the product of the two lists of
+  `leEqF s t`, `u ≤ w` is `⋁` of `leF t s`, `u ∈ Kˣ` is `⋁` of the unit atom, `u ≠ 0` is `⋁` of
+  `s ≠ 0`.  Nothing about the case list depends on the model: it is a syntactic object.
+
+  Hypotheses: exactly m3's three repairs, in semantic form —
+  `KAddAdditive` (`kAddLink`), `KNegAdditive`, `KJunkZero` (`kJunkZero`), `KNegJunkZero`
+  (`kNegJunkZero`), plus for `kNeg` the (conjectural-in-m3, here hypothesised) agreement of `kNeg`
+  with `-` on units.  `kAdd_zero_right`/`kAdd_zero_left`/`kNeg_zero` are unconditional in the tree
+  (`Transfer.TrivCase`).
+-/
+
+set_option linter.unusedVariables false
+set_option linter.unusedSimpArgs false
+set_option linter.style.haveILetI false
+set_option backward.isDefEq.respectTransparency false
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+open VFRestrict
+
+namespace QFRes
+
+/-! ## 1. Sorted terms, now with the residue symbols -/
+
+/-- Well-sorted `VF`-terms over a tuple of `VF`-variables. -/
+inductive VFT (n : ℕ) : Type
+  | var : Fin n → VFT n
+  | zero : VFT n
+  | one : VFT n
+  | add : VFT n → VFT n → VFT n
+  | neg : VFT n → VFT n
+  | mul : VFT n → VFT n → VFT n
+
+/-- Well-sorted `RV`-terms over a tuple of `VF`-variables, with the residue symbols. -/
+inductive RVT (n : ℕ) : Type
+  | one : RVT n
+  | zero : RVT n
+  | mul : RVT n → RVT n → RVT n
+  | kAdd : RVT n → RVT n → RVT n
+  | kNeg : RVT n → RVT n
+  | rv : VFT n → RVT n
+
+namespace VFT
+
+variable {n : ℕ}
+
+/-- The `L_RV`-term underlying a `VF`-term. -/
+def toLRV : VFT n → Tm n
+  | var i => tv i.1 i.2
+  | zero => tVFZero
+  | one => tVFOne
+  | add a b => tVFAdd a.toLRV b.toLRV
+  | neg a => tVFNeg a.toLRV
+  | mul a b => tVFMul a.toLRV b.toLRV
+
+/-- The `L_val`-term underlying a `VF`-term. -/
+def toVal : VFT n → Language.val.Term (Empty ⊕ Fin n)
+  | var i => Term.var (Sum.inr i)
+  | zero => (0 : Language.val.Term (Empty ⊕ Fin n))
+  | one => (1 : Language.val.Term (Empty ⊕ Fin n))
+  | add a b => a.toVal + b.toVal
+  | neg a => -a.toVal
+  | mul a b => a.toVal * b.toVal
+
+variable {M : Type} [LRV.Structure M]
+
+/-- `×` on `L_val`-terms, evaluated. -/
+theorem valTermEval_mul' (x : Fin n → M) (a b : Language.val.Term (Empty ⊕ Fin n)) :
+    valTermEval x (a * b) = iVFMul (valTermEval x a) (valTermEval x b) := rfl
+
+theorem realize_toLRV (s : VFT n) (x : Fin n → M) :
+    (s.toLRV).realize (Sum.elim (default : Empty → M) x) = valTermEval x s.toVal := by
+  induction s with
+  | var i => rfl
+  | zero => simp [toLRV, toVal, realize_tVFZero]
+  | one => simp [toLRV, toVal, realize_tVFOne]
+  | add a b iha ihb =>
+    simp only [toLRV, toVal, realize_tVFAdd, iha, ihb, M2.valTermEval_add]
+  | neg a iha =>
+    simp only [toLRV, toVal, realize_tVFNeg, iha, M2.valTermEval_neg]
+  | mul a b iha ihb =>
+    simp only [toLRV, toVal, realize_tVFMul, iha, ihb, valTermEval_mul']
+
+theorem realize_mem (hM : M ⊨ Axioms.ACVF) (s : VFT n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) : iVF ((s.toLRV).realize (Sum.elim (default : Empty → M) x)) := by
+  induction s with
+  | var i => simpa [toLRV, realize_tv] using hx i
+  | zero => simpa [toLRV, realize_tVFZero] using vf_zero_mem hM
+  | one => simpa [toLRV, realize_tVFOne] using vf_one_mem hM
+  | add a b iha ihb => simp only [toLRV, realize_tVFAdd]; exact vf_add_mem hM iha ihb
+  | neg a iha => simp only [toLRV, realize_tVFNeg]; exact vf_neg_mem hM iha
+  | mul a b iha ihb => simp only [toLRV, realize_tVFMul]; exact vf_mul_mem hM iha ihb
+
+end VFT
+
+namespace RVT
+
+variable {n : ℕ}
+
+/-- The `L_RV`-term underlying an `RV`-term. -/
+def toLRV : RVT n → Tm n
+  | one => tRVOne
+  | zero => tRVZero
+  | mul a b => tRVMul a.toLRV b.toLRV
+  | kAdd a b => tKAdd a.toLRV b.toLRV
+  | kNeg a => tKNeg a.toLRV
+  | rv s => tRv s.toLRV
+
+end RVT
+
+/-! ## 2. The repairs, in the semantic form of `.ultramath/smw1541fr/m3/KAdd.lean` -/
+
+/-- The additive property of the residue map (m3's `kAddLink`, semantically): at units of the
+valuation ring, `kAdd` is `rv` of the sum when the sum is a unit, and `0` otherwise. -/
+def KAddAdditive (M : Type) [LRV.Structure M] : Prop :=
+  ∀ x y : M, iVF x → iVF y → iUnits (iRv x) → iUnits (iRv y) →
+    ((iUnits (iRv (iVFAdd x y)) → iKAdd (iRv x) (iRv y) = iRv (iVFAdd x y)) ∧
+      (¬ iUnits (iRv (iVFAdd x y)) → iKAdd (iRv x) (iRv y) = iRVZero))
+
+/-- `kNeg` agrees with the field's `-` at units (m3's `KNegAdditive`). -/
+def KNegAdditive (M : Type) [LRV.Structure M] : Prop :=
+  ∀ x : M, iVF x → iUnits (iRv x) → TrivCase.iKNeg (iRv x) = iRv (iVFNeg x)
+
+/-- The junk convention, semantically (m3's `kJunkZero`). -/
+def KJunkZero (M : Type) [LRV.Structure M] : Prop :=
+  ∀ x y : M, iRV x → iRV y →
+    (¬(iUnits x ∨ x = iRVZero) ∨ ¬(iUnits y ∨ y = iRVZero)) → iKAdd x y = iRVZero
+
+/-- The junk convention for `-`, semantically (m3's `kNegJunkZero`). -/
+def KNegJunkZero (M : Type) [LRV.Structure M] : Prop :=
+  ∀ x : M, iRV x → ¬(iUnits x ∨ x = iRVZero) → TrivCase.iKNeg x = iRVZero
+
+namespace QFAux
+
+variable {n : ℕ}
+
+/-- `L_val`-formulas with `n` variables. -/
+abbrev VFm (n : ℕ) := Language.val.BoundedFormula Empty n
+/-- `L_val`-terms with `n` variables. -/
+abbrev VTm (n : ℕ) := Language.val.Term (Empty ⊕ Fin n)
+/-- A finite presentation of an `RV`-element: a list of (guard, `L_val`-term) pairs. -/
+abbrev CaseList (n : ℕ) := List (VFm n × VTm n)
+
+/-- An always-true atomic formula. -/
+def ttF (n : ℕ) : VFm n := ((0 : VTm n) =' 0)
+
+/-- `⋁` of the guards of a case list. -/
+def anyF : CaseList n → VFm n
+  | [] => ⊥
+  | (g, _) :: L => g ⊔ anyF L
+
+/-- `⋁ over the cases of (guard ∧ body term)`. -/
+def allF : CaseList n → (VTm n → VFm n) → VFm n
+  | [], _ => ⊥
+  | (g, s) :: L, body => (g ⊓ body s) ⊔ allF L body
+
+/-- The cartesian product of two case lists: the presentation of a binary operation on `RV`. -/
+def prodL (L1 L2 : CaseList n) (gF : VFm n → VTm n → VFm n → VTm n → VFm n)
+    (tF : VTm n → VTm n → VTm n) : CaseList n :=
+  L1.flatMap (fun p => L2.map (fun q => (gF p.1 p.2 q.1 q.2, tF p.2 q.2)))
+
+end QFAux
+
+namespace QFAux
+
+variable {M : Type} [LRV.Structure M] {n : ℕ}
+
+/-! ### The evaluator on the pieces -/
+
+theorem evalVF_inf (x : Fin n → M) (φ ψ : VFm n) :
+    valFormulaEvalVF x (φ ⊓ ψ) ↔ (valFormulaEvalVF x φ ∧ valFormulaEvalVF x ψ) := by
+  have h : valFormulaEvalVF x (φ ⊓ ψ) = ¬ (valFormulaEvalVF x φ → ¬ valFormulaEvalVF x ψ) := rfl
+  rw [h]; tauto
+
+theorem evalVF_sup (x : Fin n → M) (φ ψ : VFm n) :
+    valFormulaEvalVF x (φ ⊔ ψ) ↔ (valFormulaEvalVF x φ ∨ valFormulaEvalVF x ψ) := by
+  have h : valFormulaEvalVF x (φ ⊔ ψ) = (¬ valFormulaEvalVF x φ → valFormulaEvalVF x ψ) := rfl
+  rw [h]; tauto
+
+theorem evalVF_not (x : Fin n → M) (φ : VFm n) :
+    valFormulaEvalVF x (∼φ) ↔ ¬ valFormulaEvalVF x φ := Iff.rfl
+
+theorem evalVF_equal (x : Fin n → M) (s t : VTm n) :
+    valFormulaEvalVF x (s =' t) ↔ valTermEval x s = valTermEval x t := Iff.rfl
+
+theorem evalVF_leF (x : Fin n → M) (s t : VTm n) :
+    valFormulaEvalVF x (ValPM.leF s t) ↔ iLe (iRv (valTermEval x t)) (iRv (valTermEval x s)) :=
+  Iff.rfl
+
+theorem evalVF_tt (x : Fin n → M) : valFormulaEvalVF x (ttF n) := by
+  rw [ttF, evalVF_equal]
+
+theorem evalVF_anyF (x : Fin n → M) (L : CaseList n) :
+    valFormulaEvalVF x (anyF L) ↔ ∃ p ∈ L, valFormulaEvalVF x p.1 := by
+  induction L with
+  | nil => simp [anyF, valFormulaEvalVF]
+  | cons p L ih =>
+    simp only [anyF, evalVF_sup, ih, List.mem_cons]
+    constructor
+    · rintro (h | ⟨q, hq, hg⟩)
+      · exact ⟨p, Or.inl rfl, h⟩
+      · exact ⟨q, Or.inr hq, hg⟩
+    · rintro ⟨q, hq | hq, hg⟩
+      · exact Or.inl (hq ▸ hg)
+      · exact Or.inr ⟨q, hq, hg⟩
+
+theorem evalVF_allF (x : Fin n → M) (L : CaseList n) (body : VTm n → VFm n) :
+    valFormulaEvalVF x (allF L body) ↔
+      ∃ p ∈ L, valFormulaEvalVF x p.1 ∧ valFormulaEvalVF x (body p.2) := by
+  induction L with
+  | nil => simp [allF, valFormulaEvalVF]
+  | cons p L ih =>
+    simp only [allF, evalVF_sup, evalVF_inf, ih, List.mem_cons]
+    constructor
+    · rintro (⟨h1, h2⟩ | ⟨q, hq, h1, h2⟩)
+      · exact ⟨p, Or.inl rfl, h1, h2⟩
+      · exact ⟨q, Or.inr hq, h1, h2⟩
+    · rintro ⟨q, hq | hq, h1, h2⟩
+      · exact Or.inl ⟨hq ▸ h1, hq ▸ h2⟩
+      · exact Or.inr ⟨q, hq, h1, h2⟩
+
+theorem mem_prodL {L1 L2 : CaseList n} {gF : VFm n → VTm n → VFm n → VTm n → VFm n}
+    {tF : VTm n → VTm n → VTm n} {p : VFm n × VTm n} :
+    p ∈ prodL L1 L2 gF tF ↔
+      ∃ p1 ∈ L1, ∃ p2 ∈ L2, p.1 = gF p1.1 p1.2 p2.1 p2.2 ∧ p.2 = tF p1.2 p2.2 := by
+  simp only [prodL, List.mem_flatMap, List.mem_map]
+  constructor
+  · rintro ⟨p1, hp1, p2, hp2, hEq⟩
+    refine ⟨p1, hp1, p2, hp2, ?_, ?_⟩
+    · rw [← hEq]
+    · rw [← hEq]
+  · rintro ⟨p1, hp1, p2, hp2, h1, h2⟩
+    exact ⟨p1, hp1, p2, hp2, Prod.ext h1.symm h2.symm⟩
+
+theorem evalVF_anyF_prodL (x : Fin n → M) (L1 L2 : CaseList n)
+    (gF : VFm n → VTm n → VFm n → VTm n → VFm n) (tF : VTm n → VTm n → VTm n) :
+    valFormulaEvalVF x (anyF (prodL L1 L2 gF tF)) ↔
+      ∃ p1 ∈ L1, ∃ p2 ∈ L2, valFormulaEvalVF x (gF p1.1 p1.2 p2.1 p2.2) := by
+  rw [evalVF_anyF]
+  constructor
+  · rintro ⟨p, hp, hg⟩
+    obtain ⟨p1, hp1, p2, hp2, h1, -⟩ := mem_prodL.mp hp
+    exact ⟨p1, hp1, p2, hp2, by rw [← h1]; exact hg⟩
+  · rintro ⟨p1, hp1, p2, hp2, hg⟩
+    refine ⟨(gF p1.1 p1.2 p2.1 p2.2, tF p1.2 p2.2), ?_, ?_⟩
+    · exact mem_prodL.mpr ⟨p1, hp1, p2, hp2, rfl, rfl⟩
+    · exact hg
+
+/-! ### The unit atom and its two sides -/
+
+/-- `rv s ∈ Kˣ`, as a quantifier-free `L_val`-formula: `s ≠ 0 ∧ v s = v 1`. -/
+def unitAtm (s : VTm n) : VFm n :=
+  ∼(s =' (0 : VTm n)) ⊓ (ValPM.leF s 1 ⊓ ValPM.leF 1 s)
+
+/-- **The unit atom is `iUnits` of the value**, at every `VF`-element (including `0`, where both
+sides are false because `Kˣ` does not contain `∞`). -/
+theorem evalVF_unitAtm (hM : M ⊨ Axioms.ACVF) {x : Fin n → M} (hx : ∀ i, iVF (x i))
+    (s : VTm n) :
+    valFormulaEvalVF x (unitAtm s) ↔ iUnits (iRv (valTermEval x s)) := by
+  have hmem : iVF (valTermEval x s) := M2.valTermEval_mem hM hx s
+  simp only [unitAtm, evalVF_inf, evalVF_not, evalVF_equal, M2.valTermEval_zero,
+    evalVF_leF, M2.valTermEval_one]
+  by_cases h0 : valTermEval x s = iVFZero
+  · rw [h0]
+    constructor
+    · intro h
+      exact absurd rfl h.1
+    · intro hu
+      rw [rv_zero_eq hM] at hu
+      exact absurd hu (TrivCase.units_ne_infty hM)
+  · exact ⟨fun h => (Cover.units_atom hM hmem h0).2 ⟨h.2.1, h.2.2⟩,
+      fun h => ⟨h0, (Cover.units_atom hM hmem h0).1 h⟩⟩
+
+/-- `rv s ≠ 0` is `s ≠ 0`. -/
+theorem rv_ne_zero_iff (hM : M ⊨ Axioms.ACVF) {x : Fin n → M} (hx : ∀ i, iVF (x i))
+    (s : VTm n) : iRv (valTermEval x s) ≠ iRVZero ↔ valTermEval x s ≠ iVFZero := by
+  have hmem : iVF (valTermEval x s) := M2.valTermEval_mem hM hx s
+  exact ⟨fun h h0 => h (by rw [h0, rv_zero_eq hM]), fun h h0 => h (rv_eq_infty hM hmem h0)⟩
+
+/-- `×` on `RV` is commutative (`Axioms.rvMulComm`), semantically. -/
+theorem rv_mul_comm (hM : M ⊨ Axioms.ACVF) {a b : M} (ha : iRV a) (hb : iRV b) :
+    iRVMul a b = iRVMul b a := by
+  have hmem : Axioms.rvMulComm ∈ Axioms.ACVF :=
+    TrivCase.mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+  have h := allSorted_realize hM hmem ![a, b] (by intro i; fin_cases i <;> simp [ha, hb])
+  simpa only [Axioms.rvMulComm, pEq, BoundedFormula.realize_bdEqual, realize_tRVMul, realize_tv,
+    Term.realize_var, Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons] using h
+
+/-- `∞ · b = ∞`. -/
+theorem rv_zero_mul (hM : M ⊨ Axioms.ACVF) {b : M} (hb : iRV b) :
+    iRVMul iRVZero b = iRVZero := by
+  rw [rv_mul_comm hM (TrivCase.iRV_rvZero hM) hb]
+  exact TrivCase.rvMul_infty hM hb
+
+/-- Additive cancellation on the `VF` sort. -/
+theorem vf_add_left_cancel (hM : M ⊨ Axioms.ACVF) {a b c : M} (ha : iVF a) (hb : iVF b)
+    (hc : iVF c) (h : iVFAdd a b = iVFAdd a c) : b = c := by
+  have hna : iVF (iVFNeg a) := vf_neg_mem hM ha
+  have key : ∀ x : M, iVF x → iVFAdd (iVFNeg a) (iVFAdd a x) = x := by
+    intro x hx
+    rw [← vf_add_assoc hM hna ha hx, vf_add_comm hM hna ha, vf_add_neg hM ha,
+      vf_add_comm hM (vf_zero_mem hM) hx, vf_add_zero hM hx]
+  rw [← key b hb, ← key c hc, h]
+
+/-- `x · 0 = 0` on the `VF` sort. -/
+theorem vf_mul_zero_right (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) :
+    iVFMul x iVFZero = iVFZero := by
+  have h0 : iVF (iVFZero (M := M)) := vf_zero_mem hM
+  have hz : iVF (iVFMul x iVFZero) := vf_mul_mem hM hx h0
+  have hdist := vf_left_distrib hM hx h0 h0
+  rw [vf_add_zero hM h0] at hdist
+  have h1 : iVFAdd (iVFMul x iVFZero) (iVFMul x iVFZero) =
+      iVFAdd (iVFMul x iVFZero) iVFZero := by
+    rw [vf_add_zero hM hz]; exact hdist.symm
+  exact vf_add_left_cancel hM hz hz h0 h1
+
+/-- A product of nonzero field elements is nonzero (`VF` is an integral domain). -/
+theorem vf_mul_ne_zero (hM : M ⊨ Axioms.ACVF) {x y : M} (hx : iVF x) (hy : iVF y)
+    (hx0 : x ≠ iVFZero) (hy0 : y ≠ iVFZero) : iVFMul x y ≠ iVFZero := by
+  obtain ⟨xi, hxi, hxxi⟩ := (vf_mul_inv_or_zero hM hx).resolve_left hx0
+  have h1 : iVF (iVFOne (M := M)) := vf_one_mem hM
+  have hxy : iVF (iVFMul x y) := vf_mul_mem hM hx hy
+  intro h
+  apply hy0
+  have hcx : iVFMul xi x = iVFOne := by
+    rw [vf_mul_comm hM hxi hx]; exact hxxi
+  have hone : iVFMul iVFOne y = y := by
+    rw [vf_mul_comm hM h1 hy]; exact vf_mul_one hM hy
+  rw [← hone, ← hcx, vf_mul_assoc hM hxi hx hy, h, vf_mul_zero_right hM hxi]
+
+/-- **Nonvanishing is multiplicative on `RV`**: `a · b ≠ 0 ↔ a ≠ 0 ∧ b ≠ 0`. -/
+theorem rv_mul_ne_zero_iff (hM : M ⊨ Axioms.ACVF) {a b : M} (ha : iRV a) (hb : iRV b) :
+    iRVMul a b ≠ iRVZero ↔ (a ≠ iRVZero ∧ b ≠ iRVZero) := by
+  constructor
+  · intro h
+    constructor
+    · intro h0
+      exact h (by rw [h0]; exact rv_zero_mul hM hb)
+    · intro h0
+      exact h (by rw [h0]; exact TrivCase.rvMul_infty hM ha)
+  · rintro ⟨ha0, hb0⟩
+    obtain ⟨x, hx, hxa⟩ := TrivCase.rv_surj hM ha ha0
+    obtain ⟨y, hy, hyb⟩ := TrivCase.rv_surj hM hb hb0
+    have hx0 : x ≠ iVFZero := fun h0 => ha0 (by rw [h0, rv_zero_eq hM] at hxa; exact hxa.symm)
+    have hy0 : y ≠ iVFZero := fun h0 => hb0 (by rw [h0, rv_zero_eq hM] at hyb; exact hyb.symm)
+    have hxy : iRv (iVFMul x y) = iRVMul a b := by
+      rw [rv_mul_hom hM hx hy, hxa, hyb]
+    rw [← hxy]
+    exact fun h => vf_mul_ne_zero hM hx hy hx0 hy0 (rv_eq_infty hM (vf_mul_mem hM hx hy) h)
+
+end QFAux
+
+namespace QFAux
+
+variable {M : Type} [LRV.Structure M] {n : ℕ}
+
+/-- `⋁` over the product of two case lists, of a formula body. -/
+def prodF (L1 L2 : CaseList n) (body : VTm n → VTm n → VFm n) : VFm n :=
+  allF L1 (fun s => allF L2 (fun t => body s t))
+
+theorem evalVF_anyF_append (x : Fin n → M) (L1 L2 : CaseList n) :
+    valFormulaEvalVF x (anyF (L1 ++ L2)) ↔
+      (valFormulaEvalVF x (anyF L1) ∨ valFormulaEvalVF x (anyF L2)) := by
+  induction L1 with
+  | nil => simp [anyF, valFormulaEvalVF]
+  | cons p L ih => simp only [List.cons_append, anyF, evalVF_sup, ih]; tauto
+
+theorem evalVF_prodF (x : Fin n → M) (L1 L2 : CaseList n) (body : VTm n → VTm n → VFm n) :
+    valFormulaEvalVF x (prodF L1 L2 body) ↔
+      ∃ p ∈ L1, ∃ q ∈ L2, valFormulaEvalVF x p.1 ∧ valFormulaEvalVF x q.1 ∧
+        valFormulaEvalVF x (body p.2 q.2) := by
+  simp only [prodF, evalVF_allF]
+  constructor
+  · rintro ⟨p, hp, h1, ⟨q, hq, h2, h3⟩⟩
+    exact ⟨p, hp, q, hq, h1, h2, h3⟩
+  · rintro ⟨p, hp, q, hq, h1, h2, h3⟩
+    exact ⟨p, hp, h1, q, hq, h2, h3⟩
+
+end QFAux
+
+namespace RVT
+
+open QFAux
+
+variable {n : ℕ}
+
+/-- **The case presentation of an `RV`-term**: a list of (guard, `L_val`-term) pairs.  This is
+where the residue symbols enter: `kAdd` needs the three-way split
+"`a ∈ Kˣ` and `b = 0`", "`a = 0` and `b ∈ Kˣ`", "both in `Kˣ` and the sum in `Kˣ`". -/
+def pres : RVT n → QFAux.CaseList n
+  | one => [(ttF n, (1 : VTm n))]
+  | zero => []
+  | rv s => [(∼(s.toVal =' (0 : VTm n)), s.toVal)]
+  | mul a b => prodL (pres a) (pres b) (fun g1 _ g2 _ => g1 ⊓ g2) (fun s t => s * t)
+  | kAdd a b =>
+    ((pres a).map (fun p => (p.1 ⊓ unitAtm p.2 ⊓ ∼(anyF (pres b)), p.2)))
+      ++ ((pres b).map (fun q => (∼(anyF (pres a)) ⊓ q.1 ⊓ unitAtm q.2, q.2)))
+      ++ (prodL (pres a) (pres b)
+          (fun g1 s1 g2 s2 => g1 ⊓ g2 ⊓ unitAtm s1 ⊓ unitAtm s2 ⊓ unitAtm (s1 + s2))
+          (fun s1 s2 => s1 + s2))
+  | kNeg a => (pres a).map (fun p => (p.1 ⊓ unitAtm p.2, -p.2))
+
+@[simp] theorem pres_one : pres (RVT.one (n := n)) = [(ttF n, (1 : VTm n))] := rfl
+
+@[simp] theorem pres_zero : pres (RVT.zero (n := n)) = [] := rfl
+
+@[simp] theorem pres_rv (s : VFT n) :
+    pres (RVT.rv s) = [(∼(s.toVal =' (0 : VTm n)), s.toVal)] := rfl
+
+@[simp] theorem pres_mul (a b : RVT n) :
+    pres (RVT.mul a b) = prodL (pres a) (pres b) (fun g1 _ g2 _ => g1 ⊓ g2) (fun s t => s * t) :=
+  rfl
+
+@[simp] theorem pres_kAdd (a b : RVT n) :
+    pres (RVT.kAdd a b) =
+      ((pres a).map (fun p => (p.1 ⊓ unitAtm p.2 ⊓ ∼(anyF (pres b)), p.2)))
+        ++ ((pres b).map (fun q => (∼(anyF (pres a)) ⊓ q.1 ⊓ unitAtm q.2, q.2)))
+        ++ (prodL (pres a) (pres b)
+            (fun g1 s1 g2 s2 => g1 ⊓ g2 ⊓ unitAtm s1 ⊓ unitAtm s2 ⊓ unitAtm (s1 + s2))
+            (fun s1 s2 => s1 + s2)) := rfl
+
+@[simp] theorem pres_kNeg (a : RVT n) :
+    pres (RVT.kNeg a) = (pres a).map (fun p => (p.1 ⊓ unitAtm p.2, -p.2)) := rfl
+
+end RVT
+
+namespace RVT
+
+open QFAux
+
+variable {n : ℕ} {M : Type} [LRV.Structure M]
+
+/-- The value of an `RV`-term at a tuple, as an element of the carrier. -/
+noncomputable def Val (u : RVT n) (x : Fin n → M) : M :=
+  (u.toLRV).realize (Sum.elim (default : Empty → M) x)
+
+/-- **Invariant 1**: a firing case names the value. -/
+def Q1 (u : RVT n) (x : Fin n → M) : Prop :=
+  ∀ p ∈ pres u, valFormulaEvalVF x p.1 → Val u x = iRv (valTermEval x p.2)
+
+/-- **Invariant 2**: the guards hold exactly away from `0`. -/
+def Q2 (u : RVT n) (x : Fin n → M) : Prop :=
+  valFormulaEvalVF x (anyF (pres u)) ↔ Val u x ≠ iRVZero
+
+/-- **Invariant 3**: the value is an `RV`-element. -/
+def Q3 (u : RVT n) (x : Fin n → M) : Prop := iRV (Val u x)
+
+end RVT
+
+namespace RVT
+
+open QFAux
+
+variable {n : ℕ} {M : Type} [LRV.Structure M]
+
+/-! ### The value of a term, by constructor -/
+
+theorem val_one (x : Fin n → M) : Val (RVT.one (n := n)) x = iRVOne := by
+  simp only [Val, toLRV, M2.realize_tRVOne]
+
+theorem val_zero (x : Fin n → M) : Val (RVT.zero (n := n)) x = iRVZero := by
+  simp only [Val, toLRV, realize_tRVZero]
+
+theorem val_rv (s : VFT n) (x : Fin n → M) :
+    Val (RVT.rv s) x = iRv (valTermEval x s.toVal) := by
+  simp only [Val, toLRV, realize_tRv, VFT.realize_toLRV]
+
+theorem val_mul (a b : RVT n) (x : Fin n → M) :
+    Val (RVT.mul a b) x = iRVMul (Val a x) (Val b x) := by
+  simp only [Val, toLRV, realize_tRVMul]
+
+theorem val_kAdd (a b : RVT n) (x : Fin n → M) :
+    Val (RVT.kAdd a b) x = iKAdd (Val a x) (Val b x) := by
+  simp only [Val, toLRV, TrivCase.realize_tKAdd]
+
+theorem val_kNeg (a : RVT n) (x : Fin n → M) :
+    Val (RVT.kNeg a) x = TrivCase.iKNeg (Val a x) := by
+  simp only [Val, toLRV, TrivCase.realize_tKNeg]
+
+/-! ### Auxiliary semantic facts -/
+
+/-- `×` on `RV` lands in `RV` (`Axioms.sdRVMul`). -/
+theorem rv_mul_mem (hM : M ⊨ Axioms.ACVF) {a b : M} (ha : iRV a) (hb : iRV b) :
+    iRV (iRVMul a b) := by
+  have hmem : Axioms.sdRVMul ∈ Axioms.ACVF :=
+    mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+  have h := allSorted_realize hM hmem ![a, b] (by intro i; fin_cases i <;> simp [ha, hb])
+  simpa only [Axioms.sdRVMul, pRVsort_realize, realize_tRVMul, realize_tv, Term.realize_var,
+    Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons] using h
+
+/-- The first conjunct of the unit atom: the term is nonzero. -/
+theorem unitAtm_ne (x : Fin n → M) (s : VTm n)
+    (h : valFormulaEvalVF x (unitAtm s)) : valTermEval x s ≠ iVFZero := by
+  intro h0
+  exact ((evalVF_not x (s =' (0 : VTm n))).mp ((evalVF_inf x _ _).mp h).1)
+    ((evalVF_equal x _ _).mpr h0)
+
+end RVT
+
+namespace RVT
+
+open QFAux
+
+variable {n : ℕ} {M : Type} [LRV.Structure M]
+
+/-- The bottom formula is false. -/
+theorem evalVF_bot (x : Fin n → M) : ¬ valFormulaEvalVF x (⊥ : VFm n) := fun h => h
+
+/-- One step of peeling a conjunction. -/
+theorem peel (x : Fin n → M) (φ ψ : VFm n) (h : valFormulaEvalVF x (φ ⊓ ψ)) :
+    valFormulaEvalVF x φ ∧ valFormulaEvalVF x ψ := (evalVF_inf x φ ψ).mp h
+
+/-- `-s ≠ 0` for `s ≠ 0` in the field. -/
+theorem vf_neg_ne_zero (hM : M ⊨ Axioms.ACVF) {s : M} (hs : iVF s) (h : s ≠ iVFZero) :
+    iVFNeg s ≠ iVFZero := by
+  intro h0
+  apply h
+  have h1 := vf_add_neg hM hs
+  rw [h0, vf_add_zero hM hs] at h1
+  exact h1
+
+/-- The first and third groups of the `kAdd` presentation, as a membership step. -/
+theorem mem_kAdd_g1 (a b : RVT n) (p : VFm n × VTm n) (hp : p ∈ pres a) :
+    (p.1 ⊓ unitAtm p.2 ⊓ ∼(anyF (pres b)), p.2) ∈ pres (RVT.kAdd a b) := by
+  rw [pres_kAdd]
+  exact List.mem_append.mpr (Or.inl (List.mem_append.mpr (Or.inl
+    (List.mem_map.mpr ⟨p, hp, rfl⟩))))
+
+theorem mem_kAdd_g2 (a b : RVT n) (q : VFm n × VTm n) (hq : q ∈ pres b) :
+    (∼(anyF (pres a)) ⊓ q.1 ⊓ unitAtm q.2, q.2) ∈ pres (RVT.kAdd a b) := by
+  rw [pres_kAdd]
+  exact List.mem_append.mpr (Or.inl (List.mem_append.mpr (Or.inr
+    (List.mem_map.mpr ⟨q, hq, rfl⟩))))
+
+theorem mem_kAdd_g3 (a b : RVT n) (p1 p2 : VFm n × VTm n) (hp1 : p1 ∈ pres a)
+    (hp2 : p2 ∈ pres b) :
+    (p1.1 ⊓ p2.1 ⊓ unitAtm p1.2 ⊓ unitAtm p2.2 ⊓ unitAtm (p1.2 + p2.2),
+        p1.2 + p2.2) ∈ pres (RVT.kAdd a b) := by
+  rw [pres_kAdd]
+  refine List.mem_append.mpr (Or.inr ?_)
+  rw [prodL]
+  exact List.mem_flatMap.mpr ⟨p1, hp1, List.mem_map.mpr ⟨p2, hp2, rfl⟩⟩
+
+/-- A firing case of the first group makes the `kAdd` guard fire. -/
+theorem anyF_kAdd_g1 (x : Fin n → M) (a b : RVT n) (q : VFm n × VTm n) (hq : q ∈ pres a)
+    (hg : valFormulaEvalVF x (q.1 ⊓ unitAtm q.2 ⊓ ∼(anyF (pres b)))) :
+    valFormulaEvalVF x (anyF (pres (RVT.kAdd a b))) := by
+  rw [pres_kAdd]
+  refine (evalVF_anyF_append x _ _).mpr (Or.inl ((evalVF_anyF_append x _ _).mpr (Or.inl ?_)))
+  exact (evalVF_anyF x _).mpr ⟨_, List.mem_map.mpr ⟨q, hq, rfl⟩, hg⟩
+
+/-- A firing case of the second group makes the `kAdd` guard fire. -/
+theorem anyF_kAdd_g2 (x : Fin n → M) (a b : RVT n) (q : VFm n × VTm n) (hq : q ∈ pres b)
+    (hg : valFormulaEvalVF x (∼(anyF (pres a)) ⊓ q.1 ⊓ unitAtm q.2)) :
+    valFormulaEvalVF x (anyF (pres (RVT.kAdd a b))) := by
+  rw [pres_kAdd]
+  refine (evalVF_anyF_append x _ _).mpr (Or.inl ((evalVF_anyF_append x _ _).mpr (Or.inr ?_)))
+  exact (evalVF_anyF x _).mpr ⟨_, List.mem_map.mpr ⟨q, hq, rfl⟩, hg⟩
+
+/-- A firing case of the third group makes the `kAdd` guard fire. -/
+theorem anyF_kAdd_g3 (x : Fin n → M) (a b : RVT n) (p1 p2 : VFm n × VTm n)
+    (hp1 : p1 ∈ pres a) (hp2 : p2 ∈ pres b)
+    (hg : valFormulaEvalVF x (p1.1 ⊓ p2.1 ⊓ unitAtm p1.2 ⊓ unitAtm p2.2 ⊓ unitAtm (p1.2 + p2.2))) :
+    valFormulaEvalVF x (anyF (pres (RVT.kAdd a b))) := by
+  rw [pres_kAdd]
+  refine (evalVF_anyF_append x _ _).mpr (Or.inr ?_)
+  refine (evalVF_anyF x _).mpr
+    ⟨(p1.1 ⊓ p2.1 ⊓ unitAtm p1.2 ⊓ unitAtm p2.2 ⊓ unitAtm (p1.2 + p2.2), p1.2 + p2.2), ?_, hg⟩
+  rw [prodL]
+  exact List.mem_flatMap.mpr ⟨p1, hp1, List.mem_map.mpr ⟨p2, hp2, rfl⟩⟩
+
+/-- A firing case makes the `kNeg` guard fire. -/
+theorem anyF_kNeg (x : Fin n → M) (a : RVT n) (q : VFm n × VTm n) (hq : q ∈ pres a)
+    (hg : valFormulaEvalVF x (q.1 ⊓ unitAtm q.2)) :
+    valFormulaEvalVF x (anyF (pres (RVT.kNeg a))) := by
+  rw [pres_kNeg]
+  exact (evalVF_anyF x _).mpr ⟨_, List.mem_map.mpr ⟨q, hq, rfl⟩, hg⟩
+
+/-- **The invariants of the case presentation**, by induction on the term.  The residue symbols
+are where the repairs enter: `kAdd` uses `KAddAdditive` (`kAddLink`) and `KJunkZero`, `kNeg` uses
+`KNegAdditive` and `KNegJunkZero`. -/
+theorem pres_spec (hM : M ⊨ Axioms.ACVF) (hKa : KAddAdditive M) (hKn : KNegAdditive M)
+    (hJ : KJunkZero M) (hJn : KNegJunkZero M) (u : RVT n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) : Q1 u x ∧ Q2 u x ∧ Q3 u x := by
+  induction u with
+  | one =>
+    refine ⟨?_, ?_, ?_⟩
+    · intro p hp _
+      rw [pres_one] at hp
+      simp only [List.mem_singleton] at hp
+      rw [hp, val_one, M2.valTermEval_one]
+      exact (Cover.rv_one hM).symm
+    · constructor
+      · intro _
+        rw [val_one]
+        exact fun h => M2.rv_zero_ne_one hM h.symm
+      · intro _
+        exact (evalVF_sup x (ttF n) (anyF ([] : CaseList n))).mpr (Or.inl (evalVF_tt x))
+    · show iRV (Val (RVT.one : RVT n) x)
+      rw [val_one]
+      exact M2.rv_one_mem hM
+  | zero =>
+    refine ⟨?_, ?_, ?_⟩
+    · intro p hp _
+      rw [pres_zero] at hp
+      exact absurd hp (by simp)
+    · constructor
+      · intro h _
+        rw [pres_zero] at h
+        exact evalVF_bot x h
+      · intro h
+        exact h (by rw [val_zero])
+    · show iRV (Val (RVT.zero : RVT n) x)
+      rw [val_zero]
+      exact TrivCase.iRV_rvZero hM
+  | rv s =>
+    refine ⟨?_, ?_, ?_⟩
+    · intro p hp _
+      rw [pres_rv] at hp
+      simp only [List.mem_singleton] at hp
+      rw [hp]
+      exact val_rv s x
+    · constructor
+      · intro h
+        rw [pres_rv] at h
+        have h1 : valFormulaEvalVF x (∼(s.toVal =' (0 : VTm n))) := by
+          rcases (evalVF_sup x (∼(s.toVal =' (0 : VTm n))) (anyF ([] : CaseList n))).mp h with
+            h' | h'
+          · exact h'
+          · exact absurd h' (evalVF_bot x)
+        rw [val_rv, rv_ne_zero_iff hM hx s.toVal]
+        intro h0
+        exact ((evalVF_not x _).mp h1) ((evalVF_equal x _ _).mpr h0)
+      · intro h
+        rw [val_rv] at h
+        have h' : valTermEval x s.toVal ≠ iVFZero := (rv_ne_zero_iff hM hx s.toVal).mp h
+        rw [pres_rv]
+        refine (evalVF_sup x (∼(s.toVal =' (0 : VTm n))) (anyF ([] : CaseList n))).mpr
+          (Or.inl ?_)
+        exact (evalVF_not x _).mpr (fun h0 => h' ((evalVF_equal x _ _).mp h0))
+    · show iRV (Val (RVT.rv s) x)
+      rw [val_rv]
+      exact rv_mem hM (M2.valTermEval_mem hM hx s.toVal)
+  | mul a b iha ihb =>
+    obtain ⟨iha1, iha2, iha3⟩ := iha
+    obtain ⟨ihb1, ihb2, ihb3⟩ := ihb
+    refine ⟨?_, ?_, ?_⟩
+    · intro p hp hg
+      rw [pres_mul] at hp
+      obtain ⟨p1, hp1, p2, hp2, h1, h2⟩ := mem_prodL.mp hp
+      rw [h1] at hg
+      obtain ⟨hg1, hg2⟩ := peel x p1.1 p2.1 hg
+      rw [h2, val_mul, iha1 p1 hp1 hg1, ihb1 p2 hp2 hg2, VFT.valTermEval_mul']
+      exact (rv_mul_hom hM (M2.valTermEval_mem hM hx p1.2)
+        (M2.valTermEval_mem hM hx p2.2)).symm
+    · constructor
+      · intro h
+        rw [pres_mul, evalVF_anyF_prodL] at h
+        obtain ⟨p1, hp1, p2, hp2, hg⟩ := h
+        obtain ⟨hg1, hg2⟩ := peel x p1.1 p2.1 hg
+        have hA : Val a x ≠ iRVZero := iha2.mp ((evalVF_anyF x _).mpr ⟨p1, hp1, hg1⟩)
+        have hB : Val b x ≠ iRVZero := ihb2.mp ((evalVF_anyF x _).mpr ⟨p2, hp2, hg2⟩)
+        rw [val_mul]
+        exact (rv_mul_ne_zero_iff hM iha3 ihb3).mpr ⟨hA, hB⟩
+      · intro h
+        rw [pres_mul, evalVF_anyF_prodL]
+        rw [val_mul] at h
+        obtain ⟨hA, hB⟩ := (rv_mul_ne_zero_iff hM iha3 ihb3).mp h
+        obtain ⟨p1, hp1, hg1⟩ := (evalVF_anyF x _).mp (iha2.mpr hA)
+        obtain ⟨p2, hp2, hg2⟩ := (evalVF_anyF x _).mp (ihb2.mpr hB)
+        exact ⟨p1, hp1, p2, hp2, (evalVF_inf x p1.1 p2.1).mpr ⟨hg1, hg2⟩⟩
+    · show iRV (Val (RVT.mul a b) x)
+      rw [val_mul]
+      exact rv_mul_mem hM iha3 ihb3
+  | kAdd a b iha ihb =>
+    obtain ⟨iha1, iha2, iha3⟩ := iha
+    obtain ⟨ihb1, ihb2, ihb3⟩ := ihb
+    refine ⟨?_, ?_, ?_⟩
+    · -- invariant 1
+      intro p hp hg
+      rw [pres_kAdd] at hp
+      rcases List.mem_append.mp hp with h12 | h3
+      · rcases List.mem_append.mp h12 with h1 | h2
+        · obtain ⟨q, hq, rfl⟩ := List.mem_map.mp h1
+          obtain ⟨hgA, hzB⟩ := peel x (q.1 ⊓ unitAtm q.2) (∼(anyF (pres b))) hg
+          obtain ⟨hg1, hunit⟩ := peel x q.1 (unitAtm q.2) hgA
+          have haeq : Val a x = iRv (valTermEval x q.2) := iha1 q hq hg1
+          have hunitA : iUnits (Val a x) := by
+            rw [haeq]; exact (evalVF_unitAtm hM hx q.2).mp hunit
+          have hzB0 : Val b x = iRVZero := by
+            by_contra hh
+            exact ((evalVF_not x _).mp hzB) (ihb2.mpr hh)
+          rw [val_kAdd, hzB0, TrivCase.kAdd_zero_right hM (Or.inl hunitA), haeq]
+        · obtain ⟨q, hq, rfl⟩ := List.mem_map.mp h2
+          obtain ⟨hgB, hunit⟩ := peel x (∼(anyF (pres a)) ⊓ q.1) (unitAtm q.2) hg
+          obtain ⟨hzA, hg2⟩ := peel x (∼(anyF (pres a))) q.1 hgB
+          have hbeq : Val b x = iRv (valTermEval x q.2) := ihb1 q hq hg2
+          have hunitB : iUnits (Val b x) := by
+            rw [hbeq]; exact (evalVF_unitAtm hM hx q.2).mp hunit
+          have hzA0 : Val a x = iRVZero := by
+            by_contra hh
+            exact ((evalVF_not x _).mp hzA) (iha2.mpr hh)
+          rw [val_kAdd, hzA0, TrivCase.kAdd_zero_left hM (Or.inl hunitB), hbeq]
+      · obtain ⟨p1, hp1, p2, hp2, h1, h2⟩ := mem_prodL.mp h3
+        rw [h1] at hg
+        obtain ⟨hG, hus⟩ := peel x _ (unitAtm (p1.2 + p2.2)) hg
+        obtain ⟨hG2, hu2⟩ := peel x _ (unitAtm p2.2) hG
+        obtain ⟨hG3, hu1⟩ := peel x _ (unitAtm p1.2) hG2
+        obtain ⟨hg1, hg2⟩ := peel x p1.1 p2.1 hG3
+        have haeq : Val a x = iRv (valTermEval x p1.2) := iha1 p1 hp1 hg1
+        have hbeq : Val b x = iRv (valTermEval x p2.2) := ihb1 p2 hp2 hg2
+        have hu1' : iUnits (iRv (valTermEval x p1.2)) := (evalVF_unitAtm hM hx p1.2).mp hu1
+        have hu2' : iUnits (iRv (valTermEval x p2.2)) := (evalVF_unitAtm hM hx p2.2).mp hu2
+        have hus' : iUnits (iRv (iVFAdd (valTermEval x p1.2) (valTermEval x p2.2))) := by
+          rw [← M2.valTermEval_add x p1.2 p2.2]
+          exact (evalVF_unitAtm hM hx (p1.2 + p2.2)).mp hus
+        have hlink := (hKa (valTermEval x p1.2) (valTermEval x p2.2)
+          (M2.valTermEval_mem hM hx p1.2) (M2.valTermEval_mem hM hx p2.2) hu1' hu2').1 hus'
+        rw [val_kAdd, haeq, hbeq, h2, M2.valTermEval_add, hlink]
+    · -- invariant 2
+      constructor
+      · intro h
+        rw [pres_kAdd] at h
+        rcases (evalVF_anyF_append x _ _).mp h with h12 | h3
+        · rcases (evalVF_anyF_append x _ _).mp h12 with h1 | h2
+          · obtain ⟨p, hp, hg⟩ := (evalVF_anyF x _).mp h1
+            obtain ⟨q, hq, rfl⟩ := List.mem_map.mp hp
+            obtain ⟨hgA, hzB⟩ := peel x (q.1 ⊓ unitAtm q.2) (∼(anyF (pres b))) hg
+            obtain ⟨hg1, hunit⟩ := peel x q.1 (unitAtm q.2) hgA
+            have haeq : Val a x = iRv (valTermEval x q.2) := iha1 q hq hg1
+            have hunitA : iUnits (Val a x) := by
+              rw [haeq]; exact (evalVF_unitAtm hM hx q.2).mp hunit
+            have hne : valTermEval x q.2 ≠ iVFZero := unitAtm_ne x q.2 hunit
+            have hzB0 : Val b x = iRVZero := by
+              by_contra hh
+              exact ((evalVF_not x _).mp hzB) (ihb2.mpr hh)
+            rw [val_kAdd, hzB0, TrivCase.kAdd_zero_right hM (Or.inl hunitA), haeq]
+            exact (rv_ne_zero_iff hM hx q.2).mpr hne
+          · obtain ⟨p, hp, hg⟩ := (evalVF_anyF x _).mp h2
+            obtain ⟨q, hq, rfl⟩ := List.mem_map.mp hp
+            obtain ⟨hgB, hunit⟩ := peel x (∼(anyF (pres a)) ⊓ q.1) (unitAtm q.2) hg
+            obtain ⟨hzA, hg2⟩ := peel x (∼(anyF (pres a))) q.1 hgB
+            have hbeq : Val b x = iRv (valTermEval x q.2) := ihb1 q hq hg2
+            have hunitB : iUnits (Val b x) := by
+              rw [hbeq]; exact (evalVF_unitAtm hM hx q.2).mp hunit
+            have hne : valTermEval x q.2 ≠ iVFZero := unitAtm_ne x q.2 hunit
+            have hzA0 : Val a x = iRVZero := by
+              by_contra hh
+              exact ((evalVF_not x _).mp hzA) (iha2.mpr hh)
+            rw [val_kAdd, hzA0, TrivCase.kAdd_zero_left hM (Or.inl hunitB), hbeq]
+            exact (rv_ne_zero_iff hM hx q.2).mpr hne
+        · obtain ⟨p, hp, hg⟩ := (evalVF_anyF x _).mp h3
+          obtain ⟨p1, hp1, p2, hp2, h1, h2⟩ := mem_prodL.mp hp
+          rw [h1] at hg
+          obtain ⟨hG, hus⟩ := peel x _ (unitAtm (p1.2 + p2.2)) hg
+          obtain ⟨hG2, hu2⟩ := peel x _ (unitAtm p2.2) hG
+          obtain ⟨hG3, hu1⟩ := peel x _ (unitAtm p1.2) hG2
+          obtain ⟨hg1, hg2⟩ := peel x p1.1 p2.1 hG3
+          have haeq : Val a x = iRv (valTermEval x p1.2) := iha1 p1 hp1 hg1
+          have hbeq : Val b x = iRv (valTermEval x p2.2) := ihb1 p2 hp2 hg2
+          have hu1' : iUnits (iRv (valTermEval x p1.2)) := (evalVF_unitAtm hM hx p1.2).mp hu1
+          have hu2' : iUnits (iRv (valTermEval x p2.2)) := (evalVF_unitAtm hM hx p2.2).mp hu2
+          have hne : valTermEval x (p1.2 + p2.2) ≠ iVFZero := unitAtm_ne x (p1.2 + p2.2) hus
+          have hus' : iUnits (iRv (iVFAdd (valTermEval x p1.2) (valTermEval x p2.2))) := by
+            rw [← M2.valTermEval_add x p1.2 p2.2]
+            exact (evalVF_unitAtm hM hx (p1.2 + p2.2)).mp hus
+          have hlink := (hKa (valTermEval x p1.2) (valTermEval x p2.2)
+            (M2.valTermEval_mem hM hx p1.2) (M2.valTermEval_mem hM hx p2.2) hu1' hu2').1 hus'
+          rw [val_kAdd, haeq, hbeq, hlink, ← M2.valTermEval_add x p1.2 p2.2]
+          exact (rv_ne_zero_iff hM hx (p1.2 + p2.2)).mpr hne
+      · -- the value is nonzero, so a case fires
+        intro hval
+        have hKa' : iUnits (Val a x) ∨ Val a x = iRVZero := by
+          by_contra hh
+          exact hval (by rw [val_kAdd, hJ _ _ iha3 ihb3 (Or.inl hh)])
+        have hKb' : iUnits (Val b x) ∨ Val b x = iRVZero := by
+          by_contra hh
+          exact hval (by rw [val_kAdd, hJ _ _ iha3 ihb3 (Or.inr hh)])
+        by_cases hb0 : Val b x = iRVZero
+        · have ha0 : Val a x ≠ iRVZero := by
+            intro h0
+            exact hval (by rw [val_kAdd, h0, hb0, TrivCase.kAdd_zero_left hM (Or.inr rfl)])
+          have hunitA : iUnits (Val a x) := hKa'.resolve_right ha0
+          obtain ⟨q, hq, hg1⟩ := (evalVF_anyF x _).mp (iha2.mpr ha0)
+          have haeq : Val a x = iRv (valTermEval x q.2) := iha1 q hq hg1
+          have hunit : valFormulaEvalVF x (unitAtm q.2) := by
+            rw [evalVF_unitAtm hM hx q.2, ← haeq]; exact hunitA
+          have hzB : valFormulaEvalVF x (∼(anyF (pres b))) :=
+            (evalVF_not x _).mpr (fun hh => (ihb2.mp hh) hb0)
+          exact anyF_kAdd_g1 x a b q hq
+            ((evalVF_inf x _ _).mpr ⟨(evalVF_inf x _ _).mpr ⟨hg1, hunit⟩, hzB⟩)
+        · have hb0' : Val b x ≠ iRVZero := hb0
+          by_cases ha0 : Val a x = iRVZero
+          · have hunitB : iUnits (Val b x) := hKb'.resolve_right hb0'
+            obtain ⟨q, hq, hg2⟩ := (evalVF_anyF x _).mp (ihb2.mpr hb0')
+            have hbeq : Val b x = iRv (valTermEval x q.2) := ihb1 q hq hg2
+            have hunit : valFormulaEvalVF x (unitAtm q.2) := by
+              rw [evalVF_unitAtm hM hx q.2, ← hbeq]; exact hunitB
+            have hzA : valFormulaEvalVF x (∼(anyF (pres a))) :=
+              (evalVF_not x _).mpr (fun hh => (iha2.mp hh) ha0)
+            exact anyF_kAdd_g2 x a b q hq
+              ((evalVF_inf x _ _).mpr ⟨(evalVF_inf x _ _).mpr ⟨hzA, hg2⟩, hunit⟩)
+          · have hunitA : iUnits (Val a x) := hKa'.resolve_right ha0
+            have hunitB : iUnits (Val b x) := hKb'.resolve_right hb0'
+            obtain ⟨p1, hp1, hg1⟩ := (evalVF_anyF x _).mp (iha2.mpr ha0)
+            obtain ⟨p2, hp2, hg2⟩ := (evalVF_anyF x _).mp (ihb2.mpr hb0')
+            have haeq : Val a x = iRv (valTermEval x p1.2) := iha1 p1 hp1 hg1
+            have hbeq : Val b x = iRv (valTermEval x p2.2) := ihb1 p2 hp2 hg2
+            have hu1 : valFormulaEvalVF x (unitAtm p1.2) := by
+              rw [evalVF_unitAtm hM hx p1.2, ← haeq]; exact hunitA
+            have hu2 : valFormulaEvalVF x (unitAtm p2.2) := by
+              rw [evalVF_unitAtm hM hx p2.2, ← hbeq]; exact hunitB
+            have hu1' : iUnits (iRv (valTermEval x p1.2)) := (evalVF_unitAtm hM hx p1.2).mp hu1
+            have hu2' : iUnits (iRv (valTermEval x p2.2)) := (evalVF_unitAtm hM hx p2.2).mp hu2
+            have hus' : iUnits (iRv (iVFAdd (valTermEval x p1.2) (valTermEval x p2.2))) := by
+              by_contra hh
+              exact hval (by
+                rw [val_kAdd, haeq, hbeq, (hKa _ _ (M2.valTermEval_mem hM hx p1.2)
+                  (M2.valTermEval_mem hM hx p2.2) hu1' hu2').2 hh])
+            have hus : valFormulaEvalVF x (unitAtm (p1.2 + p2.2)) := by
+              rw [evalVF_unitAtm hM hx, M2.valTermEval_add]
+              exact hus'
+            exact anyF_kAdd_g3 x a b p1 p2 hp1 hp2
+              ((evalVF_inf x _ _).mpr ⟨(evalVF_inf x _ _).mpr ⟨(evalVF_inf x _ _).mpr
+                ⟨(evalVF_inf x _ _).mpr ⟨hg1, hg2⟩, hu1⟩, hu2⟩, hus⟩)
+    · -- invariant 3
+      show iRV (Val (RVT.kAdd a b) x)
+      rw [val_kAdd]
+      by_cases hKa' : iUnits (Val a x) ∨ Val a x = iRVZero
+      · by_cases hKb' : iUnits (Val b x) ∨ Val b x = iRVZero
+        · exact TrivCase.iRV_of_inK hM (TrivCase.inK_kAdd hM hKa' hKb')
+        · rw [hJ _ _ iha3 ihb3 (Or.inr hKb')]
+          exact TrivCase.iRV_rvZero hM
+      · rw [hJ _ _ iha3 ihb3 (Or.inl hKa')]
+        exact TrivCase.iRV_rvZero hM
+  | kNeg a iha =>
+    obtain ⟨iha1, iha2, iha3⟩ := iha
+    refine ⟨?_, ?_, ?_⟩
+    · intro p hp hg
+      rw [pres_kNeg] at hp
+      obtain ⟨q, hq, rfl⟩ := List.mem_map.mp hp
+      obtain ⟨hg1, hunit⟩ := peel x q.1 (unitAtm q.2) hg
+      have haeq : Val a x = iRv (valTermEval x q.2) := iha1 q hq hg1
+      have hunit' : iUnits (iRv (valTermEval x q.2)) := (evalVF_unitAtm hM hx q.2).mp hunit
+      rw [val_kNeg, haeq, hKn (valTermEval x q.2) (M2.valTermEval_mem hM hx q.2) hunit',
+        M2.valTermEval_neg]
+    · constructor
+      · intro h
+        rw [pres_kNeg] at h
+        obtain ⟨p, hp, hg⟩ := (evalVF_anyF x _).mp h
+        obtain ⟨q, hq, rfl⟩ := List.mem_map.mp hp
+        obtain ⟨hg1, hunit⟩ := peel x q.1 (unitAtm q.2) hg
+        have haeq : Val a x = iRv (valTermEval x q.2) := iha1 q hq hg1
+        have hunit' : iUnits (iRv (valTermEval x q.2)) := (evalVF_unitAtm hM hx q.2).mp hunit
+        have hne : valTermEval x q.2 ≠ iVFZero := unitAtm_ne x q.2 hunit
+        have hneg : valTermEval x (-q.2) ≠ iVFZero := by
+          rw [M2.valTermEval_neg]
+          exact vf_neg_ne_zero hM (M2.valTermEval_mem hM hx q.2) hne
+        rw [val_kNeg, haeq, hKn (valTermEval x q.2) (M2.valTermEval_mem hM hx q.2) hunit']
+        rw [← M2.valTermEval_neg]
+        exact (rv_ne_zero_iff hM hx (-q.2)).mpr hneg
+      · intro h
+        have hK : iUnits (Val a x) ∨ Val a x = iRVZero := by
+          by_contra hh
+          exact h (by rw [val_kNeg, hJn _ iha3 hh])
+        have ha0 : Val a x ≠ iRVZero := by
+          intro h0
+          exact h (by rw [val_kNeg, h0, TrivCase.kNeg_zero hM])
+        have hunitA : iUnits (Val a x) := hK.resolve_right ha0
+        obtain ⟨q, hq, hg1⟩ := (evalVF_anyF x _).mp (iha2.mpr ha0)
+        have haeq : Val a x = iRv (valTermEval x q.2) := iha1 q hq hg1
+        have hunit : valFormulaEvalVF x (unitAtm q.2) := by
+          rw [evalVF_unitAtm hM hx q.2, ← haeq]; exact hunitA
+        exact anyF_kNeg x a q hq ((evalVF_inf x _ _).mpr ⟨hg1, hunit⟩)
+    · show iRV (Val (RVT.kNeg a) x)
+      rw [val_kNeg]
+      by_cases hK : iUnits (Val a x) ∨ Val a x = iRVZero
+      · exact TrivCase.iRV_of_inK hM (TrivCase.inK_kNeg hM hK)
+      · rw [hJn _ iha3 hK]
+        exact TrivCase.iRV_rvZero hM
+
+end RVT
+
+namespace RVT
+
+open QFAux
+
+variable {n : ℕ} {M : Type} [LRV.Structure M]
+
+/-- The presentation together with the zero case, so that at least one case always fires. -/
+def fullCases (u : RVT n) : CaseList n :=
+  pres u ++ [(∼(anyF (pres u)), (0 : VTm n))]
+
+/-- Every firing case of `fullCases u` names the value of `u`. -/
+theorem full_Q1 (hM : M ⊨ Axioms.ACVF) (hKa : KAddAdditive M) (hKn : KNegAdditive M)
+    (hJ : KJunkZero M) (hJn : KNegJunkZero M) (u : RVT n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) :
+    ∀ p ∈ fullCases u, valFormulaEvalVF x p.1 → Val u x = iRv (valTermEval x p.2) := by
+  obtain ⟨h1, h2, -⟩ := pres_spec hM hKa hKn hJ hJn u x hx
+  intro p hp hg
+  rw [fullCases] at hp
+  rcases List.mem_append.mp hp with hp' | hpz
+  · exact h1 p hp' hg
+  · simp only [List.mem_singleton] at hpz
+    rw [hpz] at hg ⊢
+    have hz : ¬ valFormulaEvalVF x (anyF (pres u)) := (evalVF_not x _).mp hg
+    have h0 : Val u x = iRVZero := by
+      by_contra hh
+      exact hz (h2.mpr hh)
+    rw [h0, M2.valTermEval_zero, rv_zero_eq hM]
+
+/-- Some case of `fullCases u` always fires. -/
+theorem full_any (u : RVT n) (x : Fin n → M) :
+    valFormulaEvalVF x (anyF (fullCases u)) := by
+  rw [fullCases, evalVF_anyF_append]
+  by_cases h : valFormulaEvalVF x (anyF (pres u))
+  · exact Or.inl h
+  · refine Or.inr ((evalVF_anyF x _).mpr ⟨(∼(anyF (pres u)), (0 : VTm n)),
+      List.mem_singleton.mpr rfl, ?_⟩)
+    exact (evalVF_not x _).mpr h
+
+/-! ### The atoms of the `RV` sort -/
+
+/-- `u = w` on `RV`, quantifier-free in `L_val`. -/
+def eqA (u w : RVT n) : VFm n := prodF (fullCases u) (fullCases w) (fun s t => M2.leEqF s t)
+
+/-- `u ≤ w` on `RV`, quantifier-free in `L_val`. -/
+def leA (u w : RVT n) : VFm n := prodF (fullCases u) (fullCases w) (fun s t => ValPM.leF t s)
+
+/-- `u ∈ Kˣ`, quantifier-free in `L_val`. -/
+def unitA (u : RVT n) : VFm n := allF (fullCases u) (fun s => unitAtm s)
+
+/-- `u ≠ 0` on `RV`, quantifier-free in `L_val`. -/
+def neA (u : RVT n) : VFm n := allF (fullCases u) (fun s => ∼(s =' (0 : VTm n)))
+
+end RVT
+
+namespace QFAux
+
+open QFAux
+
+variable {n : ℕ} {M : Type} [LRV.Structure M]
+
+/-! ### Quantifier-freeness of the repair formula -/
+
+theorem isQF_leF (a b : VTm n) : (ValPM.leF a b).IsQF :=
+  (BoundedFormula.IsAtomic.rel (l := 2) ValRel.le ![a, b]).isQF
+
+theorem isQF_not {ψ : VFm n} (h : ψ.IsQF) : (∼ψ).IsQF :=
+  BoundedFormula.IsQF.imp h BoundedFormula.IsQF.falsum
+
+theorem isQF_leEqF (s t : VTm n) : (M2.leEqF s t).IsQF :=
+  ((isQF_leF s t).inf (isQF_leF t s)).inf
+    ((BoundedFormula.IsAtomic.equal _ _).isQF.sup
+      ((isQF_leF (s + -t) s).inf (isQF_not (isQF_leF s (s + -t)))))
+
+/-- **The repair formula `leEqF s t` says `rv s = rv t`.** -/
+theorem evalVF_leEqF (hM : M ⊨ Axioms.ACVF) (hfib : M ⊨ ({M2.rvFibreIff} : LRV.Theory))
+    (x : Fin n → M) (hx : ∀ i, iVF (x i)) (s t : VTm n) :
+    valFormulaEvalVF x (M2.leEqF s t) ↔ iRv (valTermEval x s) = iRv (valTermEval x t) := by
+  rw [VFRestrict.valFormulaEvalVF_eq_of_QF x
+    (VFRestrict.isQFVal_of_isQF (isQF_leEqF s t))]
+  rw [M2.leEqF_iff_pEq hM hfib s t hx, pEq, BoundedFormula.realize_bdEqual, realize_tRv,
+    realize_tRv, valTermToRV_realize, valTermToRV_realize]
+
+end QFAux
+
+namespace RVT
+
+open QFAux
+
+variable {n : ℕ} {M : Type} [LRV.Structure M]
+
+theorem evalVF_eqA (hM : M ⊨ Axioms.ACVF) (hfib : M ⊨ ({M2.rvFibreIff} : LRV.Theory))
+    (hKa : KAddAdditive M) (hKn : KNegAdditive M) (hJ : KJunkZero M)
+    (hJn : KNegJunkZero M) (u w : RVT n) (x : Fin n → M) (hx : ∀ i, iVF (x i)) :
+    valFormulaEvalVF x (eqA u w) ↔ Val u x = Val w x := by
+  rw [eqA, evalVF_prodF]
+  constructor
+  · rintro ⟨p, hp, q, hq, hgp, hgq, hbody⟩
+    have hpu : Val u x = iRv (valTermEval x p.2) :=
+      full_Q1 hM hKa hKn hJ hJn u x hx p hp hgp
+    have hqv : Val w x = iRv (valTermEval x q.2) :=
+      full_Q1 hM hKa hKn hJ hJn w x hx q hq hgq
+    have hb : iRv (valTermEval x p.2) = iRv (valTermEval x q.2) :=
+      (evalVF_leEqF hM hfib x hx p.2 q.2).mp hbody
+    rw [hpu, hqv, hb]
+  · intro h
+    obtain ⟨p, hp, hgp⟩ := (evalVF_anyF x _).mp (full_any u x)
+    obtain ⟨q, hq, hgq⟩ := (evalVF_anyF x _).mp (full_any w x)
+    refine ⟨p, hp, q, hq, hgp, hgq, ?_⟩
+    have hpu : Val u x = iRv (valTermEval x p.2) :=
+      full_Q1 hM hKa hKn hJ hJn u x hx p hp hgp
+    have hqv : Val w x = iRv (valTermEval x q.2) :=
+      full_Q1 hM hKa hKn hJ hJn w x hx q hq hgq
+    have hb : iRv (valTermEval x p.2) = iRv (valTermEval x q.2) := by rw [← hpu, ← hqv]; exact h
+    exact (evalVF_leEqF hM hfib x hx p.2 q.2).mpr hb
+
+theorem evalVF_leA (hM : M ⊨ Axioms.ACVF) (hKa : KAddAdditive M) (hKn : KNegAdditive M)
+    (hJ : KJunkZero M) (hJn : KNegJunkZero M) (u w : RVT n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) :
+    valFormulaEvalVF x (leA u w) ↔ iLe (Val u x) (Val w x) := by
+  rw [leA, evalVF_prodF]
+  constructor
+  · rintro ⟨p, hp, q, hq, hgp, hgq, hbody⟩
+    have hpu : Val u x = iRv (valTermEval x p.2) :=
+      full_Q1 hM hKa hKn hJ hJn u x hx p hp hgp
+    have hqv : Val w x = iRv (valTermEval x q.2) :=
+      full_Q1 hM hKa hKn hJ hJn w x hx q hq hgq
+    have hb : iLe (iRv (valTermEval x p.2)) (iRv (valTermEval x q.2)) :=
+      (evalVF_leF x q.2 p.2).mp hbody
+    rw [hpu, hqv]
+    exact hb
+  · intro h
+    obtain ⟨p, hp, hgp⟩ := (evalVF_anyF x _).mp (full_any u x)
+    obtain ⟨q, hq, hgq⟩ := (evalVF_anyF x _).mp (full_any w x)
+    refine ⟨p, hp, q, hq, hgp, hgq, ?_⟩
+    have hpu : Val u x = iRv (valTermEval x p.2) :=
+      full_Q1 hM hKa hKn hJ hJn u x hx p hp hgp
+    have hqv : Val w x = iRv (valTermEval x q.2) :=
+      full_Q1 hM hKa hKn hJ hJn w x hx q hq hgq
+    have hb : iLe (iRv (valTermEval x p.2)) (iRv (valTermEval x q.2)) := by
+      rw [← hpu, ← hqv]; exact h
+    exact (evalVF_leF x q.2 p.2).mpr hb
+
+theorem evalVF_unitA (hM : M ⊨ Axioms.ACVF) (hKa : KAddAdditive M) (hKn : KNegAdditive M)
+    (hJ : KJunkZero M) (hJn : KNegJunkZero M) (u : RVT n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) :
+    valFormulaEvalVF x (unitA u) ↔ iUnits (Val u x) := by
+  rw [unitA, evalVF_allF]
+  constructor
+  · rintro ⟨p, hp, hgp, hunit⟩
+    have hpu : Val u x = iRv (valTermEval x p.2) :=
+      full_Q1 hM hKa hKn hJ hJn u x hx p hp hgp
+    have hu : iUnits (iRv (valTermEval x p.2)) := (evalVF_unitAtm hM hx p.2).mp hunit
+    rw [hpu]
+    exact hu
+  · intro h
+    obtain ⟨p, hp, hgp⟩ := (evalVF_anyF x _).mp (full_any u x)
+    refine ⟨p, hp, hgp, ?_⟩
+    have hpu : Val u x = iRv (valTermEval x p.2) :=
+      full_Q1 hM hKa hKn hJ hJn u x hx p hp hgp
+    rw [evalVF_unitAtm hM hx p.2, ← hpu]
+    exact h
+
+theorem evalVF_neA (hM : M ⊨ Axioms.ACVF) (hKa : KAddAdditive M) (hKn : KNegAdditive M)
+    (hJ : KJunkZero M) (hJn : KNegJunkZero M) (u : RVT n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) :
+    valFormulaEvalVF x (neA u) ↔ Val u x ≠ iRVZero := by
+  rw [neA, evalVF_allF]
+  constructor
+  · rintro ⟨p, hp, hgp, hne⟩
+    have hpu : Val u x = iRv (valTermEval x p.2) :=
+      full_Q1 hM hKa hKn hJ hJn u x hx p hp hgp
+    have hne' : valTermEval x p.2 ≠ iVFZero := by
+      intro h0
+      exact ((evalVF_not x _).mp hne) ((evalVF_equal x p.2 (0 : VTm n)).mpr h0)
+    rw [hpu]
+    exact fun hh => hne' (rv_eq_infty hM (M2.valTermEval_mem hM hx p.2) hh)
+  · intro h
+    obtain ⟨p, hp, hgp⟩ := (evalVF_anyF x _).mp (full_any u x)
+    refine ⟨p, hp, hgp, (evalVF_not x _).mpr ?_⟩
+    intro h0
+    apply h
+    have hpu : Val u x = iRv (valTermEval x p.2) :=
+      full_Q1 hM hKa hKn hJ hJn u x hx p hp hgp
+    rw [hpu, (evalVF_equal x _ _).mp h0]
+    exact rv_zero_eq hM
+
+end RVT
+
+/-! ## The fragment with the residue symbols, and the cover -/
+
+/-- The fragment: quantifier-free, well-sorted `L_RV`-formulas over a `VF`-tuple, with the
+residue symbols allowed in the `RV`-terms. -/
+inductive QF (n : ℕ) : Type
+  | falsum : QF n
+  | eqVF : VFT n → VFT n → QF n
+  | inVF : VFT n → QF n
+  | eqRV : RVT n → RVT n → QF n
+  | leRV : RVT n → RVT n → QF n
+  | unitRV : RVT n → QF n
+  | neRV : RVT n → QF n
+  | inRV : RVT n → QF n
+  | imp : QF n → QF n → QF n
+
+namespace QF
+
+variable {n : ℕ}
+
+/-- The image in `L_RV`. -/
+def toRV : QF n → Bf n
+  | falsum => BoundedFormula.falsum
+  | eqVF a b => pEq a.toLRV b.toLRV
+  | inVF a => pVF a.toLRV
+  | eqRV u w => pEq u.toLRV w.toLRV
+  | leRV u w => pLe u.toLRV w.toLRV
+  | unitRV u => pUnits u.toLRV
+  | neRV u => pRV u.toLRV
+  | inRV u => pRVsort u.toLRV
+  | imp a b => BoundedFormula.imp a.toRV b.toRV
+
+/-- The image in `L_val`: the cover, syntactically. -/
+def toVal : QF n → QFAux.VFm n
+  | falsum => ⊥
+  | eqVF a b => (a.toVal =' b.toVal)
+  | inVF _ => QFAux.ttF n
+  | eqRV u w => RVT.eqA u w
+  | leRV u w => RVT.leA u w
+  | unitRV u => RVT.unitA u
+  | neRV u => RVT.neA u
+  | inRV _ => QFAux.ttF n
+  | imp a b => BoundedFormula.imp a.toVal b.toVal
+
+section Realize
+
+variable {M : Type} [LRV.Structure M]
+
+/-- **The cover on the fragment with the residue symbols**: at every tuple of `VF`-elements, the
+`L_RV`-formula and the guarded image of its `L_val`-formula agree.  Hypotheses: the repair
+sentence `rvFibreIff` (for `=` on `RV`, through `leEqF`) and m3's four semantic repairs
+`KAddAdditive`, `KNegAdditive`, `KJunkZero`, `KNegJunkZero`. -/
+theorem realize_iff_vf (hM : M ⊨ Axioms.ACVF) (hfib : M ⊨ ({M2.rvFibreIff} : LRV.Theory))
+    (hKa : KAddAdditive M) (hKn : KNegAdditive M) (hJ : KJunkZero M)
+    (hJn : KNegJunkZero M) (φ : QF n) (x : Fin n → M) (hx : ∀ i, iVF (x i)) :
+    (φ.toRV).Realize (default : Empty → M) x
+      ↔ (VFRestrict.valFormulaToRVvf φ.toVal).Realize (default : Empty → M) x := by
+  induction φ with
+  | falsum => exact Iff.rfl
+  | eqVF a b =>
+    rw [toRV, toVal, VFRestrict.valFormulaToRVvf_realize, pEq,
+      BoundedFormula.realize_bdEqual, QFAux.evalVF_equal]
+    simp only [VFT.realize_toLRV]
+  | inVF a =>
+    rw [toRV, toVal, VFRestrict.valFormulaToRVvf_realize, pVF_realize]
+    exact ⟨fun _ => QFAux.evalVF_tt x, fun _ => VFT.realize_mem hM a x hx⟩
+  | eqRV u w =>
+    rw [toRV, toVal, VFRestrict.valFormulaToRVvf_realize, pEq, BoundedFormula.realize_bdEqual]
+    exact (RVT.evalVF_eqA hM hfib hKa hKn hJ hJn u w x hx).symm
+  | leRV u w =>
+    rw [toRV, toVal, VFRestrict.valFormulaToRVvf_realize, realize_pLe]
+    exact (RVT.evalVF_leA hM hKa hKn hJ hJn u w x hx).symm
+  | unitRV u =>
+    rw [toRV, toVal, VFRestrict.valFormulaToRVvf_realize, pUnits_realize]
+    exact (RVT.evalVF_unitA hM hKa hKn hJ hJn u x hx).symm
+  | neRV u =>
+    rw [toRV, toVal, VFRestrict.valFormulaToRVvf_realize, pRV_realize]
+    exact (RVT.evalVF_neA hM hKa hKn hJ hJn u x hx).symm
+  | inRV u =>
+    rw [toRV, toVal, VFRestrict.valFormulaToRVvf_realize, pRVsort_realize]
+    exact ⟨fun _ => QFAux.evalVF_tt x, fun _ => (RVT.pres_spec hM hKa hKn hJ hJn u x hx).2.2⟩
+  | imp a b iha ihb =>
+    rw [toRV, toVal, VFRestrict.valFormulaToRVvf, BoundedFormula.realize_imp]
+    exact ⟨fun h ha => ihb.mp (h (iha.mpr ha)), fun h ha => ihb.mpr (h (iha.mp ha))⟩
+
+end Realize
+
+end QF
+
+/-- **`qf_cover` for the fragment with the residue symbols.**  One `L_val`-formula, independent of
+the model and of the tuple, covers the `L_RV`-formula at every tuple of `VF`-elements in every
+model of `ACVF` + `rvFibreIff` + m3's four repairs. -/
+theorem qf_cover {n : ℕ} (φ : QF n) :
+    ∃ θ : Language.val.BoundedFormula Empty n,
+      ∀ (M : Type) [LRV.Structure M], ∀ (_hM : M ⊨ Axioms.ACVF),
+        M ⊨ ({M2.rvFibreIff} : LRV.Theory) → KAddAdditive M → KNegAdditive M →
+        KJunkZero M → KNegJunkZero M → ∀ x : Fin n → M, (∀ i, iVF (x i)) →
+        ((φ.toRV).Realize (default : Empty → M) x
+          ↔ (VFRestrict.valFormulaToRVvf θ).Realize (default : Empty → M) x) :=
+  ⟨φ.toVal, fun M _ hM hfib hKa hKn hJ hJn x hx =>
+    QF.realize_iff_vf hM hfib hKa hKn hJ hJn φ x hx⟩
+
+/-! ## Axiom checks -/
+
+#print axioms QFRes.RVT.pres_spec
+#print axioms QFRes.RVT.full_Q1
+#print axioms QFRes.RVT.full_any
+#print axioms QFRes.RVT.evalVF_eqA
+#print axioms QFRes.RVT.evalVF_leA
+#print axioms QFRes.RVT.evalVF_unitA
+#print axioms QFRes.RVT.evalVF_neA
+#print axioms QFRes.QF.realize_iff_vf
+#print axioms QFRes.qf_cover
+
+/-! ## Guarded `VF`-quantifiers on top of the residue fragment -/
+
+/-- The residue fragment closed under `VF`-guarded universal quantification (the quantifier shape
+that `valFormulaToRVvf` produces). -/
+inductive QFq : ℕ → Type
+  | ofQF {n : ℕ} : QF n → QFq n
+  | imp {n : ℕ} : QFq n → QFq n → QFq n
+  | allVF {n : ℕ} : QFq (n + 1) → QFq n
+
+namespace QFq
+
+/-- The image in `L_RV`. -/
+def toRV : {n : ℕ} → QFq n → Bf n
+  | _, ofQF φ => φ.toRV
+  | _, imp a b => BoundedFormula.imp a.toRV b.toRV
+  | _, allVF ψ => BoundedFormula.all (pVF (tv _ (Nat.lt_succ_self _)) ⟹ ψ.toRV)
+
+/-- The image in `L_val`. -/
+def toVal : {n : ℕ} → QFq n → Language.val.BoundedFormula Empty n
+  | _, ofQF φ => φ.toVal
+  | _, imp a b => BoundedFormula.imp a.toVal b.toVal
+  | _, allVF ψ => BoundedFormula.all ψ.toVal
+
+section Realize
+
+variable {M : Type} [LRV.Structure M]
+
+/-- **The cover survives `VF`-guarded quantifiers**, on top of the residue fragment. -/
+theorem realize_iff_vf (hM : M ⊨ Axioms.ACVF) (hfib : M ⊨ ({M2.rvFibreIff} : LRV.Theory))
+    (hKa : KAddAdditive M) (hKn : KNegAdditive M) (hJ : KJunkZero M)
+    (hJn : KNegJunkZero M) {n : ℕ} (φ : QFq n) (x : Fin n → M) (hx : ∀ i, iVF (x i)) :
+    (φ.toRV).Realize (default : Empty → M) x
+      ↔ (VFRestrict.valFormulaToRVvf φ.toVal).Realize (default : Empty → M) x := by
+  induction φ with
+  | ofQF φ => exact QF.realize_iff_vf hM hfib hKa hKn hJ hJn φ x hx
+  | imp a b iha ihb =>
+    rw [toRV, toVal, VFRestrict.valFormulaToRVvf, BoundedFormula.realize_imp]
+    exact ⟨fun h ha => (ihb x hx).mp (h ((iha x hx).mpr ha)),
+      fun h ha => (ihb x hx).mpr (h ((iha x hx).mp ha))⟩
+  | allVF ψ ih =>
+    simp only [toRV, toVal, BoundedFormula.realize_all, BoundedFormula.realize_imp,
+      VFRestrict.realize_pVF_last, Fin.snoc_last, VFRestrict.valFormulaToRVvf,
+      VFRestrict.valFormulaEvalVF]
+    constructor
+    · intro h a ha
+      exact (ih (Fin.snoc x a) (by
+        intro i
+        refine Fin.lastCases ?_ (fun j => ?_) i
+        · simpa using ha
+        · simpa using hx j)).mp (h a ha)
+    · intro h a ha
+      exact (ih (Fin.snoc x a) (by
+        intro i
+        refine Fin.lastCases ?_ (fun j => ?_) i
+        · simpa using ha
+        · simpa using hx j)).mpr (h a ha)
+
+end Realize
+
+end QFq
+
+/-- **`qfq_cover`**: one `L_val`-formula covers a formula of the residue fragment with
+`VF`-guarded quantifiers, uniformly in the model and the tuple. -/
+theorem qfq_cover {n : ℕ} (φ : QFq n) :
+    ∃ θ : Language.val.BoundedFormula Empty n,
+      ∀ (M : Type) [LRV.Structure M], ∀ (_hM : M ⊨ Axioms.ACVF),
+        M ⊨ ({M2.rvFibreIff} : LRV.Theory) → KAddAdditive M → KNegAdditive M →
+        KJunkZero M → KNegJunkZero M → ∀ x : Fin n → M, (∀ i, iVF (x i)) →
+        ((φ.toRV).Realize (default : Empty → M) x
+          ↔ (VFRestrict.valFormulaToRVvf θ).Realize (default : Empty → M) x) :=
+  ⟨φ.toVal, fun M _ hM hfib hKa hKn hJ hJn x hx =>
+    QFq.realize_iff_vf hM hfib hKa hKn hJ hJn φ x hx⟩
+
+end QFRes
+
+/-! ## Axiom checks (continued) -/
+
+#print axioms QFRes.QFq.realize_iff_vf
+#print axioms QFRes.qfq_cover
+
+
+#print axioms QFCover.qf_cover
+#print axioms QFCover.qfq_cover
+#print axioms QFCover.exists_qf_of_covered
+#print axioms QFRes.qf_cover
+#print axioms QFRes.qfq_cover

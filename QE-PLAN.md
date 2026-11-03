@@ -1323,3 +1323,20 @@ about a Mathlib valuation.  Still missing for `Theory.Model Axioms.ACVF` of that
 case analysis over the axiom list (bookkeeping over the union, plus the `Fin.snoc`/match steps in
 realization) and `kField`, `kAlgClosed`, `vfAlgClosed`.  Until that lands, the honest status stays
 "not known to be inconsistent", but the distance is now bookkeeping rather than mathematics.
+
+### The well-sorted cover is in the tree
+
+`QFCover` and `QFRes` (swarm `smw163dd5` m2, accepted, merged) give the quantifier-free cover for
+the *well-sorted* sublanguage — the paper's two-sorted `L_RV` — at `VF`-tuples:
+
+* `QFCover.qf_cover` / `qf_cover_at` / `qfq_cover`: the multiplicative fragment, needing only
+  `rvFibreIff`, with a single `θ = φ.toVal` covering every formula at every `VF`-tuple;
+* `QFCover.exists_qf_of_covered`: from `HasQEb ValPM.ACVF_val` and `VFType ⊨ ValPM.ACVF_val`, a
+  quantifier-free witness outright — no `CoverVF` hypothesis;
+* `QFRes.qf_cover` / `qfq_cover`: the same with `kAdd`/`kNeg`, via the case-splitting presentation
+  `RVT.pres` (no single term exists, by m1's counterexample), with the hypotheses `rvFibreIff`,
+  `KAddAdditive`, `KNegAdditive`, `KJunkZero`, `KNegJunkZero` — all of which are consequences of the
+  repaired axioms in `Model.lean`'s valuation setting.
+
+So on the well-sorted fragment the cover is no longer a hypothesis; what remains for it is
+`RV`-quantifiers, which is `RVElim`'s `exists_VFQ` and is also in the tree.
