@@ -80,3 +80,62 @@ lemmas.
 Layer (D) is the largest single item in the whole formalization and is not formalized in any
 proof assistant that I could find. The reduction (A) with (C) proved is a real theorem about
 the paper's argument and is the point of the current run; it is *not* Theorem 2.3 itself.
+
+## State after the Johnson campaign (update)
+
+The criterion in layer (B) no longer needs saturation. `QE/ACF_HasQE.lean` proves, generic in
+`L : Language.{0,0}`,
+
+```
+hasQE_of_johnson : T₀ ⊆ T → HasPrimeModels T₀ T → HasAmalgamation T₀ →
+  (∀ M N, M ⊨ T → OneECIn (f : M ↪[L] N)) → QECriterion.HasQE T
+```
+
+from `JohnsonCriterion.qfDetermined` + `QE/H_of_qfDetermined.lean` (the last mile `H`) +
+`hasQE_of_qfDet` (compactness). Instantiated at `T₀ = Theory.field`, `T = acf` it gives
+`HasQE acf` unconditionally, in the frozen shape; the three hypotheses are discharged by
+`QE/PrimeModels_full.lean` (prime models: `Frac (FreeCommRing S ⧸ ker (FreeCommRing.lift e))`),
+`amalgamation_field` (tensor products) and `oneEC_field_acf`.
+
+So layer (A) is now reachable in two steps, neither of them Shoenfield's:
+
+1. **QE in `L_val`** by `hasQE_of_johnson` at `L = Language.val`, `T₀` = valued fields,
+   `T` = nontrivially valued algebraically closed fields. Hypotheses: (i) prime models —
+   `QE/PrimeModels_valued.lean` has the mathematics (`vFrac`, `prime_model_property`) and needs
+   repackaging into `HasPrimeModels`; (ii) amalgamation — `QE/Amalgamation_reduced.lean` modulo
+   ★ alone (Johnson 2.2.4/2.2.6 on `O₁ ⊗_{O₀} O₂`); (iii) 1-ec — Johnson §2.3, where
+   `QE/Johnson23_valuation.lean` now has 2.3.4, 2.3.5, 2.3.6, 2.3.7 in full generality, ball
+   comparability, and the cell decomposition behind 2.3.2; missing are `cell_swissCheese`
+   (normalising a cell's complement family to subballs), 2.3.1, 2.3.3, 2.3.8, 2.3.9.
+
+2. **The transfer `L_val → L_RV`.** The paper's Theorem 2.3 is stated in `L_RV`
+   (`paper.tex:509`, quoting `qe.tex` Theorem 3.10), so QE in `L_val` alone does not discharge
+   it. Three routes, and why the obvious one is not the paper's:
+
+   * **(T1) Syntactic translation.** Show that every `L_RV`-formula is `ACVF`-equivalent to an
+     `L_val`-formula, and every quantifier-free `L_val`-formula to a quantifier-free
+     `L_RV`-formula. Then QE in `L_val` gives QE in `L_RV` by composition. The translation
+     works term by term: `rv` is multiplicative, so an `RV`-term built from `rv(F_i(X))`,
+     `RV`-parameters and products is `rv` of a `VF`-term once the parameters are named; the
+     `RV`-literals become `v s ≤ v t` (`rv s ≤ rv t`) and `v (s - t) < v s` (`rv s = rv t`);
+     and a quantifier over `RV` becomes `y = 0 ∨ ∃ x (VF), y = rv x`. **The last step is
+     exactly the surjectivity of `rv` onto `RV ∖ {0}` — the twelfth encoding defect
+     (`Milestone0/DECISION.md`)**: the frozen `rvSurj` is guarded by `pUnits` and only reaches
+     the class of `1`, so the frozen axioms do not presently give it. Either derive it in the
+     theory (it may follow from the multiplicativity/ordering axioms plus the `pUnits` form),
+     or repair the guard — which changes the frozen hash and requires re-verifying
+     `Milestone0/accepted/` and every `QE/` snapshot that embeds it. That decision is
+     recorded, not taken.
+   * **(T2) Johnson directly in `L_RV`.** The criterion is generic, so it applies to the frozen
+     language as it stands. The junk problem that blocks Yin's Remark 3.1 does *not* hit
+     hypothesis (i): `HasPrimeModels` only quantifies over `S` that embed into a model, and a
+     model of `ACVF` has no `RV`-element outside `rv(VF) ∪ {0}`. It does make (i) itself harder
+     (the prime model must be built in the tagged one-sorted language) and replaces (iii) by
+     the `RV`-definable version, i.e. Yin §4's C-minimality analysis rather than §2.3.
+   * **(T3) Yin's route** (`qe.tex` §3): Shoenfield's test with saturated models plus
+     Weispfenning's QE in `L_v`. Dead here: Mathlib has no model-theoretic saturation, and it
+     needs `Proposition 3.9` (extension of monomorphisms) whose proof is Lemmas 3.2–3.8.
+
+   Recommendation: (T1), because it uses QE in `L_val` — which step 1 delivers — and reduces
+   the remaining work to a term-by-term syntactic translation plus one axiom question, instead
+   of an extension theory for monomorphisms.
