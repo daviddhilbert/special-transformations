@@ -984,3 +984,20 @@ fragment, and what remains is precisely that every `L_RV`-formula lies in it —
 had been assumed by m4's `FineTriv` and by m1's docstrings.  It follows from the frozen axioms
 through the group laws (`iRVOne` is idempotent, `rvSurj` gives a preimage, `iUnits` gives an
 inverse).
+
+### Correction: "per-model QE implies theory QE" is **false**
+
+I proposed that as the compactness step that would let the trivial/nontrivial case split be handled
+per model.  It is wrong, and m6's counterexample settles it: take the empty theory `T = ∅` in a
+language with one unary predicate `P` and the one-point model `{a}` with `P = {a}`.  Every formula
+is equivalent *in that model* to `⊤`, `⊥` or `P (x)`, so the model has QE; yet `∀ x, P x` has no
+quantifier-free equivalent modulo `∅`.  The gap in my argument was real: proving `T` has QE needs
+one model in which *every* candidate witness fails at once, and per-model QE only supplies a
+witness per model.
+
+The correct statement is the two-model one, `QECriterion.QFTypeDetermines T`: models with the same
+quantifier-free type satisfy the same formulas.  That is what `m6/FinalAssembly.lean` uses, and what
+`m6/QFComp.lean` closes against `QE/Bounded_compactness.lean`.  Everything in the section above
+about the assembly stands; only the justification I gave for the case split was wrong, and the case
+split is now carried by `NontrivialTransfer` + `TrivialTransfer` + `CaseSeparation` + `CaseSplit`
+rather than by compactness on models.
