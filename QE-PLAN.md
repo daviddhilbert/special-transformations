@@ -1853,3 +1853,70 @@ packaging.  Nothing conceptual is left in the bridge.
 
 So h4's output needs `VFQAtomSorted`, and the requirement should be built into the quantifier step
 rather than discovered when the assembly is attempted.
+
+## Saturation in Marker's shape, and §3 restated over a monster model
+
+The author has ruled (see `Milestone0/DECISION.md`, "the saturation interface is Mathlib-shaped")
+that saturation enters as `Saturated M κ` plus a monster-model structure, in the shape of Marker's
+*Model Theory*, **not** as three stated consequences; and that model theory may be taken as given
+while the paper's own lemmas must be proved.
+
+`Milestone0/Saturation.lean` (new, green: `lean` exit 0, 0 errors, no `sorry`, no `axiom`, no
+`sat_*` axiom anywhere) carries exactly that interface, for Mathlib's general
+`FirstOrder.Language`:
+
+* `Sat.typeOf`, `Sat.mem_typeOf`, `Sat.FinitelySatisfiable`,
+  `Sat.finitelySatisfiable_typeOf` — types over a parameter set, in the form the compactness
+  arguments of §4 use;
+* `Sat.Saturated N κ := ∀ A (v : A → N), #A < κ → <every finitely satisfiable type over v is
+  realized>`, with `Saturated.anti` (fewer parameters is weaker) and `Saturated.realizes`;
+* `Sat.PartialElementary v w` (every formula with parameters from `A` agrees at tuples from `A`)
+  and `Sat.StronglyHomogeneous M κ` (every such map on fewer than `κ` parameters extends to an
+  automorphism `M ≃[L] M`);
+* `Sat.MonsterModel L T`: carrier `M`, `κ ≥ ℵ₀`, `M ⊨ T`, saturation, homogeneity — with
+  `MonsterModel.small A := #A < κ`, `MonsterModel.realizes`, `MonsterModel.exists_automorphism`,
+  `MonsterModel.mk_fin_lt`, `MonsterModel.small_of_finite`, and `Sat.MonsterACVF` for
+  `L = LRV`, `T = Axioms.ACVF`.
+
+Because the saturation lives in a *structure* rather than in axioms, no footprint grows: a
+statement about the monster model mentions `𝕄 : MonsterACVF` and `𝕄.small A`, and the interface
+cannot be used to smuggle a paper lemma in as a hypothesis.
+
+**§3 restated over the monster model** (`QE/Sec3_sat.lean`, three more frozen targets, `sorry` as
+usual, plus two parameter-pair abbreviations `SP.singleVF`, `SP.singleRV`, the `VF`-zero
+`SP.iVFZero` and the explicit list sum `SP.sumVF`):
+
+| paper label | frozen as | needs |
+| --- | --- | --- |
+| `alg:ind:imag` | `swl_alg_ind_image` | `acl`, the monster model |
+| `average:0:rv:not:constant` | `swl_average_zero_rv_not_constant` | `VF`-sum, `iRv` only |
+| `ball:proper:sub:center` | `swl_ball_proper_sub_center` | `IsBall`, `DefinableVF`, `dcl` |
+
+**The remaining five §3 items are blocked on vocabulary, not on saturation**, and each blocker is
+named in `QE/Sec3_sat.lean`'s header: `dcl:to:ac` needs `VF(S)(ā)^{alg}`, i.e. the `Field`
+structure on `{x // iVF x}` that only `QE/Assembly_val.lean` has (`vfFieldOfModel`), plus
+`Subfield.closure` and `AlgebraicClosure`; `inf:RV:def:gam` needs the `Γ`-sort, `vrv` and a
+monster model *of the expansion* `LRVΓ`; `effectiveness` and `algebraic:balls:definable:centers`
+need "algebraic set of closed balls" and "`𝓑` has centers", which this paper quotes from
+arXiv:1006.1393 (Definitions 4.13/4.14) without defining; `aclS:model` needs `Γ(acl(S))` and the
+substructure interpretation of `acl(S)` in `ACVF_S(0,0)` (`Encoding.lean` Part 5 has the theory,
+not the interpretation).
+
+State corrections made in the same commit:
+
+* `QE/Sec3_frozen.lean` did not elaborate against the current `Encoding.lean`: after the recursive
+  `WellSorted` was adopted, `WellSorted` lives in `namespace LRV`, so `open LRV` is needed
+  *inside* `namespace SpecialTransformations.Milestone0`.  Its five frozen statements are green
+  again; the file had silently stopped compiling when the adoption landed.
+* the QF balls bridge is **not** in `QE/Assembly_val.lean`; it is only in
+  `.ultramath/smw18pb0w/m1/*.lean` (`import PreC`).  The line in an earlier entry that "everything
+  of value is merged here" is false for it.
+
+**Swarm `smw19wtoj`** (5 members, 150 min) is working the rest of the way to `HasQE`, one
+direction per obstruction: w1 `exists_toFrag` in the all-`VF` context (from h4's
+`H4_attempt.lean`), w2 free-variable substitution by `rv`, w3 the mixed-context QF fragment with
+`RV`-variables, w4 the arbitrary-parameter bridge (finite support + relabelling), w5 the assembly
+`exists_toFrag → qfq_cover → hasQE_ACVF_val → QF witness`.  The pieces w2 and w3 exist because
+the fragment + `L_val` route as planned in `smw17pts2`'s h4 only covers `α = Empty` and all-`VF`
+contexts, and the frozen `HasQE` quantifies over all parameters and all variable sorts; that gap
+was not visible in the earlier plan.

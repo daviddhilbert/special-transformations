@@ -480,3 +480,55 @@ So the policy has two halves, and they must not be confused in a footprint:
 ```
 sha256 851d6a986b69c4df2075ebb81f1dd325f694bbfb0a17079e527e631077427a4c
 ```
+
+## Ruling (this session): the saturation interface is Mathlib-shaped, not a list of consequences
+
+Asked how the `sat_*` interface should be shaped — three stated consequences, or a genuine
+notion with a monster-model structure — the author answered:
+
+> If you want saturation as a genuine Mathlib-shaped notion (`Saturated M κ` and a monster-model
+> structure) rather than three stated consequences, say so and I will write the interface in that
+> shape : I think this is better.
+
+and, for the general model theory, named Dave Marker's *Model Theory: An Introduction* as the
+standard reference.  So the interface is `Milestone0/Saturation.lean`, and it is written in
+Marker's shape:
+
+* `Sat.typeOf`, `Sat.FinitelySatisfiable` — types over a parameter set and finite satisfiability;
+* `Sat.Saturated N κ` — `κ`-saturation: every finitely satisfiable type over fewer than `κ`
+  parameters is realized;
+* `Sat.PartialElementary`, `Sat.StronglyHomogeneous` — partial elementary maps, and strong
+  `κ`-homogeneity (every partial elementary map on fewer than `κ` parameters extends to an
+  automorphism);
+* `Sat.MonsterModel L T` — a structure carrying `M`, `κ ≥ ℵ₀`, `M ⊨ T`, `κ`-saturation and strong
+  `κ`-homogeneity, with `MonsterModel.small A` meaning `|A| < κ`, `MonsterModel.realizes` (types
+  over small sets are realized) and `MonsterModel.exists_automorphism` as its two elimination
+  rules;
+* `Sat.MonsterACVF : Type _` — the instantiation at the frozen encoding, whose `.isModel` gives
+  `𝕄.M ⊨ Axioms.ACVF` and whose `.model` names that fact.
+
+Consequences of the shape, binding on what is written next:
+
+1. **No `sat_*` axiom is needed and none is declared.**  Saturation enters as *data* of the
+   `MonsterModel` structure, so a theorem about the monster model mentions `𝕄 : MonsterACVF` and
+   the smallness hypothesis `𝕄.small A` explicitly, and its footprint is the ordinary one
+   (`propext`, `Classical.choice`, `Quot.sound`).  The point of the author's ruling was that the
+   interface must not turn the paper's lemmas into hypotheses; with this shape it cannot, because
+   the structure supplies only saturation and homogeneity.
+2. **Existence is not asserted.**  That a monster model of `ACVF` exists is the model theory the
+   author ruled may be taken as given; it is not formalized and no theorem may silently assume a
+   `MonsterModel` exists.  Any statement that needs one takes it as a parameter.
+3. **The paper's lemmas stay unproved targets.**  `QE/Sec3_sat.lean` freezes the §3 items that
+   need the monster model with `sorry`, exactly like the earlier frozen files.
+
+Two state corrections recorded at the same time:
+
+* `QE/Sec3_frozen.lean` (written before the recursive `WellSorted` was adopted) did **not**
+  elaborate against the current `Milestone0/Encoding.lean`: `WellSorted` now lives in
+  `namespace LRV`, so the file needs `open LRV` *inside* the `Milestone0` namespace.  Fixed; the
+  five frozen §3 statements compile again.
+* The QF balls bridge (`polyOf`, `atom_*_iff`, `VFQF_isBoolComb`, `isBoolComb_of_isQF`, …) is
+  **not** in `QE/Assembly_val.lean`; it lives only in the swarm files
+  `.ultramath/smw18pb0w/m1/{Syntax,RVSort,QFFrame,Glue,Integration,ValueOnlyM4,AssemblyM3}.lean`
+  (`import PreC`; replace by `import Pre_build`).  `QE-PLAN.md`'s "everything of value is merged
+  here" is wrong on this point until those are merged.

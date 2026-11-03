@@ -8,6 +8,7 @@ proofs from arXiv:1006.1393, so they are quoted theorems unless re-proved here.
 import Enc
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.Milestone0
+open LRV
 
 /-! ## `acl`, `dcl`, and the frozen Section 3 statements (SWL naming)
 
