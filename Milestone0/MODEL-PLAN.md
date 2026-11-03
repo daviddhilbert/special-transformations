@@ -105,6 +105,25 @@ Crucially, `IntendedModel.lean`'s `model_vfField` and `model_rvAxioms_all` menti
 and port to the frozen axioms unchanged. `model_kField`/`model_kAlgClosed` in that file do
 depend on it and must be redone.
 
+## What is now verified (unconditional)
+
+`accepted/ACVF_gamma_padic.lean`, at the frozen axioms `d608de6`:
+
+* `model_ACVF_minus_kField [IsAlgClosed K] (v)` — six of the eight summands of `ACVF` at
+  `C v = K ⊕ RV₀ v` for **arbitrary** `v`: `sortAxioms`, `vfField`, `vfAlgClosed`, `rvGroup`,
+  `preorderRV`, `rvAxioms`;
+* `ACVF_eq_FRAG_union : Axioms.ACVF = FRAG ∪ Axioms.kField ∪ Axioms.kAlgClosed` — the gap as a
+  set equality;
+* `exists_gamma_nontrivial (v) (x) (hx0 : x ≠ 0) (hx : v x < 1)` — `t = mkRV (some (rv x))`
+  lies in `RV^×` and outside the class of `1`, in the **corrected** predicate;
+* `exists_model_with_nontrivial_gamma (p)` — at `ℂ_[p]`, a structure with
+  `M ⊨ FRAG ∪ atomicDiagram S` and `Γ(S)` nontrivial;
+* `not_model_ACVF_S_padic` — `ℂ_[p]` has residue characteristic `p`, so `ACVF(0,0)`, hence
+  `ACVF_S S`, fails there for **every** `S`.
+
+So: `ACVF` minus the two residue-field summands is realised with a nontrivial value group, and
+the `(0,0)` refinement is proved out of reach at the only concrete field Mathlib offers.
+
 ## What is still missing
 
 Of the eight blocks of `Axioms.ACVF` at the general carrier `K ⊕ RV₀ v`, four are done against
