@@ -1212,4 +1212,42 @@ theorem prod_map_eq_const_of_near {p q : Multiset K} {a b : K} (hb : b ∈ p + q
     exact val_eq_of_near (p := p) (q := q) hb hmin hx c (Multiset.mem_add.mpr (Or.inl hcp)) hca
   rw [h]
 
+
+/-- The easiest case of the ball condition: equal powers of `δ`.  The set is everything when
+`w (f cP) ≤ w (f cQ)`, and the singleton `{f a}` otherwise (at the centre both sides vanish). -/
+theorem good_pow_le_pow_same {a cP cQ : K} (m : ℕ) :
+    Good f w {x : N | w (f cP) * (w (x - f a)) ^ m ≤ w (f cQ) * (w (x - f a)) ^ m} := by
+  by_cases h : w (f cP) ≤ w (f cQ)
+  · have hset : {x : N | w (f cP) * (w (x - f a)) ^ m ≤ w (f cQ) * (w (x - f a)) ^ m}
+        = Set.univ := by
+      ext x
+      simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
+      exact mul_le_mul_right' h _
+    rw [hset]; exact good_univ f w
+  · push_neg at h
+    rcases eq_or_ne m 0 with rfl | hm
+    · have hset : {x : N | w (f cP) * (w (x - f a)) ^ 0 ≤ w (f cQ) * (w (x - f a)) ^ 0} = ∅ := by
+        ext x
+        simp only [pow_zero, mul_one, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+        exact not_le.mpr h
+      rw [hset]; exact good_empty f w
+    · have hset : {x : N | w (f cP) * (w (x - f a)) ^ m ≤ w (f cQ) * (w (x - f a)) ^ m}
+          = {f a} := by
+        ext x
+        simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+        constructor
+        · intro hx
+          by_contra hne
+          have hδ : w (x - f a) ≠ 0 := by
+            intro h0
+            exact hne (sub_eq_zero.mp (w.zero_iff.mp h0))
+          have hlt : w (f cQ) * (w (x - f a)) ^ m < w (f cP) * (w (x - f a)) ^ m :=
+            mul_lt_mul_right' h _
+          exact absurd hlt (not_lt.mpr hx)
+        · intro hx
+          subst hx
+          rw [show f a - f a = (0 : N) from sub_self _, map_zero,
+            zero_pow hm, mul_zero, mul_zero]
+      rw [hset]; exact good_singleton f w a
+
 end MasterClaim
