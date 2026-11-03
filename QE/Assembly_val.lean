@@ -10636,6 +10636,100 @@ theorem vf_left_distrib {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x
   simpa [realize_tVFAdd, realize_tVFMul, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons] using h
 
+/-- `0 ≠ 1` on the `VF` sort. -/
+theorem vf_zero_ne_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iVFZero (M := M) ≠ iVFOne := by
+  have hmem : (∼(pEq tVFZero tVFOne)) ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := sentence_realize hM hmem
+  rw [Sentence.Realize] at h
+  simp only [Formula.Realize, BoundedFormula.realize_not, pEq, BoundedFormula.realize_bdEqual,
+    realize_tVFZero, realize_tVFOne] at h
+  exact h
+
+/-- **The invertibility law**: a `VF`-element is `0` or has a multiplicative inverse.  The
+encoding states it this way because the language has no inverse symbol. -/
+theorem vf_mul_inv_or_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : x = iVFZero ∨ ∃ y : M, iVF y ∧ iVFMul x y = iVFOne := by
+  have hmem : allSorted ![.vf]
+      (pEq &0 tVFZero ⊔ exSorted .vf (pEq (tVFMul &0 &1) tVFOne)) ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := allSorted_realize hM hmem ![x] (by intro i; fin_cases i; simpa using hx)
+  simp only [BoundedFormula.realize_sup, exSorted, BoundedFormula.realize_ex,
+    BoundedFormula.realize_inf, sortPred, pEq, BoundedFormula.realize_bdEqual, realize_tVFZero,
+    realize_tVFMul, realize_tVFOne, realize_tv, pVF_realize, Term.realize_var,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
+  exact h
+/-! ### The `VF` sort as a field -/
+
+section VFField
+
+variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
+
+/-- The `VF` sort of an `ACVF`-model, as a type. -/
+def VFType : Type := {x : M // iVF x}
+
+instance vfInstZero : Zero (VFType (M := M)) := ⟨⟨iVFZero, vf_zero_mem hM⟩⟩
+
+instance vfInstOne : One (VFType (M := M)) := ⟨⟨iVFOne, vf_one_mem hM⟩⟩
+
+instance vfInstAdd : Add (VFType (M := M)) :=
+  ⟨fun x y => ⟨iVFAdd x.1 y.1, vf_add_mem hM x.2 y.2⟩⟩
+
+instance vfInstNeg : Neg (VFType (M := M)) :=
+  ⟨fun x => ⟨iVFNeg x.1, vf_neg_mem hM x.2⟩⟩
+
+instance vfInstMul : Mul (VFType (M := M)) :=
+  ⟨fun x y => ⟨iVFMul x.1 y.1, vf_mul_mem hM x.2 y.2⟩⟩
+
+/-- The inverse on the `VF` sort: `0⁻¹ = 0`, and a nonzero element inverts by the
+invertibility law. -/
+noncomputable def vfInvFun (x : VFType (M := M)) : VFType (M := M) := by
+  classical
+  exact if h : x.1 = iVFZero then 0
+    else
+      let w := (vf_mul_inv_or_zero hM x.2).resolve_left h
+      ⟨Classical.choose w, (Classical.choose_spec w).1⟩
+
+noncomputable instance vfInstInv : Inv (VFType (M := M)) := ⟨vfInvFun⟩
+
+theorem vfInv_zero : (0 : VFType (M := M))⁻¹ = 0 := dif_pos rfl
+
+theorem vfInv_val {x : VFType (M := M)} (hx : x ≠ 0) :
+    iVFMul x.1 ((x⁻¹ : VFType (M := M))).1 = iVFOne := by
+  have hx' : x.1 ≠ iVFZero := fun h => hx (Subtype.ext h)
+  have hval : ((x⁻¹ : VFType (M := M))).1
+      = Classical.choose ((vf_mul_inv_or_zero hM x.2).resolve_left hx') := by
+    show (vfInvFun x).1 = _
+    unfold vfInvFun
+    exact congrArg Subtype.val (dif_neg hx')
+  rw [hval]
+  exact (Classical.choose_spec ((vf_mul_inv_or_zero hM x.2).resolve_left hx')).2
+
+/-- **The `VF` sort is a field.** -/
+noncomputable def vfFieldOfModel : Field (VFType (M := M)) :=
+  Field.ofMinimalAxioms (VFType (M := M))
+    (fun a b c => Subtype.ext (vf_add_assoc hM a.2 b.2 c.2))
+    (fun a => Subtype.ext (by
+      show iVFAdd iVFZero a.1 = a.1
+      rw [vf_add_comm hM (vf_zero_mem hM) a.2]
+      exact vf_add_zero hM a.2))
+    (fun a => Subtype.ext (by
+      show iVFAdd (iVFNeg a.1) a.1 = iVFZero
+      rw [vf_add_comm hM (vf_neg_mem hM a.2) a.2]
+      exact vf_add_neg hM a.2))
+    (fun a b c => Subtype.ext (vf_mul_assoc hM a.2 b.2 c.2))
+    (fun a b => Subtype.ext (vf_mul_comm hM a.2 b.2))
+    (fun a => Subtype.ext (by
+      show iVFMul iVFOne a.1 = a.1
+      rw [vf_mul_comm hM (vf_one_mem hM) a.2]
+      exact vf_mul_one hM a.2))
+    (fun a ha => Subtype.ext (vfInv_val ha))
+    vfInv_zero
+    (fun a b c => Subtype.ext (vf_left_distrib hM a.2 b.2 c.2))
+    ⟨0, 1, fun h => vf_zero_ne_one hM (congrArg Subtype.val h)⟩
+
+end VFField
 end SpecialTransformations.Milestone0.Transfer
 
 #print axioms SpecialTransformations.Milestone0.Transfer.valTermToRV_realize
@@ -10644,3 +10738,5 @@ end SpecialTransformations.Milestone0.Transfer
 
 #print axioms SpecialTransformations.Milestone0.Transfer.sortedHyps_realize
 #print axioms SpecialTransformations.Milestone0.Transfer.allSorted_realize
+
+#print axioms SpecialTransformations.Milestone0.Transfer.vfFieldOfModel
