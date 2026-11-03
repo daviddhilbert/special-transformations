@@ -2332,3 +2332,39 @@ field, or a saturation/compactness substitute for it.  Two consequences worth ke
 `QFTypeDetermines` is *equivalent* to the target, and `Assembly_val`'s `hasQE_of_transfers` needs
 the compactness step `QFComp.hasQE_of_qfTypeDetermines` precisely to manufacture, by compactness in
 a *third* model, the element that this induction cannot manufacture in `N`.
+
+## Section 3: the frozen targets audited against the source, and two of them were false
+
+Before continuing §3 (the saturation/`acl` section) I checked what was there.  The chain
+`Enc → Saturation → Sec3_frozen → Sec3_sat` still compiles against the repaired encoding (all four
+`lean` runs exit 0), so the guard repair cost §3 nothing — `acl`/`dcl` only *hypothesise*
+`WellSorted`, they never build one.
+
+What was wrong was the statements.  Six of the thirteen frozen §3 items are not transcriptions of
+their source sentences; three are false as frozen.  The inventory is in `DECISION.md` §"Section 3
+statement audit".  The sharpest: `average:0:rv:not:constant` was frozen with the paper's own slip
+("and hence `rv` is not constant on the set") as a conjunct, which contradicts its own hypothesis —
+now machine-checked as `SP.swl_average_conclusion_unsat`; and `swl_exchange` had three free parameter
+pairs instead of `acl(b) ∖ acl(∅) ⊑ acl(a)`, which is not exchange and is refutable.
+
+`QE/Sec3_frozen.lean` is rewritten (green, 5 `sorry`s) with:
+
+* `extendVFParam`/`extendRVParam` (the parameter pair `S` together with one element — the paper's
+  `ā, a`), `singleVF`/`singleRV` moved up from `Sec3_sat` so that exchange can be stated;
+* `DefinableFun` (a definable graph) — the missing hypothesis of `function:rv:to:vf:finite:image`;
+* corrected `swl_acl_const_of_fibres`, `swl_acl_VF_transfer_acl_RV`, `swl_exchange`,
+  `swl_function_rv_to_vf_finite_image`, `swl_finite_VF_project_RV`;
+* proved: `dcl_subset_acl`, `acl_self` (`a` is algebraic over `{a}`).
+
+`QE/Sec3_sat.lean` is green with 7 `sorry`s; `swl_average_zero_rv_not_constant` now states the two
+halves of `vv(c_i - c_j) = α` (the encoding has a *preorder* on `RV`, so equality is equivalence), the
+two ball lemmas gained the nonemptiness their only recorded use has, and
+`swl_average_conclusion_unsat` is proved.
+
+**Next in §3.**  `alg:ind:imag` is the one item the file always said should be proved (the paper
+gives its proof).  With the statements now right, its proof needs exactly three inputs: exchange
+(frozen), the transport `acl (singleRV t) a → acl (singleVF b) a` for `rv b = t` (parameter change
+along a definable term), and "the `rv`-fibre of `t ∉ {rv 0, rv 1}` is infinite while `acl` of a
+finite parameter set is countable".  The first is a frozen target, the second is formula relabelling,
+the third is a cardinality argument on formulas.  That is the shape recorded for the next attempt;
+none of it is started.

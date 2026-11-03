@@ -64,14 +64,6 @@ variable {M : Type*} [LRV.Structure M]
 constants `iRVOne`/`iRVZero` but has no name for this one.) -/
 def iVFZero : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfZero fun i => i.elim0
 
-/-- The parameter pair consisting of one `RV`-element: the paper's `acl(t)`. -/
-def singleRV (t : M) (ht : iRV t) : SP M :=
-  ⟨0, 1, Fin.elim0, (fun _ => t), (fun i => i.elim0), (fun _ => ht)⟩
-
-/-- The parameter pair consisting of one `VF`-element: the paper's `acl(a)`. -/
-def singleVF (a : M) (ha : iVF a) : SP M :=
-  ⟨1, 0, (fun _ => a), Fin.elim0, (fun _ => ha), (fun j => j.elim0)⟩
-
 /-- The sum of a list of `VF`-elements, in the ring of the `VF`-sort.  (The `Field` structure on
 `{x // iVF x}` is built in `QE/Assembly_val.lean`, not in `Encoding.lean`, so the average lemma
 below is stated with this explicit fold rather than with `Finset.sum`.) -/
@@ -90,22 +82,39 @@ theorem swl_alg_ind_image (a t : 𝕄.M) (ha : iVF a) (ht : iRV t)
     (h : ¬ acl (base (M := 𝕄.M)) a) : ¬ acl (singleRV t ht) a := by
   sorry
 
+/-- The conclusion the first transcription of `average:0:rv:not:constant` froze is *unsatisfiable*
+given its own hypothesis: it asked, in addition to `vv(c_i - c_j) = α`, that `rv (c i) ≠ rv (c j)`,
+while `hsame` says all `rv (c i)` agree.  Recorded here because the paper's own sentence ("... and
+hence `rv` is not constant on the set `{c₁, …, c_k}`") carries the same slippage: `rv` *is* constant
+on that set, and what is not constant is `rv` on the differences — which is how the paper uses it
+(`qe.tex` line 1239, on `A_i - a_i`).  Machine-checked, no `sorry`. -/
+theorem swl_average_conclusion_unsat {k : ℕ} (hk0 : 0 < k) (c : Fin k → 𝕄.M)
+    (hsame : ∀ i, iRv (c i) = iRv (c ⟨0, hk0⟩)) :
+    ¬ ∃ i j : Fin k, i ≠ j ∧
+      iRv (iVFAdd (c i) (iVFNeg (c j))) = iRv (c ⟨0, hk0⟩) ∧ iRv (c i) ≠ iRv (c j) := by
+  rintro ⟨i, j, -, -, hij⟩
+  exact hij (by rw [hsame i, hsame j])
+
 /-- **`average:0:rv:not:constant`** (Yin, QE:ACVF:min, Lemma 4.9): if `c₁, …, c_k` (`k ≥ 2`) are
-distinct elements of `VF` with the same value `α`, and their average is `0`, then two of them have
-`vv(c_i - c_j) = α`, and hence `rv` is not constant on `{c₁, …, c_k}`. -/
+distinct elements of `VF` with the same value `α`, and their average is `0`, then two of them
+satisfy `vv(c_i - c_j) = α`.  Stated as the two halves of that equality, because the encoding
+axiomatises a *preorder* on `RV` and not a partial order, so `= α` is "equivalent to `α`" here:
+`iLe (vv (c_i - c_j)) α` is the half the paper's proof produces, `iLe α (vv (c_i - c_j))` is the
+ultrametric lower bound. -/
 theorem swl_average_zero_rv_not_constant {k : ℕ} (hk : 1 < k) (hk0 : 0 < k) (c : Fin k → 𝕄.M)
     (hVF : ∀ i, iVF (c i)) (hinj : Function.Injective c)
     (hsame : ∀ i, iRv (c i) = iRv (c ⟨0, hk0⟩))
     (havg : sumVF (List.ofFn c) = iVFZero) :
     ∃ i j : Fin k, i ≠ j ∧
-      iRv (iVFAdd (c i) (iVFNeg (c j))) = iRv (c ⟨0, hk0⟩) ∧ iRv (c i) ≠ iRv (c j) := by
+      iLe (iRv (iVFAdd (c i) (iVFNeg (c j)))) (iRv (c ⟨0, hk0⟩)) ∧
+        iLe (iRv (c ⟨0, hk0⟩)) (iRv (iVFAdd (c i) (iVFNeg (c j)))) := by
   sorry
 
 /-- **`ball:proper:sub:center`** (paper §3; the paper cites Yin, QE:ACVF:min, Lemma 4.16 for the
 proof): a ball that contains a definable proper subset contains a definable point — a point
 definable over the parameters, i.e. in the definable closure of `S`. -/
 theorem swl_ball_proper_sub_center (S : SP 𝕄.M) (b D : Set 𝕄.M) (hb : IsBall b)
-    (hD : SP.DefinableVF S D) (hsub : D ⊆ b) (hne : D ≠ b) :
+    (hD : SP.DefinableVF S D) (hne0 : D.Nonempty) (hsub : D ⊆ b) (hne : D ≠ b) :
     ∃ x : 𝕄.M, x ∈ b ∧ dcl S x := by
   sorry
 
@@ -251,7 +260,8 @@ theorem swl_algebraic_balls_definable_centers (S : SP 𝕄.M) (𝓑 : Set (Set �
 `ball:proper:sub:center`): if an `rv`-ball has a definable proper subset then it has a definable
 point. -/
 theorem swl_rv_effectiveness (S : SP 𝕄.M) (t : 𝕄.M) (ht : iRV t) (A : Set 𝕄.M)
-    (hA : SP.DefinableVF S A) (hsub : A ⊆ Sec3.rvBall t) (hne : A ≠ Sec3.rvBall t) :
+    (hA : SP.DefinableVF S A) (hne0 : A.Nonempty) (hsub : A ⊆ Sec3.rvBall t)
+    (hne : A ≠ Sec3.rvBall t) :
     ∃ c : 𝕄.M, c ∈ Sec3.rvBall t ∧ dcl S c := by
   sorry
 

@@ -860,3 +860,55 @@ Two consequences to keep straight, because the records said the opposite:
    and `rv 0 = ∞`, so nothing is unsound — but the fragment statement is the one that matters and
    whoever closes `nontrivialTransferWS_ACVF` should decide which version it is.  Not changed here,
    because `TransferWS.lean` is a statement file that a swarm is currently aiming at.
+
+
+## Section 3 statement audit (the frozen §3 targets were not faithful)
+
+Checking the §3 state before continuing it turned up that the frozen statement files had been written
+from the paper's *labels* rather than its sentences.  Six defects, each now fixed in
+`QE/Sec3_frozen.lean` / `QE/Sec3_sat.lean`; both files compile (0 errors, 5 and 7 `sorry`s, which
+are exactly the frozen targets).  The source is `paper.tex` §3 from line 659 — which copies
+`qe.tex` for `average:0:rv:not:constant` (4.9), `function:rv:to:vf:finite:image` (4.12),
+`effectiveness` (4.15), `algebraic:balls:definable:centers` (4.17), `aclS:model` (4.18) — plus
+`qe.tex` itself for 4.3 (exchange) and 4.10 (`finite:VF:project:RV`).
+
+| frozen as | what the source says | what was frozen | verdict |
+| --- | --- | --- | --- |
+| `swl_acl_const_of_fibres` | `s ∈ acl(a)` for each `a ∈ A` ⟹ `s ∈ acl(∅)` | `h : ∀ a, a ∈ A → acl S s` — *no `a` in the hypothesis* | vacuous at `A = ∅`, conclusion does not follow |
+| `swl_acl_VF_transfer_acl_RV` | `x ∈ acl(ā)` for each `ā ∈ A` ⟹ `x ∈ acl(t̄)` | hypothesis `acl S x`, conclusion `acl S x` | hypothesis does not mention `a`; neither the source nor provable |
+| `swl_exchange` | `a, b ∈ VF`, `a ∈ acl(b) ∖ acl(∅)` ⟹ `b ∈ acl(a)` | `(S S₁ S₂ : SP)`, `acl S₁ b` ⟹ `acl S b ∨ dcl S₂ a` | **not exchange, and false**: with `S = S₂ = base`, `S₁ = singleVF b` it asserts `acl base b ∨ dcl base a` for every `a ∈ VF` |
+| `swl_function_rv_to_vf_finite_image` | `f : A → VF^n` **definable** ⟹ `f(A)` finite | `hf : ∀ a ∈ A, iVF (f a)` only | **false** without definability (any injection of an infinite `RV`-set into `VF`) |
+| `swl_finite_VF_project_RV` | finite definable `A ⊆ VF^n` has a **definable injection into `RV^m`** | a finiteness claim about the `VF`-projection of a `B ⊆ VF × RV` | **false** (`B = VF × {t}` has all of `VF` as projection); the source's content was not stated at all |
+| `swl_average_zero_rv_not_constant` | `vv(c_i - c_j) = α` (the paper adds "and hence `rv` is not constant on `{c₁,…,c_k}`") | that equality **plus** `rv (c i) ≠ rv (c j)` | the conclusion is unsatisfiable: `hsame` gives all `rv (c i)` equal |
+
+The last one is the instructive one.  The paper's own sentence is a slip — `rv` *is* constant on
+`{c₁, …, c_k}` under its hypotheses, and what is not constant is `rv` on the *differences*: qe.tex
+line 1239 uses the lemma exactly that way, on `A_i - a_i`.  Freezing the slip as a conjunct made the
+target unsatisfiable, and that is machine-checked now: `SP.swl_average_conclusion_unsat`
+(`QE/Sec3_sat.lean`, no `sorry`) derives a contradiction from `hsame` alone.  The corrected target
+states the two halves of `vv(c_i - c_j) = α` as a pair of `iLe`, because the encoding axiomatises a
+*preorder* on `RV` — `= α` means "equivalent to `α`" there, and the two halves are what the paper's
+proof and the ultrametric inequality respectively supply.
+
+Two further corrections of a different kind:
+
+* `swl_ball_proper_sub_center` and `swl_rv_effectiveness` gained `D.Nonempty` / `A.Nonempty`.  The
+  source's `D` is a fibre of a definable function (its only recorded use, `ball:RV:finite`, takes
+  `D = f⁻¹(s)`), hence nonempty; without the hypothesis the statement claims that *every* ball in a
+  definable family has a point definable over the parameters, which is stronger than the paper.
+* `DefinableFun` was added (`QE/Sec3_frozen.lean`): the graph of `f` is cut out by a well-sorted
+  two-variable formula over `S`.  It is what the third row above needs.
+
+**Still not expressible, and not fixable by transcription** (§3 vocabulary gaps, unchanged):
+
+* exchange at the `RV` sort (`t, s ∈ RV`, `t ∈ acl(s) ∖ acl(∅) ⟹ s ∈ acl(t)`) — `acl` here is a
+  `VF`-sorted predicate (`WellSorted … (fun _ => .vf)`), and the paper proves the `RV` half through
+  the `Γ`-sort and its `ρ`-function.  Nothing in §3–§5 consumes that half.
+* `inf:RV:def:gam` and `aclS:model` — unchanged from the earlier record (`Γ`-side vocabulary, and
+  `acl(S)` as an `LRV.Substructure` with relativized satisfaction).
+
+**Proved, as the first instalment of §3 content** (`QE/Sec3_frozen.lean`, no `sorry`, axioms clean):
+`SP.dcl_subset_acl` and `SP.acl_self` (`a` is algebraic over `{a}` — the formula `x = a` has the
+singleton solution set).  `acl_self` is also what makes the old `swl_exchange` transparently
+degenerate: with `acl (singleVF b) b` in hand, that statement's hypothesis is satisfiable for every
+`b` and its conclusion is free in `a`.
