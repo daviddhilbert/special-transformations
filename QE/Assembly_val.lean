@@ -13435,3 +13435,825 @@ theorem exSorted_rv_realize_vf (hM : M ⊨ Axioms.ACVF) {k : ℕ} (φ : Bf (k + 
 #print axioms TrivCase.rv_exists_vf
 #print axioms TrivCase.fine_dictionary
 #print axioms TrivCase.allSortedK_realize
+
+
+/-!
+# Per-model quantifier elimination versus quantifier elimination of a theory
+
+`QECriterion.HasQE T` says: every formula is `T`-equivalent to a quantifier-free formula, with
+*one* quantifier-free formula working in **all** models of `T`.
+
+The per-model statement — every model of `T`, on its own, eliminates quantifiers — is strictly
+weaker, and the gap is not a technicality: it is the reason a "two cases" assembly (nontrivially
+valued / trivially valued models of `ACVF`) cannot be closed by a case split alone. What has to be
+added is uniformity across models: two models of `T` that agree on all quantifier-free *sentences*
+must be elementarily equivalent (`sentence_iff_of_qfSentence_iff`), and a case split can be glued
+only when a quantifier-free separator exists for the two classes (`hasQE_of_qfSeparated`).
+
+The last section is a machine-checked counterexample to the general step "per-model QE implies QE
+of the theory", in the smallest language where the statement can be made.
+-/
+
+set_option linter.style.haveILetI false
+
+open FirstOrder FirstOrder.Language
+open scoped FirstOrder
+
+namespace Smw1541fr.M1
+
+universe u v
+
+variable {L : FirstOrder.Language.{u, v}}
+
+/-! ## 0. Bridging `M ⊨ φ` with bounded realization -/
+
+lemma sentence_realize_iff {ψ : L.Sentence} {M : Type} [L.Structure M] :
+    (M ⊨ ψ) ↔ BoundedFormula.Realize ψ (default : Empty → M) (default : Fin 0 → M) :=
+  Iff.rfl
+
+/-! ## 1. The two notions -/
+
+/-- **Per-model quantifier elimination.** Every model of `T` eliminates quantifiers *in itself*:
+each formula is, uniformly in the tuple, equivalent in that model to a quantifier-free formula
+with the same free variables.  Nothing is required to be uniform across different models of `T`.
+
+(Quantification over the tuple is essential: without it the condition would be vacuous, `⊤` and
+`⊥` being available at each single tuple.) -/
+def PerModelQE (T : L.Theory) : Prop :=
+  ∀ (α : Type) (φ : L.Formula α) (M : Type) [L.Structure M] [Nonempty M], M ⊨ T →
+    ∃ ψ : L.Formula α, ψ.IsQF ∧ ∀ v : α → M, (φ.Realize v ↔ ψ.Realize v)
+
+/-- Quantifier elimination of a theory gives quantifier elimination in each of its models. -/
+theorem HasQE.perModelQE {T : L.Theory} (h : QECriterion.HasQE T) : PerModelQE T := by
+  intro α φ M _ _ hM
+  obtain ⟨ψ, hqf, hiff⟩ := h α φ
+  haveI : M ⊨ T := hM
+  refine ⟨ψ, hqf, fun v => ?_⟩
+  have h' := hiff.realize_boundedFormula (M := M) (v := v) (xs := default)
+  simpa only [BoundedFormula.realize_iff, Formula.Realize] using h'
+
+/-! ## 2. What QE really buys: quantifier-free sentences determine the theory of a model -/
+
+/-- **The uniformity step.** If `T` has quantifier elimination, then any two of its models that
+agree on all quantifier-free *sentences* are elementarily equivalent.  Contrapositively: two
+models of `T` that agree on quantifier-free sentences but disagree on some sentence refute
+`HasQE T`.  This is the test a two-case assembly has to pass: the trivially valued and the
+nontrivially valued models of the frozen `ACVF` must be separated by a quantifier-free sentence. -/
+theorem sentence_iff_of_qfSentence_iff {T : L.Theory} (hT : QECriterion.HasQE T)
+    {M : Type} [L.Structure M] [Nonempty M] {N : Type} [L.Structure N] [Nonempty N]
+    (hM : M ⊨ T) (hN : N ⊨ T)
+    (hQF : ∀ ψ : L.Sentence, ψ.IsQF → ((M ⊨ ψ) ↔ (N ⊨ ψ))) :
+    ∀ σ : L.Sentence, ((M ⊨ σ) ↔ (N ⊨ σ)) := by
+  intro σ
+  obtain ⟨ψ, hqf, hiff⟩ := hT Empty σ
+  haveI : M ⊨ T := hM
+  haveI : N ⊨ T := hN
+  have h1 : (M ⊨ σ) ↔ (M ⊨ ψ) := by
+    rw [sentence_realize_iff, sentence_realize_iff]
+    have h' := hiff.realize_boundedFormula (M := M) (v := (default : Empty → M))
+      (xs := (default : Fin 0 → M))
+    simpa only [BoundedFormula.realize_iff] using h'
+  have h2 : (N ⊨ σ) ↔ (N ⊨ ψ) := by
+    rw [sentence_realize_iff, sentence_realize_iff]
+    have h' := hiff.realize_boundedFormula (M := N) (v := (default : Empty → N))
+      (xs := (default : Fin 0 → N))
+    simpa only [BoundedFormula.realize_iff] using h'
+  exact h1.trans ((hQF ψ hqf).trans h2.symm)
+
+/-- The refutation form: two models of `T` that agree on quantifier-free sentences and disagree
+on some sentence show that `T` does *not* have quantifier elimination. -/
+theorem not_hasQE_of_qfSentence_equiv {T : L.Theory}
+    {M : Type} [L.Structure M] [Nonempty M] {N : Type} [L.Structure N] [Nonempty N]
+    (hM : M ⊨ T) (hN : N ⊨ T)
+    (hQF : ∀ ψ : L.Sentence, ψ.IsQF → ((M ⊨ ψ) ↔ (N ⊨ ψ)))
+    (σ : L.Sentence) (hσ : (M ⊨ σ) ↔ ¬ (N ⊨ σ)) :
+    ¬ QECriterion.HasQE T := by
+  intro hT
+  have h1 := sentence_iff_of_qfSentence_iff hT hM hN hQF σ
+  tauto
+
+/-! ## 3. Gluing a case split: what a two-case assembly actually needs
+
+If the models of `T` split into two classes, quantifier elimination is known on each class, and a
+**quantifier-free** formula separator exists for the two classes, then `T` has quantifier
+elimination.  The separator is not a convenience: by `not_hasQE_of_qfSentence_equiv` something of
+this kind is necessary for any such gluing, and for the frozen `ACVF` there is none (see
+`NOTE.md`). -/
+
+theorem hasQE_of_qfSeparated {T T₁ T₂ : L.Theory}
+    (hcov : ∀ (M : Theory.ModelType.{u, v, max u v} T), (M.Carrier ⊨ T₁) ∨ (M.Carrier ⊨ T₂))
+    (h₁ : QECriterion.HasQE T₁) (h₂ : QECriterion.HasQE T₂)
+    (sep : ∀ (α : Type), ∃ τ : L.Formula α, τ.IsQF ∧ T₁ ⊨ᵇ τ ∧ T₂ ⊨ᵇ τ.not) :
+    QECriterion.HasQE T := by
+  intro α φ
+  obtain ⟨ψ₁, hqf₁, hiff₁⟩ := h₁ α φ
+  obtain ⟨ψ₂, hqf₂, hiff₂⟩ := h₂ α φ
+  obtain ⟨τ, hτqf, hτ₁, hτ₂⟩ := sep α
+  refine ⟨(ψ₁ ⊓ τ) ⊔ (ψ₂ ⊓ τ.not), hqf₁.inf hτqf |>.sup (hqf₂.inf hτqf.not), ?_⟩
+  show T ⊨ᵇ (BoundedFormula.iff φ ((ψ₁ ⊓ τ) ⊔ (ψ₂ ⊓ τ.not)))
+  rw [Theory.models_formula_iff]
+  intro M v
+  rcases hcov M with hc | hc
+  · haveI : M.Carrier ⊨ T₁ := hc
+    have hsep := hτ₁.realize_boundedFormula (M := M.Carrier) (v := v) (xs := default)
+    have hiff := hiff₁.realize_boundedFormula (M := M.Carrier) (v := v) (xs := default)
+    simp only [Formula.Realize, BoundedFormula.realize_iff, BoundedFormula.realize_sup,
+      BoundedFormula.realize_inf, BoundedFormula.realize_not] at hsep hiff ⊢
+    tauto
+  · haveI : M.Carrier ⊨ T₂ := hc
+    have hsep := hτ₂.realize_boundedFormula (M := M.Carrier) (v := v) (xs := default)
+    have hiff := hiff₂.realize_boundedFormula (M := M.Carrier) (v := v) (xs := default)
+    simp only [Formula.Realize, BoundedFormula.realize_iff, BoundedFormula.realize_sup,
+      BoundedFormula.realize_inf, BoundedFormula.realize_not] at hsep hiff ⊢
+    tauto
+
+end Smw1541fr.M1
+
+#print axioms Smw1541fr.M1.HasQE.perModelQE
+#print axioms Smw1541fr.M1.sentence_iff_of_qfSentence_iff
+#print axioms Smw1541fr.M1.not_hasQE_of_qfSentence_equiv
+#print axioms Smw1541fr.M1.hasQE_of_qfSeparated
+
+/-
+  **Direction e2: `pLe` and `pUnits` inside `L_val`.**
+
+  The frozen `L_RV` encoding of `ACVF` (`QE/Assembly_val.lean`, module `Pre`) has two atoms that
+  mention `rv` of a `VF`-term: `pLe (tRv s) (tRv t)` and `pUnits (tRv s)`.  The cover direction of
+  the transfer (every `L_RV`-formula is `ACVF`-equivalent to a translated `L_val`-formula) needs
+  their `L_val`-preimages, *and* it needs them to be exact, junk cases included.
+
+  What this file proves (all unconditional, no `sorry`, no `axiom`):
+
+  * `not_units_zero` — **`Kˣ` does not contain `∞ = rv 0`**, from the frozen axioms alone.  This is
+    not stated by any axiom of the encoding (every `Kˣ`-axiom is guarded by `pUnits`, and
+    `leClassOne` is guarded by `pRV`), but it *is* a consequence: `rvMulInv` at `0` produces
+    `y ∈ Kˣ` with `y · 0 = 1`, and `rvMulInfty` at `y` gives `y · 0 = 0`, so `0 = 1` against
+    `kField`.  This is what makes the guard in `leClassOne` removable (`iUnits_iff'`), i.e. it is
+    the junk case of `pUnits` at `s = 0`.
+  * `iUnits_iff'` — the semantic form of `Axioms.leClassOne`, **unguarded**: for `x ∈ RV`,
+    `x ∈ Kˣ ↔ 1 ≤ x ∧ x ≤ 1`.
+  * `pLe_rv_iff` — the `pLe` atom at `rv`-of-terms is `predV` with its arguments swapped:
+    `pLe (tRv s) (tRv t) ↔ predV t s`, i.e. `↔ |t| ≤ |s|`  (the two orders are opposite: `∞` is
+    the top of the `RV` order and the bottom of the `L_val` order).
+  * `leOneF` — the `L_val`-formula `v s ≤ v 1 ∧ v 1 ≤ v s`, with `leOneF_realize`, and
+    `leOneF_iff_pUnits` : its realisation is *exactly* `pUnits (tRv s)`, junk case `s = 0`
+    included; likewise `translate_pLe` for the order atom, and `pInK` for `K = Kˣ ∪ {0}`.
+  * the junk cases explicitly: `not_units_rv_zero`, `pUnits_tRv_zero`, `leOneF_zero`.
+
+  Direction of the reversal, checked against `Transfer.predV` (`predV x y = iLe (iRv y) (iRv x)`):
+  `leF s t` (`L_val`'s `v s ≤ v t`) realises as `iLe (iRv t) (iRv s) = predV s t`, so the `L_RV`
+  atom `pLe (tRv s) (tRv t)` — which realises as `iLe (iRv s) (iRv t)` — is `predV t s` and has
+  `L_val` preimage `leF t s`.
+
+  `realize_tRVOne`, `exSorted_realize`, `realize_tv_last_apply`, `snoc_apply_zero_one/one_one`
+  are re-derived here from `.ultramath/smw14elno/m4/d4.lean` (same proofs; that file is a separate
+  module and not importable without rebuilding it).
+-/
+
+namespace SpecialTransformations.Milestone0.Transfer
+namespace M2
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 LRV ValPM
+open scoped FirstOrder
+
+/-! ## 0. Re-derived helpers -/
+
+/-- The realiser of the `1` of the `RV` sort. -/
+theorem realize_tRVOne {M : Type} [LRV.Structure M] {k : ℕ} (v : Empty ⊕ Fin k → M) :
+    (tRVOne (n := k)).realize v = iRVOne := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvOne
+      (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i)) = iRVOne
+  rw [show (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i))
+      = (fun i => i.elim0) from by funext i; exact i.elim0]
+  rfl
+
+/-- The value of the last variable of `Fin.snoc x a`, as `exSorted` presents it. -/
+theorem realize_tv_last_apply {M : Type} [LRV.Structure M] {k : ℕ} (v : Empty → M)
+    (x : Fin k → M) (a : M) (h : k < k + 1) :
+    (tv k h).realize (Sum.elim v (Fin.snoc x a)) = a := by
+  rw [show tv k h = tv (⟨k, h⟩ : Fin (k + 1)).1 (⟨k, h⟩ : Fin (k + 1)).2 from rfl,
+    realize_tv]
+  simp [Fin.snoc]
+
+/-- `Fin.snoc` at the first index, for a one-entry tuple. -/
+theorem snoc_apply_zero_one {M : Type} (x : Fin 1 → M) (a : M) :
+    (Fin.snoc (α := fun _ : Fin 2 => M) x a) (0 : Fin 2) = x 0 := by
+  simp [Fin.snoc]
+
+/-- `Fin.snoc` at the last index, for a one-entry tuple. -/
+theorem snoc_apply_one_one {M : Type} (x : Fin 1 → M) (a : M) :
+    (Fin.snoc (α := fun _ : Fin 2 => M) x a) (1 : Fin 2) = a := by
+  simp [Fin.snoc]
+
+/-- **Guard-free realisation of `exSorted`**: `∃ x ∈ s, φ`. -/
+theorem exSorted_realize {M : Type} [LRV.Structure M] {k : ℕ} (s : SortTag) (φ : Bf (k + 1))
+    (v : Empty → M) (x : Fin k → M) :
+    (exSorted s φ).Realize v x ↔
+      ∃ a : M, (match s with
+          | .vf => iVF a
+          | .rv => iRV a) ∧ φ.Realize v (Fin.snoc x a) := by
+  cases s with
+  | vf =>
+    simp only [exSorted, BoundedFormula.realize_ex, BoundedFormula.realize_inf, sortPred,
+      pVF_realize, realize_tv_last_apply]
+  | rv =>
+    simp only [exSorted, BoundedFormula.realize_ex, BoundedFormula.realize_inf, sortPred,
+      pRVsort_realize, realize_tv_last_apply]
+
+/-! ## 1. Membership helpers for the frozen theory -/
+
+theorem mem_ACVF_rvGroup {s : LRV.Sentence} (h : s ∈ Axioms.rvGroup) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
+  tauto
+
+theorem mem_ACVF_kField {s : LRV.Sentence} (h : s ∈ Axioms.kField) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
+  tauto
+
+theorem mem_ACVF_rvMulInv : Axioms.rvMulInv ∈ Axioms.ACVF :=
+  mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvMulInfty : Axioms.rvMulInfty ∈ Axioms.ACVF :=
+  mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvMulOne : Axioms.rvMulOne ∈ Axioms.ACVF :=
+  mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvMulAssoc : Axioms.rvMulAssoc ∈ Axioms.ACVF :=
+  mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvOneMem : Axioms.rvOneMem ∈ Axioms.ACVF :=
+  mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvSurj : Axioms.rvSurj ∈ Axioms.ACVF :=
+  mem_ACVF_rvAxioms (by simp [Axioms.rvAxioms, Axioms.ofList])
+
+/-- `0 ≠ 1` of the residue field `K`, as an unguarded sentence of the frozen theory. -/
+theorem mem_ACVF_kZeroNeOne : (∼(pEq tRVZero tRVOne)) ∈ Axioms.ACVF :=
+  mem_ACVF_kField (by simp [Axioms.kField, Axioms.ofList])
+
+/-- `∞ = 0` of the `RV` sort lies in the `RV` sort (sort closure `sdRVZero`). -/
+theorem rv_zero_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iRV (iRVZero (M := M)) := by
+  have h := sentence_realize hM (φ := Axioms.sdRVZero)
+    (mem_ACVF_sortClosure (s := Axioms.sdRVZero) (by simp [Axioms.sortClosure, Axioms.ofList]))
+  rw [Axioms.sdRVZero, Sentence.Realize] at h
+  simp only [Formula.Realize] at h
+  rw [pRVsort_realize, realize_tRVZero] at h
+  exact h
+
+/-- `1` of the `RV` sort lies in the `RV` sort (sort closure `sdRVOne`). -/
+theorem rv_one_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iRV (iRVOne (M := M)) := by
+  have h := sentence_realize hM (φ := Axioms.sdRVOne)
+    (mem_ACVF_sortClosure (s := Axioms.sdRVOne) (by simp [Axioms.sortClosure, Axioms.ofList]))
+  rw [Axioms.sdRVOne, Sentence.Realize] at h
+  simp only [Formula.Realize] at h
+  rw [pRVsort_realize, realize_tRVOne] at h
+  exact h
+
+/-- `1 ∈ Kˣ` (`Axioms.rvOneMem`). -/
+theorem units_rv_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iUnits (iRVOne (M := M)) := by
+  have h := sentence_realize hM (φ := Axioms.rvOneMem) mem_ACVF_rvOneMem
+  rw [Axioms.rvOneMem, Sentence.Realize] at h
+  simp only [Formula.Realize] at h
+  rwa [pUnits_realize, realize_tRVOne] at h
+
+/-- `0 ≠ 1` of the `RV` sort. -/
+theorem rv_zero_ne_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iRVZero (M := M) ≠ iRVOne := by
+  have h := sentence_realize hM mem_ACVF_kZeroNeOne
+  rw [Sentence.Realize] at h
+  simp only [Formula.Realize, BoundedFormula.realize_not, pEq, BoundedFormula.realize_bdEqual,
+    realize_tRVZero, realize_tRVOne] at h
+  exact h
+
+/-- **The absorbing law of `∞` on the `RV` sort**: `y · ∞ = ∞` for `y ∈ RV`
+(`Axioms.rvMulInfty`). -/
+theorem rv_mul_infty {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {y : M}
+    (hy : iRV y) : iRVMul y iRVZero = iRVZero := by
+  have h := allSorted_realize hM (ss := ![SortTag.rv])
+    (φ := (pEq (tRVMul &0 tRVInfty) tRVInfty)) mem_ACVF_rvMulInfty ![y] (by
+      intro i; fin_cases i; simpa using hy)
+  simpa [pEq, BoundedFormula.realize_bdEqual, realize_tRVMul, realize_tRVZero, tRVInfty,
+    realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply,
+    Matrix.cons_val_zero] using h
+
+/-- **Inverses in `Kˣ`** (`Axioms.rvMulInv`), semantically. -/
+theorem units_inv {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iRV x) (hu : iUnits x) :
+    ∃ y : M, iRV y ∧ iUnits y ∧ iRVMul y x = iRVOne := by
+  have h := allSorted_realize hM (ss := ![SortTag.rv])
+    (φ := (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVMul &1 &0) tRVOne)))
+    mem_ACVF_rvMulInv ![x] (by intro i; fin_cases i; simpa using hx)
+  have h' : iUnits x → ∃ y : M, iRV y ∧ iUnits y ∧ iRVMul y x = iRVOne := by
+    simpa [pUnits_realize, exSorted_realize, BoundedFormula.realize_inf, pEq,
+      BoundedFormula.realize_bdEqual, realize_tRVMul, realize_tRVOne, realize_tv_last_apply,
+      snoc_apply_zero_one, snoc_apply_one_one] using h
+  exact h' hu
+
+/-! ## 2. `Kˣ` does not contain `∞` — the junk case of `pUnits` -/
+
+/-- **`Kˣ` does not contain `∞ = 0 = rv 0`.**
+
+The frozen axioms state nothing directly about `pUnits` at `0` (`sdUnits` only says `Kˣ ⊆ RV`,
+`leClassOne` is guarded by `pRV`), but `Axioms.rvMulInv` at `0` gives `y ∈ Kˣ` with `y · 0 = 1`
+and `Axioms.rvMulInfty` at `y` gives `y · 0 = 0`, hence `0 = 1`, contradicting `kField`. -/
+theorem not_units_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    ¬ iUnits (iRVZero (M := M)) := by
+  intro hu
+  obtain ⟨y, hy, huy, hinv⟩ := units_inv hM (rv_zero_mem hM) hu
+  have hzero : iRVMul y iRVZero = iRVZero := rv_mul_infty hM hy
+  exact rv_zero_ne_one hM (by rw [← hinv, hzero])
+
+/-- `Kˣ ⊆ RV` (`Axioms.sdUnits`), semantically. -/
+theorem units_mem_rv {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hu : iUnits x) : iRV x := by
+  have hmem : allOne (pUnits &0 ⟹ pRVsort &0) ∈ Axioms.ACVF :=
+    mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList, Axioms.sdUnits])
+  have h := allOne_realize hM (φ := (pUnits &0 ⟹ pRVsort &0)) hmem ![x]
+  simp only [BoundedFormula.realize_imp, pUnits_realize, pRVsort_realize, Term.realize_var,
+    Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero] at h
+  exact h hu
+
+/-! ## 3. `Kˣ` is the class of `1`, with the guard removed -/
+
+/-- **`Axioms.leClassOne`, semantically** (guarded, as in `.ultramath/smw14elno/m4/d4.lean`):
+for `x ∈ RV`, `x ∈ Kˣ ↔ 1 ≤ x ∧ x ≤ 1`. -/
+theorem iUnits_iff_le {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iRV x) (hx0 : x ≠ iRVZero) :
+    iUnits x ↔ (iLe (iRVOne (M := M)) x ∧ iLe x iRVOne) := by
+  have hmem : Axioms.leClassOne ∈ Axioms.ACVF :=
+    mem_ACVF_preorderRV (s := Axioms.leClassOne) (by simp [Axioms.preorderRV, Axioms.ofList])
+  have h := allSorted_realize hM (ss := ![SortTag.rv])
+    (φ := (pRV &0 ⟹ (pUnits &0 ⇔ (pLe tRVOne &0 ⊓ pLe &0 tRVOne)))) hmem ![x] (by
+      intro i; fin_cases i; simpa using hx)
+  have h' : x ≠ iRVZero → (iUnits x ↔ (iLe iRVOne x ∧ iLe x iRVOne)) := by
+    simpa [pRV_realize, pUnits_realize, realize_pLe, realize_tRVOne] using h
+  exact h' hx0
+
+/-- **`Kˣ` is the class of `1`, unguarded.**  The `pRV` guard of `Axioms.leClassOne` can be
+dropped, because at `x = ∞ = 0` both sides are false: the right-hand side by
+`Transfer.le_infty_eq` and `iRVZero ≠ iRVOne`, the left-hand side by `not_units_zero`. -/
+theorem iUnits_iff' {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iRV x) :
+    iUnits x ↔ (iLe (iRVOne (M := M)) x ∧ iLe x iRVOne) := by
+  by_cases hx0 : x = iRVZero
+  · subst hx0
+    constructor
+    · intro hu
+      exact absurd hu (not_units_zero hM)
+    · rintro ⟨-, h2⟩
+      exact absurd (le_infty_eq hM iRVOne (rv_one_mem hM) (rv_zero_ne_one hM).symm h2).symm
+        (rv_zero_ne_one hM)
+  · exact iUnits_iff_le hM hx hx0
+/-- `∞ ≤ 1` is false: by `Axioms.leInftyEq` it would force `1 = ∞`, against `kField`. -/
+theorem not_le_infty_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    ¬ iLe (iRVZero (M := M)) iRVOne := by
+  intro h
+  exact rv_zero_ne_one hM
+    (le_infty_eq hM iRVOne (rv_one_mem hM) (rv_zero_ne_one hM).symm h).symm
+
+/-- A member of `Kˣ` is not `∞ = 0`: the junk case of `pUnits`, `0 ∈ Kˣ` is false. -/
+theorem units_ne_infty {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hu : iUnits x) : x ≠ iRVZero :=
+  fun h => not_units_zero hM (h ▸ hu)
+
+/-! ## 4. Terms over a `VF`-tuple, and the two atoms at `rv`-of-terms -/
+
+section Terms
+
+variable {M : Type} [LRV.Structure M]
+
+/-- `valTermEval` of a term over a `VF`-tuple stays in the `VF` sort. -/
+theorem valTermEval_mem (hM : M ⊨ Axioms.ACVF) {n : ℕ} {x : Fin n → M}
+    (hx : ∀ i, iVF (x i)) (t : Language.val.Term (Empty ⊕ Fin n)) :
+    iVF (valTermEval x t) := by
+  induction t with
+  | var v =>
+    rcases v with e | i
+    · exact e.elim
+    · exact hx i
+  | func f args ih =>
+    cases f with
+    | add => exact vf_add_mem hM (ih 0) (ih 1)
+    | mul => exact vf_mul_mem hM (ih 0) (ih 1)
+    | neg => exact vf_neg_mem hM (ih 0)
+    | zero => exact vf_zero_mem hM
+    | one => exact vf_one_mem hM
+
+@[simp] theorem valTermEval_zero {n : ℕ} (x : Fin n → M) :
+    valTermEval x (0 : Language.val.Term (Empty ⊕ Fin n)) = iVFZero := rfl
+
+@[simp] theorem valTermEval_one {n : ℕ} (x : Fin n → M) :
+    valTermEval x (1 : Language.val.Term (Empty ⊕ Fin n)) = iVFOne := rfl
+
+/-- **The `pLe` atom at `rv` of two terms.** -/
+theorem realize_pLe_tRv {k : ℕ} (a b : Tm k) (v : Empty → M) (x : Fin k → M) :
+    (pLe (tRv a) (tRv b)).Realize v x ↔
+      iLe (iRv (a.realize (Sum.elim v x))) (iRv (b.realize (Sum.elim v x))) := by
+  rw [realize_pLe, realize_tRv, realize_tRv]
+
+/-- **The `pLe` atom at translated `L_val`-terms.** -/
+theorem pLe_valTerm_iff {n : ℕ} (s t : Language.val.Term (Empty ⊕ Fin n)) (x : Fin n → M) :
+    (pLe (tRv (valTermToRV s)) (tRv (valTermToRV t))).Realize (default : Empty → M) x ↔
+      iLe (iRv (valTermEval x s)) (iRv (valTermEval x t)) := by
+  rw [realize_pLe_tRv, valTermToRV_realize, valTermToRV_realize]
+
+/-- **The `L_val` atom `leF s t` (`v s ≤ v t`), read in the `L_RV`-structure**: it is `iLe` of
+the two values, reversed. -/
+theorem leF_valTerm_iff {n : ℕ} (s t : Language.val.Term (Empty ⊕ Fin n)) (x : Fin n → M) :
+    valFormulaEval x (leF s t) ↔ iLe (iRv (valTermEval x t)) (iRv (valTermEval x s)) :=
+  Iff.rfl
+
+/-- **The order atom: `pLe (rv s) (rv t)` is exactly the `L_val`-formula `leF t s`.**  The swap
+`t s` is the reversal between the `RV` order (`∞` on top) and `L_val`'s `v · ≤ v ·` (`∞` at the
+bottom). -/
+theorem translate_pLe {n : ℕ} (s t : Language.val.Term (Empty ⊕ Fin n)) (x : Fin n → M) :
+    valFormulaEval x (leF t s) ↔
+      (pLe (tRv (valTermToRV s)) (tRv (valTermToRV t))).Realize (default : Empty → M) x :=
+  (leF_valTerm_iff t s x).trans (pLe_valTerm_iff s t x).symm
+
+/-- `⊓` on `L_val`-formulas, read by `valFormulaEval`. -/
+theorem valFormulaEval_inf {n : ℕ} (x : Fin n → M)
+    (φ ψ : Language.val.BoundedFormula Empty n) :
+    valFormulaEval x (φ ⊓ ψ) ↔ (valFormulaEval x φ ∧ valFormulaEval x ψ) := by
+  have h : valFormulaEval x (φ ⊓ ψ)
+      = ¬ (valFormulaEval x φ → ¬ valFormulaEval x ψ) := rfl
+  rw [h]
+  tauto
+
+/-- `⊔` on `L_val`-formulas, read by `valFormulaEval`. -/
+theorem valFormulaEval_sup {n : ℕ} (x : Fin n → M)
+    (φ ψ : Language.val.BoundedFormula Empty n) :
+    valFormulaEval x (φ ⊔ ψ) ↔ (valFormulaEval x φ ∨ valFormulaEval x ψ) := by
+  have h : valFormulaEval x (φ ⊔ ψ)
+      = (¬ valFormulaEval x φ → valFormulaEval x ψ) := rfl
+  rw [h]
+  tauto
+
+end Terms
+
+/-! ## 5. `rv 1 = 1` — the other canonical value, also absent from the axioms -/
+
+/-- **`rv` is surjective on `RV ∖ {∞}`** (`Axioms.rvSurj`), semantically. -/
+theorem rv_surj {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {y : M}
+    (hy : iRV y) (hy0 : y ≠ iRVZero) : ∃ x : M, iVF x ∧ iRv x = y := by
+  have h := allSorted_realize hM (ss := ![SortTag.rv])
+    (φ := (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))) mem_ACVF_rvSurj ![y] (by
+      intro i; fin_cases i; simpa using hy)
+  simp only [pEq, BoundedFormula.realize_bdEqual, BoundedFormula.realize_imp,
+    BoundedFormula.realize_not, exSorted, BoundedFormula.realize_ex, BoundedFormula.realize_inf,
+    sortPred, realize_tRVZero, realize_tRv, pVF_realize,
+    realize_tv_last_apply] at h
+  exact h hy0
+
+/-- `1` is neutral on `Kˣ` (`Axioms.rvMulOne`). -/
+theorem rv_mul_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hu : iUnits x) : iRVMul (iRVOne (M := M)) x = x := by
+  have h := allSorted_realize hM (ss := ![SortTag.rv])
+    (φ := (pUnits &0 ⟹ pEq (tRVMul tRVOne &0) &0)) mem_ACVF_rvMulOne ![x] (by
+      intro i; fin_cases i; simpa using units_mem_rv hM hu)
+  have h' : iUnits x → iRVMul iRVOne x = x := by
+    simpa [pUnits_realize, pEq, BoundedFormula.realize_bdEqual, realize_tRVMul, realize_tRVOne,
+      Matrix.cons_val_zero] using h
+  exact h' hu
+
+/-- Associativity of `×` on the `RV` sort (`Axioms.rvMulAssoc`). -/
+theorem rv_mul_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M}
+    (hx : iRV x) (hy : iRV y) (hz : iRV z) :
+    iRVMul (iRVMul x y) z = iRVMul x (iRVMul y z) := by
+  have h := allSorted_realize hM (ss := ![SortTag.rv, SortTag.rv, SortTag.rv])
+    (φ := (pEq (tRVMul (tRVMul &0 &1) &2) (tRVMul &0 (tRVMul &1 &2))))
+    mem_ACVF_rvMulAssoc ![x, y, z] (by intro i; fin_cases i <;> simp [hx, hy, hz])
+  simpa [pEq, BoundedFormula.realize_bdEqual, realize_tRVMul, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons] using h
+
+/-- **`rv 1` is a left identity for the whole of `RV^×`**: `rv(1) · y = y` for every `y ∈ RV`.
+This is not an axiom — it is `rvSurj` (every `y` is some `rv x`) plus `rvMulHom` plus the field
+law `1 · x = x`. -/
+theorem rv_one_mul_left {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {y : M}
+    (hy : iRV y) : iRVMul (iRv (iVFOne (M := M))) y = y := by
+  by_cases hy0 : y = iRVZero
+  · subst hy0
+    exact rv_mul_infty hM (rv_mem hM (vf_one_mem hM))
+  · obtain ⟨x, hx, hxy⟩ := rv_surj hM hy hy0
+    rw [← hxy, ← rv_mul_hom hM (vf_one_mem hM) hx, vf_mul_comm hM (vf_one_mem hM) hx,
+      vf_mul_one hM hx]
+
+/-- Every `RV`-element other than `∞` is left-invertible with respect to `rv 1`:
+`v · rv x = rv 1`.  This is where the field inverse of `VF` (`vf_mul_inv_or_zero`) enters; it is
+what makes `RV^×` a group even though the encoding only axiomatises `Kˣ` as one. -/
+theorem rv_exists_left_inv {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {y : M}
+    (hy : iRV y) (hy0 : y ≠ iRVZero) :
+    ∃ v : M, iRV v ∧ iRVMul v y = iRv (iVFOne (M := M)) := by
+  obtain ⟨a, ha, rfl⟩ := rv_surj hM hy hy0
+  rcases vf_mul_inv_or_zero hM ha with ha0 | ⟨b, hb, hab⟩
+  · exact absurd (by rw [ha0, rv_zero_eq hM]) hy0
+  · exact ⟨iRv b, rv_mem hM hb, by rw [← rv_mul_hom hM hb ha, vf_mul_comm hM hb ha, hab]⟩
+
+/-- **`rv 1 = 1`.**  Not an axiom of the encoding (`rvMulHom` alone does not say it).
+
+Two ingredients, both consequences of the axioms:
+* `rv 1` is a left identity for the whole of `RV^×` (`rv_one_mul_left`, from `rvSurj` + `rvMulHom`);
+* `1 = iRVOne` is idempotent (`rvMulOne` at `1 ∈ Kˣ`) and has a left inverse `v` with respect to
+  `rv 1` (`rv_exists_left_inv`).
+
+Then `rv 1 = v · 1 = v · (1 · 1) = (v · 1) · 1 = (rv 1) · 1 = 1`. -/
+theorem rv_one_eq {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iRv (iVFOne (M := M)) = iRVOne := by
+  have hone : iRVMul (iRVOne (M := M)) iRVOne = iRVOne :=
+    rv_mul_one hM (units_rv_one hM)
+  obtain ⟨v, hv, hve⟩ := rv_exists_left_inv hM (rv_one_mem hM) (rv_zero_ne_one hM).symm
+  calc iRv iVFOne
+      = iRVMul v iRVOne := hve.symm
+    _ = iRVMul v (iRVMul iRVOne iRVOne) := by rw [hone]
+    _ = iRVMul (iRVMul v iRVOne) iRVOne :=
+        (rv_mul_assoc hM hv (rv_one_mem hM) (rv_one_mem hM)).symm
+    _ = iRVMul (iRv iVFOne) iRVOne := by rw [hve]
+    _ = iRVOne := rv_one_mul_left hM (rv_one_mem hM)
+
+/-- `rv 1 ∈ Kˣ`: the `pUnits` atom holds at `rv 1`. -/
+theorem units_rv_one_eq {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iUnits (iRv (iVFOne (M := M))) := by
+  rw [rv_one_eq hM]
+  exact units_rv_one hM
+
+/-- `rv 1 ≠ ∞`. -/
+theorem rv_one_ne_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iRv (iVFOne (M := M)) ≠ iRVZero :=
+  fun h => rv_zero_ne_one hM (by rw [← h, rv_one_eq hM])
+
+
+/-! ## 5b. `Kˣ` is a single `≤`-class: the order atoms cannot separate units -/
+
+/-- Every member of `Kˣ` satisfies both inequalities against `1`. -/
+theorem units_le_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hu : iUnits x) :
+    (iLe (iRVOne (M := M)) x ∧ iLe x iRVOne) :=
+  (iUnits_iff' hM (units_mem_rv hM hu)).1 hu
+
+/-- **Any two members of `Kˣ` are `≤`-equivalent.**  So the two order atoms cannot tell two
+units apart: the order on `RV` sees only `RV/Kˣ`, not `RV` itself. -/
+theorem units_pairwise_le {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iUnits x) (hy : iUnits y) : (iLe x y ∧ iLe y x) := by
+  have hx' := units_le_one hM hx
+  have hy' := units_le_one hM hy
+  refine ⟨?_, ?_⟩
+  · exact le_trans hM (units_mem_rv hM hx) (rv_one_mem hM) (units_mem_rv hM hy)
+      (units_ne_infty hM hx) (rv_zero_ne_one hM).symm (units_ne_infty hM hy) hx'.2 hy'.1
+  · exact le_trans hM (units_mem_rv hM hy) (rv_one_mem hM) (units_mem_rv hM hx)
+      (units_ne_infty hM hy) (rv_zero_ne_one hM).symm (units_ne_infty hM hx) hy'.2 hx'.1
+
+/-- `rv`-equality implies the two order atoms (the converse fails, see below). -/
+theorem rv_eq_imp_orderEq {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {s t : M}
+    (ht : iVF t) (h : iRv s = iRv t) :
+    (iLe (iRv s) (iRv t) ∧ iLe (iRv t) (iRv s)) := by
+  rw [h]
+  exact ⟨le_self hM (rv_mem hM ht), le_self hM (rv_mem hM ht)⟩
+
+/-- **The order atoms do not translate the equality atom.**  If `Kˣ` has two distinct elements
+`u ≠ v` (always the case in the intended model: `K` is an algebraically closed field, so `Kˣ` is
+infinite), then the preimages of `u` and `v` under `rv` satisfy *both* order atoms
+`iLe (rv s) (rv t)` and `iLe (rv t) (rv s)` while `rv s ≠ rv t`.
+
+So `Axioms.leClassOne` makes `iLe` a genuine *preorder* whose classes are the cosets of `Kˣ`, and
+`leF s t ⊓ leF t s` — the only quantifier-free `L_val` reading of "same value" — is strictly weaker
+than `pEq (tRv s) (tRv t)`.  Translating the equality atom needs the residue field, i.e. a link
+between `rv` and `kAdd`/`kNeg` that the frozen axioms do not state. -/
+theorem order_atoms_not_iff_pEq {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {u v : M}
+    (hu : iUnits u) (hv : iUnits v) (hne : u ≠ v) :
+    ∃ s t : M, iVF s ∧ iVF t ∧ (iLe (iRv s) (iRv t) ∧ iLe (iRv t) (iRv s)) ∧
+      iRv s ≠ iRv t := by
+  obtain ⟨s, hs, hsu⟩ := rv_surj hM (units_mem_rv hM hu) (units_ne_infty hM hu)
+  obtain ⟨t, ht, htv⟩ := rv_surj hM (units_mem_rv hM hv) (units_ne_infty hM hv)
+  have hle := units_pairwise_le hM hu hv
+  refine ⟨s, t, hs, ht, ?_, ?_⟩
+  · rw [hsu, htv]; exact hle
+  · simpa only [hsu, htv] using hne
+
+/-! ## 6. `pUnits (rv s)` is `v s = v 1` — exactly, junk case included -/
+
+section UnitsAtom
+
+variable {M : Type} [LRV.Structure M]
+
+/-- **The `L_val`-formula `v s = v 1`**: the preimage of the `L_RV` atom `pUnits (rv s)`. -/
+def leOneF {n : ℕ} (s : Language.val.Term (Empty ⊕ Fin n)) :
+    Language.val.BoundedFormula Empty n :=
+  leF s 1 ⊓ leF 1 s
+
+/-- The semantics of `leOneF s`, in terms of the `rv` of the `1` *of the `VF` sort*. -/
+theorem leOneF_eval {n : ℕ} (s : Language.val.Term (Empty ⊕ Fin n)) (x : Fin n → M) :
+    valFormulaEval x (leOneF s) ↔
+      (iLe (iRv (iVFOne (M := M))) (iRv (valTermEval x s)) ∧
+        iLe (iRv (valTermEval x s)) (iRv iVFOne)) := by
+  rw [leOneF, valFormulaEval_inf, leF_valTerm_iff, leF_valTerm_iff]
+  simp only [valTermEval_one]
+
+/-- The semantics of `leOneF s`: `v s = v 1`, using `rv 1 = 1` (`rv_one_eq`). -/
+theorem leOneF_eval' (hM : M ⊨ Axioms.ACVF) {n : ℕ}
+    (s : Language.val.Term (Empty ⊕ Fin n)) (x : Fin n → M) :
+    valFormulaEval x (leOneF s) ↔
+      (iLe (iRVOne (M := M)) (iRv (valTermEval x s)) ∧
+        iLe (iRv (valTermEval x s)) iRVOne) := by
+  rw [leOneF_eval, rv_one_eq hM]
+
+/-- **The `pUnits` atom at `rv` of a term is exactly the quantifier-free `L_val`-formula
+`v s = v 1`, junk case `s = 0` included.** -/
+theorem leOneF_iff_pUnits (hM : M ⊨ Axioms.ACVF) {n : ℕ}
+    (s : Language.val.Term (Empty ⊕ Fin n)) {x : Fin n → M} (hx : ∀ i, iVF (x i)) :
+    valFormulaEval x (leOneF s) ↔
+      (pUnits (tRv (valTermToRV s))).Realize (default : Empty → M) x := by
+  rw [leOneF_eval' hM, pUnits_realize, realize_tRv, valTermToRV_realize,
+    ← iUnits_iff' hM (rv_mem hM (valTermEval_mem hM hx s))]
+
+/-- `v s = v 1` forces `s ≠ 0` (`pUnits` is false at `∞`). -/
+theorem leOneF_ne_zero (hM : M ⊨ Axioms.ACVF) {n : ℕ}
+    (s : Language.val.Term (Empty ⊕ Fin n)) {x : Fin n → M}
+    (h : valFormulaEval x (leOneF s)) : valTermEval x s ≠ iVFZero := by
+  intro h0
+  rw [leOneF_eval' hM] at h
+  rw [h0, rv_zero_eq hM] at h
+  exact not_le_infty_one hM h.2
+
+/-- **The junk case `s = 0`**: `pUnits (rv 0)` is false, and so is its `L_val` preimage. -/
+theorem pUnits_tRv_zero {k : ℕ} (hM : M ⊨ Axioms.ACVF) (v : Empty → M) (x : Fin k → M) :
+    ¬ (pUnits (tRv (tVFZero (n := k)))).Realize v x := by
+  rw [pUnits_realize, realize_tRv, realize_tVFZero]
+  simpa only [rv_zero_eq hM] using not_units_zero hM
+
+/-- `pUnits (rv 0)` is false. -/
+theorem pUnits_iRv_zero (hM : M ⊨ Axioms.ACVF) :
+    ¬ iUnits (iRv (iVFZero (M := M))) := by
+  simpa only [rv_zero_eq hM] using not_units_zero hM
+
+/-- The junk case of `leOneF`: at the zero term it is false, matching `pUnits_tRv_zero`. -/
+theorem leOneF_zero {n : ℕ} (hM : M ⊨ Axioms.ACVF) (x : Fin n → M) :
+    ¬ valFormulaEval x (leOneF (0 : Language.val.Term (Empty ⊕ Fin n))) := by
+  rw [leOneF_eval' hM, valTermEval_zero, rv_zero_eq hM]
+  exact fun h => not_le_infty_one hM h.2
+
+/-- **`K = Kˣ ∪ {0}`** inside `L_val`: the preimage of `pInK (rv s)` is `v s = v 1 ∨ s = 0`. -/
+def inKF {n : ℕ} (s : Language.val.Term (Empty ⊕ Fin n)) :
+    Language.val.BoundedFormula Empty n :=
+  leOneF s ⊔ s =' 0
+
+/-- Equality of two `L_val`-terms, read by `valFormulaEval`. -/
+theorem valFormulaEval_equal {n : ℕ} (x : Fin n → M)
+    (t u : Language.val.Term (Empty ⊕ Fin n)) :
+    valFormulaEval x (t =' u) ↔ valTermEval x t = valTermEval x u :=
+  Iff.rfl
+
+/-- The semantics of `inKF s`. -/
+theorem inKF_eval (hM : M ⊨ Axioms.ACVF) {n : ℕ}
+    (s : Language.val.Term (Empty ⊕ Fin n)) (x : Fin n → M) :
+    valFormulaEval x (inKF s) ↔
+      ((iLe (iRVOne (M := M)) (iRv (valTermEval x s)) ∧
+        iLe (iRv (valTermEval x s)) iRVOne) ∨ valTermEval x s = iVFZero) := by
+  rw [inKF, valFormulaEval_sup, leOneF_eval' hM, valFormulaEval_equal, valTermEval_zero]
+
+/-- **`pInK (rv s)` is exactly the `L_val`-formula `v s = v 1 ∨ s = 0`.** -/
+theorem inKF_iff_pInK (hM : M ⊨ Axioms.ACVF) {n : ℕ}
+    (s : Language.val.Term (Empty ⊕ Fin n)) {x : Fin n → M} (hx : ∀ i, iVF (x i)) :
+    valFormulaEval x (inKF s) ↔
+      (pInK (tRv (valTermToRV s))).Realize (default : Empty → M) x := by
+  have hmem : iVF (valTermEval x s) := valTermEval_mem hM hx s
+  have hzero : (valTermEval x s = iVFZero) ↔ (iRv (valTermEval x s) = iRVZero) := by
+    constructor
+    · intro h; rw [h, rv_zero_eq hM]
+    · exact rv_eq_infty hM hmem
+  have hR : (pInK (tRv (valTermToRV s))).Realize (default : Empty → M) x ↔
+      (iUnits (iRv (valTermEval x s)) ∨ iRv (valTermEval x s) = iRVZero) := by
+    simp only [pInK, BoundedFormula.realize_sup, pUnits_realize, realize_tRv,
+      valTermToRV_realize, pEq, BoundedFormula.realize_bdEqual, realize_tRVZero]
+  rw [inKF_eval hM, hR, ← iUnits_iff' hM (rv_mem hM hmem), hzero]
+
+end UnitsAtom
+
+/-! ## 7. The equality atom, conditional on the repair `rvFibreIff`
+
+`iRv s = iRv t` is not definable in `L_val` from the frozen axioms (see `REPORT.md` §3 and
+`order_atoms_not_iff_pEq`).  The missing sentence is the one that makes the fibres of `rv` the
+cosets of `1 + M`; with it the equality atom has a quantifier-free `L_val` preimage, and that is
+what this section proves.  Nothing else in the file uses `rvFibreIff`. -/
+
+/-- **Suggested repair axiom** (in the style of `Axioms.leMulCompatFull`): `rv x = rv y` iff the two
+values agree and, unless `x = 0`, `x - y` has strictly larger value than `x`.  In the intended
+model the second conjunct says `resid x = resid y`, so this is exactly the statement that the
+fibres of `rv` are the cosets of `1 + M` — the part of the paper's Definition 2.1/2.2 (RV as a
+quotient of `VF^×`) that the encoding never writes down.
+
+Read with `pLe a b = iLe (rv a) (rv b)`: `pLe &0 &1 ⊓ pLe &1 &0` is `v x = v y`, and
+`pLe (x - y) x ⊓ ¬ pLe x (x - y)` is `v (x - y) > v x`. -/
+def rvFibreIff : LRV.Sentence :=
+  allSorted ![.vf, .vf]
+    (pEq (tRv &0) (tRv &1) ⇔
+      ((pLe (tRv &0) (tRv &1) ⊓ pLe (tRv &1) (tRv &0)) ⊓
+        (pEq &0 tVFZero ⊔ (pLe (tRv &0) (tRv (tVFAdd &0 (tVFNeg &1))) ⊓
+          ∼(pLe (tRv (tVFAdd &0 (tVFNeg &1))) (tRv &0))))))
+
+section EqAtom
+
+variable {M : Type} [LRV.Structure M]
+
+/-- The semantic form of `rvFibreIff`. -/
+theorem rv_fibre_iff (hfib : M ⊨ ({rvFibreIff} : LRV.Theory)) {x y : M}
+    (hx : iVF x) (hy : iVF y) :
+    (iRv x = iRv y) ↔
+      ((iLe (iRv x) (iRv y) ∧ iLe (iRv y) (iRv x)) ∧
+        (x = iVFZero ∨ (iLe (iRv x) (iRv (iVFAdd x (iVFNeg y))) ∧
+          ¬ iLe (iRv (iVFAdd x (iVFNeg y))) (iRv x)))) := by
+  have h := allSorted_realize (T := ({rvFibreIff} : LRV.Theory)) hfib
+    (ss := ![SortTag.vf, SortTag.vf])
+    (φ := (pEq (tRv &0) (tRv &1) ⇔
+      ((pLe (tRv &0) (tRv &1) ⊓ pLe (tRv &1) (tRv &0)) ⊓
+        (pEq &0 tVFZero ⊔ (pLe (tRv &0) (tRv (tVFAdd &0 (tVFNeg &1))) ⊓
+          ∼(pLe (tRv (tVFAdd &0 (tVFNeg &1))) (tRv &0))))))) (by simp [rvFibreIff]) ![x, y] (by
+      intro i; fin_cases i <;> simp [hx, hy])
+  simpa [pEq, BoundedFormula.realize_bdEqual, BoundedFormula.realize_iff,
+    BoundedFormula.realize_inf, BoundedFormula.realize_sup, BoundedFormula.realize_not,
+    realize_pLe, realize_tRv, realize_tVFZero, realize_tVFAdd, realize_tVFNeg, realize_tv,
+    Term.realize_var, Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons] using h
+
+/-- **The `L_val`-formula `v s = v t` with the residue test**: the preimage of `pEq (rv s) (rv t)`
+once `rvFibreIff` is assumed. -/
+def leEqF {n : ℕ} (s t : Language.val.Term (Empty ⊕ Fin n)) :
+    Language.val.BoundedFormula Empty n :=
+  (leF s t ⊓ leF t s) ⊓ (s =' 0 ⊔ (leF (s + -t) s ⊓ ∼(leF s (s + -t))))
+
+@[simp] theorem valTermEval_add {n : ℕ} (x : Fin n → M)
+    (a b : Language.val.Term (Empty ⊕ Fin n)) :
+    valTermEval x (a + b) = iVFAdd (valTermEval x a) (valTermEval x b) := rfl
+
+@[simp] theorem valTermEval_neg {n : ℕ} (x : Fin n → M)
+    (a : Language.val.Term (Empty ⊕ Fin n)) :
+    valTermEval x (-a) = iVFNeg (valTermEval x a) := rfl
+
+/-- The negation of an `L_val`-formula, read by `valFormulaEval`. -/
+theorem valFormulaEval_not {n : ℕ} (x : Fin n → M)
+    (φ : Language.val.BoundedFormula Empty n) :
+    valFormulaEval x (∼φ) ↔ ¬ valFormulaEval x φ :=
+  Iff.rfl
+
+/-- The semantics of `leEqF s t`, in `L_val`'s own vocabulary. -/
+theorem leEqF_eval {n : ℕ} (s t : Language.val.Term (Empty ⊕ Fin n)) (x : Fin n → M) :
+    valFormulaEval x (leEqF s t) ↔
+      ((iLe (iRv (valTermEval x s)) (iRv (valTermEval x t)) ∧
+          iLe (iRv (valTermEval x t)) (iRv (valTermEval x s))) ∧
+        (valTermEval x s = iVFZero ∨
+          (iLe (iRv (valTermEval x s)) (iRv (iVFAdd (valTermEval x s)
+              (iVFNeg (valTermEval x t)))) ∧
+            ¬ iLe (iRv (iVFAdd (valTermEval x s) (iVFNeg (valTermEval x t))))
+              (iRv (valTermEval x s))))) := by
+  simp only [leEqF, valFormulaEval_inf, valFormulaEval_sup, valFormulaEval_equal,
+    valFormulaEval_not, valTermEval_zero, leF_valTerm_iff, valTermEval_add, valTermEval_neg]
+  tauto
+
+/-- **The equality atom, once `rvFibreIff` is assumed**: `pEq (rv s) (rv t)` is exactly the
+quantifier-free `L_val`-formula `leEqF s t`. -/
+theorem leEqF_iff_pEq (hM : M ⊨ Axioms.ACVF) (hfib : M ⊨ ({rvFibreIff} : LRV.Theory))
+    {n : ℕ} (s t : Language.val.Term (Empty ⊕ Fin n)) {x : Fin n → M}
+    (hx : ∀ i, iVF (x i)) :
+    valFormulaEval x (leEqF s t) ↔
+      (pEq (tRv (valTermToRV s)) (tRv (valTermToRV t))).Realize (default : Empty → M) x := by
+  rw [leEqF_eval, pEq, BoundedFormula.realize_bdEqual, realize_tRv, realize_tRv,
+    valTermToRV_realize, valTermToRV_realize,
+    ← rv_fibre_iff hfib (valTermEval_mem hM hx s) (valTermEval_mem hM hx t)]
+
+end EqAtom
+
+end M2
+end SpecialTransformations.Milestone0.Transfer
+
+/-! ## Axiom checks -/
+
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.not_units_zero
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.iUnits_iff'
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.rv_one_eq
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.units_rv_one
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.translate_pLe
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.leOneF_iff_pUnits
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.inKF_iff_pInK
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.pUnits_tRv_zero
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.leOneF_zero
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.rv_one_mul_left
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.rv_exists_left_inv
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.units_le_one
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.units_pairwise_le
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.order_atoms_not_iff_pEq
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.rv_eq_imp_orderEq
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.rv_fibre_iff
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.leEqF_eval
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.leEqF_iff_pEq
+
+#print axioms Smw1541fr.M1.sentence_iff_of_qfSentence_iff
+#print axioms Smw1541fr.M1.not_hasQE_of_qfSentence_equiv
+#print axioms Smw1541fr.M1.hasQE_of_qfSeparated
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.translate_pLe
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.leOneF_iff_pUnits
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.rv_one_eq
+#print axioms SpecialTransformations.Milestone0.Transfer.M2.not_units_zero
