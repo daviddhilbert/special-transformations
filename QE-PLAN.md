@@ -1764,3 +1764,30 @@ parallel sound rather than optimistic.
 
 Gaps named: `VF[k,·]` and its dimensions are not done; and instantiating at the repository's `RV`
 sort needs `Top (RV v) := ⟨none⟩`, which `SpecialTransformations/Basic.lean` lacks.
+
+## Section 3 frozen statements, over `SP`, with `acl`/`dcl` (draft: `QE/Sec3_frozen.lean`)
+
+Definitions added: `SP` (the REC record), `SP.paramSet`, `SP.toFun`, `SP.sortMap`, `SP.base`,
+`SP.extendVF`/`SP.extendRV`, `SP.DefinableVF`/`DefinableRV`, and the two closure notions
+
+```lean
+SP.acl S x := ∃ φ, WellSorted S.sortMap (fun _ => .vf) φ ∧
+  ({y | iVF y ∧ φ.Realize S.toFun ![y]}).Finite ∧ iVF x ∧ φ.Realize S.toFun ![x]
+SP.dcl S x := ∃ φ, WellSorted S.sortMap (fun _ => .vf) φ ∧
+  {y | iVF y ∧ φ.Realize S.toFun ![y]} = {x}
+```
+
+Frozen (SWL naming, each with `sorry`): `swl_acl_const_of_fibres`, `swl_acl_VF_transfer_acl_RV`,
+`swl_exchange`, `swl_function_rv_to_vf_finite_image`, `swl_finite_VF_project_RV`.  The remaining
+items of the inventory (`dcl:to:ac`, `alg:ind:imag`, `average:0:rv:not:constant`, `effectiveness`,
+`ball:proper:sub:center`, `algebraic:balls:definable:centers`, `aclS:model`, `inf:RV:def:gam`) need
+one more notion each — the field `VF(S)`, `trdeg`, or `vrv` on `SP` — and are listed in
+`QE/Sec3_draft.lean`'s inventory table with the notion each consumes.
+
+**Their proofs are not missing, they are external**: the paper cites them from
+arXiv:1006.1393 (`Yin:QE:ACVF:min`) — exchange is Lemma 4.3 there, the average lemma 4.9, the
+`VF`-projection 4.10, the finite image 4.12, effectiveness 4.15, the algebraic balls 4.17, and
+`aclS:model` Corollary 4.18.  So these are *quoted* theorems: freezing the statement is the
+deliverable, and each docstring says which external lemma it corresponds to.  Any of them that is
+re-proved here should be marked as such, and the ones left quoted should be flagged in the final
+report rather than counted as formalized.
