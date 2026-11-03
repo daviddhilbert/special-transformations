@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lean Projects"
+  short_description: "Plan modules, proof campaigns, and releases"
+  default_prompt: "Use $lean-project-architecture to organize this Lean project around the requested deliverable."
