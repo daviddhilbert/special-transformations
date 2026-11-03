@@ -123,16 +123,14 @@ So layer (A) is now reachable in two steps, neither of them Shoenfield's:
    2.2.1(2) produces the valuation ring of the amalgam.  Johnson's proofs are in
    `.ultramath/refs/johnson-ch2.txt` lines 190–360.  In progress in swarm `smw0fcnxx`.
 
-   **(iii) 1-ec: one input left.** `QE/OneEC_val.lean` (1838 lines, compiles, axioms clean) has
-   2.3.1(i), the syntax bridge, `boolCombCheese` (2.3.2), and now **`AtomGood` = 2.3.1(ii) is
-   proved**: `atomGood_of_isAlgClosed`, by the cell decomposition over (nearest root, tie set)
-   — see the commit message of `d06670d` for why the tie set must be part of the cell parameter.
-   The one input still missing for `oneECIn_of_inputs'` is **`CheeseMeetsBase`** (Johnson 2.3.8:
-   a nonempty swiss cheese over `K` meets the image of `K`), which is proved in the
-   `IsValBall` framework of `QE/Johnson23_valuation.lean` (`Johnson.lemma_2_3_8`, with 2.3.3 and
-   2.3.7 and `valueGroup_dlo`) but **not** in the `IsKBall` framework that `OneEC_val.lean`
-   uses; the port needs the nontriviality hypothesis `∃ x ≠ 0, w (f x) < 1`, which 2.3.8
-   genuinely requires.  In progress in swarm `smw0fobjd`.
+   **(iii) 1-ec: closed.** `QE/OneEC_val.lean` (4247 lines, compiles, axioms clean) now ends
+   with `oneECIn_of_nontrivial : [IsAlgClosed K] → (hnt : ∃ x ≠ 0, w (f x) < 1) → OneECIn F`,
+   with no input left: 2.3.1(i) (`finite_rootSet`), the syntax bridge (`termToPoly`), 2.3.1(ii)
+   (`atomGood_of_isAlgClosed`, by the cell decomposition over (nearest root, tie set)), 2.3.2
+   (`boolCombCheese`), and 2.3.8 (`cheeseMeetsBase`, whose Johnson body 2.3.3/2.3.5/2.3.6/2.3.7
+   with `valueGroup_dlo` and `infinite_residueField` now sits in the same file).  The composition
+   is `goodMeetsBase_of_nontrivial` fed to `oneECIn_of_inputs'`.  `hnt` is not removable: 2.3.8 is
+   false for a trivial valuation.
 
    Still entirely to write after (i)–(iii): `HasQE (L := Language.val) ACVF_val`.  Everything
    above is at the level of concrete valued fields; `hasQE_of_johnson` wants the abstract
