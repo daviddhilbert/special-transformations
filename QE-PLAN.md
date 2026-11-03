@@ -300,11 +300,19 @@ have 0 errors, and there are exactly **three** real `sorry`s in it —
    merge has to be done by hand: appending the Johnson body to `OneEC_val.lean` by line arithmetic
    broke the parse (my attempt did), so splice it deliberately.
 
-2. **`star`** (Johnson 2.2.4–2.2.7).  Blocked on one piece of commutative algebra: torsion-free
-   over a valuation ring is flat, so `O₁ ⊗_O O₂ ↪ O₁ ⊗_O K₂ ↪ K₁ ⊗_O K₂`.  Johnson's full proof is
-   at `.ultramath/refs/johnson-ch2.txt` lines 190–360.  The `star`-to-`HasAmalgamation valField`
-   step additionally needs the `ValuationSubring`-level statement transported to
-   `valField.ModelType`s, which `exists_valuation_of_isValPred` (`e6fdc8a`) now makes possible.
+2. **`star`** — **proved** in `QE/Amalgamation_reduced.lean` (commit `7cc89e8`, swarm
+   `smw0fcnxx` member m3), which grows to 786 lines with every line it had preserved.  Johnson's
+   proof of 2.2.7 verbatim, and the piece that looked like hard algebra is not: "torsion-free over
+   a valuation ring is flat" (2.2.4.2) is Mathlib's
+   `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout` (a valuation ring is Bezout), so it is one
+   line.  Then `TensorProduct.map_injective_of_flat_flat` gives `B₁ ⊗_B B₂ ↪ A₁ ⊗_B A₂`, a
+   minimal prime of the former lifts to one of the latter and contracts to `0` in each factor
+   (2.2.6), the prime `p` comes from `k₁ ⊗_{k₀} k₂` being nontrivial, and Chevalley's two-prime
+   form (`chevalley_hom'`, already in the file) finishes.  The file ends with an `example`
+   typechecking `amalgamation_of_ring_amalgamation star`, i.e. the amalgamation property for
+   *valued fields* at `Type u`.
+   **Still to do**: transport that to `HasAmalgamation valField`, which is the same
+   `ModelType`/`valStructOf` step as item 3.
 
 3. **Hypothesis (iii) at the `ModelType` level.**  `oneECIn_of_inputs'` is stated for concrete
    valued fields with the `L_val` structure `valStructure w`; `hasQE_of_johnson` wants it for
