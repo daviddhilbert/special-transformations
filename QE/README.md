@@ -30,6 +30,8 @@ axiom added; Weispfenning's theorem is never assumed as an axiom, only taken as 
 | `Reduction_assembly.lean` | a second, independent reduction: `theorem_2_3_of_hypotheses (hShoen : ShoenfieldTest) (hAlg : AlgIngredients) : HasQE ACVF`, with `prop39`, the exhaustion of `K(M)` by Zorn (`exists_vf_all`, via `DirectLimit.partialEquivLimit`), and `AlgIngredients.rv` recording that `RV = rv(VF) ∪ {0}` is **not** derivable from the frozen axioms (see `../Milestone0/DECISION.md`, twelfth defect). | (A) |
 | `BackAndForth.lean` | the general model theory that `Reduction_assembly.lean` uses | (A) |
 
+| `Chevalley.lean` | **Chevalley's lemma, containment half**: `exists_valuationSubring_le_of_algebra` — a valuation subring of `K` sits inside one of any field extension `L` — built from `LocalSubring.exists_le_valuationSubring`, plus `exists_localSubring_contraction` giving the exact contraction on the local subring. The *contraction* half for the valuation subring itself (needed for amalgamation) is not proved; see the file header for why it needs the maximal-ideal argument rather than bare maximality. | (B) amalgamation input |
+
 ## Duplication and coherence
 
 - `Lemma37_transcendental.lean` and `Lifting_transcendental.lean` are **independent**
