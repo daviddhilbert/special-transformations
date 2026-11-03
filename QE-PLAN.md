@@ -1969,3 +1969,24 @@ Two §3 items remain unstatable, each with its missing development named in the 
 `inf:RV:def:gam` (the `Γ`-side vocabulary of `LRVΓ`: `pMemGamma`, `gVrv`'s interpretation,
 `Γ(S)`, `vrv⁻¹(γ)`, and a monster model of the expansion) and `aclS:model` (`acl(S)` as an
 `LRV.Substructure` with relativized satisfaction, plus `Γ(acl(S))`).
+
+**The balls bridge is merged into `QE/Assembly_val.lean`.** The seven swarm files
+(`ValueOnlyM4`, `Syntax`, `RVSort`, `QFFrame`, `Glue`, `AssemblyM3`, `Integration`, 2 413 lines)
+are now part of the assembly: 23 246 lines, `lean` exit 0, 0 errors. Three `rfl`s had to become
+`try rfl` — the merged `simp` set closes those goals before the `rfl` runs; nothing else changed.
+**Correction to an earlier claim:** `Assembly_val.lean` does contain two `sorry`s, and always did —
+it embeds a copy of `Encoding.lean`'s Part 6, so it carries that file's
+`theorem_2_3_quantifier_elimination` and `theorem_2_8_c_minimal` as `sorry` placeholders. "No
+`sorry`" was true of the assembly's own results, not of the file. Removing or restating them is
+part of the `HasQE` restatement (they are the *old* two-variable `HasQE`/`IsCMinimal`, not the
+frozen well-sorted ones).
+
+**Yin QE:ACVF:min Definition 4.14 formalized** (`QE/Sec3_sat.lean`, from the quoted text in
+`.ultramath/refs/qe.tex`): an algebraic set of balls is a definable set of balls containing
+finitely many balls; `𝓑` has centers if there is a definable `f : 𝓑 → VF` with `f(𝔟ᵢ) ∈ 𝔟ᵢ`.
+The formal version is `Sec3.IsAlgebraicSetOfBalls`/`IsAlgebraicBall`/`AlgebraicUnion`/
+`IsDefinableSetOfBalls`/`IsSetOfCenters`/`HasCenters`/`rvBall`, and the two §3 statements that
+used to take "algebraic set of balls" as an unconstrained predicate now take the real definition:
+`swl_effectiveness` (4.15) and `swl_algebraic_balls_definable_centers` (4.17). Also frozen:
+`swl_rv_effectiveness` (QE:ACVF:min 4.16), the fact behind `ball:proper:sub:center`. Seven frozen
+statements in the file, green, seven `sorry` warnings, no `axiom`.

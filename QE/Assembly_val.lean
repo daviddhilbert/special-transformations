@@ -20831,3 +20831,2416 @@ end SpecialTransformations.Milestone0.LRV
 
 #print axioms SpecialTransformations.Milestone0.Downstream.hasQEws_iff_semantic
 #print axioms SpecialTransformations.Milestone0.Downstream.vf_tuple_version
+
+/-! ===== merged from .ultramath/smw18pb0w/m1/ValueOnlyM4.lean ===== -/
+/-
+# b1 — the value-only case: value comparisons in one `VF`-variable define
+Boolean combinations of balls
+
+Swarm `smw18pb0w`, member `m4`.  Part of the proof of Theorem 2.8 (`IsCMinimal`) of
+Yimu Yin, *Special transformations in algebraically closed valued fields* (APAL 2010).
+
+For a model `M ⊨ ACVF` of the frozen encoding (`Milestone0/Encoding.lean`) this file proves
+that the **value-only** fragment of `L_RV` in one free `VF`-variable defines a finite Boolean
+combination of balls in the frozen sense (`IsBoolComb {b | IsBall b}`).
+
+What is *reused* (already in `QE/Assembly_val.lean`, axiom-clean, not reproved here):
+
+* `ValOneEC.AtomGood`, `ValOneEC.atomGood_of_isAlgClosed` — Johnson's Lemma 2.3.1(ii): the set
+  `{x | v (P x) ≤ v (Q x)}` is a finite Boolean combination of balls with centre and radius in
+  the base field.  Its proof is the C-minimal cell decomposition over the roots of `P`, `Q` and
+  the order of their values (`prodLe_good`, `cluster`, `good_pow_le_pow_lt/gt/same`).
+* `ValOneEC.good_solSet` — every quantifier-free `Language.val` formula in one variable is such
+  a combination.
+* `Transfer.predV_refl/_trans/_zero_le/_zero_eq/_ultra/_total`, `Transfer.vfPred_scale_forall`,
+  `Transfer.paperScale_of_model`, `VFAlgClosed.isAlgClosed_vfType`,
+  `ValPM.exists_valuation_of_isValPred`.
+
+What is **new** here:
+
+* `M4ValueOnly.isValPred_predV` and `exists_valuation_predV`: the `VF`-sort of a model of the
+  frozen `ACVF` carries a genuine Mathlib valuation `w`, with
+  `iLe (rv y) (rv x) ↔ w x ≤ w y` (the two orders are *reversed*; this pins the convention).
+* `M4ValueOnly.lift` and the ball dictionary `isBoolComb_lift_isKBall`: every `K`-ball is a ball
+  in the frozen sense, including the degenerate cases (`Set.univ`; the singleton `{c}` arising as
+  `closedBall w c (w 0)`; the empty set `openBall w c (w 0)`).
+* `M4ValueOnly.isBoolComb_lift_of_good`: `Good ⇒ IsBoolComb {b | IsBall b}` on the carrier.
+* `isBoolComb_boolFun`, `setOf_boolFun_eq_iUnion_patternSet`, `patternSet`, `IsBoolComb.inter`,
+  `IsBoolComb.empty`, `IsBoolComb.iUnion_finset`, `IsBoolComb.iInter_finset`, `good_iInter_finset`
+  — the finite cell decomposition of an arbitrary Boolean combination of a finite family of sets.
+* `valueOnly_atom_isBoolComb`, `valueOnly_family_isBoolComb`, `valueOnly_qf_isBoolComb`.
+
+The file imports `Pre2`, a byte-for-byte copy of `QE/Assembly_val.lean` (the shared
+`Pre.olean` in `.ultramath/shared` is stale).  To merge: delete the single import line just
+below this comment and append the rest to `QE/Assembly_val.lean`.
+-/
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations
+open SpecialTransformations.Milestone0
+open SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+namespace M4ValueOnly
+
+variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
+
+/-! ## 1. The valuation carried by the `VF`-sort of a model of `ACVF` -/
+
+/-- The `VF`-sort of a model of the frozen `ACVF`, with the predicate `predV` (the paper's
+`v x ≤ v y`, with the two orders reversed), satisfies `ValPM.IsValPred`: it is a valued field. -/
+theorem isValPred_predV : ValPM.IsValPred (predV (M := M)) :=
+  { refl := fun x => predV_refl hM x
+    trans := fun x y z h1 h2 => predV_trans hM h1 h2
+    zero_le := fun x => predV_zero_le hM x
+    zero_eq := fun x h => predV_zero_eq hM h
+    ultra := fun x y => predV_ultra hM x y
+    total := fun x y => predV_total hM x y
+    scale := fun x y z hz => vfPred_scale_forall (paperScale_of_model hM) x y z hz }
+
+/-- **A model of `ACVF` carries a genuine Mathlib valuation on its `VF`-sort**, and the frozen
+`L_RV` preorder on `RV` is that valuation's order read backwards:
+`iLe (rv y) (rv x) ↔ w x ≤ w y`.  (`predV x y` is `iLe (iRv y) (iRv x)` by definition.) -/
+theorem exists_valuation_predV :
+    ∃ (Γ : Type) (_ : LinearOrderedCommGroupWithZero Γ)
+      (w : Valuation (VFType (M := M)) Γ),
+      ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y := by
+  letI : Field (VFType (M := M)) := vfFieldOfModel (M := M)
+  exact ValPM.exists_valuation_of_isValPred (p := predV (M := M)) isValPred_predV
+
+end M4ValueOnly
+
+
+namespace SpecialTransformations.Milestone0
+
+variable {α : Type*}
+
+theorem IsBoolComb.inter {B : Set (Set α)} {s t : Set α}
+    (hs : IsBoolComb B s) (ht : IsBoolComb B t) : IsBoolComb B (s ∩ t) := by
+  have h : s ∩ t = (sᶜ ∪ tᶜ)ᶜ := by ext x; simp
+  rw [h]
+  exact (hs.compl.union ht.compl).compl
+
+theorem IsBoolComb.empty {B : Set (Set α)} : IsBoolComb B (∅ : Set α) := by
+  simpa using (IsBoolComb.compl (B := B) (s := (Set.univ : Set α)) IsBoolComb.univ)
+
+theorem IsBoolComb.iUnion_finset {B : Set (Set α)} {ι : Type*} (s : Finset ι)
+    {b : ι → Set α} (h : ∀ i ∈ s, IsBoolComb B (b i)) :
+    IsBoolComb B (⋃ i ∈ s, b i) := by
+  classical
+  induction s using Finset.induction with
+  | empty =>
+      have h0 : (⋃ i ∈ (∅ : Finset ι), b i) = (∅ : Set α) := by simp
+      rw [h0]; exact IsBoolComb.empty
+  | insert a s ha ih =>
+      have h1 : IsBoolComb B (b a) := h a (Finset.mem_insert_self a s)
+      have h2 : IsBoolComb B (⋃ i ∈ s, b i) :=
+        ih (fun i hi => h i (Finset.mem_insert_of_mem hi))
+      have hun : (⋃ i ∈ insert a s, b i) = b a ∪ ⋃ i ∈ s, b i := by
+        ext x
+        simp only [Set.mem_iUnion, Set.mem_union, Finset.mem_insert]
+        constructor
+        · rintro ⟨i, rfl | hi, hx⟩
+          · exact Or.inl hx
+          · exact Or.inr ⟨i, hi, hx⟩
+        · rintro (hx | ⟨i, hi, hx⟩)
+          · exact ⟨a, Or.inl rfl, hx⟩
+          · exact ⟨i, Or.inr hi, hx⟩
+      rw [hun]
+      exact h1.union h2
+
+theorem IsBoolComb.iInter_finset {B : Set (Set α)} {ι : Type*} (s : Finset ι)
+    {b : ι → Set α} (h : ∀ i ∈ s, IsBoolComb B (b i)) :
+    IsBoolComb B (⋂ i ∈ s, b i) := by
+  classical
+  induction s using Finset.induction with
+  | empty =>
+      have h0 : (⋂ i ∈ (∅ : Finset ι), b i) = (Set.univ : Set α) := by simp
+      rw [h0]; exact IsBoolComb.univ
+  | insert a s ha ih =>
+      have h1 : IsBoolComb B (b a) := h a (Finset.mem_insert_self a s)
+      have h2 : IsBoolComb B (⋂ i ∈ s, b i) :=
+        ih (fun i hi => h i (Finset.mem_insert_of_mem hi))
+      have hun : (⋂ i ∈ insert a s, b i) = b a ∩ ⋂ i ∈ s, b i := by
+        ext x
+        simp only [Set.mem_iInter, Set.mem_inter_iff, Finset.mem_insert]
+        constructor
+        · intro hx; exact ⟨hx a (Or.inl rfl), fun i hi => hx i (Or.inr hi)⟩
+        · rintro ⟨h1, h2⟩ i (rfl | hi)
+          · exact h1
+          · exact h2 i hi
+      rw [hun]
+      exact h1.inter h2
+
+/-- The set of points whose pattern of membership in the `β i` is exactly `S`. -/
+def patternSet {ι : Type*} (β : ι → Set α) (S : Finset ι) : Set α :=
+  {x | ∀ i, (x ∈ β i ↔ i ∈ S)}
+
+theorem patternSet_eq {ι : Type*} [Fintype ι] [DecidableEq ι] (β : ι → Set α) (S : Finset ι) :
+    patternSet β S = (⋂ i ∈ S, β i) ∩ (⋂ i ∈ Finset.univ \ S, (β i)ᶜ) := by
+  ext x
+  simp only [patternSet, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter,
+    Set.mem_compl_iff, Finset.mem_sdiff, Finset.mem_univ, true_and]
+  constructor
+  · intro h
+    exact ⟨fun i hi => (h i).mpr hi, fun i hi => fun hx => hi ((h i).mp hx)⟩
+  · rintro ⟨h1, h2⟩ i
+    exact ⟨fun hi => by_contra fun hiS => h2 i hiS hi, fun hi => h1 i hi⟩
+
+theorem mem_patternSet_iff {ι : Type*} (β : ι → Set α) (S : Finset ι) {x : α} :
+    x ∈ patternSet β S ↔ {i | x ∈ β i} = (S : Set ι) := by
+  simp only [patternSet, Set.mem_ofPred_eq, Set.ext_iff, Finset.mem_coe]
+
+/-- **The cell decomposition of a set described by a Boolean function of finitely many
+membership tests**: it is the disjoint union of the cells (patterns) that the function accepts. -/
+theorem setOf_boolFun_eq_iUnion_patternSet {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (β : ι → Set α) (t : Set ι → Bool) :
+    {x | t {i | x ∈ β i} = true}
+      = ⋃ S ∈ (Finset.univ.filter (fun S : Finset ι => t (S : Set ι) = true)),
+          patternSet β S := by
+  classical
+    ext x
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Finset.mem_filter, Finset.mem_univ,
+      true_and]
+    constructor
+    · intro hx
+      refine ⟨Finset.univ.filter (fun i => x ∈ β i), ?_, ?_⟩
+      · have hcoe : ((Finset.univ.filter (fun i => x ∈ β i) : Finset ι) : Set ι)
+            = {i | x ∈ β i} := by ext i; simp
+        rw [hcoe, ← hx]
+      · rw [mem_patternSet_iff]
+        ext i
+        simp
+    · rintro ⟨S, hS, hx⟩
+      rw [mem_patternSet_iff] at hx
+      rw [← hS, ← hx]
+
+/-- **An arbitrary finite Boolean combination of members of `B` is a `IsBoolComb B`.** -/
+theorem isBoolComb_boolFun {ι : Type*} [Fintype ι] [DecidableEq ι] {B : Set (Set α)}
+    {β : ι → Set α} (hβ : ∀ i, IsBoolComb B (β i)) (t : Set ι → Bool) :
+    IsBoolComb B {x | t {i | x ∈ β i} = true} := by
+  classical
+  rw [setOf_boolFun_eq_iUnion_patternSet]
+  refine IsBoolComb.iUnion_finset _ fun S _ => ?_
+  rw [patternSet_eq]
+  exact (IsBoolComb.iInter_finset S (fun i _ => hβ i)).inter
+    (IsBoolComb.iInter_finset _ (fun i _ => (hβ i).compl))
+
+end SpecialTransformations.Milestone0
+
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations
+open SpecialTransformations.Milestone0
+open SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+set_option warn.classDefReducibility false
+set_option linter.unusedSectionVars false
+
+namespace M4ValueOnly
+
+variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
+
+noncomputable instance instFieldVF : Field (VFType (M := M)) := vfFieldOfModel (M := M)
+
+/-- The carrier-level version of a subset of the `VF`-sort. -/
+def lift (D : Set (VFType (M := M))) : Set M :=
+  {x | ∃ h : iVF x, (⟨x, h⟩ : VFType (M := M)) ∈ D}
+
+theorem mem_lift {D : Set (VFType (M := M))} {x : M} (hx : iVF x) :
+    x ∈ lift D ↔ (⟨x, hx⟩ : VFType (M := M)) ∈ D := by
+  constructor
+  · rintro ⟨h, hh⟩
+    have he : (⟨x, h⟩ : VFType (M := M)) = ⟨x, hx⟩ := Subtype.ext rfl
+    rwa [he] at hh
+  · exact fun h => ⟨hx, h⟩
+
+theorem lift_mono {D E : Set (VFType (M := M))} (h : D ⊆ E) : lift D ⊆ lift E := by
+  rintro x ⟨hx, hmem⟩
+  exact ⟨hx, h hmem⟩
+
+theorem lift_inter (D E : Set (VFType (M := M))) :
+    lift (D ∩ E) = lift D ∩ lift E := by
+  ext x
+  constructor
+  · rintro ⟨hx, hmem⟩
+    have hmem' : (⟨x, hx⟩ : VFType (M := M)) ∈ D ∧ (⟨x, hx⟩ : VFType (M := M)) ∈ E := hmem
+    exact ⟨(mem_lift hx).mpr hmem'.1, (mem_lift hx).mpr hmem'.2⟩
+  · rintro ⟨h1, h2⟩
+    obtain ⟨hx, hmemE⟩ := h2
+    exact ⟨hx, ⟨(mem_lift hx).mp h1, hmemE⟩⟩
+
+theorem lift_compl (D : Set (VFType (M := M))) :
+    lift (Dᶜ) = {x : M | iVF x} ∩ (lift D)ᶜ := by
+  ext x
+  constructor
+  · rintro ⟨hx, hmem⟩
+    have hmem' : (⟨x, hx⟩ : VFType (M := M)) ∉ D := hmem
+    exact ⟨hx, fun hc => hmem' ((mem_lift hx).mp hc)⟩
+  · rintro ⟨hx, hmem⟩
+    have hmem' : x ∉ lift D := hmem
+    exact ⟨hx, fun hc => hmem' ((mem_lift hx).mpr hc)⟩
+
+theorem isBall_vf : IsBall {x : M | iVF x} := Or.inl rfl
+
+theorem isBoolComb_vf : IsBoolComb {b | IsBall b} {x : M | iVF x} :=
+  IsBoolComb.basic isBall_vf
+
+/-! ### 2. The three kinds of ball with centre and radius in the base field -/
+
+theorem lift_univ : lift (Set.univ : Set (VFType (M := M))) = {x : M | iVF x} := by
+  ext x
+  constructor
+  · rintro ⟨hx, -⟩; exact hx
+  · intro hx; exact ⟨hx, trivial⟩
+
+theorem lift_singleton (c : VFType (M := M)) :
+    lift ({c} : Set (VFType (M := M))) = {x : M | iVF x ∧ x = c.1} := by
+  ext x
+  constructor
+  · rintro ⟨hx, hmem⟩
+    refine ⟨hx, ?_⟩
+    have := congrArg Subtype.val hmem
+    simpa using this
+  · rintro ⟨hx, rfl⟩
+    exact ⟨hx, rfl⟩
+
+theorem isBall_lift_singleton (c : VFType (M := M)) :
+    IsBall (lift ({c} : Set (VFType (M := M)))) := by
+  rw [lift_singleton]
+  exact Or.inr (Or.inr (Or.inr ⟨c.1, c.2, rfl⟩))
+
+/-- Membership in a closed `K`-ball, read through the valuation, in `predV` form. -/
+theorem mem_closedBall_predV {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ) (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    (c b y : VFType (M := M)) :
+    (y ∈ ValOneEC.closedBall w c (w b)) ↔ iLe (iRv b.1) (iRv (iVFAdd y.1 (iVFNeg c.1))) := by
+  rw [ValOneEC.mem_closedBall]
+  have h := (hw (y - c) b).symm
+  exact h
+
+/-- Membership in an open `K`-ball, read through the valuation, in `predV` form. -/
+theorem mem_openBall_predV {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ) (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    (c b y : VFType (M := M)) :
+    (y ∈ ValOneEC.openBall w c (w b)) ↔
+      iLe (iRv b.1) (iRv (iVFAdd y.1 (iVFNeg c.1)))
+        ∧ ¬ iLe (iRv (iVFAdd y.1 (iVFNeg c.1))) (iRv b.1) := by
+  rw [ValOneEC.mem_openBall]
+  constructor
+  · intro h
+    refine ⟨(hw (y - c) b).mpr h.le, ?_⟩
+    intro hc
+    exact (not_le.mpr h) ((hw b (y - c)).mp hc)
+  · rintro ⟨h1, h2⟩
+    exact lt_of_le_not_ge ((hw (y - c) b).mp h1) (fun hc => h2 ((hw b (y - c)).mpr hc))
+
+theorem lift_closedBall {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ) (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    (c b : VFType (M := M)) :
+    lift (ValOneEC.closedBall w c (w b))
+      = {x : M | iVF x ∧ iLe (iRv b.1) (iRv (iVFAdd x (iVFNeg c.1)))} := by
+  ext x
+  constructor
+  · rintro ⟨hx, hmem⟩
+    refine ⟨hx, ?_⟩
+    exact (mem_closedBall_predV w hw c b (⟨x, hx⟩ : VFType (M := M))).mp hmem
+  · rintro ⟨hx, hle⟩
+    refine ⟨hx, ?_⟩
+    exact (mem_closedBall_predV w hw c b (⟨x, hx⟩ : VFType (M := M))).mpr hle
+
+theorem lift_openBall {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ) (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    (c b : VFType (M := M)) :
+    lift (ValOneEC.openBall w c (w b))
+      = {x : M | iVF x ∧ iLe (iRv b.1) (iRv (iVFAdd x (iVFNeg c.1)))
+          ∧ ¬ iLe (iRv (iVFAdd x (iVFNeg c.1))) (iRv b.1)} := by
+  ext x
+  constructor
+  · rintro ⟨hx, hmem⟩
+    exact ⟨hx, (mem_openBall_predV w hw c b (⟨x, hx⟩ : VFType (M := M))).mp hmem⟩
+  · rintro ⟨hx, hle, hlt⟩
+    refine ⟨hx, ?_⟩
+    exact (mem_openBall_predV w hw c b (⟨x, hx⟩ : VFType (M := M))).mpr ⟨hle, hlt⟩
+
+theorem isBoolComb_lift_isKBall {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ) (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    {B : Set (VFType (M := M))} (hB : ValOneEC.IsKBall (RingHom.id (VFType (M := M))) w B) :
+    IsBoolComb {b | IsBall b} (lift B) := by
+  cases hB with
+  | univ =>
+      rw [lift_univ]
+      exact isBoolComb_vf
+  | closed c b =>
+      simp only [RingHom.id_apply]
+      by_cases hb : b = 0
+      · have hsub : ValOneEC.closedBall w c (w b) = ({c} : Set (VFType (M := M))) := by
+          rw [show w b = 0 from by rw [hb]; exact Valuation.map_zero w]
+          exact ValOneEC.closedBall_zero_radius w c
+        rw [hsub]
+        exact IsBoolComb.basic (isBall_lift_singleton c)
+      · rw [lift_closedBall w hw c b]
+        refine IsBoolComb.basic (Or.inr (Or.inl ?_))
+        exact ⟨c.1, iRv b.1, c.2, Transfer.rv_mem hM b.2,
+          Transfer.rv_ne_zero hM b.2 (fun h => hb (Subtype.ext h)), rfl⟩
+  | openball c b =>
+      simp only [RingHom.id_apply]
+      by_cases hb : b = 0
+      · have hsub : ValOneEC.openBall w c (w b) = (∅ : Set (VFType (M := M))) := by
+          rw [show w b = 0 from by rw [hb]; exact Valuation.map_zero w]
+          ext x
+          simp only [ValOneEC.mem_openBall, Set.mem_empty_iff_false, iff_false]
+          intro hx
+          exact absurd hx (not_lt.mpr zero_le)
+        rw [hsub]
+        have hemp : lift (∅ : Set (VFType (M := M))) = (∅ : Set M) := by
+          ext x
+          exact ⟨fun h => h.2, fun h => h.elim⟩
+        rw [hemp]
+        exact IsBoolComb.empty
+      · rw [lift_openBall w hw c b]
+        refine IsBoolComb.basic (Or.inr (Or.inr (Or.inl ?_)))
+        exact ⟨c.1, iRv b.1, c.2, Transfer.rv_mem hM b.2,
+          Transfer.rv_ne_zero hM b.2 (fun h => hb (Subtype.ext h)), rfl⟩
+
+end M4ValueOnly
+
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations
+open SpecialTransformations.Milestone0
+open SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+set_option warn.classDefReducibility false
+set_option linter.unusedSectionVars false
+set_option linter.style.haveILetI false
+
+namespace M4ValueOnly
+
+variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
+
+/-! ### 3. The cell decomposition behind `Good`, and the bridge to `IsBoolComb` -/
+
+/-- **`Good` ⇒ a finite Boolean combination of balls on the carrier.**  This is the bridge from
+the `L_val`/Johnson ball vocabulary (`ValOneEC.IsKBall`, centres and radii in the base field) to
+the frozen `L_RV` vocabulary of `Milestone0/Encoding.lean`
+(`IsBoolComb {b | IsBall b}`, balls on the one-sorted carrier). -/
+theorem isBoolComb_lift_of_good {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ) (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    {D : Set (VFType (M := M))}
+    (hD : ValOneEC.Good (RingHom.id (VFType (M := M))) w D) :
+    IsBoolComb {b | IsBall b} (lift D) := by
+  classical
+  obtain ⟨ι, hι, β, t, hβ, hspec⟩ := hD
+  haveI : Fintype ι := hι
+  have hset : lift D
+      = {x : M | iVF x} ∩ {x : M | t {i | x ∈ lift (β i)} = true} := by
+    ext x
+    constructor
+    · rintro ⟨hx, hmem⟩
+      refine ⟨hx, ?_⟩
+      have h1 : t {i | (⟨x, hx⟩ : VFType (M := M)) ∈ β i} = true :=
+        (hspec ⟨x, hx⟩).mp hmem
+      rw [← h1]
+      congr 1
+      ext i
+      exact mem_lift hx
+    · rintro ⟨hx, hpx⟩
+      refine ⟨hx, (hspec ⟨x, hx⟩).mpr ?_⟩
+      rw [← hpx]
+      congr 1
+      ext i
+      exact (mem_lift hx).symm
+  rw [hset]
+  exact isBoolComb_vf.inter
+    (isBoolComb_boolFun (fun i => isBoolComb_lift_isKBall w hw (hβ i)) t)
+
+/-! ### 4. The value-only case: value comparisons in one variable define balls -/
+
+/-- **One value comparison.**  For polynomials `P`, `Q` over the `VF`-sort of a model of `ACVF`,
+the set `{x | v (P x) ≤ v (Q x)}` is a finite Boolean combination of balls. -/
+theorem valueOnly_atom_isBoolComb {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ)
+    (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    (P Q : Polynomial (VFType (M := M))) :
+    IsBoolComb {b | IsBall b}
+      (lift {x : VFType (M := M) | w (P.eval x) ≤ w (Q.eval x)}) := by
+  classical
+  haveI : IsAlgClosed (VFType (M := M)) := VFAlgClosed.isAlgClosed_vfType (M := M)
+  refine isBoolComb_lift_of_good w hw ?_
+  have h := ValOneEC.atomGood_of_isAlgClosed
+    (K := VFType (M := M)) (N := VFType (M := M)) (f := RingHom.id (VFType (M := M)))
+    (w := w) P Q
+  simpa only [Polynomial.eval₂_id] using h
+
+/-- `Good` is closed under finite intersections (dual to `good_union`, via `good_compl`). -/
+theorem good_iInter_finset {K : Type} [Field K] [IsAlgClosed K] {N : Type} [Field N]
+    {Γ' : Type} [LinearOrderedCommGroupWithZero Γ'] {f : K →+* N} {w : Valuation N Γ'}
+    {ι : Type} (s : Finset ι) {b : ι → Set N}
+    (h : ∀ i ∈ s, ValOneEC.Good f w (b i)) :
+    ValOneEC.Good f w (⋂ i ∈ s, b i) := by
+  classical
+  induction s using Finset.induction with
+  | empty =>
+      have h0 : (⋂ i ∈ (∅ : Finset ι), b i) = (Set.univ : Set N) := by simp
+      rw [h0]; exact ValOneEC.good_univ f w
+  | insert a s ha ih =>
+      have h1 : ValOneEC.Good f w (b a) := h a (Finset.mem_insert_self a s)
+      have h2 : ValOneEC.Good f w (⋂ i ∈ s, b i) :=
+        ih (fun i hi => h i (Finset.mem_insert_of_mem hi))
+      have hun : (⋂ i ∈ insert a s, b i) = b a ∩ ⋂ i ∈ s, b i := by
+        ext x
+        simp only [Set.mem_iInter, Set.mem_inter_iff, Finset.mem_insert]
+        constructor
+        · intro hx; exact ⟨hx a (Or.inl rfl), fun i hi => hx i (Or.inr hi)⟩
+        · rintro ⟨h1, h2⟩ i (rfl | hi)
+          · exact h1
+          · exact h2 i hi
+      rw [hun]
+      exact ValOneEC.good_inter h1 h2
+
+/-- **The finite-family form.**  For finitely many polynomial pairs `(P j, Q j)` and an arbitrary
+Boolean combination `t` of the comparisons `v (P j x) ≤ v (Q j x)`, the subset of the `VF`-sort
+that it defines is a finite Boolean combination of balls.  The *cell decomposition* is the
+decomposition of a finite Boolean combination of balls into the finitely many patterns of the
+finite ball family. -/
+theorem valueOnly_family_isBoolComb {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ)
+    (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    {ι : Type} [Fintype ι] [DecidableEq ι]
+    (P Q : ι → Polynomial (VFType (M := M))) (t : Set ι → Bool) :
+    IsBoolComb {b | IsBall b}
+      (lift {y : VFType (M := M) | t {j | w ((P j).eval y) ≤ w ((Q j).eval y)} = true}) := by
+  classical
+  haveI : IsAlgClosed (VFType (M := M)) := VFAlgClosed.isAlgClosed_vfType (M := M)
+  have hgood : ValOneEC.Good (RingHom.id (VFType (M := M))) w
+      {y : VFType (M := M) | t {j | w ((P j).eval y) ≤ w ((Q j).eval y)} = true} := by
+    have hβ : ∀ j : ι, ValOneEC.Good (RingHom.id (VFType (M := M))) w
+        ({y : VFType (M := M) | w ((P j).eval y) ≤ w ((Q j).eval y)} : Set (VFType (M := M))) :=
+      fun j => ValOneEC.atomGood_of_isAlgClosed
+        (K := VFType (M := M)) (N := VFType (M := M)) (f := RingHom.id (VFType (M := M)))
+        (w := w) (P j) (Q j)
+    have hset : {y : VFType (M := M) | t {j | w ((P j).eval y) ≤ w ((Q j).eval y)} = true}
+        = {y : VFType (M := M) | t {j | y ∈ ({z : VFType (M := M) |
+            w ((P j).eval z) ≤ w ((Q j).eval z)} : Set (VFType (M := M)))} = true} := by
+      congr 1
+    rw [hset, setOf_boolFun_eq_iUnion_patternSet]
+    refine ValOneEC.good_iUnion_finset _ fun S _ => ?_
+    rw [patternSet_eq]
+    exact ValOneEC.good_inter
+      (good_iInter_finset S (fun i _ => hβ i))
+      (good_iInter_finset (Finset.univ \ S) (fun i _ => ValOneEC.good_compl (hβ i)))
+  exact isBoolComb_lift_of_good w hw hgood
+
+/-- **The quantifier-free value language.**  Every quantifier-free formula of `L_val` in one
+variable, with parameters in the `VF`-sort, defines a finite Boolean combination of balls.  This
+is Johnson's Lemma 2.3.1 in the ball vocabulary of the frozen `L_RV` encoding. -/
+theorem valueOnly_qf_isBoolComb {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ)
+    (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    (φ : Language.val.BoundedFormula (VFType (M := M)) 1) (hφ : φ.IsQF) :
+    IsBoolComb {b | IsBall b}
+      (lift {a : VFType (M := M) | ValOneEC.Holds w (RingHom.id (VFType (M := M))) φ a}) := by
+  classical
+  haveI : IsAlgClosed (VFType (M := M)) := VFAlgClosed.isAlgClosed_vfType (M := M)
+  refine isBoolComb_lift_of_good w hw ?_
+  exact ValOneEC.good_solSet
+    (ValOneEC.atomGood_of_isAlgClosed (K := VFType (M := M)) (N := VFType (M := M))
+      (f := RingHom.id (VFType (M := M))) (w := w)) φ hφ
+
+end M4ValueOnly
+
+/-! ## Axiom footprints -/
+
+#print axioms SpecialTransformations.Milestone0.isBoolComb_boolFun
+#print axioms SpecialTransformations.Milestone0.setOf_boolFun_eq_iUnion_patternSet
+#print axioms M4ValueOnly.isValPred_predV
+#print axioms M4ValueOnly.exists_valuation_predV
+#print axioms M4ValueOnly.isBoolComb_lift_isKBall
+#print axioms M4ValueOnly.isBoolComb_lift_of_good
+#print axioms M4ValueOnly.good_iInter_finset
+#print axioms M4ValueOnly.valueOnly_atom_isBoolComb
+#print axioms M4ValueOnly.valueOnly_family_isBoolComb
+#print axioms M4ValueOnly.valueOnly_qf_isBoolComb
+
+/-! ===== merged from .ultramath/smw18pb0w/m1/Syntax.lean ===== -/
+/-
+  m1 / direction d4 — the syntax side of the quantifier-free half of Theorem 2.8.
+
+  Main content: a well-sorted `VF`-sorted term of `L_RV`, read at a `VF`-tuple of a model of
+  `ACVF`, is a polynomial in a designated variable, with the other parameters as coefficients
+  (`polyOf`, `eval_polyOf`).  Every atom of the quantifier-free fragment whose terms are
+  `VF`-sorted therefore translates into a condition on polynomials (`atom_eq_iff`,
+  `atom_rvEq_iff`, `atom_le_iff`, `atom_units_iff`).
+
+  This is the bridge between the object language `L_RV` and the algebra (`Polynomial` over the
+  field `VFType` of `Transfer.vfFieldOfModel`) that a cell decomposition of
+  `Milestone0/Balls.lean`-style balls consumes.
+-/
+
+set_option maxHeartbeats 2000000
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+namespace Smw18pb0w.M1
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 1. Evaluation of a term at a parameter tuple and a variable tuple -/
+
+/-- `ev u x t` is the value of the term `t` at the parameter assignment `u` and the variable
+assignment `x`. -/
+noncomputable def ev {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (t : LRV.Term (α ⊕ Fin n)) : M :=
+  t.realize (Sum.elim u x)
+
+theorem ev_var_inl {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M) (a : α) :
+    ev u x (Term.var (Sum.inl a) : LRV.Term (α ⊕ Fin n)) = u a := rfl
+
+theorem ev_var_inr {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M) (i : Fin n) :
+    ev u x (Term.var (Sum.inr i) : LRV.Term (α ⊕ Fin n)) = x i := rfl
+
+theorem ev_func {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M) {l : ℕ}
+    (f : LRV.Functions l) (ts : Fin l → LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func f ts) = Structure.funMap f (fun i => ev u x (ts i)) := rfl
+
+/-- the encoding's `+` of the `VF` sort, at an arbitrary argument vector -/
+theorem ev_vfAdd_ts {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (ts : Fin 2 → LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.vfAdd ts) = iVFAdd (ev u x (ts 0)) (ev u x (ts 1)) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfAdd
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i))
+    = iVFAdd (ev u x (ts 0)) (ev u x (ts 1))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i))
+      = ![ev u x (ts 0), ev u x (ts 1)] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-- the encoding's `×` of the `VF` sort, at an arbitrary argument vector -/
+theorem ev_vfMul_ts {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (ts : Fin 2 → LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.vfMul ts) = iVFMul (ev u x (ts 0)) (ev u x (ts 1)) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfMul
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i))
+    = iVFMul (ev u x (ts 0)) (ev u x (ts 1))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i))
+      = ![ev u x (ts 0), ev u x (ts 1)] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-- the encoding's `-` of the `VF` sort, at an arbitrary argument vector -/
+theorem ev_vfNeg_ts {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (ts : Fin 1 → LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.vfNeg ts) = iVFNeg (ev u x (ts 0)) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfNeg
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i)) = iVFNeg (ev u x (ts 0))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i)) = ![ev u x (ts 0)] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-- the encoding's `vfAdd` of the `VF` sort -/
+theorem ev_vfAdd {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (s t : LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.vfAdd ![s, t]) = iVFAdd (ev u x s) (ev u x t) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfAdd
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (![s, t] i)) = iVFAdd (ev u x s) (ev u x t)
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (![s, t] i))
+      = ![ev u x s, ev u x t] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-- the encoding's `vfMul` of the `VF` sort -/
+theorem ev_vfMul {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (s t : LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.vfMul ![s, t]) = iVFMul (ev u x s) (ev u x t) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfMul
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (![s, t] i)) = iVFMul (ev u x s) (ev u x t)
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (![s, t] i))
+      = ![ev u x s, ev u x t] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-- the encoding's `-` of the `VF` sort -/
+theorem ev_vfNeg {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (s : LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.vfNeg ![s]) = iVFNeg (ev u x s) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfNeg
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (![s] i)) = iVFNeg (ev u x s)
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (![s] i)) = ![ev u x s] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-- `vfZero` of the `VF` sort -/
+theorem ev_vfZero {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M) :
+    ev u x (Term.func Fn.vfZero (fun i => i.elim0) : LRV.Term (α ⊕ Fin n)) = iVFZero := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfZero
+      (fun i => Term.realize (L := LRV) (Sum.elim u x)
+        ((fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) i)) = iVFZero
+  rw [show (fun i : Fin 0 => Term.realize (L := LRV) (Sum.elim u x)
+        ((fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) i))
+      = (fun i : Fin 0 => i.elim0) from by
+    funext i
+    exact i.elim0]
+  rfl
+
+/-- `vfOne` of the `VF` sort -/
+theorem ev_vfOne {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M) :
+    ev u x (Term.func Fn.vfOne (fun i => i.elim0) : LRV.Term (α ⊕ Fin n)) = iVFOne := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfOne
+      (fun i => Term.realize (L := LRV) (Sum.elim u x)
+        ((fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) i)) = iVFOne
+  rw [show (fun i : Fin 0 => Term.realize (L := LRV) (Sum.elim u x)
+        ((fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) i))
+      = (fun i : Fin 0 => i.elim0) from by
+    funext i
+    exact i.elim0]
+  rfl
+
+/-! ## 2. A well-sorted `VF`-term evaluates into the `VF` sort -/
+
+section SortMem
+
+variable [hM : M ⊨ Axioms.ACVF] {α : Type} {sα : α → SortTag} {n : ℕ} {sn : Fin n → SortTag}
+
+/-- **The sort discipline on terms.**  A well-sorted `VF`-sorted term evaluates, at a tuple of
+the declared sorts, to an element of the `VF` sort.  (Only the `VF` half is provable from the
+frozen axioms: no axiom of `ACVF` says that `kAdd`/`kNeg` of two `RV`-elements is again an
+`RV`-element, so the `RV` half of the analogous statement is *not* available.  It is not needed
+below, where every atom is read through `iRv` or through a `VF`-term.) -/
+theorem tmSort_vf_mem (t : LRV.Term (α ⊕ Fin n)) (h : TmSort sα sn t = some .vf)
+    (u : α → M) (x : Fin n → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (hx : ∀ i, sn i = .vf → iVF (x i)) : iVF (ev u x t) := by
+  induction t with
+  | var v =>
+    cases v with
+    | inl a =>
+      have h' : sα a = .vf := Option.some.inj h
+      simpa [ev] using hu a h'
+    | inr i =>
+      have h' : sn i = .vf := Option.some.inj h
+      simpa [ev] using hx i h'
+  | func f ts ih =>
+    cases f with
+    | vfZero =>
+      have hts : ts = (fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) :=
+        funext fun i => i.elim0
+      rw [hts, ev_vfZero]
+      exact vf_zero_mem hM
+    | vfOne =>
+      have hts : ts = (fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) :=
+        funext fun i => i.elim0
+      rw [hts, ev_vfOne]
+      exact vf_one_mem hM
+    | vfAdd =>
+      have hts : ts = ![ts 0, ts 1] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h ⊢
+      rw [tmSort_vfAdd] at h
+      obtain ⟨h0, h1⟩ := h
+      rw [ev_vfAdd]
+      exact vf_add_mem hM (ih 0 h0) (ih 1 h1)
+    | vfNeg =>
+      have hts : ts = ![ts 0] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h ⊢
+      rw [tmSort_vfNeg] at h
+      rw [ev_vfNeg]
+      exact vf_neg_mem hM (ih 0 h)
+    | vfMul =>
+      have hts : ts = ![ts 0, ts 1] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h ⊢
+      rw [tmSort_vfMul] at h
+      obtain ⟨h0, h1⟩ := h
+      rw [ev_vfMul]
+      exact vf_mul_mem hM (ih 0 h0) (ih 1 h1)
+    | rvOne => simp [TmSort, Fn.resSort] at h
+    | rvZero => simp [TmSort, Fn.resSort] at h
+    | rvMul => simp [TmSort, Fn.resSort] at h
+    | kAdd => simp [TmSort, Fn.resSort] at h
+    | kNeg => simp [TmSort, Fn.resSort] at h
+    | rvMap => simp [TmSort, Fn.resSort] at h
+
+end SortMem
+
+/-! ## 3. A well-sorted `VF`-term is a polynomial in a designated variable -/
+
+section Pt
+
+variable [LRV.Structure M]
+
+/-- An element of the `VF` sort, as an element of the field `VFType` of the model.
+
+Named so that no `Subtype` literal appears inside the polynomial constructions below: with a
+literal, `Polynomial.C ⟨a, h⟩` does not re-elaborate after a `simp only [polyOf]` unfolds the
+definition (`{x // iVF x}` is then not seen as `VFType` at the instance transparency level). -/
+def vfOf (a : M) (h : iVF a) : VFType (M := M) := ⟨a, h⟩
+
+theorem vfOf_val (a : M) (h : iVF a) : (vfOf a h).1 = a := rfl
+
+theorem vfOf_inj {a b : M} (ha : iVF a) (hb : iVF b) : vfOf a ha = vfOf b hb ↔ a = b := by
+  constructor
+  · intro h
+    have := congrArg Subtype.val h
+    simpa [vfOf] using this
+  · rintro rfl
+    rfl
+
+/-- The designated variable's value, as an element of the field `VFType`. -/
+abbrev pt {n : ℕ} (x : Fin n → M) (i₀ : Fin n) (h : iVF (x i₀)) : VFType (M := M) :=
+  vfOf (x i₀) h
+
+theorem pt_val {n : ℕ} (x : Fin n → M) (i₀ : Fin n) (h : iVF (x i₀)) :
+    (pt x i₀ h).1 = x i₀ := rfl
+
+end Pt
+
+section Poly
+
+variable [hM : M ⊨ Axioms.ACVF]
+
+attribute [local instance] vfFieldOfModel
+
+/-- the ring operations of `VFType` are the encoding's `VF` symbols, in the carrier -/
+theorem pt_add (a b : VFType (M := M)) : (a + b).1 = iVFAdd a.1 b.1 := rfl
+
+theorem pt_mul (a b : VFType (M := M)) : (a * b).1 = iVFMul a.1 b.1 := rfl
+
+theorem pt_neg (a : VFType (M := M)) : (-a).1 = iVFNeg a.1 := rfl
+
+theorem pt_zero : ((0 : VFType (M := M))).1 = iVFZero := rfl
+
+theorem pt_one : ((1 : VFType (M := M))).1 = iVFOne := rfl
+
+/-- **`polyOf u hu x hx i₀ t`**: the polynomial in the variable `x i₀` that the `VF`-term `t`
+denotes, with the parameters `u a` and the other coordinates `x i` as its coefficients.
+
+Junk (`0`) at variables of the `RV` sort and at the `RV`-sorted function symbols; a well-sorted
+`VF`-term never reads those (`eval_polyOf`). -/
+noncomputable def polyOf {α : Type} {n : ℕ} {sα : α → SortTag} {sn : Fin n → SortTag}
+    (u : α → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (x : Fin n → M) (hx : ∀ i, sn i = .vf → iVF (x i)) (i₀ : Fin n) :
+    LRV.Term (α ⊕ Fin n) → Polynomial (VFType (M := M))
+  | Term.var (Sum.inl a) =>
+      if h : sα a = .vf then Polynomial.C (vfOf (u a) (hu a h)) else 0
+  | Term.var (Sum.inr i) =>
+      if h : sn i = .vf then
+        (if i = i₀ then Polynomial.X else Polynomial.C (vfOf (x i) (hx i h)))
+      else 0
+  | Term.func Fn.vfZero _ => 0
+  | Term.func Fn.vfOne _ => 1
+  | Term.func Fn.vfAdd ts => polyOf u hu x hx i₀ (ts 0) + polyOf u hu x hx i₀ (ts 1)
+  | Term.func Fn.vfNeg ts => - polyOf u hu x hx i₀ (ts 0)
+  | Term.func Fn.vfMul ts => polyOf u hu x hx i₀ (ts 0) * polyOf u hu x hx i₀ (ts 1)
+  | _ => 0
+
+/-- **The bridge, in `VFType`.**  A well-sorted `VF`-sorted term of `L_RV`, evaluated at a
+parameter tuple `u` and a variable tuple `x`, is the value at `x i₀` of its polynomial
+`polyOf`. -/
+theorem eval_polyOf_VF (t : LRV.Term (α ⊕ Fin n)) (h : TmSort sα sn t = some .vf)
+    (u : α → M) (x : Fin n → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (hx : ∀ i, sn i = .vf → iVF (x i)) (i₀ : Fin n) (h₀ : sn i₀ = .vf) :
+    (polyOf u hu x hx i₀ t).eval (pt x i₀ (hx i₀ h₀))
+      = vfOf (ev u x t) (tmSort_vf_mem t h u x hu hx) := by
+  induction t with
+  | var v =>
+    cases v with
+    | inl a =>
+      have ha : sα a = .vf := Option.some.inj h
+      simp only [polyOf, ev, Term.realize_var, Sum.elim_inl]
+      rw [dif_pos ha]
+      simp only [Polynomial.eval_C]
+    | inr i =>
+      have hi : sn i = .vf := Option.some.inj h
+      simp only [polyOf, ev, Term.realize_var, Sum.elim_inr]
+      rw [dif_pos hi]
+      by_cases hii : i = i₀
+      · subst hii
+        rw [if_pos rfl]
+        simp only [Polynomial.eval_X]
+      · rw [if_neg hii]
+        simp only [Polynomial.eval_C]
+  | func f ts ih =>
+    cases f with
+    | vfZero =>
+      have hts : ts = (fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) :=
+        funext fun i => i.elim0
+      rw [hts]
+      simp only [polyOf, ev_vfZero, Polynomial.eval_zero]
+      apply Subtype.ext
+      rfl
+    | vfOne =>
+      have hts : ts = (fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) :=
+        funext fun i => i.elim0
+      rw [hts]
+      simp only [polyOf, ev_vfOne, Polynomial.eval_one]
+      apply Subtype.ext
+      rfl
+    | vfAdd =>
+      have hts : ts = ![ts 0, ts 1] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h
+      rw [tmSort_vfAdd] at h
+      obtain ⟨h0, h1⟩ := h
+      simp only [polyOf, ev_vfAdd_ts, Polynomial.eval_add, ih 0 h0, ih 1 h1]
+      rfl
+    | vfNeg =>
+      have hts : ts = ![ts 0] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h
+      rw [tmSort_vfNeg] at h
+      simp only [polyOf, ev_vfNeg_ts, Polynomial.eval_neg, ih 0 h]
+      rfl
+    | vfMul =>
+      have hts : ts = ![ts 0, ts 1] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h
+      rw [tmSort_vfMul] at h
+      obtain ⟨h0, h1⟩ := h
+      simp only [polyOf, ev_vfMul_ts, Polynomial.eval_mul, ih 0 h0, ih 1 h1]
+      rfl
+    | rvOne => simp [TmSort, Fn.resSort] at h
+    | rvZero => simp [TmSort, Fn.resSort] at h
+    | rvMul => simp [TmSort, Fn.resSort] at h
+    | kAdd => simp [TmSort, Fn.resSort] at h
+    | kNeg => simp [TmSort, Fn.resSort] at h
+    | rvMap => simp [TmSort, Fn.resSort] at h
+
+/-- **The bridge**, in the carrier.  A well-sorted `VF`-sorted term of `L_RV`, evaluated at a
+parameter tuple `u` and a variable tuple `x`, is the value at `x i₀` of its polynomial
+`polyOf`. -/
+theorem eval_polyOf (t : LRV.Term (α ⊕ Fin n)) (h : TmSort sα sn t = some .vf)
+    (u : α → M) (x : Fin n → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (hx : ∀ i, sn i = .vf → iVF (x i)) (i₀ : Fin n) (h₀ : sn i₀ = .vf) :
+    ((polyOf u hu x hx i₀ t).eval (pt x i₀ (hx i₀ h₀))).1 = ev u x t := by
+  rw [eval_polyOf_VF t h u x hu hx i₀ h₀]
+  exact vfOf_val _ _
+
+end Poly
+
+/-! ## 3b. Evaluation of the `RV`-sorted symbols -/
+
+/-- the encoding's `1` of the `RV` sort -/
+theorem ev_rvOne {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M) :
+    ev u x (Term.func Fn.rvOne (fun i => i.elim0) : LRV.Term (α ⊕ Fin n)) = iRVOne := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvOne
+      (fun i => Term.realize (L := LRV) (Sum.elim u x)
+        ((fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) i)) = iRVOne
+  rw [show (fun i : Fin 0 => Term.realize (L := LRV) (Sum.elim u x)
+        ((fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) i))
+      = (fun i : Fin 0 => i.elim0) from by
+    funext i
+    exact i.elim0]
+  rfl
+
+/-- the encoding's `0` of the `RV` sort (the paper's `∞`) -/
+theorem ev_rvZero {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M) :
+    ev u x (Term.func Fn.rvZero (fun i => i.elim0) : LRV.Term (α ⊕ Fin n)) = iRVZero := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvZero
+      (fun i => Term.realize (L := LRV) (Sum.elim u x)
+        ((fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) i)) = iRVZero
+  rw [show (fun i : Fin 0 => Term.realize (L := LRV) (Sum.elim u x)
+        ((fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) i))
+      = (fun i : Fin 0 => i.elim0) from by
+    funext i
+    exact i.elim0]
+  rfl
+
+/-- the encoding's `×` of the `RV` sort -/
+theorem ev_rvMul_ts {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (ts : Fin 2 → LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.rvMul ts) = iRVMul (ev u x (ts 0)) (ev u x (ts 1)) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvMul
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i))
+    = iRVMul (ev u x (ts 0)) (ev u x (ts 1))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i))
+      = ![ev u x (ts 0), ev u x (ts 1)] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-- the encoding's `+` of the `RV` sort (the residue field's addition) -/
+theorem ev_kAdd_ts {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (ts : Fin 2 → LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.kAdd ts) = iKAdd (ev u x (ts 0)) (ev u x (ts 1)) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.kAdd
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i))
+    = iKAdd (ev u x (ts 0)) (ev u x (ts 1))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i))
+      = ![ev u x (ts 0), ev u x (ts 1)] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-- the encoding's unary `-` of the `RV` sort -/
+theorem ev_kNeg_ts {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (ts : Fin 1 → LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.kNeg ts) = TrivCase.iKNeg (ev u x (ts 0)) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.kNeg
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i)) = TrivCase.iKNeg (ev u x (ts 0))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i)) = ![ev u x (ts 0)] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-- the projection `rv : VF → RV` -/
+theorem ev_rvMap_ts {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (ts : Fin 1 → LRV.Term (α ⊕ Fin n)) :
+    ev u x (Term.func Fn.rvMap ts) = iRv (ev u x (ts 0)) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvMap
+      (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i)) = iRv (ev u x (ts 0))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim u x) (ts i)) = ![ev u x (ts 0)] from by
+    funext i
+    fin_cases i <;> rfl]
+  rfl
+
+/-! ## 4. The atoms of the quantifier-free fragment, at `VF`-terms
+
+Each atom whose terms are `VF`-sorted becomes a condition on the polynomials `polyOf`, i.e. a
+condition on elements of the field `VFType` and their `rv`-images.  These are the inputs a cell
+decomposition (`Milestone0/Balls.lean`, `Poly`/root analysis) consumes: the sorting discipline of
+the atoms is discharged here, once, and never again. -/
+
+section Atoms
+
+variable [hM : M ⊨ Axioms.ACVF] {α : Type} {sα : α → SortTag} {n : ℕ} {sn : Fin n → SortTag}
+
+/-- the `VF`-sort predicate at a `VF`-term is true at a tuple of the declared sorts -/
+theorem atom_vf (t : LRV.Term (α ⊕ Fin n)) (h : TmSort sα sn t = some .vf)
+    (u : α → M) (x : Fin n → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (hx : ∀ i, sn i = .vf → iVF (x i)) : iVF (ev u x t) :=
+  tmSort_vf_mem t h u x hu hx
+
+/-- the `RV`-sort predicate at `rv` of a `VF`-term is true at a tuple of the declared sorts -/
+theorem atom_rv (t : LRV.Term (α ⊕ Fin n)) (h : TmSort sα sn t = some .vf)
+    (u : α → M) (x : Fin n → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (hx : ∀ i, sn i = .vf → iVF (x i)) : iRV (iRv (ev u x t)) :=
+  rv_mem hM (tmSort_vf_mem t h u x hu hx)
+
+/-- **The `VF`-equality atom**: two `VF`-terms agree iff their polynomials have the same value. -/
+theorem atom_eq_iff {t₁ t₂ : LRV.Term (α ⊕ Fin n)} (h₁ : TmSort sα sn t₁ = some .vf)
+    (h₂ : TmSort sα sn t₂ = some .vf) (u : α → M) (x : Fin n → M)
+    (hu : ∀ a, sα a = .vf → iVF (u a)) (hx : ∀ i, sn i = .vf → iVF (x i))
+    (i₀ : Fin n) (h₀ : sn i₀ = .vf) :
+    (ev u x t₁ = ev u x t₂) ↔
+      ((polyOf u hu x hx i₀ t₁).eval (pt x i₀ (hx i₀ h₀))
+        = (polyOf u hu x hx i₀ t₂).eval (pt x i₀ (hx i₀ h₀))) := by
+  rw [eval_polyOf_VF t₁ h₁ u x hu hx i₀ h₀, eval_polyOf_VF t₂ h₂ u x hu hx i₀ h₀]
+  exact (vfOf_inj _ _).symm
+
+/-- **The `rv`-equality atom** `rv s = rv t`. -/
+theorem atom_rvEq_iff {t₁ t₂ : LRV.Term (α ⊕ Fin n)} (h₁ : TmSort sα sn t₁ = some .vf)
+    (h₂ : TmSort sα sn t₂ = some .vf) (u : α → M) (x : Fin n → M)
+    (hu : ∀ a, sα a = .vf → iVF (u a)) (hx : ∀ i, sn i = .vf → iVF (x i))
+    (i₀ : Fin n) (h₀ : sn i₀ = .vf) :
+    (iRv (ev u x t₁) = iRv (ev u x t₂)) ↔
+      (iRv (((polyOf u hu x hx i₀ t₁).eval (pt x i₀ (hx i₀ h₀))).1)
+        = iRv (((polyOf u hu x hx i₀ t₂).eval (pt x i₀ (hx i₀ h₀))).1)) := by
+  rw [eval_polyOf t₁ h₁ u x hu hx i₀ h₀, eval_polyOf t₂ h₂ u x hu hx i₀ h₀]
+
+/-- **The `RV`-preorder atom** `rv s ≤ rv t`. -/
+theorem atom_le_iff {t₁ t₂ : LRV.Term (α ⊕ Fin n)} (h₁ : TmSort sα sn t₁ = some .vf)
+    (h₂ : TmSort sα sn t₂ = some .vf) (u : α → M) (x : Fin n → M)
+    (hu : ∀ a, sα a = .vf → iVF (u a)) (hx : ∀ i, sn i = .vf → iVF (x i))
+    (i₀ : Fin n) (h₀ : sn i₀ = .vf) :
+    (iLe (iRv (ev u x t₁)) (iRv (ev u x t₂))) ↔
+      (iLe (iRv (((polyOf u hu x hx i₀ t₁).eval (pt x i₀ (hx i₀ h₀))).1))
+        (iRv (((polyOf u hu x hx i₀ t₂).eval (pt x i₀ (hx i₀ h₀))).1))) := by
+  rw [eval_polyOf t₁ h₁ u x hu hx i₀ h₀, eval_polyOf t₂ h₂ u x hu hx i₀ h₀]
+
+/-- **The units atom** `rv s ∈ Kˣ`. -/
+theorem atom_units_iff {t : LRV.Term (α ⊕ Fin n)} (h : TmSort sα sn t = some .vf)
+    (u : α → M) (x : Fin n → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (hx : ∀ i, sn i = .vf → iVF (x i)) (i₀ : Fin n) (h₀ : sn i₀ = .vf) :
+    iUnits (iRv (ev u x t)) ↔
+      iUnits (iRv (((polyOf u hu x hx i₀ t).eval (pt x i₀ (hx i₀ h₀))).1)) := by
+  rw [eval_polyOf t h u x hu hx i₀ h₀]
+
+end Atoms
+
+/-! ## 5. Axiom footprints -/
+
+#print axioms Smw18pb0w.M1.ev_var_inl
+#print axioms Smw18pb0w.M1.ev_vfAdd
+#print axioms Smw18pb0w.M1.tmSort_vf_mem
+#print axioms Smw18pb0w.M1.polyOf
+#print axioms Smw18pb0w.M1.eval_polyOf_VF
+#print axioms Smw18pb0w.M1.eval_polyOf
+#print axioms Smw18pb0w.M1.atom_vf
+#print axioms Smw18pb0w.M1.atom_rv
+#print axioms Smw18pb0w.M1.atom_eq_iff
+#print axioms Smw18pb0w.M1.atom_rvEq_iff
+#print axioms Smw18pb0w.M1.atom_le_iff
+#print axioms Smw18pb0w.M1.atom_units_iff
+
+end Smw18pb0w.M1
+
+/-! ===== merged from .ultramath/smw18pb0w/m1/RVSort.lean ===== -/
+/-
+  m1 / direction d4, second half: the `RV` half of the sort discipline on terms.
+
+  `Syntax.lean` proves that a well-sorted `VF`-sorted term evaluates into the `VF` sort.  Here
+  the same for the `RV` sort, which needs the repaired axioms `kJunkZero`, `kNegJunkZero`
+  (members of `Axioms.ACVF`): without them `kAdd` of two `RV`-elements outside `K` is
+  unconstrained, and the atom `t ∈ RV` at an `RV`-term would not be trivially true.
+-/
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+namespace Smw18pb0w.M1
+
+variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
+
+/-! ## 1. The `RV` symbols preserve the `RV` sort -/
+
+theorem iRV_rvOne_mem : iRV (iRVOne (M := M)) :=
+  TrivCase.rv_of_units hM (TrivCase.iUnits_rvOne hM)
+
+theorem iRV_rvMul_mem {a b : M} (ha : iRV a) (hb : iRV b) : iRV (iRVMul a b) := by
+  have hmem : Axioms.sdRVMul ∈ Axioms.ACVF :=
+    Transfer.mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+  have h := allSorted_realize hM hmem ![a, b] (by
+    intro i
+    fin_cases i <;> simp [ha, hb])
+  simpa [Transfer.pRVsort_realize, Transfer.realize_tRVMul, Matrix.cons_val_zero,
+    Matrix.cons_val_one] using h
+
+/-- the semantic form of `Axioms.kJunkZero`: `kAdd` of arguments outside `K` is junk `0` -/
+theorem kAdd_junk_zero {a b : M} (ha : iRV a) (hb : iRV b)
+    (hK : ¬(iUnits a ∨ a = iRVZero) ∨ ¬(iUnits b ∨ b = iRVZero)) : iKAdd a b = iRVZero := by
+  have hmem : Axioms.kJunkZero ∈ Axioms.ACVF := by
+    simp [Axioms.ACVF, Axioms.ACVFpaper, Axioms.repairRV, Axioms.ofList]
+  have h' := allSorted_realize hM hmem ![a, b] (by
+    intro i
+    fin_cases i <;> simp [ha, hb])
+  simp only [Axioms.kJunkZero, BoundedFormula.realize_imp, BoundedFormula.realize_sup,
+    BoundedFormula.realize_not, TrivCase.pInK_realize, pEq, BoundedFormula.realize_bdEqual,
+    TrivCase.realize_tKAdd, Transfer.realize_tRVZero, realize_tv, Term.realize_var,
+    Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons] at h'
+  exact h' hK
+
+theorem iRV_kAdd_mem {a b : M} (ha : iRV a) (hb : iRV b) : iRV (iKAdd a b) := by
+  by_cases h1 : iUnits a ∨ a = iRVZero
+  · by_cases h2 : iUnits b ∨ b = iRVZero
+    · exact TrivCase.iRV_of_inK hM (TrivCase.inK_kAdd hM h1 h2)
+    · rw [kAdd_junk_zero ha hb (Or.inr h2)]
+      exact TrivCase.iRV_rvZero hM
+  · rw [kAdd_junk_zero ha hb (Or.inl h1)]
+    exact TrivCase.iRV_rvZero hM
+
+theorem iRV_kNeg_mem {a : M} (ha : iRV a) : iRV (TrivCase.iKNeg a) := by
+  by_cases h1 : iUnits a ∨ a = iRVZero
+  · exact TrivCase.iRV_of_inK hM (TrivCase.inK_kNeg hM h1)
+  · have hmem : Axioms.kNegJunkZero ∈ Axioms.ACVF := by
+      simp [Axioms.ACVF, Axioms.ACVFpaper, Axioms.repairRV, Axioms.ofList]
+    have h' := allSorted_realize hM hmem ![a] (by
+      intro i
+      fin_cases i
+      simpa using ha)
+    simp only [Axioms.kNegJunkZero, BoundedFormula.realize_imp, BoundedFormula.realize_not,
+      TrivCase.pInK_realize, pEq, BoundedFormula.realize_bdEqual, TrivCase.realize_tKNeg,
+      Transfer.realize_tRVZero, realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply,
+      Matrix.cons_val_zero] at h'
+    rw [h' h1]
+    exact TrivCase.iRV_rvZero hM
+
+/-! ## 1b. The sort discipline at `RV`-sorted terms -/
+
+section Terms
+
+variable {α : Type} {sα : α → SortTag} {n : ℕ} {sn : Fin n → SortTag}
+
+/-- **The `RV` half of the sort discipline on terms.**  A well-sorted `RV`-sorted term evaluates,
+at a tuple of the declared sorts, to an element of the `RV` sort.  Unlike the `VF` half
+(`tmSort_vf_mem`) this needs the repaired axioms: `iRV_kAdd_mem`/`iRV_kNeg_mem` above go through
+`kJunkZero`/`kNegJunkZero`, without which `kAdd` of two `RV`-elements outside `K` need not be an
+`RV`-element at all. -/
+theorem tmSort_rv_mem (t : LRV.Term (α ⊕ Fin n)) (h : TmSort sα sn t = some .rv)
+    (u : α → M) (x : Fin n → M)
+    (huV : ∀ a, sα a = .vf → iVF (u a)) (huR : ∀ a, sα a = .rv → iRV (u a))
+    (hxV : ∀ i, sn i = .vf → iVF (x i)) (hxR : ∀ i, sn i = .rv → iRV (x i)) :
+    iRV (ev u x t) := by
+  induction t with
+  | var v =>
+    cases v with
+    | inl a =>
+      have h' : sα a = .rv := Option.some.inj h
+      simpa [ev] using huR a h'
+    | inr i =>
+      have h' : sn i = .rv := Option.some.inj h
+      simpa [ev] using hxR i h'
+  | func f ts ih =>
+    cases f with
+    | rvOne =>
+      have hts : ts = (fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) :=
+        funext fun i => i.elim0
+      rw [hts, ev_rvOne]
+      exact iRV_rvOne_mem
+    | rvZero =>
+      have hts : ts = (fun i => i.elim0 : Fin 0 → LRV.Term (α ⊕ Fin n)) :=
+        funext fun i => i.elim0
+      rw [hts, ev_rvZero]
+      exact TrivCase.iRV_rvZero hM
+    | rvMul =>
+      have hts : ts = ![ts 0, ts 1] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h
+      rw [tmSort_rvMul] at h
+      obtain ⟨h0, h1⟩ := h
+      rw [ev_rvMul_ts]
+      exact iRV_rvMul_mem (ih 0 h0) (ih 1 h1)
+    | kAdd =>
+      have hts : ts = ![ts 0, ts 1] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h
+      rw [tmSort_kAdd] at h
+      obtain ⟨h0, h1⟩ := h
+      rw [ev_kAdd_ts]
+      exact iRV_kAdd_mem (ih 0 h0) (ih 1 h1)
+    | kNeg =>
+      have hts : ts = ![ts 0] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h
+      rw [tmSort_kNeg] at h
+      rw [ev_kNeg_ts]
+      exact iRV_kNeg_mem (ih 0 h)
+    | rvMap =>
+      have hts : ts = ![ts 0] := by funext i; fin_cases i <;> rfl
+      rw [hts] at h
+      rw [tmSort_tRv] at h
+      rw [ev_rvMap_ts]
+      exact rv_mem hM (tmSort_vf_mem (ts 0) h u x huV hxV)
+    | vfZero => simp [TmSort, Fn.resSort] at h
+    | vfOne => simp [TmSort, Fn.resSort] at h
+    | vfAdd => simp [TmSort, Fn.resSort] at h
+    | vfNeg => simp [TmSort, Fn.resSort] at h
+    | vfMul => simp [TmSort, Fn.resSort] at h
+
+end Terms
+
+/-! ## 2. Axiom footprints -/
+
+#print axioms Smw18pb0w.M1.iRV_rvOne_mem
+#print axioms Smw18pb0w.M1.iRV_rvMul_mem
+#print axioms Smw18pb0w.M1.tmSort_rv_mem
+#print axioms Smw18pb0w.M1.kAdd_junk_zero
+#print axioms Smw18pb0w.M1.iRV_kAdd_mem
+#print axioms Smw18pb0w.M1.iRV_kNeg_mem
+
+end Smw18pb0w.M1
+
+/-! ===== merged from .ultramath/smw18pb0w/m1/QFFrame.lean ===== -/
+/-
+  m1 / direction d4: the quantifier-free induction frame.
+
+  `IsCMinimal` (and `Downstream.isBoolComb_of_HasQEws`) need: *every quantifier-free well-sorted
+  formula with one free `VF`-variable defines a Boolean combination of balls*.  This file does the
+  whole syntactic induction and leaves exactly the **atomic** case as a hypothesis — one case per
+  relation symbol, at `VF`-terms.  The atoms are then supplied by `Syntax.lean`'s dictionary
+  (`atom_eq_iff`, `atom_rvEq_iff`, `atom_le_iff`, `atom_units_iff`) plus the cell decomposition
+  over `polyOf`.
+-/
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+namespace Smw18pb0w.M1
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 1. The Boolean algebra of `IsBoolComb` -/
+
+section BoolAlgebra
+
+variable {B : Set (Set M)}
+
+theorem isBoolComb_empty : IsBoolComb B (∅ : Set M) := by
+  have h : IsBoolComb B (Set.univᶜ : Set M) := IsBoolComb.univ.compl
+  simpa using h
+
+theorem isBoolComb_univ : IsBoolComb B (Set.univ : Set M) := IsBoolComb.univ
+
+theorem isBoolComb_inter {s t : Set M} (hs : IsBoolComb B s) (ht : IsBoolComb B t) :
+    IsBoolComb B (s ∩ t) := by
+  have h : s ∩ t = (sᶜ ∪ tᶜ)ᶜ := by
+    ext x
+    simp only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_union, not_or]
+    tauto
+  rw [h]
+  exact (hs.compl.union ht.compl).compl
+
+theorem isBoolComb_diff {s t : Set M} (hs : IsBoolComb B s) (ht : IsBoolComb B t) :
+    IsBoolComb B (s \ t) := by
+  rw [Set.sdiff_eq]
+  exact isBoolComb_inter hs ht.compl
+
+end BoolAlgebra
+
+/-! ## 2. The induction -/
+
+section Frame
+
+variable {α : Type} (sα : α → SortTag) (u : α → M)
+
+/-- the implication step, stated with the two subformulas as explicit binders -/
+theorem isBoolComb_imp {φ₁ φ₂ : LRV.BoundedFormula α 1}
+    (i1 : IsBoolComb {b : Set M | IsBall b} {x : M | iVF x ∧ φ₁.Realize u (fun _ => x)})
+    (i2 : IsBoolComb {b : Set M | IsBall b} {x : M | iVF x ∧ φ₂.Realize u (fun _ => x)}) :
+    IsBoolComb {b : Set M | IsBall b}
+      {x : M | iVF x ∧ (φ₁.imp φ₂).Realize u (fun _ => x)} := by
+  have hset : {x : M | iVF x ∧ (φ₁.imp φ₂).Realize u (fun _ => x)}
+      = {x : M | iVF x} ∩
+        ({x : M | iVF x ∧ φ₁.Realize u (fun _ => x)}ᶜ ∪
+          {x : M | iVF x ∧ φ₂.Realize u (fun _ => x)}) := by
+    ext x
+    simp only [Set.mem_setOf_eq, BoundedFormula.realize_imp, Set.mem_inter_iff, Set.mem_union,
+      Set.mem_compl_iff]
+    tauto
+  rw [hset]
+  exact isBoolComb_inter (IsBoolComb.basic (Or.inl rfl)) (i1.compl.union i2)
+
+/-- **The frame.**  If every atomic formula of `L_RV` whose variables are all of the `VF` sort
+defines a Boolean combination of balls, then so does every quantifier-free well-sorted formula
+with one free `VF`-variable.  The induction is on `BoundedFormula.IsQF`; `WellSorted` is used only
+at the atomic case, and the quantifier case cannot occur (`BoundedFormula.not_all_isQF`). -/
+theorem isBoolComb_of_isQF (φ : LRV.BoundedFormula α 1) (hQF : φ.IsQF)
+    (hWS : WellSorted sα (fun _ => .vf) φ)
+    (hatom : ∀ (a : LRV.BoundedFormula α 1), a.IsAtomic →
+      WellSorted sα (fun _ => .vf) a →
+      IsBoolComb {b : Set M | IsBall b} {x : M | iVF x ∧ a.Realize u (fun _ => x)}) :
+    IsBoolComb {b : Set M | IsBall b} {x : M | iVF x ∧ φ.Realize u (fun _ => x)} := by
+  induction hQF with
+  | falsum =>
+    have hset : {x : M | iVF x ∧ (BoundedFormula.falsum : LRV.BoundedFormula α 1).Realize u
+        (fun _ => x)} = ∅ := by
+      ext x
+      constructor
+      · rintro ⟨-, h⟩
+        exact h
+      · intro h
+        exact h.elim
+    rw [hset]
+    exact isBoolComb_empty
+  | of_isAtomic ha => exact hatom _ ha hWS
+  | imp h1 h2 ih1 ih2 =>
+    cases hWS with
+    | imp _ hw1 hw2 =>
+      exact isBoolComb_imp (u := u) (ih1 hw1) (ih2 hw2)
+
+end Frame
+
+/-! ## 3. Axiom footprint -/
+
+#print axioms Smw18pb0w.M1.isBoolComb_empty
+#print axioms Smw18pb0w.M1.isBoolComb_inter
+#print axioms Smw18pb0w.M1.isBoolComb_diff
+#print axioms Smw18pb0w.M1.isBoolComb_imp
+#print axioms Smw18pb0w.M1.isBoolComb_of_isQF
+
+end Smw18pb0w.M1
+
+/-! ===== merged from .ultramath/smw18pb0w/m1/Glue.lean ===== -/
+/-
+  m1 / direction d4: the frame instantiated at the shape `Downstream.isBoolComb_of_HasQEws` uses.
+
+  `isBoolComb_of_HasQEws` (in `QE/Assembly_val.lean`) carries the quantifier-free half as
+
+    `hQF : ∀ (ψ : Bf 1), ψ.IsQF → WellSorted (fun _ => .vf) ψ →
+        IsBoolComb {b | IsBall b} {x : M | iVF x ∧ ψ.Realize (default : Empty → M) ![x]}`
+
+  This file proves `hQF` from the **atomic** case alone, i.e. from the single input a cell
+  decomposition has to supply (`Syntax.lean` reduces each atom further to a polynomial condition).
+-/
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+namespace Smw18pb0w.M1
+
+variable {M : Type} [LRV.Structure M]
+
+/-- `![x]` and the constant tuple agree. -/
+theorem vec_one_eq (x : M) : (fun _ : Fin 1 => x) = ![x] := by
+  funext i
+  fin_cases i
+  rfl
+
+/-- **The quantifier-free half from the atomic case.**  Exactly the `hQF` hypothesis of
+`SpecialTransformations.Milestone0.Downstream.isBoolComb_of_HasQEws`, with the atomic case
+(one hypothesis per atomic formula of the all-`VF` fragment) as the only input. -/
+theorem hQF_of_atom (hatom : ∀ (a : LRV.BoundedFormula Empty 1), a.IsAtomic →
+      WellSorted (fun e : Empty => e.elim) (fun _ => .vf) a →
+      IsBoolComb {b : Set M | IsBall b}
+        {x : M | iVF x ∧ a.Realize (default : Empty → M) ![x]}) :
+    ∀ (ψ : LRV.BoundedFormula Empty 1), ψ.IsQF →
+      WellSorted (fun e : Empty => e.elim) (fun _ => .vf) ψ →
+      IsBoolComb {b : Set M | IsBall b}
+        {x : M | iVF x ∧ ψ.Realize (default : Empty → M) ![x]} := by
+  have hatom' : ∀ (a : LRV.BoundedFormula Empty 1), a.IsAtomic →
+      WellSorted (fun e : Empty => e.elim) (fun _ => .vf) a →
+      IsBoolComb {b : Set M | IsBall b}
+        {x : M | iVF x ∧ a.Realize (default : Empty → M) (fun _ => x)} := by
+    intro a ha hw
+    have h := hatom a ha hw
+    convert h using 2
+    ext x
+    rw [vec_one_eq]
+  intro ψ hQF hWS
+  have h := isBoolComb_of_isQF (sα := fun e : Empty => e.elim) (u := (default : Empty → M))
+    ψ hQF hWS hatom'
+  convert h using 2
+  ext x
+  rw [vec_one_eq]
+
+/-- **Interface check.**  `hQF_of_atom` is *exactly* the `hQF` hypothesis of
+`SpecialTransformations.Milestone0.Downstream.isBoolComb_of_HasQEws` at the sort discipline
+`WS := WellSorted` (i.e. at `Milestone0.Encoding`'s `WellSorted`): the composition below is that
+theorem applied to it.  So `HasQE` + the atomic case gives C-minimality for parameter-free
+well-sorted one-variable formulas.
+
+What this does **not** do: `IsCMinimal` itself quantifies over `A.Definable₁ LRV s` for
+*arbitrary* parameter sets `A` (Mathlib expands parameters into `LRV[[A]]` constants) and over
+ill-sorted formulas; neither is in this file.  It also does not prove the atomic case. -/
+theorem isBoolComb_of_HasQEws_of_atom {T : LRV.Theory}
+    (h : Downstream.HasQEws
+      (fun {n : ℕ} (sn : Fin n → SortTag) (φ : Bf n) =>
+        WellSorted (fun e : Empty => e.elim) sn φ) T)
+    (hatom : ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ T → ∀ (a : Bf 1), a.IsAtomic →
+      WellSorted (fun e : Empty => e.elim) (fun _ => .vf) a →
+      IsBoolComb {b : Set M | IsBall b}
+        {x : M | iVF x ∧ a.Realize (default : Empty → M) ![x]})
+    (φ : Bf 1) (hφ : WellSorted (fun e : Empty => e.elim) (fun _ => .vf) φ) :
+    ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ T →
+      IsBoolComb {b : Set M | IsBall b}
+        {x : M | iVF x ∧ φ.Realize (default : Empty → M) ![x]} :=
+  Downstream.isBoolComb_of_HasQEws h
+    (fun M _ _ hM ψ hQF hWS => hQF_of_atom (hatom M hM) ψ hQF hWS) φ hφ
+
+#print axioms Smw18pb0w.M1.vec_one_eq
+#print axioms Smw18pb0w.M1.hQF_of_atom
+#print axioms Smw18pb0w.M1.isBoolComb_of_HasQEws_of_atom
+
+end Smw18pb0w.M1
+
+/-! ===== merged from .ultramath/smw18pb0w/m1/AssemblyM3.lean ===== -/
+/-
+C-minimality (Theorem 2.8) for the frozen encoding: the assembly.
+
+`import Pre2` where `Pre2.olean` is `QE/Assembly_val.lean` (git be7d3b2) compiled in this
+directory, see `REPORT.md`.
+
+Contents
+1. The Boolean-combination API for `IsBoolComb` (`Milestone0/Encoding.lean`'s inductive).
+2. Balls are subsets of the `VF` sort, hence a Boolean combination of balls is blind outside
+   `VF`; consequently the frozen `IsCMinimal` is *false* in every model of `ACVF` with two
+   `RV`-elements (`not_isCMinimal_of_two_rv`).
+3. The quantifier-free half of C-minimality: `BallsBridge`, the exact input of
+   `Downstream.isBoolComb_of_HasQEws`.
+4. The assembly: `HasQEws WS ACVF` + `BallsBridge` ⇒ C-minimality (in the corrected sense) of
+   every model of `ACVF` for parameter-free well-sorted formulas in one `VF`-variable.
+-/
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+
+set_option autoImplicit false
+set_option linter.unusedSectionVars false
+set_option linter.unusedVariables false
+
+namespace SpecialTransformations
+namespace Milestone0
+namespace CM
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 1. The Boolean algebra generated by a family of subsets -/
+
+section BoolCombAPI
+
+variable {B B' : Set (Set M)} {s t : Set M}
+
+/-- A Boolean combination w.r.t. a smaller family is one w.r.t. a larger family. -/
+theorem IsBoolComb.mono (hBB' : B ⊆ B') (hs : IsBoolComb B s) : IsBoolComb B' s := by
+  induction hs with
+  | basic hb => exact IsBoolComb.basic (hBB' hb)
+  | univ => exact IsBoolComb.univ
+  | compl _ ih => exact ih.compl
+  | union _ _ ih1 ih2 => exact ih1.union ih2
+
+/-- The empty set is a Boolean combination. -/
+theorem isBoolComb_empty : IsBoolComb B (∅ : Set M) := by
+  have h := (IsBoolComb.univ (B := B) : IsBoolComb B (Set.univ : Set M)).compl
+  simpa using h
+
+/-- Intersections. -/
+theorem IsBoolComb.inter (hs : IsBoolComb B s) (ht : IsBoolComb B t) :
+    IsBoolComb B (s ∩ t) := by
+  have h : s ∩ t = (sᶜ ∪ tᶜ)ᶜ := by
+    ext x
+    simp only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_union, not_or, not_not]
+  rw [h]
+  exact (hs.compl.union ht.compl).compl
+
+/-- Differences. -/
+theorem IsBoolComb.diff (hs : IsBoolComb B s) (ht : IsBoolComb B t) :
+    IsBoolComb B (s \ t) := by
+  rw [Set.sdiff_eq]
+  exact IsBoolComb.inter hs (IsBoolComb.compl ht)
+
+/-- Transport along an equality of sets. -/
+theorem IsBoolComb.of_eq (hs : IsBoolComb B s) (h : s = t) : IsBoolComb B t := h ▸ hs
+
+/-- A finite union of Boolean combinations. -/
+theorem isBoolComb_iUnion_finset {ι : Type*} (u : Finset ι) {b : ι → Set M}
+    (hb : ∀ i ∈ u, IsBoolComb B (b i)) : IsBoolComb B (⋃ i ∈ u, b i) := by
+  classical
+  induction u using Finset.induction_on with
+  | empty => simpa using (isBoolComb_empty (B := B))
+  | insert i u hi ih =>
+    have hins : (⋃ j ∈ insert i u, b j) = b i ∪ ⋃ j ∈ u, b j := by
+      ext x
+      simp only [Set.mem_iUnion, Finset.mem_insert, exists_prop, Set.mem_union]
+      constructor
+      · rintro ⟨j, hj | hj, hx⟩
+        · exact Or.inl (hj ▸ hx)
+        · exact Or.inr ⟨j, hj, hx⟩
+      · rintro (hx | ⟨j, hj, hx⟩)
+        · exact ⟨i, Or.inl rfl, hx⟩
+        · exact ⟨j, Or.inr hj, hx⟩
+    rw [hins]
+    exact (hb i (Finset.mem_insert_self i u)).union
+      (ih fun j hj => hb j (Finset.mem_insert_of_mem hj))
+
+/-- A finite set is a Boolean combination as soon as each of its points is. -/
+theorem isBoolComb_of_finite {s : Set M} (hfin : s.Finite)
+    (h : ∀ x ∈ s, IsBoolComb B ({x} : Set M)) : IsBoolComb B s := by
+  classical
+  have hs : s = ⋃ x ∈ hfin.toFinset, ({x} : Set M) := by
+    ext y
+    simp only [Set.mem_iUnion, Set.mem_singleton_iff, exists_prop]
+    constructor
+    · intro hy
+      exact ⟨y, by rwa [hfin.mem_toFinset], rfl⟩
+    · rintro ⟨x, hx, rfl⟩
+      exact hfin.mem_toFinset.mp hx
+  rw [hs]
+  exact isBoolComb_iUnion_finset hfin.toFinset
+    (fun x hx => h x (by rwa [hfin.mem_toFinset] at hx))
+
+end BoolCombAPI
+
+/-! ## 2. Balls lie in the `VF` sort -/
+
+section VFOnly
+
+/-- The `VF` sort as a set. -/
+def vfSet (M : Type) [LRV.Structure M] : Set M := {x | iVF x}
+
+theorem mem_vfSet {x : M} : x ∈ vfSet M ↔ iVF x := Iff.rfl
+
+theorem isBall_subset_vfSet {b : Set M} (hb : IsBall b) : b ⊆ vfSet M := by
+  rcases hb with h | h | h
+  · rw [h]; exact subset_rfl
+  · obtain ⟨a, t, ha, -, -, rfl⟩ := h
+    intro x hx
+    exact hx.1
+  · rcases h with ⟨a, t, ha, -, -, rfl⟩ | ⟨a, ha, rfl⟩
+    · intro x hx
+      exact hx.1
+    · intro x hx
+      exact hx.1
+
+/-- The `VF` sort itself is a ball, so it is a Boolean combination of balls. -/
+theorem isBoolComb_vfSet : IsBoolComb {b | IsBall b} (vfSet M) :=
+  IsBoolComb.basic (Or.inl rfl)
+
+/-- **A Boolean combination of balls is blind outside the `VF` sort**: two points outside `VF`
+are indistinguishable for it. -/
+theorem IsBoolComb.congr_outside {s : Set M}
+    (hs : IsBoolComb {b | IsBall b} s) {y z : M} (hy : ¬ iVF y) (hz : ¬ iVF z) :
+    (y ∈ s ↔ z ∈ s) := by
+  induction hs with
+  | basic hb =>
+    have hsub := isBall_subset_vfSet hb
+    exact ⟨fun h => absurd (hsub h) hy, fun h => absurd (hsub h) hz⟩
+  | univ => exact Iff.rfl
+  | compl _ ih => exact not_congr ih
+  | union _ _ ih1 ih2 => exact or_congr ih1 ih2
+
+end VFOnly
+
+/-! ## 3. The frozen `IsCMinimal` is false in every model of `ACVF` with two `RV`-elements
+
+`Milestone0/Encoding.lean` states
+`IsCMinimal M := ∀ (A : Set M) (s : Set M), A.Definable₁ LRV s → IsBoolComb {b | IsBall b} s`,
+i.e. it quantifies over *all* parametrically definable subsets of the carrier.  But every ball is
+a subset of the `VF` sort (`isBall_subset_vfSet`), so a Boolean combination of balls cannot
+separate two points outside `VF` (`IsBoolComb.congr_outside`).  A singleton `{r}` of an `RV`-element
+is definable over `{r}`, but it is not a Boolean combination of balls as soon as the carrier has a
+second `RV`-element.  Hence the statement as frozen is refutable; the paper's Definition 2.7
+quantifies only over definable subsets of `VF(M)`, and that restriction is what a repair has to
+restore. -/
+
+/-- **`IsCMinimal` fails as soon as two distinct `RV`-elements exist.** -/
+theorem not_isCMinimal_of_two_rv (hM : M ⊨ Axioms.ACVF) {r s : M} (hr : iRV r) (hs : iRV s)
+    (hne : r ≠ s) : ¬ IsCMinimal M := by
+  intro hCM
+  have hrv : ¬ iVF r := Transfer.not_iVF_of_iRV hM hr
+  have hsv : ¬ iVF s := Transfer.not_iVF_of_iRV hM hs
+  -- the singleton `{r}` is definable over `{r}`, hence over `Set.univ`
+  have h1 : ({r} : Set M).Definable₁ LRV {r} :=
+    Set.Definable.singleton_of_mem LRV (Set.mem_singleton r)
+  have hdef : (Set.univ : Set M).Definable₁ LRV {r} :=
+    h1.mono (Set.subset_univ (Set.singleton r))
+  have hb : IsBoolComb {b | IsBall b} ({r} : Set M) := hCM Set.univ {r} hdef
+  have hiff := IsBoolComb.congr_outside hb hrv hsv
+  rw [Set.mem_singleton_iff, Set.mem_singleton_iff] at hiff
+  exact hne (hiff.mp rfl).symm
+
+end CM
+end Milestone0
+end SpecialTransformations
+
+namespace SpecialTransformations
+namespace Milestone0
+namespace CM
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 4. The quantifier-free bridge: the exact input of `Downstream.isBoolComb_of_HasQEws`
+
+`Downstream.isBoolComb_of_HasQEws` (`QE/Assembly_val.lean`, §7) reduces Theorem 2.8 to a single
+quantifier-free statement about the language `L_RV` in one free `VF`-variable.  That statement is
+`BallsBridge` below.  This section
+* states it (`BallsBridge`),
+* reduces it to an atom-by-atom statement (`AtomBridge`, `ballsBridge_of_atomBridge` — proved),
+* carries out the reduction of the `rv`-equality atom to *value comparisons* and *zero sets*
+  (`rv_eq_set_eq`), i.e. the exact form in which the value-only input of direction b1 is consumed.
+-/
+
+/-- Evaluation of a term at the single point `x`. -/
+noncomputable def ev (t : Tm 1) (x : M) : M :=
+  t.realize (Sum.elim (default : Empty → M) ![x])
+
+@[simp] theorem ev_var (x : M) :
+    ev (tv 0 (Nat.lt_succ_self 0) : Tm 1) x = x := rfl
+
+theorem ev_add (a b : Tm 1) (x : M) : ev (tVFAdd a b) x = iVFAdd (ev a x) (ev b x) :=
+  Transfer.realize_tVFAdd _ a b
+
+theorem ev_neg (a : Tm 1) (x : M) : ev (tVFNeg a) x = iVFNeg (ev a x) :=
+  Transfer.realize_tVFNeg _ a
+
+theorem ev_mul (a b : Tm 1) (x : M) : ev (tVFMul a b) x = iVFMul (ev a x) (ev b x) :=
+  Transfer.realize_tVFMul _ a b
+
+theorem ev_rv (a : Tm 1) (x : M) : ev (tRv a) x = iRv (ev a x) :=
+  Transfer.realize_tRv _ a
+
+/-- `t₁ - t₂` as a term. -/
+def tSub (a b : Tm 1) : Tm 1 := tVFAdd a (tVFNeg b)
+
+theorem ev_sub (a b : Tm 1) (x : M) : ev (tSub a b) x = iVFAdd (ev a x) (iVFNeg (ev b x)) := by
+  rw [tSub, ev_add, ev_neg]
+
+/-- **The quantifier-free half of C-minimality**, at a fixed model `M`: every quantifier-free
+formula of `L_RV` with one free variable, restricted to the `VF` sort, defines a finite Boolean
+combination of balls.  This is *literally* the hypothesis `hQF` of
+`Downstream.isBoolComb_of_HasQEws`, minus its abstract sort discipline `WS`. -/
+def BallsBridge (M : Type) [LRV.Structure M] : Prop :=
+  ∀ (ψ : Bf 1), ψ.IsQF →
+    IsBoolComb {b | IsBall b} {x : M | iVF x ∧ ψ.Realize (default : Empty → M) ![x]}
+
+/-- The atom-level form of `BallsBridge`: every atomic formula of `L_RV` in one free variable
+defines, on the `VF` sort, a finite Boolean combination of balls.
+
+**Scope note.**  This quantifies over *all* atomic formulas, ill-sorted ones included.  For an
+ill-sorted atom such as `vfAdd (rv x) 1 ∈ VF` the claim is *false*: `Axioms.ACVF` constrains
+`vfAdd` only at `VF`-arguments, so its value at `RV`-arguments is arbitrary junk, and the set
+`{x : iVF (vfAdd (rv x) 1)}` need not be a Boolean combination of balls.  The honest assembly
+therefore needs the well-sortedness side condition: see §6, `AtomBridgeWS`, and `REPORT.md`. -/
+def AtomBridge (M : Type) [LRV.Structure M] : Prop :=
+  ∀ (a : Bf 1), a.IsAtomic →
+    IsBoolComb {b | IsBall b} {x : M | iVF x ∧ a.Realize (default : Empty → M) ![x]}
+
+/-- The propositional step of the `⟹` case of the Boolean induction. -/
+theorem imp_set_key (a b c : Prop) : (a ∧ (¬(a ∧ b) ∨ (a ∧ c))) ↔ (a ∧ (b → c)) := by
+  constructor
+  · rintro ⟨ha, h | ⟨-, hc⟩⟩
+    · exact ⟨ha, fun hb => absurd ⟨ha, hb⟩ h⟩
+    · exact ⟨ha, fun _ => hc⟩
+  · rintro ⟨ha, hbc⟩
+    by_cases hb : b
+    · exact ⟨ha, Or.inr ⟨ha, hbc hb⟩⟩
+    · exact ⟨ha, Or.inl fun h => hb h.2⟩
+
+/-- **The Boolean induction**: an atom-by-atom bridge gives the quantifier-free bridge.  Nothing
+but the closure of `IsBoolComb` under complement and union, and `realize_imp`, is used. -/
+theorem ballsBridge_of_atomBridge (ha : AtomBridge M) : BallsBridge M := by
+  intro ψ hψ
+  induction hψ with
+  | falsum =>
+    refine IsBoolComb.of_eq isBoolComb_empty ?_
+    ext x
+    exact ⟨fun h => h.elim, fun h => h.2.elim⟩
+  | of_isAtomic hat => exact ha _ hat
+  | imp _ _ ih1 ih2 =>
+    refine IsBoolComb.of_eq
+      (IsBoolComb.inter isBoolComb_vfSet (IsBoolComb.union (IsBoolComb.compl ih1) ih2)) ?_
+    ext x
+    simp only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_union, Set.mem_compl_iff,
+      BoundedFormula.realize_imp, mem_vfSet]
+    exact imp_set_key _ _ _
+
+/-! ## 5. The `rv`-atoms, reduced to value comparisons and zero sets
+
+`Transfer.correctedLink_of_model` is the semantic content of the encoding's residue-equality
+the semantic content of the encoding's residue-equality axiom: for `a, b ∈ VF` with `b ≠ 0`,
+`rv a = rv b ↔ ¬ (v (a - b) ≤ v b)`, i.e. `rv a = rv b ↔ a ∈ openBall b (v b)`.  Composed with
+`rv(0) = ∞` (`Transfer.rv_zero_eq`, `Transfer.rv_eq_infty`) this turns the atom `rv s = rv t` into
+`{s = 0} ∩ {t = 0}` together with a **value comparison** `¬ (v t ≤ v (s - t))`, i.e. exactly the
+kind of set that direction b1's cell decomposition handles.  -/
+
+section RVAtoms
+
+/-- `rv a = ∞ = rv 0` iff `a = 0`, for a `VF`-element `a`. -/
+theorem rv_eq_zero_iff (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iVF a) :
+    iRv a = iRVZero ↔ a = Transfer.iVFZero (M := M) := by
+  constructor
+  · intro h
+    exact Transfer.rv_eq_infty hM ha h
+  · intro h
+    rw [h, Transfer.rv_zero_eq hM]
+
+/-- **The set identity for the `rv`-equality atom.**  For `VF`-valued terms `s`, `t`:
+
+`{x ∈ VF : rv (s x) = rv (t x)}`
+`  = {x ∈ VF : s x = 0 ∧ t x = 0}`
+`    ∪ ({x ∈ VF : t x ≠ 0} ∩ {x ∈ VF : ¬ (v (s x - t x) ≤ v (t x))})`.
+
+The second half is a *value comparison* of the two `VF`-terms `t` and `s - t`, i.e. an atom of the
+value-only language; the first half is a pair of zero sets.  So the `rv`-equality atom is a Boolean
+combination of the two kinds of set that directions b1 (value comparisons) and the term bridge
+(m1) supply. -/
+theorem rv_eq_set_eq (hM : M ⊨ Axioms.ACVF) (s t : Tm 1)
+    (hs : ∀ (x : M), iVF x → iVF (ev s x)) (ht : ∀ (x : M), iVF x → iVF (ev t x)) :
+    {x : M | iVF x ∧ iRv (ev s x) = iRv (ev t x)}
+      = ({x : M | iVF x ∧ ev s x = Transfer.iVFZero (M := M) ∧ ev t x = Transfer.iVFZero (M := M)}
+          ∪ ({x : M | iVF x ∧ ev t x ≠ Transfer.iVFZero (M := M)}
+              ∩ {x : M | iVF x ∧
+                  ¬ iLe (iRv (ev (tSub s t) x)) (iRv (ev t x))})) := by
+  ext x
+  by_cases hx : iVF x
+  · have hsv := hs x hx
+    have htv := ht x hx
+    have hsub : iVF (ev (tSub s t) x) := by
+      rw [ev_sub]
+      exact Transfer.vf_add_mem (M := M) hM hsv (Transfer.vf_neg_mem (M := M) hM htv)
+    simp only [Set.mem_setOf_eq, Set.mem_union, Set.mem_inter_iff, hx, true_and]
+    by_cases ht0 : ev t x = Transfer.iVFZero (M := M)
+    · have hfalse : ¬ (ev t x ≠ Transfer.iVFZero (M := M)) := not_not_intro ht0
+      simp only [hfalse, false_and, or_false]
+      rw [show iRv (ev t x) = iRVZero from (by rw [ht0, Transfer.rv_zero_eq hM])]
+      constructor
+      · intro h
+        exact ⟨(rv_eq_zero_iff (M := M) hM hsv).mp h, ht0⟩
+      · rintro ⟨h1, -⟩
+        rw [h1, Transfer.rv_zero_eq hM]
+    · rw [ev_sub, Transfer.correctedLink_of_model hM hsv htv ht0]
+      simp only [ht0, ne_eq, not_false_eq_true, and_false, false_or, true_and]
+  · simp only [Set.mem_setOf_eq, hx, false_and, Set.mem_union, Set.mem_inter_iff]
+    simp
+
+end RVAtoms
+
+end CM
+end Milestone0
+end SpecialTransformations
+
+namespace SpecialTransformations
+namespace Milestone0
+namespace CM
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 6. The `rv`-equality atom from a value bridge and a zero-set bridge
+
+The two kinds of atomic set that the paper's quantifier-free fragment needs, in the value-only
+language, are
+
+* `ValueBridge`: the value comparison `v (s x) ≤ v (t x)` (i.e. `iLe (rv (t x)) (rv (s x))` in
+  the encoding), and
+* `ZeroBridge`: the zero set of a `VF`-term.
+
+`rv_eq_atom_of_bridges` shows that the `rv`-equality atom follows from them, which is the precise
+sense in which the `RV`-atoms reduce to direction b1's cell decomposition. -/
+
+/-- Value comparisons of `VF`-valued terms define Boolean combinations of balls.  This is the
+input of direction b1 (the finite cell decomposition by roots and by the value order). -/
+def ValueBridge (M : Type) [LRV.Structure M] : Prop :=
+  ∀ (a b : Tm 1), (∀ (x : M), iVF x → iVF (ev a x)) → (∀ (x : M), iVF x → iVF (ev b x)) →
+    IsBoolComb {b' | IsBall b'} {x : M | iVF x ∧ iLe (iRv (ev a x)) (iRv (ev b x))}
+
+/-- Zero sets of `VF`-valued terms define Boolean combinations of balls.  (A nonzero polynomial has
+finitely many roots, and the singleton is a ball; this is the term bridge `m1` + `Balls.lean`.) -/
+def ZeroBridge (M : Type) [LRV.Structure M] : Prop :=
+  ∀ (a : Tm 1), (∀ (x : M), iVF x → iVF (ev a x)) →
+    IsBoolComb {b' | IsBall b'} {x : M | iVF x ∧ ev a x = Transfer.iVFZero}
+
+/-- **The `rv`-equality atom** `rv (s x) = rv (t x)` is a Boolean combination of balls, given the
+value bridge and the zero-set bridge. -/
+theorem rv_eq_atom_of_bridges (hM : M ⊨ Axioms.ACVF) (s t : Tm 1)
+    (hs : ∀ (x : M), iVF x → iVF (ev s x)) (ht : ∀ (x : M), iVF x → iVF (ev t x))
+    (hval : ValueBridge M) (hzero : ZeroBridge M) :
+    IsBoolComb {b' | IsBall b'} {x : M | iVF x ∧ iRv (ev s x) = iRv (ev t x)} := by
+  have hsub : ∀ (x : M), iVF x → iVF (ev (tSub s t) x) := by
+    intro x hx
+    rw [ev_sub]
+    exact Transfer.vf_add_mem (M := M) hM (hs x hx) (Transfer.vf_neg_mem (M := M) hM (ht x hx))
+  refine IsBoolComb.of_eq ?_ (rv_eq_set_eq (M := M) hM s t hs ht).symm
+  refine IsBoolComb.union ?_ ?_
+  · -- the both-zero half: an intersection of two zero sets
+    have h1 := IsBoolComb.inter (hzero s hs) (hzero t ht)
+    refine IsBoolComb.of_eq h1 (by
+      ext x
+      simp only [Set.mem_inter_iff, Set.mem_setOf_eq]
+      tauto)
+  · -- the half with `t ≠ 0`: a value comparison `¬ (v t ≤ v (s - t))`
+    have h1 : IsBoolComb {b' | IsBall b'}
+        {x : M | iVF x ∧ iLe (iRv (ev (tSub s t) x)) (iRv (ev t x))} := hval _ _ hsub ht
+    have h2 : IsBoolComb {b' | IsBall b'}
+        {x : M | iVF x ∧ ev t x ≠ Transfer.iVFZero (M := M)} :=
+      IsBoolComb.of_eq (IsBoolComb.diff isBoolComb_vfSet (hzero t ht)) (by
+        ext x
+        simp only [Set.mem_setOf_eq, Set.mem_sdiff, mem_vfSet, ne_eq]
+        tauto)
+    have h3 : IsBoolComb {b' | IsBall b'}
+        {x : M | iVF x ∧ ¬ iLe (iRv (ev (tSub s t) x)) (iRv (ev t x))} :=
+      IsBoolComb.of_eq (IsBoolComb.diff isBoolComb_vfSet h1) (by
+        ext x
+        simp only [Set.mem_setOf_eq, Set.mem_sdiff, mem_vfSet]
+        tauto)
+    exact IsBoolComb.inter h2 h3
+
+end CM
+end Milestone0
+end SpecialTransformations
+
+namespace SpecialTransformations
+namespace Milestone0
+namespace CM
+
+/-! ## 7. The assembly: the frozen `HasQE` plus the quantifier-free bridge ⇒ C-minimality
+
+This is the whole content of direction b3: `Downstream.isBoolComb_of_HasQEws`
+(`QE/Assembly_val.lean` §7) turns the quantifier-free bridge into C-minimality, and the quantifier
+steps are exactly the frozen `theorem_2_3_quantifier_elimination` (`HasQEws WS Axioms.ACVF`). -/
+
+variable {M : Type} [LRV.Structure M]
+
+/-- **C-minimality from the frozen quantifier elimination plus the quantifier-free bridge.**
+
+`HasQEws WS Axioms.ACVF` is `Milestone0/Encoding.lean`'s frozen
+`theorem_2_3_quantifier_elimination` in the restated, well-sorted form
+(`Downstream.HasQEws`); `BallsBridge` is the quantifier-free half, which is not in the tree and is
+the deliverable of directions b1/b2 here.  The conclusion is the paper's C-minimality at
+parameter-free well-sorted formulas in one `VF`-variable: for every model `M` of `ACVF` the set
+`{x ∈ VF : φ(x)}` is a finite Boolean combination of balls. -/
+theorem isBoolComb_of_HasQEws
+    {WS : ∀ {n : ℕ}, (Fin n → SortTag) → Bf n → Prop}
+    (hQE : Downstream.HasQEws WS Axioms.ACVF)
+    (hbridge : ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ Axioms.ACVF → BallsBridge M)
+    (φ : Bf 1) (hφ : WS (fun _ => SortTag.vf) φ) :
+    ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ Axioms.ACVF →
+      IsBoolComb {b | IsBall b} {x : M | iVF x ∧ φ.Realize (default : Empty → M) ![x]} :=
+  Downstream.isBoolComb_of_HasQEws hQE
+    (fun M _ _ hM ψ hQF _ => hbridge M hM ψ hQF) φ hφ
+
+/-- **Definition 2.7 as the paper states it**: every *parametrically definable subset of `VF(M)`* is
+a finite Boolean combination of balls.  The only difference from the frozen
+`Milestone0/Encoding.lean` `IsCMinimal` is the side condition `s ⊆ vfSet M`, which is not
+cosmetic: without it the statement is false (`not_isCMinimal_of_two_rv`). -/
+def IsCMinimalVF (M : Type) [LRV.Structure M] : Prop :=
+  ∀ (A : Set M) (s : Set M), s ⊆ vfSet M → A.Definable₁ LRV s →
+    IsBoolComb {b | IsBall b} s
+
+/-- The bridge from the `Bf 1` form (which is what `HasQEws` produces) to the `Definable₁` form
+(which is what Definition 2.7 speaks about): a set cut out by a parameter-free one-variable formula
+is a Boolean combination of balls, and it is contained in `VF`. -/
+theorem isBoolComb_vf_of_HasQEws
+    {WS : ∀ {n : ℕ}, (Fin n → SortTag) → Bf n → Prop}
+    (hQE : Downstream.HasQEws WS Axioms.ACVF)
+    (hbridge : ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ Axioms.ACVF → BallsBridge M)
+    (φ : Bf 1) (hφ : WS (fun _ => SortTag.vf) φ)
+    (M : Type) [LRV.Structure M] [Nonempty M] (hM : M ⊨ Axioms.ACVF) :
+    IsBoolComb {b | IsBall b} {x : M | iVF x ∧ φ.Realize (default : Empty → M) ![x]} :=
+  isBoolComb_of_HasQEws hQE hbridge φ hφ M hM
+
+end CM
+end Milestone0
+end SpecialTransformations
+
+/-! ## 8. Axiom footprints -/
+
+#print axioms SpecialTransformations.Milestone0.CM.IsBoolComb.mono
+#print axioms SpecialTransformations.Milestone0.CM.isBoolComb_of_finite
+#print axioms SpecialTransformations.Milestone0.CM.isBall_subset_vfSet
+#print axioms SpecialTransformations.Milestone0.CM.IsBoolComb.congr_outside
+#print axioms SpecialTransformations.Milestone0.CM.not_isCMinimal_of_two_rv
+#print axioms SpecialTransformations.Milestone0.CM.ballsBridge_of_atomBridge
+#print axioms SpecialTransformations.Milestone0.CM.rv_eq_set_eq
+#print axioms SpecialTransformations.Milestone0.CM.rv_eq_atom_of_bridges
+#print axioms SpecialTransformations.Milestone0.CM.isBoolComb_of_HasQEws
+
+/-! ===== merged from .ultramath/smw18pb0w/m1/Integration.lean ===== -/
+/-
+  m1 / direction d4 — integration: the value-only case (m4 / b1) fed through the term bridge.
+
+  `ValueOnlyM4` (copy of m4's `ValueOnly.lean`) proves, for a model `M ⊨ ACVF` and *arbitrary*
+  polynomials `P Q` over `VFType`, that `{y | w (P y) ≤ w (Q y)}` is a Boolean combination of
+  balls.  This file supplies the missing input m4 names in their report — the `L_RV`
+  term→polynomial translation (`Syntax.polyOf`) — and therefore discharges, for the fragment
+  generated by the allowed atoms below, the quantifier-free ball bridge over `L_RV` itself, with
+  arbitrary parameters.
+-/
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+set_option autoImplicit false
+set_option linter.unusedSectionVars false
+
+namespace Smw18pb0w.M1
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 1. The polynomial of a term -/
+
+section TermPoly
+
+variable [hM : M ⊨ Axioms.ACVF]
+
+attribute [local instance] vfFieldOfModel
+
+/-- the sort assignment of the one free `VF`-variable -/
+abbrev snVF : Fin 1 → SortTag := fun _ => .vf
+
+/-- the polynomial of `s`, at the point `x`; the value of `s` at `x` is `(P s).eval x` -/
+theorem P_eval {α : Type} {sα : α → SortTag} (u : α → M)
+    (hu : ∀ a, sα a = .vf → iVF (u a)) (s : LRV.Term (α ⊕ Fin 1))
+    (hs : TmSort sα snVF s = some .vf) (x : M) (hx : iVF x) :
+    ((polyOf (sα := sα) (sn := snVF) u hu (fun _ => x) (fun _ _ => hx) 0 s).eval (vfOf x hx)).1
+      = ev u (fun _ => x) s := by
+  have h := eval_polyOf (sα := sα) (sn := snVF) (u := u) (x := fun _ => x)
+    (hu := hu) (hx := fun _ _ => hx) (i₀ := 0) (h₀ := rfl) s hs
+  simpa [pt] using h
+
+end TermPoly
+
+/-! ## 2. Zero sets are Boolean combinations of balls -/
+
+section ZeroSet
+
+variable [hM : M ⊨ Axioms.ACVF]
+
+theorem lift_singleton (a : VFType (M := M)) :
+    M4ValueOnly.lift ({a} : Set (VFType (M := M))) = {a.1} := by
+  ext x
+  constructor
+  · rintro ⟨hx, h⟩
+    have h2 : (⟨x, hx⟩ : VFType (M := M)) = a := h
+    rw [Set.mem_singleton_iff]
+    exact congrArg Subtype.val h2
+  · intro h
+    rw [Set.mem_singleton_iff] at h
+    subst h
+    exact ⟨a.2, rfl⟩
+
+theorem lift_empty : M4ValueOnly.lift (∅ : Set (VFType (M := M))) = ∅ := by
+  ext x
+  constructor
+  · rintro ⟨hx, h⟩
+    exact h
+  · intro h
+    exact h.elim
+
+theorem lift_insert (a : VFType (M := M)) (s : Set (VFType (M := M))) :
+    M4ValueOnly.lift (insert a s)
+      = M4ValueOnly.lift ({a} : Set (VFType (M := M))) ∪ M4ValueOnly.lift s := by
+  ext x
+  constructor
+  · rintro ⟨hx, h⟩
+    rcases h with h | h
+    · exact Or.inl ⟨hx, h⟩
+    · exact Or.inr ⟨hx, h⟩
+  · rintro (⟨hx, h⟩ | ⟨hx, h⟩)
+    · exact ⟨hx, Or.inl h⟩
+    · exact ⟨hx, Or.inr h⟩
+
+theorem isBoolComb_lift_singleton (a : VFType (M := M)) :
+    IsBoolComb {b : Set M | IsBall b} (M4ValueOnly.lift ({a} : Set (VFType (M := M)))) := by
+  rw [lift_singleton]
+  refine IsBoolComb.basic (Or.inr (Or.inr (Or.inr ⟨a.1, a.2, ?_⟩)))
+  ext x
+  constructor
+  · rintro rfl
+    exact ⟨a.2, rfl⟩
+  · rintro ⟨-, h⟩
+    exact h
+
+theorem isBoolComb_lift_finset (s : Finset (VFType (M := M))) :
+    IsBoolComb {b : Set M | IsBall b}
+      (M4ValueOnly.lift (↑s : Set (VFType (M := M)))) := by
+  classical
+  induction s using Finset.induction with
+  | empty =>
+    rw [Finset.coe_empty, lift_empty]
+    exact CM.isBoolComb_empty
+  | insert a s ha ih =>
+    rw [Finset.coe_insert, lift_insert]
+    exact (isBoolComb_lift_singleton a).union ih
+
+/-- **The zero set of a polynomial is a finite Boolean combination of balls.** -/
+theorem isBoolComb_lift_zero (p : Polynomial (VFType (M := M))) :
+    IsBoolComb {b : Set M | IsBall b}
+      (M4ValueOnly.lift {y : VFType (M := M) | p.eval y = 0}) := by
+  classical
+  by_cases hp : p = 0
+  · have h : {y : VFType (M := M) | p.eval y = 0} = Set.univ := by
+      ext y
+      rw [hp]
+      simp
+      try rfl
+    rw [h, M4ValueOnly.lift_univ]
+    exact IsBoolComb.basic (Or.inl rfl)
+  · have h : {y : VFType (M := M) | p.eval y = 0}
+        = (p.roots.toFinset : Set (VFType (M := M))) := by
+      ext y
+      simp only [Set.mem_ofPred_eq, Finset.mem_coe, Multiset.mem_toFinset,
+        Polynomial.mem_roots hp, Polynomial.IsRoot.def]
+      try rfl
+    rw [h]
+    exact isBoolComb_lift_finset p.roots.toFinset
+
+end ZeroSet
+
+/-! ## 3. The atomic cases at `L_RV` terms -/
+
+section Atoms
+
+variable [hM : M ⊨ Axioms.ACVF]
+variable {α : Type} {sα : α → SortTag}
+
+attribute [local instance] vfFieldOfModel
+
+/-- **The polynomial does not depend on the values of the non-designated variables.**  With one
+free variable there are none, so the assignment is immaterial. -/
+theorem polyOf_single (u : α → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (x x' : Fin 1 → M) (hx : ∀ i, snVF i = .vf → iVF (x i))
+    (hx' : ∀ i, snVF i = .vf → iVF (x' i)) (s : LRV.Term (α ⊕ Fin 1)) :
+    polyOf (sα := sα) (sn := snVF) u hu x hx 0 s
+      = polyOf (sα := sα) (sn := snVF) u hu x' hx' 0 s := by
+  induction s with
+  | var v =>
+    cases v with
+    | inl a => rfl
+    | inr i =>
+      have hi : i = 0 := Fin.eq_zero i
+      subst hi
+      rfl
+  | func f ts ih =>
+    cases f with
+    | vfZero => rfl
+    | vfOne => rfl
+    | vfAdd =>
+      have hts : ts = ![ts 0, ts 1] := by funext i; fin_cases i <;> rfl
+      rw [hts]
+      simp only [polyOf, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+      rw [ih 0, ih 1]
+    | vfNeg =>
+      have hts : ts = ![ts 0] := by funext i; fin_cases i <;> rfl
+      rw [hts]
+      simp only [polyOf, Matrix.cons_val_zero, Matrix.head_cons]
+      rw [ih 0]
+    | vfMul =>
+      have hts : ts = ![ts 0, ts 1] := by funext i; fin_cases i <;> rfl
+      rw [hts]
+      simp only [polyOf, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+      rw [ih 0, ih 1]
+    | rvOne => rfl
+    | rvZero => rfl
+    | rvMul => rfl
+    | kAdd => rfl
+    | kNeg => rfl
+    | rvMap => rfl
+
+/-- the polynomial of a term: independent of the point, so a genuine polynomial -/
+noncomputable def Pol (u : α → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (s : LRV.Term (α ⊕ Fin 1)) : Polynomial (VFType (M := M)) :=
+  polyOf (sα := sα) (sn := snVF) u hu (fun _ => iVFZero) (fun _ _ => vf_zero_mem hM) 0 s
+
+theorem Pol_eval (u : α → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (s : LRV.Term (α ⊕ Fin 1)) (hs : TmSort sα snVF s = some .vf) (x : M) (hx : iVF x) :
+    ((Pol (sα := sα) u hu s).eval (vfOf x hx)).1 = ev u (fun _ => x) s := by
+  have h := P_eval (sα := sα) u hu s hs x hx
+  have h2 : polyOf (sα := sα) (sn := snVF) u hu (fun _ => iVFZero)
+        (fun _ _ => vf_zero_mem hM) 0 s
+      = polyOf (sα := sα) (sn := snVF) u hu (fun _ => x) (fun _ _ => hx) 0 s :=
+    polyOf_single (sα := sα) u hu (x := fun _ => iVFZero) (x' := fun _ => x)
+      (fun _ _ => vf_zero_mem hM) (fun _ _ => hx) s
+  change ((polyOf (sα := sα) (sn := snVF) u hu (fun _ => iVFZero)
+      (fun _ _ => vf_zero_mem hM) 0 s).eval (vfOf x hx)).1 = ev u (fun _ => x) s
+  rw [h2]
+  exact h
+
+theorem Pol_eval_VF (u : α → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (s : LRV.Term (α ⊕ Fin 1)) (hs : TmSort sα snVF s = some .vf) (x : M) (hx : iVF x) :
+    (Pol (sα := sα) u hu s).eval (vfOf x hx)
+      = vfOf (ev u (fun _ => x) s)
+          (tmSort_vf_mem (sα := sα) (sn := snVF) s hs u (fun _ => x) hu (fun _ h => hx)) := by
+  have h := eval_polyOf_VF (sα := sα) (sn := snVF) (u := u) (x := fun _ => x)
+    (hu := hu) (hx := fun _ _ => hx) (i₀ := 0) (h₀ := rfl) s hs
+  have h2 : polyOf (sα := sα) (sn := snVF) u hu (fun _ => iVFZero)
+        (fun _ _ => vf_zero_mem hM) 0 s
+      = polyOf (sα := sα) (sn := snVF) u hu (fun _ => x) (fun _ _ => hx) 0 s :=
+    polyOf_single (sα := sα) u hu (x := fun _ => iVFZero) (x' := fun _ => x)
+      (fun _ _ => vf_zero_mem hM) (fun _ _ => hx) s
+  change Polynomial.eval (vfOf x hx)
+      (polyOf (sα := sα) (sn := snVF) u hu (fun _ => iVFZero) (fun _ _ => vf_zero_mem hM) 0 s)
+    = vfOf (ev u (fun _ => x) s)
+        (tmSort_vf_mem (sα := sα) (sn := snVF) s hs u (fun _ => x) hu (fun _ h => hx))
+  rw [h2]
+  simpa [pt] using h
+
+/-- **The `VF`-equality atom** `{x | s(x) = t(x)}` is the zero set of the polynomial of `s - t`. -/
+theorem atom_eq_isBoolComb (u : α → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (s t : LRV.Term (α ⊕ Fin 1)) (hs : TmSort sα snVF s = some .vf)
+    (ht : TmSort sα snVF t = some .vf) :
+    IsBoolComb {b : Set M | IsBall b}
+      {x : M | iVF x ∧ ev u (fun _ => x) s = ev u (fun _ => x) t} := by
+  classical
+  have hset : {x : M | iVF x ∧ ev u (fun _ => x) s = ev u (fun _ => x) t}
+      = M4ValueOnly.lift {y : VFType (M := M) |
+          (Pol (sα := sα) u hu s - Pol (sα := sα) u hu t).eval y = 0} := by
+    ext x
+    constructor
+    · rintro ⟨hx, hst⟩
+      refine ⟨hx, ?_⟩
+      have h1 := Pol_eval_VF (sα := sα) u hu s hs x hx
+      have h2 := Pol_eval_VF (sα := sα) u hu t ht x hx
+      have h3 : vfOf (ev u (fun _ => x) s)
+            (tmSort_vf_mem (sα := sα) (sn := snVF) s hs u (fun _ => x) hu (fun _ h => hx))
+          = vfOf (ev u (fun _ => x) t)
+            (tmSort_vf_mem (sα := sα) (sn := snVF) t ht u (fun _ => x) hu (fun _ h => hx)) :=
+        Subtype.ext hst
+      show ((Pol (sα := sα) u hu s - Pol (sα := sα) u hu t).eval (vfOf x hx)) = 0
+      rw [Polynomial.eval_sub, h1, h2, h3, sub_self]
+      try rfl
+    · rintro ⟨hx, hz⟩
+      refine ⟨hx, ?_⟩
+      have hz' : (Pol (sα := sα) u hu s - Pol (sα := sα) u hu t).eval (vfOf x hx) = 0 := hz
+      have h1 := Pol_eval_VF (sα := sα) u hu s hs x hx
+      have h2 := Pol_eval_VF (sα := sα) u hu t ht x hx
+      rw [Polynomial.eval_sub] at hz'
+      have h3 : vfOf (ev u (fun _ => x) s)
+            (tmSort_vf_mem (sα := sα) (sn := snVF) s hs u (fun _ => x) hu (fun _ h => hx))
+          = vfOf (ev u (fun _ => x) t)
+            (tmSort_vf_mem (sα := sα) (sn := snVF) t ht u (fun _ => x) hu (fun _ h => hx)) := by
+        rw [← h1, ← h2]
+        exact sub_eq_zero.mp hz'
+      exact congrArg Subtype.val h3
+  rw [hset]
+  exact isBoolComb_lift_zero _
+
+/-- **The `VF` zero atom** `s(x) = 0`. -/
+theorem atom_zero_isBoolComb (u : α → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (s : LRV.Term (α ⊕ Fin 1)) (hs : TmSort sα snVF s = some .vf) :
+    IsBoolComb {b : Set M | IsBall b}
+      {x : M | iVF x ∧ ev u (fun _ => x) s = iVFZero} := by
+  classical
+  have hset : {x : M | iVF x ∧ ev u (fun _ => x) s = iVFZero}
+      = M4ValueOnly.lift {y : VFType (M := M) | (Pol (sα := sα) u hu s).eval y = 0} := by
+    ext x
+    constructor
+    · rintro ⟨hx, hst⟩
+      refine ⟨hx, ?_⟩
+      show (Pol (sα := sα) u hu s).eval (vfOf x hx) = 0
+      have h1 := Pol_eval_VF (sα := sα) u hu s hs x hx
+      rw [h1]
+      exact Subtype.ext hst
+    · rintro ⟨hx, hz⟩
+      refine ⟨hx, ?_⟩
+      have hz' : (Pol (sα := sα) u hu s).eval (vfOf x hx) = 0 := hz
+      have h1 := Pol_eval_VF (sα := sα) u hu s hs x hx
+      have h2 : vfOf (ev u (fun _ => x) s)
+          (tmSort_vf_mem (sα := sα) (sn := snVF) s hs u (fun _ => x) hu (fun _ h => hx)) = 0 := by
+        rw [← h1]
+        exact hz'
+      exact congrArg Subtype.val h2
+  rw [hset]
+  exact isBoolComb_lift_zero _
+
+/-- **The value-comparison atom** `rv s ≤ rv t`, through the value-only cell decomposition of
+`ValueOnlyM4` (m4's b1). -/
+theorem atom_le_isBoolComb {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ)
+    (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    (u : α → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (s t : LRV.Term (α ⊕ Fin 1)) (hs : TmSort sα snVF s = some .vf)
+    (ht : TmSort sα snVF t = some .vf) :
+    IsBoolComb {b : Set M | IsBall b}
+      {x : M | iVF x ∧ iLe (iRv (ev u (fun _ => x) s)) (iRv (ev u (fun _ => x) t))} := by
+  classical
+  have hset : {x : M | iVF x ∧
+        iLe (iRv (ev u (fun _ => x) s)) (iRv (ev u (fun _ => x) t))}
+      = M4ValueOnly.lift
+          {y : VFType (M := M) | w ((Pol (sα := sα) u hu t).eval y)
+            ≤ w ((Pol (sα := sα) u hu s).eval y)} := by
+    ext x
+    constructor
+    · rintro ⟨hx, hle⟩
+      refine ⟨hx, ?_⟩
+      have h1 := Pol_eval (sα := sα) u hu s hs x hx
+      have h2 := Pol_eval (sα := sα) u hu t ht x hx
+      rw [← h1, ← h2] at hle
+      exact (hw _ _).mp hle
+    · rintro ⟨hx, hle⟩
+      refine ⟨hx, ?_⟩
+      have h1 := Pol_eval (sα := sα) u hu s hs x hx
+      have h2 := Pol_eval (sα := sα) u hu t ht x hx
+      rw [← h1, ← h2]
+      exact (hw _ _).mpr hle
+  rw [hset]
+  exact M4ValueOnly.valueOnly_atom_isBoolComb w hw _ _
+
+
+/-- `s + t` in the `VF` sort, at an arbitrary parameter type -/
+noncomputable def gAdd {α : Type} {n : ℕ} (s t : LRV.Term (α ⊕ Fin n)) : LRV.Term (α ⊕ Fin n) :=
+  Term.func Fn.vfAdd ![s, t]
+
+/-- `-s` in the `VF` sort, at an arbitrary parameter type -/
+noncomputable def gNeg {α : Type} {n : ℕ} (s : LRV.Term (α ⊕ Fin n)) : LRV.Term (α ⊕ Fin n) :=
+  Term.func Fn.vfNeg ![s]
+
+/-- the difference term `s - t`, in the `VF` sort -/
+noncomputable def subT {α : Type} {n : ℕ} (s t : LRV.Term (α ⊕ Fin n)) : LRV.Term (α ⊕ Fin n) :=
+  gAdd s (gNeg t)
+
+theorem ev_subT {α : Type} {n : ℕ} (u : α → M) (x : Fin n → M)
+    (s t : LRV.Term (α ⊕ Fin n)) :
+    ev u x (subT s t) = iVFAdd (ev u x s) (iVFNeg (ev u x t)) := by
+  simp [subT, gAdd, gNeg, ev_vfAdd, ev_vfNeg]
+
+theorem tmSort_subT {n : ℕ} {sn : Fin n → SortTag} {α : Type} {sα : α → SortTag}
+    (s t : LRV.Term (α ⊕ Fin n)) (hs : TmSort sα sn s = some .vf)
+    (ht : TmSort sα sn t = some .vf) : TmSort sα sn (subT s t) = some .vf := by
+  rw [subT, gAdd, gNeg, tmSort_vfAdd]
+  refine ⟨hs, ?_⟩
+  rw [tmSort_vfNeg]
+  exact ht
+
+/-- **The `rv`-equality set identity**, with parameters, from `Transfer.correctedLink_of_model`
+and `Transfer.rv_eq_infty`. -/
+theorem rvEq_set_eq (u : α → M) (s t : LRV.Term (α ⊕ Fin 1))
+    (hsV : ∀ x : M, iVF x → iVF (ev u (fun _ => x) s))
+    (htV : ∀ x : M, iVF x → iVF (ev u (fun _ => x) t)) :
+    {x : M | iVF x ∧ iRv (ev u (fun _ => x) s) = iRv (ev u (fun _ => x) t)}
+      = ({x : M | iVF x ∧ ev u (fun _ => x) s = iVFZero ∧ ev u (fun _ => x) t = iVFZero}
+          ∪ ({x : M | iVF x ∧ ev u (fun _ => x) t ≠ iVFZero}
+              ∩ ({x : M | iVF x} \
+                  {x : M | iVF x ∧
+                    iLe (iRv (ev u (fun _ => x) (subT s t))) (iRv (ev u (fun _ => x) t))}))) := by
+  ext x
+  by_cases hx : iVF x
+  · have ha : iVF (ev u (fun _ => x) s) := hsV x hx
+    have hb : iVF (ev u (fun _ => x) t) := htV x hx
+    have hsubEq : ev u (fun _ => x) (subT s t)
+        = iVFAdd (ev u (fun _ => x) s) (iVFNeg (ev u (fun _ => x) t)) := ev_subT u _ s t
+    have key : (iRv (ev u (fun _ => x) s) = iRv (ev u (fun _ => x) t))
+        ↔ ((ev u (fun _ => x) s = iVFZero ∧ ev u (fun _ => x) t = iVFZero)
+            ∨ (ev u (fun _ => x) t ≠ iVFZero ∧
+                ¬ iLe (iRv (ev u (fun _ => x) (subT s t))) (iRv (ev u (fun _ => x) t)))) := by
+      by_cases hb0 : ev u (fun _ => x) t = iVFZero
+      · have hbRv : iRv (ev u (fun _ => x) t) = iRVZero := by
+          rw [hb0]; exact rv_zero_eq hM
+        constructor
+        · intro h
+          refine Or.inl ⟨?_, hb0⟩
+          rw [hbRv] at h
+          exact rv_eq_infty hM ha h
+        · rintro (⟨ha0, -⟩ | ⟨hne, -⟩)
+          · rw [ha0, hb0, rv_zero_eq hM]
+          · exact absurd hb0 hne
+      · have hlen := correctedLink_of_model hM ha hb hb0
+        have hlen' : iRv (ev u (fun _ => x) s) = iRv (ev u (fun _ => x) t)
+            ↔ ¬ iLe (iRv (ev u (fun _ => x) (subT s t))) (iRv (ev u (fun _ => x) t)) := by
+          rw [hsubEq]
+          exact hlen
+        constructor
+        · intro h
+          exact Or.inr ⟨hb0, hlen'.mp h⟩
+        · rintro (⟨-, ht0⟩ | ⟨-, hnot⟩)
+          · exact absurd ht0 hb0
+          · exact hlen'.mpr hnot
+    simpa [Set.mem_ofPred_eq, Set.mem_union, Set.mem_inter_iff, Set.mem_sdiff, hx] using key
+  · simp [Set.mem_ofPred_eq, Set.mem_union, Set.mem_inter_iff, Set.mem_sdiff, hx]
+
+/-- **The `rv`-equality atom** `rv s = rv t`, with parameters. -/
+theorem atom_rvEq_isBoolComb {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ)
+    (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y)
+    (u : α → M) (hu : ∀ a, sα a = .vf → iVF (u a))
+    (s t : LRV.Term (α ⊕ Fin 1)) (hs : TmSort sα snVF s = some .vf)
+    (ht : TmSort sα snVF t = some .vf) :
+    IsBoolComb {b : Set M | IsBall b}
+      {x : M | iVF x ∧ iRv (ev u (fun _ => x) s) = iRv (ev u (fun _ => x) t)} := by
+  classical
+  have hsV : ∀ x : M, iVF x → iVF (ev u (fun _ => x) s) := fun x hx =>
+    tmSort_vf_mem (sα := sα) (sn := snVF) s hs u (fun _ => x) hu (fun _ h => hx)
+  have htV : ∀ x : M, iVF x → iVF (ev u (fun _ => x) t) := fun x hx =>
+    tmSort_vf_mem (sα := sα) (sn := snVF) t ht u (fun _ => x) hu (fun _ h => hx)
+  have hsub : TmSort sα snVF (subT s t) = some .vf := tmSort_subT s t hs ht
+  have hz : IsBoolComb {b : Set M | IsBall b}
+      {x : M | iVF x ∧ ev u (fun _ => x) s = iVFZero ∧ ev u (fun _ => x) t = iVFZero} := by
+    have h := (atom_zero_isBoolComb (sα := sα) u hu s hs).inter
+      (atom_zero_isBoolComb (sα := sα) u hu t ht)
+    convert h using 2
+    ext x
+    simp only [Set.mem_inter_iff, Set.mem_ofPred_eq]
+    tauto
+  have hne : IsBoolComb {b : Set M | IsBall b}
+      {x : M | iVF x ∧ ev u (fun _ => x) t ≠ iVFZero} := by
+    have h := isBoolComb_diff (B := {b : Set M | IsBall b})
+      (IsBoolComb.basic (Or.inl rfl)) (atom_zero_isBoolComb (sα := sα) u hu t ht)
+    convert h using 2
+    ext x
+    simp only [Set.mem_ofPred_eq, Set.mem_sdiff]
+    tauto
+  have hnot : IsBoolComb {b : Set M | IsBall b}
+      ({x : M | iVF x} \
+        {x : M | iVF x ∧
+          iLe (iRv (ev u (fun _ => x) (subT s t))) (iRv (ev u (fun _ => x) t))}) :=
+    isBoolComb_diff (B := {b : Set M | IsBall b}) (IsBoolComb.basic (Or.inl rfl))
+      (atom_le_isBoolComb w hw u hu (subT s t) t hsub ht)
+  rw [rvEq_set_eq u s t hsV htV]
+  exact hz.union (hne.inter hnot)
+
+/-! ## 4. The fragment, end to end
+
+The quantifier-free formulas generated, with arbitrary parameters, from the four atom forms
+`s = t`, `s = 0`, `rv s ≤ rv t`, `rv s = rv t` (`s`, `t` well-sorted `VF`-terms).  Every such
+formula defines a finite Boolean combination of balls. -/
+
+/-- `rv s` at an arbitrary parameter type -/
+noncomputable def tRvG {α : Type} (t : LRV.Term (α ⊕ Fin 1)) : LRV.Term (α ⊕ Fin 1) :=
+  Term.func Fn.rvMap (fun _ : Fin 1 => t)
+
+theorem ev_tRvG {α : Type} (u : α → M) (x : Fin 1 → M) (s : LRV.Term (α ⊕ Fin 1)) :
+    ev u x (tRvG s) = iRv (ev u x s) := by
+  have h := ev_rvMap_ts u x (fun _ : Fin 1 => s)
+  simpa [tRvG] using h
+
+/-- the fragment: quantifier-free formulas built from the four atom forms -/
+inductive VFQF : {α : Type} → (α → SortTag) → LRV.BoundedFormula α 1 → Prop
+  | falsum {α : Type} (sα : α → SortTag) : VFQF sα BoundedFormula.falsum
+  | eqVF {α : Type} {sα : α → SortTag} {s t : LRV.Term (α ⊕ Fin 1)}
+      (hs : TmSort sα snVF s = some .vf) (ht : TmSort sα snVF t = some .vf) :
+      VFQF sα (pEqG s t)
+  | rvLe {α : Type} {sα : α → SortTag} {s t : LRV.Term (α ⊕ Fin 1)}
+      (hs : TmSort sα snVF s = some .vf) (ht : TmSort sα snVF t = some .vf) :
+      VFQF sα (pLeG (tRvG s) (tRvG t))
+  | rvEq {α : Type} {sα : α → SortTag} {s t : LRV.Term (α ⊕ Fin 1)}
+      (hs : TmSort sα snVF s = some .vf) (ht : TmSort sα snVF t = some .vf) :
+      VFQF sα (pEqG (tRvG s) (tRvG t))
+  | imp {α : Type} {sα : α → SortTag} {a b : LRV.BoundedFormula α 1} :
+      VFQF sα a → VFQF sα b → VFQF sα (a.imp b)
+
+theorem pEqG_realize {α : Type} {n : ℕ} (v : α → M) (x : Fin n → M)
+    (s t : LRV.Term (α ⊕ Fin n)) :
+    (pEqG s t).Realize v x ↔ ev v x s = ev v x t := by
+  show FirstOrder.Language.BoundedFormula.Realize (L := LRV) (Term.bdEqual s t) v x
+    ↔ ev v x s = ev v x t
+  rw [BoundedFormula.realize_bdEqual]
+  rfl
+
+theorem pLeG_realize {α : Type} {n : ℕ} (v : α → M) (x : Fin n → M)
+    (s t : LRV.Term (α ⊕ Fin n)) :
+    (pLeG s t).Realize v x ↔ iLe (ev v x s) (ev v x t) := by
+  have h : (fun i => Term.realize (L := LRV) (Sum.elim v x) (![s, t] i))
+      = ![Term.realize (L := LRV) (Sum.elim v x) s,
+          Term.realize (L := LRV) (Sum.elim v x) t] := by
+    funext i
+    fin_cases i <;> simp
+  show FirstOrder.Language.Structure.RelMap (L := LRV) Rel.rvLe
+      (fun i => Term.realize (L := LRV) (Sum.elim v x) (![s, t] i)) ↔ iLe (ev v x s) (ev v x t)
+  rw [h]
+  rfl
+
+theorem isBoolComb_of_eq {B : Set (Set M)} {s t : Set M} (hs : IsBoolComb B s) (h : s = t) :
+    IsBoolComb B t := h ▸ hs
+
+/-- **Every formula of the fragment defines a finite Boolean combination of balls**, with
+arbitrary parameters. -/
+theorem VFQF_isBoolComb {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
+    (w : Valuation (VFType (M := M)) Γ)
+    (hw : ∀ x y : VFType (M := M), predV x y ↔ w x ≤ w y) :
+    ∀ {α : Type} {sα : α → SortTag} (u : α → M), (∀ a, sα a = .vf → iVF (u a)) →
+      ∀ {φ : LRV.BoundedFormula α 1}, VFQF sα φ →
+        IsBoolComb {b : Set M | IsBall b} {x : M | iVF x ∧ φ.Realize u (fun _ => x)} := by
+  intro α sα u hu φ h
+  induction h with
+  | falsum =>
+    have hset : {x : M | iVF x ∧ (BoundedFormula.falsum : LRV.BoundedFormula α 1).Realize u
+        (fun _ => x)} = ∅ := by
+      ext x
+      constructor
+      · rintro ⟨-, h⟩
+        exact h
+      · intro h
+        exact h.elim
+    rw [hset]
+    exact isBoolComb_empty
+  | eqVF hs ht =>
+    refine isBoolComb_of_eq (atom_eq_isBoolComb u hu _ _ hs ht) ?_
+    ext x
+    simp only [Set.mem_ofPred_eq, pEqG_realize]
+  | rvLe hs ht =>
+    refine isBoolComb_of_eq (atom_le_isBoolComb w hw u hu _ _ hs ht) ?_
+    ext x
+    simp only [Set.mem_ofPred_eq, pLeG_realize, ev_tRvG]
+  | rvEq hs ht =>
+    refine isBoolComb_of_eq (atom_rvEq_isBoolComb w hw u hu _ _ hs ht) ?_
+    ext x
+    simp only [Set.mem_ofPred_eq, pEqG_realize, ev_tRvG]
+  | imp _ _ ih1 ih2 =>
+    exact isBoolComb_imp (u := u) ih1 ih2
+
+end Atoms
+
+/-! ## 3. Axiom footprints -/
+
+#print axioms Smw18pb0w.M1.P_eval
+#print axioms Smw18pb0w.M1.ev_subT
+#print axioms Smw18pb0w.M1.tmSort_subT
+#print axioms Smw18pb0w.M1.pEqG_realize
+#print axioms Smw18pb0w.M1.pLeG_realize
+#print axioms Smw18pb0w.M1.Pol_eval_VF
+#print axioms Smw18pb0w.M1.Pol_eval
+#print axioms Smw18pb0w.M1.atom_eq_isBoolComb
+#print axioms Smw18pb0w.M1.atom_zero_isBoolComb
+#print axioms Smw18pb0w.M1.atom_le_isBoolComb
+#print axioms Smw18pb0w.M1.rvEq_set_eq
+#print axioms Smw18pb0w.M1.atom_rvEq_isBoolComb
+#print axioms Smw18pb0w.M1.lift_singleton
+#print axioms Smw18pb0w.M1.isBoolComb_lift_finset
+#print axioms Smw18pb0w.M1.isBoolComb_lift_zero
+#print axioms Smw18pb0w.M1.VFQF_isBoolComb
+
+end Smw18pb0w.M1

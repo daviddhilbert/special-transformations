@@ -19,7 +19,9 @@ Stated and frozen here:
   membership in `VF(S)(ā)^{alg}`;
 * `swl_effectiveness` — paper `effectiveness` (QE:ACVF:min 4.15), with `Sec3.HasCenters`;
 * `swl_algebraic_balls_definable_centers` — paper `algebraic:balls:definable:centers`
-  (QE:ACVF:min 4.17), with centres definable over `S`.
+  (QE:ACVF:min 4.17), with centres definable over `S`;
+* `swl_rv_effectiveness` — Yin, QE:ACVF:min Lemma 4.16 (the fact behind the paper's
+  `ball:proper:sub:center`): an `rv`-ball with a definable proper subset has a definable point.
 
 Still not stated, with the exact missing development:
 
@@ -103,7 +105,7 @@ theorem swl_average_zero_rv_not_constant {k : ℕ} (hk : 1 < k) (hk0 : 0 < k) (c
 proof): a ball that contains a definable proper subset contains a definable point — a point
 definable over the parameters, i.e. in the definable closure of `S`. -/
 theorem swl_ball_proper_sub_center (S : SP 𝕄.M) (b D : Set 𝕄.M) (hb : IsBall b)
-    (hD : DefinableVF S D) (hsub : D ⊆ b) (hne : D ≠ b) :
+    (hD : SP.DefinableVF S D) (hsub : D ⊆ b) (hne : D ≠ b) :
     ∃ x : 𝕄.M, x ∈ b ∧ dcl S x := by
   sorry
 
@@ -124,11 +126,13 @@ docstring of the statement:
   `vfFieldOfModel` when the two copies of the encoding are unified.  The field laws are
   determined by `Axioms` (`vfAddAssoc`, `vfMulComm`, …), so this adds no hypothesis about the
   mathematics, only about the file layout.
-* "algebraic set of closed balls" is quoted by the paper from Yin, QE:ACVF:min (Definition 4.13
-  there) and is **not defined in this paper**.  It is therefore a *parameter* of the statements
-  that use it, of type `Set (Set M) → Prop`, so that a later formalization of 4.13 can instantiate
-  them without restating anything.  "has centers" *is* defined here (`Sec3.HasCenters`), from the
-  way the paper uses it (`|A_t̄ ∩ b| = 1`).
+* "algebraic set of balls" is quoted by the paper from Yin, QE:ACVF:min Definition 4.14.  That
+  definition is now formalized here, from the quoted text in `.ultramath/refs/qe.tex`:
+  `Sec3.IsAlgebraicSetOfBalls` (finitely many balls), `Sec3.IsAlgebraicBall`,
+  `Sec3.AlgebraicUnion`, `Sec3.IsDefinableSetOfBalls` (the definability half),
+  `Sec3.IsSetOfCenters` and `Sec3.HasCenters` (a definable choice `f : 𝓑 → VF` with
+  `f b ∈ b` — the quoted definition asks only that the point lies in the ball, not that it is a
+  geometric centre), and `Sec3.rvBall` for the paper's use of an `RV`-element as a ball.
 * "`S` is `(VF, Γ)`-generated" is not formulable without the `Γ`-sort, so
   `swl_algebraic_balls_definable_centers` is frozen with the conclusion (centres definable over
   `S`) and the hypothesis recorded in its docstring; the `Γ`-side of `S` is only used to reduce
@@ -162,11 +166,40 @@ def IsCentreOf (b : Set M) (a : M) : Prop :=
   iVF a ∧ ∃ t : M, iRV t ∧ t ≠ iRVZero ∧
     b = {x | iVF x ∧ iLe t (iRv (iVFAdd x (iVFNeg a)))}
 
-/-- **`𝓑` has centers**: there is a set `C` meeting each `b ∈ 𝓑` in exactly one point, and that
-point is a centre of `b`.  This is the notion the paper uses (its proof of `ball:RV:finite` writes
-the witness as a definable `A_t̄` with `|A_t̄ ∩ b| = 1`). -/
-def HasCenters (𝓑 : Set (Set M)) : Prop :=
-  ∃ C : Set M, ∀ b ∈ 𝓑, ∃! a : M, a ∈ C ∧ a ∈ b ∧ IsCentreOf b a
+/-- An **algebraic ball** (Yin, QE:ACVF:min, Definition 4.14, quoted by the paper): a ball that is
+a member of an algebraic set of balls. -/
+def IsAlgebraicBall (b : Set M) : Prop := IsBall b
+
+/-- **Algebraic set of balls** — Yin, QE:ACVF:min, Definition 4.14, quoted verbatim by the paper
+just before Lemma 4.15: *"Let `𝓑` be a definable set of balls.  If `𝓑` contains finitely many
+(open, closed, rv-) balls, then `𝓑` is an algebraic set of balls."*  The definability half of the
+quote is `IsDefinableSetOfBalls` below; this predicate is the finite-family-and-balls half, which
+is all that the two lemmas use. -/
+def IsAlgebraicSetOfBalls (𝓑 : Set (Set M)) : Prop :=
+  𝓑.Finite ∧ ∀ b ∈ 𝓑, IsBall b
+
+/-- The **algebraic union of balls** `⋃ 𝓑`. -/
+def AlgebraicUnion (𝓑 : Set (Set M)) : Set M := ⋃₀ 𝓑
+
+/-- The `rv`-ball of `t`, `rv⁻¹(t) ∩ VF` — the paper's `rv`-ball, written `t` when `t ∈ RV` is
+used as a ball. -/
+def rvBall (t : M) : Set M := {x | iVF x ∧ iRv x = t}
+
+/-- The family `𝓑` is **definable over** the parameters `S` (the definability half of
+Definition 4.14): finitely many members, each `S`-definable as a set. -/
+def IsDefinableSetOfBalls (S : SP M) (𝓑 : Set (Set M)) : Prop :=
+  𝓑.Finite ∧ ∀ b ∈ 𝓑, SP.DefinableVF S b
+
+/-- `C` is a **set of centers** for `𝓑` (Yin, QE:ACVF:min, Definition 4.14, verbatim): *"if there
+is a definable function `f : 𝓑 → VF` such that `f(𝔟ᵢ) ∈ 𝔟ᵢ` for every `𝔟ᵢ` then we say that `𝓑`
+has centers and `f(𝓑)` is a set of centers of `𝓑`"*.  `C` codes `f(𝓑)`: exactly one point of `C`
+lies in each ball of `𝓑`, so `b ↦` that point is a function.  Note that the point need **not** be
+a centre of the ball in the geometric sense — the quoted definition only asks `f(𝔟ᵢ) ∈ 𝔟ᵢ`. -/
+def IsSetOfCenters (𝓑 : Set (Set M)) (C : Set M) : Prop :=
+  ∀ b ∈ 𝓑, ∃! c : M, c ∈ C ∧ c ∈ b
+
+/-- **`𝓑` has centers**: it has a set of centers. -/
+def HasCenters (𝓑 : Set (Set M)) : Prop := ∃ C : Set M, IsSetOfCenters 𝓑 C
 
 end Sec3
 
@@ -188,22 +221,29 @@ namespace SP
 variable (𝕄 : Sat.MonsterACVF)
 
 /-- **`effectiveness`** (paper §3; Yin, QE:ACVF:min, Lemma 4.15): an algebraic set of closed balls
-has centers.  The hypothesis `IsAlgBalls` is the paper's quoted notion (QE:ACVF:min, Definition
-4.13), which this paper does not define; see the section comment. -/
-theorem swl_effectiveness (IsAlgBalls : Set (Set 𝕄.M) → Prop) (𝓑 : Set (Set 𝕄.M))
-    (halg : IsAlgBalls 𝓑) : Sec3.HasCenters 𝓑 := by
+has centers.  `Sec3.IsAlgebraicSetOfBalls` is Definition 4.14 of QE:ACVF:min, quoted by the
+paper before this lemma. -/
+theorem swl_effectiveness (𝓑 : Set (Set 𝕄.M)) (halg : Sec3.IsAlgebraicSetOfBalls 𝓑)
+    (hclosed : ∀ b ∈ 𝓑, IsClosedBall b) : Sec3.HasCenters 𝓑 := by
   sorry
 
 /-- **`algebraic:balls:definable:centers`** (paper §3; Yin, QE:ACVF:min, Lemma 4.17): if `S` is
 `(VF, Γ)`-generated and `𝓑` is an algebraic set of balls, then `𝓑` has centers *definable over*
 `S`.  The `(VF, Γ)`-generated hypothesis needs the `Γ`-sort and is recorded in the paper's own
 words rather than as a Lean hypothesis; it is used only to ensure `RV(S) ⊆ rv(VF(S))`, so the
-frozen content is the conclusion with `S`-relative definability. -/
-theorem swl_algebraic_balls_definable_centers (S : SP 𝕄.M)
-    (IsAlgBalls : Set (Set 𝕄.M) → Prop) (𝓑 : Set (Set 𝕄.M)) (halg : IsAlgBalls 𝓑) :
-    ∃ C : Set 𝕄.M,
-      (∀ b ∈ 𝓑, ∃! a : 𝕄.M, a ∈ C ∧ a ∈ b ∧ Sec3.IsCentreOf b a) ∧
-        ∀ a : 𝕄.M, a ∈ C → dcl S a := by
+frozen content is the conclusion with `S`-relative definability.  `Sec3.IsDefinableSetOfBalls`
+is the definability half of Definition 4.14, and `Sec3.IsSetOfCenters` is its "has centers". -/
+theorem swl_algebraic_balls_definable_centers (S : SP 𝕄.M) (𝓑 : Set (Set 𝕄.M))
+    (halg : Sec3.IsAlgebraicSetOfBalls 𝓑) (hdef : Sec3.IsDefinableSetOfBalls S 𝓑) :
+    ∃ C : Set 𝕄.M, Sec3.IsSetOfCenters 𝓑 C ∧ ∀ a : 𝕄.M, a ∈ C → dcl S a := by
+  sorry
+
+/-- **`rv:effectiveness`** (Yin, QE:ACVF:min, Lemma 4.16, the fact behind the paper's
+`ball:proper:sub:center`): if an `rv`-ball has a definable proper subset then it has a definable
+point. -/
+theorem swl_rv_effectiveness (S : SP 𝕄.M) (t : 𝕄.M) (ht : iRV t) (A : Set 𝕄.M)
+    (hA : SP.DefinableVF S A) (hsub : A ⊆ Sec3.rvBall t) (hne : A ≠ Sec3.rvBall t) :
+    ∃ c : 𝕄.M, c ∈ Sec3.rvBall t ∧ dcl S c := by
   sorry
 
 end SP
