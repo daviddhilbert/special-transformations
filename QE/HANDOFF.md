@@ -175,3 +175,38 @@ Order, and why:
 
 Do **not** spend further effort on criterion variants: `hasQE_iff_qfTypeDetermines` makes them
 sharply equivalent to the theorem, so a variant buys a reformulation, not progress.
+
+## The junk-sensitivity experiment: answered (junk-sensitivity is real; repair still needed)
+
+Question: can a formula that is `WellSorted` under the **unrepaired** predicate have its truth at
+*sorted* tuples influenced by elements outside the sorts?  If not, the guard repair would be
+unnecessary for the criterion route.
+
+**Answer: yes, and here is the witness.**  Take `s = .vf` and
+
+```
+φ  =  ∀x ( ((x ∈ VF) ⟹ ⊥) ⟹ (x = 0_VF) )
+```
+
+* `WellSorted` holds: the body is `.imp η ψ` with `η = ((pVF x) ⟹ ⊥)`, and `GuardsLast` fires on
+  `η` because `Occurs i .vf (pVF x)` holds (`pVF x` *is* `sortPredG .vf (var i)`); `ψ = (x = 0)` is
+  a well-sorted atom at sort `.vf`; so `WellSorted.all` applies under the unrepaired predicate.
+* **At `x ∈ VF` the body is `⊤`** (`x ∈ VF` is true, so `(x ∈ VF ⟹ ⊥)` is `⊥`, so the implication
+  is `⊤`) — so on the `VF` sort `φ` is vacuous.
+* **At `x` outside `VF`** — i.e. at an `RV`-element, which exists in every model by `sdCover` and
+  `sdDisjoint` — the body is `x = 0_VF`, i.e. it asks whether that `RV`-element equals the `VF`
+  zero.  So `φ` says "every element outside `VF` equals the `VF`-zero", which is a real condition
+  on the junk part of the model.
+
+So the unrepaired `WellSorted` admits formulas whose truth is decided entirely by junk elements,
+while the *guards* in them look innocuous.  Consequences:
+
+1. **The criterion's statement is unaffected** — `QFTypeDetermines` is equivalent to the target
+   (`W1.hasQE_iff_qfTypeDetermines`), and the target is what it is.  Junk-sensitivity does not
+   refute it, because such a `φ` must still have a QF equivalent if the theorem is true.
+2. **The proof is affected.**  Any induction on `WellSorted` derivations that pushes an equivalence
+   through `∀` must bound the body's truth at junk values, and this witness shows the unrepaired
+   predicate gives no such bound.  So the guard repair (or the equivalent invariant `JunkTrueAt` on
+   bodies) **is still needed for the criterion route's proof**, not for its statement.
+3. Which is the useful form of the answer: the repair is not bookkeeping — it is the difference
+   between a fragment whose formulas are controlled by their sorted part and one that is not.
