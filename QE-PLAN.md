@@ -1340,3 +1340,31 @@ the *well-sorted* sublanguage — the paper's two-sorted `L_RV` — at `VF`-tupl
 
 So on the well-sorted fragment the cover is no longer a hypothesis; what remains for it is
 `RV`-quantifiers, which is `RVElim`'s `exists_VFQ` and is also in the tree.
+
+## The repair is consistent (m3, swarm `smw16q93m`, accepted)
+
+```
+IModel.model_repairRV (v : Valuation K Γ₀) {x : K} (hx : x ≠ 0) (hv : v x < 1) :
+  (C v) ⊨ Repair.repairRV
+```
+
+— all nine sentences of the repaired axiom set hold at the intended `L_RV`-structure of an arbitrary
+non-trivially valued field, proved one sentence at a time.  With `PadicComplex p` and `x = p` (so
+`v p = 1/p < 1`) this is an unconditional consistency proof **relative to a Mathlib-valued field**,
+and it retires the caveat that the `rvEqLink` erratum put on everything derived from `repairRV`.
+
+Two findings recorded with it:
+
+1. **`kJunkZero` forces the strict junk convention**: `kAdd t s = 0` unless *both* arguments are in
+   `K`.  The accepted `Milestone0/accepted/ACVF_residue_ops.lean` defines `kAdd` as
+   `ofK (kOf t + kOf s)`, which returns `s` when `t ∉ K` and `s ∈ K` — so that file's `kAdd` *fails*
+   `kJunkZero`.  The model is that file with the single definition replaced by
+   `if IK t ∧ IK s then ofK (kOf t + kOf s) else none`.  An accepted artifact is thus corrected, and
+   the correction is recorded rather than smoothed over.
+2. **`rvEqLink` holds at the intended structure**, including `a = b ≠ 0`
+   (`rv_eq_iff_lt : rv a = rv b ↔ v (a - b) < v b`), independently confirming the transposition fix
+   of commit `6ee852c`.
+
+Still not claimed: `kField`, `kAlgClosed`, `rvDivisible` — the three hypotheses of the accepted
+`model_ACVF_of_components` — so `(C v) ⊨ Axioms.ACVF` is not yet asserted.  With `PadicComplex p`
+those concern an algebraically closed residue field and a divisible value group.
