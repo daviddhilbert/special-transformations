@@ -214,6 +214,12 @@ def pK (t : Tm n) : Bf n := ∼(pEq t tRVInfty)
 def pRV0 (_t : Tm n) : Bf n := ⊤
 /-- the strict order `t > 1` of the `RV` sort -/
 def pGtOne (t : Tm n) : Bf n := pLe tRVOne t ⊓ ∼(pLe t tRVOne)
+/-- `t ∈ K = K^× ∪ {0}`, the residue field inside the `RV` sort.
+
+Not the same as `t ≠ ∞`: when `Γ` is nontrivial the elements of `RV ∖ {0, ∞}` of value
+`≠ 1` are not in `K`, and the residue-field operations are junk there.  Definition 2.1(d)
+defines `K` as `K^× ∪ {0}`, with `K^×` the predicate, i.e. axiom (4)'s class of `1`. -/
+def pInK (t : Tm n) : Bf n := pUnits t ⊔ pEq t tRVZero
 
 end LRV
 
@@ -256,7 +262,7 @@ invertible" would then force `0 = ∞`. -/
 
 /-- `⋀ i < k, x_i ≠ ∞`: the tuple lies in `K = RV-sort ∖ {∞}` -/
 def kHyps {k : ℕ} : Bf k :=
-  (List.finRange k).foldr (fun i acc => pK (tv i.val i.isLt) ⊓ acc) ⊤
+  (List.finRange k).foldr (fun i acc => pInK (tv i.val i.isLt) ⊓ acc) ⊤
 
 /-- the universal sentence `∀ x̄ ∈ s̄ ∩ K, φ` -/
 def allSortedK {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence :=
@@ -265,7 +271,7 @@ def allSortedK {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence :=
 /-- the guarded existential formula `∃ x ∈ s ∩ K, φ`, with `x` the variable of index `k` -/
 def exSortedK {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
   BoundedFormula.ex (sortPred s (tv k (Nat.lt_succ_self k)) ⊓
-    pK (tv k (Nat.lt_succ_self k)) ⊓ φ)
+    pInK (tv k (Nat.lt_succ_self k)) ⊓ φ)
 
 /-- the universal closure of a formula in a single variable -/
 def allOne (φ : Bf 1) : LRV.Sentence := BoundedFormula.alls φ
@@ -347,13 +353,15 @@ Identifying `Kˣ` with all of `RV ∖ {0, ∞}` (as an earlier version did) puts
 `Γ` trivial — contradicting the paper's standing hypothesis that `Γ(S)` is nontrivial. -/
 def sdUnits : LRV.Sentence := allOne (pUnits &0 ⟹ pRVsort &0)
 /-- `K = Kˣ ∪ {0}` is closed under `+` -/
-def sdKAdd : LRV.Sentence := allSorted ![.rv, .rv] (pK &0 ⟹ (pK &1 ⟹ pK (tKAdd &0 &1)))
+def sdKAdd : LRV.Sentence :=
+  allSorted ![.rv, .rv] (pInK &0 ⟹ (pInK &1 ⟹ pInK (tKAdd &0 &1)))
 /-- `K` is closed under unary `-` -/
-def sdKNeg : LRV.Sentence := allSorted ![.rv] (pK &0 ⟹ pK (tKNeg &0))
+def sdKNeg : LRV.Sentence := allSorted ![.rv] (pInK &0 ⟹ pInK (tKNeg &0))
 /-- `K` is closed under `×`: the paper's `K = K^× ∪ {0}` is a field, so the product of two
 elements of `K` is in `K` and not `∞`.  Without this the field axioms of `kField` (which are
 guarded by `pK`) constrain only the products that happen to land in `K`. -/
-def sdKMul : LRV.Sentence := allSorted ![.rv, .rv] (pK &0 ⟹ (pK &1 ⟹ pK (tRVMul &0 &1)))
+def sdKMul : LRV.Sentence :=
+  allSorted ![.rv, .rv] (pInK &0 ⟹ (pInK &1 ⟹ pInK (tRVMul &0 &1)))
 
 /-- The closure part of the sort discipline: each sort is closed under its own symbols,
 and the two sorts are related through the symbols that cross them. -/
@@ -465,7 +473,7 @@ def rvMulInv : LRV.Sentence :=
 def rvDivisible (k : ℕ) : LRV.Sentence :=
   allSorted ![.rv] (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVPow &1 k) &0))
 /-- `t × 0 = 0` for `t ∈ K` -/
-def rvMulZeroK : LRV.Sentence := allSorted ![.rv] (pK &0 ⟹ pEq (tRVMul &0 tRVZero) tRVZero)
+def rvMulZeroK : LRV.Sentence := allSorted ![.rv] (pInK &0 ⟹ pEq (tRVMul &0 tRVZero) tRVZero)
 /-- `t × ∞ = ∞` for `t ∈ RV₀`, i.e. for every `t` of the `RV` sort -/
 def rvMulInfty : LRV.Sentence := allSorted ![.rv] (pEq (tRVMul &0 tRVInfty) tRVInfty)
 

@@ -123,6 +123,15 @@ roughly 1.5–6k lines, for no gain over (a).
   the preorder — hence `Γ` — collapses to a point, contradicting the paper's standing
   hypothesis `Γ(S)` nontrivial. `sdUnits` now only says that the predicate lives on the `RV`
   sort; its content comes from `leClassOne`.
+* **`K` is `K^× ∪ {0}`, not `RV ∖ {∞}`.** This is the subtlest of the repairs. Guarding the
+  residue-field axioms by `t ≠ ∞` still over-asserts them: when `Γ` is nontrivial, the
+  elements of `RV ∖ {0, ∞}` of value `≠ 1` are outside `K`, the residue operations are junk
+  there, and the field axiom `t + 0 = t` together with invertibility then fails at such a
+  `t` — so `t ≠ ∞` as a guard forces `Γ` trivial just as the original sort-predicate guard
+  forced `0 = ∞`. Definition 2.1(d) is explicit: `K = K^× ∪ {0}`, with `K^×` the predicate
+  of Definition 2.2(4), i.e. the class of `1`. Every `K`-quantifier is now guarded by
+  `pInK t := pUnits t ⊔ t = 0`, and `sdKAdd`, `sdKNeg`, `sdKMul` and `rvMulZeroK` use it too.
+  (`t ≠ ∞` remains in the file as `pK`, but is no longer used as a guard.)
 * **`K` must be closed under `×`, not only under `+` and `−`.** The paper's `K = K^× ∪ {0}`
   is a field. With the field axioms guarded by `pK` but no closure axiom for `×`, a model may
   send the product of two elements of `K` to `∞`, and the axioms then constrain only those
