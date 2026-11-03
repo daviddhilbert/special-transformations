@@ -240,3 +240,35 @@ paper's theory is junk-free, and the repaired axiom is the paper's own. Note als
 correct convention (`rv(0)` the only absorbing element) suggests a second, smaller repair: the
 encoding's two constants `rvZero` and `rvInfty` should be identified, or at least one of them
 kept.
+
+## The other assembled route, and why the plan still prefers Johnson's
+
+There are **two** chains in the tree that reduce `HasQE ACVF` (the frozen statement of Theorem 2.3
+in `Milestone0/Encoding.lean`) to named hypotheses.  This section records the second one, which
+this plan did not mention, so that nobody thinks Johnson's criterion is the only way.
+
+**Yin's own route** — `QE/Reduction_assembly.lean`, `theorem_2_3_of_three`:
+
+```
+theorem_2_3_of_three : ShoenfieldTest →
+  (∀ M N, M ⊨ ACVF → N ⊨ ACVF → Saturated N → PrepStep)   -- Lemmas 3.3 + henselization
+  (∀ M N, … → Saturated N → OneStepVF)                     -- Lemmas 3.4-3.8
+  (∀ M N, … → VFGenCase)                                   -- Remark 3.1 + Weispfenning QE in L_v
+  → HasQE ACVF
+```
+
+The fourth ingredient of `theorem_2_3_of_hypotheses` (`RV = rv(VF^×) ∪ {0}`, the paper's
+surjectivity of `rv`) is **discharged** there (`RVeqRvVF_of_model`), which is what the ruling on
+`rvSurj` bought.
+
+So Theorem 2.3 has four remaining hypotheses on this route (`ShoenfieldTest`, `PrepStep`,
+`OneStepVF`, `VFGenCase`) against three plus a syntactic transfer on Johnson's.  The plan keeps
+preferring Johnson's because `ShoenfieldTest` needs model-theoretic saturation, which Mathlib does
+not have, whereas on Johnson's route saturation never appears; `PrepStep`, `OneStepVF` and
+`VFGenCase` are all stated with `Saturated N` as a hypothesis, so that route cannot be closed
+without building saturation.  `VFGenCase` additionally depends on Remark 3.1, i.e. exactly the
+`rv`-surjectivity/junk question that the ruling settled on the encoding side but that is not yet
+formalised as a transfer lemma.
+
+It is worth knowing that `QE/Reduction_assembly.lean` compiles and that `RVeqRvVF_of_model` is
+proved there: if saturation ever becomes available, that route is the shorter one.
