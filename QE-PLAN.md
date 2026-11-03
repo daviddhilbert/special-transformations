@@ -1990,3 +1990,43 @@ used to take "algebraic set of balls" as an unconstrained predicate now take the
 `swl_effectiveness` (4.15) and `swl_algebraic_balls_definable_centers` (4.17). Also frozen:
 `swl_rv_effectiveness` (QE:ACVF:min 4.16), the fact behind `ball:proper:sub:center`. Seven frozen
 statements in the file, green, seven `sorry` warnings, no `axiom`.
+
+## Swarm `smw19wtoj`: the QE route is now assembled, and it has found a defect in the frozen predicate
+
+Four of the five directions delivered; every file checked here by compiling it, not by report.
+
+**w5 (m5, accepted) — the assembly.** `.ultramath/smw19wtoj/m5/Main.lean`: `qf_of_QFq`
+(unconditional), `qf_witness_of_exists_toFrag` (modulo w1's statement), and
+`hasQEws_of_exists_toFrag`, a *`Downstream.HasQEws` instance* — the interface the downstream
+C-minimality consumes. It derives rather than assumes the five hypotheses of `QFRes.qfq_cover`
+(`Asm.model_rvFibreIff`, the four `QFRes.K*` links) and `hasQEb_ACVF_val` (from
+`hasQE_ACVF_val`'s inputs), and gets `WellSorted (valFormulaToRV θ')` without any `GuardsLast`
+argument, because a QF formula needs none.
+
+**w1 (m1, accepted) — `exists_toFrag` for the paper's guarded discipline, plus a defect.**
+`.ultramath/smw19wtoj/m1/W1.lean`: `exists_toFrag_WSg` covers all cases, `.vf` and `.rv`
+(The `.rv` case is closed by `QFq.allVF` together with `exists_vf_of_rv` from `rvSurj`), and
+`WSg.toWellSorted` embeds the guarded discipline into the frozen predicate. **The embedding is
+one-directional and cannot be reversed**: the frozen `WellSorted.all` admits a body
+`(x ∈ s ⟹ ⊥) ⟹ ψ`, which `GuardsLast` accepts and which is false at a junk element, so the
+induction needs `JunkTrueAt s n χ := ∀ T a, ¬ sortEval s a → χ.Realize (snoc T a)`, and
+`GuardsLast` does not imply it. Consequence: **the frozen `WellSorted.all`/`.ex` are too weak to
+support the QE proof they are supposed to enable.** The fix is a junk-truth condition on the guard
+in the frozen predicate (a third revision of `Encoding.lean`), or stating the target over the
+paper's guarded discipline `WSg`. **This is an author decision and is not taken unilaterally.**
+
+**w2 (m4, accepted) — the substitution.** `.ultramath/smw19wtoj/m4/SubstRv.lean`: `substLastRv`
+(and the general-`α` `substFormulaRv`), `realize_substLastRv`, `tmSort_substLastRv` and
+`wellSorted_substLastRv`: replacing the last free variable by `rv` of itself preserves `TmSort`,
+`WellSorted` (with the context's sort updated `.rv → .vf`) and realization. Together with w1 this
+gives the `.rv` quantifier case both halves — the `rvSurj` rewrite and the substitution.
+
+**w4 (m2, rejected once) — the parameter bridge, partial.** `.ultramath/smw19wtoj/m2/Shrink.lean`
+compiles and proves `realize_shrinkAux` — the depth-indexed relabel that Mathlib's
+`BoundedFormula.relabel` cannot do, plus `tupleAt_snoc` — but not the `TmSort`/`WellSorted`
+transport that makes it usable, and `ShrinkSort.lean` does not compile. Sent back with the route:
+fix the index as an explicit `K = m + (n + k)` (or `termination_by`), prove `tmSort_shrink` in
+the shape the `.all` step needs, reuse `junkTrueAt_guard` from w1, then the finite-support
+extraction. The deliverable remains `hasQE_of_hasQE_empty`.
+
+**w3 (m3) — the mixed-context fragment (with `RV` variables) is still running.**
