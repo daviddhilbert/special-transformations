@@ -14322,3 +14322,685 @@ end SpecialTransformations.Milestone0.Transfer
 #print axioms SpecialTransformations.Milestone0.Transfer.exSorted_realize
 #print axioms SpecialTransformations.Milestone0.Transfer.hasNontrivVal_of_model_ACVFplusN
 #print axioms SpecialTransformations.Milestone0.Transfer.model_ACVF_val_of_model_ACVFplusN
+
+
+/-!
+# The cover, I: `rv 1 = 1` and the unit atom
+
+`SpecialTransformations.Milestone0.Transfer` has the translation `L_val → L_RV`
+(`valFormulaToRVvf`, `VFRestrict`) and its realization lemma.  The transfer of quantifier
+elimination needs the **converse**: every `L_RV`-formula is (modulo the axioms) the image of an
+`L_val`-formula.  This file builds the pieces of that cover that can be closed.
+
+Contents:
+
+* `rv_one` — `iRv (iVFOne) = iRVOne`.  This is *not* an axiom of the frozen encoding and nobody
+  has proved it: `rv` is multiplicative and surjective, so `rv 1` is the identity of the ambient
+  `RV`-semigroup, and `iRVOne` is an idempotent, so the two agree.  The derivation below uses
+  `rvSurj` twice (through `iRVOne ∈ rv '' VF` and an inverse of a preimage).  Without it the
+  paper's `Kˣ` cannot be matched to `v x = v 1` in `L_val`, i.e. `pUnits` has no `L_val` image.
+* `iUnits_iff` — the semantic form of `Axioms.leClassOne` (`Kˣ` is the class of `1`).  This is
+  `d1`'s target; it is proved here in ten lines because the cover below consumes it.
+* `VFTm`, `Frag`, `Frag.toRV`, `Frag.toVal` and `Frag.realize` — the cover on the fragment of
+  `L_RV` whose atoms are `v s ≤ v t` (`pLe` on `rv`-terms) and `s ∈ Kˣ` (`pUnits` on `rv`-terms),
+  with arbitrarily nested Boolean structure and `VF`-guarded quantifiers.
+* `frag_QE` — quantifier elimination for that fragment, from `hasQE_ACVF_val` and the read-back
+  `VFRestrict.transfer_of_isQF`, *given* that the `VF` sort of the model models `ValPM.ACVF_val`.
+
+Not done here (and why): RV-sorted equality `rv s = rv t` needs the residue field, so it is not
+covered; `Theory.Iff`-level statements at junk tuples are not covered; the hypothesis
+`VFType ⊨ ValPM.ACVF_val` is exactly the gap on record (item 5 + `axNontrivial`).
+-/
+
+set_option maxHeartbeats 1000000
+set_option backward.isDefEq.respectTransparency false
+set_option linter.style.haveILetI false
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Axioms
+open SpecialTransformations.Milestone0.Transfer
+
+namespace Cover
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 1. Members of the frozen theory -/
+
+theorem mem_ACVF_paper {s : LRV.Sentence} (h : s ∈ Axioms.ACVFpaper) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Set.mem_union]
+  tauto
+
+theorem mem_ACVF_rvGroup {s : LRV.Sentence} (h : s ∈ Axioms.rvGroup) : s ∈ Axioms.ACVF :=
+  mem_ACVF_paper (by
+    simp only [Axioms.ACVFpaper, Set.mem_union]
+    tauto)
+
+theorem mem_ACVF_kField {s : LRV.Sentence} (h : s ∈ Axioms.kField) : s ∈ Axioms.ACVF :=
+  mem_ACVF_paper (by
+    simp only [Axioms.ACVFpaper, Set.mem_union]
+    tauto)
+
+/-! ## 2. The realizers of the constants -/
+
+theorem realize_tRVOne {k : ℕ} (v : Empty ⊕ Fin k → M) : (tRVOne (n := k)).realize v = iRVOne := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvOne
+      (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i)) = iRVOne
+  rw [show (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i))
+      = (fun i => i.elim0) from by funext i; exact i.elim0]
+  rfl
+
+/-- The value of the variable that `Fin.snoc` appends. -/
+theorem realize_tv_last_apply {k : ℕ} (v : Empty → M) (x : Fin k → M) (a : M) (h : k < k + 1) :
+    (tv k h).realize (Sum.elim v (Fin.snoc x a)) = a := by
+  rw [show tv k h = tv (⟨k, h⟩ : Fin (k + 1)).1 (⟨k, h⟩ : Fin (k + 1)).2 from rfl, realize_tv]
+  simp [Fin.snoc]
+
+theorem snoc_apply_zero_one (x : Fin 1 → M) (a : M) :
+    (Fin.snoc (α := fun _ : Fin 2 => M) x a) (0 : Fin 2) = x 0 := by
+  simp [Fin.snoc]
+
+theorem snoc_apply_one_one (x : Fin 1 → M) (a : M) :
+    (Fin.snoc (α := fun _ : Fin 2 => M) x a) (1 : Fin 2) = a := by
+  simp [Fin.snoc]
+
+/-- **`rv` is surjective on `RV` away from `∞`** (`Axioms.rvSurj`), semantically. -/
+theorem rvSurj_realize (hM : M ⊨ Axioms.ACVF) {y : M} (hy : iRV y) (hy0 : y ≠ iRVZero) :
+    ∃ x : M, iVF x ∧ iRv x = y := by
+  have hmem : Axioms.rvSurj ∈ Axioms.ACVF :=
+    mem_ACVF_rvAxioms (by simp [Axioms.rvAxioms, Axioms.ofList])
+  have h := allSorted_realize hM (ss := ![SortTag.rv])
+    (φ := (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))) hmem ![y] (by
+      intro i; fin_cases i; simpa using hy)
+  simp only [pEq, BoundedFormula.realize_bdEqual, BoundedFormula.realize_imp,
+    BoundedFormula.realize_not, exSorted, BoundedFormula.realize_ex, BoundedFormula.realize_inf,
+    sortPred, realize_tRVZero, realize_tRv, pVF_realize, Matrix.cons_val_zero,
+    realize_tv_last_apply, snoc_apply_zero_one, snoc_apply_one_one] at h
+  exact h hy0
+
+/-- **`Kˣ` is the class of `1`** (`Axioms.leClassOne`), semantically. -/
+theorem iUnits_iff (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iRV x) (hx0 : x ≠ iRVZero) :
+    iUnits x ↔ (iLe (iRVOne (M := M)) x ∧ iLe x iRVOne) := by
+  have hmem : Axioms.leClassOne ∈ Axioms.ACVF :=
+    mem_ACVF_preorderRV (s := Axioms.leClassOne) (by simp [Axioms.preorderRV, Axioms.ofList])
+  have h := allSorted_realize hM (ss := ![SortTag.rv])
+    (φ := (pRV &0 ⟹ (pUnits &0 ⇔ (pLe tRVOne &0 ⊓ pLe &0 tRVOne)))) hmem ![x] (by
+      intro i; fin_cases i; simpa using hx)
+  have h' : x ≠ iRVZero → (iUnits x ↔ (iLe iRVOne x ∧ iLe x iRVOne)) := by
+    simpa [pRV_realize, pUnits_realize, realize_pLe, realize_tRVOne] using h
+  exact h' hx0
+
+/-- A nonzero `VF`-element has `rv ≠ ∞` (`Axioms.rvEqInfty` contrapositively). -/
+theorem rv_ne_zero (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) (h : x ≠ iVFZero) :
+    iRv x ≠ iRVZero :=
+  fun hh => h (rv_eq_infty hM hx hh)
+
+/-- Every `RV`-element is `rv` of a `VF`-element (`Axioms.rvSurj`, with `rv 0 = ∞` for the
+absorbing element). -/
+theorem exists_vf_of_rv (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iRV a) :
+    ∃ x : M, iVF x ∧ iRv x = a := by
+  by_cases ha0 : a = iRVZero
+  · exact ⟨iVFZero, vf_zero_mem hM, by rw [rv_zero_eq hM, ha0]⟩
+  · exact rvSurj_realize hM ha ha0
+
+/-! ## 3. The sort of `1` of the `RV` sort, and `rv 1 = 1` -/
+
+/-- `1` of the `RV` sort lies in the `RV` sort (`sdRVOne`). -/
+theorem rv_one_mem (hM : M ⊨ Axioms.ACVF) : iRV (iRVOne (M := M)) := by
+  have h := sentence_realize hM (φ := Axioms.sdRVOne)
+    (mem_ACVF_sortClosure (s := Axioms.sdRVOne) (by simp [Axioms.sortClosure, Axioms.ofList]))
+  rw [Axioms.sdRVOne, Sentence.Realize] at h
+  simp only [Formula.Realize] at h
+  rw [pRVsort_realize, realize_tRVOne] at h
+  exact h
+
+/-- `0 ≠ 1` on the `RV` sort (`kField` states it unguarded). -/
+theorem iRVZero_ne_iRVOne (hM : M ⊨ Axioms.ACVF) : iRVZero (M := M) ≠ iRVOne := by
+  have hmem : (∼(pEq tRVZero tRVOne)) ∈ Axioms.ACVF :=
+    mem_ACVF_kField (s := ∼(pEq tRVZero tRVOne)) (by simp [Axioms.kField, Axioms.ofList])
+  have h := sentence_realize hM hmem
+  rw [Sentence.Realize] at h
+  simp only [Formula.Realize, BoundedFormula.realize_not, pEq, BoundedFormula.realize_bdEqual,
+    realize_tRVZero, realize_tRVOne] at h
+  exact h
+
+/-- `1 ∈ Kˣ` (`Axioms.rvOneMem`). -/
+theorem units_one (hM : M ⊨ Axioms.ACVF) : iUnits (iRVOne (M := M)) := by
+  have hmem : Axioms.rvOneMem ∈ Axioms.ACVF :=
+    mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+  have h := sentence_realize hM hmem
+  rw [Axioms.rvOneMem, Sentence.Realize] at h
+  simp only [Formula.Realize] at h
+  rw [pUnits_realize, realize_tRVOne] at h
+  exact h
+
+/-- `×` on the `RV` sort is associative (`Axioms.rvMulAssoc`), semantically. -/
+theorem rv_mul_assoc (hM : M ⊨ Axioms.ACVF) {x y z : M} (hx : iRV x) (hy : iRV y) (hz : iRV z) :
+    iRVMul (iRVMul x y) z = iRVMul x (iRVMul y z) := by
+  have hmem : Axioms.rvMulAssoc ∈ Axioms.ACVF :=
+    mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+  have h := allSorted_realize hM hmem ![x, y, z] (by
+    intro i; fin_cases i <;> simp [hx, hy, hz])
+  simpa only [pEq, BoundedFormula.realize_bdEqual, realize_tRVMul, realize_tv, Term.realize_var,
+    Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.cons_val_two, Matrix.vecHead, Matrix.vecTail, Fin.succ_zero_eq_one, Matrix.head_cons] using h
+
+/-- `1` is neutral for `×` on `Kˣ` (`Axioms.rvMulOne`), semantically. -/
+theorem rv_mul_one (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iRV x) (hu : iUnits x) :
+    iRVMul iRVOne x = x := by
+  have hmem : Axioms.rvMulOne ∈ Axioms.ACVF :=
+    mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+  have h := allSorted_realize hM hmem ![x] (by intro i; fin_cases i; simpa using hx)
+  have h' : iUnits x → iRVMul iRVOne x = x := by
+    simpa only [pUnits_realize, BoundedFormula.realize_imp, pEq, BoundedFormula.realize_bdEqual,
+      realize_tRVMul, realize_tRVOne, realize_tv, Term.realize_var, Sum.elim_inr,
+      Function.comp_apply, Matrix.cons_val_zero] using h
+  exact h' hu
+
+/-- **`rv 1 = 1`.**  Not an axiom of the frozen encoding; derived from multiplicativity of `rv`,
+`rvSurj`, and the fact that `RV ∖ {0}` is a semigroup with identity `rv 1` in which `iRVOne` is
+idempotent and has an inverse.
+
+The chain is `1 = 1·rv 1 = 1·(1·rv y) = (1·1)·rv y = 1·rv y = rv 1`, where `y` is the inverse
+of a preimage `x` of `iRVOne` under `rv` (`rvSurj`), which exists because `x ∈ VF` is a field. -/
+theorem rv_one (hM : M ⊨ Axioms.ACVF) : iRv (iVFOne (M := M)) = iRVOne := by
+  have h1mem : iVF (iVFOne (M := M)) := vf_one_mem hM
+  have hg0 : iRv (iVFOne (M := M)) ≠ iRVZero :=
+    rv_ne_zero hM h1mem (vf_zero_ne_one hM).symm
+  have hh_mem : iRV (iRVOne (M := M)) := rv_one_mem hM
+  have hh0 : iRVOne ≠ iRVZero := fun h => iRVZero_ne_iRVOne hM h.symm
+  -- a preimage of `iRVOne` under `rv`
+  obtain ⟨x, hx, hxone⟩ := rvSurj_realize hM hh_mem hh0
+  have hx0 : x ≠ iVFZero := by
+    intro h
+    rw [h, rv_zero_eq hM] at hxone
+    exact hh0 hxone.symm
+  obtain ⟨y, hy, hxy⟩ := (vf_mul_inv_or_zero hM hx).resolve_left hx0
+  -- `h · rv y = rv 1`
+  have key1 : iRv (iVFOne (M := M)) = iRVMul iRVOne (iRv y) := by
+    have h := rv_mul_hom hM hx hy
+    rw [hxy, hxone] at h
+    exact h
+  -- `h · rv 1 = h`
+  have key2 : iRVOne = iRVMul iRVOne (iRv (iVFOne (M := M))) := by
+    have h := rv_mul_hom hM hx h1mem
+    rw [vf_mul_one hM hx, hxone] at h
+    exact h
+  -- `h · h = h`
+  have hh : iRVMul iRVOne iRVOne = iRVOne := rv_mul_one hM hh_mem (units_one hM)
+  have hyp : iRV (iRv y) := rv_mem hM hy
+  have step2 : iRVMul iRVOne (iRv (iVFOne (M := M)))
+      = iRVMul iRVOne (iRVMul iRVOne (iRv y)) := by rw [key1]
+  have step3 : iRVMul iRVOne (iRVMul iRVOne (iRv y))
+      = iRVMul (iRVMul iRVOne iRVOne) (iRv y) :=
+    (rv_mul_assoc hM hh_mem hh_mem hyp).symm
+  have step4 : iRVMul (iRVMul iRVOne iRVOne) (iRv y) = iRVMul iRVOne (iRv y) := by rw [hh]
+  exact key1.trans (key2.trans (step2.trans (step3.trans step4))).symm
+
+
+/-! ## 4. `VF`-terms and their two readings -/
+
+/-- The `VF`-terms of `L_RV`: the terms built from the `VF`-sorted symbols and the variables.
+`L_RV` has a single carrier, so this is a *sub*-term-language of `Tm n`, made into its own
+inductive type so that the two translations below are structural recursions. -/
+inductive VFTm (n : ℕ) : Type
+  /-- the variable `i` -/
+  | var : Fin n → VFTm n
+  /-- `0` of the `VF` sort -/
+  | zero : VFTm n
+  /-- `1` of the `VF` sort -/
+  | one : VFTm n
+  /-- `+` of the `VF` sort -/
+  | add : VFTm n → VFTm n → VFTm n
+  /-- `-` of the `VF` sort -/
+  | neg : VFTm n → VFTm n
+  /-- `×` of the `VF` sort -/
+  | mul : VFTm n → VFTm n → VFTm n
+
+namespace VFTm
+
+variable {n : ℕ}
+
+/-- The `L_RV`-term underlying a `VF`-term. -/
+def toLRV : VFTm n → Tm n
+  | var i => tv i.1 i.2
+  | zero => tVFZero
+  | one => tVFOne
+  | add a b => tVFAdd a.toLRV b.toLRV
+  | neg a => tVFNeg a.toLRV
+  | mul a b => tVFMul a.toLRV b.toLRV
+
+/-- The `L_val`-term underlying a `VF`-term: the same shape, read in the ring language. -/
+def toVal : VFTm n → Language.val.Term (Empty ⊕ Fin n)
+  | var i => Term.var (Sum.inr i)
+  | zero => (0 : Language.val.Term (Empty ⊕ Fin n))
+  | one => (1 : Language.val.Term (Empty ⊕ Fin n))
+  | add a b => Term.func ValFunc.add ![a.toVal, b.toVal]
+  | neg a => Term.func ValFunc.neg ![a.toVal]
+  | mul a b => Term.func ValFunc.mul ![a.toVal, b.toVal]
+
+/-- **The term-level cover**: a `VF`-term has the same value read as an `L_RV`-term and as an
+`L_val`-term.  No axiom is used. -/
+theorem realize_toLRV (s : VFTm n) (x : Fin n → M) :
+    (s.toLRV).realize (Sum.elim (default : Empty → M) x) = valTermEval x s.toVal := by
+  induction s with
+  | var i => rfl
+  | zero => simp [toLRV, toVal, realize_tVFZero, valTermEval]
+  | one => simp [toLRV, toVal, realize_tVFOne, valTermEval]
+  | add a b iha ihb =>
+    simp only [toLRV, toVal, realize_tVFAdd, iha, ihb, valTermEval, Matrix.cons_val_zero,
+      Matrix.cons_val_one]
+  | neg a iha =>
+    simp only [toLRV, toVal, realize_tVFNeg, iha, valTermEval, Matrix.cons_val_zero]
+  | mul a b iha ihb =>
+    simp only [toLRV, toVal, realize_tVFMul, iha, ihb, valTermEval, Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.head_cons]
+
+/-- A `VF`-term with a tuple of `VF`-elements as parameters is a `VF`-element (the sort-closure
+axioms of the encoding). -/
+theorem realize_mem (hM : M ⊨ Axioms.ACVF) (s : VFTm n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) : iVF ((s.toLRV).realize (Sum.elim (default : Empty → M) x)) := by
+  induction s with
+  | var i => simpa [toLRV, realize_tv] using hx i
+  | zero => simpa [toLRV, realize_tVFZero] using vf_zero_mem hM
+  | one => simpa [toLRV, realize_tVFOne] using vf_one_mem hM
+  | add a b iha ihb =>
+    simp only [toLRV, realize_tVFAdd]
+    exact vf_add_mem hM iha ihb
+  | neg a iha =>
+    simp only [toLRV, realize_tVFNeg]
+    exact vf_neg_mem hM iha
+  | mul a b iha ihb =>
+    simp only [toLRV, realize_tVFMul]
+    exact vf_mul_mem hM iha ihb
+
+end VFTm
+
+/-! ## 5. The fragment and its two translations -/
+
+/-- A fragment of `L_RV`: Boolean combinations of the atoms `v s ≤ v t` (i.e. `pLe` on `rv`-terms,
+with the reversal of the order) and `s ∈ Kˣ` (i.e. `pUnits` on `rv`-terms, together with the
+nonzero condition that makes it a statement about `v s = v 1`), closed under `VF`-guarded
+quantification.  Every constructor has an image in `L_RV` (`Frag.toRV`) and in `L_val`
+(`Frag.toVal`), and `Frag.realize_toRV_iff` says the two images agree at every `VF`-tuple. -/
+inductive Frag : ℕ → Type
+  /-- `⊥` -/
+  | falsum (n : ℕ) : Frag n
+  /-- `v s ≤ v t`, i.e. `pLe (rv t) (rv s)` -/
+  | leAtm {n : ℕ} : VFTm n → VFTm n → Frag n
+  /-- `s ∈ Kˣ` together with `s ≠ 0`, i.e. `pUnits (rv s)` plus its nonzero condition -/
+  | unitAtm {n : ℕ} : VFTm n → Frag n
+  /-- implication -/
+  | imp {n : ℕ} : Frag n → Frag n → Frag n
+  /-- universal quantification over the `VF` sort -/
+  | all {n : ℕ} : Frag (n + 1) → Frag n
+
+namespace Frag
+
+/-- The image of a fragment formula in `L_RV`. -/
+def toRV : {n : ℕ} → Frag n → Bf n
+  | _, falsum _ => BoundedFormula.falsum
+  | _, leAtm s t => pLe (tRv t.toLRV) (tRv s.toLRV)
+  | _, unitAtm s => pUnits (tRv s.toLRV) ⊓ ∼(pEq s.toLRV tVFZero)
+  | _, imp a b => BoundedFormula.imp a.toRV b.toRV
+  | _, all φ =>
+    BoundedFormula.all (pVF (tv _ (Nat.lt_succ_self _)) ⟹ φ.toRV)
+
+/-- The image of a fragment formula in `L_val`. -/
+def toVal : {n : ℕ} → Frag n → Language.val.BoundedFormula Empty n
+  | _, falsum _ => BoundedFormula.falsum
+  | _, leAtm s t => ValPM.leF s.toVal t.toVal
+  | _, unitAtm s =>
+    ∼(s.toVal =' (0 : Language.val.Term (Empty ⊕ _))) ⊓
+      (ValPM.leF s.toVal (1 : Language.val.Term (Empty ⊕ _)) ⊓
+        ValPM.leF (1 : Language.val.Term (Empty ⊕ _)) s.toVal)
+  | _, imp a b => BoundedFormula.imp a.toVal b.toVal
+  | _, all φ => BoundedFormula.all φ.toVal
+
+end Frag
+
+/-! ## 6. The atoms -/
+
+variable {n : ℕ}
+
+/-- The realisation of an `L_val`-term in `vfStruct`, as a term of the `VF` sort. -/
+noncomputable def vfTermEval (hM : M ⊨ Axioms.ACVF) {n : ℕ} (x : Fin n → VFType (M := M))
+    (t : Language.val.Term (Empty ⊕ Fin n)) : VFType (M := M) :=
+  @Term.realize Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) (Empty ⊕ Fin n)
+    (Sum.elim (default : Empty → VFType (M := M)) x) t
+
+/-- The value of an `L_val`-term in `vfStruct`, as an element of `M`. -/
+theorem vfTermEval_val (hM : M ⊨ Axioms.ACVF) {n : ℕ} (x : Fin n → VFType (M := M))
+    (t : Language.val.Term (Empty ⊕ Fin n)) :
+    (vfTermEval hM x t).1 = valTermEval (fun i => (x i).1) t :=
+  VFRestrict.realize_term_vf hM x t
+
+/-- `leF` read in `vfStruct`: the realisation of `v a ≤ v b` is `iLe (rv b) (rv a)`, the paper's
+order with the reversal. -/
+theorem vfStruct_leF (hM : M ⊨ Axioms.ACVF) {n : ℕ} (x : Fin n → VFType (M := M))
+    (a b : Language.val.Term (Empty ⊕ Fin n)) :
+    (@BoundedFormula.Realize Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) Empty n
+        (ValPM.leF a b) (default : Empty → VFType (M := M)) x)
+      ↔ iLe (iRv (vfTermEval hM x b).1) (iRv (vfTermEval hM x a).1) := by
+  letI : Language.val.Structure (VFType (M := M)) := VFRestrict.vfStruct hM
+  rw [show ValPM.leF a b = Relations.boundedFormula ValRel.le ![a, b] from rfl,
+    BoundedFormula.realize_rel]
+  have h2 : ∀ r : Fin 2 → VFType (M := M),
+      Structure.RelMap (L := Language.val) ValRel.le r ↔ iLe (iRv (r 1).1) (iRv (r 0).1) :=
+    fun r => VFRestrict.vfStruct_le hM r
+  rw [h2]
+  simp [Matrix.cons_val_zero, Matrix.cons_val_one, vfTermEval]
+
+/-- **The unit atom.**  `rv a ∈ Kˣ` together with `a ≠ 0` is `v a = v 1`.  (`leClassOne` gives
+`Kˣ = ` the class of `1`, and `rv_one` identifies the `RV`-`1` with `rv 1`.) -/
+theorem units_atom (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iVF a) (h0 : a ≠ iVFZero) :
+    iUnits (iRv a) ↔
+      (iLe (iRv (iVFOne (M := M))) (iRv a) ∧
+        iLe (iRv a) (iRv (iVFOne (M := M)))) := by
+  exact (iUnits_iff hM (rv_mem hM ha) (rv_ne_zero hM ha h0)).trans (by rw [rv_one hM])
+
+/-! ## 7. The cover on the fragment -/
+
+/-- **The cover.**  On the fragment, the `L_RV`-image and the `L_val`-image of a formula are
+realised by the same tuple: `L_RV` at the `VF`-elements of `M`, `L_val` in the structure
+`vfStruct` on the `VF` sort.  This is the converse of
+`VFRestrict.valFormulaToRVvf_realize_VF`. -/
+theorem Frag.realize (hM : M ⊨ Axioms.ACVF) :
+    ∀ {n : ℕ} (φ : Frag n) (x : Fin n → VFType (M := M)),
+      (@BoundedFormula.Realize Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) Empty n
+          φ.toVal (default : Empty → VFType (M := M)) x)
+        ↔ (@BoundedFormula.Realize LRV M _ Empty n
+            φ.toRV (default : Empty → M) (fun i => (x i).1))
+  | _, Frag.falsum _, x => Iff.rfl
+  | _, Frag.leAtm s t, x => by
+    letI : Language.val.Structure (VFType (M := M)) := VFRestrict.vfStruct hM
+    rw [Frag.toVal, Frag.toRV, vfStruct_leF hM x]
+    rw [realize_pLe, realize_tRv, realize_tRv]
+    have e1 : (vfTermEval hM x t.toVal).1 = valTermEval (fun i => (x i).1) t.toVal :=
+      vfTermEval_val hM x t.toVal
+    have e2 : (vfTermEval hM x s.toVal).1 = valTermEval (fun i => (x i).1) s.toVal :=
+      vfTermEval_val hM x s.toVal
+    have e3 : (t.toLRV).realize (Sum.elim (default : Empty → M) (fun i => (x i).1))
+        = valTermEval (fun i => (x i).1) t.toVal := VFTm.realize_toLRV t _
+    have e4 : (s.toLRV).realize (Sum.elim (default : Empty → M) (fun i => (x i).1))
+        = valTermEval (fun i => (x i).1) s.toVal := VFTm.realize_toLRV s _
+    rw [e1, e2, e3, e4]
+  | _, Frag.unitAtm s, x => by
+    letI : Language.val.Structure (VFType (M := M)) := VFRestrict.vfStruct hM
+    rw [Frag.toVal, Frag.toRV]
+    simp only [BoundedFormula.realize_inf, BoundedFormula.realize_not, pUnits_realize,
+      realize_tRv, pEq, BoundedFormula.realize_bdEqual, realize_tVFZero]
+    rw [vfStruct_leF hM x s.toVal (1 : Language.val.Term (Empty ⊕ _)),
+      vfStruct_leF hM x (1 : Language.val.Term (Empty ⊕ _)) s.toVal]
+    have e1 : (vfTermEval hM x s.toVal).1 = valTermEval (fun i => (x i).1) s.toVal :=
+      vfTermEval_val hM x s.toVal
+    have e1' : (vfTermEval hM x (1 : Language.val.Term (Empty ⊕ _))).1 = iVFOne := by
+      rw [vfTermEval_val hM x]; rfl
+    have e2 : ((s.toLRV).realize (Sum.elim (default : Empty → M) (fun i => (x i).1)))
+        = valTermEval (fun i => (x i).1) s.toVal := VFTm.realize_toLRV s _
+    have hmem : iVF (valTermEval (fun i => (x i).1) s.toVal) := by
+      rw [← e2]
+      exact VFTm.realize_mem hM s _ (fun i => (x i).2)
+    have es : Term.realize (Sum.elim (default : Empty → VFType (M := M)) x) s.toVal
+        = vfTermEval hM x s.toVal := rfl
+    have e3 : Term.realize (Sum.elim (default : Empty → VFType (M := M)) x)
+        (0 : Language.val.Term (Empty ⊕ _)) = (0 : VFType (M := M)) := rfl
+    have hiff : (vfTermEval hM x s.toVal = (0 : VFType (M := M)))
+        ↔ (valTermEval (fun i => (x i).1) s.toVal = iVFZero) := by
+      rw [Subtype.ext_iff, e1]
+      exact Iff.rfl
+    rw [es, e3, e1, e1', e2, hiff]
+    constructor
+    · rintro ⟨hne, h1, h2⟩
+      exact ⟨(units_atom hM hmem hne).2 ⟨h1, h2⟩, hne⟩
+    · rintro ⟨hu, hne⟩
+      exact ⟨hne, (units_atom hM hmem hne).1 hu⟩
+  | _, Frag.imp a b, x => by
+    letI : Language.val.Structure (VFType (M := M)) := VFRestrict.vfStruct hM
+    rw [Frag.toVal, Frag.toRV]
+    simp only [BoundedFormula.realize_imp]
+    exact ⟨fun h ha => (Frag.realize hM b x).1 (h ((Frag.realize hM a x).2 ha)),
+      fun h ha => (Frag.realize hM b x).2 (h ((Frag.realize hM a x).1 ha))⟩
+  | _, Frag.all φ, x => by
+    letI : Language.val.Structure (VFType (M := M)) := VFRestrict.vfStruct hM
+    rw [Frag.toVal, Frag.toRV]
+    simp only [BoundedFormula.realize_all, BoundedFormula.realize_imp,
+      VFRestrict.realize_pVF_last, Fin.snoc_last]
+    constructor
+    · intro h a ha
+      have h1 := h (⟨a, ha⟩ : VFType (M := M))
+      have h2 := (Frag.realize hM φ (Fin.snoc x (⟨a, ha⟩ : VFType (M := M)))).1 h1
+      have hs := VFRestrict.val_snoc (M := M) x (⟨a, ha⟩ : VFType (M := M))
+      rwa [hs] at h2
+    · intro h a
+      have h1 := h a.1 a.2
+      have hs := VFRestrict.val_snoc (M := M) x a
+      rw [← hs] at h1
+      exact (Frag.realize hM φ (Fin.snoc x a)).2 h1
+
+/-! ## 8. The cover commutes with the guarded transfer, and quantifier elimination -/
+
+/-- **The cover commutes with `valFormulaToRVvf`**: at every tuple of `VF`-elements, the fragment
+formula and the guarded `L_RV`-image of its `L_val`-image agree. -/
+theorem frag_iff_valFormulaToRVvf (hM : M ⊨ Axioms.ACVF) {n : ℕ} (φ : Frag n) (x : Fin n → M)
+    (hx : ∀ i, iVF (x i)) :
+    (φ.toRV).Realize (default : Empty → M) x
+      ↔ (VFRestrict.valFormulaToRVvf φ.toVal).Realize (default : Empty → M) x := by
+  rw [VFRestrict.valFormulaToRVvf_realize,
+    ← VFRestrict.realize_valFormulaVF' hM φ.toVal x hx]
+  exact (Frag.realize hM φ (fun i => (⟨x i, hx i⟩ : VFType (M := M)))).symm
+
+/-- A model of `ValPM.ACVF_val` on the `VF` sort realises its formulas as the model relation says. -/
+theorem realize_of_valModel (hM : M ⊨ Axioms.ACVF)
+    (hval : @Theory.Model Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) ValPM.ACVF_val)
+    {n : ℕ} {θ : Language.val.BoundedFormula Empty n} (h : ValPM.ACVF_val ⊨ᵇ θ)
+    (x : Fin n → VFType (M := M)) :
+    (@BoundedFormula.Realize Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) Empty n
+      θ (default : Empty → VFType (M := M)) x) := by
+  letI : Language.val.Structure (VFType (M := M)) := VFRestrict.vfStruct hM
+  haveI : @Theory.Model Language.val (VFType (M := M)) _ ValPM.ACVF_val := hval
+  haveI : Nonempty (VFType (M := M)) := ⟨0⟩
+  exact Theory.ModelsBoundedFormula.realize_boundedFormula h _ (v := (default : Empty → VFType (M := M)))
+    (xs := x)
+
+/-- **Quantifier elimination on the fragment**, from `QECriterion.HasQEb ValPM.ACVF_val` (QE in
+`L_val` for bounded formulas) and the read-back `VFRestrict.transfer_of_isQF`.  At every tuple of
+`VF`-elements, a fragment formula is equivalent to the `L_RV`-image of a quantifier-free
+`L_val`-formula.
+
+The hypothesis `hval` is where the gaps on record enter: `ValPM.ACVF_val` contains
+`axNontrivial`, which the frozen axioms do not imply. -/
+theorem frag_QE (hM : M ⊨ Axioms.ACVF)
+    (hval : @Theory.Model Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) ValPM.ACVF_val)
+    (hQEb : QECriterion.HasQEb ValPM.ACVF_val) {n : ℕ} (φ : Frag n) :
+    ∃ ψ : Language.val.BoundedFormula Empty n, ψ.IsQF ∧
+      ∀ (y : Fin n → M), (∀ i, iVF (y i)) →
+        ((φ.toRV).Realize (default : Empty → M) y
+          ↔ (valFormulaToRV ψ).Realize (default : Empty → M) y) := by
+  obtain ⟨ψ, hψ, hiff⟩ := hQEb Empty n φ.toVal
+  refine ⟨ψ, hψ, fun y hy => ?_⟩
+  have hpoint : ∀ x : Fin n → VFType (M := M),
+      (@BoundedFormula.Realize Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) Empty n
+          φ.toVal (default : Empty → VFType (M := M)) x)
+        ↔ (@BoundedFormula.Realize Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) Empty n
+          ψ (default : Empty → VFType (M := M)) x) := by
+    intro x
+    have h2 := realize_of_valModel hM hval hiff x
+    have h3 := realize_of_valModel hM hval hiff.not x
+    simpa only [BoundedFormula.realize_iff] using h2
+  exact (frag_iff_valFormulaToRVvf hM φ y hy).trans
+    (VFRestrict.transfer_of_isQF hM hψ hpoint y hy)
+
+/-- **Quantifier elimination on the sentences of the fragment**, unconditional in the QE input:
+`hasQE_ACVF_val` (QE in `L_val`, proved in the tree) applies directly, because a fragment formula
+in no free variables is an `L_val`-sentence. -/
+theorem frag_QE_sentence (hM : M ⊨ Axioms.ACVF)
+    (hval : @Theory.Model Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) ValPM.ACVF_val)
+    (φ : Frag 0) :
+    ∃ ψ : Language.val.BoundedFormula Empty 0, ψ.IsQF ∧
+      ((φ.toRV).Realize (default : Empty → M) (default : Fin 0 → M)
+        ↔ (valFormulaToRV ψ).Realize (default : Empty → M) (default : Fin 0 → M)) := by
+  obtain ⟨ψ, hψ, hiff⟩ := hasQE_ACVF_val Empty φ.toVal
+  refine ⟨ψ, hψ, ?_⟩
+  have hpoint : ∀ x : Fin 0 → VFType (M := M),
+      (@BoundedFormula.Realize Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) Empty 0
+          φ.toVal (default : Empty → VFType (M := M)) x)
+        ↔ (@BoundedFormula.Realize Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) Empty 0
+          ψ (default : Empty → VFType (M := M)) x) := by
+    intro x
+    have h2 := realize_of_valModel hM hval hiff x
+    simpa only [BoundedFormula.realize_iff] using h2
+  exact (frag_iff_valFormulaToRVvf hM φ (default : Fin 0 → M) (fun i => i.elim0)).trans
+    (VFRestrict.transfer_of_isQF hM hψ hpoint (default : Fin 0 → M) (fun i => i.elim0))
+
+end Cover
+/-! ## Axiom checks -/
+
+#print axioms Cover.rv_one
+#print axioms Cover.units_atom
+#print axioms Cover.VFTm.realize_toLRV
+#print axioms Cover.VFTm.realize_mem
+#print axioms Cover.Frag.realize
+#print axioms Cover.frag_iff_valFormulaToRVvf
+#print axioms Cover.frag_QE
+#print axioms Cover.frag_QE_sentence
+
+
+/-!
+# From the cover `L_RV → L_val` to quantifier elimination on the `VF` sort
+
+`hasQE_ACVF_val` (`QE/Assembly_val.lean`) is quantifier elimination for `ValPM.ACVF_val` in the
+one-sorted language `L_val`.  `m6/ValEvalVF.lean` (swarm `smw14elno`) has the reading of an
+`L_val`-formula in the `L_val`-structure `vfStruct hM` on the `VF` sort of an `L_RV`-model, the
+guarded translation `valFormulaToRVvf`, and `transfer_of_isQF`, which reads a quantifier-eliminated
+`L_val` output back into `L_RV` at tuples of `VF`-elements.
+
+This file puts the two together: **given the cover hypothesis `CoverVF` — every `L_RV`-formula is,
+at `VF`-tuples of every model of `ACVF`, equivalent to the image `valFormulaToRVvf θ` of an
+`L_val`-formula — every `L_RV`-formula is (uniformly in the model) equivalent at `VF`-tuples to a
+quantifier-free `L_RV`-formula**, provided the `VF`-sort structure is a model of `ACVF_val`.
+
+The uniformity matters: the quantifier-free witness `ψ = valFormulaToRV θ'` depends only on the
+cover's `θ` and on `ACVF_val`, not on the model or the tuple.  Hence the two-model transfer step
+follows immediately at `VF`-tuples (the last theorem).
+
+What is **not** here: tuples with `RV`-valued coordinates.  The cover is stated with a tuple of
+`VF`-elements because `L_val` has nothing to say about an `RV`-element; in the intended proof the
+`RV`-coordinates are replaced by `VF`-preimages using `Axioms.rvSurj`, which costs existential
+quantifiers in `L_val` and is the content of the cover proper (direction e1).  Also missing: the
+model hypothesis `S ⊨ ValPM.ACVF_val`, which needs the repaired axiom `leMulCompatFull`
+(`m1/Scale.lean`), `m5/VFAlgClosed.lean`, and nontriviality.
+-/
+
+set_option linter.unusedVariables false
+set_option linter.style.haveILetI false
+set_option backward.isDefEq.respectTransparency false
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+open VFRestrict
+
+namespace CoverBridge
+
+/-! ## 1. `valFormulaToRV` preserves quantifier-freeness
+
+(Copied from `m3/QFTransfer.lean`, swarm `smw14elno`, where it was accepted; it is two inductions
+and is reproduced here so that this file is self-contained.) -/
+
+theorem isQF_of_isAtomic {n : ℕ} {φ : Language.val.BoundedFormula Empty n} (h : φ.IsAtomic) :
+    (valFormulaToRV φ).IsQF := by
+  induction h with
+  | equal t₁ t₂ =>
+    show BoundedFormula.IsQF ((valTermToRV t₁) =' (valTermToRV t₂))
+    exact BoundedFormula.IsAtomic.equal _ _ |>.isQF
+  | rel R ts =>
+    cases R with
+    | le =>
+      show BoundedFormula.IsQF (pLe (tRv (valTermToRV (ts 1)))
+        (tRv (valTermToRV (ts 0))))
+      exact (BoundedFormula.IsAtomic.rel (l := 2) Rel.rvLe
+        ![tRv (valTermToRV (ts 1)), tRv (valTermToRV (ts 0))]).isQF
+
+/-- **The translation preserves quantifier-freeness.** -/
+theorem isQF_valFormulaToRV {n : ℕ} {φ : Language.val.BoundedFormula Empty n} (h : φ.IsQF) :
+    (valFormulaToRV φ).IsQF := by
+  induction h with
+  | falsum => exact BoundedFormula.IsQF.falsum
+  | of_isAtomic hA => exact isQF_of_isAtomic hA
+  | imp _ _ ih1 ih2 => exact ih1.imp ih2
+
+/-! ## 2. The cover hypothesis -/
+
+/-- **The cover**, at `VF`-tuples: every `L_RV`-formula is equivalent, in every model of `T`, at
+every tuple of `VF`-elements, to the guarded `L_RV`-image of an `L_val`-formula in the same number
+of variables.  (The general form must also handle `RV`-valued coordinates, by `Axioms.rvSurj`;
+that is the cover proper, direction e1.) -/
+def CoverVF (T : LRV.Theory) : Prop :=
+  ∀ (n : ℕ) (φ : LRV.BoundedFormula Empty n), ∃ θ : Language.val.BoundedFormula Empty n,
+    ∀ (M : Type) [LRV.Structure M], M ⊨ T → ∀ y : Fin n → M, (∀ i, iVF (y i)) →
+      (φ.Realize (default : Empty → M) y
+        ↔ (valFormulaToRVvf θ).Realize (default : Empty → M) y)
+
+-- The hypothesis `hQEb` is not vacuous: its `n = 0` case is `hasQE_ACVF_val`, unconditionally.
+example (φ : Language.val.Formula Empty) :
+    ∃ ψ : Language.val.Formula Empty, ψ.IsQF ∧ Theory.Iff ValPM.ACVF_val φ ψ :=
+  hasQE_ACVF_val Empty φ
+
+/-! ## 3. The bridge: quantifier elimination at `VF`-tuples -/
+
+/-- **The cover plus quantifier elimination in `L_val` gives a uniform quantifier-free
+`L_RV`-formula at `VF`-tuples.** -/
+theorem exists_qf_of_coverVF (hQEb : QECriterion.HasQEb (L := Language.val) ValPM.ACVF_val)
+    (hC : CoverVF Axioms.ACVF) {n : ℕ} (φ : LRV.BoundedFormula Empty n) :
+    ∃ ψ : LRV.BoundedFormula Empty n, ψ.IsQF ∧
+      ∀ (M : Type) [LRV.Structure M] (hM : M ⊨ Axioms.ACVF)
+        (hS : @Theory.Model Language.val (VFType (M := M)) (vfStruct hM) ValPM.ACVF_val)
+        (y : Fin n → M), (∀ i, iVF (y i)) →
+        (φ.Realize (default : Empty → M) y
+          ↔ ψ.Realize (default : Empty → M) y) := by
+  obtain ⟨θ, hθ⟩ := hC n φ
+  obtain ⟨θ', hθ'QF, hθ'⟩ := hQEb Empty n θ
+  refine ⟨valFormulaToRV θ', isQF_valFormulaToRV hθ'QF, ?_⟩
+  intro M _ hM hS y hy
+  -- the `L_val`-equivalence, read in the `L_val`-structure on the `VF` sort
+  haveI : Nonempty (VFType (M := M)) := ⟨⟨iVFZero, vf_zero_mem hM⟩⟩
+  letI : Language.val.Structure (VFType (M := M)) := vfStruct hM
+  haveI : @Theory.Model Language.val (VFType (M := M)) inferInstance ValPM.ACVF_val := hS
+  have hiff : ∀ x : Fin n → VFType (M := M),
+      (@BoundedFormula.Realize Language.val (VFType (M := M)) inferInstance Empty n θ
+        (default : Empty → VFType (M := M)) x)
+      ↔ (@BoundedFormula.Realize Language.val (VFType (M := M)) inferInstance Empty n θ'
+        (default : Empty → VFType (M := M)) x) :=
+    fun x => hθ'.realize_bd_iff
+  exact (hθ M hM y hy).trans (transfer_of_isQF hM hθ'QF (by
+    intro x
+    exact hiff x) y hy)
+
+/-- **The two-model transfer at `VF`-tuples.**  Two models of `ACVF` whose `VF`-sort structures
+model `ACVF_val`, and two `VF`-tuples with the same quantifier-free `L_RV`-type, satisfy the same
+`L_RV`-formulas.  (No nontriviality or triviality enters: this is the `VF`-tuple fragment only.) -/
+theorem transfer_at_vf_tuples (hQEb : QECriterion.HasQEb (L := Language.val) ValPM.ACVF_val)
+    (hC : CoverVF Axioms.ACVF) {n : ℕ}
+    {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF)
+    (hSM : @Theory.Model Language.val (VFType (M := M)) (vfStruct hM) ValPM.ACVF_val)
+    {N : Type} [LRV.Structure N] (hN : N ⊨ Axioms.ACVF)
+    (hSN : @Theory.Model Language.val (VFType (M := N)) (vfStruct hN) ValPM.ACVF_val)
+    {y : Fin n → M} {z : Fin n → N} (hy : ∀ i, iVF (y i)) (hz : ∀ i, iVF (z i))
+    (hQF : ∀ ψ : LRV.BoundedFormula Empty n, ψ.IsQF →
+      (ψ.Realize (default : Empty → M) y ↔ ψ.Realize (default : Empty → N) z))
+    (φ : LRV.BoundedFormula Empty n) :
+    (φ.Realize (default : Empty → M) y ↔ φ.Realize (default : Empty → N) z) := by
+  obtain ⟨ψ, hψQF, hψ⟩ := exists_qf_of_coverVF hQEb hC φ
+  exact (hψ M hM hSM y hy).trans ((hQF ψ hψQF).trans (hψ N hN hSN z hz).symm)
+
+end CoverBridge
+
+#print axioms CoverBridge.isQF_valFormulaToRV
+#print axioms CoverBridge.exists_qf_of_coverVF
+#print axioms CoverBridge.transfer_at_vf_tuples
+
+#print axioms Cover.rv_one
+#print axioms Cover.frag_QE_sentence
+#print axioms CoverBridge.exists_qf_of_coverVF
+#print axioms CoverBridge.transfer_at_vf_tuples
