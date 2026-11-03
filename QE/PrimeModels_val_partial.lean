@@ -1590,3 +1590,27 @@ theorem valStructOf_eq_valStructure {K : Type} [Field K] {Γ₀ : Type*}
   | le => exact propext (h (x 0) (x 1))
 
 #print axioms ValPM.valStructOf_eq_valStructure
+
+/-- **The nontriviality sentence says what it should**: some element is not in the valuation ring,
+`v x < v 1`.  Phrased with the *value of the constant* `1` rather than `(1 : M)`, because an
+abstract `L_val`-structure carries no `One` instance. -/
+theorem axNontrivial_realize {M : Type*} [CommRing M] [Language.val.Structure M]
+    [CompatibleRing M] [valRingHom.IsExpansionOn M] :
+    (M ⊨ axNontrivial) ↔
+      ∃ x : M,
+        ¬ predM (@Structure.funMap Language.val M _ 0 ValFunc.one (fun i => i.elim0)) x := by
+  have hval : ∀ a : M,
+      (leF (1 : Language.val.Term (Empty ⊕ Fin 1)) (var (Sum.inr 0))).Realize
+          (default : Empty → M) (Fin.snoc (default : Fin 0 → M) a)
+        ↔ predM (@Structure.funMap Language.val M _ 0 ValFunc.one (fun i => i.elim0)) a := by
+    intro a
+    rw [leF_realize]
+    simp only [realize_oneTerm', realize_varTerm', Function.comp_apply, Sum.elim_inr,
+      Fin.snoc_last]
+    rfl
+  simp only [axNontrivial, axNontrivialF, Sentence.Realize, Formula.Realize,
+    BoundedFormula.realize_ex, BoundedFormula.realize_not]
+  exact ⟨fun ⟨a, ha⟩ => ⟨a, fun hc => ha ((hval a).mpr hc)⟩,
+    fun ⟨a, ha⟩ => ⟨a, fun hc => ha ((hval a).mp hc)⟩⟩
+
+#print axioms ValPM.axNontrivial_realize
