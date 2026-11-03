@@ -635,3 +635,48 @@ Left, precisely:
 3. `QE/Assembly_val.lean`: not yet re-synced. Its embedded copy of the encoding must receive the
    same two blocks (`guardAtom`/`InAntecedent`/`GuardTrue` and the `.all` hypothesis) plus the
    same three site fixes, and then its own call sites audited.
+
+## Ruling (this session): general model theory may be taken from Marker and treated as given
+
+Author's words: **"if you need more model theory, feel free to grab anything from Marker's book and
+treat them as given."**
+
+This supersedes the "do not take anything as a hypothesis without consulting me" reading *for
+general model theory only*.  The boundary, which is the whole point of the ruling, is:
+
+**May be taken as given (Marker, *Model Theory: An Introduction*, and the standard facts it
+contains):** compactness and its consequences; the existence of `κ`-saturated and strongly
+`κ`-homogeneous models and hence of monster models; elementary chains and unions; the standard
+quantifier-elimination criteria (QF-type determines type; Shoenfield's test in its abstract form —
+every partial isomorphism between finitely generated substructures of models of `T` is elementary);
+type realization and omission; elementarity of substructure embeddings under QE; Łoś.
+
+**May not be taken as given:** anything stated in `paper.tex` or in `qe.tex`
+(arXiv:1006.1393) — including the ACVF-specific verification of any criterion.  In particular
+"`QFTypeDetermines Axioms.ACVF`", "`NontrivialTransfer`/`TrivialTransfer`/`CaseSeparation`", the
+extension property of qe.tex Proposition 3.9 as an ACVF statement, and every §3–§5 lemma of the
+paper remain theorems to be proved.  The distinction is deliberately sharp: the *criterion* is
+model theory, the *verification of the criterion for ACVF* is the paper's mathematics.
+
+**Mechanism.** All such assumptions go into one file, `Milestone0/Marker.lean`, as named
+`axiom`s, each with the Marker result in its docstring and the numbering of the section it comes
+from.  No other file may declare an `axiom`.  Any theorem whose footprint contains a
+`Marker.*` axiom must say so in its docstring and in its report, and `#print axioms` on it will
+show the dependency — that is the audit trail.  Where a Marker fact is *easy* to prove in
+Mathlib, prove it instead (as `QE/Semantics_saturation.lean` already does for QF-preservation by
+embeddings and the back-and-forth step); the axioms are for the facts that would cost more than
+they are worth.
+
+**Immediate consequences, so they are not forgotten:**
+
+* `Saturation.lean`'s `MonsterModel` no longer needs to be pure data: existence can be assumed
+  (`Marker.exists_monsterModel`), while still not being asserted for `ACVF` in particular anywhere
+  that a paper lemma would then depend on it.
+* The abstract half of the Shoenfield route — `ShoenfieldTest`'s implication
+  `SaturationExists T → ExtensionProperty T → QEExStep T` — may be *assumed* rather than proved.
+  So swarm `smw1b0thh`'s w1 is now optional: if it lands, no axiom is needed; if it does not, the
+  axiom covers it.  w2 — the transfer of QF-type determination from `L_val` to `L_RV` — is
+  **not** covered and remains the real content of that route.
+* Nothing here shortens the main route's remaining work (the guard repair, the mixed-context
+  elimination, the parameter bridge), because those are about the encoding and the fragment, not
+  about model theory.
