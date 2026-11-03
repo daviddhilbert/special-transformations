@@ -338,9 +338,14 @@ def sdRVInfty : LRV.Sentence := pRVsort tRVInfty
 def sdRVOne : LRV.Sentence := pRVsort tRVOne
 /-- the `RV` sort is closed under `×` -/
 def sdRVMul : LRV.Sentence := allSorted ![.rv, .rv] (pRVsort (tRVMul &0 &1))
-/-- `Kˣ` is `RV ∖ {0, ∞}`, i.e. the `RV` sort minus its two constants `0` and `∞` -/
-def sdUnits : LRV.Sentence :=
-  allSorted ![.rv] (pUnits &0 ⇔ (pK &0 ⊓ ∼(pEq &0 tRVZero)))
+/-- The predicate `Kˣ` holds only of elements of the `RV` sort.
+
+Its actual content is axiom (4)'s `leClassOne`, which makes `Kˣ` the class of `1` — a
+*proper* subgroup of the multiplicative group `RV ∖ {0, ∞}` whenever `Γ` is nontrivial.
+Identifying `Kˣ` with all of `RV ∖ {0, ∞}` (as an earlier version did) puts every
+`x ∉ {0, ∞}` in the class of `1`, hence `1 ≤ x ≤ 1`, hence makes the preorder trivial and
+`Γ` trivial — contradicting the paper's standing hypothesis that `Γ(S)` is nontrivial. -/
+def sdUnits : LRV.Sentence := allOne (pUnits &0 ⟹ pRVsort &0)
 /-- `K = Kˣ ∪ {0}` is closed under `+` -/
 def sdKAdd : LRV.Sentence := allSorted ![.rv, .rv] (pK &0 ⟹ (pK &1 ⟹ pK (tKAdd &0 &1)))
 /-- `K` is closed under unary `-` -/

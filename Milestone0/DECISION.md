@@ -115,6 +115,14 @@ roughly 1.5–6k lines, for no gain over (a).
   `Encoding.lean`; it was found by a member proving the *negative* result
   (`¬ (K ⊕ RV₀) ⊨ ACVF` for any placement of the constants) and is fixed in
   `Axioms.kField`, `Axioms.acfSchemeK`, `Axioms.kAlgClosed`.
+* **`K^×` is the class of `1`, not everything below `∞`.** The paper's `K^×` is the
+  residue field's units — the subgroup `{x : vrv x = 1}`, which is *proper* as soon as `Γ` is
+  nontrivial. An earlier sort axiom defined `K^×` as `RV-sort ∖ {0, ∞}`, i.e. the whole
+  multiplicative group `RV^× = K^× · Γ`; combined with axiom (4) (`K^×` is the class of `1`)
+  that puts every `x ∉ {0, ∞}` in the class of `1`, so `1 ≤ x ≤ 1` holds for all of them and
+  the preorder — hence `Γ` — collapses to a point, contradicting the paper's standing
+  hypothesis `Γ(S)` nontrivial. `sdUnits` now only says that the predicate lives on the `RV`
+  sort; its content comes from `leClassOne`.
 * **`rv` is onto the units only.** `rv : VF^× → RV^×` is surjective onto
   `RV^× = RV ∖ {0, ∞}`; the residue zero is *not* in its image (it is absorbing, hence not
   a group element). An axiom saying "every `t ≠ ∞` is `rv x`" excludes the intended model.
