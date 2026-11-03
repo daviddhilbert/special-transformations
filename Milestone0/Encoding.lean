@@ -287,6 +287,755 @@ def exSortedK {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
 /-- the universal closure of a formula in a single variable -/
 def allOne (φ : Bf 1) : LRV.Sentence := BoundedFormula.alls φ
 
+/-! ### Part 2b. The well-sorted fragment
+
+The encoding is one-sorted, so `Tm n` and `Bf n` also contain *ill-sorted* terms (`rv (rv x)`,
+the `VF` operations at an `RV` element, `kAdd` at a `VF` element, ...), and no axiom of `ACVF`
+constrains their values.  The paper's `L_RV` is two-sorted and has no such terms.  This part
+singles out the image of the paper's two-sorted language inside the encoding:
+
+* `TmSort sα sn t` is the sort of the term `t`, if it has one (`none` is junk);
+* `WellSorted sα sn φ` says that `φ` is a formula of the paper's two-sorted `L_RV`, with the
+  free parameters `a : α` of sort `sα a` and the bound variables of sort `sn`, each quantifier
+  being guarded by a sort hypothesis for the variable it binds.
+
+`Milestone0.HasQE` is stated over this fragment, so that it is a statement about the paper's
+two-sorted `L_RV` rather than about the encoding's junk values. -/
+
+/-! #### The sort signature of the symbols -/
+
+/-- The result sort of a function symbol of `L_RV`. -/
+def Fn.resSort : {l : ℕ} → Fn l → SortTag
+  | _, .vfZero => .vf
+  | _, .vfOne => .vf
+  | _, .vfAdd => .vf
+  | _, .vfNeg => .vf
+  | _, .vfMul => .vf
+  | _, .rvOne => .rv
+  | _, .rvZero => .rv
+  | _, .rvMul => .rv
+  | _, .kAdd => .rv
+  | _, .kNeg => .rv
+  | _, .rvMap => .rv
+
+/-- The sort of the `i`-th argument of a function symbol of `L_RV`. -/
+def Fn.argSort : {l : ℕ} → (f : Fn l) → Fin l → SortTag
+  | _, .vfZero => Fin.elim0
+  | _, .vfOne => Fin.elim0
+  | _, .vfAdd => fun _ => .vf
+  | _, .vfNeg => fun _ => .vf
+  | _, .vfMul => fun _ => .vf
+  | _, .rvOne => Fin.elim0
+  | _, .rvZero => Fin.elim0
+  | _, .rvMul => fun _ => .rv
+  | _, .kAdd => fun _ => .rv
+  | _, .kNeg => fun _ => .rv
+  | _, .rvMap => fun _ => .vf
+
+/-- The sort of the `i`-th argument of a relation symbol of `L_RV`.  The two encoding predicates
+`memVF`, `memRV` are dealt with like the paper's own predicates: `memVF` needs its argument in
+`VF`, and `memRV`, `memUnits`, `rvLe` need their arguments in `RV`. -/
+def Rel.argSort : {l : ℕ} → (R : Rel l) → Fin l → SortTag
+  | _, .memVF => fun _ => .vf
+  | _, .memRV => fun _ => .rv
+  | _, .memUnits => fun _ => .rv
+  | _, .rvLe => fun _ => .rv
+
+/-! #### The sort of a term -/
+
+/-- **The sort of a term**, if it has one.  `none` is exactly the encoding's ill-sorted terms:
+`rv` applied to an `RV`-term, a `VF` operation at an `RV`-term, `kAdd` at a `VF`-term, and any
+term containing one of those.  Parameters `a : α` carry the declared sort `sα a`, the bound
+variable of index `i` carries `sn i`. -/
+def TmSort {α : Type} (sα : α → SortTag) {n : ℕ} (sn : Fin n → SortTag) :
+    LRV.Term (α ⊕ Fin n) → Option SortTag
+  | Term.var (Sum.inl a) => some (sα a)
+  | Term.var (Sum.inr i) => some (sn i)
+  | Term.func f ts =>
+    if (∀ i, TmSort sα sn (ts i) = some (Fn.argSort f i)) then some (Fn.resSort f) else none
+
+/-- `t ∈ VF` with parameters `α` (`pVF` for `Bf n = LRV.BoundedFormula Empty n`). -/
+def pVFG {α : Type} {n : ℕ} (t : LRV.Term (α ⊕ Fin n)) : LRV.BoundedFormula α n :=
+  FirstOrder.Language.Relations.boundedFormula₁ Rel.memVF t
+
+/-- `t ∈ RV` with parameters `α`. -/
+def pRVG {α : Type} {n : ℕ} (t : LRV.Term (α ⊕ Fin n)) : LRV.BoundedFormula α n :=
+  FirstOrder.Language.Relations.boundedFormula₁ Rel.memRV t
+
+/-- the paper's unary predicate `Kˣ` with parameters `α`. -/
+def pUnitsG {α : Type} {n : ℕ} (t : LRV.Term (α ⊕ Fin n)) : LRV.BoundedFormula α n :=
+  FirstOrder.Language.Relations.boundedFormula₁ Rel.memUnits t
+
+/-- the paper's preorder `≤` with parameters `α`. -/
+def pLeG {α : Type} {n : ℕ} (t u : LRV.Term (α ⊕ Fin n)) : LRV.BoundedFormula α n :=
+  FirstOrder.Language.Relations.boundedFormula₂ Rel.rvLe t u
+
+/-- `t = u` with parameters `α`. -/
+def pEqG {α : Type} {n : ℕ} (t u : LRV.Term (α ⊕ Fin n)) : LRV.BoundedFormula α n :=
+  t =' u
+
+/-- the sort predicate of the sort `s` at a term, with parameters `α` -/
+def sortPredG {α : Type} {n : ℕ} (s : SortTag) (t : LRV.Term (α ⊕ Fin n)) :
+    LRV.BoundedFormula α n :=
+  match s with
+  | .vf => pVFG t
+  | .rv => pRVG t
+
+theorem sortPred_eq_sortPredG {n : ℕ} (s : SortTag) (t : Tm n) :
+    sortPred s t = sortPredG (α := Empty) s t := rfl
+
+theorem pVF_eq_pVFG {n : ℕ} (t : Tm n) : pVF t = pVFG (α := Empty) t := rfl
+
+/-! #### Guards -/
+
+/-- **`Occurs i s η`**: the atom "the variable of index `i` lies in the sort `s`" is one of the
+top-level conjuncts of `η`.  Only conjunctions are decomposed (`a ⊓ b` is `¬(a → ¬b)` in the
+encoding), so an occurrence found by `Occurs` makes `η` *false* whenever the `i`-th element of the
+tuple is not in the sort `s`, whatever the rest of `η` says.  Conjunctions are decomposed in the
+form the tree's `sortedHyps` and friends are written in, which is the point of the definition. -/
+def Occurs {α : Type} {m : ℕ} (i : Fin m) (s : SortTag) : LRV.BoundedFormula α m → Prop
+  | .imp (.imp a (.imp b .falsum)) .falsum => Occurs i s a ∨ Occurs i s b
+  | φ => φ = sortPredG s (Term.var (Sum.inr i))
+
+/-- **`GuardsLast s i χ`**: `χ` has the atom "the variable of index `i` lies in the sort `s`" as a
+conjunct of an antecedent, at its own level or under further quantifiers.  This is the syntactic
+condition a guarded quantifier `∀ x ∈ s, ...` satisfies: descending under `all` keeps the indices
+of the earlier variables, so the index only needs to be cast by `Fin.castSucc`. -/
+def GuardsLast {α : Type} (s : SortTag) :
+    {m : ℕ} → (i : Fin m) → LRV.BoundedFormula α m → Prop
+  | _, i, .imp η ψ => Occurs i s η ∨ GuardsLast s i η ∨ GuardsLast s i ψ
+  | _, i, .all χ => GuardsLast s (Fin.castSucc i) χ
+  | _, _, _ => False
+
+/-! #### Well-sorted formulas -/
+
+/-- **`WellSorted sα sn φ`**: `φ` is a formula of the paper's two-sorted `L_RV`, with the free
+parameters `a : α` of sort `sα a` and the free variables of sort `sn`.
+
+* atoms: `t = u` only between terms of one sort, `t ∈ VF` only at a `VF`-term, and `t ∈ RV`,
+  `t ∈ Kˣ`, `t ≤ u` only at `RV`-terms (this is `Rel.argSort`);
+* connectives are componentwise;
+* a quantifier is admitted only in guarded form: `∀ x, η → ψ` with `x` of sort `s` and `η`
+  containing the conjunct `x ∈ s`.  Ill-sorted terms therefore never occur, and the value of a
+  well-sorted formula at a tuple of the declared sorts is a function of the paper's two-sorted
+  structure alone. -/
+inductive WellSorted {α : Type} (sα : α → SortTag) :
+    {n : ℕ} → (Fin n → SortTag) → LRV.BoundedFormula α n → Prop
+  /-- `⊥` -/
+  | falsum {n : ℕ} (sn : Fin n → SortTag) : WellSorted sα sn .falsum
+  /-- `t = u` between terms of one sort -/
+  | equal {n : ℕ} (sn : Fin n → SortTag) {t u : LRV.Term (α ⊕ Fin n)} {s : SortTag}
+      (ht : TmSort sα sn t = some s) (hu : TmSort sα sn u = some s) :
+      WellSorted sα sn (.equal t u)
+  /-- a relation of `L_RV` applied to terms of its declared sorts -/
+  | rel {n l : ℕ} (sn : Fin n → SortTag) (R : Rel l) (ts : Fin l → LRV.Term (α ⊕ Fin n))
+      (h : ∀ i, TmSort sα sn (ts i) = some (Rel.argSort R i)) :
+      WellSorted sα sn (.rel R ts)
+  /-- implication -/
+  | imp {n : ℕ} (sn : Fin n → SortTag) {a b : LRV.BoundedFormula α n} :
+      WellSorted sα sn a → WellSorted sα sn b → WellSorted sα sn (.imp a b)
+  /-- the guarded universal quantifier `∀ x ∈ s, ψ` -/
+  | all {n : ℕ} (sn : Fin n → SortTag) {s : SortTag} {χ : LRV.BoundedFormula α (n + 1)}
+      (hχ : WellSorted sα (Fin.snoc sn s) χ) (hg : GuardsLast s (Fin.last n) χ) :
+      WellSorted sα sn (.all χ)
+/-! #### The sort of a term, symbol by symbol
+
+The statements are given for `Term.func f ![…]`, i.e. with an arbitrary parameter type `α`; the
+tree's constructors `tVFAdd`, `tRv`, … are definitionally these terms at `α = Empty`, so the
+lemmas apply to them verbatim. -/
+
+section TmSortLemmas
+
+variable {α : Type} (sα : α → SortTag) {n : ℕ} (sn : Fin n → SortTag)
+
+theorem tmSort_var_inl (a : α) : TmSort sα sn (Term.var (Sum.inl a)) = some (sα a) := rfl
+
+theorem tmSort_var_inr (i : Fin n) : TmSort sα sn (Term.var (Sum.inr i)) = some (sn i) := rfl
+
+/-- the sort of the bound variable `i` -/
+theorem tmSort_tv (i : ℕ) (h : i < n) :
+    TmSort sα sn (Term.var (Sum.inr (⟨i, h⟩ : Fin n))) = some (sn ⟨i, h⟩) := rfl
+
+/-- the sort of an application of a function symbol -/
+theorem tmSort_func_iff {l : ℕ} (f : Fn l) (ts : Fin l → LRV.Term (α ⊕ Fin n)) {s : SortTag} :
+    TmSort sα sn (Term.func f ts) = some s ↔
+      (∀ i, TmSort sα sn (ts i) = some (Fn.argSort f i)) ∧ Fn.resSort f = s := by
+  simp only [TmSort]
+  split_ifs with h
+  · simp [h]
+  · simp [h]
+
+theorem tmSort_func {l : ℕ} (f : Fn l) (ts : Fin l → LRV.Term (α ⊕ Fin n))
+    (h : ∀ i, TmSort sα sn (ts i) = some (Fn.argSort f i)) :
+    TmSort sα sn (Term.func f ts) = some (Fn.resSort f) :=
+  (tmSort_func_iff sα sn f ts).2 ⟨h, rfl⟩
+
+theorem tmSort_vfZero :
+    TmSort sα sn (Term.func Fn.vfZero (fun i => i.elim0) : LRV.Term (α ⊕ Fin n)) = some .vf :=
+  tmSort_func sα sn Fn.vfZero (fun i => i.elim0) (fun i => i.elim0)
+
+theorem tmSort_vfOne :
+    TmSort sα sn (Term.func Fn.vfOne (fun i => i.elim0) : LRV.Term (α ⊕ Fin n)) = some .vf :=
+  tmSort_func sα sn Fn.vfOne (fun i => i.elim0) (fun i => i.elim0)
+
+theorem tmSort_rvOne :
+    TmSort sα sn (Term.func Fn.rvOne (fun i => i.elim0) : LRV.Term (α ⊕ Fin n)) = some .rv :=
+  tmSort_func sα sn Fn.rvOne (fun i => i.elim0) (fun i => i.elim0)
+
+theorem tmSort_rvZero :
+    TmSort sα sn (Term.func Fn.rvZero (fun i => i.elim0) : LRV.Term (α ⊕ Fin n)) = some .rv :=
+  tmSort_func sα sn Fn.rvZero (fun i => i.elim0) (fun i => i.elim0)
+
+theorem tmSort_bin_iff (f : Fn 2) {t u : LRV.Term (α ⊕ Fin n)} :
+    TmSort sα sn (Term.func f ![t, u]) = some (Fn.resSort f) ↔
+      TmSort sα sn t = some (Fn.argSort f 0) ∧ TmSort sα sn u = some (Fn.argSort f 1) := by
+  rw [tmSort_func_iff, Fin.forall_fin_two]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+  exact ⟨fun h => h.1, fun h => ⟨h, trivial⟩⟩
+
+theorem tmSort_un_iff (f : Fn 1) {t : LRV.Term (α ⊕ Fin n)} :
+    TmSort sα sn (Term.func f ![t]) = some (Fn.resSort f) ↔
+      TmSort sα sn t = some (Fn.argSort f 0) := by
+  rw [tmSort_func_iff, Fin.forall_fin_one]
+  simp only [Matrix.cons_val_zero]
+  exact ⟨fun h => h.1, fun h => ⟨h, trivial⟩⟩
+
+theorem tmSort_vfAdd {t u : LRV.Term (α ⊕ Fin n)} :
+    TmSort sα sn (Term.func Fn.vfAdd ![t, u]) = some .vf ↔
+      TmSort sα sn t = some .vf ∧ TmSort sα sn u = some .vf :=
+  tmSort_bin_iff sα sn Fn.vfAdd
+
+theorem tmSort_vfMul {t u : LRV.Term (α ⊕ Fin n)} :
+    TmSort sα sn (Term.func Fn.vfMul ![t, u]) = some .vf ↔
+      TmSort sα sn t = some .vf ∧ TmSort sα sn u = some .vf :=
+  tmSort_bin_iff sα sn Fn.vfMul
+
+theorem tmSort_rvMul {t u : LRV.Term (α ⊕ Fin n)} :
+    TmSort sα sn (Term.func Fn.rvMul ![t, u]) = some .rv ↔
+      TmSort sα sn t = some .rv ∧ TmSort sα sn u = some .rv :=
+  tmSort_bin_iff sα sn Fn.rvMul
+
+theorem tmSort_kAdd {t u : LRV.Term (α ⊕ Fin n)} :
+    TmSort sα sn (Term.func Fn.kAdd ![t, u]) = some .rv ↔
+      TmSort sα sn t = some .rv ∧ TmSort sα sn u = some .rv :=
+  tmSort_bin_iff sα sn Fn.kAdd
+
+theorem tmSort_vfNeg {t : LRV.Term (α ⊕ Fin n)} :
+    TmSort sα sn (Term.func Fn.vfNeg ![t]) = some .vf ↔ TmSort sα sn t = some .vf :=
+  tmSort_un_iff sα sn Fn.vfNeg
+
+theorem tmSort_kNeg {t : LRV.Term (α ⊕ Fin n)} :
+    TmSort sα sn (Term.func Fn.kNeg ![t]) = some .rv ↔ TmSort sα sn t = some .rv :=
+  tmSort_un_iff sα sn Fn.kNeg
+
+theorem tmSort_tRv {t : LRV.Term (α ⊕ Fin n)} :
+    TmSort sα sn (Term.func Fn.rvMap ![t]) = some .rv ↔ TmSort sα sn t = some .vf :=
+  tmSort_un_iff sα sn Fn.rvMap
+
+/-- **The sort of a term does not change when the context is extended by a new variable.**
+This is what lets a formula be read under a quantifier that has just been added. -/
+theorem tmSort_relabel_castSucc (s : SortTag) (t : LRV.Term (α ⊕ Fin n)) :
+    TmSort sα (Fin.snoc sn s) (t.relabel (Sum.map id Fin.castSucc)) = TmSort sα sn t := by
+  induction t with
+  | var a =>
+    rcases a with a | i
+    · rfl
+    · show TmSort sα (Fin.snoc sn s) (Term.var (Sum.inr (Fin.castSucc i))) = some (sn i)
+      simp only [TmSort]
+      rw [Fin.snoc_castSucc]
+  | @func l f ts ih =>
+    simp only [Term.relabel, TmSort]
+    by_cases h : ∀ i, TmSort sα sn (ts i) = some (Fn.argSort f i)
+    · have h' : ∀ i, TmSort sα (Fin.snoc sn s)
+          ((ts i).relabel (Sum.map id Fin.castSucc)) = some (Fn.argSort f i) :=
+        fun i => by rw [ih i]; exact h i
+      rw [if_pos h', if_pos h]
+    · have h' : ¬ ∀ i, TmSort sα (Fin.snoc sn s)
+          ((ts i).relabel (Sum.map id Fin.castSucc)) = some (Fn.argSort f i) :=
+        fun hc => h (fun i => by rw [← ih i]; exact hc i)
+      rw [if_neg h', if_neg h]
+
+end TmSortLemmas
+/-! #### Well-sortedness of the atoms, and the guarded quantifiers -/
+
+section FormulaLemmas
+
+variable {α : Type} (sα : α → SortTag) {n : ℕ} (sn : Fin n → SortTag)
+
+/-- the conjunction of two well-sorted formulas is well-sorted -/
+theorem wellSorted_inf {a b : LRV.BoundedFormula α n} (ha : WellSorted sα sn a)
+    (hb : WellSorted sα sn b) : WellSorted sα sn (a ⊓ b) :=
+  WellSorted.imp sn (WellSorted.imp sn ha (WellSorted.imp sn hb (WellSorted.falsum sn)))
+    (WellSorted.falsum sn)
+
+theorem wellSorted_top : WellSorted sα sn (⊤ : LRV.BoundedFormula α n) :=
+  WellSorted.imp sn (WellSorted.falsum sn) (WellSorted.falsum sn)
+
+/-- `t = u` between terms of one sort -/
+theorem wellSorted_pEqG {t u : LRV.Term (α ⊕ Fin n)} {s : SortTag}
+    (ht : TmSort sα sn t = some s) (hu : TmSort sα sn u = some s) :
+    WellSorted sα sn (pEqG t u) :=
+  WellSorted.equal sn ht hu
+
+/-- `t ∈ VF` at a `VF`-term -/
+theorem rel_argSort_memVF : Rel.argSort (Rel.memVF) = fun _ => .vf := rfl
+
+theorem rel_argSort_memRV : Rel.argSort (Rel.memRV) = fun _ => .rv := rfl
+
+theorem rel_argSort_memUnits : Rel.argSort (Rel.memUnits) = fun _ => .rv := rfl
+
+theorem rel_argSort_rvLe : Rel.argSort (Rel.rvLe) = fun _ => .rv := rfl
+
+theorem wellSorted_pVFG {t : LRV.Term (α ⊕ Fin n)} (h : TmSort sα sn t = some .vf) :
+    WellSorted sα sn (pVFG t) :=
+  WellSorted.rel sn Rel.memVF ![t]
+    (fun i => by rw [rel_argSort_memVF]; fin_cases i; simpa using h)
+
+/-- `t ∈ RV` at an `RV`-term -/
+theorem wellSorted_pRVG {t : LRV.Term (α ⊕ Fin n)} (h : TmSort sα sn t = some .rv) :
+    WellSorted sα sn (pRVG t) :=
+  WellSorted.rel sn Rel.memRV ![t]
+    (fun i => by rw [rel_argSort_memRV]; fin_cases i; simpa using h)
+
+/-- `t ∈ Kˣ` at an `RV`-term -/
+theorem wellSorted_pUnitsG {t : LRV.Term (α ⊕ Fin n)} (h : TmSort sα sn t = some .rv) :
+    WellSorted sα sn (pUnitsG t) :=
+  WellSorted.rel sn Rel.memUnits ![t]
+    (fun i => by rw [rel_argSort_memUnits]; fin_cases i; simpa using h)
+
+/-- `t ≤ u` at `RV`-terms -/
+theorem wellSorted_pLeG {t u : LRV.Term (α ⊕ Fin n)}
+    (ht : TmSort sα sn t = some .rv) (hu : TmSort sα sn u = some .rv) :
+    WellSorted sα sn (pLeG t u) :=
+  WellSorted.rel sn Rel.rvLe ![t, u] (fun i => by
+    rw [rel_argSort_rvLe]
+    fin_cases i
+    · simpa using ht
+    · simpa using hu)
+
+/-- the sort predicate of the sort of a term of that sort -/
+theorem wellSorted_sortPredG {s : SortTag} {t : LRV.Term (α ⊕ Fin n)}
+    (h : TmSort sα sn t = some s) : WellSorted sα sn (sortPredG s t) := by
+  cases s with
+  | vf => exact wellSorted_pVFG sα sn h
+  | rv => exact wellSorted_pRVG sα sn h
+
+/-! ##### Guards -/
+
+theorem Occurs.of_conj_left {m : ℕ} (i : Fin m) {s : SortTag} {a b : LRV.BoundedFormula α m}
+    (h : Occurs i s a) : Occurs i s (a ⊓ b) := Or.inl h
+
+theorem Occurs.of_conj_right {m : ℕ} (i : Fin m) {s : SortTag} {a b : LRV.BoundedFormula α m}
+    (h : Occurs i s b) : Occurs i s (a ⊓ b) := Or.inr h
+
+/-- an occurrence in an antecedent guards the implication -/
+theorem GuardsLast.of_occurs {m : ℕ} (i : Fin m) {s : SortTag} {η ψ : LRV.BoundedFormula α m}
+    (h : Occurs i s η) : GuardsLast s i (η ⟹ ψ) := Or.inl h
+
+/-- the atom `x_i ∈ s` occurs in `sortPred s (x_i)` -/
+theorem occurs_self (α : Type) {m : ℕ} (i : Fin m) (s : SortTag) :
+    @Occurs α m i s (sortPredG s (Term.var (Sum.inr i))) := by
+  cases s <;> rfl
+
+/-- **The guarded universal quantifier**: `∀ x ∈ s, (η → ψ)` is well-sorted when `ψ` and `η` are
+well-sorted in the extended context and `η` contains the conjunct `x ∈ s`. -/
+theorem wellSorted_all_guarded {m : ℕ} {sn : Fin m → SortTag} {s : SortTag}
+    {η ψ : LRV.BoundedFormula α (m + 1)}
+    (hη : WellSorted sα (Fin.snoc sn s) η) (hψ : WellSorted sα (Fin.snoc sn s) ψ)
+    (hg : Occurs (Fin.last m) s η) :
+    WellSorted sα sn (.all (η ⟹ ψ)) :=
+  WellSorted.all sn (WellSorted.imp _ hη hψ) (Or.inl hg)
+
+/-- **The guarded existential quantifier** `∃ x ∈ s, ψ`.  (The encoding writes it as
+`¬∀ x, ¬(x ∈ s ∧ ψ)`.) -/
+def exSortedG {α : Type} {k : ℕ} (s : SortTag) (ψ : LRV.BoundedFormula α (k + 1)) :
+    LRV.BoundedFormula α k :=
+  BoundedFormula.ex (sortPredG s (Term.var (Sum.inr (Fin.last k))) ⊓ ψ)
+
+theorem wellSorted_exSortedG {m : ℕ} {sn : Fin m → SortTag} {s : SortTag}
+    {ψ : LRV.BoundedFormula α (m + 1)} (h : WellSorted sα (Fin.snoc sn s) ψ) :
+    WellSorted sα sn (exSortedG s ψ) := by
+  have hpred : WellSorted sα (Fin.snoc sn s)
+      (sortPredG s (Term.var (Sum.inr (Fin.last m)))) :=
+    wellSorted_sortPredG sα _ (by rw [tmSort_var_inr, Fin.snoc_last])
+  refine WellSorted.imp sn (WellSorted.all sn
+    (WellSorted.imp _ (wellSorted_inf sα _ hpred h) (WellSorted.falsum _)) (Or.inl (Or.inl ?_)))
+    (WellSorted.falsum sn)
+  exact occurs_self α (Fin.last m) s
+
+
+/-- **The `VF`-guarded universal quantifier** `∀ x ∈ VF, ψ` — the quantifier shape of
+`RVElim.VFQ` (`allVF`) — is well-sorted when `ψ` is. -/
+theorem wellSorted_all_pVF {m : ℕ} {sn : Fin m → SortTag} {ψ : Bf (m + 1)} {sα : Empty → SortTag}
+    (h : WellSorted sα (Fin.snoc sn .vf) ψ) :
+    WellSorted sα sn (BoundedFormula.all (pVF (tv m (Nat.lt_succ_self m)) ⟹ ψ)) :=
+  wellSorted_all_guarded sα
+    (η := pVF (tv m (Nat.lt_succ_self m)))
+    (by
+      have h' : TmSort sα (Fin.snoc sn .vf) (tv m (Nat.lt_succ_self m)) = some .vf := by
+        show TmSort sα (Fin.snoc sn .vf) (Term.var (Sum.inr (Fin.last m))) = some .vf
+        rw [tmSort_var_inr, Fin.snoc_last]
+      exact wellSorted_pVFG sα _ h')
+    h
+    (occurs_self Empty (Fin.last m) .vf)
+
+end FormulaLemmas
+/-! #### The sort hypotheses `sortedHyps`, and the iterated guarded quantifier `alls` -/
+
+section SortedHyps
+
+variable (sα : Empty → SortTag)
+
+theorem wellSorted_foldr_hyps {k : ℕ} (ss : Fin k → SortTag) (l : List (Fin k)) :
+    ∀ (acc : Bf k), WellSorted sα ss acc →
+      WellSorted sα ss (l.foldr (fun i acc => sortPred (ss i) (tv i.val i.isLt) ⊓ acc) acc) := by
+  induction l with
+  | nil => intro acc h; exact h
+  | cons i l ih =>
+    intro acc h
+    simp only [List.foldr_cons]
+    exact wellSorted_inf sα ss (wellSorted_sortPredG sα ss (tmSort_var_inr sα ss i)) (ih acc h)
+
+/-- **`sortedHyps ss` is well-sorted** in the context whose sorts are `ss`. -/
+theorem wellSorted_sortedHyps {k : ℕ} (ss : Fin k → SortTag) :
+    WellSorted sα ss (sortedHyps ss) :=
+  wellSorted_foldr_hyps sα ss (List.finRange k) ⊤ (wellSorted_top sα ss)
+
+end SortedHyps
+
+section OccursHyps
+
+/-- In `sortedHyps ss` the atom `x_i ∈ ss i` occurs as a conjunct. -/
+theorem occurs_foldr_hyps {k : ℕ} (ss : Fin k → SortTag) :
+    ∀ (l : List (Fin k)) (acc : Bf k) (i : Fin k), i ∈ l →
+      Occurs i (ss i) (l.foldr (fun j acc => sortPred (ss j) (tv j.val j.isLt) ⊓ acc) acc)
+  | [], _, i, hi => by simp at hi
+  | j :: l, acc, i, hi => by
+    simp only [List.foldr_cons]
+    rcases List.mem_cons.mp hi with rfl | hi'
+    · exact Occurs.of_conj_left i (occurs_self Empty i (ss i))
+    · exact Or.inr (occurs_foldr_hyps ss l acc i hi')
+
+theorem occurs_sortedHyps {k : ℕ} (ss : Fin k → SortTag) (i : Fin k) :
+    Occurs i (ss i) (sortedHyps ss) :=
+  occurs_foldr_hyps ss (List.finRange k) ⊤ i (List.mem_finRange i)
+
+end OccursHyps
+
+section Alls
+
+/-- `Fin.snoc` of the restriction to `Fin.castSucc` and the last value is the whole tuple. -/
+theorem fin_snoc_castSucc_last {k : ℕ} (ss : Fin (k + 1) → SortTag) :
+    Fin.snoc (fun i : Fin k => ss (Fin.castSucc i)) (ss (Fin.last k)) = ss := by
+  funext i
+  refine Fin.lastCases ?_ ?_ i
+  · rw [Fin.snoc_last]
+  · intro j
+    rw [Fin.snoc_castSucc]
+
+/-- **The iterated guarded quantifier.**  If `χ` is well-sorted in the context `ss`, and every
+variable of that context occurs as a guard `x_i ∈ ss i` in a conjunct of an antecedent of `χ`,
+then `∀ x_0 … ∀ x_{k-1}, χ` is well-sorted.  (`BoundedFormula.alls` binds the variables in this
+order, so the guard for the `d`-th binder is the occurrence at index `d`.) -/
+theorem wellSorted_alls {k : ℕ} {sα : Empty → SortTag} {χ : Bf k} {ss : Fin k → SortTag}
+    (h : WellSorted sα ss χ) (hg : ∀ d : Fin k, GuardsLast (ss d) d χ) :
+    WellSorted sα (fun i : Fin 0 => i.elim0) (BoundedFormula.alls χ) := by
+  induction k with
+  | zero =>
+    have hss : ss = fun i : Fin 0 => i.elim0 := funext (fun i => i.elim0)
+    rwa [hss] at h
+  | succ k ih =>
+    show WellSorted sα (fun i : Fin 0 => i.elim0) (BoundedFormula.alls (BoundedFormula.all χ))
+    refine ih (ss := fun d : Fin k => ss (Fin.castSucc d)) ?_ ?_
+    · refine WellSorted.all _ ?_ (hg (Fin.last k))
+      rw [fin_snoc_castSucc_last ss]
+      exact h
+    · intro d
+      exact hg (Fin.castSucc d)
+
+/-- **The guarded universal sentence `allSorted ss φ` is well-sorted.** -/
+theorem wellSorted_allSorted {k : ℕ} {sα : Empty → SortTag} (ss : Fin k → SortTag) {φ : Bf k}
+    (hφ : WellSorted sα ss φ) :
+    WellSorted sα (fun i : Fin 0 => i.elim0) (allSorted ss φ) :=
+  wellSorted_alls (WellSorted.imp ss (wellSorted_sortedHyps sα ss) hφ)
+    (fun d => Or.inl (occurs_sortedHyps ss d))
+
+/-- `pInK t` is well-sorted at an `RV`-term. -/
+theorem wellSorted_pInK {n : ℕ} {sα : Empty → SortTag} {sn : Fin n → SortTag}
+    {t : Tm n} (h : TmSort sα sn t = some .rv) : WellSorted sα sn (pInK t) :=
+  WellSorted.imp sn (WellSorted.imp sn (wellSorted_pUnitsG sα sn h) (WellSorted.falsum sn))
+    (wellSorted_pEqG sα sn h (tmSort_rvZero sα sn))
+
+theorem wellSorted_foldr_kHyps {k : ℕ} (sα : Empty → SortTag) (l : List (Fin k)) :
+    ∀ (acc : Bf k), WellSorted sα (fun _ => .rv) acc →
+      WellSorted sα (fun _ => .rv)
+        (l.foldr (fun i acc => pInK (tv i.val i.isLt) ⊓ acc) acc) := by
+  induction l with
+  | nil => intro acc h; exact h
+  | cons i l ih =>
+    intro acc h
+    simp only [List.foldr_cons]
+    exact wellSorted_inf sα _ (wellSorted_pInK (tmSort_var_inr sα (fun _ => .rv) i)) (ih acc h)
+
+theorem wellSorted_kHyps {k : ℕ} (sα : Empty → SortTag) :
+    WellSorted sα (fun _ : Fin k => .rv) (kHyps : Bf k) :=
+  wellSorted_foldr_kHyps (k := k) sα (List.finRange k) ⊤ (wellSorted_top sα _)
+
+/-- **The guarded universal sentence `allSortedK ss φ` is well-sorted**, in the contexts where it
+is used (`ss` constantly `RV`; `kHyps` constrains `RV`-variables only). -/
+theorem wellSorted_allSortedK {k : ℕ} {sα : Empty → SortTag} {φ : Bf k}
+    (hφ : WellSorted sα (fun _ => .rv) φ) :
+    WellSorted sα (fun i : Fin 0 => i.elim0) (allSortedK (fun _ => .rv) φ) :=
+  wellSorted_alls
+    (WellSorted.imp _ (wellSorted_inf sα _ (wellSorted_sortedHyps sα _)
+      (wellSorted_kHyps sα)) hφ)
+    (fun d => Or.inl (Or.inl (occurs_sortedHyps (fun _ => .rv) d)))
+
+/-- **The universal closure of a guarded formula in one variable is well-sorted.** -/
+theorem wellSorted_allOne {sα : Empty → SortTag} {s : SortTag} {φ : Bf 1}
+    (hφ : WellSorted sα (fun _ => s) φ) (hg : GuardsLast s 0 φ) :
+    WellSorted sα (fun i : Fin 0 => i.elim0) (allOne φ) :=
+  wellSorted_alls (ss := fun _ => s) hφ (fun d => by
+    have : d = 0 := by ext; omega
+    rw [this]
+    exact hg)
+
+end Alls
+
+/-! #### w1's additions to the block
+
+The block above is m5's, verbatim (swarm `smw17pts2`, `.ultramath/smw17pts2/m5/WellSorted_block.lean`,
+inserted after `def allOne` and inside `namespace LRV` as its README requires).  What follows is what
+the audit of Part 6.1 needs on top of it: closure of `WellSorted` under the derived connectives
+(`∼`, `⊔`, `⇔`), the encoding's guarded existentials `exSorted`/`exSortedK` in `WellSorted` form, and
+the `TmSort` of the tree's term constructors (`tVFAdd`, `tRv`, `tRVPow`, `tVFNumeral`, …) as a
+`simp` set.
+
+Nothing here changes `WellSorted` or any of m5's statements: it is all addition. -/
+
+section Connectives
+
+variable {α : Type} (sα : α → SortTag) {n : ℕ} (sn : Fin n → SortTag)
+
+/-- the negation of a well-sorted formula is well-sorted -/
+theorem wellSorted_not {a : LRV.BoundedFormula α n} (h : WellSorted sα sn a) :
+    WellSorted sα sn (∼a) :=
+  WellSorted.imp sn h (WellSorted.falsum sn)
+
+/-- the disjunction of two well-sorted formulas is well-sorted (`a ⊔ b` is `∼a ⟹ b`) -/
+theorem wellSorted_sup {a b : LRV.BoundedFormula α n} (ha : WellSorted sα sn a)
+    (hb : WellSorted sα sn b) : WellSorted sα sn (a ⊔ b) :=
+  WellSorted.imp sn (wellSorted_not sα sn ha) hb
+
+/-- the biconditional of two well-sorted formulas is well-sorted -/
+theorem wellSorted_iff {a b : LRV.BoundedFormula α n} (ha : WellSorted sα sn a)
+    (hb : WellSorted sα sn b) : WellSorted sα sn (a ⇔ b) :=
+  wellSorted_inf sα sn (WellSorted.imp sn ha hb) (WellSorted.imp sn hb ha)
+
+/-- a double negation -/
+theorem wellSorted_not_not {a : LRV.BoundedFormula α n} (h : WellSorted sα sn a) :
+    WellSorted sα sn (∼∼a) :=
+  wellSorted_not sα sn (wellSorted_not sα sn h)
+
+/-- **`∃ x ∈ s, φ` with an arbitrary guard**: if `η` is well-sorted, `ψ` is well-sorted and the
+atom `x ∈ s` occurs in a conjunct of `η`, then `∃ x, η ∧ ψ` is well-sorted.  (`BoundedFormula.ex ψ`
+is `¬∀x, ¬ψ` in the encoding.)  This generalises m5's `wellSorted_exSortedG`, and is what
+`exSortedK` needs: its guard is the *conjunction* `x ∈ RV ∧ x ∈ K`, not the single sort predicate. -/
+theorem wellSorted_ex_guarded {m : ℕ} {sn : Fin m → SortTag} {s : SortTag}
+    {η ψ : LRV.BoundedFormula α (m + 1)}
+    (hη : WellSorted sα (Fin.snoc sn s) η) (hψ : WellSorted sα (Fin.snoc sn s) ψ)
+    (hg : Occurs (Fin.last m) s η) :
+    WellSorted sα sn (BoundedFormula.ex (η ⊓ ψ)) :=
+  WellSorted.imp sn (WellSorted.all sn
+    (WellSorted.imp _ (wellSorted_inf sα _ hη hψ) (WellSorted.falsum _))
+    (Or.inl (Or.inl hg)))
+    (WellSorted.falsum sn)
+
+end Connectives
+
+section Variables
+
+variable (sα : Empty → SortTag) {n : ℕ} (sn : Fin n → SortTag)
+
+/-- the bound variable `i` has the sort `sn i` (the constructor form of m5's `tmSort_tv`) -/
+@[simp] theorem tmSort_tv' (i : ℕ) (h : i < n) : TmSort sα sn (tv i h) = some (sn ⟨i, h⟩) :=
+  tmSort_var_inr sα sn ⟨i, h⟩
+
+/-- the last variable of the context `Fin.snoc ss .rv` is an `RV`-variable -/
+@[simp] theorem tmSort_tv_last {k : ℕ} {ss : Fin k → SortTag} :
+    TmSort sα (Fin.snoc ss .rv) (tv k (Nat.lt_succ_self k)) = some .rv := by
+  rw [tmSort_tv']
+  have h : (⟨k, Nat.lt_succ_self k⟩ : Fin (k + 1)) = Fin.last k := by ext; rfl
+  rw [h, Fin.snoc_last]
+
+end Variables
+
+section Existentials
+
+variable (sα : Empty → SortTag)
+
+/-- the encoding's `∃ x ∈ s, φ` (Part 2) is well-sorted at a well-sorted body: it is m5's
+`exSortedG`, the two are the same formula. -/
+theorem wellSorted_exSorted {k : ℕ} {ss : Fin k → SortTag} {s : SortTag} {φ : Bf (k + 1)}
+    (h : WellSorted sα (Fin.snoc ss s) φ) : WellSorted sα ss (exSorted s φ) :=
+  wellSorted_exSortedG sα h
+
+/-- the encoding's `∃ x ∈ s ∩ K, φ` (Part 2) is well-sorted at a well-sorted body; `pInK` is
+well-sorted at an `RV`-term, and `exSortedK` is only used at `s = .rv`. -/
+theorem wellSorted_exSortedK {k : ℕ} {ss : Fin k → SortTag} {φ : Bf (k + 1)}
+    (h : WellSorted sα (Fin.snoc ss .rv) φ) : WellSorted sα ss (exSortedK .rv φ) :=
+  wellSorted_ex_guarded sα
+    (η := sortPred .rv (tv k (Nat.lt_succ_self k)) ⊓ pInK (tv k (Nat.lt_succ_self k)))
+    (wellSorted_inf sα _
+      (wellSorted_pRVG sα _ (t := tv k (Nat.lt_succ_self k)) (tmSort_tv_last sα))
+      (wellSorted_pInK (t := tv k (Nat.lt_succ_self k)) (tmSort_tv_last sα)))
+    h
+    (Or.inl (occurs_self Empty (Fin.last k) .rv))
+
+/-- `exSortedK` at a context of `RV`-variables: the shape of `acfSchemeK`'s body -/
+theorem wellSorted_exSortedK_k {k : ℕ} {φ : Bf (k + 1)}
+    (h : WellSorted sα (fun _ : Fin (k + 1) => .rv) φ) :
+    WellSorted sα (fun _ : Fin k => .rv) (exSortedK .rv φ) :=
+  wellSorted_exSortedK sα (by
+    simpa using (fin_snoc_castSucc_last (ss := fun _ : Fin (k + 1) => .rv) ▸ h))
+
+end Existentials
+
+section SortedHypsGeneric
+
+variable (sα : Empty → SortTag)
+
+/-- `kHyps` is well-sorted at **any** context of `RV`-variables, not only at the constant one
+(m5's `wellSorted_kHyps` is the case `ss ≡ .rv`; the axioms of `Axioms.kField` are written with
+`![.rv, …]`, which is not definitionally the constant assignment). -/
+theorem wellSorted_foldr_kHyps_ss {k : ℕ} {ss : Fin k → SortTag} (hss : ∀ i, ss i = .rv)
+    (l : List (Fin k)) :
+    ∀ (acc : Bf k), WellSorted sα ss acc →
+      WellSorted sα ss (l.foldr (fun i acc => pInK (tv i.val i.isLt) ⊓ acc) acc) := by
+  induction l with
+  | nil => intro acc h; exact h
+  | cons i l ih =>
+    intro acc h
+    simp only [List.foldr_cons]
+    exact wellSorted_inf sα ss (wellSorted_pInK (by rw [tmSort_tv', hss i])) (ih acc h)
+
+/-- `kHyps` is well-sorted at a context of `RV`-variables -/
+theorem wellSorted_kHyps_ss {k : ℕ} {ss : Fin k → SortTag} (hss : ∀ i, ss i = .rv) :
+    WellSorted sα ss (kHyps : Bf k) :=
+  wellSorted_foldr_kHyps_ss sα hss (List.finRange k) ⊤ (wellSorted_top sα ss)
+
+/-- **`allSortedK ss φ` is well-sorted** for any assignment `ss` of `RV`-variables (m5's
+`wellSorted_allSortedK` is the case `ss ≡ .rv`). -/
+theorem wellSorted_allSortedK_ss {k : ℕ} {ss : Fin k → SortTag} {φ : Bf k}
+    (hss : ∀ i, ss i = .rv) (hφ : WellSorted sα ss φ) :
+    WellSorted sα (fun i : Fin 0 => i.elim0) (allSortedK ss φ) := by
+  refine wellSorted_alls (WellSorted.imp ss ?_ hφ) ?_
+  · exact wellSorted_inf sα ss (wellSorted_sortedHyps sα ss)
+      (wellSorted_kHyps_ss sα hss)
+  · intro d
+    exact Or.inl (Or.inl (occurs_sortedHyps ss d))
+
+end SortedHypsGeneric
+
+/-! #### The `TmSort` of the tree's term constructors
+
+Every axiom of `ACVF` is a formula over the *constructors* of Part 1 (`tVFAdd`, `tRv`, …), not over
+the raw `Term.func` forms that m5's lemmas are stated for.  The constructors are definitions, so the
+two are the same term — but `simp` matches syntactically, so the audit needs m5's `tmSort_*` restated
+in constructor form.  That is all this section is. -/
+
+section TmSortConstructors
+
+attribute [simp] tmSort_var_inr
+
+-- The constructors `tVFZero`, … are terms of `Tm n = LRV.Term (Empty ⊕ Fin n)`, so this section
+-- is at `α = Empty`; m5's `tmSort_*` lemmas are the general-`α` forms of the same facts.
+variable (sα : Empty → SortTag) {n : ℕ} (sn : Fin n → SortTag)
+
+@[simp] theorem tmSort_tVFZero : TmSort sα sn (tVFZero (n := n)) = some .vf :=
+  tmSort_func sα sn Fn.vfZero (fun i => i.elim0) (fun i => i.elim0)
+
+@[simp] theorem tmSort_tVFOne : TmSort sα sn (tVFOne (n := n)) = some .vf :=
+  tmSort_func sα sn Fn.vfOne (fun i => i.elim0) (fun i => i.elim0)
+
+@[simp] theorem tmSort_tRVZero : TmSort sα sn (tRVZero (n := n)) = some .rv :=
+  tmSort_func sα sn Fn.rvZero (fun i => i.elim0) (fun i => i.elim0)
+
+@[simp] theorem tmSort_tRVOne : TmSort sα sn (tRVOne (n := n)) = some .rv :=
+  tmSort_func sα sn Fn.rvOne (fun i => i.elim0) (fun i => i.elim0)
+
+@[simp] theorem tmSort_tRVInfty : TmSort sα sn (tRVInfty (n := n)) = some .rv :=
+  tmSort_tRVZero sα sn
+
+@[simp] theorem tmSort_tVFAdd {t u : Tm n} :
+    TmSort sα sn (tVFAdd t u) = some .vf ↔
+      TmSort sα sn t = some .vf ∧ TmSort sα sn u = some .vf :=
+  tmSort_bin_iff sα sn Fn.vfAdd
+
+@[simp] theorem tmSort_tVFMul {t u : Tm n} :
+    TmSort sα sn (tVFMul t u) = some .vf ↔
+      TmSort sα sn t = some .vf ∧ TmSort sα sn u = some .vf :=
+  tmSort_bin_iff sα sn Fn.vfMul
+
+@[simp] theorem tmSort_tVFNeg {t : Tm n} :
+    TmSort sα sn (tVFNeg t) = some .vf ↔ TmSort sα sn t = some .vf :=
+  tmSort_un_iff sα sn Fn.vfNeg
+
+@[simp] theorem tmSort_tRVMul {t u : Tm n} :
+    TmSort sα sn (tRVMul t u) = some .rv ↔
+      TmSort sα sn t = some .rv ∧ TmSort sα sn u = some .rv :=
+  tmSort_bin_iff sα sn Fn.rvMul
+
+@[simp] theorem tmSort_tKAdd {t u : Tm n} :
+    TmSort sα sn (tKAdd t u) = some .rv ↔
+      TmSort sα sn t = some .rv ∧ TmSort sα sn u = some .rv :=
+  tmSort_bin_iff sα sn Fn.kAdd
+
+@[simp] theorem tmSort_tKNeg {t : Tm n} :
+    TmSort sα sn (tKNeg t) = some .rv ↔ TmSort sα sn t = some .rv :=
+  tmSort_un_iff sα sn Fn.kNeg
+
+/-- the constructor form of m5's `tmSort_tRv` (the prime avoids the clash with it) -/
+@[simp] theorem tmSort_tRv' {t : Tm n} :
+    TmSort sα sn (tRv t) = some .rv ↔ TmSort sα sn t = some .vf :=
+  tmSort_un_iff sα sn Fn.rvMap
+
+end TmSortConstructors
+
+/-- `pRV t = ∼(t = 0)` is well-sorted at an `RV`-term (m5's `wellSorted_pRV` is the same
+statement with the symbol `pRV`; it is re-stated here because the audit is at `α = Empty` and uses
+the `[simp]` facts above). -/
+theorem wellSorted_pRV' {n : ℕ} {sα : Empty → SortTag} {sn : Fin n → SortTag} {t : Tm n}
+    (h : TmSort sα sn t = some .rv) : WellSorted sα sn (pRV t) :=
+  wellSorted_not sα sn (wellSorted_pEqG (s := .rv) sα sn h (tmSort_tRVZero sα sn))
+
+section Powers
+
+variable (sα : Empty → SortTag) {n : ℕ} (sn : Fin n → SortTag)
+
+@[simp] theorem tmSort_tVFPow {t : Tm n} (h : TmSort sα sn t = some .vf) :
+    ∀ k : ℕ, TmSort sα sn (tVFPow t k) = some .vf
+  | 0 => tmSort_tVFOne sα sn
+  | k + 1 => by
+    rw [tVFPow, tmSort_tVFMul]
+    exact ⟨tmSort_tVFPow h k, h⟩
+
+@[simp] theorem tmSort_tRVPow {t : Tm n} (h : TmSort sα sn t = some .rv) :
+    ∀ k : ℕ, TmSort sα sn (tRVPow t k) = some .rv
+  | 0 => tmSort_tRVOne sα sn
+  | k + 1 => by
+    rw [tRVPow, tmSort_tRVMul]
+    exact ⟨tmSort_tRVPow h k, h⟩
+
+@[simp] theorem tmSort_tVFNumeral : ∀ k : ℕ, TmSort sα sn (tVFNumeral (n := n) k) = some .vf
+  | 0 => tmSort_tVFZero sα sn
+  | k + 1 => by
+    rw [tVFNumeral, tmSort_tVFAdd]
+    exact ⟨tmSort_tVFNumeral k, tmSort_tVFOne sα sn⟩
+
+end Powers
+
+
 /-- Horner form `x^k + a_{k-1} x^{k-1} + ⋯ + a_0` of the monic polynomial of degree `k`
 whose coefficients are the variables `0, …, k-1` and whose variable is the variable `k`.
 
@@ -903,84 +1652,51 @@ end SubstructureTheory
 
 open Axioms
 
-/-- Sorted terms of the paper's two-sorted `L_RV`, over parameters `α` and free variables
-`Fin n` with declared sorts. -/
-inductive STm {α : Type} (sα : α → SortTag) {n : ℕ} (sn : Fin n → SortTag) : SortTag → Type
-  | param (a : α) : STm sα sn (sα a)
-  | var (i : Fin n) : STm sα sn (sn i)
-  | rv (t : STm sα sn .vf) : STm sα sn .rv
-  | vfAdd (t u : STm sα sn .vf) : STm sα sn .vf
-  | vfMul (t u : STm sα sn .vf) : STm sα sn .vf
-  | vfNeg (t : STm sα sn .vf) : STm sα sn .vf
-  | vfZero : STm sα sn .vf
-  | vfOne : STm sα sn .vf
-  | rvMul (t u : STm sα sn .rv) : STm sα sn .rv
-  | kAdd (t u : STm sα sn .rv) : STm sα sn .rv
-  | kNeg (t : STm sα sn .rv) : STm sα sn .rv
-  | rvZero : STm sα sn .rv
-  | rvOne : STm sα sn .rv
+/-! ### 6.0 `WellSorted` is the recursive predicate of Part 2
 
-/-- The translation of a sorted term into the one-sorted encoding. -/
-def STm.toLRV {α : Type} {sα : α → SortTag} {n : ℕ} {sn : Fin n → SortTag} {s : SortTag}
-    (t : STm sα sn s) : LRV.Term (α ⊕ Fin n) :=
-  match t with
-  | .param a => Term.var (Sum.inl a)
-  | .var i => Term.var (Sum.inr i)
-  | .rv t => Term.func Fn.rvMap ![t.toLRV]
-  | .vfAdd t u => Term.func Fn.vfAdd ![t.toLRV, u.toLRV]
-  | .vfMul t u => Term.func Fn.vfMul ![t.toLRV, u.toLRV]
-  | .vfNeg t => Term.func Fn.vfNeg ![t.toLRV]
-  | .vfZero => Term.func Fn.vfZero fun i => i.elim0
-  | .vfOne => Term.func Fn.vfOne fun i => i.elim0
-  | .rvMul t u => Term.func Fn.rvMul ![t.toLRV, u.toLRV]
-  | .kAdd t u => Term.func Fn.kAdd ![t.toLRV, u.toLRV]
-  | .kNeg t => Term.func Fn.kNeg ![t.toLRV]
-  | .rvZero => Term.func Fn.rvZero fun i => i.elim0
-  | .rvOne => Term.func Fn.rvOne fun i => i.elim0
+Until this revision the file carried, here, a *second* definition of the well-sorted fragment: the
+sorted syntax `STm`/`SBf` of the paper's two-sorted `L_RV`, its translation `STm.toLRV`/`SBf.toLRV`
+into the one-sorted encoding, and `WellSorted sα sn φ := ∃ ψ : SBf sα sn, ψ.toLRV = φ`.  That
+definition is **replaced** by the recursive predicate `LRV.WellSorted` of Part 2 (`TmSort` with
+`none` = junk, `Occurs`, `GuardsLast`), and the sorted syntax is deleted: it is dead.
 
-/-- Sorted formulas of the paper's two-sorted `L_RV`. -/
-inductive SBf {α : Type} (sα : α → SortTag) : {n : ℕ} → (Fin n → SortTag) → Type
-  | falsum {n : ℕ} {sn : Fin n → SortTag} : SBf sα sn
-  | eq {n : ℕ} {sn : Fin n → SortTag} {s : SortTag} (t u : STm sα sn s) : SBf sα sn
-  | memVF {n : ℕ} {sn : Fin n → SortTag} (t : STm sα sn .vf) : SBf sα sn
-  | memRV {n : ℕ} {sn : Fin n → SortTag} (t : STm sα sn .rv) : SBf sα sn
-  | units {n : ℕ} {sn : Fin n → SortTag} (t : STm sα sn .rv) : SBf sα sn
-  | le {n : ℕ} {sn : Fin n → SortTag} (t u : STm sα sn .rv) : SBf sα sn
-  | imp {n : ℕ} {sn : Fin n → SortTag} (φ ψ : SBf sα sn) : SBf sα sn
-  | all {n : ℕ} {sn : Fin n → SortTag} (s : SortTag) (φ : SBf sα (Fin.snoc sn s)) : SBf sα sn
+Why the replacement is safe, and in which direction:
 
-/-- The translation of a sorted formula into the one-sorted encoding: quantifiers become guarded
-quantifiers over the declared sort, which is what the encoding's `allSorted` idiom does. -/
-def SBf.toLRV {α : Type} {sα : α → SortTag} : {n : ℕ} → {sn : Fin n → SortTag} →
-    SBf sα sn → LRV.BoundedFormula α n
-  | _, _, .falsum => BoundedFormula.falsum
-  | _, _, .eq t u => BoundedFormula.equal t.toLRV u.toLRV
-  | _, _, .memVF t => BoundedFormula.rel Rel.memVF ![t.toLRV]
-  | _, _, .memRV t => BoundedFormula.rel Rel.memRV ![t.toLRV]
-  | _, _, .units t => BoundedFormula.rel Rel.memUnits ![t.toLRV]
-  | _, _, .le t u => BoundedFormula.rel Rel.rvLe ![t.toLRV, u.toLRV]
-  | _, _, .imp φ ψ => BoundedFormula.imp (SBf.toLRV φ) (SBf.toLRV ψ)
-  | _, _, .all s φ =>
-      match s with
-      | .vf => BoundedFormula.all ((BoundedFormula.rel Rel.memVF ![Term.var (Sum.inr (Fin.last _))]) ⟹ SBf.toLRV φ)
-      | .rv => BoundedFormula.all ((BoundedFormula.rel Rel.memRV ![Term.var (Sum.inr (Fin.last _))]) ⟹ SBf.toLRV φ)
+* the recursive predicate accepts every atom of the image (`TmSort` is `some s` for a sorted term,
+  and `GuardsLast` fires on the guard that `SBf.all` emits — `wellSorted_all_guarded`), and it is
+  closed under the connectives (`wellSorted_inf`, `wellSorted_not`, …) and under the guarded
+  quantifiers (`wellSorted_allSorted`, `wellSorted_allSortedK`, `wellSorted_allOne`,
+  `wellSorted_exSortedK`), which is what the frozen statements and the QE tree consume;
+* it is what the *proofs* can use: the paper's axioms and the tree's translations are formulas
+  built by `allSorted`/`allSortedK`/`allOne` over sorted atoms, so what they need is a predicate
+  that is closed under exactly those constructions — see Part 6.1 for `ACVF` sentence by sentence;
+* where it is *narrower* is exactly the encoding's own three carrier sentences, and that costs
+  nothing the paper stated: `Axioms.sdCover` (`∀x, x ∈ VF ∨ x ∈ RV`) and `Axioms.sdDisjoint`
+  (`∀x, ¬(x ∈ VF ∧ x ∈ RV)`) mention one variable at **two** sorts, so no assignment of a sort to
+  the bound variable makes the body well-sorted, and `Axioms.sdUnits` (`∀x, Kˣ(x) → x ∈ RV`) does
+  have a well-sorted body (at `x : RV`) but no *guard* — its antecedent is `Kˣ(x)`, not the sort
+  predicate of `x`, so `GuardsLast` does not fire.  These three describe the one-sorted carrier of
+  the encoding and are not formulas of the paper's language, which is why `wellSorted_ACVF` in
+  Part 6.1 excludes them and why `ACVF`'s axioms *of the paper* need no exclusion at all.
 
-/-- **Well-sorted formulas**: the image of the paper's two-sorted syntax in the one-sorted
-encoding.  This is the fragment the target statement quantifies over — ill-sorted terms such as
-`rv (rv x)` are not in it, because the encoding's `BoundedFormula` admits them but the paper's
-language does not. -/
-def WellSorted {α : Type} (sα : α → SortTag) {n : ℕ} (sn : Fin n → SortTag)
-    (φ : LRV.BoundedFormula α n) : Prop :=
-  ∃ ψ : SBf sα sn, ψ.toLRV = φ
+`WellSorted` is **not** guarded on the parameters syntactically: the frozen `HasQE` and
+`IsCMinimalWS` keep the semantic relativisation by `sortEval` below, which is a statement about
+*all* parameter types `α`, with no `[Fintype α]` and no `⋀ a, v a ∈ sα a` hypothesis.  The
+recursive predicate does not mention `α`'s finiteness at all: the only place `α` enters is the
+`Term.var (Sum.inl a)` clause of `TmSort`, which reads the declared sort `sα a`.  (A syntactic
+parameter guard would have to be a finite conjunction, hence need `[Fintype α]`; the semantic
+guard does not, and it is the one the frozen statements are written with.)
+-/
 
+open LRV
 /-- Whether an element of a model has a given sort. -/
 def sortEval {M : Type*} [LRV.Structure M] : SortTag → M → Prop
   | .vf => fun x => Structure.RelMap (L := LRV) Rel.memVF ![x]
   | .rv => fun x => Structure.RelMap (L := LRV) Rel.memRV ![x]
 
 /-- A theory `T` of `L_RV` **admits quantifier elimination on the well-sorted fragment**: every
-formula of the paper's two-sorted language — the image of `SBf` in the one-sorted encoding — is
-`T`-equivalent, at tuples respecting the declared sorts, to a quantifier-free formula of the same
+formula of the paper's two-sorted language — a `WellSorted` formula of the one-sorted encoding —
+is `T`-equivalent, at tuples respecting the declared sorts, to a quantifier-free formula of the same
 fragment.  This is the paper's Theorem 2.3 ("the theory `ACVF` admits quantifier elimination"),
 stated for the two-sorted `L_RV` it is about: the encoding's carrier admits ill-sorted terms such
 as `rv (rv x)`, whose values no axiom fixes, and those are not formulas of the paper's language. -/
@@ -1121,6 +1837,493 @@ Definition 2.7, for the formulas of the paper's two-sorted language (`IsCMinimal
 theorem theorem_2_8_c_minimal :
     ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ ACVF → IsCMinimalWS M := by
   sorry
+
+/-! ## Part 6.1 The audit: `ACVF`'s axioms are well-sorted
+
+`HasQE` and `IsCMinimalWS` above are stated over `WellSorted`.  Adopting the recursive predicate
+(the replacement recorded in 6.0) would lose a theorem only if some sentence the earlier
+image-of-sorted-syntax predicate accepted were rejected by the recursive one, and only if a proof
+relied on that.  Nothing in the file was proved *about* `WellSorted` before — it occurs in the two
+frozen statements only — so what has to be checked is that the previous definition's instances are
+still instances.  This part does that on the objects the QE transfer consumes: **every sentence of
+`ACVF`** (Definition 2.2, its sort discipline, and the `repairRV` sentences), plus the shapes of the
+tree's syntactic translations (6.2).
+
+Two facts about the shape of the audit:
+
+* the axioms are `allSorted ss φ` / `allSortedK ss φ` / `allOne φ` / `exSorted` / `exSortedK`
+  sentences over atoms built from the Part 1 constructors, and the recursive predicate has a clause
+  for exactly those (`wellSorted_allSorted`, `wellSorted_allSortedK`, `wellSorted_allOne`,
+  `wellSorted_exSortedK`), so "well-sorted" reduces to "every atom is sorted", which is `TmSort` of
+  a constructor — a `simp` computation with the lemmas of Part 2b;
+* the three sentences of the *sort discipline* are the interesting case, and they split:
+  `sdCover` and `sdDisjoint` (whose guard is the encoding's own sort predicate) **are** well-sorted
+  recursively and were **not** in the image of `SBf`; `sdUnits`, `∀x, Kˣ(x) → x ∈ RV`, is in
+  neither (its antecedent is not the sort predicate of a variable, so no guard fires).  So the
+  recursive predicate is strictly larger on these three, and `ACVF` = `sortAxioms ∪ ACVFpaper`
+  contains exactly one sentence outside the fragment: `sdUnits`. -/
+
+namespace Audit
+
+open LRV Axioms
+
+/-- `φ` is a well-sorted *sentence* of the paper's two-sorted language.  The parameter type is
+`Empty` and the sort assignment there is the empty one; the choice of `sα : Empty → SortTag` is
+irrelevant (`Empty` has one function into any type), and fixing it keeps the audit's statements
+closed. -/
+abbrev WSSent (φ : LRV.Sentence) : Prop :=
+  WellSorted (fun i : Empty => Empty.elim i) (fun i : Fin 0 => i.elim0) φ
+
+/-! ### 6.1.0 Transport and the Horner term -/
+
+/-- transport `WellSorted` along an equality of sort assignments -/
+theorem ws_congr {α : Type} {sα : α → SortTag} {n : ℕ} {sn sn' : Fin n → SortTag}
+    {φ : LRV.BoundedFormula α n} (h : sn = sn') (hφ : WellSorted sα sn φ) :
+    WellSorted sα sn' φ := h ▸ hφ
+
+/-- the context a quantified body of `Axioms.acfScheme` lives in: `∀`-extension of a constant `VF`
+tuple is the constant `VF` tuple -/
+theorem snoc_const_vf (k : ℕ) :
+    (Fin.snoc (fun _ : Fin k => SortTag.vf) SortTag.vf : Fin (k + 1) → SortTag) =
+      fun _ => SortTag.vf := by
+  simpa using fin_snoc_castSucc_last (ss := fun _ : Fin (k + 1) => SortTag.vf)
+
+/-- the same for `RV` -/
+theorem snoc_const_rv (k : ℕ) :
+    (Fin.snoc (fun _ : Fin k => SortTag.rv) SortTag.rv : Fin (k + 1) → SortTag) =
+      fun _ => SortTag.rv := by
+  simpa using fin_snoc_castSucc_last (ss := fun _ : Fin (k + 1) => SortTag.rv)
+
+/-- `Fin.snoc` of the one-variable `VF` context: the context an `∃`-quantified body lives in -/
+theorem snoc_vf1 : (Fin.snoc ![SortTag.vf] SortTag.vf : Fin 2 → SortTag) =
+    ![SortTag.vf, SortTag.vf] := by
+  funext i; fin_cases i <;> simp [Fin.snoc]
+
+/-- `Fin.snoc` of the one-variable `RV` context -/
+theorem snoc_rv1 : (Fin.snoc ![SortTag.rv] SortTag.rv : Fin 2 → SortTag) =
+    ![SortTag.rv, SortTag.rv] := by
+  funext i; fin_cases i <;> simp [Fin.snoc]
+
+/-- `Fin.snoc` of `RV` extended by a `VF`-variable (`rvSurj`) -/
+theorem snoc_rv_vf : (Fin.snoc ![SortTag.rv] SortTag.vf : Fin 2 → SortTag) =
+    ![SortTag.rv, SortTag.vf] := by
+  funext i; fin_cases i <;> simp [Fin.snoc]
+
+/-- `Fin.snoc` of the empty context (`axNontrivialRV`) -/
+theorem snoc_empty_vf : (Fin.snoc (fun i : Fin 0 => i.elim0) SortTag.vf : Fin 1 → SortTag) =
+    ![SortTag.vf] := by
+  funext i; fin_cases i <;> simp [Fin.snoc]
+
+/-- the Horner fold of `hornerPoly` preserves `TmSort … = some .vf` -/
+theorem tmSort_hornerFoldl {n : ℕ} (x : Tm (n + 1 + 1))
+    (hx : TmSort (fun i : Empty => Empty.elim i) (fun _ : Fin (n + 1 + 1) => .vf) x = some .vf) :
+    ∀ (l : List (Fin n)) (acc : Tm (n + 1 + 1)),
+      TmSort (fun i : Empty => Empty.elim i) (fun _ : Fin (n + 1 + 1) => .vf) acc = some .vf →
+      TmSort (fun i : Empty => Empty.elim i) (fun _ : Fin (n + 1 + 1) => .vf)
+        (l.foldl (fun acc i => tVFAdd (tVFMul acc x) (tv (n := n + 1 + 1) i.val (by omega))) acc) =
+        some .vf
+  | [], acc, hacc => hacc
+  | i :: l, acc, hacc => by
+    rw [List.foldl_cons]
+    refine tmSort_hornerFoldl x hx l _ ?_
+    rw [tmSort_tVFAdd, tmSort_tVFMul]
+    exact ⟨⟨hacc, hx⟩, by simp⟩
+
+/-- the Horner fold of `hornerPoly` at the residue field `K`: `TmSort … = some .rv` -/
+theorem tmSort_hornerFoldlK {n : ℕ} (x : Tm (n + 1 + 1))
+    (hx : TmSort (fun i : Empty => Empty.elim i) (fun _ : Fin (n + 1 + 1) => .rv) x = some .rv) :
+    ∀ (l : List (Fin n)) (acc : Tm (n + 1 + 1)),
+      TmSort (fun i : Empty => Empty.elim i) (fun _ : Fin (n + 1 + 1) => .rv) acc = some .rv →
+      TmSort (fun i : Empty => Empty.elim i) (fun _ : Fin (n + 1 + 1) => .rv)
+        (l.foldl (fun acc i => tKAdd (tRVMul acc x) (tv (n := n + 1 + 1) i.val (by omega))) acc) =
+        some .rv
+  | [], acc, hacc => hacc
+  | i :: l, acc, hacc => by
+    rw [List.foldl_cons]
+    refine tmSort_hornerFoldlK x hx l _ ?_
+    rw [tmSort_tKAdd, tmSort_tRVMul]
+    exact ⟨⟨hacc, hx⟩, by simp⟩
+
+/-- **the Horner polynomial of `K` is an `RV`-term** -/
+@[simp] theorem tmSort_hornerPolyK (k : ℕ) :
+    TmSort (fun i : Empty => Empty.elim i) (fun _ : Fin (k + 1) => .rv)
+      (hornerPoly tKAdd tRVMul) = some .rv := by
+  match k with
+  | 0 => rw [hornerPoly]; exact tmSort_tv' _ _ 0 _
+  | m + 1 =>
+    rw [hornerPoly]
+    refine tmSort_hornerFoldlK (n := m) (tv (n := m + 1 + 1) (m + 1) (by omega)) ?_ _ _ ?_
+    · exact tmSort_tv' _ _ (m + 1) (by omega)
+    · rw [tmSort_tKAdd]
+      exact ⟨tmSort_tv' _ _ (m + 1) (by omega), tmSort_tv' _ _ m (by omega)⟩
+
+/-- **the Horner polynomial is a `VF`-term** (of the context of the coefficients) -/
+@[simp] theorem tmSort_hornerPoly (k : ℕ) :
+    TmSort (fun i : Empty => Empty.elim i) (fun _ : Fin (k + 1) => .vf)
+      (hornerPoly tVFAdd tVFMul) = some .vf := by
+  match k with
+  | 0 => rw [hornerPoly]; exact tmSort_tv' _ _ 0 _
+  | m + 1 =>
+    rw [hornerPoly]
+    refine tmSort_hornerFoldl (n := m) (tv (n := m + 1 + 1) (m + 1) (by omega)) ?_ _ _ ?_
+    · exact tmSort_tv' _ _ (m + 1) (by omega)
+    · rw [tmSort_tVFAdd]
+      exact ⟨tmSort_tv' _ _ (m + 1) (by omega), tmSort_tv' _ _ m (by omega)⟩
+
+/-! ### 6.1.1 The sort discipline, `Axioms.sortClosure` -/
+
+theorem wss_sdVFZero : WSSent Axioms.sdVFZero := by
+  unfold Axioms.sdVFZero
+  exact wellSorted_pVFG _ _ (by simp)
+
+theorem wss_sdVFOne : WSSent Axioms.sdVFOne := by
+  unfold Axioms.sdVFOne
+  exact wellSorted_pVFG _ _ (by simp)
+
+theorem wss_sdVFAdd : WSSent Axioms.sdVFAdd := by
+  unfold Axioms.sdVFAdd
+  apply wellSorted_allSorted
+  exact wellSorted_pVFG _ _ (by simp)
+
+theorem wss_sdVFNeg : WSSent Axioms.sdVFNeg := by
+  unfold Axioms.sdVFNeg
+  apply wellSorted_allSorted
+  exact wellSorted_pVFG _ _ (by simp)
+
+theorem wss_sdVFMul : WSSent Axioms.sdVFMul := by
+  unfold Axioms.sdVFMul
+  apply wellSorted_allSorted
+  exact wellSorted_pVFG _ _ (by simp)
+
+theorem wss_sdRv : WSSent Axioms.sdRv := by
+  unfold Axioms.sdRv
+  apply wellSorted_allSorted
+  exact wellSorted_pRVG _ _ (by simp)
+
+theorem wss_sdRVZero : WSSent Axioms.sdRVZero := by
+  unfold Axioms.sdRVZero
+  exact wellSorted_pRVG _ _ (by simp)
+
+theorem wss_sdRVInfty : WSSent Axioms.sdRVInfty := by
+  unfold Axioms.sdRVInfty
+  exact wellSorted_pRVG _ _ (by simp)
+
+theorem wss_sdRVOne : WSSent Axioms.sdRVOne := by
+  unfold Axioms.sdRVOne
+  exact wellSorted_pRVG _ _ (by simp)
+
+theorem wss_sdRVMul : WSSent Axioms.sdRVMul := by
+  unfold Axioms.sdRVMul
+  apply wellSorted_allSorted
+  exact wellSorted_pRVG _ _ (by simp)
+
+theorem wss_sdKAdd : WSSent Axioms.sdKAdd := by
+  unfold Axioms.sdKAdd
+  apply wellSorted_allSorted
+  exact WellSorted.imp _ (wellSorted_pInK (by simp)) (WellSorted.imp _ (wellSorted_pInK (by simp))
+    (wellSorted_pInK (by simp)))
+
+theorem wss_sdKNeg : WSSent Axioms.sdKNeg := by
+  unfold Axioms.sdKNeg
+  apply wellSorted_allSorted
+  exact WellSorted.imp _ (wellSorted_pInK (by simp)) (wellSorted_pInK (by simp))
+
+theorem wss_sdKMul : WSSent Axioms.sdKMul := by
+  unfold Axioms.sdKMul
+  apply wellSorted_allSorted
+  exact WellSorted.imp _ (wellSorted_pInK (by simp)) (WellSorted.imp _ (wellSorted_pInK (by simp))
+    (wellSorted_pInK (by simp)))
+
+/-! ### 6.1.2 The two field axiom lists, `Axioms.fieldAxioms` -/
+
+/-- the ten field axioms of `Axioms.fieldAxioms .vf …`, i.e. `Axioms.vfField` -/
+theorem wss_vfField : ∀ t ∈ Axioms.vfField, WSSent t := by
+  intro t ht
+  simp only [Axioms.vfField, Axioms.ofList, Set.mem_ofPred_eq, Axioms.fieldAxioms,
+    List.mem_cons, List.not_mem_nil, or_false] at ht
+  rcases ht with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+  · exact wellSorted_not _ _ (wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    refine wellSorted_sup _ _ (wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)) ?_
+    refine wellSorted_exSorted _ (ss := ![SortTag.vf]) ?_
+    rw [snoc_vf1]
+    exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+
+/-- `Axioms.vfAlgClosed`, the algebraic-closedness scheme of the `VF` sort -/
+theorem wss_vfAlgClosed (k : ℕ) (_hk : 1 ≤ k) :
+    WSSent (Axioms.acfScheme .vf tVFZero tVFAdd tVFMul k) := by
+  unfold Axioms.acfScheme
+  apply wellSorted_allSorted
+  refine wellSorted_exSorted _ (ss := fun _ : Fin k => .vf) (s := .vf) ?_
+  rw [snoc_const_vf]
+  exact wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)
+
+/-! ### 6.1.3 The residue field `K = K^× ∪ {0}`, `Axioms.kField` and `Axioms.acfSchemeK` -/
+
+/-- the ten field axioms of `Axioms.kField`, guarded by `allSortedK` -/
+theorem wss_kField : ∀ t ∈ Axioms.kField, WSSent t := by
+  intro t ht
+  simp only [Axioms.kField, Axioms.ofList, Set.mem_ofPred_eq, List.mem_cons,
+    List.not_mem_nil, or_false] at ht
+  rcases ht with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · apply wellSorted_allSortedK_ss _ (hss := by intro i; fin_cases i <;> rfl)
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSortedK_ss _ (hss := by intro i; fin_cases i <;> rfl)
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSortedK_ss _ (hss := by intro i; fin_cases i <;> rfl)
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSortedK_ss _ (hss := by intro i; fin_cases i <;> rfl)
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSortedK_ss _ (hss := by intro i; fin_cases i <;> rfl)
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSortedK_ss _ (hss := by intro i; fin_cases i <;> rfl)
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSortedK_ss _ (hss := by intro i; fin_cases i <;> rfl)
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSortedK_ss _ (hss := by intro i; fin_cases i <;> rfl)
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · exact wellSorted_not _ _ (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))
+  · apply wellSorted_allSortedK_ss _ (hss := by intro i; fin_cases i <;> rfl)
+    refine wellSorted_sup _ _ (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)) ?_
+    refine wellSorted_exSortedK _ ?_
+    rw [snoc_rv1]
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+
+/-- `Axioms.kAlgClosed`, the algebraic-closedness scheme of `K = K^× ∪ {0}` -/
+theorem wss_kAlgClosed (k : ℕ) (_hk : 1 ≤ k) : WSSent (Axioms.acfSchemeK k) := by
+  unfold Axioms.acfSchemeK
+  apply wellSorted_allSortedK
+  refine wellSorted_exSortedK_k _ ?_
+  exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+
+/-! ### 6.1.4 The `RV` group, `Axioms.rvGroup` -/
+
+theorem wss_rvGroup : ∀ t ∈ Axioms.rvGroup, WSSent t := by
+  intro t ht
+  simp only [Axioms.rvGroup, Set.mem_union, Set.mem_ofPred_eq, Axioms.ofList,
+    List.mem_cons, List.not_mem_nil, or_false] at ht
+  rcases ht with (rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl) | ⟨k, _hk, hkk⟩
+  · exact wellSorted_pUnitsG _ _ (by simp)
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp)) (WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp)) ?_)
+    exact wellSorted_pUnitsG _ _ (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp))
+      (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp)) ?_
+    refine wellSorted_exSorted _ (ss := ![SortTag.rv]) ?_
+    rw [snoc_rv1]
+    exact wellSorted_inf _ _ (wellSorted_pUnitsG _ _ (by simp))
+      (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pInK (by simp)) ?_
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · rw [hkk]
+    apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp)) ?_
+    refine wellSorted_exSorted _ (ss := ![SortTag.rv]) ?_
+    rw [snoc_rv1]
+    refine wellSorted_inf _ _ (wellSorted_pUnitsG _ _ (by simp)) ?_
+    exact wellSorted_pEqG (s := .rv) _ _ (by rw [tmSort_tRVPow]; exact (by simp))
+      (by simp)
+
+/-! ### 6.1.5 The preorder, `Axioms.preorderRV` -/
+
+theorem wss_preorderRV : ∀ t ∈ Axioms.preorderRV, WSSent t := by
+  intro t ht
+  simp only [Axioms.preorderRV, Axioms.ofList, Set.mem_ofPred_eq, List.mem_cons,
+    List.not_mem_nil, or_false] at ht
+  rcases ht with rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · apply wellSorted_allSorted
+    exact WellSorted.imp _ (wellSorted_pRV' (by simp)) (wellSorted_pLeG _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pRV' (by simp)) (WellSorted.imp _ (wellSorted_pRV' (by simp))
+      (WellSorted.imp _ (wellSorted_pRV' (by simp)) (WellSorted.imp _ (wellSorted_pLeG _ _ (by simp) (by simp))
+      (WellSorted.imp _ (wellSorted_pLeG _ _ (by simp) (by simp)) ?_)))) 
+    exact wellSorted_pLeG _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pRV' (by simp)) (WellSorted.imp _ (wellSorted_pRV' (by simp)) ?_)
+    exact wellSorted_sup _ _ (wellSorted_pLeG _ _ (by simp) (by simp)) (wellSorted_pLeG _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    exact WellSorted.imp _ (wellSorted_pRV' (by simp)) (wellSorted_pLeG _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pRV' (by simp)) (WellSorted.imp _ (wellSorted_pLeG _ _ (by simp) (by simp)) ?_)
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pRV' (by simp)) ?_
+    exact wellSorted_iff _ _ (wellSorted_pUnitsG _ _ (by simp))
+      (wellSorted_inf _ _ (wellSorted_pLeG _ _ (by simp) (by simp)) (wellSorted_pLeG _ _ (by simp) (by simp)))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pRV' (by simp)) (WellSorted.imp _ (wellSorted_pRV' (by simp))
+      (WellSorted.imp _ (wellSorted_pRV' (by simp)) (WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp))
+      (WellSorted.imp _ (wellSorted_pLeG _ _ (by simp) (by simp)) ?_))))
+    exact wellSorted_pLeG _ _ (by simp) (by simp)
+
+/-! ### 6.1.6 The projection `rv`, `Axioms.rvAxioms` -/
+
+theorem wss_rvAxioms : ∀ t ∈ Axioms.rvAxioms, WSSent t := by
+  intro t ht
+  simp only [Axioms.rvAxioms, Axioms.ofList, Set.mem_ofPred_eq, List.mem_cons,
+    List.not_mem_nil, or_false] at ht
+  rcases ht with rfl | rfl | rfl | rfl | rfl
+  · exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact WellSorted.imp _ (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))
+      (wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_not _ _ (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))) ?_
+    refine wellSorted_exSorted _ (ss := ![SortTag.rv]) ?_
+    rw [snoc_rv_vf]
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact wellSorted_sup _ _ (wellSorted_pLeG _ _ (by simp) (by simp)) (wellSorted_pLeG _ _ (by simp) (by simp))
+
+/-! ### 6.1.7 The repaired axioms, `Axioms.repairRV` -/
+
+theorem wss_repairRV : ∀ t ∈ Axioms.repairRV, WSSent t := by
+  intro t ht
+  simp only [Axioms.repairRV, Axioms.ofList, Set.mem_ofPred_eq, List.mem_cons,
+    List.not_mem_nil, or_false] at ht
+  rcases ht with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · apply wellSorted_allSorted
+    exact WellSorted.imp _ (wellSorted_pRV' (by simp)) (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pRV' (by simp)) ?_
+    refine wellSorted_exSorted _ (ss := ![SortTag.rv]) ?_
+    rw [snoc_rv1]
+    exact wellSorted_inf _ _ (wellSorted_pRV' (by simp)) (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pRV' (by simp)) ?_
+    exact wellSorted_iff _ _ (wellSorted_pLeG _ _ (by simp) (by simp)) (wellSorted_pLeG _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp)) (WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp)) ?_)
+    exact wellSorted_inf _ _ (WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp)) (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)))
+      (WellSorted.imp _ (wellSorted_not _ _ (wellSorted_pUnitsG _ _ (by simp))) (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)))
+  · apply wellSorted_allSorted
+    exact WellSorted.imp _ (wellSorted_pUnitsG _ _ (by simp)) (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_not _ _ (wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp))) ?_
+    exact wellSorted_iff _ _ (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))
+      (wellSorted_not _ _ (wellSorted_pLeG _ _ (by simp) (by simp)))
+  · apply wellSorted_allSorted
+    refine WellSorted.imp _ (wellSorted_sup _ _ (wellSorted_not _ _ (wellSorted_pInK (by simp)))
+      (wellSorted_not _ _ (wellSorted_pInK (by simp)))) ?_
+    exact wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp)
+  · apply wellSorted_allSorted
+    exact WellSorted.imp _ (wellSorted_not _ _ (wellSorted_pInK (by simp))) (wellSorted_pEqG (s := .rv) _ _ (by simp) (by simp))
+  · refine wellSorted_exSorted _ (ss := fun i : Fin 0 => i.elim0) (s := .vf) ?_
+    rw [snoc_empty_vf]
+    exact wellSorted_inf _ _ (wellSorted_not _ _ (wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp)))
+      (wellSorted_not _ _ (wellSorted_pLeG _ _ (by simp) (by simp)))
+
+/-! ### 6.1.8 The sort discipline as a theory, and the characteristic -/
+
+/-- every sentence of `Axioms.sortClosure` except `sdUnits` is well-sorted (`sdUnits` is the one
+sentence of the sort discipline that the recursive predicate rejects: its antecedent is `Kˣ(x)`, not
+the sort predicate of the variable, so no guard fires — see the discussion in 6.0) -/
+theorem wss_sortClosure : ∀ t ∈ Axioms.sortClosure, t ≠ Axioms.sdUnits → WSSent t := by
+  intro t ht hne
+  simp only [Axioms.sortClosure, Axioms.ofList, Set.mem_ofPred_eq, List.mem_cons,
+    List.not_mem_nil, or_false] at ht
+  rcases ht with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · exact wss_sdVFZero
+  · exact wss_sdVFOne
+  · exact wss_sdVFAdd
+  · exact wss_sdVFNeg
+  · exact wss_sdVFMul
+  · exact wss_sdRv
+  · exact wss_sdRVZero
+  · exact wss_sdRVInfty
+  · exact wss_sdRVOne
+  · exact wss_sdRVMul
+  · exact absurd rfl hne
+  · exact wss_sdKAdd
+  · exact wss_sdKNeg
+  · exact wss_sdKMul
+
+/-- characteristic zero of the `VF` sort -/
+theorem wss_charZeroVF (k : ℕ) : WSSent (Axioms.charZeroVF k) := by
+  unfold Axioms.charZeroVF
+  exact wellSorted_not _ _ (wellSorted_pEqG (s := .vf) _ _ (by simp) (by simp))
+
+/-- residue characteristic zero -/
+theorem wss_residueCharZero (p : ℕ) : WSSent (Axioms.residueCharZero p) := by
+  unfold Axioms.residueCharZero pGtOne
+  exact wellSorted_not _ _ (wellSorted_inf _ _ (wellSorted_pLeG _ _ (by simp) (by simp))
+    (wellSorted_not _ _ (wellSorted_pLeG _ _ (by simp) (by simp))))
+
+/-! ### 6.1.9 The audit, assembled -/
+
+/-- **every sentence of `Axioms.ACVFpaper` is well-sorted** — this is Definition 2.2 items 1–6
+together with the `repairRV` sentences, i.e. every axiom the paper actually states -/
+theorem wellSorted_ACVFpaper : ∀ t ∈ Axioms.ACVFpaper, WSSent t := by
+  intro t ht
+  simp only [Axioms.ACVFpaper, Set.mem_union, Set.mem_ofPred_eq] at ht
+  rcases ht with ((((((((h | h) | h) | h) | h) | h) | h) | h) | h)
+  · exact wss_vfField t h
+  · obtain ⟨k, hk, rfl⟩ := h
+    exact wss_vfAlgClosed k hk
+  · exact wss_rvGroup t h
+  · exact wss_kField t h
+  · obtain ⟨k, hk, rfl⟩ := h
+    exact wss_kAlgClosed k hk
+  · exact wss_preorderRV t h
+  · exact wss_rvAxioms t h
+  · exact wss_repairRV t h
+  · exact wss_repairRV t h
+
+/-- **`ACVF`'s characteristic-zero theory is well-sorted** -/
+theorem wellSorted_ACVF00paper : ∀ t ∈ Axioms.ACVF00paper, WSSent t := by
+  intro t ht
+  simp only [Axioms.ACVF00paper, Set.mem_union, Set.mem_ofPred_eq] at ht
+  rcases ht with (h | ⟨k, rfl⟩) | ⟨p, _hp, rfl⟩
+  · exact wellSorted_ACVFpaper t h
+  · exact wss_charZeroVF k
+  · exact wss_residueCharZero p
+
+/-- **The audit, `ACVF` itself.**  `ACVF = sortAxioms ∪ ACVFpaper` and `sortAxioms` is
+`sortClosure` together with the two carrier sentences `sdCover`, `sdDisjoint`; the paper's sentences
+are all well-sorted (`wellSorted_ACVFpaper`), the closure sentences are (`wss_sortClosure`), and
+the only sentence of `ACVF` the recursive predicate rejects is `sdUnits`.  (`sdCover` and
+`sdDisjoint` are rejected too — both mention one variable at two sorts — and are excluded by the
+hypotheses below.) -/
+theorem wellSorted_ACVF {t : LRV.Sentence} (ht : t ∈ Axioms.ACVF)
+    (h₁ : t ≠ Axioms.sdCover) (h₂ : t ≠ Axioms.sdDisjoint) (h₃ : t ≠ Axioms.sdUnits) : WSSent t := by
+  simp only [Axioms.ACVF, Axioms.sortAxioms, Set.mem_union, Set.mem_ofPred_eq, Axioms.ofList,
+    List.mem_cons, List.not_mem_nil, or_false] at ht
+  rcases ht with (h | h) | h
+  · exact wss_sortClosure t h h₃
+  · rcases h with rfl | rfl
+    · exact absurd rfl h₁
+    · exact absurd rfl h₂
+  · exact wellSorted_ACVFpaper t h
+
+end Audit
 
 /-! ## Part 7. Definable subsets of `VF^n × RV^m`
 

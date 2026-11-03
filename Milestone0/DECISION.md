@@ -452,3 +452,31 @@ definability *unrestricted*, which is strictly stronger — and can fail, since 
 ```
 sha256 of Milestone0/Encoding.lean: 116bd9f358deff9bd03a716e53105ae768448434bd05e46cd85eec88cac8bacf
 ```
+
+### Ruling: saturation is taken as given; the paper's own lemmas are not
+
+Mathlib has no model-theoretic saturation (`rg -i saturat Mathlib/ModelTheory` is empty), and the
+paper's Section 3 is written inside a **saturated monster model**.  The author's ruling: take the
+necessary model theory for saturation **as given, without proofs**; do not develop it here.  The
+paper's own statements — including those it cites from arXiv:1006.1393 — are **not** to be assumed:
+they are to be proved.
+
+So the policy has two halves, and they must not be confused in a footprint:
+
+* **Assumed (visible as declared axioms):** the saturation/monster-model infrastructure that Mathlib
+  lacks — existence of a saturated model of `ACVF`, and the standard consequences §3 uses
+  (algebraic closure in the monster model agreeing with the syntactic `acl`, type realization).  Any
+  theorem whose footprint contains one of these must say so; they will be named `sat_*` and listed.
+* **Not assumed (to be proved):** every statement of the paper, including §3's items whose printed
+  proofs are in arXiv:1006.1393 — exchange, the average lemma, the finiteness of the `VF`-projection,
+  the finite image of an `RV`-definable function, effectiveness, the algebraic balls, `aclS:model`.
+  Freezing a statement with `sorry` marks it as unproved; passing it as a hypothesis in a proof is
+  not allowed, and any such hypothesis in the tree so far (`Section3Supply`'s fields) is a
+  placeholder to be discharged, not a result.
+
+`Milestone0/Encoding.lean` after adopting the recursive `WellSorted`, with `DefinableVF`,
+`IsCMinimalVFWS` and `isCMinimalVFWS_of_isCMinimalWS` retained:
+
+```
+sha256 851d6a986b69c4df2075ebb81f1dd325f694bbfb0a17079e527e631077427a4c
+```
