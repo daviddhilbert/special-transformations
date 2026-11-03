@@ -1674,3 +1674,30 @@ open = ∅), and the `IsBoolComb` closure API (`inter`, `empty`, `iUnion_finset`
 well-sorted `Bf 1` formula into `L_val` (the atoms are `M2`'s, the terms are polynomials) and then
 applying `valueOnly_qf_isBoolComb`.  That is the "L_RV term→polynomial translation" m4 names as the
 unchanged part, and it is now the only piece of (BallsBridge) that is missing.
+
+## Section map correction, and what "well-sorted parameters" means for Section 3
+
+The paper's sections (`.ultramath/refs/paper.tex`): §3 "Some structural properties" (659), §4
+"Categories of definable subsets" (801), §5 "$\RV$-pullbacks and special bijections" (1247), §6
+"Interlude: quantifier elimination for henselian fields" (1419), §7 "Lifting functions from $\RV$ to
+$\VF$" (1470), §8 "More on structural properties" (1724).  So the items I earlier attributed to
+"Section 3" — $\RV[*,\cdot]$, the lifting map $\mathbb{L}$, special bijections — are §5 and §7; §3
+itself is the geometry of definable sets (definable closure, exchange — citing
+`Yin:QE:ACVF:min` Lemma 4.3 — and dimension).  Swarm `smw18ygko`'s members have been working across
+§3–§7, and m2's `Section3SupplyFrozen.lean` currently freezes the Section 2 *supply*
+(`cminimal_of_frozen`) rather than §3's own statements.
+
+**The refinement the author asked for.**  Every statement of §3–§8 that quantifies over a parameter
+set or over a definable object must be stated over *sorted* parameters, exactly as `HasQE` and
+`IsCMinimal` now are:
+
+* a parameter set is a pair of a `VF`-part and an `RV`-part (each with its sort declared), not an
+  arbitrary `Set M`;
+* `dcl`/`acl`, definability, and every "definable subset" in §3 are taken over *well-sorted* formulas
+  with those parameters — the notion `DefinableVF`/`WellSorted` in `Milestone0/Encoding.lean`;
+* and where a statement is about subsets of one sort, the set is cut down to that sort (`s ⊆ VF` or
+  `s ⊆ RV`) as `IsCMinimalWS` does, rather than quantified over the carrier.
+
+The reason is the same one that refuted the unrestricted `IsCMinimal` and `HasQE`: the carrier admits
+ill-sorted terms and ill-sorted parameters, whose values no axiom fixes, so a statement that
+quantifies over them is either false or says nothing about the paper's language.
