@@ -1299,3 +1299,27 @@ kills the obvious construction:
 * **`ACVF(0,0) ≠ ACVF`**: the characteristic-0 schemes are *not* derivable from the rest, since
   `rv (n·1)` remembers the residue of `n`.  The repository's `ACVF(0,0)` and `ACVF_S(0,0)` are
   genuinely stronger theories, not notation.
+
+## The repaired axioms have a candidate model, and the field is Mathlib's
+
+Two results from swarm `smw16q93m` (m1, m6; accepted, green, axioms clean) move the consistency
+question from open to nearly closed.
+
+**The field.** Mathlib's `PadicComplex p` (`ℂ_[p]`) is algebraically closed, of characteristic 0,
+with a **nontrivial** valuation `v : ℂ_[p] → ℝ≥0` (`v p = 1/p`) and an algebraically closed residue
+field.  Since `ℝ≥0` is a `LinearOrderedCommGroupWithZero`, `Milestone0/RVModel.lean` applies to it
+verbatim, and `axNontrivialRV` is `v p < v 1`.  No construction was needed for g1.
+
+**The structure and the repair's content.** Over an arbitrary `Valuation K Γ₀`, `Model.lean`
+builds the carrier `K ⊕ Option (Kˣ ⧸ (1+𝔪))`, all twelve function and four relation symbols total
+with junk conventions, `LRV.Structure`, and proves the mathematical content of the repaired
+sentences as lemmas: `rv x = rv y ↔ v (x - y) < v y` (the corrected `rvEqLink`, right sign),
+`kAddAux_congr` (the residue sum is well defined on `rv`-classes — the part that could have failed),
+`kAdd_units`/`kAdd_junk_*` (`kAddLink`, `kJunkZero`), `kNeg_units`/`kNeg_junk`, and
+`rvLe_rvMul_iff : c ≠ 0 → (a·c ≤ b·c ↔ a ≤ b)` (`leMulCompatFull`).
+
+So the nine repaired sentences are no longer hypotheses in search of a model; they are theorems
+about a Mathlib valuation.  Still missing for `Theory.Model Axioms.ACVF` of that structure: the
+case analysis over the axiom list (bookkeeping over the union, plus the `Fin.snoc`/match steps in
+realization) and `kField`, `kAlgClosed`, `vfAlgClosed`.  Until that lands, the honest status stays
+"not known to be inconsistent", but the distance is now bookkeeping rather than mathematics.
