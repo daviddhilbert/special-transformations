@@ -10301,6 +10301,66 @@ theorem valFormulaToRV_realize {M : Type} [LRV.Structure M] {n : ℕ}
   | all φ ih =>
     simp only [valFormulaToRV, valFormulaEval, BoundedFormula.realize_all, ih]
 
+/-! ### The `L_val`-structure induced by an `L_RV`-structure -/
+
+/-- The `L_val`-structure that an `L_RV`-structure induces on its carrier: the ring symbols are the
+`VF`-sorted ones and the predicate is `vv x ≤ vv y` with `vv = vrv ∘ rv` (Definition 2.2).
+
+This is a structure on the **whole** carrier; the field axioms of `valField` hold only on the `VF`
+sort, so anything that uses them is stated for tuples with all entries in `VF`. -/
+@[instance_reducible]
+def valStructOfLRV (M : Type) [LRV.Structure M] : Language.val.Structure M where
+  funMap := fun {_} f x =>
+    match f with
+    | ValFunc.add => iVFAdd (x 0) (x 1)
+    | ValFunc.mul => iVFMul (x 0) (x 1)
+    | ValFunc.neg => iVFNeg (x 0)
+    | ValFunc.zero => iVFZero
+    | ValFunc.one => iVFOne
+  RelMap := fun {_} r x =>
+    match r with
+    | ValRel.le => iLe (iRv (x 0)) (iRv (x 1))
+
+/-- **Terms evaluate the same way** in `valStructOfLRV M` as by `valTermEval`. -/
+theorem realize_valTermEval {M : Type} [LRV.Structure M] {n : ℕ} (x : Fin n → M)
+    (t : Language.val.Term (Empty ⊕ Fin n)) :
+    @Term.realize Language.val M (valStructOfLRV M) (Empty ⊕ Fin n)
+        (Sum.elim (default : Empty → M) x) t = valTermEval x t := by
+  induction t with
+  | var v =>
+    rcases v with e | i
+    · exact e.elim
+    · rfl
+  | func f args ih =>
+    cases f with
+    | add =>
+      show iVFAdd (@Term.realize Language.val M (valStructOfLRV M) (Empty ⊕ Fin n)
+          (Sum.elim default x) (args 0)) (@Term.realize Language.val M (valStructOfLRV M)
+            (Empty ⊕ Fin n) (Sum.elim default x) (args 1)) = _
+      rw [ih 0, ih 1]
+      rfl
+    | mul =>
+      show iVFMul (@Term.realize Language.val M (valStructOfLRV M) (Empty ⊕ Fin n)
+          (Sum.elim default x) (args 0)) (@Term.realize Language.val M (valStructOfLRV M)
+            (Empty ⊕ Fin n) (Sum.elim default x) (args 1)) = _
+      rw [ih 0, ih 1]
+      rfl
+    | neg =>
+      show iVFNeg (@Term.realize Language.val M (valStructOfLRV M) (Empty ⊕ Fin n)
+          (Sum.elim default x) (args 0)) = _
+      rw [ih 0]
+      rfl
+    | zero => rfl
+    | one => rfl
+
+-- NOTE.  `valFormulaEval` is by construction the `L_val`-realisation in `valStructOfLRV M`; the
+-- identification `valFormulaEval x φ ↔ (φ.Realize default x in valStructOfLRV M)` is therefore
+-- true by the same recursion, but stating it runs into `RelMap`'s implicit-language argument
+-- (the raw `BoundedFormula.rel` constructor versus the `Relations.boundedFormula` wrapper that
+-- `BoundedFormula.realize_rel` is stated for).  It is not needed: `valFormulaToRV_realize` above
+-- is the substantive statement, and the model correspondence works directly with
+-- `valStructOfLRV`.
+
 end SpecialTransformations.Milestone0.Transfer
 
 #print axioms SpecialTransformations.Milestone0.Transfer.valTermToRV_realize
