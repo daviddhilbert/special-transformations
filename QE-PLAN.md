@@ -1034,4 +1034,51 @@ item 1 again.  So even this one-line case split waits on the same ruling.
 `TrivialTransfer` is stated against the empty predicate, so as written it is vacuously true and
 carries no content; when the trivial case is restated as the negation of `IsNontrivialVF`, m4's
 `FineTriv` dictionary is the right content for it.  This must be fixed before the assembly's
-hypothesis list is quoted anywhere.
+hypothesis list is quoted anywhere — or, better, dropped: the last section shows that adding
+nontriviality to the theory removes the case split altogether, so `CaseSplit`, `CaseSeparation` and
+`TrivialTransfer` should not be repaired but removed from the endgame.
+
+### Third refutation, and the simplification it forces: add nontriviality, drop the case split
+
+Swarm `smw1541fr` m1 (`m1/PerModelQE.lean`, accepted; green, axioms clean) proved the general
+engine
+
+```
+sentence_iff_of_qfSentence_iff : HasQE T → (models agreeing on all QF sentences are elementarily equivalent)
+not_hasQE_of_qfSentence_equiv  : the refutation form
+hasQE_of_qfSeparated           : two QE model classes + a quantifier-free separator ⇒ HasQE
+```
+
+and turned it on `ACVF`.  Every closed `L_RV` term is a numeral, or `rv`, `·`, `kAdd`, `kNeg`,
+`kMul` applied to numerals, so a quantifier-free `L_RV` sentence is arithmetic on `rv (n)`; in a
+trivially valued and in a nontrivially valued algebraically closed field of the *same* residue
+characteristic, `rv (n) = rv (1)` for every `n ≠ 0`, so the two agree on **all** quantifier-free
+sentences — while they disagree on nontriviality, `∃ x ∈ VF, x ≠ 0 ∧ ¬ (v x ≤ v 1)`.  Hence
+
+**`HasQE (Axioms.ACVF ∪ {leMulCompatFull})` is false**, and the frozen statement fails for a third
+reason, disjoint from the coarsening (item 5) and the residue-link (item 3) ones.
+
+Two consequences, and the second is a real simplification.
+
+1. **The repair list gains nontriviality.**  The paper's own theorems need it — Theorem 2.8
+   (C-minimality) is false for a trivially valued field, and `ValPM.ACVF_val` carries
+   `axNontrivial` for exactly that reason — so the axiom set must exclude the trivial valuation.
+   As an `L_RV` sentence: `∃ x, pVF x ⊓ ∼(x = 0) ⊓ ∼(pLe (tRv x) (tRv tVFOne))`, the exact
+   transport of `ValPM.axNontrivial`.
+2. **The case split disappears.**  With nontriviality in the theory, m6's `CaseSplit`,
+   `CaseSeparation` and `TrivialTransfer` are all unnecessary: the endgame is
+   `model_ACVF_val_of_axioms` (items 1, 2 + `IsAlgClosed` + nontriviality) + `hasQE_ACVF_val` +
+   the cover (item 3) + `transfer_of_isQF`, glued by `QFTypeDetermines` — one case, no gluing, no
+   separator.  m4's `FineTriv` work stays useful as the characterisation of what is being
+   excluded, and m1's `hasQE_of_qfSeparated` records exactly why gluing would have needed a
+   quantifier-free separator that triviality cannot supply.
+
+Revised repair list, now five items:
+
+| # | edit | restores | status |
+| --- | --- | --- | --- |
+| 1 | `leMulCompat` with `pRV`, `⇔`, guards on `a`,`b` dropped | item 5, `RV/Kˣ` ordered | **in the tree** (`leMulCompatFull`) |
+| 2 | `rvMulOne`, `rvMulInv` guarded by `pRV` | item 2, `RV^×` a group | needed for `rv`-equality and cancellation |
+| 3 | `kAddLink`, `rvEqLink` | the residue field is the residue field | needed for the cover |
+| 4 | `kJunkZero`, `kNegJunkZero` | junk conventions | harmless, pins the symbols |
+| 5 | `axNontrivial` in `L_RV` | nontriviality | **needed, and it replaces the case split** |
