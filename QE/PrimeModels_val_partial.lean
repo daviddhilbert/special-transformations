@@ -1459,3 +1459,32 @@ theorem hasPrimeModels_mono {T₀ T T' : Language.val.Theory} (hTT' : T' ⊆ T)
 #print axioms ValPM.hasPrimeModels_valField
 #print axioms ValPM.hasPrimeModels_mono
 #print axioms ValPM.isValPred_of_valFieldModel
+
+/-! ## 12. The theory `ACVF` in `L_val` -/
+
+/-- The `L_val`-sentence "every monic polynomial of degree `n` has a root", read along
+`valRingHom` from the language of rings. -/
+noncomputable def genericMonicPolyHasRoot (n : ℕ) : Language.val.Sentence :=
+  valRingHom.onBoundedFormula (Field.genericMonicPolyHasRoot n)
+
+/-- The valuation is nontrivial: some element is not in the valuation ring, `v x < v 1`. -/
+def axNontrivialF : Language.val.BoundedFormula Empty 1 := ∼(leF 1 (&0))
+
+/-- **Nontriviality of the valuation**, as a sentence of `L_val`. -/
+def axNontrivial : Language.val.Sentence := axNontrivialF.ex
+
+/-- **The theory of nontrivially valued algebraically closed fields in `L_val`.** -/
+noncomputable def ACVF_val : Language.val.Theory :=
+  valField ∪ genericMonicPolyHasRoot '' {n : ℕ | 0 < n} ∪ {axNontrivial}
+
+theorem valField_subset_ACVF_val : valField ⊆ ACVF_val := by
+  intro φ hφ
+  exact Or.inl (Or.inl hφ)
+
+
+/-- **Hypothesis (i) of Johnson's criterion at `L_val`**: prime models over substructures, for
+`ACVF` in the language of valued fields. -/
+theorem hasPrimeModels_ACVF_val : HasPrimeModels valField ACVF_val :=
+  hasPrimeModels_mono valField_subset_ACVF_val hasPrimeModels_valField
+
+#print axioms ValPM.hasPrimeModels_ACVF_val
