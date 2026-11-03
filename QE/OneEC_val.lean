@@ -1433,6 +1433,400 @@ theorem good_pow_le_pow_gt {a cP cQ e : K} (hcP : cP ≠ 0) {n d : ℕ} (hd : 0 
   rw [hset]
   exact good_closed (c := a) (b := e)
 
+/-!
+## Johnson 2.3.1(ii) for an algebraically closed base field: the cell decomposition
+
+Write `d_c := w (x - f c)` for `c : K`, `A` for the finite set of roots of `P` and `Q` in `K`
+(algebraic closedness makes `P` split, so `w (P x) = w (f P.lc) * ∏_{c ∈ A} d_c ^ (count c)`,
+`val_eval₂_eq_prod_roots`), and `γ_{ac} := w (f a - f c)`.
+
+The two ultrametric facts used (both from `w (u + v) ≤ max (w u) (w v)`):
+
+* `closer_eq` : `d_a ≤ d_c ↔ x` lies in the open ball of radius `γ_{ac}` around `f a`, or on the
+  sphere of that radius around `f c`, or outside both closed balls;
+* `prod_map_split` : if `a` is a nearest root and `S = {c ∈ A | γ_{ac} ≤ d_a}`, then `d_c = d_a`
+  for `c ∈ S` (two roots at least as close as `c` forces the max rule) and `d_c = γ_{ac}` for
+  `c ∉ S` (`val_sub_eq_of_lt`).
+
+Hence, on the cell `cluster A a S` (a finite intersection of `K`-balls, so `Good`), the product
+over `A` collapses to `d_a ^ (∑_{c ∈ S} count c)` times an explicit constant, which is absorbed
+into the coefficients by `absorb`; the condition becomes the one-variable inequality
+`w (f eP) * δ ^ m ≤ w (f eQ) * δ ^ n` (`good_pow_le_pow`, with `m < n`, `m > n` and `m = n`),
+solved by `good_pow_le_pow_lt` / `good_pow_le_pow_gt` / `good_pow_le_pow_same` (the `d`-th root
+exists because `K` is algebraically closed, `exists_val_pow_div`).
+
+Since every `x` has a nearest root `a ∈ A` (`Finset.exists_min_image`) and the associated `S` is
+determined by `x`, the whole set is the finite union of the `Good` pieces
+`cluster A a S ∩ clusterCond …`; `prodLe_good` assembles this and `atomGood_of_isAlgClosed`
+transfers it to `AtomGood` via `val_eval₂_eq_prod_roots` and the degenerate cases
+`atomGood_P_zero` / `atomGood_Q_zero`.
+-/
+
+/-! #### Ultrametric comparisons of distances to the roots -/
+
+/-- `w (f a - f c)` is bounded by the maximum of the two distances of `x` from `f a` and `f c`. -/
+theorem val_sub_le_max_of_dist {x : N} (a c : K) :
+    w (f a - f c) ≤ max (w (x - f a)) (w (x - f c)) := by
+  have h : f a - f c = (f a - x) + (x - f c) := by ring
+  rw [h]
+  refine le_trans (map_add_le_max w _ _) (le_of_eq ?_)
+  rw [show f a - x = -(x - f a) by ring, Valuation.map_neg]
+
+/-- **Closest-root comparison.**  `x` is at least as close to `f a` as to `f c` exactly when one
+of three `K`-ball conditions holds: it lies in the open ball of radius `w (f a - f c)` around
+`f a`, or on the sphere of that radius around `f c`, or outside both closed balls. -/
+theorem closer_eq (a c : K) :
+    {x : N | w (x - f a) ≤ w (x - f c)} =
+      openBall w (f a) (w (f a - f c))
+        ∪ (closedBall w (f c) (w (f a - f c)) \ openBall w (f c) (w (f a - f c)))
+        ∪ (closedBall w (f a) (w (f a - f c)) ∪ closedBall w (f c) (w (f a - f c)))ᶜ := by
+  have key : ∀ x : N, (w (x - f a) ≤ w (x - f c) ↔
+      (w (x - f a) < w (f a - f c) ∨
+        (w (x - f c) ≤ w (f a - f c) ∧ w (f a - f c) ≤ w (x - f c)) ∨
+        (w (f a - f c) < w (x - f a) ∧ w (f a - f c) < w (x - f c)))) := by
+    intro x
+    have U1 : w (x - f c) ≤ max (w (x - f a)) (w (f a - f c)) := by
+      have h : x - f c = (x - f a) + (f a - f c) := by ring
+      rw [h]
+      exact map_add_le_max w _ _
+    have U2 : w (x - f a) ≤ max (w (x - f c)) (w (f a - f c)) := by
+      have h : x - f a = (x - f c) + (f c - f a) := by ring
+      rw [h]
+      refine le_trans (map_add_le_max w _ _) (le_of_eq ?_)
+      rw [show f c - f a = -(f a - f c) by ring, Valuation.map_neg]
+    have U3 := val_sub_le_max_of_dist (f := f) (w := w) (x := x) a c
+    constructor
+    · intro h
+      by_cases h1 : w (x - f a) < w (f a - f c)
+      · exact Or.inl h1
+      · by_cases h2 : w (x - f c) ≤ w (f a - f c)
+        · exact Or.inr (Or.inl ⟨h2, le_trans (not_lt.mp h1) h⟩)
+        · have h3 : w (x - f c) ≤ w (x - f a) := by
+            rw [max_eq_left (not_lt.mp h1)] at U1
+            exact U1
+          exact Or.inr (Or.inr ⟨lt_of_lt_of_le (not_le.mp h2) h3, not_le.mp h2⟩)
+    · rintro (h1 | ⟨h2, h3⟩ | ⟨h2, h3⟩)
+      · by_contra hcon
+        rw [max_eq_left (not_le.mp hcon).le] at U3
+        exact absurd U3 (not_le.mpr h1)
+      · rw [max_eq_left h3] at U2
+        exact U2
+      · rw [max_eq_left h3.le] at U2
+        exact U2
+  ext x
+  have hset : (x ∈ openBall w (f a) (w (f a - f c))
+        ∪ (closedBall w (f c) (w (f a - f c)) \ openBall w (f c) (w (f a - f c)))
+        ∪ (closedBall w (f a) (w (f a - f c)) ∪ closedBall w (f c) (w (f a - f c)))ᶜ) ↔
+      (w (x - f a) < w (f a - f c) ∨
+        (w (x - f c) ≤ w (f a - f c) ∧ w (f a - f c) ≤ w (x - f c)) ∨
+        (w (f a - f c) < w (x - f a) ∧ w (f a - f c) < w (x - f c))) := by
+    simp only [Set.mem_union, Set.mem_diff, Set.mem_compl_iff, mem_openBall, mem_closedBall,
+      not_or, not_le, not_lt]
+    tauto
+  simp only [Set.mem_setOf_eq]
+  exact (key x).trans hset.symm
+
+/-- The points at least as close to `f a` as to `f c` form a `Good` set. -/
+theorem good_closer (a c : K) : Good f w {x : N | w (x - f a) ≤ w (x - f c)} := by
+  rw [closer_eq]
+  have hγ : w (f a - f c) = w (f (a - c)) := by rw [← RingHom.map_sub f a c]
+  rw [hγ]
+  refine good_union (good_union ?_ ?_) ?_
+  · exact good_of_isKBall (IsKBall.openball a (a - c))
+  · exact good_diff (good_of_isKBall (IsKBall.closed c (a - c)))
+      (good_of_isKBall (IsKBall.openball c (a - c)))
+  · exact good_compl (good_union (good_of_isKBall (IsKBall.closed a (a - c)))
+      (good_of_isKBall (IsKBall.closed c (a - c))))
+
+/-- A finite intersection of `Good` sets is `Good`. -/
+theorem good_iInter_finset {ι : Type} (s : Finset ι) {b : ι → Set N}
+    (hb : ∀ i ∈ s, Good f w (b i)) : Good f w (⋂ i ∈ s, b i) := by
+  classical
+  have h : (⋂ i ∈ s, b i) = (⋃ i ∈ s, (b i)ᶜ)ᶜ := by
+    ext x
+    simp
+  rw [h]
+  exact good_compl (good_iUnion_finset s fun i hi => good_compl (hb i hi))
+
+/-! #### Multiset products over a superset of the root set -/
+
+/-- A product of distances depends only on the multiplicities of the roots. -/
+theorem prod_map_count {p : Multiset K} {A : Finset K} (hA : p.toFinset ⊆ A) (x : N) :
+    (p.map (fun c => w (x - f c))).prod = ∏ c ∈ A, (w (x - f c)) ^ (p.count c) := by
+  rw [Finset.prod_multiset_map_count]
+  refine Finset.prod_subset hA ?_
+  intro c _ hc
+  have hc' : c ∉ p := by simpa using hc
+  rw [Multiset.count_eq_zero_of_notMem hc', pow_zero]
+
+/-- **Splitting a product into the nearest roots and the constant factors.**  If `a` is a nearest
+root to `x` and `S` is the set of roots whose distance from `f a` is at most `δ = w (x - f a)`,
+then the product over the roots of `p` is `δ ^ (multiplicity in S)` times the product of the
+constant values `w (f a - f c)` over the remaining roots. -/
+theorem prod_map_split {p : Multiset K} {A : Finset K} (hA : p.toFinset ⊆ A)
+    {a : K} {S : Finset K} (hSA : S ⊆ A) {x : N}
+    (hcl : ∀ c ∈ A, w (x - f a) ≤ w (x - f c))
+    (hS : ∀ c ∈ A, (w (f a - f c) ≤ w (x - f a) ↔ c ∈ S)) :
+    (p.map (fun c => w (x - f c))).prod
+      = (w (x - f a)) ^ (∑ c ∈ S, p.count c)
+        * ∏ c ∈ A \ S, (w (f a - f c)) ^ (p.count c) := by
+  have hT : ∀ c ∈ A \ S, (w (x - f c)) ^ (p.count c) = (w (f a - f c)) ^ (p.count c) := by
+    intro c hc
+    obtain ⟨hcA, hcS⟩ := Finset.mem_sdiff.mp hc
+    have hgt : w (x - f a) < w (f a - f c) :=
+      not_le.mp fun hle => hcS ((hS c hcA).mp hle)
+    rw [val_sub_eq_of_lt hgt]
+  have hU : ∀ c ∈ S, (w (x - f c)) ^ (p.count c) = (w (x - f a)) ^ (p.count c) := by
+    intro c hc
+    have hcA := hSA hc
+    have hle : w (f a - f c) ≤ w (x - f a) := (hS c hcA).mpr hc
+    have h1 : w (x - f c) ≤ max (w (x - f a)) (w (f a - f c)) := by
+      have h : x - f c = (x - f a) + (f a - f c) := by ring
+      rw [h]
+      exact map_add_le_max w _ _
+    rw [max_eq_left hle] at h1
+    rw [show w (x - f c) = w (x - f a) from le_antisymm h1 (hcl c hcA)]
+  rw [prod_map_count hA x, ← Finset.prod_sdiff hSA,
+    Finset.prod_congr rfl hT, Finset.prod_congr rfl hU, Finset.prod_pow_eq_pow_sum]
+  exact mul_comm _ _
+
+/-! #### Absorbing the constant factors into a coefficient -/
+
+/-- Multiply a coefficient by the constants `(a - c) ^ (multiplicity of c in p)` for `c ∈ T`. -/
+def absorb (aP a : K) (p : Multiset K) (T : Finset K) : K :=
+  aP * ∏ c ∈ T, (a - c) ^ (p.count c)
+
+/-- The value of the absorbed coefficient. -/
+theorem val_absorb (aP a : K) (p : Multiset K) (T : Finset K) :
+    w (f (absorb aP a p T)) = w (f aP) * ∏ c ∈ T, (w (f a - f c)) ^ (p.count c) := by
+  have hf : f (absorb aP a p T) = f aP * ∏ c ∈ T, (f a - f c) ^ (p.count c) := by
+    unfold absorb
+    rw [map_mul, map_prod]
+    congr 1
+    refine Finset.prod_congr rfl ?_
+    intro c _
+    rw [map_pow, RingHom.map_sub]
+  rw [hf, map_mul, map_prod]
+  congr 1
+  refine Finset.prod_congr rfl ?_
+  intro c _
+  rw [map_pow]
+
+/-- The absorbed form of the product, stated so that it can be rewritten in either direction. -/
+theorem absorb_mul_pow (aP a : K) (p : Multiset K) (S T : Finset K) (δ : Γ') :
+    w (f (absorb aP a p T)) * δ ^ (∑ c ∈ S, p.count c)
+      = w (f aP) * (δ ^ (∑ c ∈ S, p.count c)
+          * ∏ c ∈ T, (w (f a - f c)) ^ (p.count c)) := by
+  rw [val_absorb]
+  calc w (f aP) * (∏ c ∈ T, (w (f a - f c)) ^ (p.count c)) * δ ^ (∑ c ∈ S, p.count c)
+      = w (f aP) * ((∏ c ∈ T, (w (f a - f c)) ^ (p.count c)) * δ ^ (∑ c ∈ S, p.count c)) :=
+        mul_assoc _ _ _
+    _ = w (f aP) * (δ ^ (∑ c ∈ S, p.count c)
+          * ∏ c ∈ T, (w (f a - f c)) ^ (p.count c)) := by
+        rw [mul_comm (∏ c ∈ T, (w (f a - f c)) ^ (p.count c)) (δ ^ (∑ c ∈ S, p.count c))]
+
+/-! #### The one-variable condition -/
+
+/-- A product is nonnegative, so `w (f eP) * δ ^ M ≤ 0` is `{x : δ ^ M = 0}` when `eP ≠ 0`. -/
+theorem good_le_zero {a eP : K} (M : ℕ) :
+    Good f w {x : N | w (f eP) * (w (x - f a)) ^ M ≤ 0} := by
+  rcases eq_or_ne eP 0 with hP | hP
+  · have h : {x : N | w (f eP) * (w (x - f a)) ^ M ≤ 0} = Set.univ := by
+      ext x
+      simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true, hP, map_zero, w.map_zero, zero_mul]
+      exact zero_le
+    rw [h]
+    exact good_univ f w
+  · have hP' : w (f eP) ≠ 0 := fun h => hP ((val_eq_zero_iff eP).mp h)
+    rcases eq_or_ne M 0 with hM | hM
+    · have h : {x : N | w (f eP) * (w (x - f a)) ^ M ≤ 0} = ∅ := by
+        ext x
+        simp only [Set.mem_setOf_eq, hM, pow_zero, mul_one, Set.mem_empty_iff_false, iff_false]
+        exact not_le.mpr (pos_iff_ne_zero.mpr hP')
+      rw [h]
+      exact good_empty f w
+    · have h : {x : N | w (f eP) * (w (x - f a)) ^ M ≤ 0} = {f a} := by
+        ext x
+        simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+        constructor
+        · intro hle
+          have hzero : w (x - f a) = 0 := by
+            by_contra hδ
+            exact absurd hle (not_le.mpr (mul_pos (pos_iff_ne_zero.mpr hP')
+              (pow_pos (pos_iff_ne_zero.mpr hδ) M)))
+          exact sub_eq_zero.mp (w.zero_iff.mp hzero)
+        · rintro rfl
+          simp [hM]
+      rw [h]
+      exact good_singleton f w a
+
+/-- **The one-variable condition in full generality**: `w (f eP) * δ ^ m ≤ w (f eQ) * δ ^ n`. -/
+theorem good_pow_le_pow (a eP eQ : K) (m n : ℕ) :
+    Good f w {x : N | w (f eP) * (w (x - f a)) ^ m ≤ w (f eQ) * (w (x - f a)) ^ n} := by
+  rcases lt_trichotomy m n with h | h | h
+  · obtain ⟨d, hd⟩ : ∃ d, n = m + d := ⟨n - m, (Nat.add_sub_cancel' h.le).symm⟩
+    have hd0 : 0 < d := by omega
+    rw [hd]
+    rcases eq_or_ne eQ 0 with hQ | hQ
+    · simp only [hQ, map_zero, w.map_zero, zero_mul]
+      exact good_le_zero m
+    · obtain ⟨e, he⟩ := exists_val_pow_div (w := w) eP eQ hd0
+      exact good_pow_le_pow_lt hQ hd0 he
+  · subst h
+    exact good_pow_le_pow_same m
+  · obtain ⟨d, hd⟩ : ∃ d, m = n + d := ⟨m - n, (Nat.add_sub_cancel' h.le).symm⟩
+    have hd0 : 0 < d := by omega
+    rw [hd]
+    rcases eq_or_ne eP 0 with hP | hP
+    · have hset : {x : N | w (f eP) * (w (x - f a)) ^ (n + d)
+          ≤ w (f eQ) * (w (x - f a)) ^ n} = Set.univ := by
+        ext x
+        simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true, hP, map_zero, w.map_zero, zero_mul]
+        exact zero_le
+      rw [hset]
+      exact good_univ f w
+    · obtain ⟨e, he⟩ := exists_val_pow_div (w := w) eQ eP hd0
+      exact good_pow_le_pow_gt hP hd0 he
+
+/-! #### The cells of the decomposition -/
+
+/-- The cell indexed by a nearest root `a ∈ A` and the set `S` of roots at distance at most
+`δ = w (x - f a)` from `f a`. -/
+def cluster (f : K →+* N) (w : Valuation N Γ') (A : Finset K) (a : K)
+    (S : Finset K) : Set N :=
+  {x : N | (∀ c ∈ A, w (x - f a) ≤ w (x - f c)) ∧
+    ∀ c ∈ A, (w (f a - f c) ≤ w (x - f a) ↔ c ∈ S)}
+
+/-- A cell is a finite intersection of `K`-balls. -/
+theorem cluster_eq_iInter (A : Finset K) (a : K) (S : Finset K) :
+    cluster f w A a S = ⋂ c ∈ A, ({x : N | w (x - f a) ≤ w (x - f c)}
+      ∩ (if c ∈ S then (openBall w (f a) (w (f a - f c)))ᶜ
+         else openBall w (f a) (w (f a - f c)))) := by
+  ext x
+  simp only [cluster, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff, Set.mem_compl_iff,
+    mem_openBall]
+  constructor
+  · rintro ⟨h1, h2⟩ c hc
+    refine ⟨h1 c hc, ?_⟩
+    by_cases hcS : c ∈ S
+    · rw [if_pos hcS]
+      exact not_lt.mpr ((h2 c hc).mpr hcS)
+    · rw [if_neg hcS]
+      exact not_le.mp fun hle => hcS ((h2 c hc).mp hle)
+  · intro h
+    refine ⟨fun c hc => (h c hc).1, fun c hc => ?_⟩
+    by_cases hcS : c ∈ S
+    · have h2 := (h c hc).2
+      rw [if_pos hcS] at h2
+      exact ⟨fun _ => hcS, fun _ => not_lt.mp h2⟩
+    · have h2 := (h c hc).2
+      rw [if_neg hcS] at h2
+      exact ⟨fun hle => absurd hle (not_le.mpr h2), fun hc' => absurd hc' hcS⟩
+
+theorem cluster_good (A : Finset K) (a : K) (S : Finset K) : Good f w (cluster f w A a S) := by
+  rw [cluster_eq_iInter]
+  refine good_iInter_finset A fun c _ => ?_
+  by_cases hcS : c ∈ S
+  · rw [if_pos hcS]
+    exact good_inter (good_closer a c) (good_compl (good_near (a := a) (b := c)))
+  · rw [if_neg hcS]
+    exact good_inter (good_closer a c) (good_near (a := a) (b := c))
+
+/-- The reduced one-variable condition on a cell: only the distance `δ = w (x - f a)` survives,
+with the multiplicities of the roots of `S` as exponents. -/
+def clusterCond (f : K →+* N) (w : Valuation N Γ') (p q : Multiset K) (aP aQ a : K)
+    (A S : Finset K) : Set N :=
+  {x : N | w (f (absorb aP a p (A \ S))) * (w (x - f a)) ^ (∑ c ∈ S, p.count c)
+      ≤ w (f (absorb aQ a q (A \ S))) * (w (x - f a)) ^ (∑ c ∈ S, q.count c)}
+
+theorem clusterCond_good (p q : Multiset K) (aP aQ a : K) (A S : Finset K) :
+    Good f w (clusterCond f w p q aP aQ a A S) :=
+  good_pow_le_pow (f := f) (w := w) a (absorb aP a p (A \ S)) (absorb aQ a q (A \ S))
+    (∑ c ∈ S, p.count c) (∑ c ∈ S, q.count c)
+
+/-- **On a cell the compound condition reduces to the one-variable condition.** -/
+theorem prodLe_iff_clusterCond {p q : Multiset K} {A : Finset K} (hp : p.toFinset ⊆ A)
+    (hq : q.toFinset ⊆ A) {aP aQ a : K} {S : Finset K} (hSA : S ⊆ A) {x : N}
+    (hx : x ∈ cluster f w A a S) :
+    x ∈ prodLe (f := f) (w := w) p q aP aQ ↔ x ∈ clusterCond f w p q aP aQ a A S := by
+  obtain ⟨hcl, hS⟩ := hx
+  rw [prodLe, Set.mem_setOf_eq, prod_map_split hp hSA hcl hS,
+    prod_map_split hq hSA hcl hS, clusterCond, Set.mem_setOf_eq,
+    ← absorb_mul_pow aP a p S (A \ S) (w (x - f a)),
+    ← absorb_mul_pow aQ a q S (A \ S) (w (x - f a))]
+
+/-- **The compound condition is `Good`**: a finite union of cells, on each of which it reduces to
+a one-variable condition. -/
+theorem prodLe_good (p q : Multiset K) (aP aQ : K) :
+    Good f w (prodLe (f := f) (w := w) p q aP aQ) := by
+  classical
+  set A : Finset K := p.toFinset ∪ q.toFinset with hA
+  have hp : p.toFinset ⊆ A := hA ▸ Finset.subset_union_left
+  have hq : q.toFinset ⊆ A := hA ▸ Finset.subset_union_right
+  rcases A.eq_empty_or_nonempty with hAe | hAn
+  · have hp0 : p = 0 := by
+      refine eq_zero_of_toFinset_eq_empty ?_
+      rw [hA] at hAe
+      exact (Finset.union_eq_empty.mp hAe).1
+    have hq0 : q = 0 := by
+      refine eq_zero_of_toFinset_eq_empty ?_
+      rw [hA] at hAe
+      exact (Finset.union_eq_empty.mp hAe).2
+    subst hp0
+    subst hq0
+    simp only [prodLe, Multiset.map_zero, Multiset.prod_zero, mul_one]
+    by_cases hle : w (f aP) ≤ w (f aQ)
+    · have h : {x : N | w (f aP) ≤ w (f aQ)} = Set.univ := by
+        ext x
+        simp [hle]
+      rw [h]
+      exact good_univ f w
+    · have h : {x : N | w (f aP) ≤ w (f aQ)} = ∅ := by
+        ext x
+        simp [hle]
+      rw [h]
+      exact good_empty f w
+  · have hcover : prodLe (f := f) (w := w) p q aP aQ
+        = ⋃ a ∈ A, ⋃ S ∈ A.powerset, (cluster f w A a S ∩ clusterCond f w p q aP aQ a A S) := by
+      ext x
+      simp only [Set.mem_iUnion, Set.mem_inter_iff]
+      constructor
+      · intro hx
+        obtain ⟨a, haA, hmin⟩ := Finset.exists_min_image A (fun c => w (x - f c)) hAn
+        refine ⟨a, haA, A.filter (fun c => w (f a - f c) ≤ w (x - f a)),
+          Finset.mem_powerset.mpr (Finset.filter_subset _ _), ⟨?_, ?_⟩, ?_⟩
+        · exact fun c hc => hmin c hc
+        · intro c hc
+          rw [Finset.mem_filter]
+          exact ⟨fun h => ⟨hc, h⟩, fun h => h.2⟩
+        · exact (prodLe_iff_clusterCond hp hq (Finset.filter_subset _ _)
+            ⟨fun c hc => hmin c hc, fun c hc => by
+              rw [Finset.mem_filter]
+              exact ⟨fun h => ⟨hc, h⟩, fun h => h.2⟩⟩).mp hx
+      · rintro ⟨a, _, S, hS, hx, hx'⟩
+        exact (prodLe_iff_clusterCond hp hq (Finset.mem_powerset.mp hS) hx).mpr hx'
+    rw [hcover]
+    refine good_iUnion_finset A fun a _ => good_iUnion_finset A.powerset fun S _ => ?_
+    exact good_inter (cluster_good A a S) (clusterCond_good p q aP aQ a A S)
+
+/-- **Johnson's Lemma 2.3.1(ii)** for an algebraically closed base field. -/
+theorem atomGood_of_isAlgClosed {K : Type} [Field K] [DecidableEq K] [IsAlgClosed K]
+    {N : Type} [Field N] {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
+    {f : K →+* N} {w : Valuation N Γ'} : AtomGood f w := by
+  intro P Q
+  rcases eq_or_ne P 0 with hP | hP
+  · subst hP
+    exact atomGood_P_zero Q
+  rcases eq_or_ne Q 0 with hQ | hQ
+  · subst hQ
+    exact atomGood_Q_zero P
+  have hset : {x : N | w (P.eval₂ f x) ≤ w (Q.eval₂ f x)}
+      = prodLe (f := f) (w := w) P.roots Q.roots P.leadingCoeff Q.leadingCoeff := by
+    ext x
+    simp only [prodLe, Set.mem_setOf_eq, val_eval₂_eq_prod_roots]
+  rw [hset]
+  exact prodLe_good (f := f) (w := w) P.roots Q.roots P.leadingCoeff Q.leadingCoeff
+
 end MasterClaim
 
 
@@ -1440,3 +1834,5 @@ end MasterClaim
 #print axioms ValOneEC.good_pow_le_pow_lt
 #print axioms ValOneEC.good_pow_le_pow_gt
 #print axioms ValOneEC.exists_val_pow_div
+#print axioms ValOneEC.atomGood_of_isAlgClosed
+#print axioms ValOneEC.prodLe_good
