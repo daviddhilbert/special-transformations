@@ -1156,3 +1156,34 @@ cover turns an `L_RV`-formula into `valFormulaToRVvf θ`, `hasQE_ACVF_val` repla
 quantifier-free `θ'` in the `L_val`-structure on the `VF` sort (a model of `ValPM.ACVF_val` by
 `model_ACVF_val_of_model`), and `VFRestrict.transfer_of_isQF` reads `valFormulaToRV θ'` back.  Swarm
 `smw163dd5` is producing the cover now; when it lands, Theorem 2.3 is closed.
+
+## The cover cannot be term-level (m1's counterexample)
+
+`RVNF` (swarm `smw163dd5`, accepted, in the tree) settles a premise of the cover the wrong way
+round, and that is worth knowing before anyone spends a day on it: the *literal* normal form "every
+`RV`-term is, at every `VF`-tuple, either `0` or `rv s` for one `L_val`-term `s`" is **false** in
+every nontrivially valued model.  The term
+
+```
+T := kAdd (mul (kAdd (rv v₀) (rv v₁)) (rv v₂)) (rv 1)
+```
+
+is `rv 1` wherever `v (v₀ + v₁) > 0` — the inner `kAdd` lands in `𝔪`, so it is `0`, and `0 · b = 0`
+forgets `v₂` — while at `(1, 0, c)` it is `rv (c+1)`.  So no single `s` works, and the cover must be
+*formula-level with a guard per candidate*, not term-level.
+
+What survives, and what `RVNF` proves, is the finite-**list** normal form:
+`t = 0 ∨ ∃ s ∈ t.vals, t = rv s`, where `vals` is closed under sums and products
+(`vals (kAdd a b) = vals a ++ vals b ++ (vals a + vals b)`), together with the per-construct axiom
+accounting (`rv` needs none; `mul` uses `rvMulHom` and `rvMulInfty`; `kAdd` both branches of
+`kAddLink` plus `kJunkZero`; `kNeg` the `kNegLink` pair), the residue-operation lemmas
+(`iKAdd_rv_rv`, `iKAdd_zero_rv`, `iKAdd_rv_zero`, `iKNeg_rv`, `iKAdd_mem_K`, `iKNeg_mem_K`,
+`iRVMul_*`, `iRv_eq_zero_iff`), and `MulTerm`, where the normal form *is* exact (`t = rv valT`) and
+the three atoms are single quantifier-free `L_val` formulas.
+
+**One reconciliation outstanding**: `RVNF`'s theorems are stated for
+`ACVFrep = ACVF ∪ residueLink ∪ {M2.rvFibreIff}`, while the tree's repaired `ACVF` carries
+`rvEqLink`.  `rvFibreIff` — `rv s = rv t ↔ (rv s ~ rv t ∧ (s = 0 ∨ v (s−t) > v s))` — should follow
+from `rvEqLink` (`rv s = rv t ↔ ¬ (v t ≤ v (s − t))`) by transitivity of `≤`, and that derivation is
+a ten-line lemma nobody has written yet.  Until it is, `RVNF`'s results are conditional on
+`rvFibreIff`.

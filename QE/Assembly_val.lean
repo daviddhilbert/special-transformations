@@ -16352,3 +16352,704 @@ end SpecialTransformations.Milestone0.Transfer
 #print axioms TrivialHalf.hasQE_of_nontrivialTransfer
 #print axioms FineQE.fineTriv_val_QE
 #print axioms SpecialTransformations.Milestone0.Transfer.hasQE_ACVF_of_nontrivialTransfer
+
+/-
+  **RV-term normal form** (swarm `smw163dd5`, member m1, direction f1).
+
+  Every `L_RV`-term of the `RV` sort whose `VF`-arguments are `VF`-terms is, at every tuple of
+  `VF`-elements of a model of `ACVF` plus the residue links, pointwise **either `0` or `rv s` for
+  one of finitely many `L_val`-terms `s` that are read off the term syntactically**:
+
+    `RVTerm.realize_normal : t.evalM x = iRVZero ∨ ∃ s ∈ t.vals, t.evalM x = iRv (valTermEval x s)`
+
+  The set `t.vals` is computed by `RVTerm.vals`:
+  `·` is product, `kAdd` is `S_a ∪ S_b ∪ (S_a + S_b)`, `kNeg` is `-S_a`, `rv s` is `{s}`,
+  `0` is `∅`, `1` is `{1}`.
+
+  **The single-candidate form is false**, and the reason is worth recording, because it is
+  exactly the shape the cover direction f1 was stated in: `mul 0 b = 0` forgets the value of `b`
+  (`rvMulInfty`), so the value of `kAdd (mul a b) 1` on the region where `a = 0` is `rv 1`,
+  independently of the value of `b`; a single `L_val`-term `s` would have to be `≡ 1` there
+  (the region is valuation-open, hence Zariski dense, so `s = 1` as a polynomial), but on the
+  region where `a = rv(v0+v1)`, `b = rv v2` with `rv((v0+v1)v2) = 1` and `(v0+v1)v2 = -1` the
+  term is `kAdd (rv(-1)) (rv 1) = 0`, where `rv s = rv 1 ≠ 0`. Hence no single `s` works; a finite
+  set does.  See `REPORT.md`.
+
+  Repair axioms used (all named at the use site):
+  * `Axioms.rvMulHom`, `Axioms.rvMulInfty`, `Axioms.rvEqInfty`, `Axioms.kField` (zero law and
+    commutativity of `kAdd` on `K`), `Axioms.sdRVMul`, `Axioms.sdKAdd`, `Axioms.sdKNeg`,
+    `Axioms.sdRv` — frozen `ACVF`;
+  * `kAddLink` (the residue addition at units, two cases), `kNegLink` (residue negation at units),
+    `kJunkZero`, `kNegJunkZero` — the residue links, defined below because they are not in the
+    `Pre` snapshot (they are `Axioms.kAddLink` etc. in the working tree).
+
+  Only import: `Pre`.  No `sorry`, no `axiom`, no `native_decide`.
+-/
+
+set_option maxHeartbeats 2000000
+set_option linter.unusedVariables false
+set_option linter.unusedSimpArgs false
+set_option backward.isDefEq.respectTransparency false
+
+open FirstOrder FirstOrder.Language
+open scoped FirstOrder
+open SpecialTransformations.Milestone0
+open SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Axioms
+open SpecialTransformations.Milestone0.Transfer
+open SpecialTransformations.Milestone0.Transfer.M2
+open Cover
+
+namespace RVNF
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 1. The residue links (copies of `Axioms.kAddLink` etc. of the working tree) -/
+
+/-- `kAdd` is the residue addition at units: `kAdd (rv x) (rv y) = rv (x+y)` if that is a unit, and
+`0` if it is not. -/
+def kAddLink : LRV.Sentence :=
+  allSorted ![.vf, .vf]
+    (pUnits (tRv &0) ⟹ (pUnits (tRv &1) ⟹
+      ((pUnits (tRv (tVFAdd &0 &1)) ⟹
+          pEq (tKAdd (tRv &0) (tRv &1)) (tRv (tVFAdd &0 &1))) ⊓
+        (∼(pUnits (tRv (tVFAdd &0 &1))) ⟹
+          pEq (tKAdd (tRv &0) (tRv &1)) tRVZero))))
+
+/-- `kNeg` is the residue negation at units. -/
+def kNegLink : LRV.Sentence :=
+  allSorted ![.vf] (pUnits (tRv &0) ⟹ pEq (tKNeg (tRv &0)) (tRv (tVFNeg &0)))
+
+/-- The junk convention for `kAdd` off `K`. -/
+def kJunkZero : LRV.Sentence :=
+  allSorted ![.rv, .rv] ((∼(pInK &0) ⊔ ∼(pInK &1)) ⟹ pEq (tKAdd &0 &1) tRVZero)
+
+/-- The junk convention for `kNeg` off `K`. -/
+def kNegJunkZero : LRV.Sentence := allSorted ![.rv] (∼(pInK &0) ⟹ pEq (tKNeg &0) tRVZero)
+
+/-- The residue links, as a theory. -/
+def residueLink : LRV.Theory := ofList [kAddLink, kNegLink, kJunkZero, kNegJunkZero]
+
+/-- **The theory this file works in**: the frozen `ACVF` plus the residue links. -/
+def ACVFrep : LRV.Theory := Axioms.ACVF ∪ residueLink ∪ {Transfer.M2.rvFibreIff}
+
+theorem acvf_of_repair (h : M ⊨ ACVFrep) : M ⊨ Axioms.ACVF :=
+  Theory.Model.mono h (fun s hs => Or.inl (Or.inl hs))
+
+theorem mem_repair_of_link {s : LRV.Sentence} (hs : s ∈ residueLink) : s ∈ ACVFrep :=
+  Or.inl (Or.inr hs)
+
+theorem mem_repair_kAddLink : kAddLink ∈ ACVFrep := mem_repair_of_link (by simp [residueLink, Axioms.ofList])
+
+theorem mem_repair_kNegLink : kNegLink ∈ ACVFrep := mem_repair_of_link (by simp [residueLink, Axioms.ofList])
+
+theorem mem_repair_kJunkZero : kJunkZero ∈ ACVFrep := mem_repair_of_link (by simp [residueLink, Axioms.ofList])
+
+theorem mem_repair_kNegJunkZero : kNegJunkZero ∈ ACVFrep :=
+  mem_repair_of_link (by simp [residueLink, Axioms.ofList])
+
+theorem mem_repair_rvFibre : Transfer.M2.rvFibreIff ∈ ACVFrep := Or.inr (by simp)
+
+end RVNF
+
+namespace RVNF
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 2. The semantic form of the residue links -/
+
+/-- The semantic form of `kAddLink`. -/
+def KAddAdditive (M : Type) [LRV.Structure M] : Prop :=
+  ∀ x y : M, iVF x → iVF y → iUnits (iRv x) → iUnits (iRv y) →
+    ((iUnits (iRv (iVFAdd x y)) → iKAdd (iRv x) (iRv y) = iRv (iVFAdd x y)) ∧
+      (¬ iUnits (iRv (iVFAdd x y)) → iKAdd (iRv x) (iRv y) = iRVZero))
+
+theorem kAddAdditive_of_repair (h : M ⊨ ACVFrep) : KAddAdditive M := by
+  intro x y hx hy hxu hyu
+  have h' := allSorted_realize (T := ACVFrep) h (ss := ![SortTag.vf, SortTag.vf])
+    (φ := (pUnits (tRv &0) ⟹ (pUnits (tRv &1) ⟹
+      ((pUnits (tRv (tVFAdd &0 &1)) ⟹
+          pEq (tKAdd (tRv &0) (tRv &1)) (tRv (tVFAdd &0 &1))) ⊓
+        (∼(pUnits (tRv (tVFAdd &0 &1))) ⟹
+          pEq (tKAdd (tRv &0) (tRv &1)) tRVZero))))) mem_repair_kAddLink ![x, y]
+    (by intro i; fin_cases i <;> simp [hx, hy])
+  simp only [BoundedFormula.realize_imp, BoundedFormula.realize_inf, pUnits_realize,
+    pEq, BoundedFormula.realize_bdEqual, BoundedFormula.realize_not, Transfer.realize_tRv,
+    TrivCase.realize_tKAdd, Transfer.realize_tVFAdd, Transfer.realize_tRVZero,
+    realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons] at h'
+  exact h' hxu hyu
+
+/-- The semantic form of `kNegLink`. -/
+theorem kNegLink_sem (h : M ⊨ ACVFrep) {x : M} (hx : iVF x) (hu : iUnits (iRv x)) :
+    TrivCase.iKNeg (iRv x) = iRv (iVFNeg x) := by
+  have h' := allSorted_realize (T := ACVFrep) h (ss := ![SortTag.vf])
+    (φ := (pUnits (tRv &0) ⟹ pEq (tKNeg (tRv &0)) (tRv (tVFNeg &0)))) mem_repair_kNegLink
+    ![x] (by intro i; fin_cases i; simpa using hx)
+  simp only [BoundedFormula.realize_imp, pUnits_realize, pEq, BoundedFormula.realize_bdEqual,
+    Transfer.realize_tRv, TrivCase.realize_tKNeg, Transfer.realize_tVFNeg, realize_tv,
+    Term.realize_var, Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero] at h'
+  exact h' hu
+
+/-- The semantic form of `kJunkZero`. -/
+theorem kJunkZero_sem (h : M ⊨ ACVFrep) {a b : M} (ha : iRV a) (hb : iRV b)
+    (hK : ¬(iUnits a ∨ a = iRVZero) ∨ ¬(iUnits b ∨ b = iRVZero)) : iKAdd a b = iRVZero := by
+  have h' := allSorted_realize (T := ACVFrep) h (ss := ![SortTag.rv, SortTag.rv])
+    (φ := ((∼(pInK &0) ⊔ ∼(pInK &1)) ⟹ pEq (tKAdd &0 &1) tRVZero)) mem_repair_kJunkZero
+    ![a, b] (by intro i; fin_cases i <;> simp [ha, hb])
+  simp only [BoundedFormula.realize_imp, BoundedFormula.realize_sup, BoundedFormula.realize_not,
+    TrivCase.pInK_realize, pEq, BoundedFormula.realize_bdEqual, TrivCase.realize_tKAdd,
+    Transfer.realize_tRVZero, realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h'
+  exact h' hK
+
+/-- The semantic form of `kNegJunkZero`. -/
+theorem kNegJunkZero_sem (h : M ⊨ ACVFrep) {a : M} (ha : iRV a)
+    (hK : ¬(iUnits a ∨ a = iRVZero)) : TrivCase.iKNeg a = iRVZero := by
+  have h' := allSorted_realize (T := ACVFrep) h (ss := ![SortTag.rv])
+    (φ := (∼(pInK &0) ⟹ pEq (tKNeg &0) tRVZero)) mem_repair_kNegJunkZero ![a]
+    (by intro i; fin_cases i; simpa using ha)
+  simp only [BoundedFormula.realize_imp, BoundedFormula.realize_not, TrivCase.pInK_realize,
+    pEq, BoundedFormula.realize_bdEqual, TrivCase.realize_tKNeg, Transfer.realize_tRVZero,
+    realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero] at h'
+  exact h' hK
+
+end RVNF
+
+namespace RVNF
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 3. One-step lemmas: `×`, `+`, `-` on `rv`-images -/
+
+theorem mem_ACVF_rvMulComm : Axioms.rvMulComm ∈ Axioms.ACVF :=
+  M2.mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvMulInfty : Axioms.rvMulInfty ∈ Axioms.ACVF :=
+  M2.mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+/-- `×` of `RV` is commutative, for `RV`-elements. -/
+theorem iRVMul_comm (h : M ⊨ ACVFrep) {a b : M} (ha : iRV a) (hb : iRV b) :
+    iRVMul a b = iRVMul b a := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  have h' := allSorted_realize hA (T := Axioms.ACVF) (ss := ![SortTag.rv, SortTag.rv])
+    (φ := pEq (tRVMul &0 &1) (tRVMul &1 &0)) mem_ACVF_rvMulComm ![a, b]
+    (by intro i; fin_cases i <;> simp [ha, hb])
+  simpa [pEq, BoundedFormula.realize_bdEqual, Transfer.realize_tRVMul, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons] using h'
+
+/-- `×` of `RV` stays in the `RV` sort. -/
+theorem iRVMul_mem (h : M ⊨ ACVFrep) {a b : M} (ha : iRV a) (hb : iRV b) : iRV (iRVMul a b) := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  have hmem : Axioms.sdRVMul ∈ Axioms.ACVF :=
+    Transfer.mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+  have h' := allSorted_realize hA (T := Axioms.ACVF) (ss := ![SortTag.rv, SortTag.rv])
+    (φ := pRVsort (tRVMul &0 &1)) hmem ![a, b] (by intro i; fin_cases i <;> simp [ha, hb])
+  simpa [Transfer.pRVsort_realize, Transfer.realize_tRVMul, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons] using h'
+
+/-- `0` is absorbing for `×` on the left. -/
+theorem iRVMul_zero_left (h : M ⊨ ACVFrep) {b : M} (hb : iRV b) :
+    iRVMul iRVZero b = iRVZero := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  rw [iRVMul_comm h (TrivCase.iRV_rvZero hA) hb]
+  exact M2.rv_mul_infty hA hb
+
+/-- `0` is absorbing for `×` on the right. -/
+theorem iRVMul_zero_right (h : M ⊨ ACVFrep) {a : M} (ha : iRV a) :
+    iRVMul a iRVZero = iRVZero := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  exact M2.rv_mul_infty hA ha
+
+/-- `×` of two `rv`-images is the `rv` of the product (`Axioms.rvMulHom`). -/
+theorem iRVMul_rv (h : M ⊨ ACVFrep) {x y : M} (hx : iVF x) (hy : iVF y) :
+    iRVMul (iRv x) (iRv y) = iRv (iVFMul x y) := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  exact (Transfer.rv_mul_hom hA hx hy).symm
+
+/-- `kAdd 0 0 = 0` (`Axioms.kField`: `0` is neutral for `+` on `K`). -/
+theorem iKAdd_zero_zero (h : M ⊨ ACVFrep) :
+    iKAdd (iRVZero (M := M)) (iRVZero (M := M)) = iRVZero := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  exact TrivCase.kAdd_zero_right hA (Or.inr rfl)
+
+/-- **`kAdd 0 (rv y)`** is `rv y` if `rv y ∈ K`, and `0` otherwise. -/
+theorem iKAdd_zero_rv (h : M ⊨ ACVFrep) {y : M} (hy : iVF y) :
+    iKAdd iRVZero (iRv y) = iRv y ∨ iKAdd iRVZero (iRv y) = iRVZero := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  by_cases hu : iUnits (iRv y)
+  · exact Or.inl (TrivCase.kAdd_zero_left hA (Or.inl hu))
+  · by_cases h0 : iRv y = iRVZero
+    · right; rw [h0]; exact iKAdd_zero_zero h
+    · right
+      exact kJunkZero_sem h (TrivCase.iRV_rvZero hA) (Transfer.rv_mem hA hy)
+        (Or.inr (by rintro (h' | h'); exact hu h'; exact h0 h'))
+
+/-- **`kAdd (rv x) 0`** is `rv x` if `rv x ∈ K`, and `0` otherwise. -/
+theorem iKAdd_rv_zero (h : M ⊨ ACVFrep) {x : M} (hx : iVF x) :
+    iKAdd (iRv x) iRVZero = iRv x ∨ iKAdd (iRv x) iRVZero = iRVZero := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  by_cases hu : iUnits (iRv x)
+  · exact Or.inl (TrivCase.kAdd_zero_right hA (Or.inl hu))
+  · by_cases h0 : iRv x = iRVZero
+    · left; rw [h0]; exact iKAdd_zero_zero h
+    · right
+      exact kJunkZero_sem h (Transfer.rv_mem hA hx) (TrivCase.iRV_rvZero hA)
+        (Or.inl (by rintro (h' | h'); exact hu h'; exact h0 h'))
+
+/-- **`kAdd (rv x) (rv y)`**: the two cases of `kAddLink`, and the junk cases of `kJunkZero`. -/
+theorem iKAdd_rv_rv (h : M ⊨ ACVFrep) {x y : M} (hx : iVF x) (hy : iVF y) :
+    (iUnits (iRv x) → iUnits (iRv y) → iUnits (iRv (iVFAdd x y)) →
+        iKAdd (iRv x) (iRv y) = iRv (iVFAdd x y)) ∧
+      (iUnits (iRv x) → iUnits (iRv y) → ¬ iUnits (iRv (iVFAdd x y)) →
+        iKAdd (iRv x) (iRv y) = iRVZero) ∧
+      (¬ iUnits (iRv x) → iRv x ≠ iRVZero → iKAdd (iRv x) (iRv y) = iRVZero) ∧
+      (¬ iUnits (iRv y) → iRv y ≠ iRVZero → iKAdd (iRv x) (iRv y) = iRVZero) := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  refine ⟨fun hu1 hu2 hs => (kAddAdditive_of_repair h x y hx hy hu1 hu2).1 hs,
+    fun hu1 hu2 hs => (kAddAdditive_of_repair h x y hx hy hu1 hu2).2 hs, ?_, ?_⟩
+  · intro hu h0
+    exact kJunkZero_sem h (Transfer.rv_mem hA hx) (Transfer.rv_mem hA hy)
+      (Or.inl (by rintro (h' | h'); exact hu h'; exact h0 h'))
+  · intro hu h0
+    exact kJunkZero_sem h (Transfer.rv_mem hA hx) (Transfer.rv_mem hA hy)
+      (Or.inr (by rintro (h' | h'); exact hu h'; exact h0 h'))
+
+/-- **`kNeg (rv x)`**: the residue negation at units, and the junk convention. -/
+theorem iKNeg_rv (h : M ⊨ ACVFrep) {x : M} (hx : iVF x) :
+    (iUnits (iRv x) → TrivCase.iKNeg (iRv x) = iRv (iVFNeg x)) ∧
+      (¬ iUnits (iRv x) → TrivCase.iKNeg (iRv x) = iRVZero) := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  refine ⟨fun hu => kNegLink_sem h hx hu, fun hu => ?_⟩
+  by_cases h0 : iRv x = iRVZero
+  · rw [h0]; exact TrivCase.kNeg_zero hA
+  · exact kNegJunkZero_sem h (Transfer.rv_mem hA hx)
+      (by rintro (h' | h'); exact hu h'; exact h0 h')
+
+/-- `kNeg 0 = 0`. -/
+theorem iKNeg_zero (h : M ⊨ ACVFrep) :
+    TrivCase.iKNeg (iRVZero (M := M)) = iRVZero :=
+  TrivCase.kNeg_zero (acvf_of_repair h)
+
+/-- `rv x = 0` iff `x = 0` (`Axioms.rvEqInfty` and `Axioms.rvZeroEq`). -/
+theorem iRv_eq_zero_iff (h : M ⊨ ACVFrep) {x : M} (hx : iVF x) :
+    iRv x = iRVZero ↔ x = iVFZero :=
+  ⟨fun h' => Transfer.rv_eq_infty (acvf_of_repair h) hx h',
+    fun h' => by rw [h', Transfer.rv_zero_eq (acvf_of_repair h)]⟩
+
+end RVNF
+
+namespace RVNF
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 4. `RV`-terms, their two readings, and their candidate lists -/
+
+/-- `RV`-sorted terms of `L_RV` built from `VF`-terms and `rv`.  There are no `RV`-sorted
+variables: the cover eliminates those (direction f3), and the class below is what the
+substitution `y ↦ rv x` produces. -/
+inductive RVTerm (n : ℕ) : Type
+  /-- `0` of the `RV` sort (= the paper's `∞`) -/
+  | zero : RVTerm n
+  /-- `1` of the `RV` sort -/
+  | one : RVTerm n
+  /-- `×` of the `RV` sort -/
+  | mul : RVTerm n → RVTerm n → RVTerm n
+  /-- `+` of the residue field `K` -/
+  | kadd : RVTerm n → RVTerm n → RVTerm n
+  /-- `-` of the residue field `K` -/
+  | kneg : RVTerm n → RVTerm n
+  /-- `rv` of a `VF`-term -/
+  | rv : VFTm n → RVTerm n
+
+namespace RVTerm
+
+variable {n : ℕ}
+
+/-- The `L_RV`-term underlying an `RV`-term. -/
+def toLRV : RVTerm n → Tm n
+  | zero => tRVZero
+  | one => tRVOne
+  | mul a b => tRVMul a.toLRV b.toLRV
+  | kadd a b => tKAdd a.toLRV b.toLRV
+  | kneg a => tKNeg a.toLRV
+  | rv s => tRv s.toLRV
+
+/-- The `L_val`-term attached to an `RV`-term, read as a value. -/
+def valT : RVTerm n → Language.val.Term (Empty ⊕ Fin n)
+  | zero => 0
+  | one => 1
+  | mul a b => a.valT * b.valT
+  | kadd a b => a.valT + b.valT
+  | kneg a => -a.valT
+  | rv s => s.toVal
+
+/-- **The candidate list**: the `L_val`-terms whose `rv`-image covers the term pointwise.
+
+`kAdd` needs the union `S_a ∪ S_b ∪ (S_a + S_b)`: the extra `S_a`, `S_b` are exactly the
+`kAdd 0 b = b` / `kAdd a 0 = a` cases, in which the value of the zero argument is lost
+(`rvMulInfty` / `kAdd` at `0`) and a single candidate `S_a + S_b` would be wrong. -/
+def vals : RVTerm n → List (Language.val.Term (Empty ⊕ Fin n))
+  | zero => []
+  | one => [1]
+  | mul a b => a.vals.flatMap (fun s => b.vals.map (fun t => s * t))
+  | kadd a b => a.vals ++ b.vals ++ a.vals.flatMap (fun s => b.vals.map (fun t => s + t))
+  | kneg a => a.vals.map (fun s => -s)
+  | rv s => [s.toVal]
+
+/-- The direct semantic recursion for an `RV`-term. -/
+def evalM (x : Fin n → M) : RVTerm n → M
+  | zero => iRVZero
+  | one => iRVOne
+  | mul a b => iRVMul (evalM x a) (evalM x b)
+  | kadd a b => iKAdd (evalM x a) (evalM x b)
+  | kneg a => TrivCase.iKNeg (evalM x a)
+  | rv s => iRv (Term.realize (Sum.elim (default : Empty → M) x) s.toLRV)
+
+/-- The realization of `toLRV` is `evalM`. -/
+theorem realize_toLRV {M : Type} [LRV.Structure M] (x : Fin n → M) (t : RVTerm n) :
+    Term.realize (Sum.elim (default : Empty → M) x) t.toLRV = t.evalM x := by
+  induction t with
+  | zero => simp [toLRV, evalM, Transfer.realize_tRVZero]
+  | one => simp [toLRV, evalM, Cover.realize_tRVOne]
+  | mul a b iha ihb => simp only [toLRV, evalM, Transfer.realize_tRVMul, iha, ihb]
+  | kadd a b iha ihb => simp only [toLRV, evalM, TrivCase.realize_tKAdd, iha, ihb]
+  | kneg a iha => simp only [toLRV, evalM, TrivCase.realize_tKNeg, iha]
+  | rv s => simp only [toLRV, evalM, Transfer.realize_tRv]
+
+end RVTerm
+end RVNF
+
+namespace RVNF
+
+variable {M : Type} [LRV.Structure M] {n : ℕ}
+
+@[simp] theorem valTermEval_mul (x : Fin n → M)
+    (a b : Language.val.Term (Empty ⊕ Fin n)) :
+    valTermEval x (a * b) = iVFMul (valTermEval x a) (valTermEval x b) := rfl
+
+/-- **The `RV`-term normal form.**  Every `RV`-sorted `L_RV`-term built from `VF`-terms is, at
+every tuple of `VF`-elements of a model of `ACVFrep`, pointwise either `0` or the `rv` of one of
+the finitely many `L_val`-terms in its candidate list `vals`.
+
+Each constructor uses exactly one link:
+* `rv` — nothing;
+* `one` — `Axioms.rvMulHom`-free: `rv 1 = 1` (`M2.rv_one_eq`, from `rvMulHom` + `rvSurj`);
+* `mul` — `Axioms.rvMulHom` when both factors are nonzero, `Axioms.rvMulInfty` when one is `0`;
+* `kadd` — `kAddLink` (both arguments units: two cases according to whether the sum is a unit),
+  `kJunkZero` (an argument off `K`), `Axioms.kField`'s zero law + commutativity (`kAdd 0 b = b`
+  for `b ∈ K`), and `iKAdd_zero_zero`;
+* `kneg` — `kNegLink` at units, `kNegJunkZero` off `K`, `TrivCase.kNeg_zero` at `0`. -/
+theorem exists_normal (h : M ⊨ ACVFrep) (x : Fin n → M) (hx : ∀ i, iVF (x i)) :
+    ∀ t : RVTerm n, t.evalM x = iRVZero ∨ ∃ s ∈ t.vals, t.evalM x = iRv (valTermEval x s) := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  intro t
+  induction t with
+  | zero => exact Or.inl rfl
+  | one =>
+    refine Or.inr ⟨1, by simp [RVTerm.vals], ?_⟩
+    simp only [RVTerm.evalM]
+    rw [M2.valTermEval_one, M2.rv_one_eq hA]
+  | rv s =>
+    refine Or.inr ⟨s.toVal, by simp [RVTerm.vals], ?_⟩
+    simp only [RVTerm.evalM]
+    rw [VFTm.realize_toLRV]
+  | mul a b iha ihb =>
+    rcases iha with ha | ⟨sa, hsa, ha⟩ <;> rcases ihb with hb | ⟨sb, hsb, hb⟩
+    · refine Or.inl ?_
+      simp only [RVTerm.evalM]
+      rw [ha, hb, iRVMul_zero_left h (TrivCase.iRV_rvZero hA)]
+    · refine Or.inl ?_
+      simp only [RVTerm.evalM]
+      rw [ha, hb]
+      exact iRVMul_zero_left h
+        (Transfer.rv_mem hA (M2.valTermEval_mem hA hx sb))
+    · refine Or.inl ?_
+      simp only [RVTerm.evalM]
+      rw [ha, hb]
+      exact iRVMul_zero_right h (Transfer.rv_mem hA (M2.valTermEval_mem hA hx sa))
+    · refine Or.inr ⟨sa * sb, ?_, ?_⟩
+      · simp only [RVTerm.vals, List.mem_flatMap, List.mem_map]
+        exact ⟨sa, hsa, sb, hsb, rfl⟩
+      simp only [RVTerm.evalM]
+      rw [ha, hb, iRVMul_rv h (M2.valTermEval_mem hA hx sa) (M2.valTermEval_mem hA hx sb)]
+      rw [valTermEval_mul]
+  | kneg a iha =>
+    rcases iha with ha | ⟨sa, hsa, ha⟩
+    · refine Or.inl ?_
+      simp only [RVTerm.evalM]
+      rw [ha, iKNeg_zero h]
+    · obtain ⟨hunit, hjunk⟩ := iKNeg_rv h (M2.valTermEval_mem hA hx sa)
+      by_cases hu : iUnits (iRv (valTermEval x sa))
+      · refine Or.inr ⟨-sa, ?_, ?_⟩
+        · simp only [RVTerm.vals, List.mem_map]
+          exact ⟨sa, hsa, rfl⟩
+        simp only [RVTerm.evalM]
+        rw [ha, hunit hu, ← M2.valTermEval_neg]
+      · by_cases h0 : iRv (valTermEval x sa) = iRVZero
+        · refine Or.inl ?_
+          simp only [RVTerm.evalM]
+          rw [ha, h0, iKNeg_zero h]
+        · refine Or.inl ?_
+          simp only [RVTerm.evalM]
+          rw [ha, hjunk hu]
+  | kadd a b iha ihb =>
+    rcases iha with ha0 | ⟨sa, hsa, ha⟩ <;> rcases ihb with hb0 | ⟨sb, hsb, hb⟩
+    · -- a = 0, b = 0
+      refine Or.inl ?_
+      simp only [RVTerm.evalM]
+      rw [ha0, hb0, iKAdd_zero_zero h]
+    · -- a = 0, b = rv sb
+      simp only [RVTerm.evalM]
+      rw [ha0, hb]
+      rcases iKAdd_zero_rv h (M2.valTermEval_mem hA hx sb) with hz | hz
+      · refine Or.inr ⟨sb, ?_, hz⟩
+        simp only [RVTerm.vals, List.mem_append]
+        exact Or.inl (Or.inr hsb)
+      · exact Or.inl hz
+    · -- a = rv sa, b = 0
+      simp only [RVTerm.evalM]
+      rw [ha, hb0]
+      rcases iKAdd_rv_zero h (M2.valTermEval_mem hA hx sa) with hz | hz
+      · refine Or.inr ⟨sa, ?_, hz⟩
+        simp only [RVTerm.vals, List.mem_append]
+        exact Or.inl (Or.inl hsa)
+      · exact Or.inl hz
+    · -- a = rv sa, b = rv sb
+      simp only [RVTerm.evalM]
+      rw [ha, hb]
+      obtain ⟨hl1, hl2, hl3, hl4⟩ :=
+        iKAdd_rv_rv h (M2.valTermEval_mem hA hx sa) (M2.valTermEval_mem hA hx sb)
+      by_cases hua : iUnits (iRv (valTermEval x sa))
+      · by_cases hub : iUnits (iRv (valTermEval x sb))
+        · by_cases hus : iUnits (iRv (iVFAdd (valTermEval x sa) (valTermEval x sb)))
+          · refine Or.inr ⟨sa + sb, ?_, ?_⟩
+            · simp only [RVTerm.vals, List.mem_append, List.mem_flatMap, List.mem_map]
+              exact Or.inr ⟨sa, hsa, sb, hsb, rfl⟩
+            rw [show valTermEval x (sa + sb)
+              = iVFAdd (valTermEval x sa) (valTermEval x sb) from M2.valTermEval_add x sa sb]
+            exact hl1 hua hub hus
+          · exact Or.inl (hl2 hua hub hus)
+        · by_cases hb0' : iRv (valTermEval x sb) = iRVZero
+          · rw [hb0']
+            rcases iKAdd_rv_zero h (M2.valTermEval_mem hA hx sa) with hz | hz
+            · refine Or.inr ⟨sa, ?_, hz⟩
+              simp only [RVTerm.vals, List.mem_append]
+              exact Or.inl (Or.inl hsa)
+            · exact Or.inl hz
+          · exact Or.inl (hl4 hub hb0')
+      · by_cases ha0' : iRv (valTermEval x sa) = iRVZero
+        · rw [ha0']
+          rcases iKAdd_zero_rv h (M2.valTermEval_mem hA hx sb) with hz | hz
+          · refine Or.inr ⟨sb, ?_, hz⟩
+            simp only [RVTerm.vals, List.mem_append]
+            exact Or.inl (Or.inr hsb)
+          · exact Or.inl hz
+        · exact Or.inl (hl3 hua ha0')
+
+/-- The same, read back through `Term.realize`: the realization of the `L_RV`-term `t.toLRV`. -/
+theorem realize_normal (h : M ⊨ ACVFrep) (x : Fin n → M) (hx : ∀ i, iVF (x i))
+    (t : RVTerm n) :
+    Term.realize (Sum.elim (default : Empty → M) x) t.toLRV = iRVZero ∨
+      ∃ s ∈ t.vals,
+        Term.realize (Sum.elim (default : Empty → M) x) t.toLRV = iRv (valTermEval x s) := by
+  rw [RVTerm.realize_toLRV]
+  exact exists_normal h x hx t
+
+end RVNF
+
+namespace RVNF
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 5. The residue operations always land in `K = Kˣ ∪ {0}`
+
+These are the sort facts the formula-level cover needs at a *composite* `RV`-term: `kAdd` and
+`kNeg` of `RV`-elements are always in `K`, so the next `kField`/`kAddLink`-guarded step applies.
+`Axioms.sdKAdd`/`Axioms.sdKNeg` give the `K`-case (`TrivCase.inK_kAdd`, `TrivCase.inK_kNeg`);
+`kJunkZero`/`kNegJunkZero` give the junk case. -/
+
+/-- `kAdd` of two `RV`-elements is in `K`. -/
+theorem iKAdd_mem_K (h : M ⊨ ACVFrep) {a b : M} (ha : iRV a) (hb : iRV b) :
+    iUnits (iKAdd a b) ∨ iKAdd a b = iRVZero := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  by_cases haK : iUnits a ∨ a = iRVZero
+  · by_cases hbK : iUnits b ∨ b = iRVZero
+    · exact TrivCase.inK_kAdd hA haK hbK
+    · rw [kJunkZero_sem h ha hb (Or.inr hbK)]
+      exact Or.inr rfl
+  · rw [kJunkZero_sem h ha hb (Or.inl haK)]
+    exact Or.inr rfl
+
+/-- `kNeg` of an `RV`-element is in `K`. -/
+theorem iKNeg_mem_K (h : M ⊨ ACVFrep) {a : M} (ha : iRV a) :
+    iUnits (TrivCase.iKNeg a) ∨ TrivCase.iKNeg a = iRVZero := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  by_cases haK : iUnits a ∨ a = iRVZero
+  · exact TrivCase.inK_kNeg hA haK
+  · rw [kNegJunkZero_sem h ha haK]
+    exact Or.inr rfl
+
+/-- `kAdd` of two `RV`-elements is an `RV`-element. -/
+theorem iRV_iKAdd (h : M ⊨ ACVFrep) {a b : M} (ha : iRV a) (hb : iRV b) : iRV (iKAdd a b) :=
+  TrivCase.iRV_of_inK (acvf_of_repair h) (iKAdd_mem_K h ha hb)
+
+/-- `kNeg` of an `RV`-element is an `RV`-element. -/
+theorem iRV_iKNeg (h : M ⊨ ACVFrep) {a : M} (ha : iRV a) : iRV (TrivCase.iKNeg a) :=
+  TrivCase.iRV_of_inK (acvf_of_repair h) (iKNeg_mem_K h ha)
+
+/-- `kAdd` is commutative on `K` (`Axioms.kField`). -/
+theorem iKAdd_comm_K (h : M ⊨ ACVFrep) {a b : M} (haK : iUnits a ∨ a = iRVZero)
+    (hbK : iUnits b ∨ b = iRVZero) : iKAdd a b = iKAdd b a :=
+  TrivCase.kAdd_comm (acvf_of_repair h) haK hbK
+
+/-- `0` is neutral for `kAdd` on the left, on `K` (`Axioms.kField`). -/
+theorem iKAdd_zero_left_K (h : M ⊨ ACVFrep) {a : M} (haK : iUnits a ∨ a = iRVZero) :
+    iKAdd iRVZero a = a :=
+  TrivCase.kAdd_zero_left (acvf_of_repair h) haK
+
+end RVNF
+
+/-! ## Axiom checks -/
+
+#print axioms RVNF.kAddAdditive_of_repair
+#print axioms RVNF.kNegLink_sem
+#print axioms RVNF.kJunkZero_sem
+#print axioms RVNF.kNegJunkZero_sem
+#print axioms RVNF.iRVMul_comm
+#print axioms RVNF.iRVMul_mem
+#print axioms RVNF.iRVMul_zero_left
+#print axioms RVNF.iRVMul_rv
+#print axioms RVNF.iKAdd_zero_rv
+#print axioms RVNF.iKAdd_rv_zero
+#print axioms RVNF.iKAdd_rv_rv
+#print axioms RVNF.iKNeg_rv
+#print axioms RVNF.iRv_eq_zero_iff
+#print axioms RVNF.RVTerm.realize_toLRV
+#print axioms RVNF.exists_normal
+#print axioms RVNF.realize_normal
+#print axioms RVNF.iKAdd_mem_K
+#print axioms RVNF.iKNeg_mem_K
+#print axioms RVNF.iKAdd_comm_K
+
+namespace RVNF
+
+variable {M : Type} [LRV.Structure M] {n : ℕ}
+
+/-! ## 6. The multiplicative fragment: an *exact* normal form, and its atom translations
+
+For terms built from `0`, `1`, `×` and `rv` (no `kAdd`/`kNeg`) the disjunction of
+`RVTerm.exists_normal` collapses: the term *is* `rv (valT)` at every tuple, with no case split.
+Consequently the atoms `pLe`, `pEq`, `pUnits` at such terms are single quantifier-free `L_val`
+formulas (`leF`, `leEqF`, `leOneF`).  This is the part of the cover that needs no guards; the
+guards enter only with `kAdd`/`kNeg` (see `REPORT.md` §3). -/
+
+/-- `RV`-terms in the multiplicative fragment: `0`, `1`, `×`, `rv` of a `VF`-term. -/
+inductive MulTerm (n : ℕ) : Type
+  | zero : MulTerm n
+  | one : MulTerm n
+  | mul : MulTerm n → MulTerm n → MulTerm n
+  | rv : VFTm n → MulTerm n
+
+namespace MulTerm
+
+/-- The `L_RV`-term underlying a multiplicative `RV`-term. -/
+def toLRV : MulTerm n → Tm n
+  | zero => tRVZero
+  | one => tRVOne
+  | mul a b => tRVMul a.toLRV b.toLRV
+  | rv s => tRv s.toLRV
+
+/-- The `L_val`-term: the product of the `VF`-witnesses of the factors. -/
+def valT : MulTerm n → Language.val.Term (Empty ⊕ Fin n)
+  | zero => 0
+  | one => 1
+  | mul a b => a.valT * b.valT
+  | rv s => s.toVal
+
+/-- The semantic recursion. -/
+def evalM (x : Fin n → M) : MulTerm n → M
+  | zero => iRVZero
+  | one => iRVOne
+  | mul a b => iRVMul (evalM x a) (evalM x b)
+  | rv s => iRv (Term.realize (Sum.elim (default : Empty → M) x) s.toLRV)
+
+/-- **The exact normal form of the multiplicative fragment**: no disjunction, no case split. -/
+theorem exact_normal (h : M ⊨ ACVFrep) (x : Fin n → M) (hx : ∀ i, iVF (x i)) (t : MulTerm n) :
+    t.evalM x = iRv (valTermEval x t.valT) := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  induction t with
+  | zero =>
+    simp only [evalM, valT, M2.valTermEval_zero]
+    exact (Transfer.rv_zero_eq hA).symm
+  | one =>
+    simp only [evalM, valT, M2.valTermEval_one]
+    exact (M2.rv_one_eq hA).symm
+  | mul a b iha ihb =>
+    simp only [evalM, valT, valTermEval_mul]
+    rw [iha, ihb,
+      iRVMul_rv h (M2.valTermEval_mem hA hx a.valT) (M2.valTermEval_mem hA hx b.valT)]
+  | rv s => simp only [evalM, valT, VFTm.realize_toLRV]
+
+/-- The `L_RV`-realization version. -/
+theorem exact_normal_realize (h : M ⊨ ACVFrep) (x : Fin n → M) (hx : ∀ i, iVF (x i))
+    (t : MulTerm n) :
+    Term.realize (Sum.elim (default : Empty → M) x) t.toLRV = iRv (valTermEval x t.valT) := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  induction t with
+  | zero => simp only [toLRV, Transfer.realize_tRVZero, valT, M2.valTermEval_zero]
+            exact (Transfer.rv_zero_eq hA).symm
+  | one => simp only [toLRV, Cover.realize_tRVOne, valT, M2.valTermEval_one]
+           exact (M2.rv_one_eq hA).symm
+  | mul a b iha ihb =>
+    simp only [toLRV, Transfer.realize_tRVMul, valT, valTermEval_mul]
+    rw [iha, ihb,
+      iRVMul_rv h (M2.valTermEval_mem hA hx a.valT) (M2.valTermEval_mem hA hx b.valT)]
+  | rv s => simp only [toLRV, Transfer.realize_tRv, valT, VFTm.realize_toLRV]
+
+/-- **The order atom** at multiplicative terms is the single `L_val` atom `leF`. -/
+theorem le_atom (h : M ⊨ ACVFrep) (x : Fin n → M) (hx : ∀ i, iVF (x i))
+    (t u : MulTerm n) :
+    iLe (t.evalM x) (u.evalM x) ↔ valFormulaEval x (ValPM.leF u.valT t.valT) := by
+  rw [exact_normal h x hx t, exact_normal h x hx u, M2.leF_valTerm_iff]
+
+/-- **The equality atom** at multiplicative terms is the single quantifier-free `L_val` formula
+`leEqF` (this uses `rvFibreIff`). -/
+theorem eq_atom (h : M ⊨ ACVFrep) (x : Fin n → M) (hx : ∀ i, iVF (x i))
+    (t u : MulTerm n) :
+    t.evalM x = u.evalM x ↔ valFormulaEval x (M2.leEqF t.valT u.valT) := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  have hfib : M ⊨ ({M2.rvFibreIff} : LRV.Theory) :=
+    Theory.Model.mono h (by
+      intro s hs
+      rw [Set.mem_singleton_iff] at hs
+      subst hs
+      exact mem_repair_rvFibre)
+  rw [exact_normal h x hx t, exact_normal h x hx u]
+  rw [M2.leEqF_iff_pEq hA hfib t.valT u.valT hx]
+  simp only [pEq, BoundedFormula.realize_bdEqual, Transfer.realize_tRv,
+    Transfer.valTermToRV_realize]
+
+/-- **The `Kˣ` atom** at multiplicative terms is the single quantifier-free `L_val` formula
+`leOneF`. -/
+theorem units_atom (h : M ⊨ ACVFrep) (x : Fin n → M) (hx : ∀ i, iVF (x i)) (t : MulTerm n) :
+    iUnits (t.evalM x) ↔ valFormulaEval x (M2.leOneF t.valT) := by
+  have hA : M ⊨ Axioms.ACVF := acvf_of_repair h
+  rw [exact_normal h x hx t, M2.leOneF_iff_pUnits hA t.valT hx, Transfer.pUnits_realize,
+    Transfer.realize_tRv, Transfer.valTermToRV_realize]
+
+end MulTerm
+
+/-! ## Axiom checks for §6 -/
+
+#print axioms RVNF.MulTerm.exact_normal
+#print axioms RVNF.MulTerm.exact_normal_realize
+#print axioms RVNF.MulTerm.le_atom
+#print axioms RVNF.MulTerm.eq_atom
+#print axioms RVNF.MulTerm.units_atom
+
+end RVNF
+
+#print axioms RVNF.exists_normal
+#print axioms RVNF.realize_normal
+#print axioms RVNF.realize_normal
