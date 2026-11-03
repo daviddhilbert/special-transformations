@@ -14259,3 +14259,66 @@ end SpecialTransformations.Milestone0.Transfer
 #print axioms SpecialTransformations.Milestone0.Transfer.M2.leOneF_iff_pUnits
 #print axioms SpecialTransformations.Milestone0.Transfer.M2.rv_one_eq
 #print axioms SpecialTransformations.Milestone0.Transfer.M2.not_units_zero
+
+namespace SpecialTransformations.Milestone0.Transfer
+
+/-- Realisation of a sort-guarded existential. -/
+theorem exSorted_realize {M : Type} [LRV.Structure M] {k : ℕ} (s : SortTag) (φ : Bf (k + 1))
+    (x : Fin k → M) :
+    (exSorted s φ).Realize (default : Empty → M) x ↔
+      ∃ a : M, (match s with | .vf => iVF a | .rv => iRV a) ∧
+        φ.Realize (default : Empty → M) (Fin.snoc x a) := by
+  have hterm : ∀ a : M, Term.realize (Sum.elim (default : Empty → M) (Fin.snoc x a))
+      (tv k (Nat.lt_succ_self k)) = a := by
+    intro a
+    show Term.realize (Sum.elim (default : Empty → M) (Fin.snoc x a))
+      (Term.var (Sum.inr ⟨k, Nat.lt_succ_self k⟩)) = a
+    rw [Term.realize_var]
+    simp only [Sum.elim_inr]
+    rw [show (⟨k, Nat.lt_succ_self k⟩ : Fin (k + 1)) = Fin.last k from rfl, Fin.snoc_last]
+  cases s with
+  | vf => simp only [exSorted, BoundedFormula.realize_ex, BoundedFormula.realize_inf, sortPred,
+      pVF_realize, hterm]
+  | rv => simp only [exSorted, BoundedFormula.realize_ex, BoundedFormula.realize_inf, sortPred,
+      pRVsort_realize, hterm]
+
+/-- **Nontriviality** as an `L_RV` sentence: some nonzero `VF`-element has value strictly below the
+value of `1`.  The transport of `ValPM.axNontrivial`; the frozen `ACVF` lacks it, and without it
+the theory admits trivially valued fields on which the target is false. -/
+def axNontrivialRV : LRV.Sentence :=
+  exSorted .vf (∼(pEq &0 tVFZero) ⊓ ∼(pLe (tRv &0) (tRv tVFOne)))
+
+/-- The theory with item 5 in full and nontriviality. -/
+def ACVFplusN : LRV.Theory := ACVFplus ∪ {axNontrivialRV}
+
+theorem axNontrivialRV_mem : axNontrivialRV ∈ ACVFplusN := Or.inr (by simp)
+
+theorem ACVFplus_subset_ACVFplusN : ACVFplus ⊆ ACVFplusN := fun _ h => Or.inl h
+
+/-- A model of the repaired theory with nontriviality has a nontrivial valuation. -/
+theorem hasNontrivVal_of_model_ACVFplusN {M : Type} [LRV.Structure M] (hM : M ⊨ ACVFplusN) :
+    HasNontrivVal M := by
+  have h := hM.realize_of_mem axNontrivialRV axNontrivialRV_mem
+  rw [axNontrivialRV] at h
+  rw [Sentence.Realize] at h
+  simp only [Formula.Realize] at h
+  rw [exSorted_realize] at h
+  obtain ⟨x, hxVF, hx⟩ := h
+  simp only [BoundedFormula.realize_inf, BoundedFormula.realize_not, pEq,
+    BoundedFormula.realize_bdEqual, realize_tVFZero, realize_tRv, realize_tVFOne, realize_tv,
+    realize_pLe, Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero] at hx
+  exact ⟨x, hxVF, hx.1, hx.2⟩
+
+/-- **The extraction from the fully repaired theory**: no nontriviality hypothesis, no case split. -/
+theorem model_ACVF_val_of_model_ACVFplusN {M : Type} [LRV.Structure M]
+    (hM : M ⊨ ACVFplusN) :
+    @Theory.Model Language.val (VFType (M := M))
+      (vfValStruct (hM := model_ACVF_of_model_ACVFplus (Theory.Model.mono hM ACVFplus_subset_ACVFplusN)))
+      ValPM.ACVF_val :=
+  model_ACVF_val_of_model_ACVFplus (Theory.Model.mono hM ACVFplus_subset_ACVFplusN)
+    (hasNontrivVal_of_model_ACVFplusN hM)
+end SpecialTransformations.Milestone0.Transfer
+
+#print axioms SpecialTransformations.Milestone0.Transfer.exSorted_realize
+#print axioms SpecialTransformations.Milestone0.Transfer.hasNontrivVal_of_model_ACVFplusN
+#print axioms SpecialTransformations.Milestone0.Transfer.model_ACVF_val_of_model_ACVFplusN
