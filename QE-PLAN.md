@@ -363,3 +363,37 @@ recorded here so that a reader knows the evidence exists.
 `AtomGood` (2.3.1(ii)) does have two independent proofs: the landed cell decomposition
 (`QE/OneEC_val.lean`, member m4 of swarm `smw0f42v0`) and an erase-recursion proof
 (`.ultramath/smw0f42v0/m8/AtomGood.lean`, member m8), both checked.
+
+### The last glue step, with the two sub-obstacles met so far
+
+`HasQE (L := Language.val) ACVF_val` is now assembly: `hasQE_of_johnson` needs
+`valField ⊆ ACVF_val` (proved), `HasPrimeModels valField ACVF_val` (proved), `HasAmalgamation
+valField`, and `h1ec : ∀ M N : valField.ModelType, M ⊨ ACVF_val → OneECIn f`.  The ingredients for
+the last two are in the tree — `star` (with `amalgamation_of_ring_amalgamation`) and
+`oneECIn_of_nontrivial` — and both are stated on *concrete* valued fields, so each needs the same
+transport to `valField.ModelType`.  The two structure equalities for that are now proved
+(`valStruct_ext` and `valStructOf_eq_valStructure`, commits `296163f` and `d3d1985`), so a model's
+own `L_val`-structure is propositionally `valStructure v` for a genuine Mathlib valuation `v`.
+
+What is left, with the obstacles already met:
+
+1. **Transporting an `Embedding`, and with it `OneECIn`, along those structure equalities.**  `f :
+   M ↪[val] N` depends on the structures as *instance* arguments, so rewriting them does not
+   rewrite `f`; one needs a cast of embeddings (`hM ▸ hN ▸ f`) together with the matching
+   `OneECIn` congruence.  This is where the next attempt starts; it is fiddly, not deep.
+2. **The nontriviality of the valuation, extracted from `M ⊨ ACVF_val`.**  `M ⊨ axNontrivial`
+   must become `∃ x : M, ¬ predM (funMap ValFunc.one …) x`.  Two attempts failed on the `simp
+   only` set.  The goal that is left after
+   `simp only [axNontrivial, axNontrivialF, Sentence.Realize, Formula.Realize,
+   BoundedFormula.realize_ex, BoundedFormula.realize_not, leF_realize, …]` is
+
+   ```
+   (∃ a, ¬ (leF 1 (var (Sum.inr 0))).Realize default (Fin.snoc default a))
+     ↔ ∃ x, ¬ predM (@Structure.funMap Language.val M _ 0 ValFunc.one fun i => i.elim0) x
+   ```
+
+   so `leF_realize` is not firing on that occurrence; proving the two directions by hand from
+   `leF_realize 1 (var (Sum.inr 0)) default (Fin.snoc default a)` and `realize_oneTerm'` is the
+   way in.  Note the sentence must be read with the *value of the constant* `1`, not with
+   `(1 : M)`, because an abstract `L_val`-structure has no `One` instance — that mistake is what
+   made the first version unprovable.
