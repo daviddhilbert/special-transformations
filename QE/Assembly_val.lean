@@ -15855,3 +15855,500 @@ end SpecialTransformations.Milestone0.Transfer
 #print axioms SpecialTransformations.Milestone0.Transfer.rv_mul_one_ne
 #print axioms SpecialTransformations.Milestone0.Transfer.rv_mul_inv_ne
 #print axioms SpecialTransformations.Milestone0.Transfer.isNontrivialVF_of_model
+
+/-
+  Swarm `smw163dd5`, member m6, direction f6: **the trivial case**.
+
+  The endgame `FinalAssembly.hasQE_ACVFplus_of_transfers` takes four hypotheses:
+  `NontrivialTransfer`, `TrivialTransfer`, `CaseSeparation`, `CaseSplit`.  This file shows that
+  **the trivial half is free**, and reduces the other three to a single one.
+
+  Main content:
+
+  * `isTrivialVF_iff_trivVal` : the `FinalAssembly.IsTrivialVF` of the endgame **is** the
+    `TrivCase.TrivVal` of `TrivCase.no_coarse_triv` (same definition, so this is `Iff.rfl`-cheap);
+  * `not_isTrivialVF` : **no model of `Axioms.ACVF` is trivially valued in that sense**
+    (`TrivCase.no_coarse_triv`), hence `no_isTrivialVF_of_subset` for any `T ⊇ Axioms.ACVF`;
+  * `trivialTransfer` : **`FinalAssembly.TrivialTransfer T` holds unconditionally** for every
+    theory `T ⊇ Axioms.ACVF`.  The hypothesis class is empty, so the transfer is vacuous.  This
+    discharges one of the four hypotheses of `hasQE_ACVFplus_of_transfers`
+    (for `ACVFplus`, for `ACVFplus ∪ {axNontrivialRV}`, for `ACVF00`, …).
+  * `caseSeparation_of_allNontrivial`, `caseSplit_of_allNontrivial` : once the trivial class is
+    empty, both the case separation and the case split reduce to
+    `∀ M, M ⊨ T → IsNontrivialVF M`;
+  * `hasQE_of_nontrivialTransfer` and `hasQE_ACVFplus_of_nontrivialTransfer` : **the endgame with
+    one nontrivial hypothesis instead of four**:
+    `NontrivialTransfer T → (∀ M ⊨ T, IsNontrivialVF M) → HasQE T`.
+  * `fineTriv_not_trivial` / `fineTriv_not_nontrivial` : in the *fine* trivial case
+    (`TrivCase.FineTriv`, order-trivial with `rv` injective — the class `QE-PLAN.md` §10 calls
+    the trivially valued model), the valuation is **neither** `IsTrivialVF` **nor**
+    `IsNontrivialVF`.  Consequence, stated exactly: `CaseSplit`/`CaseSeparation` for a theory `T`
+    can only be discharged through nontriviality if there is **no** `FineTriv` model of `T`; the
+    two predicates of the endgame do not exhaust the models.
+
+  Uses `import Pre` (the compiled preamble of `QE/Assembly_val.lean`).
+-/
+
+open FirstOrder FirstOrder.Language
+open scoped FirstOrder
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.Transfer
+open SpecialTransformations.Milestone0.LRV
+
+namespace TrivialHalf
+
+/-! ## 1. `FinalAssembly.IsTrivialVF` is `TrivCase.TrivVal` -/
+
+variable {M : Type} [LRV.Structure M]
+
+theorem isTrivialVF_iff_trivVal : FinalAssembly.IsTrivialVF M ↔ TrivCase.TrivVal M :=
+  Iff.rfl
+
+theorem isNontrivialVF_iff (hM : M ⊨ Axioms.ACVF) :
+    FinalAssembly.IsNontrivialVF M ↔
+      ∃ x : M, iVF x ∧ x ≠ iVFZero ∧ ¬ iLe (iRv iVFOne) (iRv x) :=
+  Iff.rfl
+
+/-! ## 2. The trivial class is empty -/
+
+theorem not_isTrivialVF (hM : M ⊨ Axioms.ACVF) : ¬ FinalAssembly.IsTrivialVF M :=
+  fun h => TrivCase.no_coarse_triv hM h
+
+/-- **Any theory containing `Axioms.ACVF` has no trivially valued models in the sense of the
+endgame.** -/
+theorem not_isTrivialVF_of_subset {T : LRV.Theory} (hsub : Axioms.ACVF ⊆ T)
+    (hM : M ⊨ T) : ¬ FinalAssembly.IsTrivialVF M :=
+  fun h => TrivCase.no_coarse_triv ⟨fun φ hφ => hM.realize_of_mem φ (hsub hφ)⟩ h
+
+/-- **The trivial half of the endgame, unconditionally.**  For every theory `T ⊇ Axioms.ACVF`,
+`FinalAssembly.TrivialTransfer T` holds: its hypothesis `IsTrivialVF` is unsatisfiable. -/
+theorem trivialTransfer (T : LRV.Theory) (hsub : Axioms.ACVF ⊆ T) :
+    FinalAssembly.TrivialTransfer T := by
+  intro α n M _ _ hM hPM N _ _ hN hPN v xs w ys hQF φ
+  exact absurd hPM (not_isTrivialVF_of_subset (M := M) hsub hM)
+
+theorem trivialTransfer_ACVFplus : FinalAssembly.TrivialTransfer FinalAssembly.ACVFplus :=
+  trivialTransfer _ FinalAssembly.ACVF_subset_ACVFplus
+
+theorem trivialTransfer_ACVF : FinalAssembly.TrivialTransfer Axioms.ACVF :=
+  trivialTransfer _ (subset_rfl)
+
+/-! ## 3. Separation and split from nontriviality alone -/
+
+/-- Every model of `T` is nontrivially valued. -/
+def AllNontrivial (T : LRV.Theory) : Prop :=
+  ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ T → FinalAssembly.IsNontrivialVF M
+
+theorem caseSeparation_of_allNontrivial {T : LRV.Theory} (h : AllNontrivial T) :
+    FinalAssembly.CaseSeparation T := by
+  intro α n M _ _ hM N _ _ hN v xs w ys hQF
+  exact ⟨fun _ => h N hN, fun _ => h M hM⟩
+
+theorem caseSplit_of_allNontrivial {T : LRV.Theory} (h : AllNontrivial T) :
+    FinalAssembly.CaseSplit T :=
+  fun M _ _ hM => Or.inl (h M hM)
+
+/-! ## 4. The endgame with one hypothesis instead of four -/
+
+/-- **The assembly without the trivial hypotheses**: `NontrivialTransfer` plus "every model is
+nontrivially valued" give quantifier elimination. -/
+theorem hasQE_of_nontrivialTransfer {T : LRV.Theory} (hsub : Axioms.ACVF ⊆ T)
+    (hnt : FinalAssembly.NontrivialTransfer T) (hn : AllNontrivial T) :
+    QECriterion.HasQE T :=
+  FinalAssembly.hasQE_of_transfers hsub hnt (trivialTransfer T hsub)
+    (caseSeparation_of_allNontrivial hn) (caseSplit_of_allNontrivial hn)
+
+/-- The assembled theorem for the repaired theory `ACVFplus`, with the trivial hypotheses gone. -/
+theorem hasQE_ACVFplus_of_nontrivialTransfer (hnt : FinalAssembly.NontrivialTransfer
+      FinalAssembly.ACVFplus) (hn : AllNontrivial FinalAssembly.ACVFplus) :
+    SpecialTransformations.Milestone0.HasQE FinalAssembly.ACVFplus :=
+  FinalAssembly.hasQE_ACVFplus_of_transfers hnt trivialTransfer_ACVFplus
+    (caseSeparation_of_allNontrivial hn) (caseSplit_of_allNontrivial hn)
+
+/-! ## 5. The fine trivial case is neither trivial nor nontrivial -/
+
+/-- In a `FineTriv` model, `1 ≠ 0` on the `VF` sort. -/
+theorem vf_one_ne_zero (hM : M ⊨ Axioms.ACVF) : iVFOne (M := M) ≠ iVFZero :=
+  fun h => vf_zero_ne_one hM h.symm
+
+/-- **In the fine trivial case the coarse triviality predicate fails**: `FineTriv` gives an element
+whose value differs from the value of `1`. -/
+theorem fineTriv_not_trivial (hM : M ⊨ Axioms.ACVF) (h : TrivCase.FineTriv M) :
+    ¬ FinalAssembly.IsTrivialVF M := by
+  obtain ⟨x, hxVF, hx0, hx⟩ := TrivCase.exists_rv_ne_one hM
+  intro hT
+  rcases isTrivialVF_iff_trivVal.mp hT x hxVF with h0 | h0
+  · exact hx0 h0
+  · exact hx h0
+
+/-- **In the fine trivial case, nontriviality fails too**: with the trivial order every nonzero
+element is `≤ 1`, so nothing lies strictly below `1`. -/
+theorem fineTriv_not_nontrivial (hM : M ⊨ Axioms.ACVF) (h : TrivCase.FineTriv M) :
+    ¬ FinalAssembly.IsNontrivialVF M := by
+  rintro ⟨x, hxVF, hx0, hlt⟩
+  have h1 : iLe (iRv (iVFOne (M := M))) (iRv x) := by
+    rw [(h.ord (iVFOne (M := M)) x (vf_one_mem hM) hxVF)]
+    exact Or.inl (vf_one_ne_zero hM)
+  exact hlt h1
+
+/-- **The two classes of the endgame do not exhaust a theory with a `FineTriv` model.** -/
+theorem fineTriv_neither (hM : M ⊨ Axioms.ACVF) (h : TrivCase.FineTriv M) :
+    ¬ (FinalAssembly.IsNontrivialVF M ∨ FinalAssembly.IsTrivialVF M) :=
+  fun hc => hc.elim (fineTriv_not_nontrivial hM h) (fineTriv_not_trivial hM h)
+
+/-- Consequence for the case split: any theory `T ⊇ Axioms.ACVF` that has a `FineTriv` model does
+**not** satisfy `CaseSplit T`.  (So `CaseSplit` can only be reached by adding nontriviality as an
+axiom, or by replacing it with a genuinely exhaustive split; and `CaseSeparation` alone does not
+close the endgame either.) -/
+theorem not_caseSplit_of_fineTriv {T : LRV.Theory} (hsub : Axioms.ACVF ⊆ T)
+    (hM : M ⊨ T) (h : TrivCase.FineTriv M) (hne : Nonempty M) :
+    ¬ FinalAssembly.CaseSplit T := by
+  intro hCS
+  haveI := hne
+  have hACVF : M ⊨ Axioms.ACVF := ⟨fun φ hφ => hM.realize_of_mem φ (hsub hφ)⟩
+  exact fineTriv_neither hACVF h (hCS M hM)
+
+end TrivialHalf
+
+#print axioms TrivialHalf.isTrivialVF_iff_trivVal
+#print axioms TrivialHalf.not_isTrivialVF
+#print axioms TrivialHalf.not_isTrivialVF_of_subset
+#print axioms TrivialHalf.trivialTransfer
+#print axioms TrivialHalf.trivialTransfer_ACVFplus
+#print axioms TrivialHalf.caseSeparation_of_allNontrivial
+#print axioms TrivialHalf.caseSplit_of_allNontrivial
+#print axioms TrivialHalf.hasQE_of_nontrivialTransfer
+#print axioms TrivialHalf.hasQE_ACVFplus_of_nontrivialTransfer
+#print axioms TrivialHalf.fineTriv_not_trivial
+#print axioms TrivialHalf.fineTriv_not_nontrivial
+#print axioms TrivialHalf.fineTriv_neither
+#print axioms TrivialHalf.not_caseSplit_of_fineTriv
+
+/-
+  Swarm `smw163dd5`, member m6, direction f6 — **the trivial case, quantifier elimination**.
+
+  Setting: `M` is a model of the frozen `Axioms.ACVF` which is *trivially valued in the fine
+  sense* (`TrivCase.FineTriv`: `rv` injective on `VF`, the valuation order trivial, the residue
+  operations the field's own).  Then the `L_val`-structure `VFRestrict.vfStruct` on the `VF` sort
+  has as its predicate the quantifier-free ring condition `y ≠ 0 ∨ x = 0`, and its ring symbols
+  are the field operations.  Hence
+
+  * the `VF` sort with its `L_val`-structure is a model of `ACFValidation.acf`, and
+  * every `L_val`-formula is, at every `VF`-tuple, equivalent to a **quantifier-free** one
+    (`fineTriv_val_QE`), by quantifier elimination for `acf` (`HQEDerive.HasQEb_acf`) applied to
+    the quantifier-free `L_ring`-translation of the formula.
+
+  This is the trivial case's half of the campaign: the exact analogue of `hasQE_ACVF_val`, with
+  `TrivCase.FineTriv` in place of nontriviality.  Nothing here uses the cover, and nothing beyond
+  `M ⊨ Axioms.ACVF` and `TrivCase.FineTriv M`.
+-/
+
+open FirstOrder FirstOrder.Language
+open scoped FirstOrder
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.Transfer
+open SpecialTransformations.Milestone0.LRV
+
+namespace FineQE
+
+set_option backward.isDefEq.respectTransparency false
+set_option linter.style.haveILetI false
+
+/-! ## 1. The `VF` sort of a `FineTriv` model as an algebraically closed field -/
+
+variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
+
+/-- The field structure on the `VF` sort. -/
+noncomputable instance instFieldVF : Field (VFType (M := M)) := vfFieldOfModel (M := M)
+
+/-- The ring structure on the `VF` sort is the field's own. -/
+noncomputable instance instCompatVF : FirstOrder.Ring.CompatibleRing (VFType (M := M)) :=
+  FirstOrder.Ring.compatibleRingOfRing _
+
+/-- The `L_val`-structure of `VFRestrict`: `VF`-sorted ring symbols, reversed `RV`-order. -/
+noncomputable instance instValVF : Language.val.Structure (VFType (M := M)) :=
+  VFRestrict.vfStruct hM
+
+/-- The ring symbols of `vfStruct` are the field operations, so `valRingHom` is an expansion. -/
+instance instExpVF : LHom.IsExpansionOn FirstOrder.valRingHom (VFType (M := M)) where
+  map_onFunction := by
+    intro n f x
+    cases f <;> rfl
+  map_onRelation := by
+    intro n r x
+    exact isEmptyElim r
+
+instance instIsAlgClosedVF : IsAlgClosed (VFType (M := M)) :=
+  VFAlgClosed.isAlgClosed_vfType (M := M) (hM := hM)
+
+/-- **The `VF` sort of a `FineTriv` model models the theory of algebraically closed fields.** -/
+noncomputable instance instAcfVF : ACFValidation.acf.Model (VFType (M := M)) :=
+  ACFValidation.acfModel
+
+instance instNonemptyVF : Nonempty (VFType (M := M)) := ⟨0⟩
+
+/-! ## 2. The predicate is quantifier-free in the ring language -/
+
+/-- **In the fine trivial case the `L_val`-predicate of the `VF` sort is the quantifier-free ring
+condition `y ≠ 0 ∨ x = 0`.** -/
+theorem vfType_eq_zero_iff (x : VFType (M := M)) : x = 0 ↔ x.1 = iVFZero := by
+  constructor
+  · rintro rfl
+    exact vfType_zero_val (M := M)
+  · intro h
+    exact Subtype.ext (h.trans (vfType_zero_val (M := M)).symm)
+
+theorem predVF_iff (h : TrivCase.FineTriv M) (x y : VFType (M := M)) :
+    (@Structure.RelMap Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) 2 ValRel.le
+      ![x, y]) ↔ y ≠ 0 ∨ x = 0 := by
+  have hord : (@Structure.RelMap Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) 2
+        ValRel.le ![x, y]) ↔ y.1 ≠ iVFZero ∨ x.1 = iVFZero := by
+    rw [VFRestrict.vfStruct_le_apply]
+    exact h.ord y.1 x.1 y.2 x.2
+  rw [hord]
+  constructor
+  · rintro (hy | hx)
+    · exact Or.inl (fun h0 => hy ((vfType_eq_zero_iff y).mp h0))
+    · exact Or.inr ((vfType_eq_zero_iff x).mpr hx)
+  · rintro (hy | hx)
+    · exact Or.inl (fun h0 => hy ((vfType_eq_zero_iff y).mpr h0))
+    · exact Or.inr ((vfType_eq_zero_iff x).mp hx)
+
+
+/-! ## 3. Translation of `L_val`-terms into `L_ring`-terms -/
+
+section Terms
+
+variable {α : Type}
+
+/-- Relabel `L_val`-terms as `L_ring`-terms (the function symbols agree). -/
+noncomputable def toRingTerm : Language.val.Term α → Language.ring.Term α
+  | .var a => .var a
+  | .func f ts => .func (ValPM.valToRing f) (fun i => toRingTerm (ts i))
+
+theorem toRingTerm_var (a : α) : toRingTerm (Term.var a : Language.val.Term α) = .var a := rfl
+
+theorem toRingTerm_func {n : ℕ} (f : Language.val.Functions n)
+    (ts : Fin n → Language.val.Term α) :
+    toRingTerm (.func f ts) = .func (ValPM.valToRing f) (fun i => toRingTerm (ts i)) := rfl
+
+/-- `L_val`-terms and their `L_ring`-images have the same value in `VFRestrict.vfStruct`. -/
+theorem realize_toRingTerm (v : α → VFType (M := M)) (t : Language.val.Term α) :
+    Term.realize (L := Language.val) v t = Term.realize (L := Language.ring) v (toRingTerm t) := by
+  induction t with
+  | var a => rfl
+  | func f ts ih =>
+    rw [toRingTerm_func, Term.realize_func, Term.realize_func]
+    rw [show (fun i => Term.realize v (toRingTerm (ts i)))
+        = (fun i => Term.realize v (ts i)) from funext fun i => (ih i).symm]
+    exact ValPM.valFunMap_eq_ringVal (N := VFType (M := M)) f _
+
+end Terms
+
+/-! ## 4. Translation of `L_val`-formulas into `L_ring`-formulas -/
+
+/-- The `L_val`-predicate `v x ≤ v y`, read as the ring condition `y ≠ 0 ∨ x = 0`. -/
+noncomputable def leToRing {α : Type} {n : ℕ} (a b : Language.val.Term (α ⊕ Fin n)) :
+    Language.ring.BoundedFormula α n :=
+  (∼(toRingTerm b =' (0 : Language.ring.Term (α ⊕ Fin n)))) ⊔
+    (toRingTerm a =' (0 : Language.ring.Term (α ⊕ Fin n)))
+
+theorem realize_leToRing {α : Type} {n : ℕ}
+    (a b : Language.val.Term (α ⊕ Fin n)) (v : α → VFType (M := M))
+    (xs : Fin n → VFType (M := M)) :
+    (leToRing a b).Realize v xs ↔
+      ¬ (Term.realize (Sum.elim v xs) b = 0) ∨ Term.realize (Sum.elim v xs) a = 0 := by
+  rw [leToRing, BoundedFormula.realize_sup, BoundedFormula.realize_not,
+    BoundedFormula.realize_bdEqual, BoundedFormula.realize_bdEqual,
+    realize_toRingTerm, realize_toRingTerm, FirstOrder.Ring.realize_zero]
+
+/-- Relabel `L_val`-formulas as `L_ring`-formulas, sending every `v a ≤ v b` to `b ≠ 0 ∨ a = 0`. -/
+noncomputable def toRingForm {α : Type} : {n : ℕ} → Language.val.BoundedFormula α n →
+    Language.ring.BoundedFormula α n
+  | _, .falsum => .falsum
+  | _, .equal t₁ t₂ => .equal (toRingTerm t₁) (toRingTerm t₂)
+  | _, .rel ValRel.le ts => leToRing (ts 0) (ts 1)
+  | _, @BoundedFormula.imp _ _ n φ₁ φ₂ => .imp (toRingForm φ₁) (toRingForm φ₂)
+  | _, @BoundedFormula.all _ _ n φ => .all (toRingForm φ)
+
+theorem toRingForm_falsum {α : Type} {n : ℕ} :
+    toRingForm (BoundedFormula.falsum (L := Language.val) (α := α) (n := n))
+      = (BoundedFormula.falsum : Language.ring.BoundedFormula α n) := rfl
+
+theorem toRingForm_equal {α : Type} {n : ℕ} (t₁ t₂ : Language.val.Term (α ⊕ Fin n)) :
+    toRingForm (BoundedFormula.equal t₁ t₂) = (toRingTerm t₁ =' toRingTerm t₂) := rfl
+
+theorem toRingForm_rel {α : Type} {n : ℕ} (ts : Fin 2 → Language.val.Term (α ⊕ Fin n)) :
+    toRingForm (BoundedFormula.rel ValRel.le ts) = leToRing (ts 0) (ts 1) := rfl
+
+theorem toRingForm_imp {α : Type} {n : ℕ} (φ₁ φ₂ : Language.val.BoundedFormula α n) :
+    toRingForm (BoundedFormula.imp φ₁ φ₂) = (BoundedFormula.imp (toRingForm φ₁) (toRingForm φ₂)) :=
+  rfl
+
+theorem toRingForm_all {α : Type} {n : ℕ} (φ : Language.val.BoundedFormula α (n + 1)) :
+    toRingForm (BoundedFormula.all φ) = (BoundedFormula.all (toRingForm φ)) := rfl
+
+/-- **The translation preserves realization** in the `L_val`-structure on the `VF` sort. -/
+theorem realize_toRingForm (h : TrivCase.FineTriv M) :
+    ∀ {n : ℕ} (φ : Language.val.BoundedFormula α n) (v : α → VFType (M := M))
+      (xs : Fin n → VFType (M := M)),
+      (φ.Realize v xs ↔ (toRingForm φ).Realize v xs)
+  | _, .falsum, v, xs => by
+    rw [toRingForm_falsum]
+    exact Iff.rfl
+  | _, .equal t₁ t₂, v, xs => by
+    rw [toRingForm_equal]
+    show Term.realize (L := Language.val) (Sum.elim v xs) t₁
+        = Term.realize (L := Language.val) (Sum.elim v xs) t₂ ↔ _
+    rw [realize_toRingTerm, realize_toRingTerm]
+    exact Iff.rfl
+  | _, .rel ValRel.le ts, v, xs => by
+    rw [toRingForm_rel]
+    show (@Structure.RelMap Language.val (VFType (M := M)) (VFRestrict.vfStruct hM) 2 ValRel.le
+      (fun i => Term.realize (Sum.elim v xs) (ts i))) ↔ (leToRing (ts 0) (ts 1)).Realize v xs
+    rw [show (fun i => Term.realize (Sum.elim v xs) (ts i))
+        = ![Term.realize (Sum.elim v xs) (ts 0), Term.realize (Sum.elim v xs) (ts 1)] from by
+        funext i; fin_cases i <;> rfl,
+      predVF_iff h, realize_leToRing, realize_toRingTerm, realize_toRingTerm]
+  | _, .imp φ₁ φ₂, v, xs => by
+    rw [toRingForm_imp, BoundedFormula.realize_imp, BoundedFormula.realize_imp,
+      realize_toRingForm h φ₁ v xs, realize_toRingForm h φ₂ v xs]
+  | _, .all φ, v, xs => by
+    rw [toRingForm_all, BoundedFormula.realize_all, BoundedFormula.realize_all]
+    exact forall_congr' fun a => realize_toRingForm h φ v (Fin.snoc xs a)
+
+
+/-! ## 5. Quantifier elimination for `L_val` in the fine trivial case -/
+
+section QE
+
+variable {α : Type}
+
+/-- `LHom.onBoundedFormula` preserves quantifier-freeness. -/
+theorem isQF_onBoundedFormula_valRingHom {n : ℕ} {φ : Language.ring.BoundedFormula α n}
+    (h : φ.IsQF) : (FirstOrder.valRingHom.onBoundedFormula φ).IsQF := by
+  induction h with
+  | falsum => exact BoundedFormula.isQF_bot
+  | of_isAtomic ha =>
+    cases ha with
+    | equal t₁ t₂ => exact (BoundedFormula.IsAtomic.equal _ _).isQF
+    | rel R ts => exact isEmptyElim R
+  | imp _ _ ih₁ ih₂ => exact ih₁.imp ih₂
+
+/-- **The quantifier-free `L_val`-formula produced by the trivial-case elimination.**  It is an
+explicit function of the input (a choice from `HasQEb_acf`), hence the *same* formula in every
+`FineTriv` model — which is what makes the two-model transfer below go through. -/
+noncomputable def fineTriv_qf {n : ℕ} (θ : Language.val.BoundedFormula α n) :
+    Language.val.BoundedFormula α n :=
+  FirstOrder.valRingHom.onBoundedFormula
+    (Classical.choose (HQEDerive.HasQEb_acf α n (toRingForm θ)))
+
+theorem fineTriv_qf_isQF {n : ℕ} (θ : Language.val.BoundedFormula α n) :
+    (fineTriv_qf θ).IsQF :=
+  isQF_onBoundedFormula_valRingHom
+    (Classical.choose_spec (HQEDerive.HasQEb_acf α n (toRingForm θ))).1
+
+/-- The defining property: the quantifier-free formula is equivalent at every `VF`-tuple. -/
+theorem fineTriv_qf_iff (h : TrivCase.FineTriv M) {n : ℕ}
+    (θ : Language.val.BoundedFormula α n) (v : α → VFType (M := M))
+    (xs : Fin n → VFType (M := M)) :
+    (θ.Realize v xs ↔ (fineTriv_qf θ).Realize v xs) := by
+  have hspec := (Classical.choose_spec (HQEDerive.HasQEb_acf α n (toRingForm θ))).2
+  have h1 : (toRingForm θ).Realize v xs ↔
+      (Classical.choose (HQEDerive.HasQEb_acf α n (toRingForm θ))).Realize v xs :=
+    hspec.realize_bd_iff
+  have h2 : (fineTriv_qf θ).Realize v xs ↔
+      (Classical.choose (HQEDerive.HasQEb_acf α n (toRingForm θ))).Realize v xs :=
+    LHom.realize_onBoundedFormula FirstOrder.valRingHom _
+  exact (realize_toRingForm (M := M) h θ v xs).trans (h1.trans h2.symm)
+
+/-- **Quantifier elimination for `L_val` on the `VF` sort of a `FineTriv` model.**  Every
+`L_val`-formula is, at every tuple of `VF`-elements, equivalent to a quantifier-free one.  This is
+the trivial-case counterpart of `hasQE_ACVF_val`, and it uses only `M ⊨ Axioms.ACVF` and
+`TrivCase.FineTriv M` — no nontriviality, no cover. -/
+theorem fineTriv_val_QE (h : TrivCase.FineTriv M) {n : ℕ}
+    (θ : Language.val.BoundedFormula α n) :
+    ∃ θ' : Language.val.BoundedFormula α n, θ'.IsQF ∧
+      ∀ (v : α → VFType (M := M)) (xs : Fin n → VFType (M := M)),
+        (θ.Realize v xs ↔ θ'.Realize v xs) :=
+  ⟨fineTriv_qf θ, fineTriv_qf_isQF θ, fun v xs => fineTriv_qf_iff h θ v xs⟩
+
+end QE
+
+/-! ## 6. The trivial case of the endgame: `L_RV`-formulas at `VF`-tuples
+
+The cover of the campaign (`CoverBridge.CoverVF`, the one open hypothesis) converts an
+`L_RV`-formula at a `VF`-tuple into an `L_val`-formula; `fineTriv_val_QE` then removes the
+quantifiers, and `VFRestrict.transfer_of_isQF` reads the result back in `L_RV`.  Consequently the
+*trivial* transfer and the quantifier-free form of every `L_RV`-formula hold **for `FineTriv`
+models, with the cover as the only hypothesis** — in particular without `HasQEb ACVF_val`, hence
+without nontriviality. -/
+
+/-- **The trivial-side cover bridge, uniformly in the model**: on every `FineTriv` model, every
+`L_RV`-formula is at every `VF`-tuple equivalent to a quantifier-free `L_RV`-formula, modulo the
+cover.  The witness does not depend on the model. -/
+theorem exists_qf_uniform_fineTriv (hC : CoverBridge.CoverVF Axioms.ACVF) {n : ℕ}
+    (φ : LRV.BoundedFormula Empty n) :
+    ∃ ψ : LRV.BoundedFormula Empty n, ψ.IsQF ∧
+      ∀ (M : Type) [LRV.Structure M] [hM : M ⊨ Axioms.ACVF] (hTM : TrivCase.FineTriv M)
+        (y : Fin n → M), (∀ i, iVF (y i)) →
+        (φ.Realize (default : Empty → M) y
+          ↔ ψ.Realize (default : Empty → M) y) := by
+  obtain ⟨θ, hθ⟩ := hC n φ
+  refine ⟨valFormulaToRV (fineTriv_qf θ),
+    CoverBridge.isQF_valFormulaToRV (fineTriv_qf_isQF θ), ?_⟩
+  intro M _ hM hTM y hy
+  exact (hθ M hM y hy).trans
+    (VFRestrict.transfer_of_isQF (M := M) hM (fineTriv_qf_isQF θ)
+      (fun x => fineTriv_qf_iff (M := M) (hM := hM) hTM θ _ x) y hy)
+
+/-- The per-model form of `exists_qf_uniform_fineTriv`. -/
+theorem exists_qf_of_coverVF_fineTriv (h : TrivCase.FineTriv M)
+    (hC : CoverBridge.CoverVF Axioms.ACVF) {n : ℕ} (φ : LRV.BoundedFormula Empty n) :
+    ∃ ψ : LRV.BoundedFormula Empty n, ψ.IsQF ∧
+      ∀ y : Fin n → M, (∀ i, iVF (y i)) →
+        (φ.Realize (default : Empty → M) y
+          ↔ ψ.Realize (default : Empty → M) y) := by
+  obtain ⟨ψ, hψQF, hψ⟩ := exists_qf_uniform_fineTriv hC φ
+  exact ⟨ψ, hψQF, fun y hy => hψ M h y hy⟩
+
+/-- **The trivial half of the transfer, for `FineTriv` models, modulo the cover.**  Two `FineTriv`
+models of `Axioms.ACVF` whose tuples have the same quantifier-free `L_RV`-type have the same
+`L_RV`-theory at those tuples. -/
+theorem transferAt_fineTriv (hC : CoverBridge.CoverVF Axioms.ACVF)
+    {n : ℕ} {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
+    (hTM : TrivCase.FineTriv M) {N : Type} [LRV.Structure N] [hN : N ⊨ Axioms.ACVF]
+    (hTN : TrivCase.FineTriv N) {y : Fin n → M} {z : Fin n → N}
+    (hy : ∀ i, iVF (y i)) (hz : ∀ i, iVF (z i))
+    (hQF : ∀ ψ : LRV.BoundedFormula Empty n, ψ.IsQF →
+      (ψ.Realize (default : Empty → M) y ↔ ψ.Realize (default : Empty → N) z))
+    (φ : LRV.BoundedFormula Empty n) :
+    (φ.Realize (default : Empty → M) y ↔ φ.Realize (default : Empty → N) z) := by
+  obtain ⟨ψ, hψQF, hψ⟩ := exists_qf_uniform_fineTriv hC φ
+  exact (hψ M hTM y hy).trans ((hQF ψ hψQF).trans (hψ N hTN z hz).symm)
+
+end FineQE
+
+#print axioms FineQE.isQF_onBoundedFormula_valRingHom
+#print axioms FineQE.fineTriv_val_QE
+#print axioms FineQE.fineTriv_qf_iff
+#print axioms FineQE.exists_qf_uniform_fineTriv
+#print axioms FineQE.exists_qf_of_coverVF_fineTriv
+#print axioms FineQE.transferAt_fineTriv
+
+namespace SpecialTransformations.Milestone0.Transfer
+
+/-- **The frozen target, from one hypothesis.**  `NontrivialTransfer Axioms.ACVF` says that two
+models with the same quantifier-free `L_RV`-type satisfy the same formulas at matching tuples; from
+it, `HasQE Axioms.ACVF` — the statement of Theorem 2.3 — follows, because every model of the
+repaired `ACVF` is nontrivially valued (`isNontrivialVF_of_model`) and the trivial half of the
+assembly is vacuous (`TrivialHalf.trivialTransfer`). -/
+theorem hasQE_ACVF_of_nontrivialTransfer
+    (hnt : FinalAssembly.NontrivialTransfer Axioms.ACVF) :
+    SpecialTransformations.Milestone0.HasQE Axioms.ACVF :=
+  TrivialHalf.hasQE_of_nontrivialTransfer (T := Axioms.ACVF) (fun _ h => h) hnt
+    (fun M _ _ hM => isNontrivialVF_of_model hM)
+
+end SpecialTransformations.Milestone0.Transfer
+
+#print axioms TrivialHalf.hasQE_of_nontrivialTransfer
+#print axioms FineQE.fineTriv_val_QE
+#print axioms SpecialTransformations.Milestone0.Transfer.hasQE_ACVF_of_nontrivialTransfer

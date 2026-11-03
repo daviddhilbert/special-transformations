@@ -1133,3 +1133,26 @@ in the tree, all green and axiom-clean:
 So the endgame is now: `hasQE_ACVF_val` (proved) + the cover (swarm `smw163dd5`) +
 `transfer_of_isQF` + `QFTypeDetermines` (proved) ⇒ `HasQE Axioms.ACVF`.  The case split is not
 needed, because nontriviality is an axiom now.
+
+## The target is one hypothesis away
+
+With the repair applied and m6's f6 direction merged (`TrivialHalf`, `FineQE`), the tree now has
+
+```lean
+Transfer.hasQE_ACVF_of_nontrivialTransfer :
+  FinalAssembly.NontrivialTransfer Axioms.ACVF → SpecialTransformations.Milestone0.HasQE Axioms.ACVF
+```
+
+— that is Theorem 2.3, from a single hypothesis.  The three things that used to be hypotheses are
+gone: the trivial half is vacuous (`TrivialHalf.trivialTransfer`, since the coarse trivial reading is
+unsatisfiable), the case split follows from nontriviality (`caseSplit_of_allNontrivial`), and
+nontriviality itself is now an axiom, converted to the `IsNontrivialVF` form the assembly wants by
+`Transfer.isNontrivialVF_of_model` (an `RV^×`-inverse lifted through `rvSurj`, then scaling by
+`v a` — which is where item 2 and item 5 of the repair are actually used).
+
+`NontrivialTransfer T` is: two models of `T` with the same quantifier-free `L_RV`-type at matching
+tuples satisfy the same formulas.  Discharging it is *exactly* the cover plus QE in `L_val`: the
+cover turns an `L_RV`-formula into `valFormulaToRVvf θ`, `hasQE_ACVF_val` replaces `θ` by a
+quantifier-free `θ'` in the `L_val`-structure on the `VF` sort (a model of `ValPM.ACVF_val` by
+`model_ACVF_val_of_model`), and `VFRestrict.transfer_of_isQF` reads `valFormulaToRV θ'` back.  Swarm
+`smw163dd5` is producing the cover now; when it lands, Theorem 2.3 is closed.
