@@ -80,8 +80,10 @@ Decided: `L_RV` in Mathlib's one-sorted `FirstOrder.Language` on a tagged
 carrier, `Γ` imaginary; the many-sorted framework was measured and rejected
 (it builds here after 3–4 renames, but has no definability layer). Symbols,
 `ACVF`, `ACVF_S(0,0)`, Theorem 2.3 and Theorem 2.8 are in
-`Milestone0/Encoding.lean`; evidence and the settled traps (`0` vs `∞`, `rv` onto
-units only, orientation of `≤`) are in `Milestone0/DECISION.md`.
+`Milestone0/Encoding.lean`; evidence and the traps (the `RV` sort has ONE absorbing
+element, `rv 0 = 0`, which the paper also writes `∞`; `rv` is surjective onto everything but
+that element; orientation of `≤`) are in `Milestone0/DECISION.md`, whose last section records
+the author's ruling that reversed the earlier `0 ≠ ∞` repair.
 
 ### Milestone 1 — algebraic layer
 
