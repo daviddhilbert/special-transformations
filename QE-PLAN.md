@@ -397,3 +397,41 @@ What is left, with the obstacles already met:
    way in.  Note the sentence must be read with the *value of the constant* `1`, not with
    `(1 : M)`, because an abstract `L_val`-structure has no `One` instance — that mistake is what
    made the first version unprovable.
+
+### Update after the Assembly_val work
+
+`QE/Assembly_val.lean` (5844 lines) is the file where the two halves of the `L_val` development
+finally meet: it is `PrimeModels_val_partial.lean` followed by the body of `OneEC_val.lean` with
+that file's private copy of the language removed, so both speak the same
+`FirstOrder.Language.val`.  Only three names were defined in both files (`ValFunc`, `ValRel`,
+`valStructure`) — exactly the preamble that is dropped.  One trap: the merged file also needs
+`open scoped Polynomial`, without which `K[X]` in `termToPoly` parses as an indexing notation and
+produces 51 cascading errors that look unrelated.
+
+Two new results there:
+
+* `isAlgClosed_of_model` — a model of `ACVF_val` is algebraically closed.  **Until this existed,
+  nothing in the tree used the algebraic-closedness half of `ACVF_val`**, and
+  `oneECIn_of_nontrivial` requires `[IsAlgClosed K]`, so the transport of hypothesis (iii) could
+  not even be started.  This was a missing piece nobody had listed.
+* `fieldOfModelValField` — the field instance the statement needs.
+
+And a correction to `ACVF_val` itself (commit `c9b882f`): the nontriviality sentence was
+`∃ x, ¬ (v 1 ≤ v x)`, which is satisfied by `x = 0` in **every** valued field, so it said nothing.
+It is now `∃ x, x ≠ 0 ∧ ¬ (v 1 ≤ v x)`, and `axNontrivial_realize` is restated accordingly.
+
+**The one remaining blocker for the transport**, with the exact error, is recorded in the file:
+
+```
+"QE/Assembly_val.lean:5856:10: error: synthesized type class instance is not definitionally
+equal to expression inferred by typing rules, synthesized sM, inferred valStructure v"
+```
+
+`M.struc = FirstOrder.valStructure v` cannot even be *stated*: `Language.val.Structure` is a class,
+so the equation itself trips instance checking, whichever side is written first, with or without a
+`letI` naming the instance.  Everything else in the proof of `oneECIn_of_modelType` is in place —
+`valStruct_ext`, `valStructOf_eq_valStructure`, `embeddingCast`, `oneECIn_congr'`,
+`oneECIn_of_nontrivial`, `isAlgClosed_of_model`, and the nontriviality transfer through
+`axNontrivial_realize`.  The likely way round it is not to state the equation at all but to
+restate `OneECIn`, or the goal, with the `valStructure` instances supplied by `letI` from the
+start, so that no equation between instances is ever needed.
