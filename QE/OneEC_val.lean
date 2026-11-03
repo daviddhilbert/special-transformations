@@ -27,6 +27,15 @@ file proves, for `[IsAlgClosed K]`:
 * `atomGood_P_zero` and `atomGood_Q_zero`: the degenerate cases (`P = 0`: everything; `Q = 0`: the
   finite root set, via `finite_rootSet`).
 
+The *ball condition* — `c_P δ^m ≤ c_Q δ^n` for `δ := w (x - f a)` with constant `c_P`, `c_Q` — is
+now complete in all three cases, which is what the region `U_a` of the cluster induction needs:
+`good_pow_le_pow_same` (`m = n`: everything, `{f a}` when `m > 0`, `∅` when `m = 0`),
+`good_pow_le_pow_lt` (`m < n`: `{f a} ∪ (openBall (f a) (w (f e)))ᶜ` when `m > 0`, the complement
+alone when `m = 0`, where `w (f e)^d = c_P / c_Q` and `d = n - m`), and `good_pow_le_pow_gt`
+(`m > n`: the closed ball of radius `w (f e)`).  `exists_val_pow_div` supplies `e` from
+`IsAlgClosed K`.  Note the two traps: the centre has to be added by hand when `m > 0` (the value
+`δ = 0` is below every radius), and the `m = 0` case is *not* the same set as the `m > 0` one.
+
 What remains is the cluster induction.  For a finite root set `A` and `a ∈ A` put
 `U_a := ⋂_{b ∈ A, b ≠ a} openBall (f a) (w (f (a - b)))`, a finite intersection of `K`-balls, so
 `Good`.  On `U_a` every factor except the `a`-one is the *constant* `w (f a - f b)`
@@ -1283,5 +1292,151 @@ theorem good_pow_le_pow_same {a cP cQ : K} (m : ℕ) :
             zero_pow hm, mul_zero, mul_zero]
       rw [hset]; exact good_singleton f w a
 
+/-! #### The ball condition with unequal multiplicities -/
+
+/-- `w (f c) = 0` only for `c = 0`. -/
+theorem val_eq_zero_iff (c : K) : w (f c) = 0 ↔ c = 0 := by
+  rw [w.zero_iff, ← map_zero f, f.injective.eq_iff]
+
+/-- A `d`-th root of a quotient of two values is again a value of `w ∘ f`: `K` is algebraically
+closed, so its group of values is divisible. -/
+theorem exists_val_pow_div (cP cQ : K) {d : ℕ} (hd : 0 < d) :
+    ∃ e : K, w (f e) ^ d = w (f cP) * (w (f cQ))⁻¹ := by
+  obtain ⟨b, hb⟩ := IsAlgClosed.exists_pow_nat_eq (cP * cQ⁻¹) hd
+  refine ⟨b, ?_⟩
+  rw [← map_pow w (f b), ← map_pow f b d, hb]
+  simp only [map_mul, map_inv₀]
+
+/-- `c * a ≤ b ↔ a ≤ b * c⁻¹` for `c ≠ 0`. -/
+theorem mul_le_iff_le_mul_inv {a b c : Γ'} (hc : c ≠ 0) : c * a ≤ b ↔ a ≤ b * c⁻¹ := by
+  constructor
+  · intro h
+    have h' := mul_le_mul_left h c⁻¹
+    rw [mul_comm c a, mul_assoc, mul_inv_cancel₀ hc, mul_one] at h'
+    exact h'
+  · intro h
+    have h' := mul_le_mul_left h c
+    rw [mul_assoc, inv_mul_cancel₀ hc, mul_one] at h'
+    rwa [mul_comm c a]
+
+/-- `a ≤ b * c ↔ a * c⁻¹ ≤ b` for `c ≠ 0`. -/
+theorem le_mul_iff_mul_inv_le {a b c : Γ'} (hc : c ≠ 0) : a ≤ b * c ↔ a * c⁻¹ ≤ b := by
+  constructor
+  · intro h
+    have h' := mul_le_mul_left h c⁻¹
+    rw [mul_assoc, mul_inv_cancel₀ hc, mul_one] at h'
+    exact h'
+  · intro h
+    have h' := mul_le_mul_left h c
+    rw [mul_assoc, inv_mul_cancel₀ hc, mul_one] at h'
+    exact h'
+
+/-- `a ≤ c * b ↔ a * c⁻¹ ≤ b` for `c ≠ 0`. -/
+theorem le_mul_left_iff_mul_inv_le {a b c : Γ'} (hc : c ≠ 0) : a ≤ c * b ↔ a * c⁻¹ ≤ b := by
+  rw [mul_comm c b]
+  exact le_mul_iff_mul_inv_le hc
+
+/-- **The ball condition when `m < n`.**  With `d = n - m > 0`, off the centre the condition
+`c_P δ^m ≤ c_Q δ^{m+d}` reads `w (f e) ≤ δ`, and at the centre it holds exactly when `m > 0`.
+Hence the complement of the open ball of radius `w (f e)`, together with the centre if `m > 0`. -/
+theorem good_pow_le_pow_lt {a cP cQ e : K} (hcQ : cQ ≠ 0) {m d : ℕ} (hd : 0 < d)
+    (he : w (f e) ^ d = w (f cP) * (w (f cQ))⁻¹) :
+    Good f w {x : N | w (f cP) * (w (x - f a)) ^ m
+      ≤ w (f cQ) * (w (x - f a)) ^ (m + d)} := by
+  have hd0 : d ≠ 0 := Nat.pos_iff_ne_zero.mp hd
+  have hQ : w (f cQ) ≠ 0 := fun h => hcQ ((val_eq_zero_iff cQ).mp h)
+  by_cases hcP : cP = 0
+  · have hset : {x : N | w (f cP) * (w (x - f a)) ^ m
+        ≤ w (f cQ) * (w (x - f a)) ^ (m + d)} = Set.univ := by
+      ext x
+      simp only [hcP, map_zero, w.map_zero, zero_mul, Set.mem_setOf_eq, Set.mem_univ, iff_true]
+      exact zero_le
+    rw [hset]; exact good_univ f w
+  · have hP : w (f cP) ≠ 0 := fun h => hcP ((val_eq_zero_iff cP).mp h)
+    have hfe : w (f e) ≠ 0 := by
+      intro h
+      have h1 : w (f e) ^ d = 0 := by rw [h]; exact zero_pow hd0
+      rw [he] at h1
+      exact (mul_ne_zero hP (inv_ne_zero hQ)) h1
+    have hoff : ∀ x : N, x ≠ f a →
+        (w (f cP) * (w (x - f a)) ^ m ≤ w (f cQ) * (w (x - f a)) ^ (m + d)
+          ↔ ¬ w (x - f a) < w (f e)) := by
+      intro x hx
+      have hδ : w (x - f a) ≠ 0 := fun h => hx (sub_eq_zero.mp (w.zero_iff.mp h))
+      have hstep : w (f cQ) * (w (x - f a)) ^ (m + d)
+          = (w (f cQ) * (w (x - f a)) ^ d) * (w (x - f a)) ^ m := by
+        rw [pow_add, mul_comm ((w (x - f a)) ^ m) ((w (x - f a)) ^ d), mul_assoc]
+      rw [hstep, le_mul_pow_iff (δ := w (x - f a)) hδ m, le_mul_left_iff_mul_inv_le hQ, ← he,
+        not_lt]
+      exact pow_le_pow_iff_left₀ (a := w (f e)) (b := w (x - f a)) zero_le zero_le hd0
+    rcases eq_or_ne m 0 with hm | hm
+    · subst hm
+      have hset : {x : N | w (f cP) * (w (x - f a)) ^ 0
+          ≤ w (f cQ) * (w (x - f a)) ^ (0 + d)}
+          = (openBall w (f a) (w (f e)))ᶜ := by
+        ext x
+        simp only [openBall, Set.mem_setOf_eq, Set.mem_compl_iff]
+        by_cases hx : x = f a
+        · subst hx
+          rw [sub_self, w.map_zero, Nat.zero_add, zero_pow hd0, mul_zero, pow_zero, mul_one]
+          exact ⟨fun h => False.elim (hP (le_antisymm h zero_le)),
+            fun h => False.elim (h (pos_iff_ne_zero.mpr hfe))⟩
+        · exact hoff x hx
+      rw [hset]
+      exact good_compl (good_of_isKBall (IsKBall.openball a e))
+    · have hmd : m + d ≠ 0 := by omega
+      have hset : {x : N | w (f cP) * (w (x - f a)) ^ m
+          ≤ w (f cQ) * (w (x - f a)) ^ (m + d)}
+          = {f a} ∪ (openBall w (f a) (w (f e)))ᶜ := by
+        ext x
+        simp only [openBall, Set.mem_setOf_eq, Set.mem_union, Set.mem_singleton_iff,
+          Set.mem_compl_iff]
+        by_cases hx : x = f a
+        · subst hx
+          rw [sub_self, w.map_zero, zero_pow hm, zero_pow hmd, mul_zero, mul_zero]
+          exact ⟨fun _ => Or.inl rfl, fun _ => le_refl 0⟩
+        · rw [hoff x hx]
+          exact ⟨fun h => Or.inr h, fun h => h.elim (fun h' => absurd h' hx) id⟩
+      rw [hset]
+      exact good_union (good_singleton f w a)
+        (good_compl (good_of_isKBall (IsKBall.openball a e)))
+
+/-- **The ball condition when `m > n`.**  With `d = m - n > 0`, the condition
+`c_P δ^{n+d} ≤ c_Q δ^n` reads `δ ≤ w (f e)`, and the centre always satisfies it, so the set is
+the closed ball of radius `w (f e)`. -/
+theorem good_pow_le_pow_gt {a cP cQ e : K} (hcP : cP ≠ 0) {n d : ℕ} (hd : 0 < d)
+    (he : w (f e) ^ d = w (f cQ) * (w (f cP))⁻¹) :
+    Good f w {x : N | w (f cP) * (w (x - f a)) ^ (n + d)
+      ≤ w (f cQ) * (w (x - f a)) ^ n} := by
+  have hd0 : d ≠ 0 := Nat.pos_iff_ne_zero.mp hd
+  have hP : w (f cP) ≠ 0 := fun h => hcP ((val_eq_zero_iff cP).mp h)
+  have hnd : n + d ≠ 0 := by omega
+  have hset : {x : N | w (f cP) * (w (x - f a)) ^ (n + d)
+      ≤ w (f cQ) * (w (x - f a)) ^ n} = closedBall w (f a) (w (f e)) := by
+    ext x
+    simp only [closedBall, Set.mem_setOf_eq]
+    by_cases hx : x = f a
+    · subst hx
+      rw [sub_self, w.map_zero, zero_pow hnd, mul_zero]
+      rcases eq_or_ne n 0 with hn | hn
+      · subst hn
+        rw [pow_zero, mul_one]
+        exact ⟨fun _ => zero_le, fun _ => zero_le⟩
+      · rw [zero_pow hn, mul_zero]
+        exact ⟨fun _ => zero_le, fun _ => le_refl 0⟩
+    · have hδ : w (x - f a) ≠ 0 := fun h => hx (sub_eq_zero.mp (w.zero_iff.mp h))
+      have hstep : w (f cP) * (w (x - f a)) ^ (n + d)
+          = (w (f cP) * (w (x - f a)) ^ d) * (w (x - f a)) ^ n := by
+        rw [pow_add, mul_comm ((w (x - f a)) ^ n) ((w (x - f a)) ^ d), mul_assoc]
+      rw [hstep, le_mul_pow_iff (δ := w (x - f a)) hδ n, mul_le_iff_le_mul_inv hP, ← he]
+      exact pow_le_pow_iff_left₀ (a := w (x - f a)) (b := w (f e)) zero_le zero_le hd0
+  rw [hset]
+  exact good_closed (c := a) (b := e)
+
 end MasterClaim
 
+
+#print axioms ValOneEC.good_pow_le_pow_same
+#print axioms ValOneEC.good_pow_le_pow_lt
+#print axioms ValOneEC.good_pow_le_pow_gt
+#print axioms ValOneEC.exists_val_pow_div
