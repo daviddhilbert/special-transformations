@@ -224,8 +224,16 @@ in this revision:
   code.)
 * Verified after the propagation: `make milestone0` (5 files), `make accepted` (14 files) and
   `make qe` (28 files) all exit 0 with no errors and no `sorry`; every `#print axioms` in all
-  47 files is a subset of `{propext, Classical.choice, Quot.sound}`.  One snapshot,
-  `accepted/ACVF_residue_ops.lean`, was still being converted at the time of writing.
+  47 files is a subset of `{propext, Classical.choice, Quot.sound}`.
+* **Still open: `accepted/ACVF_residue_ops.lean`** (the residue-operations model).  Its encoding
+  half is converted (one constant; `tRVInfty`/`uRVInfty`/`iRVInfty` as definitions; `rvSurj` the
+  paper's surjectivity) and its carrier is two-layer (`C v = K ⊕ RV v`, `cKZero = cInfty`), but
+  the *model* half still has ~55 errors, all in the definitions and axiom proofs that were
+  written against the three-layer carrier (`cUnit`, `iota`/`jota`, the `fMap` cases, the axiom
+  lemmas) — blind textual substitution makes it worse, as trying it showed.  The partial
+  conversion and its error log are saved at `.ultramath/smw0dw2rp/partial/`; it needs a careful
+  pass over the model section with the already-converted `accepted/ACVFModel.lean` as the model.
+  Until then it is the one artifact still written against the earlier transcription.
 
 Still to propagate (in progress): the standalone copies of the encoding inside
 `Milestone0/accepted/*.lean` and inside the `QE/` snapshots that embed it, then `make accepted`
