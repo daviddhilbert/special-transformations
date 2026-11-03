@@ -1737,3 +1737,30 @@ a statement over arbitrary parameters, and where both exist the `swl` one is the
 (it must be "some well-sorted formula with a *finite* solution set contains `x`", over `SP`), and the
 paper's §3 is stated relative to a *substructure* `S` — so `VF(S)(ā)` and `Γ(S)` must be built from
 `SP`, which is the one genuinely new construction §3 needs.
+
+## Definitions 4.15–4.17 are formalized, and they do not need Section 2 (m4, accepted)
+
+`.ultramath/smw18ygko/m4/RVCategory.lean` (559 lines, `import Mathlib` only, green, no sorry,
+footprints clean; intended repo path `SpecialTransformations/RVCategory.lean`):
+
+* Definition 4.15 (weight) and **Definition 4.16 in full** — objects `(U, f)` with `U ⊆ RV^m`
+  definable and `f : U → RV^k` definable, the companion `U_f`, volumetric and finite-fibre morphisms
+  at fixed `k`, and identity/composition/associativity as a genuine Mathlib `Category (Obj D k)`;
+* `RV[k]` as the full subcategory of finite-to-one maps (Full and Faithful instances included);
+* the direct sums `RV[≤i,·]` and `RV[*,·]` as Sigma categories;
+* **Definition 4.17**: `E_k : RV[k,·] ⥤ RV[k+1,·]`, proved Faithful, Full and injective on objects;
+* `F_{f,f'} : U_f → U'_{f'}` and the fact that the inclusion map is a morphism.
+
+Design point worth keeping: definability enters through a six-field **`LDefinability RV`** parameter
+(definable sets and functions, identity, composition, restriction, appending `∞`) rather than through
+the encoding, so the construction is parametric in the notion of definability.  That is what lets it
+be instantiated both at the repository's `RV` sort and at `WithTop ℕ`, and it keeps it clear of the
+junk problem.
+
+**The dependency finding is the news**: nothing in 4.15–4.17 needs QE (Theorem 2.3) or C-minimality
+(Theorem 2.8).  Those enter only in §4.1's dimensions and in Lemma 4.19's `acl`.  So a large block of
+Section 4 is independent of both frozen statements, which is what makes running the sections in
+parallel sound rather than optimistic.
+
+Gaps named: `VF[k,·]` and its dimensions are not done; and instantiating at the repository's `RV`
+sort needs `Top (RV v) := ⟨none⟩`, which `SpecialTransformations/Basic.lean` lacks.
