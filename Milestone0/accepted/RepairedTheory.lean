@@ -9,10 +9,15 @@ putting the sorts of `L_RV` on a single tagged carrier with unary sort predicate
 
 This file is self-contained: its only import is `Mathlib`.  Check it with
 
-    lean Milestone0.lean
+    lean RepairedTheory.lean
 
-The last part of the file (Part 6) contains the two target theorems.  They are stated
-with `sorry`, which is the only `sorry` in the file; all definitions are complete.
+It contains no `sorry` and no `axiom`.  Parts 0–5 are the encoding and the axioms,
+the interpretation of the symbols follows, and an appended section (`namespace Fixed`)
+extracts the axioms used by this repository's earlier inconsistency argument and records
+what the author's ruling on `0` and `∞` does to that argument.  The paper's `0` and `∞`
+of the `RV` sort are ONE element (`rv(0) = 0` is the absorbing element, `∞` is another
+name for it): the language has the single constant `rvZero`, and `tRVInfty` is a
+definition of `tRVZero`.
 -/
 import Mathlib
 
@@ -30,10 +35,11 @@ import Mathlib
           `L_RV^Γ` together with the axioms linking `Γ` to `RV`.
 * Part 5  `ACVF_S(0,0)`: the theory `ACVF(0,0)` together with the atomic diagram of a
           substructure `S`.
-* Part 6  quantifier elimination (Theorem 2.3) and C-minimality (Theorem 2.8), as
-          targets.
-* Part 7  a worked example showing that the encoding supports the paper's definable
-          subsets of `VF^n × RV^m` and their coordinate projections (Notation 2.10).
+* Part 6  the interpretation of the symbols in a model, for use in the statements
+          (the two target theorems, Theorem 2.3 and Theorem 2.8, are stated in
+          `Milestone0/Encoding.lean`, which is where they are proved).
+* appended: `namespace Fixed`, the extraction of the axioms used by the earlier
+          inconsistency argument, and what the ruling `0 = ∞` does to that argument.
 -/
 
 open FirstOrder FirstOrder.Language
@@ -108,10 +114,10 @@ inductive Fn : ℕ → Type where
   | vfMul : Fn 2
   /-- `1` of the group language of the `RV` sort -/
   | rvOne : Fn 0
-  /-- the constant `0` of the `RV` sort (an element of `K`) -/
+  /-- the constant `0` of the `RV` sort: the residue field's zero, which is also `rv(0)` and
+  the absorbing element of `RV`.  The paper writes this element both as `0` and as `∞`; it is
+  one element, so the language has one constant. -/
   | rvZero : Fn 0
-  /-- the constant `∞` of the `RV` sort -/
-  | rvInfty : Fn 0
   /-- `×` of the `RV` sort -/
   | rvMul : Fn 2
   /-- `+ : K² → K` of the `RV` sort -/
@@ -165,8 +171,10 @@ def tVFMul (t u : Tm n) : Tm n := Term.func Fn.vfMul ![t, u]
 def tRVOne : Tm n := Term.func Fn.rvOne fun i => i.elim0
 /-- `0` of the `RV` sort -/
 def tRVZero : Tm n := Term.func Fn.rvZero fun i => i.elim0
-/-- `∞` of the `RV` sort -/
-def tRVInfty : Tm n := Term.func Fn.rvInfty fun i => i.elim0
+/-- The paper's `∞` is `rv(0)`, i.e. the absorbing element `rvZero` of the `RV` sort: the paper's
+two symbols `0` and `∞` name one element.  Kept as a definition so that the axioms can be read
+in the paper's notation. -/
+def tRVInfty : Tm n := tRVZero
 /-- `×` of the `RV` sort -/
 def tRVMul (t u : Tm n) : Tm n := Term.func Fn.rvMul ![t, u]
 /-- `+ : K² → K` of the `RV` sort -/
@@ -208,12 +216,20 @@ def pLe (t u : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₂ R
 def pEq (t u : Tm n) : Bf n := t =' u
 /-- the paper's `RV = RV-sort ∖ {0}` -/
 def pRV (t : Tm n) : Bf n := ∼(pEq t tRVZero)
-/-- the paper's `K = RV-sort ∖ {∞}` -/
+/-- the paper's `K = RV-sort ∖ {∞}`.  Since `∞ = rv(0) = 0` this is the same predicate as
+`pRV`; it is kept as a separate name so that statements read as in the paper. -/
 def pK (t : Tm n) : Bf n := ∼(pEq t tRVInfty)
 /-- the paper's `RV₀ = RV ∪ {0}`, i.e. the whole `RV` sort -/
 def pRV0 (_t : Tm n) : Bf n := ⊤
 /-- the strict order `t > 1` of the `RV` sort -/
 def pGtOne (t : Tm n) : Bf n := pLe tRVOne t ⊓ ∼(pLe t tRVOne)
+/-- `t ∈ K = K^× ∪ {0}`, the residue field inside the `RV` sort.
+
+Not the same as `t ≠ 0`: when `Γ` is nontrivial the elements of `RV ∖ {0}` of value `≠ 1`
+are not in `K`, and the residue-field operations are junk there.  Definition 2.1(d)
+defines `K` as `K^× ∪ {0}`, with `K^×` the predicate, i.e. axiom (4)'s class of `1`.  The
+`0` here is `rv(0)`, the absorbing element of `RV`. -/
+def pInK (t : Tm n) : Bf n := pUnits t ⊔ pEq t tRVZero
 
 end LRV
 
@@ -256,7 +272,7 @@ invertible" would then force `0 = ∞`. -/
 
 /-- `⋀ i < k, x_i ≠ ∞`: the tuple lies in `K = RV-sort ∖ {∞}` -/
 def kHyps {k : ℕ} : Bf k :=
-  (List.finRange k).foldr (fun i acc => pK (tv i.val i.isLt) ⊓ acc) ⊤
+  (List.finRange k).foldr (fun i acc => pInK (tv i.val i.isLt) ⊓ acc) ⊤
 
 /-- the universal sentence `∀ x̄ ∈ s̄ ∩ K, φ` -/
 def allSortedK {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence :=
@@ -265,7 +281,7 @@ def allSortedK {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence :=
 /-- the guarded existential formula `∃ x ∈ s ∩ K, φ`, with `x` the variable of index `k` -/
 def exSortedK {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
   BoundedFormula.ex (sortPred s (tv k (Nat.lt_succ_self k)) ⊓
-    pK (tv k (Nat.lt_succ_self k)) ⊓ φ)
+    pInK (tv k (Nat.lt_succ_self k)) ⊓ φ)
 
 /-- the universal closure of a formula in a single variable -/
 def allOne (φ : Bf 1) : LRV.Sentence := BoundedFormula.alls φ
@@ -341,21 +357,27 @@ def sdRVMul : LRV.Sentence := allSorted ![.rv, .rv] (pRVsort (tRVMul &0 &1))
 /-- The predicate `Kˣ` holds only of elements of the `RV` sort.
 
 Its actual content is axiom (4)'s `leClassOne`, which makes `Kˣ` the class of `1` — a
-*proper* subgroup of the multiplicative group `RV ∖ {0, ∞}` whenever `Γ` is nontrivial.
-Identifying `Kˣ` with all of `RV ∖ {0, ∞}` (as an earlier version did) puts every
-`x ∉ {0, ∞}` in the class of `1`, hence `1 ≤ x ≤ 1`, hence makes the preorder trivial and
-`Γ` trivial — contradicting the paper's standing hypothesis that `Γ(S)` is nontrivial. -/
+*proper* subgroup of the multiplicative group `RV ∖ {0}` whenever `Γ` is nontrivial.
+Identifying `Kˣ` with all of `RV ∖ {0}` puts every `x ≠ 0` in the class of `1`, hence
+`1 ≤ x ≤ 1`, hence makes the preorder trivial and `Γ` trivial — contradicting the paper's
+standing hypothesis that `Γ(S)` is nontrivial. -/
 def sdUnits : LRV.Sentence := allOne (pUnits &0 ⟹ pRVsort &0)
 /-- `K = Kˣ ∪ {0}` is closed under `+` -/
-def sdKAdd : LRV.Sentence := allSorted ![.rv, .rv] (pK &0 ⟹ (pK &1 ⟹ pK (tKAdd &0 &1)))
+def sdKAdd : LRV.Sentence :=
+  allSorted ![.rv, .rv] (pInK &0 ⟹ (pInK &1 ⟹ pInK (tKAdd &0 &1)))
 /-- `K` is closed under unary `-` -/
-def sdKNeg : LRV.Sentence := allSorted ![.rv] (pK &0 ⟹ pK (tKNeg &0))
+def sdKNeg : LRV.Sentence := allSorted ![.rv] (pInK &0 ⟹ pInK (tKNeg &0))
+/-- `K` is closed under `×`: the paper's `K = K^× ∪ {0}` is a field, so the product of two
+elements of `K` is in `K` and not `∞`.  Without this the field axioms of `kField` (which are
+guarded by `pK`) constrain only the products that happen to land in `K`. -/
+def sdKMul : LRV.Sentence :=
+  allSorted ![.rv, .rv] (pInK &0 ⟹ (pInK &1 ⟹ pInK (tRVMul &0 &1)))
 
 /-- The closure part of the sort discipline: each sort is closed under its own symbols,
 and the two sorts are related through the symbols that cross them. -/
 def sortClosure : LRV.Theory :=
   ofList [sdVFZero, sdVFOne, sdVFAdd, sdVFNeg, sdVFMul, sdRv,
-    sdRVZero, sdRVInfty, sdRVOne, sdRVMul, sdUnits, sdKAdd, sdKNeg]
+    sdRVZero, sdRVInfty, sdRVOne, sdRVMul, sdUnits, sdKAdd, sdKNeg, sdKMul]
 
 /-- the sort discipline of the encoding, as a theory -/
 def sortAxioms : LRV.Theory := sortClosure ∪ ofList [sdCover, sdDisjoint]
@@ -461,7 +483,7 @@ def rvMulInv : LRV.Sentence :=
 def rvDivisible (k : ℕ) : LRV.Sentence :=
   allSorted ![.rv] (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVPow &1 k) &0))
 /-- `t × 0 = 0` for `t ∈ K` -/
-def rvMulZeroK : LRV.Sentence := allSorted ![.rv] (pK &0 ⟹ pEq (tRVMul &0 tRVZero) tRVZero)
+def rvMulZeroK : LRV.Sentence := allSorted ![.rv] (pInK &0 ⟹ pEq (tRVMul &0 tRVZero) tRVZero)
 /-- `t × ∞ = ∞` for `t ∈ RV₀`, i.e. for every `t` of the `RV` sort -/
 def rvMulInfty : LRV.Sentence := allSorted ![.rv] (pEq (tRVMul &0 tRVInfty) tRVInfty)
 
@@ -507,9 +529,12 @@ def rvEqInfty : LRV.Sentence := allSorted ![.vf] (pEq (tRv &0) tRVInfty ⟹ pEq 
 /-- `rv` is a group homomorphism on `VF^×` -/
 def rvMulHom : LRV.Sentence :=
   allSorted ![.vf, .vf] (pEq (tRv (tVFMul &0 &1)) (tRVMul (tRv &0) (tRv &1)))
-/-- `rv : VF^× → RV^×` is surjective -/
+/-- **`rv` is surjective**: every element of the `RV` sort other than `rv(0)` is `rv(x)` for
+some `x ∈ VF`.  (Definition 2.2(6): `rv : VF^× → RV^×` is surjective, augmented by
+`rv(0) = ∞ = 0`.  With `RV^× = RV ∖ {0}` this says: `RV = rv(VF) ∪ {0}`, so there are no
+`RV`-elements outside the image of `rv`.) -/
 def rvSurj : LRV.Sentence :=
-  allSorted ![.rv] (pUnits &0 ⟹ exSorted .vf (pEq (tRv &1) &0))
+  allSorted ![.rv] (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))
 /-- the ultrametric inequality for `vv = vrv ∘ rv`: `vv(x+y) ≥ min(vv x, vv y)` -/
 def rvUltrametric : LRV.Sentence :=
   allSorted ![.vf, .vf] (pLe (tRv &0) (tRv (tVFAdd &0 &1)) ⊔ pLe (tRv &1) (tRv (tVFAdd &0 &1)))
@@ -622,8 +647,8 @@ def uVFMul (t u : TmΓ n) : TmΓ n := Term.func (Sum.inl Fn.vfMul) ![t, u]
 def uRVOne : TmΓ n := Term.func (Sum.inl Fn.rvOne) fun i => i.elim0
 /-- `0` of the `RV` sort -/
 def uRVZero : TmΓ n := Term.func (Sum.inl Fn.rvZero) fun i => i.elim0
-/-- `∞` of the `RV` sort -/
-def uRVInfty : TmΓ n := Term.func (Sum.inl Fn.rvInfty) fun i => i.elim0
+/-- The paper's `∞`, i.e. `rv(0) = 0` -/
+def uRVInfty : TmΓ n := uRVZero
 /-- `×` of the `RV` sort -/
 def uRVMul (t u : TmΓ n) : TmΓ n := Term.func (Sum.inl Fn.rvMul) ![t, u]
 /-- the projection `rv` -/
@@ -846,22 +871,29 @@ def iRv (x : M) : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvMap 
 /-- the interpretation of `0` of the `RV` sort -/
 def iRVZero : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvZero fun i => i.elim0
 
-/-- the interpretation of `∞` of the `RV` sort -/
-def iRVInfty : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvInfty fun i => i.elim0
+/-- The interpretation of the paper's `∞`, which is the interpretation of `0` of the `RV` sort -/
+def iRVInfty : M := iRVZero (M := M)
 
 /-- the interpretation of `1` of the `RV` sort -/
 def iRVOne : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvOne fun i => i.elim0
-
 
 end Milestone0
 end SpecialTransformations
 
 /-!
-# The repaired `ACVF`: what survives of the old inconsistency argument
+# The repaired `ACVF`: what the author's ruling does to the old inconsistency argument
 
-Appended to a copy of `Milestone0/Encoding.lean` (current commit `acf79f6`), lines 1–854,
-with `LRV` as an `abbrev` (so `LRV.Relations` reduces and `simp`/`rw` can rewrite the
-realised axioms).  Nothing else is changed.
+Appended to a copy of `Milestone0/Encoding.lean` (the version with the two-layer `RV` sort),
+lines 1–872, with `LRV` as an `abbrev` (so `LRV.Relations` reduces and `simp`/`rw` can
+rewrite the realised axioms).  Nothing else of the encoding part is changed.
+
+## The ruling
+
+The paper's two symbols `0` and `∞` of the `RV` sort name ONE element: `rv(0) = 0` is the
+absorbing element of `RV`, `∞` is another name for it, and `RV^× = RV ∖ {∞} = RV ∖ {0}`.
+The language therefore has one constant, `rvZero` — the constructor `rvInfty` is deleted —
+and `tRVInfty`, `uRVInfty`, `iRVInfty`, `pK` are *definitions* of `tRVZero`, `uRVZero`,
+`iRVZero`, `pRV`.
 
 ## What changed and why the old argument cannot be repeated
 
@@ -871,23 +903,38 @@ The old argument (`ACVFInconsistent.lean`, aimed at commit `f0b6a84`) had three 
    The current `sdUnits` is `allOne (pUnits &0 ⟹ pRVsort &0)`, i.e. only
    **`Kˣ` lies in the `RV` sort** (`sdUnits_mem` below): `1 ≠ ∞` is no longer available.
 2. `kField`'s multiplicative-inverse axiom was asserted at every element of the `RV` sort,
-   in particular at `∞`, giving `∞ = 0 ∨ ∞ = 1`.  The current `kField` uses `allSortedK`
-   and `exSortedK`, whose hypotheses include `pK &i` (`x ≠ ∞`), so the axiom is **not**
-   available at `∞` (`kField_lin_rel` below is the linear instance, and its hypothesis
-   `a ≠ ∞` is exactly what step 2 used to elide).
+   in particular at `∞`.  The current `kField` guards all its quantifiers by the paper's
+   residue field `K = K^× ∪ {0}` (`allSortedK`, `exSortedK` with `pInK`), so the axiom is
+   not available outside `K` (`kAlgClosed_lin_rel` below is the linear instance).
 3. `hornerPoly` folded from `x`, so `acfScheme k` was the degree-`k+1` polynomial
    `x^{k+1} + a_{k-1}x^{k-1} + ⋯`; the `k = 1` instance gave `∀ a, ∃ x, x·x + a = 0`.
    The current `hornerPoly` (with the repository's own `hornerPoly_one`) gives `x + a₀`:
-   `acfSchemeK 1` is `∀ a ∈ K, ∃ x ∈ K, x + a = 0` (`kAlgClosed_lin_rel` below), whose
-   solution is `x = -a`, which **does not** violate `sdKAdd`.
+   `acfSchemeK 1` is `∀ a ∈ K, ∃ x ∈ K, x + a = 0` (`kAlgClosed_lin_rel` below).
 
-## What does survive: `0 ≠ ∞`
+Steps 1–3 are gone.  The old file's final theorem was
 
-Steps 1–3 are gone, but the *combination* `0 = ∞` is still fatal, and the fixed axioms
-exclude it: `zero_ne_infty` proves `iRVZero ≠ iRVInfty` in every model of `ACVF`, and
-`zero_eq_infty_imp_false` records the contradiction that `0 = ∞` would give.  That
-contradiction is the exact statement of "what would be needed to reinstate the old proof":
-all of it needs `rvZero = rvInfty`, which the repaired theory refutes.
+    zero_ne_infty : (iRVZero : M) ≠ iRVInfty
+
+derived from `kAlgClosed`'s linear instance together with `sdKAdd`.  Under the ruling the two
+sides are the *same* element: `iRVInfty` is definitionally `iRVZero`, so that statement is
+now **false** (it is the negation of the convention that has been adopted).  Together with
+`zero_eq_infty_imp_false`, which packaged the old inconsistency argument, it is therefore
+**removed, not weakened** — no proof of it exists, and its subject matter no longer exists.
+In its place this file records the identity as `zero_eq_infty` (`rfl`), and keeps the two
+extraction lemmas on which the old argument rested, restated with the paper's guard
+`K = K^× ∪ {0}`:
+
+* `sdKAdd_rel` : `K` is closed under `+` (the old form, `x + y ≠ ∞`, is the *wrong* statement
+  once `∞ = 0`: closure of `K` means `iInK (iKAdd x y)`, i.e. the disjunction
+  `K^× ∪ {0}`, not `≠ 0`);
+* `kAlgClosed_lin_rel` : `∀ a ∈ K, ∃ x ∈ K, x + a = 0`.
+
+The old contradiction needed `x + 1 ≠ 0` and `x + 1 = 0` simultaneously.  With `0 = ∞` the
+solution `x + 1 = 0` satisfies `sdKAdd` through the second disjunct of `K = K^× ∪ {0}`
+(`kAlgClosed_lin_unit` below), so the pair of axioms is consistent on this point.  Keeping
+the `pK` (`x ≠ ∞`) guards of an earlier version would *not* be consistent: `kAlgClosed`'s
+linear instance at `a = 1` gives `x ≠ 0` with `x + 1 = 0`, and `pK`-guarded `sdKAdd` gives
+`x + 1 ≠ ∞ = 0`.  That is why the guards of `K` are `pInK`, as in `pInK`'s own definition.
 -/
 
 open FirstOrder FirstOrder.Language
@@ -925,18 +972,26 @@ theorem evalVec2swap (xs : Fin 2 → M) :
         Fin 2 → LRV.Term (Empty ⊕ Fin 2)) i)) = ![xs 1, xs 0] := by
   funext i; fin_cases i <;> simp [Term.realize_func, fin0_fun_eq, fin1_fun_eq]
 
-theorem realize_tRVInfty {n : ℕ} (xs : Fin n → M) :
-    Term.realize (Sum.elim (default : Empty → M) xs) (LRV.tRVInfty : LRV.Term (Empty ⊕ Fin n))
-      = iRVInfty := by
-  simp [LRV.tRVInfty, Term.realize_func, iRVInfty, fin0_fun_eq]
-
 theorem realize_tRVZero {n : ℕ} (xs : Fin n → M) :
     Term.realize (Sum.elim (default : Empty → M) xs) (LRV.tRVZero : LRV.Term (Empty ⊕ Fin n))
       = iRVZero := by
-  simp [LRV.tRVZero, Term.realize_func, iRVZero, fin0_fun_eq]
+  rw [LRV.tRVZero, iRVZero]
+  exact congrArg (FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvZero)
+    (Subsingleton.elim _ _)
+
+/-- The paper's `∞` and its `0` are one element, so the term `∞` realises as `iRVZero`. -/
+theorem realize_tRVInfty {n : ℕ} (xs : Fin n → M) :
+    Term.realize (Sum.elim (default : Empty → M) xs) (LRV.tRVInfty : LRV.Term (Empty ⊕ Fin n))
+      = iRVInfty := by
+  rw [LRV.tRVInfty, iRVInfty]
+  exact realize_tRVZero xs
 
 
-/-! ## The three repaired axioms, extracted -/
+/-! ## The two extracted axioms, with the paper's `K = K^× ∪ {0}` guard -/
+
+/-- The paper's residue field `K = K^× ∪ {0}` inside the carrier, as a predicate on the
+model: `pInK`'s semantics.  `0` here is `rv(0)`, the absorbing element of `RV`. -/
+def iInK (x : M) : Prop := iUnits x ∨ x = iRVZero
 
 /-- the current `sdUnits`: only that `Kˣ` lies in the `RV` sort -/
 theorem sdUnits_mem (h : M ⊨ Axioms.sdUnits) : ∀ x : M, iUnits x → iRV x := by
@@ -955,18 +1010,26 @@ theorem sdKAdd_mem_ACVF : Axioms.sdKAdd ∈ Axioms.ACVF := by
 theorem sdRVOne_mem_ACVF : Axioms.sdRVOne ∈ Axioms.ACVF := by
   simp [Axioms.ACVF, Axioms.sortAxioms, Axioms.sortClosure, Axioms.ofList]
 
+/-- `K = K^× ∪ {0}` is closed under `+` (`sdKAdd`, read in the model).
+
+The old version of this lemma concluded `iKAdd x y ≠ iRVInfty`, which was the right reading of
+`sdKAdd` when `K` was the complement of `∞`; with `∞ = 0` closure of `K` in the paper's sense
+is membership `iInK`, whose second disjunct is exactly `= 0`. -/
 theorem sdKAdd_rel (h : M ⊨ Axioms.sdKAdd) :
-    ∀ x y : M, iRV x → iRV y → x ≠ iRVInfty → y ≠ iRVInfty → iKAdd x y ≠ iRVInfty := by
+    ∀ x y : M, iRV x → iRV y → iInK x → iInK y → iInK (iKAdd x y) := by
   have h2 := h
-  simp [Axioms.sdKAdd, LRV.allSorted, LRV.sortedHyps, LRV.sortPred, LRV.pRVsort, LRV.pK,
-    LRV.pEq, LRV.tKAdd, LRV.tv, Sentence.Realize, List.finRange, fin0_fun_eq, Term.realize] at h2
-  intro x y hx hy hxinf hyinf
-  have hx' : ¬(![x, y] 0 = Term.realize (Sum.elim (default : Empty → M) ![x, y]) LRV.tRVInfty) := by
-    simpa [iRVInfty, evalVec2, realize_tRVInfty, fin0_fun_eq, fin1_fun_eq] using hxinf
-  have hy' : ¬(![x, y] 1 = Term.realize (Sum.elim (default : Empty → M) ![x, y]) LRV.tRVInfty) := by
-    simpa [iRVInfty, evalVec2, realize_tRVInfty, fin0_fun_eq, fin1_fun_eq] using hyinf
-  have key := h2 ![x, y] hx hy hx' hy'
-  simpa [iKAdd, iRVInfty, evalVec2, realize_tRVInfty, fin0_fun_eq, fin1_fun_eq] using key
+  simp [Axioms.sdKAdd, LRV.allSorted, LRV.sortedHyps, LRV.sortPred, LRV.pRVsort, LRV.pInK,
+    LRV.pUnits, LRV.pEq, LRV.tKAdd, LRV.tv, Sentence.Realize, List.finRange, realize_tRVZero,
+    Term.realize] at h2
+  intro x y hx hy hxK hyK
+  have hxK' : iUnits x ∨ x = iRVZero := by
+    simpa [iInK, iUnits, iRVZero, realize_tRVZero] using hxK
+  have hyK' : iUnits y ∨ y = iRVZero := by
+    simpa [iInK, iUnits, iRVZero, realize_tRVZero] using hyK
+  have key := h2 ![x, y] hx hy (by simpa [iUnits, iRVZero, realize_tRVZero] using hxK')
+    (by simpa [iUnits, iRVZero, realize_tRVZero] using hyK')
+  simpa [iInK, iUnits, iKAdd, iRVZero, realize_tRVZero, evalVec2, fin0_fun_eq, fin1_fun_eq]
+    using key
 
 theorem sdRVOne_mem (h : M ⊨ Axioms.sdRVOne) : iRV (iRVOne : M) := by
   have h2 := h
@@ -988,67 +1051,89 @@ theorem zero_ne_one_rel (h : M ⊨ sKZeroNeOne) : (iRVZero : M) ≠ iRVOne := by
     Term.realize_func, fin0_fun_eq, fin1_fun_eq] at h2
   simpa [iRVZero, iRVOne, fin0_fun_eq, fin1_fun_eq] using h2
 
+/-- `1 ∈ Kˣ` (`rvOneMem`): the witness that `1` lies in the paper's residue field `K`. -/
+theorem rvOneMem_mem_ACVF : Axioms.rvOneMem ∈ Axioms.ACVF := by
+  simp [Axioms.ACVF, Axioms.ACVFpaper, Axioms.rvGroup, Axioms.ofList]
+
+theorem rvOneMem_rel (h : M ⊨ Axioms.rvOneMem) : iUnits (iRVOne : M) := by
+  have h2 := h
+  simp only [Axioms.rvOneMem, LRV.pUnits, Sentence.Realize] at h2
+  simp only [Formula.Realize, BoundedFormula.realize_rel₁, LRV.tRVOne, Term.realize_func,
+    fin0_fun_eq, fin1_fun_eq] at h2
+  simpa [iUnits, iRVOne, fin0_fun_eq, fin1_fun_eq] using h2
+
 /-- the linear instance of the repaired `kAlgClosed`: `∀ a ∈ K, ∃ x ∈ K, x + a = 0`.
 
-(`hornerPoly` at `k = 1` is now the monic *linear* polynomial `x + a₀`, the repository's
-own `hornerPoly_one`.) -/
+(`hornerPoly` at `k = 1` is the monic *linear* polynomial `x + a₀`, the repository's
+own `hornerPoly_one`; the guards are the paper's `K = K^× ∪ {0}`.) -/
 theorem kAlgClosed_lin_rel (h : M ⊨ Axioms.acfSchemeK 1) :
-    ∀ a : M, iRV a → a ≠ iRVInfty →
-      ∃ x : M, iRV x ∧ x ≠ iRVInfty ∧ iKAdd x a = iRVZero := by
+    ∀ a : M, iRV a → iInK a → ∃ x : M, iRV x ∧ iInK x ∧ iKAdd x a = iRVZero := by
   have h2 := h
   simp [Axioms.acfSchemeK, LRV.allSortedK, LRV.exSortedK, LRV.sortedHyps, LRV.kHyps,
-    LRV.sortPred, LRV.pRVsort, LRV.pK, LRV.pEq, LRV.tv, LRV.hornerPoly_one, LRV.tKAdd,
-    LRV.tRVZero, Sentence.Realize, List.finRange, fin0_fun_eq, Term.realize,
+    LRV.sortPred, LRV.pRVsort, LRV.pInK, LRV.pUnits, LRV.pEq, LRV.tv, LRV.hornerPoly_one,
+    LRV.tKAdd, LRV.tRVZero, Sentence.Realize, List.finRange, realize_tRVZero, Term.realize,
     BoundedFormula.realize_ex] at h2
-  intro a ha hainf
-  have ha' : ¬(a = Term.realize (Sum.elim (default : Empty → M) (fun _ => a))
-      (LRV.tRVInfty : LRV.Term (Empty ⊕ Fin 1))) := by
-    simpa [iRVInfty, realize_tRVInfty] using hainf
-  have key := h2 (fun _ => a) ha ha'
-  obtain ⟨x, hrest⟩ := key
-  obtain ⟨hxmain, hEq⟩ := hrest
-  obtain ⟨hx, hxinf⟩ := hxmain
-  have h1 : (Fin.snoc (fun _ : Fin 1 => a) x : Fin 2 → M) (1 : Fin 2) = x := by
+  intro a hRV haK
+  have haK' : (FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memUnits ![a] ∨
+      a = FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvZero
+        (fun i : Fin 0 => Term.realize (Sum.elim (default : Empty → M) (fun _ => a))
+          (i.elim0 : LRV.Term (Empty ⊕ Fin 1)))) := by
+    rcases haK with h | h
+    · exact Or.inl h
+    · exact Or.inr (h.trans (realize_tRVZero (xs := fun _ => a)).symm)
+  obtain ⟨x, hxrest⟩ := h2 (fun _ => a) hRV haK'
+  have hsnoc : (Fin.snoc (fun _ : Fin 1 => a) x : Fin 2 → M) (1 : Fin 2) = x := by
     simp [snoc_fin2]
-  have h0 : (Fin.snoc (fun _ : Fin 1 => a) x : Fin 2 → M) (0 : Fin 2) = a := by
+  have hzero : (Fin.snoc (fun _ : Fin 1 => a) x : Fin 2 → M) (0 : Fin 2) = a := by
     simp [snoc_fin2]
-  refine ⟨x, hx, ?_, ?_⟩
-  · intro hx0
-    exact hxinf (h1.trans (hx0.trans (realize_tRVInfty (Fin.snoc (fun _ : Fin 1 => a) x)).symm))
-  · have h' := hEq
-    rw [evalVec2swap (Fin.snoc (fun _ : Fin 1 => a) x), h1, h0] at h'
-    simpa [iKAdd, iRVZero, fin0_fun_eq, fin1_fun_eq] using h'
+  have hxRV : iRV x := by
+    have h := hxrest.1.1
+    rwa [hsnoc] at h
+  refine ⟨x, hxRV, ?_, ?_⟩
+  · rcases hxrest.1.2 with h | h
+    · rw [hsnoc] at h
+      exact Or.inl h
+    · rw [hsnoc] at h
+      exact Or.inr (h.trans (realize_tRVZero (xs := Fin.snoc (fun _ : Fin 1 => a) x)))
+  · have h' := hxrest.2
+    have hL : (fun i : Fin 2 => Term.realize (Sum.elim (default : Empty → M)
+        (Fin.snoc (fun _ : Fin 1 => a) x))
+          ((![Term.var (Sum.inr (1 : Fin 2)), Term.var (Sum.inr (0 : Fin 2))] :
+            Fin 2 → LRV.Term (Empty ⊕ Fin 2)) i)) = ![x, a] := by
+      funext i
+      fin_cases i
+      · simpa [hsnoc, fin0_fun_eq, fin1_fun_eq] using congrArg (fun f : Fin 2 → M => f 1) hsnoc
+      · simpa [hzero, fin0_fun_eq, fin1_fun_eq] using congrArg (fun f : Fin 2 → M => f 0) hzero
+    rw [hL] at h'
+    exact h'.trans (realize_tRVZero (xs := Fin.snoc (fun _ : Fin 1 => a) x))
 
-theorem kAlgClosed_lin_mem : Axioms.acfSchemeK 1 ∈ Axioms.ACVF :=
-  Or.inr (Or.inl (Or.inl (Or.inr ⟨1, le_rfl, rfl⟩)))
+theorem kAlgClosed_lin_mem : Axioms.acfSchemeK 1 ∈ Axioms.ACVF := by
+  have hmem : Axioms.acfSchemeK 1 ∈ Axioms.kAlgClosed := ⟨1, le_rfl, rfl⟩
+  simp [Axioms.ACVF, Axioms.ACVFpaper, hmem]
 
 
-/-! ## The surviving obstruction: `0 = ∞` is fatal, and the fixed axioms refute it -/
+/-! ## What the reversal of the convention does to the old obstruction -/
 
-/-- **`0 ≠ ∞` is a theorem of the repaired `ACVF`.**
+/-- **The paper's `0` and `∞` are one element**: in the repaired encoding the two names have
+the same interpretation, definitionally.  This replaces the old `zero_ne_infty`, whose
+statement is now false. -/
+theorem zero_eq_infty : (iRVZero : M) = iRVInfty := rfl
 
-This is what is left of the old inconsistency: `0 = ∞` is still contradictory (the linear
-instance of `kAlgClosed` provides `x ∈ K ∖ {∞}` with `x + 1 = 0`, and `sdKAdd` forbids
-`x + 1 ∈ {∞} = {0}`), but the repaired axioms *exclude* `0 = ∞` instead of forcing it. -/
-theorem zero_eq_infty_imp_false (h : M ⊨ Axioms.ACVF) (h0inf : (iRVZero : M) = iRVInfty) :
-    False := by
-  have h1rv : iRV (iRVOne : M) := sdRVOne_mem (h.realize_of_mem _ sdRVOne_mem_ACVF)
-  have h10 : (iRVZero : M) ≠ iRVOne :=
-    zero_ne_one_rel (h.realize_of_mem _ sKZeroNeOne_mem)
-  have h1inf : (iRVOne : M) ≠ iRVInfty := by
-    intro h1
-    exact h10 (h0inf.trans h1.symm)
-  obtain ⟨x, hx, hxinf, hEq⟩ :=
-    kAlgClosed_lin_rel (h.realize_of_mem _ kAlgClosed_lin_mem) (iRVOne : M) h1rv h1inf
-  have hne := sdKAdd_rel (h.realize_of_mem _ sdKAdd_mem_ACVF) x (iRVOne : M) hx h1rv hxinf h1inf
-  exact hne (hEq.trans h0inf)
+/-- In every model of `ACVF` the residue field has a solution of `x + 1 = 0`, and it lies in
+`K`.  This is the step that used to give the contradiction `0 = ∞`: `sdKAdd` now allows
+`x + 1 = 0` as an element of `K` through the disjunct `K = K^× ∪ {0}`, so nothing
+inconsistent follows. -/
+theorem kAlgClosed_lin_unit (h : M ⊨ Axioms.ACVF) :
+    ∃ x : M, iInK x ∧ iKAdd x (iRVOne : M) = iRVZero := by
+  have hunit : iUnits (iRVOne : M) := rvOneMem_rel (h.realize_of_mem _ rvOneMem_mem_ACVF)
+  have hRV : iRV (iRVOne : M) := sdRVOne_mem (h.realize_of_mem _ sdRVOne_mem_ACVF)
+  obtain ⟨x, -, hxK, hEq⟩ :=
+    kAlgClosed_lin_rel (h.realize_of_mem _ kAlgClosed_lin_mem) (iRVOne : M) hRV (Or.inl hunit)
+  exact ⟨x, hxK, hEq⟩
 
-/-- **`0 ≠ ∞` in every model of `ACVF`.** -/
-theorem zero_ne_infty (h : M ⊨ Axioms.ACVF) : (iRVZero : M) ≠ iRVInfty := fun h0 =>
-  zero_eq_infty_imp_false h h0
-
-#print axioms zero_ne_infty
-#print axioms zero_eq_infty_imp_false
+#print axioms zero_eq_infty
 #print axioms kAlgClosed_lin_rel
+#print axioms sdKAdd_rel
+#print axioms kAlgClosed_lin_unit
 
 end Fixed
