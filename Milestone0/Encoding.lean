@@ -1090,6 +1090,31 @@ def IsCMinimalWS (M : Type*) [LRV.Structure M] : Prop :=
     ∀ (v : α → M), (∀ a, sortEval (sα a) (v a)) →
       IsBoolComb {b | IsBall b} {x : M | iVF x ∧ φ.Realize v ![x]}
 
+/-- **Definability by a formula of the paper's language**: `s ⊆ VF` is cut out by a well-sorted
+formula with one free `VF`-variable and parameters of declared sorts.  This is Mathlib's
+`Set.Definable₁` restricted to the formulas the paper's two-sorted `L_RV` actually has — the encoding
+admits ill-sorted terms, whose values no axiom fixes, so unrestricted definability is the wrong
+notion here. -/
+def DefinableVF (M : Type*) [LRV.Structure M] (s : Set M) : Prop :=
+  ∃ (α : Type) (sα : α → SortTag) (φ : LRV.BoundedFormula α 1) (v : α → M),
+    (∀ a, sortEval (sα a) (v a)) ∧ WellSorted sα (fun _ => SortTag.vf) φ ∧
+      s = {x : M | iVF x ∧ φ.Realize v ![x]}
+
+/-- **C-minimality in set form** — the well-sorted `IsCMinimalVF`: every subset of the `VF` sort
+definable by a formula of the paper's language, with parameters from either sort, is a finite
+Boolean combination of balls.  (m3's `IsCMinimalVF` is this with *unrestricted* definability, which
+is stronger and can fail through junk terms; the direction of the implication below is therefore
+`IsCMinimalWS → IsCMinimalVFWS`, not the converse.) -/
+def IsCMinimalVFWS (M : Type*) [LRV.Structure M] : Prop :=
+  ∀ s : Set M, DefinableVF M s → IsBoolComb {b | IsBall b} s
+
+/-- **The frozen target implies the set form.** -/
+theorem isCMinimalVFWS_of_isCMinimalWS {M : Type*} [LRV.Structure M]
+    (h : IsCMinimalWS M) : IsCMinimalVFWS M := by
+  rintro s ⟨α, sα, φ, v, hv, hws, hs⟩
+  rw [hs]
+  exact h α sα φ hws v hv
+
 /-- **Theorem 2.8** (Yin, op. cit.; quoted from arXiv:1006.1393, Theorem 4.2):
 `ACVF` is C-minimal, i.e. every model of `ACVF` is C-minimal in the sense of
 Definition 2.7, for the formulas of the paper's two-sorted language (`IsCMinimalWS`). -/

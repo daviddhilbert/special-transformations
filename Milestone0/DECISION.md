@@ -425,3 +425,30 @@ parameters of declared sorts, is a finite Boolean combination of balls.  The unr
 ```
 sha256 of Milestone0/Encoding.lean: 4d841a365904e177fd71f31241b193f60359cdbb4a53a34e53e94154eba8c313
 ```
+
+### The set-form target: `IsCMinimalVFWS`, and the direction of the implication
+
+Added to this file, on the author's clarification that C-minimality concerns subsets of the `VF`
+sort while definability may use parameters from **any** sort:
+
+```lean
+def DefinableVF (M) [LRV.Structure M] (s : Set M) : Prop :=
+  ∃ (α) (sα : α → SortTag) (φ : LRV.BoundedFormula α 1) (v : α → M),
+    (∀ a, sortEval (sα a) (v a)) ∧ WellSorted sα (fun _ => SortTag.vf) φ ∧
+      s = {x : M | iVF x ∧ φ.Realize v ![x]}
+
+def IsCMinimalVFWS (M) [LRV.Structure M] : Prop :=
+  ∀ s : Set M, DefinableVF M s → IsBoolComb {b | IsBall b} s
+
+theorem isCMinimalVFWS_of_isCMinimalWS (h : IsCMinimalWS M) : IsCMinimalVFWS M
+```
+
+Parameters range over both sorts (a ball of radius `γ` needs an `RV`-parameter), the set is cut down
+to `VF`, and definability is by a formula of the paper's language.  m3's `IsCMinimalVF` takes
+definability *unrestricted*, which is strictly stronger — and can fail, since an ill-sorted term
+(`iVFAdd (rv x) 1`) has a value no axiom fixes — so the implication proved is
+`IsCMinimalWS → IsCMinimalVFWS`, and the converse is not claimed.
+
+```
+sha256 of Milestone0/Encoding.lean: 116bd9f358deff9bd03a716e53105ae768448434bd05e46cd85eec88cac8bacf
+```
