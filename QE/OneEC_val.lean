@@ -17,7 +17,35 @@ This is the syntax bridge Johnson's Lemma 2.3.1 needs, plus the assembly of 1-ec
 * `oneECIn_of_inputs'`: `OneECIn` for `K ↪[val] L` from `AtomGood` and `GoodMeetsBase`
   (= 2.3.2 ∘ 2.3.8), in the exact shape of Johnson's hypothesis (iii).
 
-**Not proved here: `AtomGood`.**  It is the one genuinely analytic step left.  Two things make it
+**Not proved here: `AtomGood`** — but its first layer is.  The section `Atom` at the end of this
+file proves, for `[IsAlgClosed K]`:
+
+* `eval₂_prod_roots_aux`, `eval₂_eq_prod_roots`, `val_eval₂_eq_prod_roots`:
+  `w (P.eval₂ f x) = w (f P.leadingCoeff) * ∏_{a ∈ P.roots} w (x - f a)`;
+* `val_sub_eq_of_lt`: **far from the other roots a factor is constant** — if
+  `w (x - f a) < w (f a - f b)` then `w (x - f b) = w (f a - f b)`;
+* `atomGood_P_zero` and `atomGood_Q_zero`: the degenerate cases (`P = 0`: everything; `Q = 0`: the
+  finite root set, via `finite_rootSet`).
+
+What remains is the cluster induction.  For a finite root set `A` and `a ∈ A` put
+`U_a := ⋂_{b ∈ A, b ≠ a} openBall (f a) (w (f (a - b)))`, a finite intersection of `K`-balls, so
+`Good`.  On `U_a` every factor except the `a`-one is the *constant* `w (f a - f b)`
+(`val_sub_eq_of_lt`), so with `m_a`, `n_a` the multiplicities of `a` in `P.roots`, `Q.roots` and
+`δ := w (x - f a)`, the condition becomes `c_P δ^{m_a} ≤ c_Q δ^{n_a}` with `c_P`, `c_Q` explicit
+values of `w ∘ f`: a closed ball when `m_a > n_a`, the complement of an open ball when
+`m_a < n_a` (the `(m_a - n_a)`-th root exists because `K` is algebraically closed —
+`exists_pow_val_eq`, or `Johnson.exists_pow_val_eq` — applied to the valuation `w.comap f`), and
+constant on `U_a` when `m_a = n_a`.  The pieces `U_a` cover only the points that are strictly
+closer to one root than to all the others; the rest is handled by induction on the number of
+distinct roots, splitting on `δ < γ_a`, `δ = γ_a`, `δ > γ_a` where `γ_a` is the distance from `a`
+to the nearest other root — in the middle case the `a`-term is constant and drops out, and in the
+third `a` merges with its nearest neighbour so the two coefficients add.  That part is **not**
+formalized yet.
+
+Why the naive arg-max argument does not work, for the record: (i) `v(x - a) = v(x - a')` with `x`
+not a root is possible, so the strict arg-max cells do not cover `N`; (ii) at `x = a` the
+ultrametric "max rule" degenerates (`v(a - a') = M` but `v(x - a') = 0`), so on a non-strict
+arg-max set the values `v(x - a')` are *not* all equal.  Two things make it
 harder than Johnson's sketch suggests, and they are recorded so that nobody repeats the mistake:
 (i) `v(x - a) = v(x - a')` with `x` not a root is possible, so the strict arg-max sets do not
 cover `N`; (ii) at `x = a` the ultrametric "max rule" degenerates (`v(a - a') = M` but
@@ -964,3 +992,87 @@ end OneEC
 #print axioms ValOneEC.oneECIn_of_inputs₃
 #print axioms ValOneEC.oneECIn_of_inputs'
 
+
+/-! ## Johnson 2.3.1(ii): the value-inequality set is a Boolean combination of `K`-balls -/
+
+section Atom
+
+open Polynomial
+
+variable {K : Type} [Field K] [IsAlgClosed K] {N : Type} [Field N]
+variable {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
+variable {f : K →+* N} {w : Valuation N Γ'}
+
+/-- Evaluating a polynomial over an algebraically closed field in an extension: the value is the
+leading coefficient times the product over the roots in `K` (with multiplicities). -/
+theorem eval₂_prod_roots_aux (p : K[X]) (x : N) :
+    Polynomial.eval₂ f x ((p.roots.map (fun a => Polynomial.X - Polynomial.C a)).prod)
+      = (p.roots.map (fun a => x - f a)).prod := by
+  induction p.roots using Multiset.induction with
+  | empty => simp
+  | cons a s ih =>
+    rw [Multiset.map_cons, Multiset.prod_cons, Polynomial.eval₂_mul,
+      Multiset.map_cons, Multiset.prod_cons, ih]
+    simp
+
+theorem eval₂_eq_prod_roots (p : K[X]) (x : N) :
+    p.eval₂ f x = f p.leadingCoeff * (p.roots.map (fun a => x - f a)).prod := by
+  have hs : p.Splits := IsAlgClosed.splits p
+  conv_lhs => rw [hs.eq_prod_roots]
+  rw [Polynomial.eval₂_mul, Polynomial.eval₂_C, eval₂_prod_roots_aux]
+
+/-- The same for values. -/
+theorem val_eval₂_eq_prod_roots (p : K[X]) (x : N) :
+    w (p.eval₂ f x) = w (f p.leadingCoeff) * (p.roots.map (fun a => w (x - f a))).prod := by
+  rw [eval₂_eq_prod_roots, map_mul, map_multiset_prod, Multiset.map_map]
+  rfl
+
+/-- **Far from the other roots, a factor is constant**: if `x` is closer to `a` than `a` is to
+`b`, then `w (x - b) = w (a - b)`. -/
+theorem val_sub_eq_of_lt {x : N} {a b : K} (h : w (x - f a) < w (f a - f b)) :
+    w (x - f b) = w (f a - f b) := by
+  have hsplit : f a - f b = (f a - x) + (x - f b) := by ring
+  rcases lt_or_ge (w (x - f b)) (w (f a - f b)) with hlt | hge
+  · -- both summands are strictly below `w (a - b)`, so their sum is too
+    have h1 : w ((f a - x) + (x - f b)) ≤ max (w (f a - x)) (w (x - f b)) :=
+      map_add_le_max w _ _
+    have h1' : w (f a - x) = w (x - f a) := by
+      rw [show f a - x = -(x - f a) by ring, Valuation.map_neg]
+    rw [h1'] at h1
+    have hbad : w ((f a - x) + (x - f b)) < w (f a - f b) :=
+      lt_of_le_of_lt h1 (max_lt h hlt)
+    rw [hsplit] at hbad
+    exact absurd hbad (lt_irrefl _)
+  · refine le_antisymm ?_ hge
+    have h2 : x - f b = (x - f a) + (f a - f b) := by ring
+    rw [h2]
+    exact le_trans (map_add_le_max w (x - f a) (f a - f b)) (max_le h.le le_rfl)
+
+/-- `P = 0`: the set is everything. -/
+theorem atomGood_P_zero (Q : K[X]) :
+    Good f w {x : N | w ((0 : K[X]).eval₂ f x) ≤ w (Q.eval₂ f x)} := by
+  have h : {x : N | w ((0 : K[X]).eval₂ f x) ≤ w (Q.eval₂ f x)} = Set.univ := by
+    ext x
+    simp only [Set.mem_setOf_eq, Polynomial.eval₂_zero, map_zero, Set.mem_univ, iff_true]
+    exact zero_le
+  rw [h]; exact good_univ f w
+
+/-- `Q = 0`: the set is the (finite) root set of `P`. -/
+theorem atomGood_Q_zero (P : K[X]) :
+    Good f w {x : N | w (P.eval₂ f x) ≤ w ((0 : K[X]).eval₂ f x)} := by
+  rcases eq_or_ne P 0 with rfl | hP
+  · rw [show {x : N | w ((0 : K[X]).eval₂ f x) ≤ w ((0 : K[X]).eval₂ f x)} = Set.univ from by
+      ext x; simp]
+    exact good_univ f w
+  have h : {x : N | w (P.eval₂ f x) ≤ w ((0 : K[X]).eval₂ f x)} = {x : N | P.eval₂ f x = 0} := by
+    ext x
+    simp only [Set.mem_setOf_eq, Polynomial.eval₂_zero, map_zero]
+    constructor
+    · intro hx
+      by_contra hne
+      exact absurd hx (not_le.mpr (pos_iff_ne_zero.mpr (w.ne_zero_iff.mpr hne)))
+    · intro hx; rw [hx, map_zero]
+  rw [h]
+  exact good_of_finite_range (finite_rootSet f P hP).1 (finite_rootSet f P hP).2
+
+end Atom
