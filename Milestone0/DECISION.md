@@ -680,3 +680,39 @@ they are worth.
 * Nothing here shortens the main route's remaining work (the guard repair, the mixed-context
   elimination, the parameter bridge), because those are about the encoding and the fragment, not
   about model theory.
+
+### The guard repair: exactly where it fails, and the fix that follows from it
+
+Tried: `InAntecedent.atom'` (taking the equation `φ = guardAtom s i`), and the bridge
+`inAntecedent_of_occurs` written as a structural match on the formula with one arm per
+constructor.  It fails in all five non-conjunction arms (10 errors): `simpa [Occurs] using h` does
+not turn `h : Occurs i s η` into the equation `η = guardAtom s i` when `η`'s head is a constructor
+whose sub-patterns are variables.  The reason is definitional: `Occurs` is a *compiled match*
+
+```
+| .imp (.imp a (.imp b .falsum)) .falsum => Occurs i s a ∨ Occurs i s b
+| φ => φ = sortPredG s (Term.var (Sum.inr i))
+```
+
+and in the arm `| .imp a b, h` the discriminator has to look *inside* `a` and `b`, which it cannot
+do when they are variables.  So `Occurs` is stuck, not false — the lemma is true, but its proof
+cannot go through `Occurs`'s equations.
+
+**Conclusion: the repair should not be attempted as a bridge from `Occurs`.**  `Occurs` and
+`InAntecedent` are the *same predicate* — a top-level conjunct of the conjunction tree — and
+`InAntecedent` is the version that is an inductive family, hence usable.  The right edit is
+
+1. define `InAntecedent` (already written), then **define `Occurs i s η := InAntecedent s i η`**
+   (a `def`, not a compiled match), or delete `Occurs` and rename all its uses;
+2. `occurs_self`, `occurs_foldr_hyps`, `occurs_sortedHyps` restate from `= sortPredG …` to
+   `InAntecedent.atom` / `.and_left` / `.and_right` — each is then a two-line proof;
+3. `GuardsLast`'s clauses are stated in terms of `Occurs`, so they are unchanged *definitionally*
+   after the redefinition, and the two `GuardTrue` obligations at the `exSorted*` sites become
+   `InAntecedent.and_left .atom`;
+4. with `Occurs := InAntecedent`, `inAntecedent_of_occurs` is `id` and `wellSorted_alls`'s four
+   callers keep their hypotheses verbatim.
+
+That is the whole repair: it removes a fragile compiled match rather than adding hypotheses to
+lemmas.  `Milestone0/Encoding.lean` is back at sha `851d6a98…` (green) because the attempt above
+left it red and the tree has to stay usable; the work is in commits `604f968`/`35be8be` and the
+analysis above is the specification for finishing it.
