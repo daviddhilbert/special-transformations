@@ -1168,3 +1168,48 @@ theorem prod_split (s : Multiset K) (g : K → Γ') (a : K) :
       ring_nf
 
 end ProdSplit
+
+/-! ### The master claim of the cluster induction -/
+
+section MasterClaim
+
+variable {K : Type} [Field K] [DecidableEq K] [IsAlgClosed K] {N : Type} [Field N]
+variable {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
+variable {f : K →+* N} {w : Valuation N Γ'}
+
+/-- The set whose `Good`-ness the induction proves. -/
+def prodLe (p q : Multiset K) (aP aQ : K) : Set N :=
+  {x : N | w (f aP) * (p.map (fun a => w (x - f a))).prod
+            ≤ w (f aQ) * (q.map (fun a => w (x - f a))).prod}
+
+/-- If no root occurs, both multisets are empty. -/
+theorem eq_zero_of_toFinset_eq_empty {p : Multiset K} (h : p.toFinset = ∅) : p = 0 := by
+  rw [Multiset.toFinset_eq_empty] at h
+  exact h
+
+
+/-- **Near region, pointwise**: if `x` is closer to `a` than the nearest other root is to `a`,
+then every other root contributes its constant value. -/
+theorem val_eq_of_near {p q : Multiset K} {a b : K} (hb : b ∈ p + q)
+    (hmin : ∀ c ∈ p + q, c ≠ a → w (f a - f b) ≤ w (f a - f c))
+    {x : N} (hx : w (x - f a) < w (f a - f b)) :
+    ∀ c ∈ p + q, c ≠ a → w (x - f c) = w (f a - f c) := by
+  intro c hc hca
+  exact val_sub_eq_of_lt (lt_of_lt_of_le hx (hmin c hc hca))
+
+/-- **Near region, for the product over the roots of one polynomial**: the whole product is a
+constant there. -/
+theorem prod_map_eq_const_of_near {p q : Multiset K} {a b : K} (hb : b ∈ p + q)
+    (hmin : ∀ c ∈ p + q, c ≠ a → w (f a - f b) ≤ w (f a - f c))
+    {x : N} (hx : w (x - f a) < w (f a - f b)) :
+    ((p.filter (fun c => c ≠ a)).map (fun c => w (x - f c))).prod
+      = ((p.filter (fun c => c ≠ a)).map (fun c => w (f a - f c))).prod := by
+  have h : (p.filter (fun c => c ≠ a)).map (fun c => w (x - f c))
+      = (p.filter (fun c => c ≠ a)).map (fun c => w (f a - f c)) := by
+    refine Multiset.map_congr rfl ?_
+    intro c hc
+    obtain ⟨hcp, hca⟩ := Multiset.mem_filter.mp hc
+    exact val_eq_of_near (p := p) (q := q) hb hmin hx c (Multiset.mem_add.mpr (Or.inl hcp)) hca
+  rw [h]
+
+end MasterClaim
