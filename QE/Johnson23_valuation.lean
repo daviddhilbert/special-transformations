@@ -1157,6 +1157,110 @@ theorem ne_finite_union_of_proper_subballs [IsAlgClosed K] (v : Valuation K Γ�
 #print axioms Johnson.cover_transfer
 #print axioms Johnson.ne_finite_union_of_proper_subballs
 
+
+/-! ## Comparability of balls (Johnson's (2.3)), including the mixed radius cases
+
+Johnson uses "any two balls which intersect are comparable" in the proof of Lemma 2.3.2.  The
+closed/closed and open/open cases are `closedBall_subset_or_subset` and
+`openBall_subset_or_subset` above; the mixed cases are proved here.  Which of the two balls is
+the smaller one is decided by the comparison of the two radii. -/
+
+/-- A closed ball of smaller radius inside an open ball. -/
+theorem closedBall_subset_openBall (v : Valuation K Γ₀) {c d : K} {a b : K}
+    (hcd : v (c - d) < v b) (ha : v a < v b) :
+    closedBall v c (v a) ⊆ openBall v d (v b) := by
+  intro x hx
+  simp only [mem_closedBall] at hx
+  simp only [mem_openBall]
+  exact lt_of_le_of_lt (val_sub_le_max v x c d) (max_lt (lt_of_le_of_lt hx ha) hcd)
+
+/-- An open ball inside a closed ball. -/
+theorem openBall_subset_closedBall (v : Valuation K Γ₀) {c d : K} {a b : K}
+    (hcd : v (c - d) ≤ v b) (ha : v a ≤ v b) :
+    openBall v c (v a) ⊆ closedBall v d (v b) := by
+  intro x hx
+  simp only [mem_openBall] at hx
+  simp only [mem_closedBall]
+  exact le_trans (val_sub_le_max v x c d) (max_le (le_of_lt (lt_of_lt_of_le hx ha)) hcd)
+
+/-- The value of `c - d` is at most the larger of two radii, given a common point `z`. -/
+theorem val_sub_le_max_of_mem (v : Valuation K Γ₀) {z c d : K} {a b : K}
+    (hz₁ : v (z - c) ≤ v a) (hz₂ : v (z - d) ≤ v b) :
+    v (c - d) ≤ max (v a) (v b) := by
+  have h1 : v (c - z) ≤ v a := by
+    rw [show c - z = -(z - c) by ring, Valuation.map_neg]; exact hz₁
+  exact le_trans (val_sub_le_max v c z d) (max_le_max h1 hz₂)
+
+/-- **Johnson (2.3).** Two balls with radii in `vK` that meet are comparable. -/
+theorem isValBall_subset_or_subset (v : Valuation K Γ₀) {B₁ B₂ : Set K}
+    (h₁ : IsValBall v B₁) (h₂ : IsValBall v B₂) (h : (B₁ ∩ B₂).Nonempty) :
+    B₁ ⊆ B₂ ∨ B₂ ⊆ B₁ := by
+  obtain ⟨z, hz₁, hz₂⟩ := h
+  cases h₁ with
+  | univ => exact Or.inr (Set.subset_univ _)
+  | singleton c =>
+    rw [Set.mem_singleton_iff] at hz₁
+    subst hz₁
+    cases h₂ with
+    | univ => exact Or.inl (Set.subset_univ _)
+    | singleton d => exact Or.inl (Set.singleton_subset_iff.mpr hz₂)
+    | closed d b => exact Or.inl (Set.singleton_subset_iff.mpr hz₂)
+    | openball d b => exact Or.inl (Set.singleton_subset_iff.mpr hz₂)
+  | closed c a =>
+    cases h₂ with
+    | univ => exact Or.inl (Set.subset_univ _)
+    | singleton d =>
+      rw [Set.mem_singleton_iff] at hz₂
+      subst hz₂
+      exact Or.inr (Set.singleton_subset_iff.mpr hz₁)
+    | closed d b => exact closedBall_subset_or_subset v ⟨z, hz₁, hz₂⟩
+    | openball d b =>
+      simp only [mem_closedBall] at hz₁
+      simp only [mem_openBall] at hz₂
+      rcases lt_or_ge (v a) (v b) with hab | hab
+      · left
+        have h2 : v (z - d) < v b := hz₂
+        refine closedBall_subset_openBall v ?_ hab
+        have h3 : v (c - z) < v b := by
+          rw [show c - z = -(z - c) by ring, Valuation.map_neg]
+          exact lt_of_le_of_lt hz₁ hab
+        exact lt_of_le_of_lt (val_sub_le_max v c z d) (max_lt h3 h2)
+      · right
+        have h2 : v (z - d) < v b := hz₂
+        refine openBall_subset_closedBall (v := v) (c := d) (d := c) (a := b) (b := a) ?_ hab
+        have h1 : v (d - z) ≤ v a := by
+          rw [show d - z = -(z - d) by ring, Valuation.map_neg]
+          exact le_trans h2.le hab
+        have h3 : v (z - c) ≤ v a := hz₁
+        exact le_trans (val_sub_le_max v d z c) (max_le h1 h3)
+  | openball c a =>
+    simp only [mem_openBall] at hz₁
+    cases h₂ with
+    | univ => exact Or.inl (Set.subset_univ _)
+    | singleton d =>
+      rw [Set.mem_singleton_iff] at hz₂
+      subst hz₂
+      exact Or.inr (Set.singleton_subset_iff.mpr hz₁)
+    | closed d b =>
+      simp only [mem_closedBall] at hz₂
+      rcases le_or_gt (v a) (v b) with hab | hab
+      · left
+        refine openBall_subset_closedBall (v := v) ?_ hab
+        have h := val_sub_le_max_of_mem v (z := z) hz₁.le hz₂
+        rwa [max_eq_right hab] at h
+      · right
+        refine closedBall_subset_openBall (v := v) (c := d) (d := c) (a := b) (b := a) ?_ hab
+        have h1 : v (d - z) < v a := by
+          rw [show d - z = -(z - d) by ring, Valuation.map_neg]
+          exact lt_of_le_of_lt hz₂ hab
+        have h2 : v (z - c) < v a := hz₁
+        exact lt_of_le_of_lt (val_sub_le_max v d z c) (max_lt h1 h2)
+    | openball d b => exact openBall_subset_or_subset v ⟨z, hz₁, hz₂⟩
+
+#print axioms Johnson.closedBall_subset_openBall
+#print axioms Johnson.openBall_subset_closedBall
+#print axioms Johnson.isValBall_subset_or_subset
+
 end Johnson
 
 #print axioms Johnson.exists_pow_val_eq
