@@ -1210,3 +1210,187 @@ noncomputable def valPrimeEmbedding (e : S ↪[Language.val] M)
       exact pred_emb_iff e (x 0) (x 1)
 
 end PrimeField
+
+
+/-! ## 10. The universal property of the prime model -/
+
+section Universal
+
+variable {S : Type} [Language.val.Structure S] [Language.ring.Structure S]
+  [valRingHom.IsExpansionOn S]
+variable {M : Type} [CommRing M] [Language.val.Structure M] [CompatibleRing M]
+  [valRingHom.IsExpansionOn M] [IsDomain M]
+variable {N : Type} [Field N] [CompatibleRing N] [Language.val.Structure N]
+  [valRingHom.IsExpansionOn N]
+
+/-- **The predicate on `S` computed in two different valued fields agrees.**  This is the
+`L_val` analogue of `ker_lift_eq`: the truth of `v (P x) ≤ v (Q x)` at a tuple of parameters from
+`S` is intrinsic to `S`, because both `e` and `f` preserve and reflect the predicate. -/
+theorem predM_lift_iff (e : S ↪[Language.val] M) (f : S ↪[Language.val] N)
+    (p q : FreeCommRing S) :
+    predM (FreeCommRing.lift (fun s => e s) p) (FreeCommRing.lift (fun s => e s) q)
+      ↔ predM (FreeCommRing.lift (fun s => f s) p) (FreeCommRing.lift (fun s => f s) q) := by
+  rw [lift_eq_apply_term e p, lift_eq_apply_term e q, lift_eq_apply_term f p,
+    lift_eq_apply_term f q]
+  exact (pred_emb_iff e _ _).trans (pred_emb_iff f _ _).symm
+
+/-- The map `S → N` extended to the coordinate ring. -/
+noncomputable def rHom (e : S ↪[Language.val] M) (f : S ↪[Language.val] N) :
+    coordRing e →+* N :=
+  Ideal.Quotient.lift (relIdeal e) (FreeCommRing.lift (fun s => f s)) (fun a ha => by
+    rw [ker_lift_eq e f] at ha
+    exact RingHom.mem_ker.mp ha)
+
+theorem rHom_mk (e : S ↪[Language.val] M) (f : S ↪[Language.val] N) (p : FreeCommRing S) :
+    rHom e f (Ideal.Quotient.mk (relIdeal e) p) = FreeCommRing.lift (fun s => f s) p := rfl
+
+theorem rHom_injective (e : S ↪[Language.val] M) (f : S ↪[Language.val] N) :
+    Function.Injective (rHom e f) := by
+  intro x y hxy
+  obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective (I := relIdeal e) x
+  obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective (I := relIdeal e) y
+  rw [rHom_mk, rHom_mk] at hxy
+  rw [Ideal.Quotient.mk_eq_mk_iff_sub_mem, ker_lift_eq e f, RingHom.mem_ker, map_sub, hxy,
+    sub_self]
+
+/-- The predicate of the coordinate ring is the same computed in `N`. -/
+theorem pred_rHom_iff (e : S ↪[Language.val] M) (f : S ↪[Language.val] N)
+    (z w : coordRing e) :
+    predM (rHom e f z) (rHom e f w) ↔ predM (coordEval e z) (coordEval e w) := by
+  obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective (I := relIdeal e) z
+  obtain ⟨q, rfl⟩ := Ideal.Quotient.mk_surjective (I := relIdeal e) w
+  rw [rHom_mk, rHom_mk, coordEval_mk, coordEval_mk]
+  exact (predM_lift_iff e f p q).symm
+
+/-- The induced map on the prime model. -/
+noncomputable def gHom (e : S ↪[Language.val] M) (f : S ↪[Language.val] N) :
+    valPrimeField e →+* N :=
+  IsFractionRing.lift (A := coordRing e) (K := valPrimeField e) (L := N) (rHom_injective e f)
+
+theorem gHom_algebraMap (e : S ↪[Language.val] M) (f : S ↪[Language.val] N)
+    (z : coordRing e) :
+    gHom e f (algebraMap (coordRing e) (valPrimeField e) z) = rHom e f z :=
+  IsFractionRing.lift_algebraMap (rHom_injective e f) z
+
+theorem gHom_injective (e : S ↪[Language.val] M) (f : S ↪[Language.val] N) :
+    Function.Injective (gHom e f) := by
+  intro x y hxy
+  have h : gHom e f (x - y) = 0 := by rw [map_sub, hxy, sub_self]
+  by_contra hne
+  have hne' : x - y ≠ 0 := sub_ne_zero.mpr hne
+  have h1 : gHom e f (x - y) * gHom e f ((x - y)⁻¹) = 1 := by
+    rw [← map_mul, mul_inv_cancel₀ hne', map_one]
+  rw [h, zero_mul] at h1
+  exact zero_ne_one h1
+
+/-- On a fraction, `gHom` is the corresponding quotient. -/
+theorem gHom_mk' (e : S ↪[Language.val] M) (f : S ↪[Language.val] N)
+    (a : coordRing e) (s : nonZeroDivisors (coordRing e)) :
+    gHom e f (IsLocalization.mk' (valPrimeField e) a s)
+      = rHom e f a * (rHom e f (s : coordRing e))⁻¹ := by
+  have hs : ((s : coordRing e)) ≠ 0 := nonZeroDivisors.ne_zero s.2
+  have hsr : rHom e f (s : coordRing e) ≠ 0 := fun h =>
+    hs (rHom_injective e f (by rw [h, map_zero]))
+  rw [eq_mul_inv_iff_mul_eq₀ hsr]
+  have hspec : IsLocalization.mk' (valPrimeField e) a s
+      * algebraMap (coordRing e) (valPrimeField e) (s : coordRing e)
+      = algebraMap (coordRing e) (valPrimeField e) a :=
+    IsLocalization.mk'_spec (valPrimeField e) a s
+  have h := congrArg (gHom e f) hspec
+  simp only [map_mul, gHom_algebraMap] at h
+  simpa only [mul_comm] using h
+
+/-- **`gHom` preserves and reflects the predicate.** -/
+theorem pred_gHom_iff (e : S ↪[Language.val] M) (f : S ↪[Language.val] N)
+    (hM : @IsValPred M _ (predM : M → M → Prop))
+    (hN : @IsValPred N _ (predM : N → N → Prop)) (x y : valPrimeField e) :
+    predM (gHom e f x) (gHom e f y) ↔ predVal e x y := by
+  obtain ⟨⟨a, s⟩, rfl⟩ := IsLocalization.mk'_surjective (nonZeroDivisors (coordRing e)) x
+  obtain ⟨⟨c, t⟩, rfl⟩ := IsLocalization.mk'_surjective (nonZeroDivisors (coordRing e)) y
+  rw [gHom_mk' e f a s, gHom_mk' e f c t]
+  show predM (rHom e f a * (rHom e f (s : coordRing e))⁻¹)
+        (rHom e f c * (rHom e f (t : coordRing e))⁻¹)
+      ↔ predFrac (predCoord e) (IsLocalization.mk' (valPrimeField e) a s)
+          (IsLocalization.mk' (valPrimeField e) c t)
+  rw [predFrac_iff (IsValPred.scale (predCoord_isValPred e hM))]
+  show predM (rHom e f a * (rHom e f (s : coordRing e))⁻¹)
+        (rHom e f c * (rHom e f (t : coordRing e))⁻¹)
+      ↔ predM (coordEval e (a * (t : coordRing e))) (coordEval e (c * (s : coordRing e)))
+  have hkey : predM (rHom e f (a * (t : coordRing e))) (rHom e f (c * (s : coordRing e)))
+      ↔ predM (coordEval e (a * (t : coordRing e))) (coordEval e (c * (s : coordRing e))) :=
+    pred_rHom_iff e f _ _
+  rw [← hkey]
+  have hs : ((s : coordRing e)) ≠ 0 := nonZeroDivisors.ne_zero s.2
+  have ht : ((t : coordRing e)) ≠ 0 := nonZeroDivisors.ne_zero t.2
+  have hsr : rHom e f (s : coordRing e) ≠ 0 := fun h =>
+    hs (rHom_injective e f (by rw [h, map_zero]))
+  have htr : rHom e f (t : coordRing e) ≠ 0 := fun h =>
+    ht (rHom_injective e f (by rw [h, map_zero]))
+  rw [show predM (rHom e f a * (rHom e f (s : coordRing e))⁻¹)
+        (rHom e f c * (rHom e f (t : coordRing e))⁻¹)
+      ↔ predM ((rHom e f a * (rHom e f (s : coordRing e))⁻¹)
+            * (rHom e f (s : coordRing e) * rHom e f (t : coordRing e)))
+          ((rHom e f c * (rHom e f (t : coordRing e))⁻¹)
+            * (rHom e f (s : coordRing e) * rHom e f (t : coordRing e)))
+    from IsValPred.scale hN _ _ _ (mul_ne_zero hsr htr)]
+  have e1 : (rHom e f a * (rHom e f (s : coordRing e))⁻¹)
+      * (rHom e f (s : coordRing e) * rHom e f (t : coordRing e))
+      = rHom e f a * rHom e f (t : coordRing e) := by
+    field_simp
+  have e2 : (rHom e f c * (rHom e f (t : coordRing e))⁻¹)
+      * (rHom e f (s : coordRing e) * rHom e f (t : coordRing e))
+      = rHom e f c * rHom e f (s : coordRing e) := by
+    field_simp
+  rw [e1, e2, map_mul, map_mul]
+
+/-- **A ring hom between valued fields which preserves and reflects the predicate is an
+`L_val`-embedding.** -/
+def embeddingOfPredRingHom {A B : Type*} [CommRing A] [CommRing B]
+    [Language.val.Structure A] [Language.val.Structure B]
+    [CompatibleRing A] [CompatibleRing B]
+    [valRingHom.IsExpansionOn A] [valRingHom.IsExpansionOn B]
+    (f : A →+* B) (hf : Function.Injective f)
+    (hpred : ∀ x y : A, predM (f x) (f y) ↔ predM x y) : A ↪[Language.val] B where
+  toFun := f
+  inj' := hf
+  map_fun' := by
+    intro n g x
+    rw [valFunMap_eq_ringVal (N := A) (g := g) (x := x),
+      valFunMap_eq_ringVal (N := B) (g := g) (x := f ∘ x)]
+    exact ringHom_map_fun f (valToRing g) x
+  map_rel' := by
+    intro n r x
+    cases r with
+    | le =>
+      have h1 : Structure.RelMap (L := Language.val) (M := B) ValRel.le (f ∘ x)
+          ↔ predM (f (x 0)) (f (x 1)) := by
+        rw [relMap_two]
+        rfl
+      have h2 : Structure.RelMap (L := Language.val) (M := A) ValRel.le x
+          ↔ predM (x 0) (x 1) := relMap_two x
+      rw [h1, h2]
+      exact hpred (x 0) (x 1)
+
+/-- **The prime model of `valField` over `S` embeds into every valued field over `S`.** -/
+theorem valPrimeField_universal (e : S ↪[Language.val] M) (f : S ↪[Language.val] N)
+    (hM : @IsValPred M _ (predM : M → M → Prop))
+    (hN : @IsValPred N _ (predM : N → N → Prop)) :
+    ∃ g : valPrimeField e ↪[Language.val] N, g.comp (valPrimeEmbedding e hM) = f := by
+  refine ⟨embeddingOfPredRingHom (gHom e f) (gHom_injective e f)
+    (fun x y => pred_gHom_iff e f hM hN x y), ?_⟩
+  refine FirstOrder.Language.Embedding.ext ?_
+  intro s
+  rw [FirstOrder.Language.Embedding.comp_apply]
+  show gHom e f (algebraMap (coordRing e) (valPrimeField e) (coordEmbedding e s)) = f s
+  rw [gHom_algebraMap]
+  show rHom e f (Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of s)) = f s
+  rw [rHom_mk, FreeCommRing.lift_of]
+
+end Universal
+
+#print axioms ValPM.valPrimeField_universal
+#print axioms ValPM.valPrimeEmbedding
+#print axioms ValPM.valPrimeField_model
+#print axioms ValPM.pred_gHom_iff
+#print axioms ValPM.predM_lift_iff
+#print axioms ValPM.model_field_of_valField
