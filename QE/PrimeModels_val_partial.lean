@@ -1574,3 +1574,19 @@ theorem valStruct_ext (M : Type) [s : Language.val.Structure M] [Field M] [Compa
 end StructEq
 
 #print axioms ValPM.valStruct_ext
+
+/-- The `L_val`-structure given by a predicate and the one given by a Mathlib valuation carrying
+the same relation are the same structure.  Together with `valStruct_ext` this chains a
+`valField.ModelType`'s own structure to `valStructure v` for the valuation produced by
+`exists_valuation_of_isValPred`, which is the form `oneECIn_of_inputs'` is stated in. -/
+theorem valStructOf_eq_valStructure {K : Type} [Field K] {Γ₀ : Type*}
+    [LinearOrderedCommGroupWithZero Γ₀] {v : Valuation K Γ₀} {p : K → K → Prop}
+    (h : ∀ x y : K, p x y ↔ v x ≤ v y) :
+    valStructOf K p = FirstOrder.valStructure v := by
+  simp only [valStructOf, FirstOrder.valStructure]
+  congr 1
+  funext n r x
+  cases r with
+  | le => exact propext (h (x 0) (x 1))
+
+#print axioms ValPM.valStructOf_eq_valStructure
