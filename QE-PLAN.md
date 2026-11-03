@@ -1817,3 +1817,24 @@ quoting the paper item it freezes; `frozen_targets_fit` proves the frozen `theor
 `theorem_2_8` have *verbatim* the types of `qe` and `cminimal`, so the interface cannot drift from the
 frozen statements.  `REPORT.md` lists what the tree lacks as *vocabulary*: `acl`/`dcl`/exchange,
 saturation, a `Γ`-sort, algebraic sets of balls, definable subgroups.
+
+## The balls bridge is down to the `RV`-term atoms (m1, accepted)
+
+The `L_RV` term-to-polynomial translation — the piece I had named as the last one — is done:
+
+* `Syntax.lean`: `ev` with evaluation lemmas for all eleven function symbols, and the bridge
+  `polyOf`/`eval_polyOf`: **a well-sorted `VF`-term at a `VF`-tuple is the evaluation of an explicit
+  `Polynomial (VFType)` whose coefficients are the parameters**; then the atom lemmas
+  `atom_{eq,rvEq,le,units}_iff`;
+* `RVSort.lean`: the `RV` side of the sort discipline — and it needs `kJunkZero`/`kNegJunkZero`,
+  i.e. the junk conventions added in the repair are what make the `RV`-term analysis go through;
+* `QFFrame`/`Glue`: `isBoolComb_of_isQF`, the complete quantifier-free Boolean induction with the
+  atomic case as its only hypothesis, and `hQF_of_atom` proving it is *verbatim* the `hQF` that
+  `Downstream.isBoolComb_of_HasQEws` consumes — the two directions' interfaces meet exactly;
+* `Integration.lean`: the atoms at `L_RV` terms **with parameters** — `atom_eq_isBoolComb`,
+  `atom_zero_isBoolComb`, `atom_le_isBoolComb` (through m4's value-only case),
+  `atom_rvEq_isBoolComb` via `rvEq_set_eq` — and `VFQF_isBoolComb`; `polyOf_single` reduces a zero
+  set to one polynomial's zero set.
+
+Missing and named: atoms at general `RV`-terms, the units atom, and the `Bf 1 → A.Definable₁`
+packaging.  Nothing conceptual is left in the bridge.
