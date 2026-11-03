@@ -99,7 +99,9 @@ roughly 1.5–6k lines, for no gain over (a).
   `Γ` may be eliminated". An encoding may adjoin it, but then it is a definitional
   expansion (`RV/K^×` by the definable relation `t ~ s ↔ ∃u ∈ K^×, t = u·s`), and Theorem
   2.3 as printed concerns `L_RV` alone.
-* **`0` and `∞` are different points.** `K = K^× ∪ {0}` uses the constant `0` as the
+* ~~**`0` and `∞` are different points.**~~ **Superseded — this was a transcription error.** See
+  the revision section below: `0` and `∞` are one element, `rv(0)`.  Kept for the record because
+  the reasoning shows what a wrong transcription of (6) looks like.  `K = K^× ∪ {0}` uses the constant `0` as the
   residue field's zero; `∞ = rv(0_VF)` is the top of `≤` and is absorbing on `RV₀`
   (`t × ∞ = ∞` for all `t`), while `t × 0 = 0` only for `t ∈ K`. Identifying them — one
   member's first axiomatisation did — forces `0 = ∞`, and then `le_top` + `le_zero` +
@@ -185,6 +187,13 @@ of which `rvGroup` (`accepted/` — m8's block) and `vfAlgClosed`
   `VF^×`. Not changed while the model artifacts in `accepted/` are proved against `d608de6`.
 
 ## Revision on the author's instruction: `0` and `∞` are one element
+
+**There is one axiom set — the paper's.**  The two-constant form that this file recorded earlier
+was a *transcription error*, not a different axiomatisation, and it is worth naming why it was
+detectable: the intended structure has `rv(0) = 0 = ∞`, so a first-order theory that proves
+`rv(0) ≠ ∞` (as the earlier form did, in `accepted/RepairedTheory.lean`) has no intended model.
+A transcription that refutes its own intended model is simply wrong; nothing about the paper
+changed.
 
 The author has ruled on the convention: **there is no separate `0` in `RV`.**  Writing
 `rv(0) = 0` makes `0` the absorbing element of `RV`, and the paper's `∞` is another name for
