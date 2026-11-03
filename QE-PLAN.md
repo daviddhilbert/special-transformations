@@ -1218,3 +1218,26 @@ the repair would make the cover pointless in the same way.
 Also resolved by the same direction: `rvFibreIff` follows from the corrected link in both
 directions (`leEqF_iff_pEq_of_link`), which closes the reconciliation between `RVNF` and the tree's
 axiom set.
+
+## The cover is reduced to one dictionary hypothesis
+
+`RVElim` (swarm `smw163dd5` m3, accepted, merged) does the quantifier half of the cover and leaves
+the atoms:
+
+* `bfSubst`/`realize_bfSubst`, `substLast`, `substLastWith` — substitution under binders, which the
+  tree lacked and which is why earlier attempts at the quantifier step stalled;
+* `rvExElim`/`rvAllElim` — `∃ y ∈ RV, ψ  ↔  ψ[∞] ∨ ∃ x ∈ VF∖{0}, ψ[rv x]`, at tuples of any sort,
+  from `rvSurj` alone; and `all_split`/`ex_split`, which split an unguarded quantifier into a `VF`
+  and an `RV` part using only `sdCover`/`sdDisjoint`;
+* `exists_VFQ` — every formula is uniformly equivalent at `VF`-tuples to one whose only quantifiers
+  are `∀x ∈ VF`, i.e. `valFormulaToRVvf`'s shape;
+* `coverVF_of_atoms : AtomCover → CoverBridge.CoverVF Axioms.ACVF`.
+
+So the cover now rests on `AtomCover`: an `L_val` description of each `L_RV` atom at `VF`-tuples.
+Three of the four atoms are already unconditional in the tree (`Transfer.M2.translate_pLe`,
+`leOneF_iff_pUnits`, `inKF_iff_pInK`), and the fourth — `rv s = rv t` — is `RepairFixed.leEqF_iff_pEq_of_link`,
+which derives it from the corrected `rvEqLink` (commit `6ee852c`) rather than assuming a separate
+sentence.  Assembling `AtomCover` from those four is the last step of the cover.
+
+`RepairFixed` (m5's `Fixed.lean`, merged) also carries the corrected link and its porting lemmas, so
+the tree and `Milestone0/Encoding.lean` now agree on the repair's exact sentences.

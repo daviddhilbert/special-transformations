@@ -17056,3 +17056,880 @@ end RVNF
 #print axioms RVNF.exists_normal
 #print axioms RVNF.realize_normal
 #print axioms RVNF.realize_normal
+
+/-
+  **m3 / direction f3: eliminating `RV`-sorted quantifiers**
+
+  Part 0: the substitution machinery on `L_RV`-formulas that the elimination needs.
+  `bfSubst` replaces every scoped (de Bruijn) variable by a term, compatible with the
+  `Fin n`-indexed binders of Mathlib's `BoundedFormula`.  Everything here is axiom-free.
+-/
+
+set_option maxHeartbeats 1000000
+set_option linter.style.haveILetI false
+set_option backward.isDefEq.respectTransparency false
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Transfer
+
+namespace RVElim
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 0. The variable-as-a-term and the weakening of a term -/
+
+/-- The variable `i` of the context `Fin n`, as a term. -/
+def tmVar {n : ℕ} (i : Fin n) : Tm n := Term.var (Sum.inr i)
+
+@[simp]
+theorem realize_tmVar {n : ℕ} (i : Fin n) (W : Empty ⊕ Fin n → M) :
+    (tmVar i).realize W = W (Sum.inr i) := rfl
+
+/-- The term map that reads a term of context `n` in the context `n+1` (new variable last). -/
+def tmLiftW (n : ℕ) : Empty ⊕ Fin n → LRV.Term (Empty ⊕ Fin (n + 1))
+  | Sum.inl e => e.elim
+  | Sum.inr i => tmVar i.castSucc
+
+/-- **Weakening**: a term of context `n`, read in the context `n+1`. -/
+def tmLift {n : ℕ} (t : Tm n) : Tm (n + 1) := t.subst (tmLiftW n)
+
+/-- The realization of a weakened term: the extra variable is simply ignored. -/
+theorem realize_tmLift {n : ℕ} (t : Tm n) (v : Empty → M) (x : Fin (n + 1) → M) :
+    (tmLift t).realize (Sum.elim v x) = t.realize (Sum.elim v (fun i => x i.castSucc)) := by
+  rw [tmLift, Term.realize_subst]
+  congr 1
+  funext a
+  rcases a with e | i
+  · exact e.elim
+  · rfl
+
+/-! ## 1. Substituting the scoped variables of a formula by terms -/
+
+/-- A family of terms over the context `n`, read as a `Term`-substitution. -/
+def tmap {n m : ℕ} (σ : Fin n → Tm m) : Empty ⊕ Fin n → LRV.Term (Empty ⊕ Fin m)
+  | Sum.inl e => e.elim
+  | Sum.inr i => σ i
+
+/-- The substitution family on `n+1` induced by one on `n`: the new last variable is mapped to
+itself (in the target context, which also grows by one). -/
+def extendSubst {n m : ℕ} (σ : Fin n → Tm m) : Fin (n + 1) → Tm (m + 1) :=
+  Fin.lastCases (tmVar (Fin.last m)) (fun i => tmLift (σ i))
+
+/-- **Formula-level substitution**: replace each scoped variable by a term. -/
+def bfSubst : (n m : ℕ) → Bf n → (Fin n → Tm m) → Bf m
+  | _, _, .falsum, _ => .falsum
+  | _, _, .equal t u, σ => .equal (t.subst (tmap σ)) (u.subst (tmap σ))
+  | _, _, .rel R ts, σ => .rel R (fun i => (ts i).subst (tmap σ))
+  | _, _, .imp φ ψ, σ => .imp (bfSubst _ _ φ σ) (bfSubst _ _ ψ σ)
+  | n, m, .all φ, σ => .all (bfSubst (n + 1) (m + 1) φ (extendSubst σ))
+
+/-- The term-level content of `bfSubst`. -/
+theorem realize_subst_term {n m : ℕ} (t : Tm n) (σ : Fin n → Tm m)
+    (v : Empty → M) (x : Fin m → M) :
+    (t.subst (tmap σ)).realize (Sum.elim v x)
+      = t.realize (Sum.elim v (fun i => (σ i).realize (Sum.elim v x))) := by
+  rw [Term.realize_subst]
+  congr 1
+  funext a
+  rcases a with e | i
+  · exact e.elim
+  · rfl
+
+/-- The value of the extended substitution, as a `Fin.snoc`. -/
+theorem subst_extend_eval {n m : ℕ} (σ : Fin n → Tm m) (v : Empty → M)
+    (x : Fin (m + 1) → M) :
+    (fun j => (extendSubst σ j).realize (Sum.elim v x))
+      = Fin.snoc (fun i => (σ i).realize (Sum.elim v (fun j => x j.castSucc)))
+          (x (Fin.last m)) := by
+  funext j
+  cases j using Fin.lastCases with
+  | last =>
+    show (extendSubst σ (Fin.last n)).realize (Sum.elim v x) = _
+    rw [extendSubst, Fin.lastCases_last, realize_tmVar, Sum.elim_inr, Fin.snoc_last]
+  | cast i =>
+    show (extendSubst σ i.castSucc).realize (Sum.elim v x) = _
+    rw [extendSubst, Fin.lastCases_castSucc, realize_tmLift, Fin.snoc_castSucc]
+
+omit [LRV.Structure M] in
+/-- `Fin.snoc` composes with `Fin.castSucc` to the original tuple. -/
+theorem snoc_comp_castSucc {m : ℕ} (x : Fin m → M) (a : M) :
+    (fun j => (Fin.snoc x a : Fin (m + 1) → M) j.castSucc) = x := by
+  funext j
+  rw [Fin.snoc_castSucc]
+
+/-- **The realization lemma for `bfSubst`.** -/
+theorem realize_bfSubst : (n m : ℕ) → (φ : Bf n) → (σ : Fin n → Tm m) →
+    ∀ (v : Empty → M) (x : Fin m → M),
+      (bfSubst n m φ σ).Realize v x
+        ↔ φ.Realize v (fun i => (σ i).realize (Sum.elim v x))
+  | _, _, .falsum, _, _, _ => Iff.rfl
+  | _, _, .equal t u, σ, v, x => by
+    show ((t.subst (tmap σ)).realize (Sum.elim v x)
+      = (u.subst (tmap σ)).realize (Sum.elim v x)) ↔ _
+    rw [realize_subst_term, realize_subst_term]
+    exact Iff.rfl
+  | _, _, .rel R ts, σ, v, x => by
+    show Structure.RelMap R (fun i => ((ts i).subst (tmap σ)).realize (Sum.elim v x)) ↔ _
+    have h : (fun i => ((ts i).subst (tmap σ)).realize (Sum.elim v x))
+        = fun i => (ts i).realize (Sum.elim v (fun i => (σ i).realize (Sum.elim v x))) := by
+      funext i
+      exact realize_subst_term (ts i) σ v x
+    rw [h]
+    exact Iff.rfl
+  | _, _, .imp φ ψ, σ, v, x => by
+    show ((bfSubst _ _ φ σ).Realize v x → (bfSubst _ _ ψ σ).Realize v x) ↔ _
+    rw [realize_bfSubst _ _ φ σ v x, realize_bfSubst _ _ ψ σ v x]
+    exact Iff.rfl
+  | n, m, .all φ, σ, v, x => by
+    show (∀ a : M, (bfSubst _ _ φ (extendSubst σ)).Realize v (Fin.snoc x a)) ↔ _
+    rw [BoundedFormula.realize_all]
+    refine forall_congr' fun a => ?_
+    rw [realize_bfSubst _ _ φ (extendSubst σ) v (Fin.snoc x a), subst_extend_eval,
+      snoc_comp_castSucc, Fin.snoc_last]
+
+end RVElim
+
+/-!
+  **m3 / direction f3: eliminating `RV`-sorted quantifiers**
+
+  Part 1: `∃ y (RV), ψ(y)` is `ψ(∞) ∨ ∃ x (VF) ∖ {0}, ψ(rv x)`, at formula level.
+
+  The only input is `TrivCase.rv_exists_vf` (`Axioms.rvSurj`), so the equivalence holds in
+  every model of `Axioms.ACVF` — and, since it is a *semantic* statement about the predicate
+  `a ↦ ψ(a)`, it holds at tuples of **any** sort, not only at `VF`-tuples.
+-/
+
+namespace RVElim
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 2. Two substitution instances: replacing the last variable -/
+
+/-- The last variable of the context, as a term.  (The same term that `exSorted` binds.) -/
+def tmLast (k : ℕ) : Tm (k + 1) := tv k (Nat.lt_succ_self k)
+
+/-- The value of the last variable, after `Fin.snoc`. -/
+theorem realize_tv_last_snoc (k : ℕ) (v : Empty → M) (x : Fin k → M) (a : M) :
+    (tv k (Nat.lt_succ_self k)).realize (Sum.elim v (Fin.snoc x a)) = a := by
+  rw [TrivCase.realize_tv_nat,
+    show (⟨k, Nat.lt_succ_self k⟩ : Fin (k + 1)) = Fin.last k from rfl, Fin.snoc_last]
+
+/-- Replace the last scoped variable of `φ` by the term `s`, read in the **shorter** context. -/
+def substLast {k : ℕ} (φ : Bf (k + 1)) (s : Tm k) : Bf k :=
+  bfSubst (k + 1) k φ (Fin.snoc (α := fun _ => Tm k) (fun i => tmVar i) s)
+
+/-- **Realization of `substLast`.** -/
+theorem realize_substLast {k : ℕ} (φ : Bf (k + 1)) (s : Tm k) (v : Empty → M)
+    (x : Fin k → M) :
+    (substLast φ s).Realize v x ↔ φ.Realize v (Fin.snoc x (s.realize (Sum.elim v x))) := by
+  have h : (fun j : Fin (k + 1) =>
+        (Fin.snoc (α := fun _ => Tm k) (fun i => tmVar i) s j).realize (Sum.elim v x))
+      = (Fin.snoc (α := fun _ => M) x (s.realize (Sum.elim v x)) : Fin (k + 1) → M) := by
+    funext j
+    cases j using Fin.lastCases with
+    | last => rw [Fin.snoc_last, Fin.snoc_last]
+    | cast i => rw [Fin.snoc_castSucc, Fin.snoc_castSucc]; rfl
+  rw [substLast, realize_bfSubst, h]
+
+/-- Replace the last scoped variable of `φ` by a term `s`, read in the **same** context. -/
+def substLastWith {k : ℕ} (φ : Bf (k + 1)) (s : Tm (k + 1)) : Bf (k + 1) :=
+  bfSubst (k + 1) (k + 1) φ (Fin.snoc (α := fun _ => Tm (k + 1)) (fun i => tmVar i.castSucc) s)
+
+/-- **Realization of `substLastWith`.** -/
+theorem realize_substLastWith {k : ℕ} (φ : Bf (k + 1)) (s : Tm (k + 1)) (v : Empty → M)
+    (y : Fin (k + 1) → M) :
+    (substLastWith φ s).Realize v y ↔
+      φ.Realize v (Fin.snoc (fun i => y i.castSucc) (s.realize (Sum.elim v y))) := by
+  have h : (fun j : Fin (k + 1) =>
+        (Fin.snoc (α := fun _ => Tm (k + 1)) (fun i => tmVar i.castSucc) s j).realize
+          (Sum.elim v y))
+      = (Fin.snoc (α := fun _ => M) (fun i => y i.castSucc) (s.realize (Sum.elim v y)) :
+          Fin (k + 1) → M) := by
+    funext j
+    cases j using Fin.lastCases with
+    | last => rw [Fin.snoc_last, Fin.snoc_last]
+    | cast i => rw [Fin.snoc_castSucc, Fin.snoc_castSucc]; rfl
+  rw [substLastWith, realize_bfSubst, h]
+
+/-! ## 3. The elimination of one `RV`-quantifier -/
+
+/-- **The eliminated formula**: `ψ[∞] ∨ ∃ x ∈ VF ∖ {0}, ψ[rv x]`. -/
+def rvExElim {k : ℕ} (φ : Bf (k + 1)) : Bf k :=
+  substLast φ tRVInfty ⊔
+    exSorted .vf (∼(pEq (tmLast k) tVFZero) ⊓ substLastWith φ (tRv (tmLast k)))
+
+/-- **`RV`-quantifier elimination.**  In every model of `Axioms.ACVF`, at every tuple (of any
+sort), `∃ y ∈ RV, φ(y)` is `φ(∞) ∨ ∃ x ∈ VF ∖ {0}, φ(rv x)`.  The formula on the right,
+`rvExElim φ`, no longer quantifies over the `RV` sort. -/
+theorem rvExElim_realize (hM : M ⊨ Axioms.ACVF) {k : ℕ} (φ : Bf (k + 1)) (v : Empty → M)
+    (x : Fin k → M) :
+    (rvExElim φ).Realize v x ↔ ∃ a : M, iRV a ∧ φ.Realize v (Fin.snoc x a) := by
+  have h1 : (substLast φ tRVInfty).Realize v x ↔ φ.Realize v (Fin.snoc x iRVZero) := by
+    rw [realize_substLast]
+    have e : (tRVInfty (n := k)).realize (Sum.elim v x) = iRVZero := by
+      rw [tRVInfty]; exact realize_tRVZero _
+    rw [e]
+  have h2 : (exSorted .vf (∼(pEq (tmLast k) tVFZero) ⊓
+      substLastWith φ (tRv (tmLast k)))).Realize v x
+      ↔ ∃ a : M, iVF a ∧ a ≠ iVFZero ∧ φ.Realize v (Fin.snoc x (iRv a)) := by
+    rw [exSorted, BoundedFormula.realize_ex]
+    refine exists_congr fun a => ?_
+    have e1 : (tv k (Nat.lt_succ_self k)).realize (Sum.elim v (Fin.snoc x a)) = a :=
+      realize_tv_last_snoc k v x a
+    have e2 : (substLastWith φ (tRv (tmLast k))).Realize v (Fin.snoc x a)
+        ↔ φ.Realize v (Fin.snoc x (iRv a)) := by
+      rw [realize_substLastWith, snoc_comp_castSucc, realize_tRv, tmLast, e1]
+    rw [sortPred, BoundedFormula.realize_inf, BoundedFormula.realize_inf, pVF_realize, e2,
+      BoundedFormula.realize_not, pEq, BoundedFormula.realize_bdEqual, realize_tVFZero, tmLast, e1]
+  rw [rvExElim, BoundedFormula.realize_sup, h1, h2]
+  exact (TrivCase.rv_exists_vf (ψ := fun a => φ.Realize v (Fin.snoc x a)) hM).symm
+
+end RVElim
+
+/-!
+  **m3 / direction f3, part 2: the `VF`-guarded quantifiers and the `∀`-elimination**
+
+  * `allVF`/`exVF`: quantification restricted to the `VF` sort, in the shape
+    `all (pVF ⟹ ·)` resp. `¬all (pVF ⟹ ¬·)` — the shape produced by
+    `VFRestrict.valFormulaToRVvf` on the `L_val` side.
+  * `rvAllElim`: `∀ y ∈ RV, φ(y)`  is  `φ(∞) ∧ ∀ x ∈ VF ∖ {0}, φ(rv x)`.
+  * `all_split`: the primitive unguarded `∀` of the encoding is the conjunction of its
+    `VF`-part and its `RV`-part (`Axioms.sdCover` + `Axioms.sdDisjoint`).
+
+  Inputs: `TrivCase.rv_exists_vf` and the sort discipline; no further repair axiom.
+-/
+
+namespace RVElim
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 4. The sort discipline, semantically -/
+
+theorem mem_ACVF_sortAxioms {s : LRV.Sentence} (h : s ∈ Axioms.sortAxioms) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Set.mem_union]
+  tauto
+
+theorem mem_ACVF_sdCover : Axioms.sdCover ∈ Axioms.ACVF :=
+  mem_ACVF_sortAxioms (by simp [Axioms.sortAxioms, Axioms.ofList])
+
+theorem mem_ACVF_sdDisjoint : Axioms.sdDisjoint ∈ Axioms.ACVF :=
+  mem_ACVF_sortAxioms (by simp [Axioms.sortAxioms, Axioms.ofList])
+
+theorem mem_allOne_sdCover :
+    allOne (pVF (tv 0 Nat.zero_lt_one) ⊔ pRVsort (tv 0 Nat.zero_lt_one)) ∈ Axioms.ACVF :=
+  mem_ACVF_sdCover
+
+theorem mem_allOne_sdDisjoint :
+    allOne (∼(pVF (tv 0 Nat.zero_lt_one) ⊓ pRVsort (tv 0 Nat.zero_lt_one))) ∈ Axioms.ACVF :=
+  mem_ACVF_sdDisjoint
+
+/-- **The two sorts cover the carrier** (`Axioms.sdCover`). -/
+theorem vf_or_rv (hM : M ⊨ Axioms.ACVF) (a : M) : iVF a ∨ iRV a := by
+  have h := allOne_realize hM (φ := (pVF (tv 0 Nat.zero_lt_one) ⊔ pRVsort (tv 0 Nat.zero_lt_one)))
+    mem_allOne_sdCover ![a]
+  simpa [BoundedFormula.realize_sup, pVF_realize, pRVsort_realize, TrivCase.realize_tv_nat]
+    using h
+
+/-- **The two sorts are disjoint** (`Axioms.sdDisjoint`). -/
+theorem not_vf_of_rv (hM : M ⊨ Axioms.ACVF) {a : M} (h : iRV a) : ¬ iVF a := by
+  have h0 := allOne_realize hM (φ := ∼(pVF (tv 0 Nat.zero_lt_one) ⊓ pRVsort (tv 0 Nat.zero_lt_one)))
+    mem_allOne_sdDisjoint ![a]
+  have h1 : ¬(iVF a ∧ iRV a) := by
+    simpa [BoundedFormula.realize_not, BoundedFormula.realize_inf, pVF_realize, pRVsort_realize,
+      TrivCase.realize_tv_nat] using h0
+  exact fun hf => h1 ⟨hf, h⟩
+
+/-! ## 5. `VF`-guarded quantifiers -/
+
+/-- Universal quantification over the `VF` sort, in the shape `∀ x, x ∈ VF → ψ`. -/
+def allVF {k : ℕ} (ψ : Bf (k + 1)) : Bf k :=
+  BoundedFormula.all (pVF (tmLast k) ⟹ ψ)
+
+theorem realize_allVF {k : ℕ} (ψ : Bf (k + 1)) (v : Empty → M) (x : Fin k → M) :
+    (allVF ψ).Realize v x ↔ ∀ a : M, iVF a → ψ.Realize v (Fin.snoc x a) := by
+  rw [allVF, BoundedFormula.realize_all]
+  refine forall_congr' fun a => ?_
+  rw [BoundedFormula.realize_imp, pVF_realize, tmLast, realize_tv_last_snoc]
+
+/-- Existential quantification over the `VF` sort, in the `¬∀¬` shape. -/
+def exVF {k : ℕ} (ψ : Bf (k + 1)) : Bf k := (allVF ψ.not).not
+
+theorem realize_exVF {k : ℕ} (ψ : Bf (k + 1)) (v : Empty → M) (x : Fin k → M) :
+    (exVF ψ).Realize v x ↔ ∃ a : M, iVF a ∧ ψ.Realize v (Fin.snoc x a) := by
+  rw [exVF, BoundedFormula.realize_not, realize_allVF, not_forall]
+  refine exists_congr fun a => ?_
+  simp
+
+/-! ## 6. The elimination of a universal `RV`-quantifier -/
+
+/-- **`∀ y ∈ RV, φ(y)` eliminated**: `φ(∞) ∧ ∀ x ∈ VF ∖ {0}, φ(rv x)`. -/
+def rvAllElim {k : ℕ} (φ : Bf (k + 1)) : Bf k :=
+  substLast φ tRVInfty ⊓
+    allVF (∼(pEq (tmLast k) tVFZero) ⟹ substLastWith φ (tRv (tmLast k)))
+
+/-- **Universal `RV`-quantifier elimination.**  In every model of `Axioms.ACVF`, at every tuple,
+`∀ y ∈ RV, φ(y)` is `φ(∞) ∧ ∀ x ∈ VF ∖ {0}, φ(rv x)`. -/
+theorem rvAllElim_realize (hM : M ⊨ Axioms.ACVF) {k : ℕ} (φ : Bf (k + 1)) (v : Empty → M)
+    (x : Fin k → M) :
+    (rvAllElim φ).Realize v x ↔ ∀ a : M, iRV a → φ.Realize v (Fin.snoc x a) := by
+  have h1 : (substLast φ tRVInfty).Realize v x ↔ φ.Realize v (Fin.snoc x iRVZero) := by
+    rw [realize_substLast]
+    have e : (tRVInfty (n := k)).realize (Sum.elim v x) = iRVZero := by
+      rw [tRVInfty]; exact realize_tRVZero _
+    rw [e]
+  have h3 : ∀ a : M, iVF a → ((∼(pEq (tmLast k) tVFZero) ⟹
+      substLastWith φ (tRv (tmLast k))).Realize v (Fin.snoc x a)
+      ↔ (a ≠ iVFZero → φ.Realize v (Fin.snoc x (iRv a)))) := by
+    intro a _
+    have e1 : (tv k (Nat.lt_succ_self k)).realize (Sum.elim v (Fin.snoc x a)) = a :=
+      realize_tv_last_snoc k v x a
+    have e2 : (substLastWith φ (tRv (tmLast k))).Realize v (Fin.snoc x a)
+        ↔ φ.Realize v (Fin.snoc x (iRv a)) := by
+      rw [realize_substLastWith, snoc_comp_castSucc, realize_tRv, tmLast, e1]
+    rw [BoundedFormula.realize_imp, BoundedFormula.realize_not, pEq,
+      BoundedFormula.realize_bdEqual, realize_tVFZero, e2, tmLast, e1]
+  have h2 : (allVF (∼(pEq (tmLast k) tVFZero) ⟹ substLastWith φ (tRv (tmLast k)))).Realize v x
+      ↔ ∀ a : M, iVF a → (a ≠ iVFZero → φ.Realize v (Fin.snoc x (iRv a))) := by
+    rw [realize_allVF]
+    exact forall_congr' fun a => forall_congr' fun ha => h3 a ha
+  rw [rvAllElim, BoundedFormula.realize_inf, h1, h2]
+  constructor
+  · rintro ⟨h0, hVF⟩ a ha
+    by_cases ha0 : a = iRVZero
+    · rw [ha0]; exact h0
+    · obtain ⟨y, hyVF, hy⟩ := Cover.rvSurj_realize hM ha ha0
+      have hy0 : y ≠ iVFZero := by
+        intro h; rw [h, rv_zero_eq hM] at hy; exact ha0 hy.symm
+      rw [← hy]
+      exact hVF y hyVF hy0
+  · rintro h
+    exact ⟨h iRVZero (TrivCase.iRV_rvZero hM), fun a ha _ => h (iRv a) (rv_mem hM ha)⟩
+
+/-! ## 7. Splitting an unguarded universal into its two sorts -/
+
+/-- **The unguarded `∀` of the encoding decomposes over the two sorts.**  This is the step that
+needs `Axioms.sdCover` and `Axioms.sdDisjoint` (both in `Axioms.ACVF`); it is where an unguarded
+quantifier becomes a `VF`-guarded one plus an eliminable `RV`-one. -/
+theorem all_split (hM : M ⊨ Axioms.ACVF) {k : ℕ} (ψ : Bf (k + 1)) (v : Empty → M)
+    (y : Fin k → M) :
+    (BoundedFormula.all ψ).Realize v y ↔ (allVF ψ).Realize v y ∧ (rvAllElim ψ).Realize v y := by
+  rw [BoundedFormula.realize_all, realize_allVF, rvAllElim_realize hM]
+  constructor
+  · intro h
+    exact ⟨fun a ha => h a, fun a _ => h a⟩
+  · rintro ⟨h1, h2⟩ a
+    rcases vf_or_rv hM a with ha | ha
+    · exact h1 a ha
+    · exact h2 a ha
+
+/-- The same for the primitive existential (`ex` is `¬∀¬`, so it becomes a disjunction). -/
+theorem ex_split (hM : M ⊨ Axioms.ACVF) {k : ℕ} (ψ : Bf (k + 1)) (v : Empty → M)
+    (y : Fin k → M) :
+    (BoundedFormula.ex ψ).Realize v y
+      ↔ (exVF ψ).Realize v y ∨ (rvExElim ψ).Realize v y := by
+  rw [BoundedFormula.realize_ex, realize_exVF, rvExElim_realize hM]
+  constructor
+  · rintro ⟨a, ha⟩
+    rcases vf_or_rv hM a with h | h
+    · exact Or.inl ⟨a, h, ha⟩
+    · exact Or.inr ⟨a, h, ha⟩
+  · rintro (⟨a, ha, hψ⟩ | ⟨a, ha, hψ⟩)
+    · exact ⟨a, hψ⟩
+    · exact ⟨a, hψ⟩
+
+end RVElim
+
+namespace RVElim
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 11. The one-step rewriting lemma for the universal quantifier -/
+
+/-- The tuple extended by a `VF`-element stays a `VF`-tuple. -/
+theorem snoc_vf {k : ℕ} {y : Fin k → M} (hy : ∀ i, iVF (y i)) {a : M} (ha : iVF a) :
+    ∀ i, iVF ((Fin.snoc y a : Fin (k + 1) → M) i) := by
+  intro i
+  cases i using Fin.lastCases with
+  | last => rw [Fin.snoc_last]; exact ha
+  | cast j => rw [Fin.snoc_castSucc]; exact hy j
+
+/-- **The `∀`-step of the elimination, isolated.**  If `A`, `B`, `C` agree with `ψ`,
+`ψ(∞)` and `ψ(rv ·)` at `VF`-tuples, then `∀ y, ψ(y)` agrees with
+`∀ x ∈ VF, A(x) ∧ B ∧ ∀ x ∈ VF ∖ {0}, C(x)` at `VF`-tuples. -/
+theorem all_step {k : ℕ} (hM : M ⊨ Axioms.ACVF) (ψ A : Bf (k + 1)) (B : Bf k) (C : Bf (k + 1))
+    (hA : ∀ (y : Fin (k + 1) → M), (∀ i, iVF (y i)) →
+      (ψ.Realize (default : Empty → M) y ↔ A.Realize (default : Empty → M) y))
+    (hB : ∀ (y : Fin k → M), (∀ i, iVF (y i)) →
+      ((substLast ψ tRVInfty).Realize (default : Empty → M) y
+        ↔ B.Realize (default : Empty → M) y))
+    (hC : ∀ (y : Fin (k + 1) → M), (∀ i, iVF (y i)) →
+      ((substLastWith ψ (tRv (tmLast k))).Realize (default : Empty → M) y
+        ↔ C.Realize (default : Empty → M) y))
+    (y : Fin k → M) (hy : ∀ i, iVF (y i)) :
+    (BoundedFormula.all ψ).Realize (default : Empty → M) y
+      ↔ (allVF A ⊓ (B ⊓ allVF (∼(pEq (tmLast k) tVFZero) ⟹ C))).Realize
+          (default : Empty → M) y := by
+  have eA : (∀ a : M, iVF a → ψ.Realize (default : Empty → M) (Fin.snoc y a))
+      ↔ ∀ a : M, iVF a → A.Realize (default : Empty → M) (Fin.snoc y a) :=
+    forall_congr' fun a => forall_congr' fun ha =>
+      hA (Fin.snoc y a) (snoc_vf hy ha)
+  have eC : (∀ a : M, iVF a → (∼(pEq (tmLast k) tVFZero) ⟹
+        substLastWith ψ (tRv (tmLast k))).Realize (default : Empty → M) (Fin.snoc y a))
+      ↔ ∀ a : M, iVF a → (∼(pEq (tmLast k) tVFZero) ⟹ C).Realize
+          (default : Empty → M) (Fin.snoc y a) :=
+    forall_congr' fun a => forall_congr' fun ha =>
+      imp_congr Iff.rfl (hC (Fin.snoc y a) (snoc_vf hy ha))
+  have hB' := hB y hy
+  have hL : (BoundedFormula.all ψ).Realize (default : Empty → M) y
+      ↔ ((∀ a : M, iVF a → ψ.Realize (default : Empty → M) (Fin.snoc y a))
+          ∧ ((substLast ψ tRVInfty).Realize (default : Empty → M) y
+            ∧ ∀ a : M, iVF a → (∼(pEq (tmLast k) tVFZero) ⟹
+                substLastWith ψ (tRv (tmLast k))).Realize (default : Empty → M)
+                  (Fin.snoc y a))) := by
+    simp only [all_split (M := M) hM ψ (default : Empty → M) y, realize_allVF, rvAllElim,
+      BoundedFormula.realize_inf]
+  have hR : (allVF A ⊓ (B ⊓ allVF (∼(pEq (tmLast k) tVFZero) ⟹ C))).Realize
+        (default : Empty → M) y
+      ↔ ((∀ a : M, iVF a → A.Realize (default : Empty → M) (Fin.snoc y a))
+          ∧ (B.Realize (default : Empty → M) y
+            ∧ ∀ a : M, iVF a → (∼(pEq (tmLast k) tVFZero) ⟹ C).Realize
+                (default : Empty → M) (Fin.snoc y a))) := by
+    simp only [BoundedFormula.realize_inf, realize_allVF]
+  rw [hL, hR, eA, hB', eC]
+
+end RVElim
+
+/-!
+  **m3 / direction f3, part 3: every `L_RV`-formula is equivalent, at `VF`-tuples, to one whose
+  quantifiers are all `VF`-guarded.**
+
+  This is the `RV`-quantifier half of the cover: it removes every quantifier that ranges over the
+  `RV` sort, at the price of substitutions of `RV`-variables by `∞` and by `rv x`.  What remains
+  is a formula in the shape `VFQ` below — atoms, implication, and universal quantifiers of the
+  form `∀ x ∈ VF`.  That is exactly the quantifier shape of `VFRestrict.valFormulaToRVvf`, so the
+  atom dictionary (f2) is the only thing still missing on top of it.
+
+  Inputs: `TrivCase.rv_exists_vf` (i.e. `Axioms.rvSurj`) and `Axioms.sdCover`/`sdDisjoint`.
+  No repair axiom of the cover is used here.
+-/
+
+namespace RVElim
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 8. The target shape: `VF`-guarded quantifiers -/
+
+/-- A formula all of whose universal quantifiers are guarded by `pVF`: atoms, implication, and
+`∀ x ∈ VF, ψ`.  (`⊓`, `⊔`, `¬`, `∃ x ∈ VF` are `imp` in this encoding, so they are covered.) -/
+inductive VFQ : {n : ℕ} → Bf n → Prop
+  | falsum {n : ℕ} : VFQ (BoundedFormula.falsum (α := Empty) (L := LRV) (n := n))
+  | equal {n : ℕ} (t u : Tm n) : VFQ (BoundedFormula.equal t u)
+  | rel {n l : ℕ} (R : LRV.Relations l) (ts : Fin l → Tm n) : VFQ (BoundedFormula.rel R ts)
+  | imp {n : ℕ} {φ ψ : Bf n} : VFQ φ → VFQ ψ → VFQ (BoundedFormula.imp φ ψ)
+  | all {n : ℕ} {ψ : Bf (n + 1)} : VFQ ψ → VFQ (BoundedFormula.all (pVF (tmLast n) ⟹ ψ))
+
+namespace VFQ
+
+theorem top {n : ℕ} : VFQ (⊤ : Bf n) :=
+  (falsum (n := n)).imp (falsum (n := n))
+
+theorem not {n : ℕ} {φ : Bf n} (h : VFQ φ) : VFQ (φ.not) :=
+  imp h (falsum (n := n))
+
+theorem inf {n : ℕ} {φ ψ : Bf n} (h1 : VFQ φ) (h2 : VFQ ψ) : VFQ (φ ⊓ ψ) :=
+  (h1.imp h2.not).not
+
+theorem sup {n : ℕ} {φ ψ : Bf n} (h1 : VFQ φ) (h2 : VFQ ψ) : VFQ (φ ⊔ ψ) :=
+  h1.not.imp h2
+
+theorem allVF {k : ℕ} {ψ : Bf (k + 1)} (h : VFQ ψ) : VFQ (allVF ψ) :=
+  all h
+
+theorem exVF {k : ℕ} {ψ : Bf (k + 1)} (h : VFQ ψ) : VFQ (exVF ψ) :=
+  (allVF h.not).not
+
+end VFQ
+
+/-! ## 9. The quantifier depth -/
+
+/-- The number of nested universal quantifiers. -/
+def qd : {n : ℕ} → Bf n → ℕ
+  | _, .falsum => 0
+  | _, .equal _ _ => 0
+  | _, .rel _ _ => 0
+  | _, .imp φ ψ => max (qd φ) (qd ψ)
+  | _, .all φ => qd φ + 1
+
+/-- **Substitution preserves the quantifier depth.** -/
+theorem qd_bfSubst : (n m : ℕ) → (φ : Bf n) → (σ : Fin n → Tm m) →
+    qd (bfSubst n m φ σ) = qd φ
+  | _, _, .falsum, _ => rfl
+  | _, _, .equal _ _, _ => rfl
+  | _, _, .rel _ _, _ => rfl
+  | _, _, .imp φ ψ, σ => by
+    show max (qd (bfSubst _ _ φ σ)) (qd (bfSubst _ _ ψ σ)) = max (qd φ) (qd ψ)
+    rw [qd_bfSubst _ _ φ σ, qd_bfSubst _ _ ψ σ]
+  | n, m, .all φ, σ => by
+    show qd (bfSubst (n + 1) (m + 1) φ (extendSubst σ)) + 1 = qd φ + 1
+    rw [qd_bfSubst (n + 1) (m + 1) φ (extendSubst σ)]
+
+theorem qd_substLast {k : ℕ} (φ : Bf (k + 1)) (s : Tm k) : qd (substLast φ s) = qd φ :=
+  qd_bfSubst (k + 1) k φ _
+
+theorem qd_substLastWith {k : ℕ} (φ : Bf (k + 1)) (s : Tm (k + 1)) :
+    qd (substLastWith φ s) = qd φ :=
+  qd_bfSubst (k + 1) (k + 1) φ _
+
+/-! ## 10. The elimination -/
+
+/-- **Every `L_RV`-formula is equivalent, at every tuple of `VF`-elements, in every model of
+`Axioms.ACVF`, to a formula with only `VF`-guarded quantifiers.** -/
+theorem exists_VFQ {n : ℕ} (φ : Bf n) :
+    ∃ φ' : Bf n, VFQ φ' ∧
+      ∀ (M : Type) [LRV.Structure M], M ⊨ Axioms.ACVF → ∀ y : Fin n → M,
+        (∀ i, iVF (y i)) →
+        (φ.Realize (default : Empty → M) y ↔ φ'.Realize (default : Empty → M) y) := by
+  classical
+  have main : ∀ d : ℕ, ∀ {n : ℕ} (φ : Bf n), qd φ ≤ d → ∃ φ' : Bf n, VFQ φ' ∧
+      ∀ (M : Type) [LRV.Structure M], M ⊨ Axioms.ACVF → ∀ y : Fin n → M,
+        (∀ i, iVF (y i)) →
+        (φ.Realize (default : Empty → M) y ↔ φ'.Realize (default : Empty → M) y) := by
+    intro d
+    induction d using Nat.strong_induction_on with
+    | _ d ihd =>
+      intro n φ
+      induction φ with
+      | falsum =>
+        intro _
+        exact ⟨⊥, VFQ.falsum, fun M _ _ y _ => Iff.rfl⟩
+      | equal t u =>
+        intro _
+        exact ⟨_, VFQ.equal t u, fun M _ _ y _ => Iff.rfl⟩
+      | rel R ts =>
+        intro _
+        exact ⟨_, VFQ.rel R ts, fun M _ _ y _ => Iff.rfl⟩
+      | imp φ ψ ihφ ihψ =>
+        intro hd
+        obtain ⟨φ', hφ'QF, hφ'⟩ := ihφ (le_trans (le_max_left _ _) hd)
+        obtain ⟨ψ', hψ'QF, hψ'⟩ := ihψ (le_trans (le_max_right _ _) hd)
+        refine ⟨φ' ⟹ ψ', VFQ.imp hφ'QF hψ'QF, fun M _ hM y hy => ?_⟩
+        rw [BoundedFormula.realize_imp, BoundedFormula.realize_imp,
+          hφ' M hM y hy, hψ' M hM y hy]
+      | all ψ ihψ =>
+        intro hd
+        have hd' : qd ψ + 1 ≤ d := hd
+        have hlt : qd ψ < d := by omega
+        obtain ⟨A, hAQF, hA⟩ := ihd (qd ψ) hlt (φ := ψ) le_rfl
+        obtain ⟨B, hBQF, hB⟩ := ihd (qd ψ) hlt (φ := substLast ψ tRVInfty)
+          (le_of_eq (qd_substLast ψ tRVInfty))
+        obtain ⟨C, hCQF, hC⟩ := ihd (qd ψ) hlt
+          (φ := substLastWith ψ (tRv (tmLast _))) (le_of_eq (qd_substLastWith ψ _))
+        exact ⟨allVF A ⊓ (B ⊓ allVF (∼(pEq (tmLast _) tVFZero) ⟹ C)),
+          VFQ.inf (VFQ.allVF hAQF) (VFQ.inf hBQF
+            (VFQ.allVF (VFQ.imp (VFQ.not (VFQ.equal _ _)) hCQF))),
+          fun M _ hM y hy => all_step (M := M) hM ψ A B C
+            (fun y hy => hA M hM y hy)
+            (fun y hy => hB M hM y hy)
+            (fun y hy => hC M hM y hy)
+            y hy⟩
+  exact main (qd φ) φ le_rfl
+
+
+end RVElim
+
+/-!
+  **m3 / direction f3, part 4: the cover reduced to the atom dictionary**
+
+  `exists_VFQ` removes every `RV`-quantifier, leaving a formula in the shape `VFQ`.  This part
+  shows that the *only* remaining input for the cover is the dictionary for the **atoms**:
+  given an `L_val`-description of every `L_RV` atom that is valid at `VF`-tuples in every model of
+  `Axioms.ACVF`, the whole cover `CoverBridge.CoverVF Axioms.ACVF` follows.
+
+  The atom hypothesis is `AtomCover`, two fields (equality atoms and relation atoms), each with
+  an `L_val`-formula in the *same* context `n`, uniformly in the model and the `VF`-tuple.  That
+  is exactly what the repair axioms are for: `rvFibreIff`/`rvEqLink` for `pEq (rv s) (rv t)`,
+  `kAddLink`/`kNegLink` for the residue atoms, `kJunkZero`/`kNegJunkZero` for the junk terms, and
+  `leClassOne` for `pUnits`.
+
+  No axiom is used here beyond `Axioms.ACVF`; the two fields of `AtomCover` are the only
+  hypothesis.
+-/
+
+namespace RVElim
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 12. The atom dictionary, as a hypothesis -/
+
+/-- **The atom dictionary hypothesis.**  Every `L_RV` atom at every context has an `L_val`
+description in the same context, valid at every `VF`-tuple of every model of `Axioms.ACVF`. -/
+structure AtomCover : Prop where
+  /-- equality atoms `t = u` -/
+  eq : ∀ (n : ℕ) (t u : Tm n), ∃ θ : Language.val.BoundedFormula Empty n,
+    ∀ (M : Type) [LRV.Structure M], M ⊨ Axioms.ACVF → ∀ y : Fin n → M, (∀ i, iVF (y i)) →
+      ((pEq t u).Realize (default : Empty → M) y
+        ↔ (VFRestrict.valFormulaToRVvf θ).Realize (default : Empty → M) y)
+  /-- relation atoms `R t̄` -/
+  rel : ∀ (n l : ℕ) (R : LRV.Relations l) (ts : Fin l → Tm n),
+    ∃ θ : Language.val.BoundedFormula Empty n,
+    ∀ (M : Type) [LRV.Structure M], M ⊨ Axioms.ACVF → ∀ y : Fin n → M, (∀ i, iVF (y i)) →
+      ((R.boundedFormula ts).Realize (default : Empty → M) y
+        ↔ (VFRestrict.valFormulaToRVvf θ).Realize (default : Empty → M) y)
+
+/-- `valFormulaToRVvf` reads a universal quantifier as `allVF`. -/
+theorem valFormulaToRVvf_all {n : ℕ} (θ : Language.val.BoundedFormula Empty (n + 1)) :
+    VFRestrict.valFormulaToRVvf (BoundedFormula.all θ)
+      = allVF (VFRestrict.valFormulaToRVvf θ) := rfl
+
+/-! ## 13. A `VFQ`-formula is the guarded translation of an `L_val`-formula -/
+
+/-- **The quantifier skeleton carries over.**  A formula with only `VF`-guarded quantifiers is,
+at `VF`-tuples, the image `valFormulaToRVvf θ` of an `L_val`-formula, provided its atoms are. -/
+theorem exists_val_of_VFQ (hA : AtomCover) :
+    {n : ℕ} → {φ : Bf n} → VFQ φ → ∃ θ : Language.val.BoundedFormula Empty n,
+      ∀ (M : Type) [LRV.Structure M], M ⊨ Axioms.ACVF → ∀ y : Fin n → M, (∀ i, iVF (y i)) →
+        (φ.Realize (default : Empty → M) y
+          ↔ (VFRestrict.valFormulaToRVvf θ).Realize (default : Empty → M) y)
+  | _, _, .falsum => ⟨⊥, fun M _ _ y _ => Iff.rfl⟩
+  | _, _, .equal t u => hA.eq _ t u
+  | _, _, .rel R ts => hA.rel _ _ R ts
+  | _, _, .imp hφ hψ => by
+    obtain ⟨θφ, hθφ⟩ := exists_val_of_VFQ hA hφ
+    obtain ⟨θψ, hθψ⟩ := exists_val_of_VFQ hA hψ
+    exact ⟨θφ ⟹ θψ, fun M _ hM y hy => by
+      rw [BoundedFormula.realize_imp, VFRestrict.valFormulaToRVvf, BoundedFormula.realize_imp,
+        hθφ M hM y hy, hθψ M hM y hy]⟩
+  | _, _, .all hψ => by
+    obtain ⟨θψ, hθψ⟩ := exists_val_of_VFQ hA hψ
+    exact ⟨BoundedFormula.all θψ, fun M _ hM y hy => by
+      show (allVF _).Realize (default : Empty → M) y
+        ↔ (VFRestrict.valFormulaToRVvf (BoundedFormula.all θψ)).Realize (default : Empty → M) y
+      rw [valFormulaToRVvf_all, realize_allVF, realize_allVF]
+      exact forall_congr' fun a => forall_congr' fun ha =>
+        hθψ M hM (Fin.snoc y a) (snoc_vf hy ha)⟩
+
+/-! ## 14. The cover -/
+
+/-- **The cover `CoverBridge.CoverVF`, from the atom dictionary alone.**  Composing
+`exists_VFQ` (no `RV`-quantifier survives) with `exists_val_of_VFQ` (the quantifier skeleton is
+`valFormulaToRVvf`'s) gives the hypothesis `CoverBridge.exists_qf_of_coverVF` and
+`CoverBridge.transfer_at_vf_tuples` consume. -/
+theorem coverVF_of_atoms (hA : AtomCover) : CoverBridge.CoverVF Axioms.ACVF := by
+  intro n φ
+  obtain ⟨φ', hφ'QF, hφ'⟩ := exists_VFQ φ
+  obtain ⟨θ, hθ⟩ := exists_val_of_VFQ hA hφ'QF
+  exact ⟨θ, fun M _ hM y hy => (hφ' M hM y hy).trans (hθ M hM y hy)⟩
+
+end RVElim
+
+/-! ## Axiom checks -/
+
+#print axioms RVElim.realize_bfSubst
+#print axioms RVElim.realize_substLast
+#print axioms RVElim.realize_substLastWith
+#print axioms RVElim.rvExElim_realize
+#print axioms RVElim.vf_or_rv
+#print axioms RVElim.not_vf_of_rv
+#print axioms RVElim.realize_allVF
+#print axioms RVElim.realize_exVF
+#print axioms RVElim.rvAllElim_realize
+#print axioms RVElim.all_split
+#print axioms RVElim.ex_split
+#print axioms RVElim.qd_bfSubst
+#print axioms RVElim.all_step
+#print axioms RVElim.exists_VFQ
+#check @RVElim.exists_VFQ
+#print axioms RVElim.exists_val_of_VFQ
+#print axioms RVElim.coverVF_of_atoms
+#check @RVElim.coverVF_of_atoms
+#check @RVElim.AtomCover
+#check @RVElim.valFormulaToRVvf_all
+
+/-
+  **What the corrected repair gives (swarm `smw163dd5`, member m5, direction d6).**
+
+  `Audit.lean` shows that `Axioms.rvEqLink` is refutable from the frozen axioms and that
+  `Axioms.ACVF` therefore has no model.  This file does two things:
+
+  §1  isolates the *semantic* content the corrected sentence must have, as a plain predicate
+      `CorrectedLink M` (no theory, no set membership), so that it is independent of how the
+      axiom set is spelled:
+        `rv x = rv y ↔ ¬ (v (x - y) ≤ v y)`  for `y ≠ 0`
+      (in `iLe`-form: `¬ iLe (iRv (x + -y)) (iRv y)`).
+
+  §2  proves that `CorrectedLink` plus the **frozen** axioms suffice for the equality atom of the
+      cover, i.e. for the sentence `Transfer.M2.rvFibreIff` — the one the cover uses through
+      `Transfer.M2.leEqF_iff_pEq` to turn `pEq (rv s) (rv t)` into a quantifier-free `L_val`
+      formula.  So after the one-transposition fix, `rvFibreIff` needs no separate hypothesis and
+      direction f2/f3's equality atom is unconditional.
+
+  §3  spells the corrected axiom as a sentence and as a theory `ACVFfixed`
+      (`ACVF` with `rvEqLink` replaced), with the porting lemmas: every member of the frozen
+      `Axioms.ACVF` other than `rvEqLink` is a member of `ACVFfixed`, so any earlier theorem whose
+      proof does not use `rvEqLink` ports verbatim, and `ACVFfixed` supplies `CorrectedLink`.
+
+  Not claimed: satisfiability of `ACVFfixed` (no model is constructed), and nothing about
+  `kAddLink`/`kNegLink` beyond the audit in `Audit.lean`.
+-/
+
+set_option linter.style.haveILetI false
+set_option backward.isDefEq.respectTransparency false
+
+open FirstOrder FirstOrder.Language
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
+open SpecialTransformations.Milestone0.Axioms
+open SpecialTransformations.Milestone0.Transfer
+
+namespace RepairFixed
+
+variable {M : Type} [LRV.Structure M]
+
+/-! ## 1. The corrected link, semantically -/
+
+/-- **The corrected repair, in semantic form**: for `y ≠ 0`, `rv x = rv y` iff the difference
+`x - y` has value strictly larger than `v y` — `¬ iLe (iRv (x + -y)) (iRv y)` in `iLe`-form.
+`Axioms.rvEqLink` has `¬ iLe (iRv y) (iRv (x + -y))`, the transposition. -/
+def CorrectedLink (M : Type) [LRV.Structure M] : Prop :=
+  ∀ {x y : M}, iVF x → iVF y → y ≠ iVFZero →
+    (iRv x = iRv y ↔ ¬ iLe (iRv (iVFAdd x (iVFNeg y))) (iRv y))
+
+/-! ## 2. `CorrectedLink` + the frozen axioms give `rvFibreIff` -/
+
+/-- `∞ = iRVZero` is not below a nonzero `RV`-element (contrapositive of `leInftyEq`). -/
+theorem not_le_infty (hM : M ⊨ Axioms.ACVF) {z : M} (hz : iRV z) (hz0 : z ≠ iRVZero) :
+    ¬ iLe (iRVZero (M := M)) z :=
+  fun h => hz0 (le_infty_eq hM z hz hz0 h)
+
+/-- `iRVZero ∈ RV`, so it can be used in `le_top'`. -/
+theorem rv_zero_mem (hM : M ⊨ Axioms.ACVF) : iRV (iRVZero (M := M)) := by
+  rw [← rv_zero_eq hM]
+  exact rv_mem hM (vf_zero_mem hM)
+
+/-- **The equality atom of the cover, from the corrected link and the frozen axioms.**  This is
+the semantic form of the sentence `Transfer.M2.rvFibreIff`. -/
+theorem rvFibreIff_semantics (hM : M ⊨ Axioms.ACVF) (hlink : CorrectedLink M)
+    {x y : M} (hx : iVF x) (hy : iVF y) :
+    (iRv x = iRv y ↔
+      ((iLe (iRv x) (iRv y) ∧ iLe (iRv y) (iRv x)) ∧
+        (x = iVFZero ∨ (iLe (iRv x) (iRv (iVFAdd x (iVFNeg y))) ∧
+          ¬ iLe (iRv (iVFAdd x (iVFNeg y))) (iRv x))))) := by
+  have hd : iVF (iVFAdd x (iVFNeg y)) := vf_add_mem hM hx (vf_neg_mem hM hy)
+  have hRx : iRV (iRv x) := rv_mem hM hx
+  have hRy : iRV (iRv y) := rv_mem hM hy
+  have hRd : iRV (iRv (iVFAdd x (iVFNeg y))) := rv_mem hM hd
+  have hR0 : iRV (iRVZero (M := M)) := rv_zero_mem hM
+  constructor
+  · -- forward: `rv x = rv y` gives the two order atoms and the residue test
+    intro h
+    have hord := SpecialTransformations.Milestone0.Transfer.M2.rv_eq_imp_orderEq hM hy h
+    refine ⟨hord, ?_⟩
+    by_cases hx0 : x = iVFZero
+    · exact Or.inl hx0
+    by_cases hy0 : y = iVFZero
+    · exfalso
+      have hz : iRv x = iRVZero := by rw [hy0, rv_zero_eq hM] at h; exact h
+      exact hx0 (rv_eq_infty hM hx hz)
+    right
+    have hxr : iRv x ≠ iRVZero := Transfer.rv_ne_zero hM hx hx0
+    have hyr : iRv y ≠ iRVZero := Transfer.rv_ne_zero hM hy hy0
+    have H1 : ¬ iLe (iRv (iVFAdd x (iVFNeg y))) (iRv y) := (hlink hx hy hy0).1 h
+    by_cases hd0 : iRv (iVFAdd x (iVFNeg y)) = iRVZero
+    · rw [hd0]
+      exact ⟨le_top' hM hRx, not_le_infty hM hRx hxr⟩
+    rcases le_total hM (iRv x) (iRv (iVFAdd x (iVFNeg y))) hRx hRd hxr hd0 with h1 | h1
+    · exact ⟨h1, fun h2 => H1 (SpecialTransformations.Milestone0.Transfer.le_trans hM hRd hRx hRy hd0 hxr hyr h2 hord.left)⟩
+    · exact absurd (SpecialTransformations.Milestone0.Transfer.le_trans hM hRd hRx hRy hd0 hxr hyr h1 hord.left) H1
+  · -- backward
+    rintro ⟨⟨h1, h2⟩, hx0 | ⟨h3, h4⟩⟩
+    · -- `x = 0`: the first conjunct forces `rv y = ∞ = rv x`
+      by_cases hyr : iRv y = iRVZero
+      · rw [hx0, rv_zero_eq hM, hyr]
+      · exfalso
+        have hxr : iRv x = iRVZero := by rw [hx0, rv_zero_eq hM]
+        exact not_le_infty hM hRy hyr (hxr ▸ h1)
+    · -- the residue test gives `¬ (v (x - y) ≤ v y)`
+      by_cases hy0 : y = iVFZero
+      · by_cases hxr : iRv x = iRVZero
+        · rw [hxr, hy0, rv_zero_eq hM]
+        · exfalso
+          have hyr : iRv y = iRVZero := by rw [hy0, rv_zero_eq hM]
+          exact not_le_infty hM hRx hxr (hyr ▸ h2)
+      · by_cases hx0 : x = iVFZero
+        · by_cases hyr : iRv y = iRVZero
+          · rw [hx0, rv_zero_eq hM, hyr]
+          · exfalso
+            have hxr : iRv x = iRVZero := by rw [hx0, rv_zero_eq hM]
+            exact not_le_infty hM hRy hyr (hxr ▸ h1)
+        · have hxr : iRv x ≠ iRVZero := Transfer.rv_ne_zero hM hx hx0
+          have hyr : iRv y ≠ iRVZero := Transfer.rv_ne_zero hM hy hy0
+          refine (hlink hx hy hy0).2 (fun h5 => h4 ?_)
+          by_cases hd0 : iRv (iVFAdd x (iVFNeg y)) = iRVZero
+          · exact absurd (hd0 ▸ h5) (not_le_infty hM hRy hyr)
+          · exact SpecialTransformations.Milestone0.Transfer.le_trans hM hRd hRy hRx hd0 hyr hxr h5 h2
+
+#print axioms RepairFixed.rvFibreIff_semantics
+
+/-! ## 3. The sentence `Transfer.M2.rvFibreIff`, and the corrected theory `ACVFfixed` -/
+
+/-- The corrected repair as a sentence: `rv x = rv y ↔ ¬ (v (x - y) ≤ v y)`. -/
+def rvEqLinkFixed : LRV.Sentence :=
+  allSorted ![SortTag.vf, SortTag.vf]
+    (∼(pEq &1 tVFZero) ⟹
+      (pEq (tRv &0) (tRv &1) ⇔ ∼(pLe (tRv (tVFAdd &0 (tVFNeg &1))) (tRv &1))))
+
+/-- **The equality atom of the cover is unconditional under the corrected link**:
+`Transfer.M2.leEqF_iff_pEq` with its `hfib` hypothesis replaced by `CorrectedLink` (the same proof,
+with the semantic form of `rvFibreIff` substituted for the sentence). -/
+theorem leEqF_iff_pEq_of_link (hM : M ⊨ Axioms.ACVF) (hlink : CorrectedLink M)
+    {n : ℕ} (s t : Language.val.Term (Empty ⊕ Fin n)) {x : Fin n → M}
+    (hx : ∀ i, iVF (x i)) :
+    valFormulaEval x (SpecialTransformations.Milestone0.Transfer.M2.leEqF s t) ↔
+      (pEq (tRv (valTermToRV s)) (tRv (valTermToRV t))).Realize (default : Empty → M) x := by
+  rw [SpecialTransformations.Milestone0.Transfer.M2.leEqF_eval, pEq,
+    BoundedFormula.realize_bdEqual, realize_tRv, realize_tRv,
+    valTermToRV_realize, valTermToRV_realize,
+    ← rvFibreIff_semantics hM hlink
+      (SpecialTransformations.Milestone0.Transfer.M2.valTermEval_mem hM hx s)
+      (SpecialTransformations.Milestone0.Transfer.M2.valTermEval_mem hM hx t)]
+
+/-! ## 4. `ACVFfixed`: `ACVF` with the transposed link replaced, and the porting lemmas -/
+
+/-- **The repaired theory with the corrected link**: `ACVF` minus `rvEqLink`, plus its transpose.
+Every other member of `Axioms.ACVF` survives, so earlier proofs that do not use `rvEqLink` port. -/
+def ACVFfixed : LRV.Theory := (Axioms.ACVF \ {Axioms.rvEqLink}) ∪ {rvEqLinkFixed}
+
+theorem rvEqLinkFixed_mem_ACVFfixed : rvEqLinkFixed ∈ ACVFfixed :=
+  Or.inr (Set.mem_singleton _)
+
+theorem ACVFfixed_of_mem {s : LRV.Sentence} (hs : s ∈ Axioms.ACVF) (hne : s ≠ Axioms.rvEqLink) :
+    s ∈ ACVFfixed :=
+  Or.inl ⟨hs, by simpa using hne⟩
+
+/-- **Porting**: a model of `ACVFfixed` satisfies every frozen axiom other than `rvEqLink`. -/
+theorem model_of_model_ACVFfixed (hM : M ⊨ ACVFfixed) {s : LRV.Sentence}
+    (hs : s ∈ Axioms.ACVF) (hne : s ≠ Axioms.rvEqLink) : M ⊨ s :=
+  hM.realize_of_mem s (ACVFfixed_of_mem hs hne)
+
+/-- **A model of `ACVFfixed` supplies the corrected link**, hence (with the frozen axioms, by
+porting) `rvFibreIff` and the equality atom of the cover. -/
+theorem CorrectedLink_of_model_ACVFfixed (hM : M ⊨ ACVFfixed) : CorrectedLink M := by
+  intro x y hx hy hy0
+  have h := allSorted_realize hM (T := ACVFfixed) (ss := ![SortTag.vf, SortTag.vf])
+    (φ := (∼(pEq &1 tVFZero) ⟹
+      (pEq (tRv &0) (tRv &1) ⇔ ∼(pLe (tRv (tVFAdd &0 (tVFNeg &1))) (tRv &1)))))
+    rvEqLinkFixed_mem_ACVFfixed ![x, y] (by intro i; fin_cases i <;> simp [hx, hy])
+  simp only [pEq, BoundedFormula.realize_bdEqual, BoundedFormula.realize_imp,
+    BoundedFormula.realize_iff, BoundedFormula.realize_not, realize_pLe, realize_tRv,
+    realize_tVFZero, realize_tVFAdd, realize_tVFNeg, Term.realize_var, Sum.elim_inr,
+    Function.comp_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
+  exact h hy0
+
+end RepairFixed
+
+#print axioms RepairFixed.leEqF_iff_pEq_of_link
+#print axioms RepairFixed.CorrectedLink_of_model_ACVFfixed
+
+#print axioms RVElim.exists_VFQ
+#print axioms RVElim.coverVF_of_atoms
+#print axioms RepairFixed.leEqF_iff_pEq_of_link
