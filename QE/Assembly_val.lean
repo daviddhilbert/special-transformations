@@ -10361,8 +10361,115 @@ theorem realize_valTermEval {M : Type} [LRV.Structure M] {n : ℕ} (x : Fin n �
 -- is the substantive statement, and the model correspondence works directly with
 -- `valStructOfLRV`.
 
+/-! ### The sort discipline, semantically -/
+
+theorem realize_tv {M : Type} [LRV.Structure M] {k : ℕ} (i : Fin k) (v : Empty → M)
+    (x : Fin k → M) : (tv i.1 i.2).realize (Sum.elim v x) = x i := rfl
+
+theorem pVF_realize {M : Type} [LRV.Structure M] {k : ℕ} (t : Tm k) (v : Empty → M)
+    (x : Fin k → M) : (pVF t).Realize v x ↔ iVF (t.realize (Sum.elim v x)) := by
+  show FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memVF
+      (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
+      ↔ iVF (t.realize (Sum.elim v x))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
+      = ![t.realize (Sum.elim v x)] from by
+    funext i
+    fin_cases i
+    simp]
+  rfl
+
+theorem pRVsort_realize {M : Type} [LRV.Structure M] {k : ℕ} (t : Tm k) (v : Empty → M)
+    (x : Fin k → M) : (pRVsort t).Realize v x ↔ iRV (t.realize (Sum.elim v x)) := by
+  show FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memRV
+      (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
+      ↔ iRV (t.realize (Sum.elim v x))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
+      = ![t.realize (Sum.elim v x)] from by
+    funext i
+    fin_cases i
+    simp]
+  rfl
+
+theorem sortPred_realize {M : Type} [LRV.Structure M] {k : ℕ} (s : SortTag) (t : Tm k)
+    (v : Empty → M) (x : Fin k → M) :
+    (sortPred s t).Realize v x ↔
+      (match s with
+        | .vf => iVF (t.realize (Sum.elim v x))
+        | .rv => iRV (t.realize (Sum.elim v x))) := by
+  cases s with
+  | vf => exact pVF_realize t v x
+  | rv => exact pRVsort_realize t v x
+
+/-- **The conjunction of sort hypotheses realises as the pointwise sort conditions.** -/
+theorem sortedHyps_foldr_realize {M : Type} [LRV.Structure M] {k : ℕ} (ss : Fin k → SortTag)
+    (l : List (Fin k)) (v : Empty → M) (x : Fin k → M) :
+    (l.foldr (fun i acc => sortPred (ss i) (tv i.1 i.2) ⊓ acc) ⊤).Realize v x
+      ↔ ∀ i ∈ l, (match ss i with
+          | .vf => iVF (x i)
+          | .rv => iRV (x i)) := by
+  induction l with
+  | nil => simp
+  | cons a l ih =>
+    rw [List.foldr_cons, BoundedFormula.realize_inf, ih]
+    have hhead : (sortPred (ss a) (tv a.1 a.2)).Realize v x
+        ↔ (match ss a with | .vf => iVF (x a) | .rv => iRV (x a)) := by
+      rw [sortPred_realize, realize_tv]
+    rw [hhead]
+    constructor
+    · rintro ⟨ha, hall⟩ i hi
+      rcases List.mem_cons.mp hi with rfl | hi
+      · exact ha
+      · exact hall i hi
+    · intro h
+      exact ⟨h a List.mem_cons_self, fun i hi => h i (List.mem_cons_of_mem a hi)⟩
+
+/-- **The gateway lemma**: `sortedHyps ss` realises as the pointwise sort conditions. -/
+theorem sortedHyps_realize {M : Type} [LRV.Structure M] {k : ℕ} (ss : Fin k → SortTag)
+    (v : Empty → M) (x : Fin k → M) :
+    (sortedHyps ss).Realize v x ↔ ∀ i, (match ss i with
+        | .vf => iVF (x i)
+        | .rv => iRV (x i)) := by
+  rw [sortedHyps, sortedHyps_foldr_realize]
+  constructor
+  · intro h i
+    exact h i (List.mem_finRange i)
+  · intro h i _
+    exact h i
+
+/-- **Uniform extraction from an `allSorted`-guarded sentence.**  If `∀ x̄ ∈ s̄, φ` is in a theory
+`T` and `M ⊨ T`, then `φ` holds at every tuple of the prescribed sorts.  Every axiom of `ACVF`
+that constrains the `VF` order or the `RV` order has this shape. -/
+theorem allSorted_realize {M : Type} [LRV.Structure M] {T : LRV.Theory} (hM : M ⊨ T)
+    {k : ℕ} {ss : Fin k → SortTag} {φ : Bf k} (hmem : allSorted ss φ ∈ T) :
+    ∀ x : Fin k → M, (∀ i, (match ss i with
+        | .vf => iVF (x i)
+        | .rv => iRV (x i)))
+      → @BoundedFormula.Realize LRV M _ Empty k φ (default : Empty → M) x := by
+  intro x hx
+  have h := hM.realize_of_mem (allSorted ss φ) hmem
+  simp only [allSorted, Sentence.Realize, BoundedFormula.realize_alls,
+    BoundedFormula.realize_imp] at h
+  exact h x ((sortedHyps_realize ss (default : Empty → M) x).mpr hx)
+
+/-- Extraction from a sentence closed by a single universal quantifier. -/
+theorem allOne_realize {M : Type} [LRV.Structure M] {T : LRV.Theory} (hM : M ⊨ T)
+    {φ : Bf 1} (hmem : allOne φ ∈ T) :
+    ∀ x : Fin 1 → M,
+      @BoundedFormula.Realize LRV M _ Empty 1 φ (default : Empty → M) x := by
+  intro x
+  have h := hM.realize_of_mem (allOne φ) hmem
+  simp only [allOne, Sentence.Realize, BoundedFormula.realize_alls] at h
+  exact h x
+
+/-- Extraction from a sentence with no quantifiers. -/
+theorem sentence_realize {M : Type} [LRV.Structure M] {T : LRV.Theory} (hM : M ⊨ T)
+    {φ : LRV.Sentence} (hmem : φ ∈ T) : M ⊨ φ :=
+  hM.realize_of_mem φ hmem
 end SpecialTransformations.Milestone0.Transfer
 
 #print axioms SpecialTransformations.Milestone0.Transfer.valTermToRV_realize
 
 #print axioms SpecialTransformations.Milestone0.Transfer.valFormulaToRV_realize
+
+#print axioms SpecialTransformations.Milestone0.Transfer.sortedHyps_realize
+#print axioms SpecialTransformations.Milestone0.Transfer.allSorted_realize
