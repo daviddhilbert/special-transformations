@@ -1920,3 +1920,21 @@ direction per obstruction: w1 `exists_toFrag` in the all-`VF` context (from h4's
 the fragment + `L_val` route as planned in `smw17pts2`'s h4 only covers `α = Empty` and all-`VF`
 contexts, and the frozen `HasQE` quantifies over all parameters and all variable sorts; that gap
 was not visible in the earlier plan.
+
+## Two swarms closed solved: §5 special bijections, and the adequacy audit
+
+**`smw18ygko` m1, accepted — Section 5 (special bijections) formalized.** `.ultramath/smw18ygko/m1/Sec5.lean`
+(1122 lines, standalone, green, no `sorry`/`axiom`): Definition 5.1's apparatus (`Pt`, `key`, `SamePD`,
+`polydisc`, `rvHull`, `IsRVPullback`, degenerate pullbacks, `Csharp`, `rvHullSharp`, focus map, `eta`,
+`SpecialBijection`, `IsDeformedRVPullback`), with `eta_wellPosed` proved from the hypotheses (both
+implicit points derived, not assumed), `etaInv ∘ eta = id`, and the paper's unique contraction
+`exists_unique_contractionVF`. Statements 5.2/5.4/5.5 are frozen as `def … : Prop`. Recorded dead end:
+`T(A)` need not be an `RV`-pullback after one centripetal step (witness ℚ_p, λ=1: `1+p`, `1+p²` share an
+`rv`-polydisc, `p`, `p²` do not) — which is why the paper deforms rather than maps directly.
+
+**`smw1951gd` m4, accepted — adequacy audit of the frozen targets.** `Adequacy.lean` (against the
+pre-adoption encoding) proves `STm.realize_toLRV`, `SBf.realize_toLRV` at arbitrary assignments, hence
+`hasQE_iff_hasQESBf`, `isCMinimalSBf_iff_isCMinimalWS`, `definableVF_iff`, plus `SBf.Sat_congr`
+(the `WellSorted` witness cannot change the defined set). `AxiomReading.lean` (against the current
+`Encoding.lean`) reads the three carrier axioms: `carrier_cover`, `carrier_disjoint`, `units_mem_rv`,
+which is exactly why `WellSorted` excludes `sdCover`/`sdDisjoint`/`sdUnits` and nothing else of `ACVF`.
