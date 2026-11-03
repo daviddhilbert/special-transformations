@@ -1488,3 +1488,41 @@ theorem hasPrimeModels_ACVF_val : HasPrimeModels valField ACVF_val :=
   hasPrimeModels_mono valField_subset_ACVF_val hasPrimeModels_valField
 
 #print axioms ValPM.hasPrimeModels_ACVF_val
+
+/-! ## 13. From a valued predicate to a Mathlib valuation -/
+
+/-- **A predicate satisfying the axioms of `valField` is a `ValuativeRel`.**  This is what makes
+the `L_val` side of the development talk to Mathlib's valuation theory: `ultra` in the form
+`p (x + y) x ∨ p (x + y) y` gives the additive axiom, and `scale` (an iff) gives both
+multiplicativity and cancellation.  `scale` only applies to nonzero multipliers, which is why
+`vle_mul_cancel` splits on `z = 0`. -/
+def valuativeRelOfIsValPred {K : Type*} [Field K] {p : K → K → Prop} (h : IsValPred p) :
+    ValuativeRel K where
+  vle := p
+  vle_total := h.total
+  vle_trans := fun hxy hyz => h.trans _ _ _ hxy hyz
+  vle_add := fun {_ _ _} hxz hyz =>
+    (h.ultra _ _).elim (fun h' => h.trans _ _ _ h' hxz) (fun h' => h.trans _ _ _ h' hyz)
+  mul_vle_mul_left := fun {_ _} hxy z => by
+    rcases eq_or_ne z 0 with rfl | hz
+    · simpa using h.refl 0
+    · exact (h.scale _ _ z hz).mp hxy
+  vle_mul_cancel := fun {_ _ z} hz hxyz => by
+    rcases eq_or_ne z 0 with rfl | hz0
+    · exact absurd (h.refl 0) hz
+    · exact (h.scale _ _ z hz0).mpr hxyz
+  not_vle_one_zero := fun h10 => one_ne_zero (h.zero_eq 1 h10)
+  vle_mul_comm := fun {x y} => by
+    rw [mul_comm y x]
+    exact h.refl (x * y)
+
+/-- **Every valued predicate comes from a genuine valuation**, with the same relation.  Together
+with `isValPred_of_valuation` this identifies the models of `valField` with Mathlib's valued
+fields. -/
+theorem exists_valuation_of_isValPred {K : Type} [Field K] {p : K → K → Prop}
+    (h : IsValPred p) :
+    ∃ (Γ : Type) (_ : LinearOrderedCommGroupWithZero Γ) (v : Valuation K Γ),
+      ∀ x y : K, p x y ↔ v x ≤ v y := by
+  letI : ValuativeRel K := valuativeRelOfIsValPred h
+  exact ⟨ValuativeRel.ValueGroupWithZero K, inferInstance, ValuativeRel.valuation K,
+    fun x y => Valuation.vle_iff_le (ValuativeRel.valuation K)⟩
