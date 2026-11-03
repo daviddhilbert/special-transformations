@@ -146,3 +146,32 @@ file elaborates, not that its statement is the one wanted.
 **Consequence to keep in mind:** because of the equivalence, `QFTypeDetermines Axioms.ACVF` is
 exactly as hard as Theorem 2.3.  The criterion *relocates* the content; it does not reduce it.
 So the second route is now a sharp statement of where the work is, not a second proof.
+
+## Sequencing decision: repair first, then use it as the probe of the `RV` work
+
+Both routes now agree that the irreducible content is the residue-field/`RV` side
+(`Missing.VFQ_to_QFq`, `Missing.MixedContextCover`, and `QFTypeDetermines Axioms.ACVF`, which by
+`W1.hasQE_iff_qfTypeDetermines` is *equivalent* to the theorem).  So the `RV` work is the real
+destination and everything else is either bounded bookkeeping or a probe.
+
+Order, and why:
+
+1. **The guard repair** — bounded (a 17-error inventory, one pass, spec in `DECISION.md`).  It is
+   required by the translation route's soundness whether or not the criterion route needs it, and
+   it is the only way to state `NontrivialTransferWS`.
+2. **One cheap experiment *before* grinding the repair**, because it may change the order: check
+   whether the *unrepaired* `WellSorted` already satisfies `QFTypeDetermines` at a single
+   quantifier.  m1's criterion is compiled against the current predicate, so if junk elements can
+   never influence a well-sorted formula *at sorted tuples*, the repair is unnecessary for the
+   criterion route and is only needed for `exists_toFrag`'s induction.  The case to try:
+   `∀x (pVF x ⟹ ((pVF x ⟹ ⊥) ⟹ ψ))` — at `x ∈ VF` the inner guard is false, so the body is `⊤`,
+   which suggests junk-insensitivity, but that is one formula, not a proof.
+3. **`nontrivialTransferWS_ACVF` far enough to locate its first failure** (frozen in
+   `QE/TransferWS.lean`).  That failure point *is* the `RV`-side work stated minimally — it is the
+   cheapest probe available, and it converts "do the `RV` work" from a direction into a lemma.
+4. **Then the `RV`-side proper**, with the §5 skeleton already in hand:
+   `.ultramath/smw18ygko/m1/Sec5.lean` (definition 5.1's apparatus, `eta_wellPosed`,
+   `exists_unique_contractionVF`; statements 5.2/5.4/5.5 frozen).
+
+Do **not** spend further effort on criterion variants: `hasQE_iff_qfTypeDetermines` makes them
+sharply equivalent to the theorem, so a variant buys a reformulation, not progress.
