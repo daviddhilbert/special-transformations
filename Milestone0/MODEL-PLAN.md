@@ -140,6 +140,27 @@ which together with `PadicComplex.valuation_p` gives `padicComplex_not_model_ACV
 clean form of the `ℂ_[p]` obstruction: residue characteristic zero is exactly "the valuation
 of every positive integer is at least `1`", which the p-adic valuation fails at `p`.
 
+## The milestone, closed
+
+`accepted/ACVF_general_model_gamma.lean` proves
+
+```
+milestone_model_with_nontrivial_gamma (p : ℕ) [Fact p.Prime] :
+  ∃ (M : Type) (_ : LRV.Structure M) (S : LRV.Substructure M),
+    M ⊨ Axioms.ACVF ∧
+    ∃ t, (S : Set M) t ∧ iRV t ∧ t ≠ iRVZero ∧ t ≠ iRVInfty ∧ ¬ (1 ≤ t ∧ t ≤ 1)
+```
+
+at `M = C ((PadicComplex.valued p).v)`, with `S = ⊤` and the witness `t = rv p`, since
+`v p = 1/p ≠ 1`. So there is a model of `ACVF` together with a substructure whose value group
+is nontrivial, in the reading a trivial valuation cannot satisfy.
+
+What is *not* available, and is now a theorem rather than a caveat: `not_model_ACVF_S_padic S`
+for **every** `S` — `ℂ_[p]` has residue characteristic `p`, so `ACVF(0,0)` and therefore
+`ACVF_S(0,0)` have no model there. A model of the `(0,0)` version needs an algebraically closed
+field of characteristic zero with a nontrivial valuation and residue characteristic zero, which
+Mathlib does not have.
+
 ## The general model exists
 
 `accepted/ACVF_general_model.lean` proves, against the frozen axioms,
