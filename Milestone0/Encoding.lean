@@ -271,11 +271,33 @@ def exSortedK {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
 def allOne (φ : Bf 1) : LRV.Sentence := BoundedFormula.alls φ
 
 /-- Horner form `x^k + a_{k-1} x^{k-1} + ⋯ + a_0` of the monic polynomial of degree `k`
-whose coefficients are the variables `0, …, k-1` and whose variable is the variable `k`. -/
+whose coefficients are the variables `0, …, k-1` and whose variable is the variable `k`.
+
+The leading term is `x ^ k`, so `acfScheme` quantifies over *all* monic polynomials of
+degree `k`.  (An earlier version started the Horner fold at `x` instead of at `x + a_{k-1}`,
+which silently produced `x^{k+1} + a_{k-1}x^{k-1} + ⋯ + a_0` — a monic polynomial of degree
+`k+1` with zero `x^k` coefficient, so the scheme covered only a proper subclass and did not
+give algebraic closedness.)  For `k = 0` the value is immaterial: `acfScheme` is only used
+with `1 ≤ k`. -/
 def hornerPoly {k : ℕ} (add mul : {n : ℕ} → Tm n → Tm n → Tm n) : Tm (k + 1) :=
-  let x : Tm (k + 1) := tv k (Nat.lt_succ_self k)
-  (List.finRange k).reverse.foldl
-    (fun acc i => add (mul acc x) (tv i.val (Nat.lt_succ_of_lt i.isLt))) x
+  match k with
+  | 0 => tv 0 Nat.zero_lt_one
+  | (n + 1) =>
+    let x : Tm (n + 1 + 1) := tv (n + 1) (by omega)
+    (List.finRange n).reverse.foldl
+      (fun acc i => add (mul acc x) (tv i.val (by omega)))
+      (add x (tv n (by omega)))
+
+/-- Sanity check on the Horner form: at `k = 1` it is the monic linear `x + a₀`. -/
+theorem hornerPoly_one :
+    hornerPoly (k := 1) tKAdd tRVMul = tKAdd (tv 1 Nat.one_lt_two) (tv 0 Nat.zero_lt_two) := rfl
+
+/-- Sanity check on the Horner form: at `k = 2` it is the monic quadratic `x² + a₁x + a₀`
+(the `x²` coefficient is `1`, not `0`). -/
+theorem hornerPoly_two :
+    hornerPoly (k := 2) tKAdd tRVMul =
+      tKAdd (tRVMul (tKAdd (tv 2 (Nat.lt_succ_self 2)) (tv 1 (Nat.one_lt_succ_succ 1)))
+        (tv 2 (Nat.lt_succ_self 2))) (tv 0 (Nat.zero_lt_succ 2)) := rfl
 
 end LRV
 

@@ -118,6 +118,14 @@ roughly 1.5–6k lines, for no gain over (a).
 * **`rv` is onto the units only.** `rv : VF^× → RV^×` is surjective onto
   `RV^× = RV ∖ {0, ∞}`; the residue zero is *not* in its image (it is absorbing, hence not
   a group element). An axiom saying "every `t ≠ ∞` is `rv x`" excludes the intended model.
+* **The ACF scheme must be the right scheme.** `acfScheme k` has to say "every monic
+  polynomial of degree `k` has a root", i.e. the Horner form must be
+  `x^k + a_{k-1}x^{k-1} + ⋯ + a_0`. A first version started the Horner fold at `x` rather
+  than at `x + a_{k-1}`, which silently produced `x^{k+1} + a_{k-1}x^{k-1} + ⋯ + a_0` — a
+  monic polynomial of degree `k+1` with zero `x^k` coefficient, so `acfScheme k` covered only
+  a proper subclass (at `k = 1`, only the quadratics `x² + a_0`) and neither `VF` nor `K`
+  was actually algebraically closed. Fixed in `LRV.hornerPoly`, with `hornerPoly_one` and
+  `hornerPoly_two` as regression lemmas.
 * **Orientation of `≤`.** With `t ≤ s ↔ vrv s ≤ vrv t`, the ultrametric inequality reads
   `rv a ≤ rv (a+b) ∨ rv b ≤ rv (a+b)`. The tempting "`val (a+b)` equals one of
   `val a`, `val b`" is strictly weaker and admits non-valuations.
