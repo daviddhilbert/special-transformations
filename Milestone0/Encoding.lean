@@ -350,12 +350,16 @@ def sdUnits : LRV.Sentence := allOne (pUnits &0 ⟹ pRVsort &0)
 def sdKAdd : LRV.Sentence := allSorted ![.rv, .rv] (pK &0 ⟹ (pK &1 ⟹ pK (tKAdd &0 &1)))
 /-- `K` is closed under unary `-` -/
 def sdKNeg : LRV.Sentence := allSorted ![.rv] (pK &0 ⟹ pK (tKNeg &0))
+/-- `K` is closed under `×`: the paper's `K = K^× ∪ {0}` is a field, so the product of two
+elements of `K` is in `K` and not `∞`.  Without this the field axioms of `kField` (which are
+guarded by `pK`) constrain only the products that happen to land in `K`. -/
+def sdKMul : LRV.Sentence := allSorted ![.rv, .rv] (pK &0 ⟹ (pK &1 ⟹ pK (tRVMul &0 &1)))
 
 /-- The closure part of the sort discipline: each sort is closed under its own symbols,
 and the two sorts are related through the symbols that cross them. -/
 def sortClosure : LRV.Theory :=
   ofList [sdVFZero, sdVFOne, sdVFAdd, sdVFNeg, sdVFMul, sdRv,
-    sdRVZero, sdRVInfty, sdRVOne, sdRVMul, sdUnits, sdKAdd, sdKNeg]
+    sdRVZero, sdRVInfty, sdRVOne, sdRVMul, sdUnits, sdKAdd, sdKNeg, sdKMul]
 
 /-- the sort discipline of the encoding, as a theory -/
 def sortAxioms : LRV.Theory := sortClosure ∪ ofList [sdCover, sdDisjoint]

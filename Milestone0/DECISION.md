@@ -123,6 +123,10 @@ roughly 1.5–6k lines, for no gain over (a).
   the preorder — hence `Γ` — collapses to a point, contradicting the paper's standing
   hypothesis `Γ(S)` nontrivial. `sdUnits` now only says that the predicate lives on the `RV`
   sort; its content comes from `leClassOne`.
+* **`K` must be closed under `×`, not only under `+` and `−`.** The paper's `K = K^× ∪ {0}`
+  is a field. With the field axioms guarded by `pK` but no closure axiom for `×`, a model may
+  send the product of two elements of `K` to `∞`, and the axioms then constrain only those
+  products that happen to land back in `K`. `sdKMul` now states the closure.
 * **`rv` is onto the units only.** `rv : VF^× → RV^×` is surjective onto
   `RV^× = RV ∖ {0, ∞}`; the residue zero is *not* in its image (it is absorbing, hence not
   a group element). An axiom saying "every `t ≠ ∞` is `rv x`" excludes the intended model.
