@@ -173,6 +173,17 @@ setting of the paper's theorems. That needs the general model over a nontrivial 
 of which `rvGroup` (`accepted/` — m8's block) and `vfAlgClosed`
 (`accepted/VFAlgClosed.lean`) are done.
 
+* **`rvSurj` is weaker than the paper's axiom (open, twelfth defect).** The encoding states
+  `pUnits t → ∃ x, rv x = t`, i.e. `rv` is onto the class of `1`, which is the subgroup
+  `K^× = ker(vrv)`. The paper's axiom is `rv : VF^× → RV^×` surjective onto
+  `RV^× = RV ∖ {0, ∞}`, the *whole* multiplicative group, of which `K^×` is the proper
+  subgroup of value `1`. So a model may contain elements of `RV ∖ {0, ∞}` that are not in the
+  image of `rv`, and the QE reduction needs `RV = rv(VF) ∪ {0}` as an extra hypothesis
+  (`.ultramath/smw081ptp/m1/Assembly.lean`, `AlgIngredients.rv`) because of it. Fixing it
+  means guarding `rvSurj` by `t ≠ rvZero ∧ t ≠ rvInfty` instead of by `pUnits`; the intended
+  model satisfies the stronger form, since `RV = Kˣ/(1+𝔪)` is by construction a quotient of
+  `VF^×`. Not changed while the model artifacts in `accepted/` are proved against `d608de6`.
+
 ## Open (Milestone 1)
 
 * **No proved model of the general `ACVF` over a nontrivial valuation.** `RVModel.lean` covers the RV-part; the field

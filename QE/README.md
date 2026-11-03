@@ -14,6 +14,9 @@ The last two are **independent formalisations of the same lemmas** — one over 
 with an `Algebra` frame, the other over a `Subfield` of the ambient field — and neither imports
 the other. Agreement between them is stronger evidence than either alone.
 
+| `Reduction_assembly.lean` | **the reduction.** `theorem_2_3_of_hypotheses (hShoen : ShoenfieldTest) (hAlg : AlgIngredients) : HasQE ACVF` in the frozen encoding. Proves Proposition 3.9 (`prop39`), the exhaustion of `K(M)` by Zorn on partial equivalences (`exists_vf_all`, via `DirectLimit.partialEquivLimit`), and Theorem 3.10 from Shoenfield's hard direction. Hypotheses: `ShoenfieldTest` (Prop 3.9 ⟹ QE), `AlgIngredients.rv` (`RV = rv(VF) ∪ {0}`, **not derivable from the frozen axioms** — see `../Milestone0/DECISION.md`), `.prep` (Lemma 3.3 + henselization), `.one` (Lemmas 3.4–3.8), `.vfgen` (Remark 3.1 + Weispfenning). | (A) reduction |
+| `BackAndForth.lean` | the general model theory it uses | (A) |
+
 ## What is not here yet
 
 Nothing of layer (A) (the reduction), (B) (the criterion), or (D) (Weispfenning, which is a
