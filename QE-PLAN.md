@@ -2198,3 +2198,32 @@ Step 2 is the one to check against Marker: the standard compactness argument is 
 Step 3 is the bridge between the semantic `sortEval` guard of the frozen `HasQE` and the syntactic
 `sortedHyps` conjunction of `HasQEws` — a genuine but small obligation, and independent of both
 routes' remaining mathematics.
+
+## The QF-type route's hypothesis is refuted, not merely unproved (`smw1b0thh` m3, accepted)
+
+`Missing.nontrivialTransfer_iff_hasQEb` (`.ultramath/smw1b0thh/m3/AvAudit.lean:264`, compiled,
+axioms clean):
+
+```
+FinalAssembly.NontrivialTransfer Axioms.ACVF  ↔  QECriterion.HasQEb (L := LRV) Axioms.ACVF
+```
+
+So the one remaining hypothesis of `hasQE_ACVF_of_nontrivialTransfer` (`Assembly_val:16347`) is
+*equivalent to unrestricted QE*, which is false (three refutations). That theorem is therefore
+vacuous, and the QF-type route as stated in `Assembly_val` cannot close anything. The fragment
+restatement in `QE/TransferWS.lean` is not a strengthening for convenience — it is the only live
+form of the route.  `FragAudit.qfTypeDeterminesWS_of_hasQE` proves the easy half at the fragment.
+
+Three audit findings, recorded as obligations:
+
+1. none of `OneEC_val`, `Amalgamation_reduced`, `CheeseMeetsBase`, `Reduction_Lv`,
+   `PrimeModels_val_partial`, `H_of_qfDetermined`, `QF_type_bridge` proves a *relativised*
+   Shoenfield test; `Reduction_Lv` states it as a `def : Prop` only;
+2. missing: the fragment transfer and a fragment compactness step
+   (`FragAudit.MissingFragmentCriterion`);
+3. `hasQE_ACVF_val` + the ball dictionary does **not** suffice — three compiled gaps:
+   `Missing.HasQEb_ACVF_val`, `Missing.VFQ_to_QFq`, `Missing.MixedContextCover`.
+
+Independence of the two routes is therefore partial: they share the mixed-context and `RV`-parameter
+obligations; the demonstrated gain is independence from the `GuardsLast`/`JunkTrueAt` repair, and
+that is an argument, not a compiled fact.
