@@ -630,3 +630,52 @@ through as planned.  This is a **frozen-encoding change**: `Milestone0/Encoding.
 moves and every snapshot that carries a copy of the axiom set must be re-verified, exactly like
 the `rvSurj` repair (which was made on the author's instruction and is recorded in
 `Milestone0/DECISION.md`).  It is therefore the author's call, and it is the one open decision.
+
+### The frozen statement is **false**, not merely unprovable by this route
+
+The coarsening above is not an artefact of the transfer: it refutes `HasQE ACVF` itself.  Take the
+intended model and coarsen by the *sign* map, `f : Γ ∪ {∞} → Γ ∪ {∞}`, `f (∞) = ∞`,
+`f 0 = 0`, `f γ = +1` for `γ > 0`, `f γ = -1` for `γ < 0` (in the paper's Γ-order, in which
+`vv (1) = 0` is the least element and `vv (0) = ∞` the top).  Then:
+
+1. **The coarsened structure is a model of `Axioms.ACVF`.**  Only the interpretation of `iLe`
+   changes, and every axiom that mentions `iLe` — `leRefl`, `leTrans`, `leTotal`, `leTop`,
+   `leInftyEq`, `leClassOne`, `leMulCompat`, `rvUltrametric` — survives, by the table above
+   (`pGtOne` is used only by `residueCharZero`, which is not in `Axioms.ACVF`; `pLe` occurs in
+   exactly those eight sentences).  In particular `leClassOne` stays exact because
+   `f γ = f 0 → γ = 0`.
+
+2. **A quantified formula defines the true order in it.**  For `a b : M` with `iRV a`, `iRV b`,
+   `a ≠ 0`, `b ≠ 0`,
+
+   ```
+   θ (a, b) :≡ ∀ c, pRV c ⟹ pLe (tRVMul a c) (tRVMul b c)
+   ```
+
+   realises as "for all `γ_c`: `f (γ_a + γ_c) ≤ f (γ_b + γ_c)`", which holds iff `γ_a ≤ γ_b`
+   (take `γ_c = -γ_a` for the converse).  So `θ` defines the **true** order on `RV^×`, which
+   the coarsened `≤` no longer sees.
+
+3. **No quantifier-free formula defines it.**  A quantifier-free formula in the two free
+   variables `a`, `b` is a Boolean combination of atoms of three kinds: `iLe (a^i b^j) (a^k b^l)`,
+   `a^i b^j = a^k b^l`, and `iUnits (a^i b^j)`.  Put `u = γ_a`, `v = γ_b`.  Restricted to the
+   open quadrant `u > 0`, `v > 0`, every nonzero monomial `a^i b^j` has positive value, so every
+   `iLe`-atom is *constant* there and every `iUnits`-atom is false; the remaining atoms are
+   equations `(i-k) u + (j-l) v = 0`, i.e. finitely many lines through the origin.  Given any
+   candidate `ψ`, take `p = (1, 1+ε)`, `q = (1, 1-ε)` with `ε` irrational and small: both are in
+   the quadrant, neither lies on any of those finitely many lines (their slopes are rational), so
+   **every atom has the same truth value at `p` and at `q`** — while `u ≤ v` holds at `p` and
+   fails at `q`.  Hence `ψ` cannot agree with `θ` in this model, and since the model satisfies
+   `Axioms.ACVF`, `ACVF ⊭ (θ ⇔ ψ)` for every quantifier-free `ψ`: **`HasQE Axioms.ACVF` is
+   false as the encoding stands.**
+
+What is machine-checked so far and what is not: the preservation of the eight axioms under a
+monotone coarsening is elementary and is being formalised (swarm `smw14elno`, direction d2); the
+two-point argument in item 3 is elementary finite combinatorics but is not formalised, and cannot
+be cheaply, because the tree has no proved model of `ACVF` over a nontrivial valuation to coarsen
+(`Milestone0/DECISION.md`, "Open (Milestone 1)").
+
+This changes the status of the repair from a convenience to a necessity: with `leMulCompat` as
+frozen, `theorem_2_3_quantifier_elimination` is not provable, exactly as the two-constant form of
+the axioms was not satisfiable by its own intended model.  The difference between the two cases is
+only that this one is refuted by a *model of the axioms* rather than by the intended model.

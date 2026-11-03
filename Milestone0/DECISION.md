@@ -267,3 +267,41 @@ mechanical edit.
 | `Tagging.lean` | many-sorted syntax and its satisfaction-preserving translation to the tagged language | `lean`, no `sorry` |
 | `Balls.lean` | the valuation C-relation, ball combinatorics, C-minimality definitions | `lean`, 1 unproved auxiliary |
 | `SPEC.md` | transcription of Definition 2.1, Definition 2.2, Theorems 2.3 and 2.8 from the arXiv sources, with line numbers | machine-checked tables |
+
+## Thirteenth defect (found during the QE campaign): item 5 of Definition 2.2 is only half transcribed
+
+Recorded here because it is a defect of the encoding, not of the mathematics, and because it
+**refutes the frozen Theorem 2.3 statement**.  Full argument in `QE-PLAN.md`, last three
+sections; the short form:
+
+`qe.tex` Definition 2.2 item 5 says the quotient `RV / K^× = Γ ∪ {∞}` is a divisible *ordered*
+abelian group whose ordering is induced by `≤` and whose group operation is induced by `×`.  The
+encoding's `Axioms.leMulCompat` states this only for multipliers in `K^×` — the class of `1`,
+which is the *identity* element of `Γ`:
+
+```
+leMulCompat : pRV a ⟹ pRV b ⟹ pRV c ⟹ (pUnits c ⟹ (pLe a b ⟹ pLe (a·c) (b·c)))
+```
+
+The missing case is `c` an arbitrary element of `RV^×`.  It is not derivable from the rest:
+coarsening the order of any model along a monotone `f` with `f⁻¹ (f 0) = {0}` preserves every
+axiom that mentions `≤`, and with `f = sign` the coarsened model is still a model of `Axioms.ACVF`
+while the formula `θ (a, b) :≡ ∀ c (RV ∖ {0}), a·c ≤ b·c` defines the true order `γ_a ≤ γ_b`, which
+no quantifier-free formula can define there (restricted to `γ_a, γ_b > 0` the only non-constant
+atoms are finitely many lines through the origin, and a half-plane is not a Boolean combination of
+those).  So the frozen `HasQE ACVF` is false, not merely hard.
+
+The repair restores the paper's item 5:
+
+```lean
+def leMulCompat : LRV.Sentence :=
+  allSorted ![.rv, .rv, .rv]
+    (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))))
+```
+
+(`pRV &2` in place of `pUnits &2`, and `⇔` in place of `⟹`; the intended model satisfies it because
+`vrv` is multiplicative and `Γ` is an ordered group, so `vrv (a·c) = vrv a · vrv c` and the Γ-order
+is translation-invariant.)  This moves the frozen hash of `Milestone0/Encoding.lean` and needs the
+same propagation as the `rvSurj` repair: every `QE/` and `accepted/` snapshot that carries a copy
+of the axiom set, plus `RVModel.lean`'s `rvGroupAxioms_intended`.  **Not applied**: awaiting the
+author's ruling.
