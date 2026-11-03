@@ -1650,3 +1650,27 @@ constant on the `RV` half), `isBoolComb_iff_split`, `isCMinimal_iff`, and
 
 Bookkeeping: `IsCMinimalWS ↔ IsCMinimalOnVF`, and `IsCMinimalWS`'s own `vfSet`-cut versus m3's
 `IsCMinimalVF`.
+
+### The value-only half of the balls bridge is done (m4, `ValueOnly.lean`)
+
+Two things here are worth more than the direction asked for.
+
+**The extracted predicate is a real valuation.** `exists_valuation_predV` produces a Mathlib valuation
+`w` on `VFType` with `iLe (iRv y) (iRv x) ↔ w x ≤ w y` — the order reversal pinned as a theorem
+rather than a convention.  That is what lets every `L_val`-side result apply to the `L_RV` model, and
+it is the lemma I would have written had I known how cheap it was.
+
+**The cell decomposition, on the `L_val` side.** `valueOnly_atom_isBoolComb` (a single comparison
+`v (P x) ≤ v (Q x)`), `valueOnly_family_isBoolComb` (a finite family of polynomial pairs under an
+arbitrary Boolean pattern), and `valueOnly_qf_isBoolComb` (any quantifier-free `Language.val`
+formula in one variable), reusing Johnson 2.3.1(ii)'s `atomGood_of_isAlgClosed` and `good_solSet`.
+Plus the ball dictionary that makes it speak about the frozen target's balls: `lift`/`lift_closedBall`/
+`lift_openBall` matching `IsClosedBall`/`IsOpenBall`, `isBoolComb_lift_isKBall`,
+`isBoolComb_lift_of_good`, with the edge cases covered (`univ`, `b = 0` closed = singleton, `b = 0`
+open = ∅), and the `IsBoolComb` closure API (`inter`, `empty`, `iUnion_finset`, `iInter_finset`,
+`patternSet`, `isBoolComb_boolFun`).
+
+**What that leaves for the bridge**: the `L_RV` side of the one-variable case — translating a
+well-sorted `Bf 1` formula into `L_val` (the atoms are `M2`'s, the terms are polynomials) and then
+applying `valueOnly_qf_isBoolComb`.  That is the "L_RV term→polynomial translation" m4 names as the
+unchanged part, and it is now the only piece of (BallsBridge) that is missing.
