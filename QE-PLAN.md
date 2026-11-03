@@ -1435,3 +1435,27 @@ With this, the two obligations that stood between the direct route and `HasQE` a
 `RepairFixed.leEqF_iff_pEq_of_link` and the cross-sort facts) — on the well-sorted fragment, whose
 `WellSorted` the swarm `smw17pts2` is building.  `NontrivialTransfer` does not appear anywhere on
 that route.
+
+## What the restatement actually leaves to prove (m1, swarm `smw17pts2`)
+
+Two corrections to my own framing, both from m1's accepted direction:
+
+1. **The quantifier-free case is trivial.** For well-sorted QF `φ`, the witness is `ψ := φ`, for
+   *every* theory `T`, with no hypothesis at all — so the entire content of the restated `HasQE` is
+   the quantifier step.  I had implied the QF case needed the cover; it does not, and the cover's
+   role is exactly to reduce an arbitrary well-sorted formula to a quantifier-free one.
+2. **`hasQEb_ACVF_val : QECriterion.HasQEb ValPM.ACVF_val` is proved unconditionally** — the
+   tuple-level QE for the `L_val` theory, where the tree previously had only the sentence shape.
+   With `VFRestrict.vfStruct hM = vfValStruct hM` identified, `QFCover_exists_qf` needs only
+   `rvFibreIff` and `QFRes_exists_qf` only a model of `RVNF.ACVFrep`.
+
+So the restated target reduces to: *every well-sorted formula is equivalent, at tuples of the
+declared sorts, to a quantifier-free one* — with the quantifier elimination of `RV` done
+(`RVElim.exists_VFQ`) and the atom dictionary available.  The remaining work is the composition,
+which is h4.  `rvEqLink ⇒ rvFibreIff` is *not* open: `RepairFixed.leEqF_iff_pEq_of_link` derives the
+`rv`-equality atom from the corrected link.
+
+The two `WellSorted` constructions (mine in `Encoding.lean` by the image of the sorted syntax, m1's
+by a recursive `TmSort` with a guard predicate) agree on content; mine relativises the sorts
+semantically (`sortEval` on the assignments), which avoids the ill-sorted-parameter defect m1 flags
+in the syntactic-guard formulation.
