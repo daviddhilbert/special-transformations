@@ -1701,3 +1701,39 @@ set or over a definable object must be stated over *sorted* parameters, exactly 
 The reason is the same one that refuted the unrestricted `IsCMinimal` and `HasQE`: the carrier admits
 ill-sorted terms and ill-sorted parameters, whose values no axiom fixes, so a statement that
 quantifies over them is either false or says nothing about the paper's language.
+
+## Section 3 draft: sorted parameter pairs (REC) and the SWL naming
+
+`QE/Sec3_draft.lean` is the draft the author asked for, checked against a compiled
+`Milestone0/Encoding.lean`.  It fixes two conventions and records the section's inventory.
+
+**REC — the sorted parameter pair.**  Every §3 statement quantifies over parameters *split by sort*,
+never over an arbitrary `Set M`:
+
+```lean
+structure SP (M : Type*) [LRV.Structure M] where
+  n m : ℕ
+  vf : Fin n → M
+  rv : Fin m → M
+  vf_sorted : ∀ i, iVF (vf i)
+  rv_sorted : ∀ j, iRV (rv j)
+```
+
+with `SP.paramSet` (the union of the two ranges — the paper's `ā, t̄`), `SP.toFun` (the tuple as one
+function on `Fin n ⊕ Fin m`), `SP.sortMap` (VF for the left summand, RV for the right), and
+`SP.DefinableVF`/`SP.DefinableRV` — `S`-definable subsets of one sort, defined by a `WellSorted`
+formula with `S`'s parameters.
+
+**SWL — the naming.**  Each statement of §3 is `swl_<paper-label>`; the prefix marks that it is the
+well-sorted version (parameters an `SP`, every formula `WellSorted`).  The bare name is reserved for
+a statement over arbitrary parameters, and where both exist the `swl` one is the target.
+
+**The inventory** (in the file, one row per paper item): `acl:VF:transfer:acl:RV`, `dcl:to:ac`,
+`function:rv:to:vf:finite:image`, `exchange`, `alg:ind:imag`, `average:0:rv:not:constant`,
+`finite:VF:project:RV`, `effectiveness`, `ball:proper:sub:center`, `ball:RV:finite`,
+`algebraic:balls:definable:centers`, `aclS:model`, `inf:RV:def:gam`.
+
+**Two decisions the draft surfaces and does not take silently**: `acl` has no definition in the tree
+(it must be "some well-sorted formula with a *finite* solution set contains `x`", over `SP`), and the
+paper's §3 is stated relative to a *substructure* `S` — so `VF(S)(ā)` and `Γ(S)` must be built from
+`SP`, which is the one genuinely new construction §3 needs.
