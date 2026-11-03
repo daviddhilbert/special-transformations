@@ -65,3 +65,53 @@ red). `git show 35be8be:Milestone0/Encoding.lean` is the base to continue from.
 * `Assembly_val.lean` carries a copy of `Encoding.lean`; any change to the encoding must be
   re-synced into it in the same commit.
 * Do not report a theorem as proved without `#print axioms` ⊆ {propext, Classical.choice, Quot.sound}.
+
+## Update: the second route is closed as stated (read this before re-attempting it)
+
+Two swarm results landed after the section above and both change the plan.
+
+**1. `NontrivialTransfer Axioms.ACVF` is false, not merely unproved.**
+`Missing.nontrivialTransfer_iff_hasQEb` (`.ultramath/smw1b0thh/m3/AvAudit.lean:264`, compiled,
+axioms clean) proves
+
+```
+FinalAssembly.NontrivialTransfer Axioms.ACVF  ↔  QECriterion.HasQEb (L := LRV) Axioms.ACVF
+```
+
+i.e. the tree's one remaining hypothesis for the frozen target (`hasQE_ACVF_of_nontrivialTransfer`,
+`Assembly_val:16347`) is equivalent to *unrestricted* QE, which is false — three refutations are in
+`QE-PLAN.md`.  So that theorem is vacuous.  **Do not try to prove `NontrivialTransfer`.**  The live
+form is `QE/TransferWS.lean`'s `NontrivialTransferWS`, which is the same assembly over the fragment.
+
+Same audit, three recorded obligations: none of the seven criterion files proves a *relativised*
+Shoenfield test; missing are the fragment transfer and a fragment compactness step
+(`FragAudit.MissingFragmentCriterion`); and `hasQE_ACVF_val` + the ball dictionary does **not**
+suffice — `Missing.HasQEb_ACVF_val`, `Missing.VFQ_to_QFq`, `Missing.MixedContextCover`.
+
+**2. `L_val` reaches only a strict sub-fragment.**  `.ultramath/smw1b0thh/m2/W2.lean` proves
+`wellSorted_valFormulaToRVvf` (the `L_val` image lies inside the frozen fragment — the tree's
+transfer never said this) and `transfer_of_qfType_VF` (equal QF well-sorted `L_RV` type at
+`VF`-tuples gives equal full `L_val` type, *without* a cover).  But the image contains only
+`s = t`, `v s ≤ v t` and `VF`-guarded quantifiers: `rv s = rv t`, `kAdd`/`kNeg`/`rvMul`, `Kˣ` and
+`RV`-quantifiers have no `L_val` preimage.  Two named gaps: no compiled bridge
+`vfValStruct = vfStruct`; `hasQE_ACVF_val` is `HasQE` at `n = 0` while tuples need `HasQEb`.
+
+**The one conclusion that has survived every direction: the residue-field and `RV`-side atoms are
+the irreducible content.**  No translation to the valuation language reaches them; closing QE means
+doing the `RV` work directly, which is what the paper's §4–§5 does.
+
+## Swarms, and what happens to them when this session ends
+
+* `smw1b0thh` (the Shoenfield/criterion route, 4 members, 120 min): w4 audit and w2 transfer
+  **accepted and recorded above**; w1 (fragment Shoenfield criterion) and w3 (worked instance on
+  two `C v` models) still running when this was written.
+* Older swarms still listed as "running" (`smw17pts2`, `smw18pb0w`) have no working members; their
+  accepted output is already merged or recorded in `QE-PLAN.md`.  Nothing is owed by them.
+* **A swarm belongs to the session that started it.**  A new session cannot see, judge or resume
+  these; `ultramath_status` only lists its own session's swarms.  So:
+  - anything a member delivers lands as ordinary files under `.ultramath/<swarm>/m<k>/` — those
+    survive, and the new session can use them as artifacts (the accepted ones are listed above);
+  - anything not yet submitted will not be judged.  If w1 or w3 matters, wait for the reminder and
+    judge it in this session before starting the new one; otherwise treat the files under
+    `.ultramath/smw1b0thh/{m1,m3}/` as unvetted and re-check them with `lean` before relying on
+    them.
