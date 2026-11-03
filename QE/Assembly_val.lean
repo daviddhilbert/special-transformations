@@ -5734,8 +5734,11 @@ variable {L : FirstOrder.Language.{0, 0}} {M N : Type}
 /-- An embedding transports along an equality of the two `L`-structures. -/
 def embeddingCast {sM sM' : L.Structure M} {sN sN' : L.Structure N}
     (hM : sM = sM') (hN : sN = sN') (f : @Embedding L M N sM sN) :
-    @Embedding L M N sM' sN' :=
-  hM ▸ hN ▸ f
+    @Embedding L M N sM' sN' where
+  toFun := f.toFun
+  inj' := f.inj'
+  map_fun' := by subst hM; subst hN; exact f.map_fun'
+  map_rel' := by subst hM; subst hN; exact f.map_rel'
 
 /-- The transported embedding is heterogeneously equal to the original. -/
 theorem embeddingCast_heq {sM sM' : L.Structure M} {sN sN' : L.Structure N}
@@ -5814,6 +5817,80 @@ noncomputable def fieldOfModelValField (M : ValPM.valField.ModelType) : Field M 
   haveI : M ⊨ Theory.field := ValPM.model_field_of_valField M M.is_model
   exact FirstOrder.Field.fieldOfModelField M
 
+/-- **Hypothesis (iii) at the level of `valField.ModelType`s**: Johnson's 1-ec property for an
+`L_val`-embedding of models of `valField`, read off the concrete-field version through the two
+structure equalities.  A model of `ACVF_val` supplies every hypothesis: `IsValPred` (so it is a
+Mathlib valued field), its own structure is `valStructure v`, `IsAlgClosed`
+(`isAlgClosed_of_model`), and nontriviality (`axNontrivial_realize`). -/
+theorem oneECIn_of_modelType (M N : ValPM.valField.ModelType.{0, 0, 0})
+    (f : @Embedding Language.val M N M.struc N.struc) (hM : M ⊨ ValPM.ACVF_val) :
+    @OneECIn Language.val M N M.struc N.struc f := by
+  letI : Language.ring.Structure M := ValPM.ringStructOfVal M
+  haveI hexpM : valRingHom.IsExpansionOn M := ValPM.ringStructOfVal.expansion M
+  have hfieldM : M ⊨ Theory.field := ValPM.model_field_of_valField M M.is_model
+  letI : Field M := FirstOrder.Field.fieldOfModelField M
+  letI : CompatibleRing M := FirstOrder.Field.compatibleRingOfModelField M
+  have hpredM : ValPM.IsValPred (ValPM.predM : M → M → Prop) := ValPM.isValPred_of_model M.is_model
+  haveI hAcM : IsAlgClosed M := isAlgClosed_of_model M hM
+  letI : Language.ring.Structure N := ValPM.ringStructOfVal N
+  haveI hexpN : valRingHom.IsExpansionOn N := ValPM.ringStructOfVal.expansion N
+  have hfieldN : N ⊨ Theory.field := ValPM.model_field_of_valField N N.is_model
+  letI : Field N := FirstOrder.Field.fieldOfModelField N
+  letI : CompatibleRing N := FirstOrder.Field.compatibleRingOfModelField N
+  have hpredN : ValPM.IsValPred (ValPM.predM : N → N → Prop) := ValPM.isValPred_of_model N.is_model
+  obtain ⟨Γ, hΓ, v, hv⟩ := ValPM.exists_valuation_of_isValPred hpredM
+  letI := hΓ
+  obtain ⟨Γ', hΓ', w, hw⟩ := ValPM.exists_valuation_of_isValPred hpredN
+  letI := hΓ'
+  have hMs : M.struc = FirstOrder.valStructure v :=
+    (ValPM.valStruct_ext M).trans (ValPM.valStructOf_eq_valStructure
+      (p := (ValPM.predM : M → M → Prop)) (v := v) hv)
+  have hNs : N.struc = FirstOrder.valStructure w :=
+    (ValPM.valStruct_ext N).trans (ValPM.valStructOf_eq_valStructure
+      (p := (ValPM.predM : N → N → Prop)) (v := w) hw)
+  let F : @Embedding Language.val M N (FirstOrder.valStructure v) (FirstOrder.valStructure w) :=
+    embeddingCast hMs hNs f
+  have hpred_emb : ∀ x y : M, ValPM.predM (f x) (f y) ↔ ValPM.predM x y := by
+    intro x y
+    have h := f.map_rel' ValRel.le ![x, y]
+    have h' : (f.toFun ∘ ![x, y]) = ![f x, f y] := by
+      funext i
+      fin_cases i <;> rfl
+    rw [h'] at h
+    exact h
+  have hord : ∀ x y : M, v x ≤ v y ↔ w (f x) ≤ w (f y) := by
+    intro x y
+    rw [← hv x y, ← hw]
+    exact (hpred_emb x y).symm
+  have hnt₀ : M ⊨ ValPM.axNontrivial := hM.realize_of_mem _ (Or.inr (by simp))
+  obtain ⟨x, hx0, hx1⟩ := (ValPM.axNontrivial_realize (M := M)).mp hnt₀
+  have hone : (@Structure.funMap Language.val M _ 0 ValFunc.one (fun i => i.elim0)) = (1 : M) :=
+    ValPM.valFunMap_one
+  have hfone : f 1 = 1 := by
+    have h := f.map_fun' ValFunc.one (fun i => Fin.elim0 i)
+    have hcongr : (f.toFun ∘ (fun i => Fin.elim0 i : Fin 0 → M)) = (fun i => Fin.elim0 i) := by
+      funext i
+      exact i.elim0
+    rw [ValPM.valFunMap_one, hcongr, ValPM.valFunMap_one] at h
+    exact h
+  have hnt : ∃ y : M, y ≠ 0 ∧ w (f y) < 1 := by
+    refine ⟨x, hx0, ?_⟩
+    have hvx : ¬ (v (@Structure.funMap Language.val M _ 0 ValFunc.one (fun i => i.elim0)) ≤ v x) :=
+      fun hc => hx1 ((hv _ _).mpr hc)
+    rw [hone, map_one] at hvx
+    have hnot : ¬ (w (f 1) ≤ w (f x)) := by
+      intro hc
+      have h' : v 1 ≤ v x := (hord 1 x).mpr hc
+      rw [map_one] at h'
+      exact hvx h'
+    rw [hfone, map_one] at hnot
+    exact not_le.mp hnot
+  have hFeq : ∀ y, F.toFun y = f y := fun y => rfl
+  have hntF : ∃ y : M, y ≠ 0 ∧ w (F.toFun y) < 1 := by
+    obtain ⟨y, hy0, hy1⟩ := hnt
+    exact ⟨y, hy0, by rwa [hFeq y]⟩
+  exact (oneECIn_congr' hMs hNs f).mpr (oneECIn_of_nontrivial v w F hntF)
+
 end ModelType
 
 -- The transport to `valField.ModelType` is blocked on one specific thing, recorded with the exact
@@ -5836,3 +5913,5 @@ end ValOneEC
 
 #print axioms ValOneEC.isAlgClosed_of_model
 #print axioms ValOneEC.fieldOfModelValField
+
+#print axioms ValOneEC.oneECIn_of_modelType
