@@ -806,3 +806,30 @@ where the value drop at `a + b = 0` forces the junk conventions), `pUnits` (`v x
 preorder.  This is the last substantial piece, and it is independent of the repair decision: it can
 be written now, against the frozen axioms, and it is what makes the frozen *statement* reachable
 once the repair is in.
+
+### The swarm's assembly is in the tree (commit after `63ba631`)
+
+`QE/Assembly_val.lean` now carries, at the end, the accepted `smw14elno` work as part of the one
+snapshot (the namespaces `VFAlgClosed`, `VFPack`, `VFRestrict`, `Smw14elno.M3` keep the pieces
+apart; `Transfer` gains m1's `PaperScale` material):
+
+* `SpecialTransformations.Milestone0.Transfer`: `mem_ACVF_sdRv`, `rv_ne_zero`, `mem_ACVF_rvSurj`,
+  `rv_surj`, `exists_vf_of_rv`, `PaperScale`, `vfPred`, `vfPred_scale{,_raw,_forall,_mp,_mpr}`,
+  `paperScale_of_vfPred_scale`, `paperScale_iff_vfPred_scale`, `valField_model_of_PaperScale`,
+  `vfValStruct`/`vfRingStruct`/`vfCompatibleRing`/`vfValStruct_expansion`,
+  `realize_genericMonicPolyHasRoot_of_isAlgClosed`, `HasNontrivVal`, `realize_axNontrivial`,
+  **`model_ACVF_val_of_axioms`**;
+* `VFAlgClosed.isAlgClosed_vfType` — from `Axioms.vfAlgClosed` through the Horner scheme;
+* `VFPack.model_valField`, `VFPack.model_ACVF_val` — the second packaging;
+* `VFRestrict`: the sort-restricted evaluator, `valFormulaToRVvf`, its bridge, `transfer_iff`,
+  `theory_transfer`, `transfer_of_isQF`, `sentence_transfer_of_isQF`, and the counterexample showing
+  the unguarded translation is not a bridge;
+* `Smw14elno.M3`: `isQF_valFormulaToRV`, QF sort-independence, `valFormulaEvalS`, `qf_transfer`.
+
+All green in one `lean QE/Assembly_val.lean` (0 errors), every `#print axioms` in
+`{propext, Classical.choice, Quot.sound}`, no `sorry`.  Two independent proofs of two load-bearing
+results are now in the tree: the six non-scaling `valField` axioms (m4's file and `predV_*`) and
+`IsAlgClosed` of the `VF` sort (m5's Horner route and m1's `realize_genericMonicPolyHasRoot`).
+
+So the extraction from an `L_RV`-model to a model of `ValPM.ACVF_val` is *proved*, with exactly two
+hypotheses on the `L_RV` side: `PaperScale` (the repair) and `HasNontrivVal` (nontriviality).
