@@ -1395,3 +1395,20 @@ formulas at all; freezing them would be axiomatising the encoding's artefact rat
 mathematics.  And the well-sorted fragment is exactly what the merged cover covers — `QFCover`/
 `QFRes` build sorted terms (`VFT`/`RVT`) and sorted quantifier-free formulas, and `RVElim.exists_VFQ`
 does the quantifier step — so this restatement is what the existing proofs already establish.
+
+## The model is complete on both halves; only the gluing is missing
+
+Swarm `smw16q93m` ended solved (4 accepted), and between m4 and m3 the model exists in pieces:
+
+| half | file | what is proved |
+| --- | --- | --- |
+| frozen `ACVFpaper` | `m4/ACVFModel_repair.lean` (3,211 lines, `import Mathlib` only, with a byte-identical copy of the repo's language and `Axioms`) | `model_ACVFpaper` at `C v = K ⊕ Option (Kˣ/(1+𝔪))`: `sortAxioms` 16/16, `vfField` 10/10, `vfAlgClosed`, `kField` 10/10, `kAlgClosed`, `rvGroup` incl. divisibility, `preorderRV` 7/7, `rvAxioms` 5/5 |
+| `repairRV` | `m3/EqLink.lean` | all nine repaired sentences, one at a time (`model_repairRV`), over any field with a valuation and an element of value `< 1` |
+| the field | `m6/Model.lean`, `m1/Necessary.lean` | `PadicComplex p` is algebraically closed, char 0, with a nontrivial valuation into `ℝ≥0` (`v p = 1/p`), and `le` on `RV` must be stated `(u = ∞ → v = ∞) ∧ vrv u ≤ vrv v` |
+
+So the model's mathematical content is done on both halves, 11 + 9 sentence footprints, all clean.
+What is *not* done is the last gluing: `Axioms.ACVF = sortAxioms ∪ ACVFpaper` with `repairRV ⊆ ACVFpaper`,
+so `(C v) ⊨ Axioms.ACVF` follows by combining `model_ACVFpaper` with `model_repairRV` (a union of two
+`Theory.Model`s, then the sort axioms), and instantiated at `PadicComplex p` with `x = p` it also
+discharges `axNontrivialRV`.  That is bookkeeping over two unions, and it is the last step standing
+between the tree and "the repaired axioms have a model, in Lean".
