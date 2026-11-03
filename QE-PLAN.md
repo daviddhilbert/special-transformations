@@ -1187,3 +1187,34 @@ the three atoms are single quantifier-free `L_val` formulas.
 from `rvEqLink` (`rv s = rv t ↔ ¬ (v t ≤ v (s − t))`) by transitivity of `≤`, and that derivation is
 a ten-line lemma nobody has written yet.  Until it is, `RVNF`'s results are conditional on
 `rvFibreIff`.
+
+## Correction: `rvEqLink` had transposed arguments, and the repair was inconsistent
+
+Swarm `smw163dd5` member m5 audited the repair (`m5/Audit.lean`, green, axioms clean) and found
+that `Axioms.rvEqLink` — the residue-equality link I added — had its two `pLe` arguments the wrong
+way round.  At `x = y = 1` it read `rv 1 = rv 1 ↔ ¬ (v 1 ≤ v 0)`, which `leTop` refutes, so
+`RepairAudit.ACVF_no_model : (M ⊨ Axioms.ACVF) → False` was a theorem and the repaired theory was
+**inconsistent**.  Everything proved from it — `paperScale_of_model`, `model_ACVF_val_of_model`,
+`hasQE_ACVF_of_nontrivialTransfer` — was therefore vacuous: true, but for the wrong reason.
+
+The fix is one transposition, and the corrected sentence is the one m2's accepted `rvFibreIff`
+already carried:
+
+```
+rv a = rv b  ↔  ¬ (v (a - b) ≤ v b)
+```
+
+Applied to `Milestone0/Encoding.lean` and to `QE/Assembly_val.lean`; both compile, and the
+instantiation that refuted the old form passes on the new one (`m5.Fixed.rvEqLinkFixed_instance`).
+New hash of `Encoding.lean`: `2012dfe0dd103f0aa3ccd0a87114ad75ce844dc6388afd76e94f876e0c7c62f5`.
+
+What this changes in the record: the repaired theory is now *not known to be inconsistent*, which
+is strictly weaker than known consistent.  No model of it exists in the tree, so the honest status
+of every theorem derived from `repairRV` is "derived from a theory whose consistency is open".  The
+next artifact that would settle this is a model — `RVModel.lean` extended to `repairRV` — and that
+is now the highest-value thing in the campaign, ahead of the cover, because a second sign error in
+the repair would make the cover pointless in the same way.
+
+Also resolved by the same direction: `rvFibreIff` follows from the corrected link in both
+directions (`leEqF_iff_pEq_of_link`), which closes the reconciliation between `RVNF` and the tree's
+axiom set.

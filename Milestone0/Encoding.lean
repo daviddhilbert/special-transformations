@@ -598,11 +598,14 @@ def kAddLink : LRV.Sentence :=
 def kNegLink : LRV.Sentence :=
   allSorted ![.vf] (pUnits (tRv &0) ⟹ pEq (tKNeg (tRv &0)) (tRv (tVFNeg &0)))
 
-/-- two elements of `VF` have the same residue iff their difference has strictly larger value. -/
+/-- two elements of `VF` have the same residue iff their difference has strictly larger value than
+the second: `rv a = rv b ↔ ¬ (v (a - b) ≤ v b)`.  (The first transcription had the two `pLe`
+arguments transposed, which made the axiom false at `a = b = 1` and the whole theory
+inconsistent — see `QE-PLAN.md` and `.ultramath/smw163dd5/m5/Audit.lean`.) -/
 def rvEqLink : LRV.Sentence :=
   allSorted ![.vf, .vf]
     (∼(pEq &1 tVFZero) ⟹
-      (pEq (tRv &0) (tRv &1) ⇔ ∼(pLe (tRv &1) (tRv (tVFAdd &0 (tVFNeg &1))))))
+      (pEq (tRv &0) (tRv &1) ⇔ ∼(pLe (tRv (tVFAdd &0 (tVFNeg &1))) (tRv &1))))
 
 /-- the junk convention for `kAdd` off `K`: the value is `0`. -/
 def kJunkZero : LRV.Sentence :=

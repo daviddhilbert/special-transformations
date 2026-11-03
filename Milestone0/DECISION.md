@@ -359,3 +359,18 @@ were previously assumed.  The snapshots in `Milestone0/accepted/` and the older 
 still carry their own copies of the *pre-repair* axiom set; since the repair only adds axioms, each
 of them remains a true statement about the theory it states, and re-verifying them against the new
 hash is bookkeeping to be done as they are next touched.
+
+### Erratum: the first version of `rvEqLink` was wrong
+
+`rvEqLink` was first added with its two `pLe` arguments transposed, i.e. asserting
+`rv a = rv b ↔ ¬ (v b ≤ v (a - b))`, which is false at `a = b = 1` and made the repaired theory
+inconsistent (`.ultramath/smw163dd5/m5/Audit.lean`, `ACVF_no_model`, machine-checked).  The
+corrected sentence is `rv a = rv b ↔ ¬ (v (a - b) ≤ v b)`, the sign already carried by m2's
+`rvFibreIff`.  Applied in `Encoding.lean` and `QE/Assembly_val.lean`; `Encoding.lean` is now
+
+```
+sha256 2012dfe0dd103f0aa3ccd0a87114ad75ce844dc6388afd76e94f876e0c7c62f5
+```
+
+The repaired theory is not known to be inconsistent; it is also not known to be consistent, since no
+model of it exists in the tree.
