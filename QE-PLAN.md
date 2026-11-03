@@ -2314,10 +2314,14 @@ field, or a saturation/compactness substitute for it.  Two consequences worth ke
    `NontrivialTransfer` is equivalent to `HasQEb` (`Missing.nontrivialTransfer_iff_hasQEb`,
    `.ultramath/smw1b0thh/m3/AvAudit.lean`), and its `all` case needs a type-realization step that
    is not in its own hypothesis.  The transfer is a *reformulation* of QE, exactly as
-   `QFTypeDetermines` is; the honest target for the RV work is the extension property
-   (Shoenfield's form: every partial isomorphism of finitely generated substructures is
-   elementary), which the tree already has the §3 interface for (`QE/Sec3_sat.lean`, `QE/Sec5`
-   skeleton in `.ultramath/smw18ygko/m1/Sec5.lean`).
+   `QFTypeDetermines` is.  (One tempting repair is to prove the Shoenfield extension property
+   instead — every partial isomorphism of finitely generated substructures is elementary — but
+   `smw1b0thh` m4 settled that it is **unusable in this encoding**: junk values lie outside the
+   fragment, so a partial isomorphism has nothing to say about them, and the QF-type form is the
+   only formulation available.  The live target is therefore the atom form,
+   `FragmentAtomQFTypeDetermines Axioms.ACVF`, `.ultramath/smw1b0thh/m4/FragAtoms.lean:100` —
+   equivalences to `HasQE Axioms.ACVF` proved there, and the files need re-porting against the
+   repaired `WellSorted`, which is what swarm d8 is for.)
 2. **The fictitious `a` can be replaced by saturation only if saturation is assumed**, which the
    frozen statements are not written with (`TransferAtWS` has no saturation hypothesis).  So the
    choice is between (a) proving the QF-mate property for `ACVF` — the real mathematics — and (b)
