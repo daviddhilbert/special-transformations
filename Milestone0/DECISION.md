@@ -215,11 +215,17 @@ in this revision:
   `RVGroupAxioms` loses `zero_ne_infty`, `IsRVUnit t := t ≠ rvZero`, and the absorbing/top
   element in the axioms is `rvZero`.  `rvGroupAxioms_intended` compiles, i.e. the intended
   model satisfies the corrected RV layer with `0 = ∞`.
-* sha256 of `Encoding.lean` after the revision:
-  **`63e92fcad29d88df874a22f3f83a45b6736f70c4f89e7d2977bac16282976d12`**.  (An intermediate
-  state had `3c14aa7c…`; the difference is the docstrings only — the `K`-guard commentary,
-  `RV₀` and `rv 0 = 0` were still phrased for the old two-element reading.  No definition or
-  axiom changed, so the propagation to the snapshots is unaffected.)
+* sha256 of `Encoding.lean` after the revision, **final**:
+  **`e4d1a5f49ece39598d59fdffd60f0402bc553a1ee6681c96add4afc729fd3408`**.  (Two intermediate
+  states had `3c14aa7c…` and `63e92fca…`; the differences are docstrings only — the `K`-guard
+  commentary, `RV₀`, `rv 0 = 0`, and finally the caution that `pK` (`t ≠ ∞ = 0`) is the group
+  `RV^×`, *not* the residue field, which is `pInK`.  No definition or axiom has changed since
+  `3c14aa7c…`, so every conversion made against any of the three hashes is against the same
+  code.)
+* Verified after the propagation: `make milestone0` (5 files), `make accepted` (14 files) and
+  `make qe` (28 files) all exit 0 with no errors and no `sorry`; every `#print axioms` in all
+  47 files is a subset of `{propext, Classical.choice, Quot.sound}`.  One snapshot,
+  `accepted/ACVF_residue_ops.lean`, was still being converted at the time of writing.
 
 Still to propagate (in progress): the standalone copies of the encoding inside
 `Milestone0/accepted/*.lean` and inside the `QE/` snapshots that embed it, then `make accepted`
