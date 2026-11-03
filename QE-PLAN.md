@@ -2085,3 +2085,42 @@ Three things block `theorem_2_3_quantifier_elimination` itself, in order of deci
   the `RV` quantifier needs beyond `QFq2`.
 * **The forward half of the parameter bridge** (`hasQE_of_hasQE_empty`), unless the shortcut above
   works.
+
+## Standing instruction: when the Shoenfield swarm returns, compare the two proofs
+
+Author's instruction: **once `smw1b0thh` returns, compare its criterion against the fragment
+criterion already in the tree and report where the two proofs disagree.** The comparison is not
+"do both compile" — it is a four-column table for each criterion:
+
+| | `QECriterion` (in `QE/Assembly_val.lean`) | fragment Shoenfield (w1) |
+| --- | --- | --- |
+| quantifies over | two models `M`, `N` and tuples with the same QF type | a substructure `S ⊆ M` and an embedding `S ↪[L] N` |
+| QF type over | all QF formulas of the encoding | only the *well-sorted* QF formulas, at sorted tuples |
+| concludes | `QECriterion.HasQE T` (sentence level, `⊨ᵇ`) | the frozen `HasQE` on the fragment |
+| model theory used | compactness only | compactness + substructure closure + QF-preservation by embeddings |
+
+The disagreements to look for, in order of interest:
+
+1. **Where the fragment restriction enters.** `QECriterion`'s criterion is a two-model statement
+   with no sort discipline at all; it was rejected as the route for `L_RV` because per-model QE
+   does not imply theory QE (m6's counterexample) and because the unrestricted statement is false
+   (three refutations). If w1's fragment version is correct, it must use `WellSorted` in *two*
+   places — in the type it compares and in the tuples it compares at — and the audit question is
+   whether the two-model criterion can be recovered from it, and vice versa.
+2. **Whether the guard repair is needed at all.** The Shoenfield route never constructs
+   `exists_toFrag` and never pushes a translation through a binder, so it should be *independent*
+   of the `GuardsLast`/`JunkTrueAt` issue that forced the edit in `Encoding.lean`. If it is, that
+   is the single most valuable outcome: the route to `theorem_2_3` that does not depend on a
+   predicate that is itself under revision.
+3. **The saturation hypothesis.** `QESat.exists_extension_of_saturated` needs `N` to be
+   `κ`-saturated with `|S| < κ`; a *criterion* must not need saturation (it is a criterion, not a
+   step).  If w1's statement comes out with a saturation hypothesis, it is not the criterion and
+   the difference must be reported as such.
+4. **What each route leaves open.** The main route leaves the mixed-context elimination and the
+   parameter bridge; the Shoenfield route should leave the QF-type-determination for `L_RV` (w2)
+   — and the comparison has to say whether those two leftovers are the *same* obligation in
+   different clothing. If they are, two proofs of one lemma is not two proofs of the theorem, and
+   that must be said plainly rather than counted as independent confirmation.
+
+Status: swarm `smw1b0thh` started with four directions (fragment criterion; `L_val` ⇒ `L_RV`
+QF-type transfer; a worked instance on two `C v` models; audit of the existing criterion files).
