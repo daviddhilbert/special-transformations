@@ -833,3 +833,35 @@ results are now in the tree: the six non-scaling `valField` axioms (m4's file an
 
 So the extraction from an `L_RV`-model to a model of `ValPM.ACVF_val` is *proved*, with exactly two
 hypotheses on the `L_RV` side: `PaperScale` (the repair) and `HasNontrivVal` (nontriviality).
+
+### The repair is now a theory in the tree, and the extraction is conditional on it alone
+
+`QE/Assembly_val.lean` (end of the `Transfer` namespace) now has
+
+```lean
+def leMulCompatFull : LRV.Sentence :=      -- Definition 2.2 item 5, in full
+  allSorted ![.rv, .rv, .rv]
+    (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))
+def ACVFplus : LRV.Theory := Axioms.ACVF ∪ {leMulCompatFull}
+```
+
+with `model_ACVF_of_model_ACVFplus`, the semantic form `le_mul_compat_full`,
+`paperScale_of_model_ACVFplus`, and
+
+```lean
+model_ACVF_val_of_model_ACVFplus (hM : M ⊨ ACVFplus) (hnontriv : HasNontrivVal M) :
+  @Theory.Model Language.val (VFType) (vfValStruct …) ValPM.ACVF_val
+```
+
+— the extraction, from the repaired theory plus nontriviality.  So the state of the campaign is:
+
+| statement | status |
+| --- | --- |
+| `M ⊨ ACVFplus` → `S_M ⊨ ValPM.ACVF_val` (nontrivial `M`) | **proved**, in the tree |
+| QE in `L_val` for `ValPM.ACVF_val` | **proved** (`hasQE_ACVF_val`) |
+| the read-back `L_val` witness → `L_RV`, QF half | **proved** (`VFRestrict.transfer_of_isQF`, `Smw14elno.M3.qf_transfer`) |
+| every `L_RV`-formula is a guarded translate of an `L_val`-formula | **open** — swarm `smw1541fr` |
+| trivial-valuation models have QE; per-model QE → theory QE | **open** — swarm `smw1541fr` |
+| `HasQE Axioms.ACVF` | needs the ruling on the one-axiom repair, plus the two rows above |
+
+The one-axiom repair is the only thing on this list that is not a piece of work.

@@ -12563,3 +12563,59 @@ end Smw14elno.M3
 #print axioms VFRestrict.transfer_of_isQF
 #print axioms Smw14elno.M3.isQF_valFormulaToRV
 #print axioms Smw14elno.M3.qf_transfer
+
+namespace SpecialTransformations.Milestone0.Transfer
+
+set_option linter.style.haveILetI false
+
+/-- Definition 2.2 item 5 in full: `≤` on `RV` is invariant under multiplication by **every**
+nonzero `RV`-element, in the iff form (the frozen `Axioms.leMulCompat` has `pUnits` — the class
+of `1` — in place of `pRV`, which only covers the identity class of `Γ`). -/
+def leMulCompatFull : LRV.Sentence :=
+  allSorted ![.rv, .rv, .rv]
+    (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))
+
+/-- **The repaired theory**: the frozen `ACVF` with item 5 stated in full. -/
+def ACVFplus : LRV.Theory := Axioms.ACVF ∪ {leMulCompatFull}
+
+theorem mem_ACVFplus_leMulCompatFull : leMulCompatFull ∈ ACVFplus := by
+  simp [ACVFplus]
+
+/-- The repaired theory is stronger than the frozen one. -/
+theorem model_ACVF_of_model_ACVFplus {M : Type} [LRV.Structure M] (hM : M ⊨ ACVFplus) :
+    M ⊨ Axioms.ACVF :=
+  ⟨fun φ hφ => hM.realize_of_mem φ (Or.inl hφ)⟩
+
+/-- **The semantic form of the repaired axiom.** -/
+theorem le_mul_compat_full {M : Type} [LRV.Structure M] (hM : M ⊨ ACVFplus) {a b c : M}
+    (ha : iRV a) (hb : iRV b) (hc : iRV c) (h0 : c ≠ iRVZero) :
+    iLe a b ↔ iLe (iRVMul a c) (iRVMul b c) := by
+  have h := allSorted_realize (T := ACVFplus) hM mem_ACVFplus_leMulCompatFull ![a, b, c]
+    (by intro i; fin_cases i <;> simp [ha, hb, hc])
+  have h' : c ≠ iRVZero → (iLe a b ↔ iLe (iRVMul a c) (iRVMul b c)) := by
+    simpa [pRV_realize, realize_pLe, realize_tRVMul] using h
+  exact h' h0
+
+/-- **The repaired theory implies the paper's item 5** in the form the transfer uses. -/
+theorem paperScale_of_model_ACVFplus {M : Type} [LRV.Structure M] (hM : M ⊨ ACVFplus) :
+    PaperScale M :=
+  fun _a _b _c ha hb hc h0 => le_mul_compat_full hM ha hb hc h0
+
+/-- **The extraction, from the repaired theory**: the `VF` sort of a nontrivially valued model of
+`ACVFplus` models `ValPM.ACVF_val`. -/
+theorem model_ACVF_val_of_model_ACVFplus {M : Type} [LRV.Structure M] (hM : M ⊨ ACVFplus)
+    (hnontriv : HasNontrivVal M) :
+    @Theory.Model Language.val (VFType (M := M)) (vfValStruct (hM := model_ACVF_of_model_ACVFplus hM))
+      ValPM.ACVF_val := by
+  letI hA : M ⊨ Axioms.ACVF := model_ACVF_of_model_ACVFplus hM
+  exact model_ACVF_val_of_axioms (M := M)
+    (fun x => predV_refl hA x) (fun x y z h1 h2 => predV_trans hA h1 h2)
+    (fun x => predV_zero_le hA x) (fun x h => predV_zero_eq hA h)
+    (fun x y => predV_ultra hA x y) (fun x y => predV_total hA x y)
+    (paperScale_of_model_ACVFplus hM) (VFAlgClosed.isAlgClosed_vfType (M := M)) hnontriv
+
+end SpecialTransformations.Milestone0.Transfer
+
+#print axioms SpecialTransformations.Milestone0.Transfer.le_mul_compat_full
+#print axioms SpecialTransformations.Milestone0.Transfer.paperScale_of_model_ACVFplus
+#print axioms SpecialTransformations.Milestone0.Transfer.model_ACVF_val_of_model_ACVFplus
