@@ -1791,3 +1791,29 @@ arXiv:1006.1393 (`Yin:QE:ACVF:min`) — exchange is Lemma 4.3 there, the average
 deliverable, and each docstring says which external lemma it corresponds to.  Any of them that is
 re-proved here should be marked as such, and the ones left quoted should be flagged in the final
 report rather than counted as formalized.
+
+## Section 3 has its first proved item, and Definition 4.18 is formalized
+
+**Lemma 4.9 re-proved, sorry-free, for an arbitrary valued field** (m2, `AverageLemma*.lean`):
+`exists_pair_val_sub_eq`, and `rv_eq_iff_val_sub_lt` — "`rv`-fibres are balls" — plus
+`exists_pair_rv_ne`.  This is the one §3 item whose printed proof §3 does not cite from
+arXiv:1006.1393, so it is the natural one to have formalized first, and it is the dictionary the
+balls bridge and the §3 freezing both consume.  The characteristic-0 hypothesis appears explicitly as
+`v (k : K) = 1`, not silently.
+
+**Definition 4.18 — the lifting map** (m3, `Lift.lean`, 28 theorems, axioms clean): object data
+`RVObj`/`VFObj`, the companion `U_f`, `lift`, **`lift_eq_iUnion` reproducing the paper's display
+verbatim**, `rvMap`, `rv (L (U,f)) = U_f`, `lift_nonempty_iff`, the padding `E_{i,k}`, `L_{≤k}`, `L`
+on `RV[*,·]`, `rv_surjective`/`rvSection` (why `U_f ⊆ rv (L (U,f))`), `rvFiber_finite`, and
+`instTopRV : Top (RV v) := ⟨rvInfty v⟩` — closing the gap m4 flagged in
+`SpecialTransformations/Basic.lean`.  Not formalized and declared: definability in the monster model,
+`dim_VF` (hence the dimension half of `L(U,f) ∈ VF[k]`), `RV:morphism:condition` (its conclusion
+needs `acl`/`dcl` and the finite-image fact, which the printed proof does not supply), and
+`RV:isomorphism:weaker:condition`.
+
+**The interface, frozen as a structure** (m2, `Section3Supply`): `hACVF`, `qe`, `cminimal`, plus §3's
+`rvToVF_finiteImage`, `finiteVF_injects_RV`, `ballProperSub_center`, `ballRV_finite`, each field
+quoting the paper item it freezes; `frozen_targets_fit` proves the frozen `theorem_2_3` and
+`theorem_2_8` have *verbatim* the types of `qe` and `cminimal`, so the interface cannot drift from the
+frozen statements.  `REPORT.md` lists what the tree lacks as *vocabulary*: `acl`/`dcl`/exchange,
+saturation, a `Γ`-sort, algebraic sets of balls, definable subgroups.
