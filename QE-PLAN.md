@@ -1082,3 +1082,38 @@ Revised repair list, now five items:
 | 3 | `kAddLink`, `rvEqLink` | the residue field is the residue field | needed for the cover |
 | 4 | `kJunkZero`, `kNegJunkZero` | junk conventions | harmless, pins the symbols |
 | 5 | `axNontrivial` in `L_RV` | nontriviality | **needed, and it replaces the case split** |
+
+### The atom translations, and the swarm is solved (6/6)
+
+Swarm `smw1541fr` ended solved: six directions accepted.  The last two pieces:
+
+**The four `rv`-atoms** (`m2/PLeUnits.lean`, green, axioms clean).  An `L_RV`-atom mentioning `rv` of
+a `VF`-term is one of exactly four things, and three are translated unconditionally:
+
+| `L_RV` atom | `L_val` image | status |
+| --- | --- | --- |
+| `pLe (rv s) (rv t)` | `leF t s` (`v t ≤ v s` — the swap is the reversal) | `translate_pLe`, unconditional |
+| `pUnits (rv s)` | `v s = v 1` (`leOneF s`) | `leOneF_iff_pUnits`, unconditional |
+| `pInK (rv s)` | `v s = v 1 ∨ s = 0` (`inKF s`) | `inKF_iff_pInK`, unconditional |
+| `pEq (rv s) (rv t)` | `leEqF s t` | **conditional on `rvFibreIff`** |
+
+with the junk cases (`not_units_zero`, `pUnits_tRv_zero`, `leOneF_zero`, `leOneF_ne_zero`) settled,
+and two facts *derived* that no axiom states: `not_units_zero : ¬ iUnits iRVZero` (from `rvMulInv` at
+`0`, `rvMulInfty` and `kField`'s unguarded `0 ≠ 1`), which removes the `pRV` guard from
+`leClassOne`; and `rv_one_eq : iRv 1 = iRVOne`, which m5 also proved by a different route — two
+independent proofs of a fact two directions had silently assumed.
+
+`rvFibreIff` is the repair sentence that makes the fourth atom provable:
+
+```
+pEq (rv s) (rv t) ⇔ (pLe (rv s) (rv t) ⊓ pLe (rv t) (rv s) ⊓ (s = 0 ⊔ (…v (s - t) < v s…)))
+```
+
+i.e. `rv`-equality is order-equivalence together with the value comparison `v (s - t) < v s` — the
+familiar `a/b ∈ 1 + 𝔪`.  This is repair item 3 in its final form, and it is what `m3`'s
+`kAddLink`/`rvEqLink` pair was pointing at.
+
+**Swarm state**: 6 of 6 accepted, all files green with axioms clean.  Two directions independently
+located the same obstruction (m3 from the residue operations, m2 from the order/predicate atoms), and
+two independently proved `rv 1 = 1`.  The repair list stands at five items, with items 1 and 5
+already in the tree as `leMulCompatFull` and (pending) `axNontrivialRV`.
