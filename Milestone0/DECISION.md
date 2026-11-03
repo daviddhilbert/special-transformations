@@ -293,10 +293,14 @@ those).  So the frozen `HasQE ACVF` is false, not merely hard.
 
 The same slip — `pUnits` (`Kˣ`, the subgroup of value `1`) written where the paper has `RV^×` —
 also affects item 2: `rvMulOne`, `rvMulInv`, `rvMulMem`, `rvDivisible` are all `pUnits`-guarded, so
-the encoding axiomatises `Kˣ` as a group and never says that `RV^×` is one.  This is not academic:
-`valField`'s `axScale` is unguarded in `x`, `y`, so the extraction needs cancellation by a nonzero
-`RV`-element, which needs inverses in `RV^×`.  The minimal repair is therefore three sentences —
-item 5 plus the neutral law and inverses of item 2 — and `QE-PLAN.md` carries the Lean text.
+the encoding axiomatises `Kˣ` as a group and never says that `RV^×` is one.  That is a fidelity gap,
+but it is **not** needed for the QE transfer: stated with the guards on `a`, `b` dropped and only
+`c ≠ 0` kept, item 5 alone carries `axScale` (`paperScale_of_vfPred_scale` in
+`.ultramath/smw14elno/m1/Scale.lean` proves the two are equivalent), whereas a `pRV`-guarded form
+would force `axScale`'s zero cases into a cancellation argument that needs the missing inverses.
+So the minimal repair is **one** sentence.  A separate gap, unrelated to the repair, is that the
+frozen axioms admit trivially valued models while `L_val`'s `ACVF_val` requires `axNontrivial`; the
+final theorem therefore needs a case split on triviality.  `QE-PLAN.md` carries both.
 
 The repair restores the paper's item 5:
 

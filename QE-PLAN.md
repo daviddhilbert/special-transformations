@@ -736,3 +736,73 @@ In `.scratch2/asm/` and not committed, because they need the ruled-on repair:
   bookkeeping at the end; `predV_scale` is the only place the repair is used.
 * also in the scratch file: `realize_tRVOne` and `mem_ACVF_rvGroup`, two utility lemmas the main
   file does not have yet.
+
+### Correction: the repair is **one** axiom, and the group axioms do not need to move
+
+The section above ("The slip is systematic: three axioms") is superseded, and the reason is worth
+keeping: it assumed item 5 stated with the `pRV` guards on `a` **and** `b`, which forces `axScale`'s
+zero cases (`x = 0` or `y = 0`) into a cancellation argument, which needs inverses in `RV^×`, which
+the encoding does not give.  Swarm `smw14elno` member m1 found the right statement instead — drop
+the guards on `a` and `b`, keep `c ≠ 0`:
+
+```lean
+def leMulCompatFull : LRV.Sentence :=
+  allSorted ![.rv, .rv, .rv]
+    (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))
+```
+
+Two facts make this exactly the repair and no more:
+
+* the intended model satisfies it: `∞ = rv 0` is absorbing and the top, so at `a = ∞` or `b = ∞`
+  both sides of the iff are true, and otherwise it is the translation-invariance of the `Γ`-order;
+* it is *equivalent* to the `L_val`-side `axScale` transported to `RV`
+  (`paperScale_of_vfPred_scale` and `vfPred_scale` in `.ultramath/smw14elno/m1/Scale.lean`), so
+  nothing is being added beyond what `L_val`'s own theory already says.
+
+The `pUnits`-for-`pRV` weakness of `rvMulOne`/`rvMulInv`/`rvMulMem`/`rvDivisible` is real — the
+encoding axiomatises `Kˣ` as a group and never says `RV^×` is one — but with item 5 in the form
+above it is **not needed** for the transfer, and it does not make the transfer's conclusion weaker.
+It is a fidelity gap to fix when the encoding is next touched, not a repair this campaign needs.
+
+### The fourth gap: nontriviality, which is separate and which the frozen axioms do not supply
+
+`ValPM.ACVF_val` contains `axNontrivial` (`∃ x, x ≠ 0 ∧ ¬ v 1 ≤ v x`), and `oneECIn_of_nontrivial`
+says its `hnt` cannot be dropped (Johnson 2.3.8 is false for a trivially valued field).  The frozen
+`Axioms.ACVF` contains **no** nontriviality sentence — `qe.tex` Definition 2.2 does not either — so
+the trivially valued structure on an algebraically closed field is a model of it.  Swarm member m1
+checked the axioms against that structure one by one (`HasNontrivVal`'s docstring in
+`.ultramath/smw14elno/m1/Scale.lean`): `vfField`/`vfAlgClosed` are those of the ACF, `kField`/
+`kAlgClosed` those of the residue field, `rvGroup` holds because `F` algebraically closed makes
+`F^×` divisible, `preorderRV` because `iUnits` is exactly the class of `1`, and `rvUltrametric`
+because all nonzero values are equivalent — while `HasNontrivVal` fails.
+
+So the final theorem needs the case split: **nontrivially valued** (transfer to `ACVF_val`, which is
+now assembled) and **trivially valued** (where `rv : F^× → RV^×` is injective on classes, `RV`
+carries a copy of the field, and QE should follow from QE for `ACF` by a separate translation).  The
+second case is not started and is a genuinely new piece of work, not bookkeeping.
+
+### What the swarm landed (all six directions accepted, `smw14elno`)
+
+| direction | file | statement |
+| --- | --- | --- |
+| d1 | `m5/VFAlgClosed.lean` | `isAlgClosed_vfType : IsAlgClosed (VFType)`, from `Axioms.vfAlgClosed` |
+| d1 | `m5/VFPack.lean` | `model_valField` and `model_ACVF_val` packaging |
+| d2 | `m1/Scale.lean` | `PaperScale`, `vfPred_scale`, `paperScale_of_vfPred_scale`, `valField_model_of_PaperScale`, `model_ACVF_val_of_axioms` — **the whole extraction assembly** |
+| d3 | `m4/d4.lean` | the six non-scaling `valField` axioms at `S` (independent of the copy in `Assembly_val.lean`), `exSorted_realize` |
+| d4 | `m2/Coarsening.lean` | the coarsening lemma: the eight `≤`-axioms survive `f∘≤`, scaling fails |
+| d5 | `m6/ValEvalVF.lean` | `vfStruct`, the sort-restricted evaluator, `valFormulaToRVvf` and its bridge, `transfer_iff`/`theory_transfer` |
+| d6 | `m3/QFTransfer.lean` | `isQF_valFormulaToRV`, QF sort-independence, `valFormulaEvalS` |
+
+Every file compiles with `import Pre`, 0 errors, no `sorry`, axioms within
+`{propext, Classical.choice, Quot.sound}`; I re-elaborated each one myself before accepting.
+
+### The one gap left on the transfer
+
+`m6`'s `transfer_of_isQF` runs from `L_val` to `L_RV`.  The frozen target needs the converse
+coverage: **every `L_RV`-formula is `ACVF`-equivalent to some `valFormulaToRVvf θ`**.  That is
+`RV`-quantifier elimination inside `L_val` — `∃ y (RV), ψ` becomes `y = rv 0 ∨ ∃ x (VF), x ≠ 0 ∧
+ψ[rv x / y]` using `rvSurj`, plus the treatment of the residue-field operations (`kAdd` above all,
+where the value drop at `a + b = 0` forces the junk conventions), `pUnits` (`v x = 1`), and the
+preorder.  This is the last substantial piece, and it is independent of the repair decision: it can
+be written now, against the frozen axioms, and it is what makes the frozen *statement* reachable
+once the repair is in.
