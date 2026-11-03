@@ -2287,3 +2287,44 @@ d2 the junk-truth induction (`GuardTrue → JunkTrueAt`), d3 the `TransferWS` pl
 composition, d5 the parameter bridge's forward half, d6 the mixed-context QF cover, d7 the `mul`
 normal form, d8 fragment compactness.  Artifacts land under `.ultramath/smw1bwjo2/m{1..8}/` and
 are unvetted until compiled.
+
+## The first failure point of the transfer, located (`QE/FailProbe.lean`, green)
+
+Sequencing step 3 ("`nontrivialTransferWS_ACVF` far enough to locate its first failure").  The
+answer is in `QE/FailProbe.lean`, which compiles against the repaired encoding (0 errors, no
+`sorry`, no axioms beyond the kernel's): the induction on the `WellSorted` derivation has an
+immediate atomic and `imp` case, and its `all` case splits on the bound element `b : N` into
+exactly two inputs, both now statements:
+
+* `¬ sortEval s b` — **junk-truth of the body**, i.e. `GuardTrue → JunkTrueAt`
+  (`all_step_forward_junk`: junk-truth at `b` *is* the conclusion, nothing else is used).  This is
+  the branch the guard repair was for; it is no longer an obstruction, only an unproved semantic
+  lemma (swarm d2).
+* `sortEval s b` — a sorted `a : M` whose quantifier-free type over `(v, xs)` equals that of `b`
+  over `(w, ys)` (`all_step_forward_sorted`, which takes it as `ext` and does nothing else).  This
+  is **realization of a QF type in a fixed model**, and the transfer's hypothesis does not supply
+  it: `M ⊨ T` and "`(v,xs)` and `(w,ys)` have the same QF type" say nothing about `b`'s type over
+  the parameters.
+
+So the transfer's content is not spread through the induction — it is (i) `GuardTrue → JunkTrueAt`
+and (ii) the one-element QF-mate property, which is the paper's §3/§4 effectiveness of the residue
+field, or a saturation/compactness substitute for it.  Two consequences worth keeping:
+
+1. **A direct proof of `NontrivialTransferWS` cannot be cheap**, and this is the precise reason:
+   `NontrivialTransfer` is equivalent to `HasQEb` (`Missing.nontrivialTransfer_iff_hasQEb`,
+   `.ultramath/smw1b0thh/m3/AvAudit.lean`), and its `all` case needs a type-realization step that
+   is not in its own hypothesis.  The transfer is a *reformulation* of QE, exactly as
+   `QFTypeDetermines` is; the honest target for the RV work is the extension property
+   (Shoenfield's form: every partial isomorphism of finitely generated substructures is
+   elementary), which the tree already has the §3 interface for (`QE/Sec3_sat.lean`, `QE/Sec5`
+   skeleton in `.ultramath/smw18ygko/m1/Sec5.lean`).
+2. **The fictitious `a` can be replaced by saturation only if saturation is assumed**, which the
+   frozen statements are not written with (`TransferAtWS` has no saturation hypothesis).  So the
+   choice is between (a) proving the QF-mate property for `ACVF` — the real mathematics — and (b)
+   restating the transfer over saturated models.  (b) is not available for the frozen `HasQE`,
+   which has no saturation hypothesis either.
+
+**The same wall, seen twice.**  This is also why the two other "criterion" routes converged: W1's
+`QFTypeDetermines` is *equivalent* to the target, and `Assembly_val`'s `hasQE_of_transfers` needs
+the compactness step `QFComp.hasQE_of_qfTypeDetermines` precisely to manufacture, by compactness in
+a *third* model, the element that this induction cannot manufacture in `N`.
