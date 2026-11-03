@@ -12619,3 +12619,819 @@ end SpecialTransformations.Milestone0.Transfer
 #print axioms SpecialTransformations.Milestone0.Transfer.le_mul_compat_full
 #print axioms SpecialTransformations.Milestone0.Transfer.paperScale_of_model_ACVFplus
 #print axioms SpecialTransformations.Milestone0.Transfer.model_ACVF_val_of_model_ACVFplus
+
+/-
+Direction **d5** of swarm `smw1541fr`: the *trivial-valuation case* of the frozen `L_RV`
+encoding (`SpecialTransformations.Milestone0.Axioms.ACVF`).
+
+WHAT IS PROVED HERE (all green, `import Pre`, no `sorry`, no `axiom`, no `native_decide`,
+footprints ⊆ {propext, Classical.choice, Quot.sound}; all statements are about an arbitrary
+`M` with `[LRV.Structure M]` and `hM : M ⊨ Axioms.ACVF`).
+
+**1. The coarse case is empty** (§9).  With
+`TrivVal M : ∀ x, iVF x → x = iVFZero ∨ iRv x = iRv iVFOne` (`rv` constant on `VF ∖ {0}`):
+
+* `TrivCase.no_coarse_triv (hM) (hT : TrivVal M) : False`,
+* `TrivCase.exists_rv_ne_one (hM) : ∃ x, iVF x ∧ x ≠ 0 ∧ iRv x ≠ iRv 1`.
+
+Reason: `TrivVal` + `rvSurj` give `RV = {∞, 1}` (`rv_mem_two`), so `K = pInK ⊆ RV` has at most
+two elements, but `kAlgClosed` at degree 2 needs a root of `x² + a₁x + a₀` in `K` for all
+`a₀, a₁ ∈ K`, and at `a₀ = a₁ = 1` both candidates `∞` and `1` evaluate to `1 ≠ ∞`
+(`kAdd_one_one : 1 + 1 = 0`, from `kNeg_one` and `kAdd_neg`).  So the "trivially valued" case
+of `QE-PLAN.md` must be read as *order-trivial with `rv` injective*, not as `rv` constant.
+
+**2. The fine case: dictionary and `RV`-quantifier elimination** (§10).
+`FineTriv M` bundles: `rv` injective on `VF`, the order trivial (`v x ≤ v y ↔ x ≠ 0 ∨ y = 0`),
+`Kˣ = VF ∖ {0}`, the residue `+`, `-` and `1` matching the field's along `rv`.  Under it:
+
+* `fine_rv_eq : iRv x = iRv y ↔ x = y`;
+* `fine_dictionary`: the `L_RV`-atoms `rv x = rv y`, `rv x ≤ rv y`, `iUnits (rv x)`,
+  `rv x + rv y = rv (x+y)`, `-rv x = rv (-x)`, `rv x · rv y = rv (xy)` are all quantifier-free
+  conditions in the *field* language of `VF`;
+* `rv_exists_vf : (∃ a, iRV a ∧ ψ a) ↔ ψ ∞ ∨ ∃ x (VF), x ≠ 0 ∧ ψ (rv x)` — the elimination of
+  `RV`-quantifiers that the cover of `e1` needs on the trivial side (it uses only `rvSurj`).
+
+What does **not** follow, and why (documented at `fine_dictionary`): terms of the form
+`iVFAdd (rv s) (rv t)`, `iVFNeg (rv s)`, `iVFMul (rv s) (rv t)` — the `VF` operations applied to
+`RV`-elements — are *junk*, constrained by no axiom.  So no quantifier-free translation of an
+arbitrary `L_RV`-formula can exist in the trivial case without an extra junk hypothesis (or
+the repaired encoding), independently of the residue-field question.
+
+**3. Also unconditional** (true in every model, useful to d1/d2):
+`units_ne_infty : ¬ iUnits iRVZero` (`rvMulInv` at `∞` + `rvMulInfty` force `1 = ∞`),
+`rvZero_ne_rvOne`, `iRV_of_inK`, `kAdd_zero_left/right`, `kAdd_comm`, `kAdd_neg`, `kMul_one`,
+`kHyps_realize`, `allSortedK_realize` (extraction from `allSortedK`-guarded axioms, which the
+tree did not have), `exSortedK_realize`, and simp lemmas for `tKAdd`, `tKNeg`, `tRVOne`, `tv`.
+
+**4. The coarse-case dictionary is kept** (§4–§8) as the proof of the refutation: under
+`TrivVal` one gets `rv 1 = 1`, `rv x = rv y ↔ x = y ∨ (x ≠ 0 ∧ y ≠ 0)`,
+`iLe (rv x) (rv y) ↔ x ≠ 0 ∨ y = 0`, `iUnits (rv x) ↔ x ≠ 0`, the residue tables on `{∞, 1}`
+and `rv_exists_two` (every `RV`-quantifier is a two-term disjunction).  These are conditional
+theorems about an inconsistent hypothesis; §9 is what makes the inconsistency explicit.
+-/
+
+open FirstOrder FirstOrder.Language
+open scoped FirstOrder
+open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.Transfer LRV Axioms
+
+namespace TrivCase
+
+variable {M : Type} [LRV.Structure M]
+
+/-- The interpretation of the unary residue-field `-`; the frozen encoding has no such
+definition (only `iKAdd`, `iRVMul`), so we add it here. -/
+def iKNeg (x : M) : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.kNeg ![x]
+
+/-! ## 0. Realization of the `RV`-sorted term constructors not in the tree -/
+
+theorem realize_tKAdd {n : ℕ} (v : Empty ⊕ Fin n → M) (a b : Tm n) :
+    (tKAdd a b).realize v = iKAdd (a.realize v) (b.realize v) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.kAdd
+      (fun i => Term.realize (L := LRV) v (![a, b] i)) = iKAdd (a.realize v) (b.realize v)
+  rw [show (fun i => Term.realize (L := LRV) v (![a, b] i)) = ![a.realize v, b.realize v]
+    from by funext i; fin_cases i <;> simp]
+  rfl
+
+theorem realize_tKNeg {n : ℕ} (v : Empty ⊕ Fin n → M) (a : Tm n) :
+    (tKNeg a).realize v = iKNeg (a.realize v) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.kNeg
+      (fun i => Term.realize (L := LRV) v (![a] i)) = iKNeg (a.realize v)
+  rw [show (fun i => Term.realize (L := LRV) v (![a] i)) = ![a.realize v]
+    from by funext i; fin_cases i; simp]
+  rfl
+
+theorem realize_tRVOne {n : ℕ} (v : Empty ⊕ Fin n → M) :
+    (tRVOne (n := n)).realize v = iRVOne := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvOne
+      (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i)) = iRVOne
+  rw [show (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i))
+      = (fun i => i.elim0) from by funext i; exact i.elim0]
+  rfl
+
+/-- A `simp`-friendly form of `Transfer.realize_tv` with the index given as a numeral. -/
+@[simp] theorem realize_tv_nat {n : ℕ} (i : ℕ) (h : i < n) (v : Empty → M) (x : Fin n → M) :
+    (tv i h).realize (Sum.elim v x) = x ⟨i, h⟩ := rfl
+
+/-! ## 1. `pInK`, `kHyps` and the `allSortedK` extraction -/
+
+theorem pInK_realize {k : ℕ} (t : Tm k) (v : Empty → M) (x : Fin k → M) :
+    (pInK t).Realize v x ↔
+      iUnits (t.realize (Sum.elim v x)) ∨ t.realize (Sum.elim v x) = iRVZero := by
+  simp only [pInK, BoundedFormula.realize_sup, pUnits_realize, pEq,
+    BoundedFormula.realize_bdEqual, realize_tRVZero]
+
+theorem kHyps_foldr_realize {k : ℕ} (l : List (Fin k)) (v : Empty → M) (x : Fin k → M) :
+    (l.foldr (fun i acc => pInK (tv i.1 i.2) ⊓ acc) ⊤).Realize v x ↔
+      ∀ i ∈ l, iUnits (x i) ∨ x i = iRVZero := by
+  induction l with
+  | nil => simp
+  | cons a l ih =>
+    rw [List.foldr_cons, BoundedFormula.realize_inf, ih, pInK_realize, realize_tv]
+    constructor
+    · rintro ⟨ha, hall⟩ i hi
+      rcases List.mem_cons.mp hi with rfl | hi
+      · exact ha
+      · exact hall i hi
+    · intro h
+      exact ⟨h a List.mem_cons_self, fun i hi => h i (List.mem_cons_of_mem a hi)⟩
+
+theorem kHyps_realize {k : ℕ} (v : Empty → M) (x : Fin k → M) :
+    (kHyps (k := k)).Realize v x ↔ ∀ i, iUnits (x i) ∨ x i = iRVZero := by
+  rw [kHyps, kHyps_foldr_realize]
+  constructor
+  · intro h i
+    exact h i (List.mem_finRange i)
+  · intro h i _
+    exact h i
+
+/-- **Uniform extraction from an `allSortedK`-guarded sentence.** -/
+theorem allSortedK_realize {T : LRV.Theory} (hM : M ⊨ T)
+    {k : ℕ} {ss : Fin k → SortTag} {φ : Bf k} (hmem : allSortedK ss φ ∈ T) :
+    ∀ (x : Fin k → M), (∀ i, (match ss i with
+        | .vf => iVF (x i)
+        | .rv => iRV (x i)))
+      → (∀ i, iUnits (x i) ∨ x i = iRVZero)
+      → @BoundedFormula.Realize LRV M _ Empty k φ (default : Empty → M) x := by
+  intro x hx hK
+  have h := hM.realize_of_mem (allSortedK ss φ) hmem
+  simp only [allSortedK, Sentence.Realize, BoundedFormula.realize_alls,
+    BoundedFormula.realize_imp, BoundedFormula.realize_inf] at h
+  exact h x ⟨(sortedHyps_realize ss (default : Empty → M) x).mpr hx,
+    (kHyps_realize (default : Empty → M) x).mpr hK⟩
+
+/-! ## 2. Membership of the axioms used below, and the constants -/
+
+theorem mem_ACVF_sdRVZero : Axioms.sdRVZero ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+theorem mem_ACVF_sdRVOne : Axioms.sdRVOne ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+theorem mem_ACVF_sdUnits : Axioms.sdUnits ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+theorem mem_ACVF_sdKAdd : Axioms.sdKAdd ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+theorem mem_ACVF_sdKNeg : Axioms.sdKNeg ∈ Axioms.ACVF :=
+  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
+
+theorem mem_ACVF_kField {s : LRV.Sentence} (h : s ∈ Axioms.kField) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union] at *
+  tauto
+
+theorem mem_ACVF_rvGroup {s : LRV.Sentence} (h : s ∈ Axioms.rvGroup) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union] at *
+  tauto
+
+theorem mem_ACVF_rvOneMem : Axioms.rvOneMem ∈ Axioms.ACVF :=
+  mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvMulOne : Axioms.rvMulOne ∈ Axioms.ACVF :=
+  mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvMulInv : Axioms.rvMulInv ∈ Axioms.ACVF :=
+  mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvMulInfty : Axioms.rvMulInfty ∈ Axioms.ACVF :=
+  mem_ACVF_rvGroup (by simp [Axioms.rvGroup, Axioms.ofList])
+
+theorem mem_ACVF_rvSurj : Axioms.rvSurj ∈ Axioms.ACVF :=
+  mem_ACVF_rvAxioms (by simp [Axioms.rvAxioms, Axioms.ofList])
+
+/-- **`rv` is surjective onto `RV ∖ {∞}`** (the frozen axiom `Axioms.rvSurj`), extracted. -/
+theorem rv_surj (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iRV a) (ha0 : a ≠ iRVZero) :
+    ∃ x : M, iVF x ∧ iRv x = a := by
+  have h := allSorted_realize hM mem_ACVF_rvSurj ![a] (by
+    intro i; fin_cases i; simpa using ha)
+  simp only [Axioms.rvSurj, BoundedFormula.realize_imp, BoundedFormula.realize_not, pEq,
+    BoundedFormula.realize_bdEqual, realize_tRVZero, exSorted, BoundedFormula.realize_ex,
+    BoundedFormula.realize_inf, sortPred, pVF_realize, realize_tRv, realize_tv,
+    Term.realize_var, Sum.elim_inr, Function.comp_apply, Fin.snoc_last, Fin.snoc_castSucc,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
+  exact h ha0
+
+/-- The two `RV` constants are distinct (`kField`'s `0 ≠ 1`). -/
+theorem rvZero_ne_rvOne (hM : M ⊨ Axioms.ACVF) : iRVZero (M := M) ≠ iRVOne := by
+  have hmem : (∼(pEq (tRVZero (n := 0)) tRVOne)) ∈ Axioms.ACVF :=
+    mem_ACVF_kField (by simp [Axioms.kField, Axioms.ofList])
+  have h := sentence_realize hM hmem
+  rw [Sentence.Realize] at h
+  simpa only [Formula.Realize, pEq, BoundedFormula.realize_not, BoundedFormula.realize_bdEqual,
+    realize_tRVZero, realize_tRVOne] using h
+
+/-- `1` of the `RV` sort lies in `RV`. -/
+theorem iRV_rvOne (hM : M ⊨ Axioms.ACVF) : iRV (iRVOne (M := M)) := by
+  have h := sentence_realize hM mem_ACVF_sdRVOne
+  rw [Sentence.Realize] at h
+  simpa only [Axioms.sdRVOne, Formula.Realize, pRVsort_realize, realize_tRVOne] using h
+
+/-- `0 = ∞` of the `RV` sort lies in `RV`. -/
+theorem iRV_rvZero (hM : M ⊨ Axioms.ACVF) : iRV (iRVZero (M := M)) := by
+  have h := sentence_realize hM mem_ACVF_sdRVZero
+  rw [Sentence.Realize] at h
+  simpa only [Axioms.sdRVZero, Formula.Realize, pRVsort_realize, realize_tRVZero] using h
+
+/-- `1` of the `RV` sort satisfies the unit predicate `Kˣ` (`rvOneMem`). -/
+theorem iUnits_rvOne (hM : M ⊨ Axioms.ACVF) : iUnits (iRVOne (M := M)) := by
+  have h := sentence_realize hM mem_ACVF_rvOneMem
+  rw [Sentence.Realize] at h
+  simpa only [Axioms.rvOneMem, Formula.Realize, pUnits_realize, realize_tRVOne] using h
+
+/-- `Kˣ` is contained in the `RV` sort (`sdUnits`). -/
+theorem rv_of_units (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iUnits a) : iRV a := by
+  have h := sentence_realize hM mem_ACVF_sdUnits
+  rw [Sentence.Realize] at h
+  simp only [Axioms.sdUnits, allOne, BoundedFormula.realize_alls] at h
+  have h2 := h ![a]
+  simp only [BoundedFormula.realize_imp, pUnits_realize, pRVsort_realize] at h2
+  simp at h2
+  exact h2 ha
+
+/-- every element of `K = Kˣ ∪ {0}` is an `RV`-element. -/
+theorem iRV_of_inK (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iUnits a ∨ a = iRVZero) : iRV a := by
+  rcases ha with h | h
+  · exact rv_of_units hM h
+  · rw [h]; exact iRV_rvZero hM
+
+/-- `K` is closed under `+` (`sdKAdd`): the `pInK` predicate is preserved. -/
+theorem inK_kAdd (hM : M ⊨ Axioms.ACVF) {a b : M}
+    (ha : iUnits a ∨ a = iRVZero) (hb : iUnits b ∨ b = iRVZero) :
+    iUnits (iKAdd a b) ∨ iKAdd a b = iRVZero := by
+  have h := allSorted_realize hM mem_ACVF_sdKAdd ![a, b] (by
+    intro i
+    fin_cases i
+    · simpa using iRV_of_inK hM ha
+    · simpa using iRV_of_inK hM hb)
+  simp only [Axioms.sdKAdd, BoundedFormula.realize_imp, pInK_realize, realize_tKAdd,
+    realize_tv, Matrix.cons_val_zero, Matrix.cons_val_one] at h
+  exact h ha hb
+
+/-- `K` is closed under unary `-` (`sdKNeg`). -/
+theorem inK_kNeg (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iUnits a ∨ a = iRVZero) :
+    iUnits (iKNeg a) ∨ iKNeg a = iRVZero := by
+  have h := allSorted_realize hM mem_ACVF_sdKNeg ![a] (by
+    intro i
+    fin_cases i
+    simpa using iRV_of_inK hM ha)
+  simp only [Axioms.sdKNeg, BoundedFormula.realize_imp, pInK_realize, realize_tKNeg,
+    realize_tv, Matrix.cons_val_zero] at h
+  exact h ha
+
+/-- `∞` is not a unit: `rvMulInv` at `∞` would force `1 = ∞` by absorption
+(`rvMulInfty`).  This is an **unconditional** fact: it holds in every model of `Axioms.ACVF`,
+with or without a trivial valuation. -/
+theorem units_ne_infty (hM : M ⊨ Axioms.ACVF) : ¬ iUnits (iRVZero (M := M)) := by
+  intro h0
+  have hinv := allSorted_realize hM mem_ACVF_rvMulInv ![iRVZero] (by
+    intro i; fin_cases i; simpa using iRV_rvZero hM)
+  simp only [Axioms.rvMulInv, BoundedFormula.realize_imp, pUnits_realize,
+    BoundedFormula.realize_ex, exSorted, BoundedFormula.realize_inf, sortPred,
+    pRVsort_realize, pVF_realize, pEq, BoundedFormula.realize_bdEqual, realize_tRVMul,
+    realize_tRVOne, realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply,
+    Fin.snoc_last, Fin.snoc_castSucc, Nat.succ_eq_add_one, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons] at hinv
+  obtain ⟨y, -, hunit, hmul⟩ := hinv h0
+  have hinf := allSorted_realize hM mem_ACVF_rvMulInfty ![y] (by
+    intro i; fin_cases i; simpa using rv_of_units hM hunit)
+  simp only [Axioms.rvMulInfty, pEq, BoundedFormula.realize_bdEqual, realize_tRVMul,
+    tRVInfty, realize_tRVZero, realize_tv] at hinf
+  simp at hinf
+  exact rvZero_ne_rvOne hM (hinf.symm.trans hmul)
+
+/-! ## 3. The `kField` laws at `K`, and `rvGroup`'s multiplicative laws -/
+
+/-- `0` is neutral for `+` in `K`. -/
+theorem kAdd_zero_right (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iUnits a ∨ a = iRVZero) :
+    iKAdd a iRVZero = a := by
+  have hmem : allSortedK ![.rv] (pEq (tKAdd (&0 : Tm 1) tRVZero) (&0 : Tm 1)) ∈ Axioms.ACVF :=
+    mem_ACVF_kField (by simp [Axioms.kField, Axioms.ofList])
+  have h := allSortedK_realize hM hmem ![a]
+    (by intro i; fin_cases i; exact iRV_of_inK hM ha)
+    (by intro i; fin_cases i; exact ha)
+  simp only [pEq, BoundedFormula.realize_bdEqual, realize_tKAdd, realize_tRVZero,
+    realize_tv, Matrix.cons_val_zero] at h
+  simpa using h
+
+/-- Additive inverses in `K`. -/
+theorem kAdd_neg (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iUnits a ∨ a = iRVZero) :
+    iKAdd a (iKNeg a) = iRVZero := by
+  have hmem : allSortedK ![.rv]
+      (pEq (tKAdd (&0 : Tm 1) (tKNeg (&0 : Tm 1))) tRVZero) ∈ Axioms.ACVF :=
+    mem_ACVF_kField (by simp [Axioms.kField, Axioms.ofList])
+  have h := allSortedK_realize hM hmem ![a]
+    (by intro i; fin_cases i; exact iRV_of_inK hM ha)
+    (by intro i; fin_cases i; exact ha)
+  simp only [pEq, BoundedFormula.realize_bdEqual, realize_tKAdd, realize_tKNeg,
+    realize_tRVZero, realize_tv, Matrix.cons_val_zero] at h
+  simpa using h
+
+/-- `1` is neutral for `×` in `K`. -/
+theorem kMul_one (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iUnits a ∨ a = iRVZero) :
+    iRVMul a iRVOne = a := by
+  have hmem : allSortedK ![.rv] (pEq (tRVMul (&0 : Tm 1) tRVOne) (&0 : Tm 1)) ∈ Axioms.ACVF :=
+    mem_ACVF_kField (by simp [Axioms.kField, Axioms.ofList])
+  have h := allSortedK_realize hM hmem ![a]
+    (by intro i; fin_cases i; exact iRV_of_inK hM ha)
+    (by intro i; fin_cases i; exact ha)
+  simp only [pEq, BoundedFormula.realize_bdEqual, realize_tRVMul, realize_tRVOne,
+    realize_tv, Matrix.cons_val_zero] at h
+  simpa using h
+
+/-- `1` is neutral for `×` on the units (`rvMulOne`). -/
+theorem rvMul_one_of_units (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iUnits a) :
+    iRVMul iRVOne a = a := by
+  have h := allSorted_realize hM mem_ACVF_rvMulOne ![a] (by
+    intro i; fin_cases i; simpa using rv_of_units hM ha)
+  simp only [Axioms.rvMulOne, BoundedFormula.realize_imp, pUnits_realize, pEq,
+    BoundedFormula.realize_bdEqual, realize_tRVMul, realize_tRVOne, realize_tv,
+    Matrix.cons_val_zero] at h
+  exact h ha
+
+/-- `∞` absorbs `×` (`rvMulInfty`). -/
+theorem rvMul_infty (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iRV a) :
+    iRVMul a iRVZero = iRVZero := by
+  have h := allSorted_realize hM mem_ACVF_rvMulInfty ![a] (by
+    intro i; fin_cases i; simpa using ha)
+  simp only [Axioms.rvMulInfty, pEq, BoundedFormula.realize_bdEqual, realize_tRVMul,
+    tRVInfty, realize_tRVZero, realize_tv, Matrix.cons_val_zero] at h
+  simpa using h
+
+/-! ## 4. The triviality hypothesis and the dictionary it forces -/
+
+/-- **Trivial valuation, coarse form**: every nonzero `VF`-element has the same value, namely
+`rv 1`.  (This is the elementary form of `Γ = 1` together with the collapse of the residue map;
+`Axioms.ACVF` admits such models, e.g. the trivially valued structure on an algebraically closed
+field of residue characteristic `2`, see `QE-PLAN.md`.) -/
+def TrivVal (M : Type) [LRV.Structure M] : Prop :=
+  ∀ x : M, iVF x → x = iVFZero (M := M) ∨ iRv x = iRv iVFOne
+
+/-- **`rv 1 = 1`**: under a trivial valuation the two one-constants are identified. -/
+theorem rv_one_eq (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) :
+    iRv (iVFOne (M := M)) = iRVOne := by
+  obtain ⟨x, hxVF, hx⟩ := rv_surj hM (iRV_rvOne hM) (fun h => rvZero_ne_rvOne hM h.symm)
+  rcases hT x hxVF with h | h
+  · rw [h, rv_zero_eq hM] at hx
+    exact absurd hx.symm (fun h => rvZero_ne_rvOne hM h.symm)
+  · exact h.symm.trans hx
+
+/-- Under a trivial valuation every nonzero `VF`-element has value `1`. -/
+theorem rv_val_one (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {x : M} (hx : iVF x)
+    (hx0 : x ≠ iVFZero) : iRv x = iRVOne := by
+  rcases hT x hx with h | h
+  · exact absurd h hx0
+  · rw [h, rv_one_eq hM hT]
+
+/-- `rv x = ∞ ↔ x = 0` (unconditional). -/
+theorem rv_eq_inf_iff (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) :
+    iRv x = iRVZero ↔ x = iVFZero :=
+  ⟨rv_eq_infty hM hx, fun h => by rw [h]; exact rv_zero_eq hM⟩
+
+/-- **When is `rv` injective?**  Under a trivial valuation it is injective off `0`, and it
+identifies exactly the two nonzero elements: `rv x = rv y ↔ x = y ∨ (x ≠ 0 ∧ y ≠ 0)`. -/
+theorem rv_eq_iff (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {x y : M} (hx : iVF x) (hy : iVF y) :
+    iRv x = iRv y ↔ x = y ∨ (x ≠ iVFZero ∧ y ≠ iVFZero) := by
+  constructor
+  · intro h
+    by_cases hx0 : x = iVFZero
+    · left
+      have h1 : iRv y = iRVZero := by rw [← h, hx0]; exact rv_zero_eq hM
+      rw [hx0, (rv_eq_inf_iff hM hy).mp h1]
+    · right
+      refine ⟨hx0, ?_⟩
+      by_contra hy0
+      rw [hy0, rv_zero_eq hM] at h
+      exact hx0 ((rv_eq_inf_iff hM hx).mp h)
+  · rintro (rfl | ⟨hx0, hy0⟩)
+    · rfl
+    · rw [rv_val_one hM hT hx hx0, rv_val_one hM hT hy hy0]
+
+/-- **The valuation order is trivial**: `v x ≤ v y ↔ x ≠ 0 ∨ y = 0`. -/
+theorem le_rv_iff (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {x y : M} (hx : iVF x) (hy : iVF y) :
+    iLe (iRv x) (iRv y) ↔ x ≠ iVFZero ∨ y = iVFZero := by
+  have hx' : iRV (iRv x) := rv_mem hM hx
+  have hy' : iRV (iRv y) := rv_mem hM hy
+  constructor
+  · intro h
+    by_cases hx0 : x = iVFZero
+    · right
+      by_contra hy0
+      have hy0' : iRv y ≠ iRVZero := fun hh => hy0 ((rv_eq_inf_iff hM hy).mp hh)
+      have h' : iLe iRVZero (iRv y) := by rw [← rv_zero_eq hM, ← hx0]; exact h
+      exact hy0' (le_infty_eq hM _ hy' hy0' h')
+    · exact Or.inl hx0
+  · rintro (hx0 | hy0)
+    · rw [rv_val_one hM hT hx hx0]
+      by_cases hy0 : y = iVFZero
+      · rw [hy0, rv_zero_eq hM]
+        exact le_top' hM (by rw [← rv_one_eq hM hT]; exact rv_mem hM (vf_one_mem hM))
+      · rw [rv_val_one hM hT hy hy0]
+        exact Transfer.le_refl hM iRVOne (iRV_rvOne hM) (fun h => rvZero_ne_rvOne hM h.symm)
+    · rw [hy0, rv_zero_eq hM]
+      exact le_top' hM hx'
+
+/-- **The units are the nonzero `VF`-elements**: `iUnits (rv x) ↔ x ≠ 0`. -/
+theorem units_rv_iff (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {x : M} (hx : iVF x) :
+    iUnits (iRv x) ↔ x ≠ iVFZero := by
+  constructor
+  · intro h hx0
+    rw [hx0, rv_zero_eq hM] at h
+    exact units_ne_infty hM h
+  · intro hx0
+    rw [rv_val_one hM hT hx hx0]
+    exact iUnits_rvOne hM
+
+/-- **`RV` has two elements**: under a trivial valuation every `RV`-element is `∞ = rv 0` or
+`1 = rv 1`.  So `RV` is a *definitional* two-element expansion of the field on `VF`. -/
+theorem rv_mem_two (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {a : M} (ha : iRV a) :
+    a = iRVZero ∨ a = iRVOne := by
+  by_cases h0 : a = iRVZero
+  · exact Or.inl h0
+  · obtain ⟨x, hxVF, hx⟩ := rv_surj hM ha h0
+    rcases hT x hxVF with h | h
+    · exact Or.inl (by rw [← hx, h, rv_zero_eq hM])
+    · exact Or.inr (by rw [← hx, h, rv_one_eq hM hT])
+
+/-! ## 5. The residue-field tables on `{∞, 1}` -/
+
+/-- `+` in `K` is commutative (`kField`). -/
+theorem kAdd_comm (hM : M ⊨ Axioms.ACVF) {a b : M}
+    (ha : iUnits a ∨ a = iRVZero) (hb : iUnits b ∨ b = iRVZero) :
+    iKAdd a b = iKAdd b a := by
+  have hmem : allSortedK ![.rv, .rv] (pEq (tKAdd (&0 : Tm 2) &1) (tKAdd &1 &0)) ∈ Axioms.ACVF :=
+    mem_ACVF_kField (by simp [Axioms.kField, Axioms.ofList])
+  have h := allSortedK_realize hM hmem ![a, b]
+    (by intro i; fin_cases i
+        · exact iRV_of_inK hM ha
+        · exact iRV_of_inK hM hb)
+    (by intro i; fin_cases i
+        · exact ha
+        · exact hb)
+  simp only [pEq, BoundedFormula.realize_bdEqual, realize_tKAdd, realize_tv] at h
+  simpa using h
+
+/-- `0` is neutral for `+` in `K`, on the left. -/
+theorem kAdd_zero_left (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iUnits a ∨ a = iRVZero) :
+    iKAdd iRVZero a = a := by
+  rw [kAdd_comm hM (Or.inr rfl) ha]
+  exact kAdd_zero_right hM ha
+
+/-- `-1 = 1`: negation in the two-element residue field. -/
+theorem kNeg_one (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) :
+    iKNeg (iRVOne (M := M)) = iRVOne := by
+  have hunit : iUnits (iRVOne (M := M)) ∨ iRVOne (M := M) = iRVZero := Or.inl (iUnits_rvOne hM)
+  have hneg : iKAdd iRVOne (iKNeg iRVOne) = iRVZero := kAdd_neg hM hunit
+  rcases rv_mem_two hM hT (iRV_of_inK hM (inK_kNeg hM hunit)) with h | h
+  · rw [h] at hneg
+    rw [kAdd_zero_right hM hunit] at hneg
+    exact absurd hneg.symm (rvZero_ne_rvOne hM)
+  · exact h
+
+/-- `-0 = 0`: negation fixes the zero of the residue field. -/
+theorem kNeg_zero (hM : M ⊨ Axioms.ACVF) : iKNeg (iRVZero (M := M)) = iRVZero := by
+  have h0 : iUnits (iRVZero (M := M)) ∨ iRVZero (M := M) = iRVZero := Or.inr rfl
+  have hneg : iKAdd iRVZero (iKNeg iRVZero) = iRVZero := kAdd_neg hM h0
+  rw [kAdd_zero_left hM (inK_kNeg hM h0)] at hneg
+  exact hneg
+
+/-- `1 + 1 = 0` in the two-element residue field. -/
+theorem kAdd_one_one (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) :
+    iKAdd (iRVOne (M := M)) iRVOne = iRVZero := by
+  have h : iKAdd (iRVOne (M := M)) (iKNeg iRVOne) = iRVZero :=
+    kAdd_neg hM (Or.inl (iUnits_rvOne hM))
+  rwa [kNeg_one hM hT] at h
+
+/-! ## 6. The residue operations on `rv`-images -/
+
+/-- `rv x ∈ K = Kˣ ∪ {0}` under a trivial valuation. -/
+theorem inK_rv (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {x : M} (hx : iVF x) :
+    iUnits (iRv x) ∨ iRv x = iRVZero := by
+  by_cases h0 : x = iVFZero
+  · exact Or.inr (by rw [h0]; exact rv_zero_eq hM)
+  · exact Or.inl ((units_rv_iff hM hT hx).mpr h0)
+
+/-- `0` is neutral for `+` on `rv`-images, on the left. -/
+theorem kAdd_rv_zero_left (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {s t : M}
+    (hs : iVF s) (ht : iVF t) (h : s = iVFZero) :
+    iKAdd (iRv s) (iRv t) = iRv t := by
+  rw [h, rv_zero_eq hM]
+  exact kAdd_zero_left hM (inK_rv hM hT ht)
+
+/-- `0` is neutral for `+` on `rv`-images, on the right. -/
+theorem kAdd_rv_zero_right (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {s t : M}
+    (hs : iVF s) (ht : iVF t) (h : t = iVFZero) :
+    iKAdd (iRv s) (iRv t) = iRv s := by
+  rw [h, rv_zero_eq hM]
+  exact kAdd_zero_right hM (inK_rv hM hT hs)
+
+/-- On two nonzero `rv`-images, `+` is the zero of the two-element residue field:
+`rv s + rv t = rv 0`. -/
+theorem kAdd_rv_ne (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {s t : M}
+    (hs : iVF s) (ht : iVF t) (h1 : s ≠ iVFZero) (h2 : t ≠ iVFZero) :
+    iKAdd (iRv s) (iRv t) = iRVZero := by
+  rw [rv_val_one hM hT hs h1, rv_val_one hM hT ht h2]
+  exact kAdd_one_one hM hT
+
+/-- Negation fixes `rv`-images. -/
+theorem kNeg_rv (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {s : M} (hs : iVF s) :
+    iKNeg (iRv s) = iRv s := by
+  by_cases h0 : s = iVFZero
+  · rw [h0, rv_zero_eq hM]
+    exact kNeg_zero hM
+  · rw [rv_val_one hM hT hs h0]
+    exact kNeg_one hM hT
+
+/-- `×` on `rv`-images is `rv` of the product (this is `rvMulHom` of the frozen axioms). -/
+theorem kMul_rv (hM : M ⊨ Axioms.ACVF) {s t : M} (hs : iVF s) (ht : iVF t) :
+    iRVMul (iRv s) (iRv t) = iRv (iVFMul s t) :=
+  (rv_mul_hom hM hs ht).symm
+
+/-- `∞` absorbs `×` on `rv`-images. -/
+theorem kMul_rv_zero (hM : M ⊨ Axioms.ACVF) {s t : M} (hs : iVF s) (ht : iVF t)
+    (h : t = iVFZero) : iRVMul (iRv s) (iRv t) = iRVZero := by
+  rw [h, rv_zero_eq hM]
+  exact rvMul_infty hM (rv_mem hM hs)
+
+/-! ## 7. Eliminating quantifiers over `RV` -/
+
+/-- **`RV`-quantifiers are eliminable**: because `RV = {∞, 1}`, an existential over the `RV` sort
+is a two-term disjunction.  This is the only quantifier elimination the trivial case needs on
+the `RV` side. -/
+theorem rv_exists_two (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {ψ : M → Prop} :
+    (∃ a : M, iRV a ∧ ψ a) ↔ ψ iRVZero ∨ ψ iRVOne := by
+  constructor
+  · rintro ⟨a, ha, hψ⟩
+    rcases rv_mem_two hM hT ha with h | h
+    · exact Or.inl (h ▸ hψ)
+    · exact Or.inr (h ▸ hψ)
+  · rintro (h | h)
+    · exact ⟨_, iRV_rvZero hM, h⟩
+    · exact ⟨_, iRV_rvOne hM, h⟩
+
+/-- The formula-level form of `rv_exists_two`: the guarded existential `exSorted .rv` is a
+disjunction over the two `RV`-elements. -/
+theorem exSorted_rv_realize (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) {k : ℕ} (φ : Bf (k + 1))
+    (x : Fin k → M) :
+    (exSorted .rv φ).Realize (default : Empty → M) x ↔
+      φ.Realize (default : Empty → M) (Fin.snoc x iRVZero) ∨
+        φ.Realize (default : Empty → M) (Fin.snoc x iRVOne) := by
+  simp only [exSorted, BoundedFormula.realize_ex, BoundedFormula.realize_inf, sortPred,
+    pRVsort_realize]
+  have hterm : ∀ a : M, Term.realize (Sum.elim (default : Empty → M) (Fin.snoc x a))
+      (tv k (Nat.lt_succ_self k)) = a := by
+    intro a
+    show Term.realize (Sum.elim (default : Empty → M) (Fin.snoc x a))
+      (Term.var (Sum.inr ⟨k, Nat.lt_succ_self k⟩)) = a
+    rw [Term.realize_var]
+    simp only [Sum.elim_inr]
+    rw [show (⟨k, Nat.lt_succ_self k⟩ : Fin (k + 1)) = Fin.last k from rfl, Fin.snoc_last]
+  have h := rv_exists_two hM hT (ψ := fun a : M => φ.Realize (default : Empty → M) (Fin.snoc x a))
+  simp only [hterm]
+  exact h
+
+/-! ## 8. The dictionary, packaged -/
+
+/-- **The trivial-valuation dictionary.**  In a model of `Axioms.ACVF` whose valuation is
+trivial, the entire `L_RV`-structure is a *definitional* expansion of the algebraically closed
+field on the `VF` sort:
+
+* `rv 1 = 1`, every nonzero element has value `1`;
+* `rv x = ∞ ↔ x = 0` and `rv x = rv y ↔ x = y ∨ (x ≠ 0 ∧ y ≠ 0)`;
+* the valuation order is `v x ≤ v y ↔ x ≠ 0 ∨ y = 0`;
+* the units are exactly the nonzero elements: `Kˣ = rv (VF ∖ {0})`;
+* `RV = {∞, 1}` has two elements, so `RV`-quantifiers are two-term disjunctions
+  (`rv_exists_two`, `exSorted_rv_realize`). -/
+theorem triv_dictionary (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) :
+    (iRv (iVFOne (M := M)) = iRVOne) ∧
+    (∀ x : M, iVF x → x ≠ iVFZero → iRv x = iRVOne) ∧
+    (∀ x : M, iVF x → (iRv x = iRVZero ↔ x = iVFZero)) ∧
+    (∀ x y : M, iVF x → iVF y →
+      (iRv x = iRv y ↔ x = y ∨ (x ≠ iVFZero ∧ y ≠ iVFZero))) ∧
+    (∀ x y : M, iVF x → iVF y → (iLe (iRv x) (iRv y) ↔ x ≠ iVFZero ∨ y = iVFZero)) ∧
+    (∀ x : M, iVF x → (iUnits (iRv x) ↔ x ≠ iVFZero)) ∧
+    (∀ a : M, iRV a → a = iRVZero ∨ a = iRVOne) :=
+  ⟨rv_one_eq hM hT, fun _ hx h0 => rv_val_one hM hT hx h0,
+    fun _ hx => rv_eq_inf_iff hM hx,
+    fun _ _ hx hy => rv_eq_iff hM hT hx hy,
+    fun _ _ hx hy => le_rv_iff hM hT hx hy,
+    fun _ hx => units_rv_iff hM hT hx,
+    fun _ ha => rv_mem_two hM hT ha⟩
+
+/-! ## 9. `kAlgClosed` extraction and the refutation of the coarse case -/
+
+theorem mem_ACVF_kAlgClosed {s : LRV.Sentence} (h : s ∈ Axioms.kAlgClosed) : s ∈ Axioms.ACVF := by
+  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union] at *
+  tauto
+
+theorem mem_ACVF_acfSchemeK_two : Axioms.acfSchemeK 2 ∈ Axioms.ACVF :=
+  mem_ACVF_kAlgClosed (by
+    simp only [Axioms.kAlgClosed, Set.mem_setOf_eq]
+    exact ⟨2, by norm_num, rfl⟩)
+
+/-- Realization of the `K`-guarded existential `exSortedK .rv`, with the fresh variable
+reduced to the quantified element. -/
+theorem exSortedK_realize {k : ℕ} (φ : Bf (k + 1)) (x : Fin k → M) :
+    (exSortedK .rv φ).Realize (default : Empty → M) x ↔
+      ∃ a : M, iRV a ∧ (iUnits a ∨ a = iRVZero) ∧
+        φ.Realize (default : Empty → M) (Fin.snoc x a) := by
+  have hterm : ∀ a : M, Term.realize (Sum.elim (default : Empty → M) (Fin.snoc x a))
+      (tv k (Nat.lt_succ_self k)) = a := by
+    intro a
+    show Term.realize (Sum.elim (default : Empty → M) (Fin.snoc x a))
+      (Term.var (Sum.inr ⟨k, Nat.lt_succ_self k⟩)) = a
+    rw [Term.realize_var]
+    simp only [Sum.elim_inr]
+    rw [show (⟨k, Nat.lt_succ_self k⟩ : Fin (k + 1)) = Fin.last k from rfl, Fin.snoc_last]
+  simp only [exSortedK, BoundedFormula.realize_ex, BoundedFormula.realize_inf, sortPred,
+    pRVsort_realize, pInK_realize, hterm, and_assoc]
+
+/-- **The coarse trivial-valuation case does not exist.**  A model of `Axioms.ACVF` cannot have
+all nonzero `VF`-elements of the same value: then `RV = {∞, 1}` (`rv_mem_two`), hence the residue
+field `K ⊆ RV` has at most two elements, but `kAlgClosed` makes `K` algebraically closed, and the
+two-element field has no root for `x² + x + 1`.
+
+So the "trivially valued" case of the case split in `QE-PLAN.md` has to be read as
+*order-trivial with `rv` injective* (the intended model), not as `rv`-constant. -/
+theorem no_coarse_triv (hM : M ⊨ Axioms.ACVF) (hT : TrivVal M) : False := by
+  have hsort : ∀ i : Fin 2, iRV (![(iRVOne (M := M)), (iRVOne (M := M))] i) := by
+    intro i; fin_cases i <;> simp [iRV_rvOne hM]
+  have hK : ∀ i : Fin 2, iUnits (![(iRVOne (M := M)), (iRVOne (M := M))] i) ∨
+      ![(iRVOne (M := M)), (iRVOne (M := M))] i = iRVZero := by
+    intro i; fin_cases i <;> simp [iUnits_rvOne hM]
+  have hmain := allSortedK_realize hM mem_ACVF_acfSchemeK_two
+    ![(iRVOne (M := M)), (iRVOne (M := M))] hsort hK
+  obtain ⟨a, haRV, -, haeq⟩ := (exSortedK_realize (k := 2)
+    (pEq (hornerPoly tKAdd tRVMul) tRVZero) ![(iRVOne (M := M)), (iRVOne (M := M))]).mp hmain
+  rw [hornerPoly_two] at haeq
+  simp only [pEq, BoundedFormula.realize_bdEqual, realize_tKAdd, realize_tRVMul,
+    realize_tRVZero] at haeq
+  simp at haeq
+  rcases rv_mem_two hM hT haRV with h | h
+  · rw [h] at haeq
+    rw [kAdd_zero_left hM (Or.inl (iUnits_rvOne hM))] at haeq
+    rw [rvMul_infty hM (iRV_rvOne hM)] at haeq
+    rw [kAdd_zero_left hM (Or.inl (iUnits_rvOne hM))] at haeq
+    exact rvZero_ne_rvOne hM haeq.symm
+  · rw [h] at haeq
+    rw [kAdd_one_one hM hT] at haeq
+    rw [kMul_one hM (Or.inr rfl)] at haeq
+    rw [kAdd_zero_left hM (Or.inl (iUnits_rvOne hM))] at haeq
+    exact rvZero_ne_rvOne hM haeq.symm
+
+/-- The negation, in positive form: in every model of `Axioms.ACVF` some nonzero `VF`-element has
+a value different from `rv 1`.  Hence `rv` is not constant on `VF ∖ {0}`. -/
+theorem exists_rv_ne_one (hM : M ⊨ Axioms.ACVF) :
+    ∃ x : M, iVF x ∧ x ≠ iVFZero ∧ iRv x ≠ iRv (iVFOne (M := M)) := by
+  by_contra h
+  apply no_coarse_triv hM
+  intro x hx
+  by_cases h0 : x = iVFZero
+  · exact Or.inl h0
+  · exact Or.inr (by by_contra hne; exact h ⟨x, hx, h0, hne⟩)
+
+/-! ## 10. The fine trivial case: order-trivial with injective `rv`
+
+`no_coarse_triv` shows that the coarse reading of "trivial valuation" (`rv` constant on
+`VF ∖ {0}`) is *empty*.  The trivially valued models of `Axioms.ACVF` are instead the ones where
+the valuation *order* is trivial and `rv` is injective — the intended model, where the residue
+field is the whole field and `Kˣ = VF ∖ {0}`.  This section isolates exactly the hypothesis set
+the trivial case needs and proves the atom dictionary under it. -/
+
+/-- **The fine trivial case**: the valuation order is trivial, `rv` is injective on `VF`, the
+units are the nonzero elements, and the residue operations agree with the field operations along
+`rv`.  (All of these hold in the trivially valued algebraically closed field, the intended model
+of the second case of the case split in `QE-PLAN.md`.) -/
+structure FineTriv (M : Type) [LRV.Structure M] : Prop where
+  /-- `rv` is injective on the `VF` sort -/
+  inj : ∀ x y : M, iVF x → iVF y → iRv x = iRv y → x = y
+  /-- the valuation order is trivial: `v x ≤ v y ↔ x ≠ 0 ∨ y = 0` -/
+  ord : ∀ x y : M, iVF x → iVF y → (iLe (iRv x) (iRv y) ↔ x ≠ iVFZero ∨ y = iVFZero)
+  /-- `Kˣ` is the set of nonzero elements -/
+  units : ∀ x : M, iVF x → (iUnits (iRv x) ↔ x ≠ iVFZero)
+  /-- the residue addition is the field addition -/
+  add : ∀ x y : M, iVF x → iVF y → iKAdd (iRv x) (iRv y) = iRv (iVFAdd x y)
+  /-- the residue negation is the field negation -/
+  neg : ∀ x : M, iVF x → iKNeg (iRv x) = iRv (iVFNeg x)
+  /-- the residue one is the value of the field one -/
+  one : iRv (iVFOne (M := M)) = iRVOne
+
+/-- In the fine trivial case `rv` is injective on `VF`. -/
+theorem fine_rv_eq (h : FineTriv M) {x y : M} (hx : iVF x) (hy : iVF y) :
+    iRv x = iRv y ↔ x = y :=
+  ⟨fun hh => h.inj x y hx hy hh, fun hh => by rw [hh]⟩
+
+/-- **Elimination of `RV`-quantifiers in the fine trivial case**: using `rvSurj`, an existential
+over `RV` becomes `∞` or the `rv` of a nonzero `VF`-element — the step that replaces
+`∃ y (RV), ψ` by `y = rv 0 ∨ ∃ x (VF), x ≠ 0 ∧ ψ[rv x / y]` in the cover of `e1`. -/
+theorem rv_exists_vf (hM : M ⊨ Axioms.ACVF) {ψ : M → Prop} :
+    (∃ a : M, iRV a ∧ ψ a) ↔
+      ψ iRVZero ∨ ∃ x : M, iVF x ∧ x ≠ iVFZero ∧ ψ (iRv x) := by
+  constructor
+  · rintro ⟨a, ha, hψ⟩
+    by_cases h0 : a = iRVZero
+    · exact Or.inl (h0 ▸ hψ)
+    · right
+      obtain ⟨x, hxVF, hx⟩ := rv_surj hM ha h0
+      refine ⟨x, hxVF, ?_, ?_⟩
+      · intro hx0
+        rw [hx0, rv_zero_eq hM] at hx
+        exact h0 hx.symm
+      · rw [hx]; exact hψ
+  · rintro (h | ⟨x, hx, -, hψ⟩)
+    · exact ⟨_, iRV_rvZero hM, h⟩
+    · exact ⟨_, rv_mem hM hx, hψ⟩
+
+/-- **The fine-case dictionary**: under `FineTriv`, every atomic `L_RV`-formula whose terms are
+`rv`-images of `VF`-terms is equivalent to a quantifier-free condition in the *field* language of
+the `VF` sort.  Together with `rv_exists_vf` this is the trivial case's half of the cover of `e1`;
+the other half — terms of the form `iVFAdd (rv s) (rv t)` and `iVFNeg (rv s)`, i.e. the `VF`
+operations applied to `RV`-elements — is *junk*: no axiom of `Axioms.ACVF` constrains it, so no
+`QF` translation of an arbitrary `L_RV`-formula can exist in the trivial case without an extra
+junk convention. -/
+theorem fine_dictionary (hM : M ⊨ Axioms.ACVF) (h : FineTriv M) :
+    (∀ x y : M, iVF x → iVF y → (iRv x = iRv y ↔ x = y)) ∧
+    (∀ x y : M, iVF x → iVF y → (iLe (iRv x) (iRv y) ↔ x ≠ iVFZero ∨ y = iVFZero)) ∧
+    (∀ x : M, iVF x → (iUnits (iRv x) ↔ x ≠ iVFZero)) ∧
+    (∀ x y : M, iVF x → iVF y → iKAdd (iRv x) (iRv y) = iRv (iVFAdd x y)) ∧
+    (∀ x : M, iVF x → iKNeg (iRv x) = iRv (iVFNeg x)) ∧
+    (∀ x : M, iVF x → iKNeg (iRv x) = iRv (iVFNeg x)) ∧
+    (∀ x y : M, iVF x → iVF y → iRVMul (iRv x) (iRv y) = iRv (iVFMul x y)) :=
+  ⟨fun x y hx hy => fine_rv_eq h hx hy, h.ord, h.units, h.add, h.neg, h.neg,
+    fun x y hx hy => (rv_mul_hom hM hx hy).symm⟩
+
+/-! ## 11. The trivial case's atom eliminations, in the form the cover consumes -/
+
+/-- In the fine case, `rv x + rv y = rv u` is the field equation `x + y = u`. -/
+theorem fine_kAdd_atom (hM : M ⊨ Axioms.ACVF) (h : FineTriv M) {x y u : M}
+    (hx : iVF x) (hy : iVF y) (hu : iVF u) :
+    (iKAdd (iRv x) (iRv y) = iRv u) ↔ iVFAdd x y = u := by
+  rw [h.add x y hx hy]
+  exact fine_rv_eq h (vf_add_mem hM hx hy) hu
+
+/-- In the fine case, `- rv x = rv u` is the field equation `-x = u`. -/
+theorem fine_kNeg_atom (hM : M ⊨ Axioms.ACVF) (h : FineTriv M) {x u : M}
+    (hx : iVF x) (hu : iVF u) :
+    (iKNeg (iRv x) = iRv u) ↔ iVFNeg x = u := by
+  rw [h.neg x hx]
+  exact fine_rv_eq h (vf_neg_mem hM hx) hu
+
+/-- In the fine case, `rv x · rv y = rv u` is the field equation `x y = u`. -/
+theorem fine_kMul_atom (hM : M ⊨ Axioms.ACVF) (h : FineTriv M) {x y u : M}
+    (hx : iVF x) (hy : iVF y) (hu : iVF u) :
+    (iRVMul (iRv x) (iRv y) = iRv u) ↔ iVFMul x y = u := by
+  rw [← rv_mul_hom hM hx hy]
+  exact fine_rv_eq h (vf_mul_mem hM hx hy) hu
+
+/-- **The `RV`-quantifier elimination of `e1`'s cover, on the trivial side, at formula level**:
+`∃ y (RV), ψ` is `ψ(∞) ∨ ∃ x (VF), x ≠ 0 ∧ ψ(rv x)`. -/
+theorem exSorted_rv_realize_vf (hM : M ⊨ Axioms.ACVF) {k : ℕ} (φ : Bf (k + 1))
+    (x : Fin k → M) :
+    (exSorted .rv φ).Realize (default : Empty → M) x ↔
+      φ.Realize (default : Empty → M) (Fin.snoc x iRVZero) ∨
+        ∃ a : M, iVF a ∧ a ≠ iVFZero ∧
+          φ.Realize (default : Empty → M) (Fin.snoc x (iRv a)) := by
+  have hterm : ∀ a : M, Term.realize (Sum.elim (default : Empty → M) (Fin.snoc x a))
+      (tv k (Nat.lt_succ_self k)) = a := by
+    intro a
+    show Term.realize (Sum.elim (default : Empty → M) (Fin.snoc x a))
+      (Term.var (Sum.inr ⟨k, Nat.lt_succ_self k⟩)) = a
+    rw [Term.realize_var]
+    simp only [Sum.elim_inr]
+    rw [show (⟨k, Nat.lt_succ_self k⟩ : Fin (k + 1)) = Fin.last k from rfl, Fin.snoc_last]
+  simp only [exSorted, BoundedFormula.realize_ex, BoundedFormula.realize_inf, sortPred,
+    pRVsort_realize, hterm]
+  exact rv_exists_vf hM
+
+/-! ## Axiom checks -/
+
+#print axioms TrivCase.units_ne_infty
+#print axioms TrivCase.allSortedK_realize
+#print axioms TrivCase.rvZero_ne_rvOne
+#print axioms TrivCase.kAdd_neg
+#print axioms TrivCase.kNeg_one
+#print axioms TrivCase.kAdd_one_one
+#print axioms TrivCase.rv_one_eq
+#print axioms TrivCase.rv_eq_iff
+#print axioms TrivCase.le_rv_iff
+#print axioms TrivCase.units_rv_iff
+#print axioms TrivCase.rv_mem_two
+#print axioms TrivCase.kAdd_rv_ne
+#print axioms TrivCase.rv_exists_two
+#print axioms TrivCase.exSorted_rv_realize
+#print axioms TrivCase.triv_dictionary
+#print axioms TrivCase.exSortedK_realize
+#print axioms TrivCase.no_coarse_triv
+#print axioms TrivCase.exists_rv_ne_one
+#print axioms TrivCase.fine_rv_eq
+#print axioms TrivCase.rv_exists_vf
+#print axioms TrivCase.fine_dictionary
+
+#print axioms TrivCase.fine_kAdd_atom
+#print axioms TrivCase.fine_kNeg_atom
+#print axioms TrivCase.fine_kMul_atom
+#print axioms TrivCase.exSorted_rv_realize_vf
+
+#print axioms TrivCase.no_coarse_triv
+#print axioms TrivCase.rv_exists_vf
+#print axioms TrivCase.fine_dictionary
+#print axioms TrivCase.allSortedK_realize
