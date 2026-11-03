@@ -10657,7 +10657,7 @@ theorem vf_mul_inv_or_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF)
   have h := allSorted_realize hM hmem ![x] (by intro i; fin_cases i; simpa using hx)
   simp only [BoundedFormula.realize_sup, exSorted, BoundedFormula.realize_ex,
     BoundedFormula.realize_inf, sortPred, pEq, BoundedFormula.realize_bdEqual, realize_tVFZero,
-    realize_tVFMul, realize_tVFOne, realize_tv, pVF_realize, Term.realize_var,
+    realize_tVFMul, realize_tVFOne, realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply, pVF_realize, Term.realize_var,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
   exact h
 /-! ### The `VF` sort as a field -/
@@ -10730,6 +10730,147 @@ noncomputable def vfFieldOfModel : Field (VFType (M := M)) :=
     ⟨0, 1, fun h => vf_zero_ne_one hM (congrArg Subtype.val h)⟩
 
 end VFField
+/-! ### The preorder and the axioms of `rv`, semantically -/
+
+theorem realize_tRVZero {M : Type} [LRV.Structure M] {k : ℕ} (v : Empty ⊕ Fin k → M) :
+    (tRVZero (n := k)).realize v = iRVZero := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvZero
+      (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i)) = iRVZero
+  rw [show (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i))
+      = (fun i => i.elim0) from by funext i; exact i.elim0]
+  rfl
+
+theorem realize_tRVMul {M : Type} [LRV.Structure M] {k : ℕ} (v : Empty ⊕ Fin k → M)
+    (a b : Tm k) : (tRVMul a b).realize v = iRVMul (a.realize v) (b.realize v) := by
+  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvMul
+      (fun i => Term.realize (L := LRV) v (![a, b] i)) = iRVMul (a.realize v) (b.realize v)
+  rw [show (fun i => Term.realize (L := LRV) v (![a, b] i))
+      = ![a.realize v, b.realize v] from by
+    funext i
+    fin_cases i <;> simp]
+  rfl
+
+theorem pRV_realize {M : Type} [LRV.Structure M] {k : ℕ} (t : Tm k) (v : Empty → M)
+    (x : Fin k → M) : (pRV t).Realize v x ↔ t.realize (Sum.elim v x) ≠ iRVZero := by
+  simp only [pRV, pEq, BoundedFormula.realize_not, BoundedFormula.realize_bdEqual,
+    realize_tRVZero]
+
+theorem pUnits_realize {M : Type} [LRV.Structure M] {k : ℕ} (t : Tm k) (v : Empty → M)
+    (x : Fin k → M) : (pUnits t).Realize v x ↔ iUnits (t.realize (Sum.elim v x)) := by
+  show FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memUnits
+      (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
+      ↔ iUnits (t.realize (Sum.elim v x))
+  rw [show (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
+      = ![t.realize (Sum.elim v x)] from by
+    funext i
+    fin_cases i
+    simp]
+  rfl
+
+theorem mem_ACVF_leRefl : Axioms.leRefl ∈ Axioms.ACVF :=
+  mem_ACVF_preorderRV (by simp [Axioms.preorderRV, Axioms.ofList])
+
+theorem mem_ACVF_leTrans : Axioms.leTrans ∈ Axioms.ACVF :=
+  mem_ACVF_preorderRV (by simp [Axioms.preorderRV, Axioms.ofList])
+
+theorem mem_ACVF_leTotal : Axioms.leTotal ∈ Axioms.ACVF :=
+  mem_ACVF_preorderRV (by simp [Axioms.preorderRV, Axioms.ofList])
+
+theorem mem_ACVF_leTop : Axioms.leTop ∈ Axioms.ACVF :=
+  mem_ACVF_preorderRV (by simp [Axioms.preorderRV, Axioms.ofList])
+
+theorem mem_ACVF_leInftyEq : Axioms.leInftyEq ∈ Axioms.ACVF :=
+  mem_ACVF_preorderRV (by simp [Axioms.preorderRV, Axioms.ofList])
+
+theorem mem_ACVF_rvEqInfty : Axioms.rvEqInfty ∈ Axioms.ACVF :=
+  mem_ACVF_rvAxioms (by simp [Axioms.rvAxioms, Axioms.ofList])
+
+theorem mem_ACVF_rvMulHom : Axioms.rvMulHom ∈ Axioms.ACVF :=
+  mem_ACVF_rvAxioms (by simp [Axioms.rvAxioms, Axioms.ofList])
+
+theorem mem_ACVF_rvUltrametric : Axioms.rvUltrametric ∈ Axioms.ACVF :=
+  mem_ACVF_rvAxioms (by simp [Axioms.rvAxioms, Axioms.ofList])
+
+theorem mem_ACVF_rvZeroEq : Axioms.rvZeroEq ∈ Axioms.ACVF :=
+  mem_ACVF_rvAxioms (by simp [Axioms.rvAxioms, Axioms.ofList])
+
+/-- Unfolding helper: the hypothesis block of `allSorted ![.rv, .rv]`. -/
+theorem rv_le_of_realize {M : Type} [LRV.Structure M] {k : ℕ} {ss : Fin k → SortTag}
+    {φ : Bf k} (hM : M ⊨ Axioms.ACVF) (hmem : allSorted ss φ ∈ Axioms.ACVF)
+    (x : Fin k → M) (hx : ∀ i, (match ss i with
+      | .vf => iVF (x i)
+      | .rv => iRV (x i))) :
+    @BoundedFormula.Realize LRV M _ Empty k φ (default : Empty → M) x :=
+  allSorted_realize hM hmem x hx
+
+theorem le_refl {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) (x : M) (hx : iRV x)
+    (hx0 : x ≠ iRVZero) : iLe x x := by
+  have h := allSorted_realize hM mem_ACVF_leRefl ![x] (by intro i; fin_cases i; simpa using hx)
+  have h' : x ≠ iRVZero → iLe x x := by simpa [pRV_realize, realize_pLe] using h
+  exact h' hx0
+
+theorem le_trans {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M}
+    (hx : iRV x) (hy : iRV y) (hz : iRV z) (hx0 : x ≠ iRVZero) (hy0 : y ≠ iRVZero)
+    (hz0 : z ≠ iRVZero) (h1 : iLe x y) (h2 : iLe y z) : iLe x z := by
+  have h := allSorted_realize hM mem_ACVF_leTrans ![x, y, z] (by
+    intro i; fin_cases i <;> simp [hx, hy, hz])
+  have h' : x ≠ iRVZero → y ≠ iRVZero → z ≠ iRVZero → iLe x y → iLe y z → iLe x z := by
+    simpa [pRV_realize, realize_pLe] using h
+  exact h' hx0 hy0 hz0 h1 h2
+
+theorem le_total {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) (x y : M)
+    (hx : iRV x) (hy : iRV y) (hx0 : x ≠ iRVZero) (hy0 : y ≠ iRVZero) :
+    iLe x y ∨ iLe y x := by
+  have h := allSorted_realize hM mem_ACVF_leTotal ![x, y] (by
+    intro i; fin_cases i <;> simp [hx, hy])
+  have h' : x ≠ iRVZero → y ≠ iRVZero → iLe x y ∨ iLe y x := by
+    simpa [pRV_realize, realize_pLe] using h
+  exact h' hx0 hy0
+
+theorem le_top {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) (x : M) (hx : iRV x)
+    (hx0 : x ≠ iRVZero) : iLe x iRVZero := by
+  have h := allSorted_realize hM mem_ACVF_leTop ![x] (by intro i; fin_cases i; simpa using hx)
+  have h' : x ≠ iRVZero → iLe x iRVZero := by
+    simpa [pRV_realize, realize_pLe, tRVInfty, realize_tRVZero] using h
+  exact h' hx0
+
+theorem le_infty_eq {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) (x : M) (hx : iRV x)
+    (hx0 : x ≠ iRVZero) (h : iLe iRVZero x) : x = iRVZero := by
+  have h0 := allSorted_realize hM mem_ACVF_leInftyEq ![x] (by intro i; fin_cases i; simpa using hx)
+  have h' : x ≠ iRVZero → iLe iRVZero x → x = iRVZero := by
+    simpa [pRV_realize, realize_pLe, pEq, tRVInfty, realize_tRVZero] using h0
+  exact absurd (h' hx0 h) hx0
+
+theorem rv_zero_eq {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iRv (iVFZero (M := M)) = iRVZero := by
+  have h := sentence_realize hM mem_ACVF_rvZeroEq
+  rw [Sentence.Realize] at h
+  simpa only [Axioms.rvZeroEq, Formula.Realize, pEq, BoundedFormula.realize_bdEqual,
+    realize_tRv, realize_tVFZero, tRVInfty, realize_tRVZero] using h
+
+theorem rv_eq_infty {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x)
+    (h : iRv x = iRVZero) : x = iVFZero := by
+  have h0 := allSorted_realize hM mem_ACVF_rvEqInfty ![x] (by intro i; fin_cases i; simpa using hx)
+  have h' : iRv x = iRVZero → x = iVFZero := by
+    simpa [pEq, realize_tRv, realize_tVFZero, tRVInfty, realize_tRVZero] using h0
+  exact h' h
+
+theorem rv_mul_hom {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) :
+    iRv (iVFMul x y) = iRVMul (iRv x) (iRv y) := by
+  have h := allSorted_realize hM mem_ACVF_rvMulHom ![x, y] (by
+    intro i; fin_cases i <;> simp [hx, hy])
+  simpa only [pEq, BoundedFormula.realize_bdEqual, realize_tRv, realize_tVFMul, realize_tRVMul,
+    realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply, Matrix.cons_val_zero, Matrix.cons_val_one] using h
+
+theorem rv_ultrametric {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) :
+    iLe (iRv x) (iRv (iVFAdd x y)) ∨ iLe (iRv y) (iRv (iVFAdd x y)) := by
+  have h := allSorted_realize hM mem_ACVF_rvUltrametric ![x, y] (by
+    intro i; fin_cases i <;> simp [hx, hy])
+  simpa only [BoundedFormula.realize_sup, realize_pLe, realize_tRv, realize_tVFAdd, realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply,
+    Matrix.cons_val_zero, Matrix.cons_val_one] using h
+
 end SpecialTransformations.Milestone0.Transfer
 
 #print axioms SpecialTransformations.Milestone0.Transfer.valTermToRV_realize
@@ -10740,3 +10881,13 @@ end SpecialTransformations.Milestone0.Transfer
 #print axioms SpecialTransformations.Milestone0.Transfer.allSorted_realize
 
 #print axioms SpecialTransformations.Milestone0.Transfer.vfFieldOfModel
+
+#print axioms SpecialTransformations.Milestone0.Transfer.le_refl
+#print axioms SpecialTransformations.Milestone0.Transfer.le_trans
+#print axioms SpecialTransformations.Milestone0.Transfer.le_total
+#print axioms SpecialTransformations.Milestone0.Transfer.le_top
+#print axioms SpecialTransformations.Milestone0.Transfer.le_infty_eq
+#print axioms SpecialTransformations.Milestone0.Transfer.rv_zero_eq
+#print axioms SpecialTransformations.Milestone0.Transfer.rv_eq_infty
+#print axioms SpecialTransformations.Milestone0.Transfer.rv_mul_hom
+#print axioms SpecialTransformations.Milestone0.Transfer.rv_ultrametric

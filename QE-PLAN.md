@@ -532,3 +532,101 @@ Then, in order: the subtype `{x // iVF x}` with the ring operations (closure fro
 laws from `vfField`); `Field` on it; `IsValPred (fun x y => iLe (iRv x) (iRv y))`; `IsAlgClosed`
 from `vfAlgClosed`; the `ACVF_val` model; instantiate `hasQE_ACVF_val`; translate back through
 `valFormulaToRV`; conclude `HasQE Axioms.ACVF` and discharge `theorem_2_3_quantifier_elimination`.
+
+## The extraction from an `L_RV`-model, and a third defect in the frozen encoding
+
+### What is in `Assembly_val.lean` now (the model correspondence, first half)
+
+The transfer's remaining crux is: from `M ⊨ Axioms.ACVF` (an `L_RV`-structure) produce an
+`L_val`-structure modelling `ValPM.ACVF_val`.  The file now has, in section 23 and all green:
+
+* the unfolding toolkit: `realize_tv`, `sortPred_realize`, `pVF_realize`, `pRVsort_realize`,
+  `pVF_realize`, `pRV_realize`, `pUnits_realize`, `realize_pLe`, `realize_tRv`, `realize_tVFAdd`,
+  `realize_tVFMul`, `realize_tVFZero`, `realize_tVFOne`, `realize_tRVZero`, `realize_tRVMul`,
+  `realize_tRVOne`, plus the gateway `sortedHyps_realize` and the uniform extraction
+  `allSorted_realize`;
+* the `VF` sort as a ring: `vf_add_assoc`, `vf_add_comm`, `vf_add_zero`, `vf_add_neg`,
+  `vf_mul_assoc`, `vf_mul_comm`, `vf_mul_one`, `vf_left_distrib`, `vf_zero_ne_one`,
+  `vf_mul_inv_or_zero`, and `vfFieldOfModel : Field (VFType (M := M))` — the eight equational
+  laws and invertibility, from `Axioms.vfField`;
+* the `RV` preorder and the axioms of `rv`, semantically: `le_refl`, `le_trans`, `le_total`,
+  `le_top` (`x ≤ ∞`), `le_infty_eq` (`∞ ≤ x → x = ∞`), `rv_zero_eq` (`rv 0 = ∞`),
+  `rv_eq_infty` (`rv x = ∞ → x = 0`), `rv_mul_hom`, `rv_ultrametric`.
+
+Two traps cost turns here and are worth recording: `simp only` does **not** reduce the tuple
+applications `![x, y, z] 2` (`Matrix.cons_val_two` is not in the default set), so an
+`![x, y, z]`-indexed extraction has to finish with a full `simp` or a `rfl`-shaped lemma; and a
+frozen axiom is an opaque `def`, so `ΔtRVInfty` and `Axioms.rvZeroEq` must be named in the simp
+set before `realize_tRVZero` / `Formula.Realize` can fire on them.
+
+### The defect: `leMulCompat` does not say what the paper's item 5 says
+
+`valField`'s `axScale` is an **iff**: `z ≠ 0 → (v x ≤ v y ↔ v x·z ≤ v y·z)`.  It is what makes the
+predicate a valuation (`valuativeRelOfIsValPred`'s comment says so: "`scale` (an iff) gives both
+multiplicativity and cancellation"), so the extracted structure needs it.  Transported along
+`valFormulaToRV` it becomes, for `a b c ∈ RV` with `c ≠ rv(0)`,
+
+```
+iLe a b ↔ iLe (iRMul a c) (iRMul b c).
+```
+
+The frozen axiom that is supposed to supply this is
+
+```
+leMulCompat : pRV &0 ⟹ pRV &1 ⟹ pRV &2 ⟹ (pUnits &2 ⟹ (pLe &0 &1 ⟹ pLe (&0·&2) (&1·&2)))
+```
+
+— multiplication by an element of `Kˣ`, i.e. by an element of the **identity class** of
+`RV/Kˣ = Γ`.  In Γ-terms that is a translation by `0`: it constrains almost nothing.  The paper's
+item 5 is "the quotient `RV/Kˣ` is a divisible **ordered** abelian group, where the ordering and
+the group operation are induced by `≤` and `×`" — i.e. translation-invariance of the Γ-order,
+which is scaling by **every** `c ≠ 0`.  The frozen axiom has `pUnits` where the paper has
+`c ≠ 0`: the same transcription slip as the old `rvSurj` (`pUnits` in place of `≠ rv(0)`).
+
+**The axioms do not force the missing law.**  Take any model of `ACVF` — concretely the intended
+one, `RV = Γ ∪ {∞}` with `Γ = RV^×/K^×` — and replace `≤` by `≤' := f∘≤` for a monotone
+`f : Γ ∪ {∞} → Γ ∪ {∞}` with `f (∞) = ∞`, finite on `Γ`, and `f⁻¹ (f 0) = {0}`.  Each of the
+eight axioms that mention `≤` survives:
+
+| axiom | why |
+| --- | --- |
+| `leRefl`, `leTrans`, `leTotal` | a total preorder pulled back along a function is a total preorder |
+| `leTop` | `f (∞) = ∞` is still the top |
+| `leInftyEq` | `f γ = ∞` only for `γ = ∞` |
+| `leClassOne` | the class of `1` is `{γ : f γ = f 0} = {0}` by `f⁻¹ (f 0) = {0}` |
+| `leMulCompat` | multiplying by `h ∈ Kˣ` does not change the Γ-value, so it is the *identity* on Γ — the requirement becomes `f γ₁ ≤ f γ₂ → f γ₁ ≤ f γ₂` |
+| `rvUltrametric` | `γ (x+y) ≥ min (γ x) (γ y)`, and `f` is monotone |
+
+and no other axiom mentions `≤` or `Kˣ` (`pLe` occurs in exactly those seven sentences plus
+`rvUltrametric`; `pUnits` in `leClassOne` and `leMulCompat`).  So if `f` is not injective the
+model satisfies the frozen `ACVF` and **fails** the scaling law: with `Γ = ℚ`,
+`f γ = γ` for `γ ≤ 1/2` and `f γ = 1/2` for `γ ≥ 1/2`, and `a = rv (t^{1/2})`,
+`b = rv t`, `c = rv (t^{-1/2})` we get `f 1/2 = f 1`, i.e. `b ≤ a`, but
+`f (1/2 - 1/2) = 0 > 1/2 = f (1 - 1/2)`, i.e. **not** `b c ≤ a c`.
+
+Two consequences.
+
+1. **The transfer (T1) cannot be completed against the frozen axioms.**  The extracted
+   `L_val`-structure `S_M` (predicate `x ≤ y ↦ iLe (iRv y) (iRv x)`) is a model of `valField`
+   only if the scaling law holds in `M`, so `hasQE_ACVF_val` cannot be instantiated at `S_M`.
+2. **Whether the frozen target stays true is now open again.**  The coarsened models are models
+   of the frozen `ACVF`, so any proof of `HasQE ACVF` must handle them.  (That is not a
+   disproof: the coarsening only removes distinctions, and QF formulas have fewer atoms too.
+   But it removes the route through `L_val`.)
+
+### The repair, and what it costs
+
+Restore the paper's item 5 in the encoding, by guarding with `pRV` and stating the iff:
+
+```lean
+def leMulCompat : LRV.Sentence :=
+  allSorted ![.rv, .rv, .rv]
+    (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))))
+```
+
+The intended model satisfies it (`vrv` is multiplicative and `Γ` is an ordered group), and with
+it the extracted predicate satisfies `axScale` — hence `S_M ⊨ valField`, and the transfer goes
+through as planned.  This is a **frozen-encoding change**: `Milestone0/Encoding.lean`'s hash
+moves and every snapshot that carries a copy of the axiom set must be re-verified, exactly like
+the `rvSurj` repair (which was made on the author's instruction and is recorded in
+`Milestone0/DECISION.md`).  It is therefore the author's call, and it is the one open decision.
