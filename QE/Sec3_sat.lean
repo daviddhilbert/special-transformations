@@ -167,14 +167,23 @@ def IsCentreOf (b : Set M) (a : M) : Prop :=
     b = {x | iVF x ∧ iLe t (iRv (iVFAdd x (iVFNeg a)))}
 
 /-- An **algebraic ball** (Yin, QE:ACVF:min, Definition 4.14, quoted by the paper): a ball that is
-a member of an algebraic set of balls. -/
+a member of an algebraic set of balls.  "Algebraic" is the word for *finite* here, in the classical
+sense of roots of polynomials: a nonzero polynomial has finitely many roots, so a set cut out by a
+formula that defines a finite set is "algebraic".  This is the same finiteness that `SP.acl` uses
+in its definition (`x ∈ acl S` is witnessed by a well-sorted formula with a finite solution set),
+so the vocabulary is consistent across §3. -/
 def IsAlgebraicBall (b : Set M) : Prop := IsBall b
 
 /-- **Algebraic set of balls** — Yin, QE:ACVF:min, Definition 4.14, quoted verbatim by the paper
 just before Lemma 4.15: *"Let `𝓑` be a definable set of balls.  If `𝓑` contains finitely many
 (open, closed, rv-) balls, then `𝓑` is an algebraic set of balls."*  The definability half of the
 quote is `IsDefinableSetOfBalls` below; this predicate is the finite-family-and-balls half, which
-is all that the two lemmas use. -/
+is all that the two lemmas use.
+
+"Algebraic" is *finiteness*, generalizing the roots of a polynomial: a nonzero polynomial has
+finitely many roots, so a definable set whose formula cuts out a finite set is called algebraic
+(the same finiteness `SP.acl` uses; an "algebraic ball" is thus a ball in a finite definable
+family, and the naming carries no closure-under-subballs claim). -/
 def IsAlgebraicSetOfBalls (𝓑 : Set (Set M)) : Prop :=
   𝓑.Finite ∧ ∀ b ∈ 𝓑, IsBall b
 
