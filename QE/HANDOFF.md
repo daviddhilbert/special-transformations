@@ -128,3 +128,21 @@ Ran in each member's own directory with `LEAN_PATH=$PWD:$LEAN_PATH lean FILE.lea
 So of the two, only w1 is an artifact. w3 is not, and neither has been judged (a swarm belongs to the
 session that started it), so treat both as *unvetted input* even where green: `lean` exit 0 says the
 file elaborates, not that its statement is the one wanted.
+
+## w1 judged (accepted): the fragment criterion exists, and it is sharp
+
+`.ultramath/smw1b0thh/m1/W1.lean` (checked by compiling: exit 0, 0 errors, no `sorry`):
+
+* `W1.QFTypeDetermines T` — two models, `∀ α sα n sn`, `sortEval` sortedness on *both* parameter
+  tuples and *both* variable tuples, QF agreement restricted to well-sorted formulas.  **No
+  saturation hypothesis**, so it is a criterion and not a step.
+* `W1.hasQE_of_qfTypeDetermines : QFTypeDetermines T → HasQE T` with the frozen `HasQE` as
+  conclusion; `W1.hasQE_iff_qfTypeDetermines` — the two are **equivalent**.
+* `W1.hasQE_of_embedding` — the substructure-embedding shape is *strictly weaker* in this encoding
+  (ill-sorted term values unconstrained), so a bridge `QFTypeEmbeddable` is genuinely needed.
+* `W1.exists_list_of_models_bounded` — compactness with parameters, via `Formula.equivSentence`;
+  sortedness must be named by sentences, else the extraction is over unsorted tuples.
+
+**Consequence to keep in mind:** because of the equivalence, `QFTypeDetermines Axioms.ACVF` is
+exactly as hard as Theorem 2.3.  The criterion *relocates* the content; it does not reduce it.
+So the second route is now a sharp statement of where the work is, not a second proof.
