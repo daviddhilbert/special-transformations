@@ -1261,6 +1261,130 @@ theorem isValBall_subset_or_subset (v : Valuation K Γ₀) {B₁ B₂ : Set K}
 #print axioms Johnson.openBall_subset_closedBall
 #print axioms Johnson.isValBall_subset_or_subset
 
+
+/-! ## Johnson, Lemma 2.3.2: Boolean combinations of balls are unions of swiss cheeses
+
+A *swiss cheese* is `B₀ \ ⋃_{j} B j` with each `B j` a subball of `B₀`.  Johnson's Lemma 2.3.2
+says that a Boolean combination of balls is a finite union of swiss cheeses.  The proof goes
+through the cells of the pattern of balls containing a point: each cell is an intersection of
+balls minus a union of the remaining balls, and by comparability (2.3) it collapses to a swiss
+cheese (or is empty). -/
+
+section Lemma232
+
+variable {ι : Type*}
+
+/-- Membership in a finite intersection of sets. -/
+theorem mem_iInter_finset (b : ι → Set K) (S : Finset ι) (x : K) :
+    x ∈ (⋂ i ∈ S, b i) ↔ ∀ i ∈ S, x ∈ b i := by
+  simp
+
+/-- Membership in a finite union of sets. -/
+theorem mem_iUnion_finset (b : ι → Set K) (S : Finset ι) (x : K) :
+    x ∈ (⋃ i ∈ S, b i) ↔ ∃ i ∈ S, x ∈ b i := by
+  simp
+
+/-- A nonempty finite intersection of balls of `vK`-radius is one of them. -/
+theorem exists_mem_of_iInter_finset [DecidableEq ι] (v : Valuation K Γ₀)
+    {b : ι → Set K} (hb : ∀ i, IsValBall v (b i)) {S : Finset ι} (hS : S.Nonempty)
+    (hne : (⋂ i ∈ S, b i).Nonempty) :
+    ∃ j ∈ S, (⋂ i ∈ S, b i) = b j := by
+  classical
+  revert hS hne
+  induction S using Finset.induction_on with
+  | empty => intro hS; exact absurd hS Finset.not_nonempty_empty
+  | insert i S hiS ih =>
+    intro hS hne
+    by_cases hS' : S.Nonempty
+    · have hne' : (⋂ k ∈ S, b k).Nonempty := by
+        obtain ⟨x, hx⟩ := hne
+        have hx' : ∀ k : ι, k ∈ insert i S → x ∈ b k := by
+          simpa only [Set.mem_iInter] using hx
+        exact ⟨x, (mem_iInter_finset b S x).mpr fun k hk =>
+          hx' k (Finset.mem_insert_of_mem hk)⟩
+      obtain ⟨j, hjS, hj⟩ := ih hS' hne'
+      have hinter : (⋂ k ∈ insert i S, b k) = b i ∩ b j := by
+        rw [show (⋂ k ∈ insert i S, b k) = b i ∩ (⋂ k ∈ S, b k) from by
+          ext x; simp [Finset.mem_insert], hj]
+      have hne2 : (b i ∩ b j).Nonempty := hinter ▸ hne
+      rcases isValBall_subset_or_subset v (hb i) (hb j) hne2 with h | h
+      · exact ⟨i, Finset.mem_insert_self i S, by rw [hinter, Set.inter_eq_left.mpr h]⟩
+      · exact ⟨j, Finset.mem_insert_of_mem hjS, by rw [hinter, Set.inter_eq_right.mpr h]⟩
+    · have hSe : S = ∅ := Finset.not_nonempty_iff_eq_empty.mp hS'
+      subst hSe
+      refine ⟨i, Finset.mem_singleton_self i, ?_⟩
+      simp
+
+/-- `D` is a finite Boolean combination of balls of `vK`-radius: a Boolean function of the
+pattern of balls containing a point. -/
+def IsBoolCombOfBalls (v : Valuation K Γ₀) (D : Set K) : Prop :=
+  ∃ (ι : Type) (_ : Fintype ι) (b : ι → Set K) (t : Set ι → Bool),
+    (∀ i, IsValBall v (b i)) ∧ ∀ x : K, (x ∈ D ↔ t {i | x ∈ b i} = true)
+
+/-- The cell of a finite set of balls: the points lying in exactly the balls indexed by `S`. -/
+def cell [Fintype ι] [DecidableEq ι] (b : ι → Set K) (S : Finset ι) : Set K :=
+  (⋂ i ∈ S, b i) \ (⋃ i ∈ Sᶜ, b i)
+
+/-- The cell of `S`, when the Boolean function accepts the pattern `S`, and `∅` otherwise. -/
+noncomputable def cellIf [Fintype ι] [DecidableEq ι] (b : ι → Set K) (t : Set ι → Bool)
+    (S : Finset ι) : Set K := by
+  classical
+  exact if t (S : Set ι) = true then cell b S else ∅
+
+theorem mem_cell [Fintype ι] [DecidableEq ι] {b : ι → Set K} {S : Finset ι} {x : K} :
+    x ∈ cell b S ↔ ∀ i, (x ∈ b i ↔ i ∈ S) := by
+  classical
+  constructor
+  · intro h
+    have h1 : ∀ k ∈ S, x ∈ b k := (mem_iInter_finset b S x).mp h.1
+    have h2 : ∀ k, k ∉ S → x ∉ b k := by
+      intro k hk hx
+      exact h.2 ((mem_iUnion_finset b (Sᶜ) x).mpr ⟨k, by simpa using hk, hx⟩)
+    exact fun i => ⟨fun hx => by_contra fun hcon => h2 i hcon hx, fun hi => h1 i hi⟩
+  · intro h
+    refine ⟨(mem_iInter_finset b S x).mpr fun k hk => (h k).mpr hk, ?_⟩
+    intro hx
+    obtain ⟨k, hk, hkx⟩ := (mem_iUnion_finset b (Sᶜ) x).mp hx
+    have hk' : k ∉ S := by simpa using hk
+    exact hk' ((h k).mp hkx)
+
+/-- **The cell decomposition behind Lemma 2.3.2.** A Boolean combination of the balls `b` is the
+union of the cells whose pattern the Boolean function accepts. -/
+theorem eq_iUnion_cell [Fintype ι] [DecidableEq ι] (b : ι → Set K) (t : Set ι → Bool) :
+    {x : K | t {i | x ∈ b i} = true} = ⋃ S : Finset ι, cellIf b t S := by
+  classical
+  ext x
+  constructor
+  · intro hx
+    refine Set.mem_iUnion.mpr ⟨Finset.univ.filter (fun i => x ∈ b i), ?_⟩
+    have hcoe : ((Finset.univ.filter (fun i => x ∈ b i) : Finset ι) : Set ι) = {i | x ∈ b i} := by
+      ext i; simp
+    have ht : t ((Finset.univ.filter (fun i => x ∈ b i) : Finset ι) : Set ι) = true := by
+      rw [hcoe]; exact hx
+    show x ∈ cellIf b t (Finset.univ.filter (fun i => x ∈ b i))
+    rw [cellIf, if_pos ht]
+    rw [mem_cell]
+    intro i
+    simp
+  · intro hx
+    obtain ⟨S, hS⟩ := Set.mem_iUnion.mp hx
+    by_cases ht : t (S : Set ι) = true
+    · rw [cellIf, if_pos ht] at hS
+      have hpat : (S : Set ι) = {i | x ∈ b i} := by
+        ext i
+        exact (mem_cell.mp hS i).symm
+      show t {i | x ∈ b i} = true
+      rw [← hpat]
+      exact ht
+    · rw [cellIf, if_neg ht] at hS
+      exact absurd hS (Set.notMem_empty x)
+
+end Lemma232
+
+#print axioms Johnson.exists_mem_of_iInter_finset
+#print axioms Johnson.mem_cell
+#print axioms Johnson.eq_iUnion_cell
+
 end Johnson
 
 #print axioms Johnson.exists_pow_val_eq
