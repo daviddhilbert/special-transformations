@@ -1529,3 +1529,24 @@ line.  `model_ACVF'` takes nontriviality as an existential instead.
 Missing: instantiation at `PadicComplex p` (`m3/Base.lean` has `padic_valuation_lt_one`), which is
 the other direction of that swarm and would make the consistency statement closed — no hypotheses
 at all.
+
+### Closed: `Axioms.ACVF` is satisfiable, no hypotheses
+
+`swm18cfdk` m2 (accepted) delivers the closed statements:
+
+```
+IModel.model_ACVF_padic {p} [Fact p.Prime] : (C (PadicComplex.valued p).v) ⊨ Axioms.ACVF
+IModel.exists_model_ACVF : ∃ (M : Type) (_ : LRV.Structure M), Theory.Model M Axioms.ACVF
+IModel.isSatisfiable_ACVF : Theory.IsSatisfiable Axioms.ACVF
+```
+
+on a concrete Mathlib object (`PadicComplex.isAlgClosed`, `padic_ne_zero`,
+`padic_valuation_lt_one`), assembled in the exact union order of `Axioms.ACVFpaper` (where
+`repairRV` occurs twice) and of `Axioms.ACVF = sortAxioms ∪ ACVFpaper`, with the list case analysis
+done by elaboration.
+
+**Reconciliation note that mattered**: m3's `Repair.*` sentences are textually identical to the
+tree's, but m3's `kIn`/`kOf`/`kNeg` differ definitionally from m4's `kIn`/`jota`/`kNegFun` (no junk
+guard on `kNeg`), so m3's proofs were *not* ported; the nine sentences were reproved on m4's carrier
+and its `Repair2` bridge.  That was the trap in the direction and it was avoided rather than stepped
+in.
