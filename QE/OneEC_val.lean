@@ -1130,3 +1130,41 @@ theorem good_closed {c b : K} : Good f w (closedBall w (f c) (w (f b))) :=
   good_of_isKBall (IsKBall.closed c b)
 
 end Master
+
+/-! ### Multiset product bookkeeping -/
+
+section ProdSplit
+
+variable {K : Type} [Field K] {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
+
+/-- The occurrences of one element contribute a power to the product. -/
+theorem prod_filter_eq_pow (s : Multiset K) (g : K → Γ') (a : K) :
+    ((s.filter (fun b => b = a)).map g).prod = g a ^ (s.count a) := by
+  induction s using Multiset.induction with
+  | empty => rfl
+  | cons b s ih =>
+    by_cases h : b = a
+    · subst h
+      rw [Multiset.filter_cons, if_pos rfl, Multiset.count_cons, if_pos rfl, Multiset.map_add,
+        Multiset.map_singleton, Multiset.prod_add, Multiset.prod_singleton, ih, pow_succ, mul_comm]
+    · have h' : ¬ (a = b) := fun hab => h hab.symm
+      rw [Multiset.filter_cons, if_neg h, Multiset.count_cons, if_neg h']
+      simp only [Multiset.zero_add, ih, Nat.add_zero]
+
+/-- **Splitting a product at one element.** -/
+theorem prod_split (s : Multiset K) (g : K → Γ') (a : K) :
+    (s.map g).prod = g a ^ (s.count a) * ((s.filter (fun b => b ≠ a)).map g).prod := by
+  induction s using Multiset.induction with
+  | empty => rfl
+  | cons b s ih =>
+    by_cases h : b = a
+    · subst h
+      rw [Multiset.map_cons, Multiset.prod_cons, Multiset.count_cons, if_pos rfl,
+        Multiset.filter_cons, if_neg (by simp), Multiset.map_cons, Multiset.prod_cons, ih, pow_succ]
+      ring_nf
+    · have h' : ¬ (a = b) := fun hab => h hab.symm
+      rw [Multiset.map_cons, Multiset.prod_cons, Multiset.count_cons, if_neg h',
+        Multiset.filter_cons, if_pos h, Multiset.map_cons, Multiset.prod_cons, ih]
+      ring_nf
+
+end ProdSplit
