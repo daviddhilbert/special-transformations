@@ -1066,3 +1066,39 @@ end Construction
 #print axioms ValPM.mk_of_valFunMap
 #print axioms ValPM.coordEmbedding
 #print axioms ValPM.predCoord_isValPred
+
+/-! ## 8. A model of `valField` is a field with a valued predicate
+
+`valField` is stated in the one-sorted `L_val`, so a `valField.ModelType` carries no ring
+structure and no field structure: the ring symbols are `L_val`-function symbols.  This section
+rebuilds the `L_ring`-structure along `valRingHom`, checks that it models `Theory.field`, and so
+obtains `Field`, `CompatibleRing` and (via `isValPred_of_model`) `IsValPred predM`.  This is the
+bridge every hypothesis of Johnson's criterion needs, because `HasPrimeModels` and
+`HasAmalgamation` quantify over `valField.ModelType`, while all the mathematics is done on
+concrete valued fields. -/
+
+section Reduct
+
+/-- The `L_ring`-structure underlying an `L_val`-structure. -/
+@[instance_reducible]
+def ringStructOfVal (N : Type*) [Language.val.Structure N] : Language.ring.Structure N where
+  funMap := fun {_} g x => Structure.funMap (L := Language.val) (valRingHom.onFunction g) x
+  RelMap := fun {_} r _ => isEmptyElim r
+
+/-- The `L_val`-structure expands `ringStructOfVal`. -/
+instance ringStructOfVal.expansion (N : Type*) [s : Language.val.Structure N] :
+    @LHom.IsExpansionOn Language.ring Language.val valRingHom N (ringStructOfVal N) s := by
+  letI : Language.ring.Structure N := ringStructOfVal N
+  exact ⟨fun {_} _ _ => rfl, fun {_} r _ => isEmptyElim r⟩
+
+/-- **A model of `valField` models the theory of fields in the language of rings.** -/
+theorem model_field_of_valField (N : Type*) [Language.val.Structure N] (hN : N ⊨ valField) :
+    @Theory.Model Language.ring N (ringStructOfVal N) Theory.field := by
+  letI : Language.ring.Structure N := ringStructOfVal N
+  haveI : valRingHom.IsExpansionOn N := ringStructOfVal.expansion N
+  refine ⟨fun φ hφ => ?_⟩
+  have hmem : valRingHom.onBoundedFormula φ ∈ valField := Or.inl (Or.inl ⟨φ, hφ, rfl⟩)
+  have h : N ⊨ valRingHom.onBoundedFormula φ := hN.realize_of_mem _ hmem
+  simpa only [Sentence.Realize, Formula.Realize, LHom.realize_onBoundedFormula] using h
+
+end Reduct
