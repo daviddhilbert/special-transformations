@@ -54,6 +54,27 @@ quantifier-free formula, and quantifier-free `L_RV`-formulas define Boolean comb
 balls. `Milestone0/Balls.lean` already has the C-relation `v (y-z) < v (x-y)` with its four
 axioms and the ball nesting lemmas, so that half is not starting from zero.
 
+## Route change (current)
+
+The criterion in layer (B) was attacked twice and both attempts stalled: Shoenfield's test needs
+saturated models, which Mathlib does not have, and a purely syntactic one-quantifier criterion
+could not be closed. The campaign now follows **Will Johnson, *Fun with Fields*, Chapter 2**
+(`https://math.berkeley.edu/~willij/drafts/will-thesis.pdf`, text at
+`.ultramath/refs/johnson-ch2.txt`), whose Lemma 2.1.4 is saturation-free:
+
+> Let `T₀` have prime models over substructures and the amalgamation property. If the 1-ec
+> models of `T₀` form an elementary class axiomatized by `T`, then `T` has QE.
+
+with `T₀` = valued fields in the one-sorted `L_val` (ring language plus `v(x) ≤ v(y)`) and
+`T` = ACVF. Its three inputs are: prime models over substructures (fraction field), amalgamation
+(Chevalley's lemma, for which Mathlib's `Valuation.LocalSubring.exists_le_valuationSubring`
+supplies the heart), and 1-ec = ACVF via ball combinatorics, which `Milestone0/Balls.lean`
+already covers. The validation is **ACF**, proved through the same criterion in the same chapter.
+
+Layer (C), Yin's Lemmas 3.2–3.8, remains necessary under this route too: Johnson gives QE in
+`L_val`, and moving it to the paper's `L_RV` still goes through Remark 3.1 and the lifting
+lemmas.
+
 ## Honest scale
 
 Layer (D) is the largest single item in the whole formalization and is not formalized in any
