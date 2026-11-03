@@ -1838,3 +1838,18 @@ The `L_RV` term-to-polynomial translation — the piece I had named as the last 
 
 Missing and named: atoms at general `RV`-terms, the units atom, and the `Bf 1 → A.Definable₁`
 packaging.  Nothing conceptual is left in the bridge.
+
+## `VFQ` does not imply `WellSorted` — the bridge needs one condition (m3, accepted)
+
+* `tmSort_iff_exists_stm` and `wellSorted_toLRV`: the recursive `TmSort`/`WellSorted` and the
+  image-of-sorted-syntax predicate agree at the term level, and every `SBf` image is `WellSorted` —
+  so **adopting the recursive predicate loses nothing**, which closes the cross-check I had listed
+  as a separate risk.
+* `VFQ.exists_sbf`/`VFQ.wellSorted`: under `VFQAtomSorted` (atoms relate terms of declared sorts, and
+  `∀` extends by a `VF`-variable) a `VFQ` formula has an *exhibited* `SBf` preimage and is
+  `WellSorted` under either predicate.
+* `VFQ.not_vfq_implies_wellSorted`: `rv (rv x) = rv (rv x)` is `VFQ` and well-sorted for neither, so
+  `VFQ` alone cannot feed the frozen `HasQE` — the condition is necessary, not convenient.
+
+So h4's output needs `VFQAtomSorted`, and the requirement should be built into the quantifier step
+rather than discovered when the assembly is attempted.
