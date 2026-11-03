@@ -1550,3 +1550,23 @@ tree's, but m3's `kIn`/`kOf`/`kNeg` differ definitionally from m4's `kIn`/`jota`
 guard on `kNeg`), so m3's proofs were *not* ported; the nine sentences were reproved on m4's carrier
 and its `Repair2` bridge.  That was the trap in the direction and it was avoided rather than stepped
 in.
+
+## Theorem 2.8's statement is frozen, and Section 3 has started (author's ruling)
+
+Both Section 2 targets are now statements-only, with their proofs running in parallel:
+
+* `HasQE ACVF` — restated over the well-sorted fragment, green, hash in `DECISION.md`;
+* `theorem_2_8_c_minimal : ∀ (M) [LRV.Structure M] [Nonempty M], M ⊨ ACVF → IsCMinimal M` — frozen.
+  The axiom set now contains nontriviality, so this quantifies over the right class of models
+  (C-minimality is false for a trivially valued field), and `Axioms.ACVF` is known satisfiable, so
+  the statement is not vacuous.  One audit remains on it, of the same kind that `HasQE` needed:
+  `IsCMinimal` quantifies over definable subsets — if its parameters range over the whole carrier,
+  ill-sorted parameters raise the junk problem again and the statement needs the well-sorted
+  relativisation too.  That is a statement question, not a proof question, and it is recorded here
+  rather than left implicit.
+
+`SpecialTransformations/*.lean` are stubs (17–38 lines, no proofs), so the paper's Section 3 —
+$\RV[*,\cdot]$ objects, the lifting map $\mathbb{L}$, special bijections — is untouched.  Swarm
+`smw18ygko` (4 directions) is on it: s1 freezes Section 3's statements in Lean the way the Section 2
+targets were frozen, s2 formalizes the objects and their category, s3 the lifting map, s4 the
+special bijection and its first theorem with the Section 2 facts named as hypotheses.
