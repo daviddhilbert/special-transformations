@@ -204,12 +204,14 @@ Each item is a decision an encoding must make; the paper's text does not make it
   or a subsort `K`. Any framework with only total function symbols must totalise.
 * **D3 (subsort).** `K` is a definable subset of `RV` (not a sort). If an encoding introduces `K`
   as a third sort with an injection, conservativity of that definitional expansion must be shown.
-* **D4 (`≤` is a preorder; where is the constant `0`?).** `K^×` is the class of 1. The paper does
-  not say where the constant `0` (of the `RV`-sort, the zero of the residue field `K`) sits in `≤`.
-  It also does not state `0 ≠ ∞`. What *is* forced: `K = K^× ∪ {0}` being a field forces
-  `0 ∉ K^×`, and `0` is not in the range of `rv` (whose range is `RV^× ∪ {∞}`), so `0 ≠ ∞` in the
-  intended model, with `0` below `K^×` and `∞` on top. An encoding must add these as axioms or
-  carry them as hypotheses; the six printed items do not separate the two constants.
+* **D4 (`≤` is a preorder; where is the constant `0`?** — settled by the author).** `K^×` is the
+  class of 1. The paper prints two constants, `0` and `∞`, but they are **one element**: writing
+  `rv(0) = 0` makes `0` the absorbing element of `RV`, and `∞` is another name for it. Axiom (2)
+  forces this reading — `(RV^×, 1, ×)` is a divisible abelian *group* and `RV^× = RV ∖ {∞}`, a
+  set that is a group only if the element removed is the absorbing one. So `RV = {rv 0} ∪ RV^×`,
+  the absorbing element is the top of the preorder, and it is also the residue field's zero. The
+  encoding has ONE constant (`rvZero`), `tRVInfty` as a definition for it, and `rvSurj` as the
+  paper's surjectivity `t ≠ rv(0) → ∃x, rv x = t`; see the revision section of `DECISION.md`.
 * **D5 (direction of `≤`, and its compatibility with `×`).** (5) says the order on `Γ` is
   "induced by" `≤` and the group operation "induced by" `×`, but states no compatibility axioms
   and no sign. Forced reading: (6) gives `rv(x) ≥ 1 ⟺ vv(x) ≥ 0` for `x ∈ VF^×`; reading the

@@ -90,8 +90,12 @@ Consequences, recorded so they are not rediscovered:
 ## Landing guards: what the accepted fragments are worth
 
 `accepted/` files span five snapshots of the encoding. Checked here by `difflib` against the
-frozen `Encoding.lean` (sha256 `78607b94c28343fc3aa5c260cb1f296063f579d5f38b5f14b260618827980be6`,
-commit `d608de6`):
+**Revised encoding** (`Encoding.lean`, sha256
+`63e92fcad29d88df874a22f3f83a45b6736f70c4f89e7d2977bac16282976d12`, commit `6ec9e47`): the
+paper's `0` and `∞` are one element, `rv(0)`, and `rvSurj` is the paper's surjectivity.  (The
+earlier frozen encoding, sha256 `78607b94…` at commit `d608de6`, had two constants; the
+propagation of the revision through the artifacts below is in progress, so the "encoding
+commit" column records where each artifact stands.)
 
 | File | Snapshot | Port cost |
 | --- | --- | --- |
