@@ -2030,3 +2030,16 @@ the shape the `.all` step needs, reuse `junkTrueAt_guard` from w1, then the fini
 extraction. The deliverable remains `hasQE_of_hasQE_empty`.
 
 **w3 (m3) — the mixed-context fragment (with `RV` variables) is still running.**
+
+**w3 (m3, accepted) — the mixed-context fragment exists.** `.ultramath/smw19wtoj/m3/QF2.lean`
+(858 lines, green, no `sorry`/`axiom`): `VFT2 sn`, `RVT2 sn` with `rvar` (the free-`RV`-variable
+constructor `QFRes.RVT` lacks), `QF2 sn`, and `QFq2 sn` with `allVF`/`allRV`. The design decision
+that makes it work: the fragment is indexed by the *sorted context* `Fin n → SortTag`, so
+`Fin.snoc sn s` is literally the shape of `WellSorted.all` and no variable renaming is needed.
+`QF2.wellSorted_toRV` and `QFq2.wellSorted_toRV` are proved **with no model hypothesis**, so the
+fragment's image lies inside the frozen `WellSorted` unconditionally — a future mixed-context
+`exists_toFrag` gets the target's well-sortedness conjunct for free. Also proves
+`{KJunkZero,KNegJunkZero,KAddAdditive,KNegAdditive}_of_model`, deriving the four repair hypotheses
+from `Axioms.ACVF` alone, independently of w5's route. Not proved, and correctly diagnosed: no
+`qfq_cover` in a mixed context (an `RV` free variable has no `L_val` image — the same obstruction
+from the other side), and the `mul`-cancellation normal form for off-`K` elements.
