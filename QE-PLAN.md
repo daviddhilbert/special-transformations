@@ -1241,3 +1241,37 @@ sentence.  Assembling `AtomCover` from those four is the last step of the cover.
 
 `RepairFixed` (m5's `Fixed.lean`, merged) also carries the corrected link and its porting lemmas, so
 the tree and `Milestone0/Encoding.lean` now agree on the repair's exact sentences.
+
+## The cover must be stated for the well-sorted sublanguage (or the junk must be pinned)
+
+Swarm `smw163dd5` m2 (accepted) found an encoding-level obstruction that no amount of proof work
+can get around: `L_RV` is a **one-sorted** encoding of a two-sorted language, so `BoundedFormula`
+admits ill-sorted terms — `rv (rv x)`, the `VF` operations at an `RV` element, `kAdd` at a `VF`
+element — and **no axiom constrains the junk values**.  `sortClosure` only says `rv` maps `VF` into
+`RV`, and `sdCover`/`sdDisjoint` only say the carrier is a disjoint union.  So the truth of an atom
+containing such a term is not a function of the `L_val`-structure, and
+
+```
+CoverBridge.CoverVF Axioms.ACVF      -- quantifies over all BoundedFormula
+RVElim.AtomCover                     -- its `eq`/`rel` fields quantify over all Tm n
+```
+
+are **false**, not merely unproved.
+
+Two ways out, and they are not exclusive:
+
+1. **State the cover on the well-sorted sublanguage** — the paper's actual two-sorted `L_RV`, where
+   `rv : VF → RV` and no ill-sorted term exists.  This is what `QFCover`/`QFRes` do, and it is the
+   right level for the *mathematics*: the paper's formulas are well-sorted, so the theorem that
+   matters is about them.
+2. **Pin the junk values**, which is a repair item: for every function symbol, a sentence fixing its
+   value at arguments outside its intended sort.  `Milestone0/Partiality.lean` already proves this is
+   conservative — totalising the paper's partial symbols with junk `= ∞` is conservative under two
+   hypotheses that Definition 2.1(2d) supplies — so this is bookkeeping in principle, but it is a
+   finite list of sentences per symbol per wrong sort.
+
+Which of the two the frozen target needs depends on what `HasQE` is supposed to quantify over.  The
+frozen `HasQE` quantifies over *all* `BoundedFormula`s, so as it stands it needs (2); the paper's
+Theorem 2.3 needs only (1).  This is a decision about the target statement, and it is the same
+decision as the trivial-valuation one in kind: how much of the one-sorted encoding the theorem is
+supposed to be about.
