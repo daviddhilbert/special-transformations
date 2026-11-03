@@ -7,7 +7,12 @@ library code. `make qe` elaborates all of them.
 
 | File | What it proves | Layer |
 | --- | --- | --- |
-| `Lifting_transcendental.lean` | Lemma 3.8 (`lift:value:full`) and Lemma 3.3's group core, over an arbitrary `Valuation K Γ₀`. `value_eval₂` is Lemma 3.7's no-cancellation formula (`v (p(e))` is the sup of the term values) for `e` of infinite order modulo `Γ(F)`; `lift_value_full` transfers the value of every `p(e)` and the `rv`-relation `v (p(e) - a·q(e)) < v (p(e))` from `F(e)` to `F'(d)` when `σ : F ≃+* F'` preserves the valuation and `w d = v e`; `leading_index_transfer` gives `RV(⟨Ŝ,e⟩) = ⟨RV(Ŝ), rv(e)⟩`; `divHull` with its universal property `divHull_le` is the divisible hull of `Γ(S)` that Lemma 3.3's `S*` needs. | (C) Lemmas 3.2–3.8 |
+| `Lemma37_transcendental.lean` | **Lemma 3.7 complete**, plus the value half of Lemma 3.8. `e_transc` gives the maximum term value (`∃ j, v b = v (b_j e^j)` for `b = Σ b_i e^i ≠ 0`), `e_transc_aeval` its polynomial form, `value_mem_of_adjoin` puts every unit of `K(e)` in `v a · (v e)^n`, and `zpow_notMem_valueGroup` gives `Γ(⟨Ŝ,e⟩) = Γ(Ŝ) ⊕ ℤ·vv(e)`. `value_transfer` and its `_sum`, `_eq_one` (claim (⋆)) and `_adjoin` variants transfer values across a value-preserving `σ` with `w d = v e`; `infiniteOrderMod_of_divisible` connects to Lemma 3.8's divisibility hypothesis. **Non-vacuity**: in `ℚ(X)` with the valuation at infinity, `K = ℚ`, `e = X`, `d = X+1`, the hypotheses hold simultaneously and `v (X+1) = v (X+2)`. | (C) Lemmas 3.7–3.8 |
+| `Lifting_transcendental.lean` | Lemma 3.8 (`lift:value:full`) and Lemma 3.3's group core, over an arbitrary `Valuation K Γ₀`. `value_eval₂` is Lemma 3.7's no-cancellation formula; `lift_value_full` transfers the value of every `p(e)` **and the `rv`-relation** `v (p(e) - a·q(e)) < v (p(e))` from `F(e)` to `F'(d)`; `leading_index_transfer` gives `RV(⟨Ŝ,e⟩) = ⟨RV(Ŝ), rv(e)⟩`; `divHull` with its universal property `divHull_le` is the divisible hull of `Γ(S)` that Lemma 3.3's `S*` needs. | (C) Lemmas 3.3, 3.7–3.8 |
+
+The last two are **independent formalisations of the same lemmas** — one over `Valuation K Γ₀`
+with an `Algebra` frame, the other over a `Subfield` of the ambient field — and neither imports
+the other. Agreement between them is stronger evidence than either alone.
 
 ## What is not here yet
 
