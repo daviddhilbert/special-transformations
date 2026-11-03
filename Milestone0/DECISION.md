@@ -740,3 +740,83 @@ was not finished here.  `Milestone0/Encoding.lean` is restored to sha `851d6a98�
 the tree stays usable.  `nontrivialTransferWS_ACVF` was therefore not attempted; its first failure
 point is unknown, and guessing it would be worthless.  The blast radius is exactly the
 `wellSorted_*` API plus the three `occurs_*` lemmas — no statement in Part 6 moves.
+
+
+## The guard repair: applied, green, and what it changed
+
+The ruling above is now implemented.  `Milestone0/Encoding.lean` is at sha256
+`86d7ea7e7d4751fd7259b30a61113af290370d7087b5aeb946a939c4513432144` and `QE/Assembly_val.lean`
+carries the same encoding verbatim (re-spliced, not hand-edited); both compile with `lean`, exit 0,
+0 errors, and only the two frozen `sorry`s of Part 6 in each.  `#print axioms` on
+`Audit.wellSorted_ACVF`, `Audit.wellSorted_ACVFpaper`, `LRV.wellSorted_alls`,
+`LRV.wellSorted_allSorted`, `LRV.wellSorted_exSortedG`, `LRV.wellSorted_allOne`,
+`LRV.occurs_sortedHyps`, `LRV.InAntecedent.shape` gives subsets of
+`{propext, Classical.choice, Quot.sound}`.
+
+**What the encoding now says.**  The `GuardTrue` field of `WellSorted.all` is not the existential
+of the earlier attempt but an inductive family; that is the one substantive change from the
+specification recorded above, and it is forced by `wellSorted_alls`:
+
+```
+def guardAtom {α} {n} (s : SortTag) (i : Fin n) : LRV.BoundedFormula α n :=
+  sortPredG s (Term.var (Sum.inr i))
+
+inductive InAntecedent {α} {n} (s : SortTag) (i : Fin n) : LRV.BoundedFormula α n → Prop
+  | atom : InAntecedent s i (guardAtom s i)
+  | and_left  {a b} : InAntecedent s i a → InAntecedent s i (a ⊓ b)
+  | and_right {a b} : InAntecedent s i b → InAntecedent s i (a ⊓ b)
+
+def Occurs {α} {m} (i : Fin m) (s : SortTag) (φ : LRV.BoundedFormula α m) : Prop :=
+  InAntecedent s i φ
+
+inductive GuardTrue {α} (s : SortTag) : {n : ℕ} → (i : Fin n) → LRV.BoundedFormula α n → Prop
+  | imp {n} {i} {η ψ : LRV.BoundedFormula α n} (h : InAntecedent s i η) : GuardTrue s i (η ⟹ ψ)
+  | all {n} {i} {χ : LRV.BoundedFormula α (n + 1)} (h : GuardTrue s (Fin.castSucc i) χ) :
+      GuardTrue s i (.all χ)
+
+-- WellSorted.all now carries it:
+  | all (sn) {s} {χ} (hχ : WellSorted sα (Fin.snoc sn s) χ) (hg : GuardsLast s (Fin.last n) χ)
+      (hj : GuardTrue s (Fin.last n) χ) : WellSorted sα sn (.all χ)
+```
+
+Why the `.all` clause is needed, and why it is the *honest* clause: `wellSorted_alls` recurses on
+the number of binders by applying `WellSorted.all` and then the induction hypothesis to the body
+`BoundedFormula.all χ`, so the obligation at the recursive step is `GuardTrue (ss d) d (.all χ)`.
+An existential `∃ η ψ, χ = η ⟹ ψ` cannot produce it — the body is not an implication — which is
+why the earlier attempt produced 17 errors and would have produced one more unsolvable obligation.
+The `.all` clause is semantically exact: at an element outside the sort `s`, the `i`-th context
+entry being junk makes `χ` true *at every value of the new variable* (that is exactly
+`GuardTrue s (Fin.castSucc i) χ`, the index unchanged in the extended context), hence `∀ y, χ`.
+
+**What stays the same.**  No statement in Part 6 moves, and Part 6.1's audit is untouched: the
+`wellSorted_allSorted` / `wellSorted_allSortedK` / `wellSorted_allSortedK_ss` /
+`wellSorted_exSorted` / `wellSorted_exSortedK` / `wellSorted_all_guarded` / `wellSorted_ex_guarded`
+signatures are unchanged and each now discharges its own `GuardTrue` internally
+(`GuardTrue.of_inAntecedent (occurs_sortedHyps ss d)` and friends).  The only API strengthened are
+`WellSorted.all`, `wellSorted_alls` and `wellSorted_allOne` (each gains the `GuardTrue`
+hypothesis); nothing in the tree called `wellSorted_allOne`.
+
+**The 17 mechanical errors, resolved.**  The inventory recorded above was right in kind and the
+fix was one line each:
+
+* `Occurs i s η` as a `def` from `InAntecedent` — no bridge lemma, no `inAntecedent_of_occurs`
+  (`Occurs` *is* `InAntecedent`, so `GuardTrue.of_inAntecedent` is the only adapter needed);
+* `occurs_self` is `InAntecedent.atom`; `Occurs.of_conj_left`/`of_conj_right` are
+  `InAntecedent.and_left`/`.and_right`; `occurs_foldr_hyps`'s recursive step is
+  `InAntecedent.and_right`;
+* five sites that had been written as `Or.inl (Or.inl (occurs …))` — exploiting the old compiled
+  `Occurs`'s *definitional* distribution over `⊓` — became `Or.inl (InAntecedent.and_left (…))`,
+  one of them (`wellSorted_exSortedK`'s hypothesis) dropping the `Or.inl` because `Occurs` is now
+  itself the disjunct;
+* `QE/Assembly_val.lean`'s audit needed `| all sn hχ hg hj` in its three `cases`, and
+  `occurs_rel`'s `Iff.rfl` is now a two-line proof: this is the one place where the change is
+  *visible* — `Occurs` at a relation atom is no longer definitional but propositional, and the
+  elimination form it needs is `InAntecedent.shape`
+  (`φ = guardAtom s i ∨ ∃ a b, φ = a ⊓ b`), which is in the encoding for that reason.
+
+**Not yet done, in order:** re-check `.ultramath/smw19wtoj/m1/W1.lean` against the repaired
+predicate (its `WSg.toWellSorted` must now supply a `GuardTrue`, and its `Pre_build.lean` predates
+the repair, so the file must be re-based on the current encoding before it can be an asset again —
+`WSg`'s single-atom guard is `InAntecedent.atom` when `tvLast n` is `var (Fin.last n)`, so the fix
+is expected to be small); then `nontrivialTransferWS_ACVF` in `QE/TransferWS.lean`, whose first
+failure point was unknown and is now the next thing to find.

@@ -388,14 +388,82 @@ theorem pVF_eq_pVFG {n : ℕ} (t : Tm n) : pVF t = pVFG (α := Empty) t := rfl
 
 /-! #### Guards -/
 
+/-- The guard atom `xᵢ ∈ s`, for an arbitrary parameter type `α`. -/
+def guardAtom {α : Type} {n : ℕ} (s : SortTag) (i : Fin n) : LRV.BoundedFormula α n :=
+  sortPredG s (Term.var (Sum.inr i))
+
+/-- **`InAntecedent s i η`**: `η` is a formula in which the guard atom `xᵢ ∈ s` occurs as a
+*top-level conjunct*.  `a ⊓ b` is `¬(a → ¬b)` in the encoding, so a formula that starts with `⊓`
+is an implication whose antecedent is an implication; the two `and` constructors descend through
+exactly that.  Nothing weaker is admitted: the atom under a further negation or as the consequent
+of an implication does not count, which is the whole point (an atom there is *true* at junk
+elements, not false).
+
+The paper's own antecedents are right-nested `⊓` of sort atoms (`sortedHyps`), which is the shape
+this family decomposes. -/
+inductive InAntecedent {α : Type} {n : ℕ} (s : SortTag) (i : Fin n) :
+    LRV.BoundedFormula α n → Prop
+  /-- the guard atom itself -/
+  | atom : InAntecedent s i (guardAtom s i)
+  /-- a conjunct of the left half -/
+  | and_left {a b : LRV.BoundedFormula α n} :
+      InAntecedent s i a → InAntecedent s i (a ⊓ b)
+  /-- a conjunct of the right half -/
+  | and_right {a b : LRV.BoundedFormula α n} :
+      InAntecedent s i b → InAntecedent s i (a ⊓ b)
+
 /-- **`Occurs i s η`**: the atom "the variable of index `i` lies in the sort `s`" is one of the
 top-level conjuncts of `η`.  Only conjunctions are decomposed (`a ⊓ b` is `¬(a → ¬b)` in the
 encoding), so an occurrence found by `Occurs` makes `η` *false* whenever the `i`-th element of the
 tuple is not in the sort `s`, whatever the rest of `η` says.  Conjunctions are decomposed in the
-form the tree's `sortedHyps` and friends are written in, which is the point of the definition. -/
-def Occurs {α : Type} {m : ℕ} (i : Fin m) (s : SortTag) : LRV.BoundedFormula α m → Prop
-  | .imp (.imp a (.imp b .falsum)) .falsum => Occurs i s a ∨ Occurs i s b
-  | φ => φ = sortPredG s (Term.var (Sum.inr i))
+form the tree's `sortedHyps` and friends are written in, which is the point of the definition.
+
+`Occurs` **is** `InAntecedent` — a definition, not a compiled match.  A compiled match cannot be
+unfolded at a constructor-headed argument whose subterms are variables, which is why the two had to
+be identified rather than bridged (see `Milestone0/DECISION.md`, the guard repair); the inductive
+form is the one the proofs can use. -/
+def Occurs {α : Type} {m : ℕ} (i : Fin m) (s : SortTag) (φ : LRV.BoundedFormula α m) : Prop :=
+  InAntecedent s i φ
+
+/-- **The junk-truth condition on the body of a quantifier** (the author's ruling; `DECISION.md`).
+`GuardTrue s i χ` is the syntactic condition on `χ` that makes it true at elements outside the sort
+`s`:
+
+* `χ = η ⟹ ψ` with the guard among the top-level conjuncts of `η`: the antecedent is false off
+  the sort, so `χ` is true there;
+* `χ = ∀ y, χ'` with `χ'` junk-true at the *same* variable (cast by `Fin.castSucc`): if the `i`-th
+  element is junk then `χ'` holds at every value of `y`, so `∀ y, χ'` does too.
+
+The second clause is what makes the condition survive the iteration in `wellSorted_alls`, where the
+body of an inner quantifier is another quantifier.  Since `WellSorted` has no model parameter the
+condition has to be syntactic, and this is the strongest shape that (a) excludes
+`(x ∈ s ⟹ ⊥) ⟹ ψ`, (b) admits `sortedHyps`-shaped antecedents, and (c) is preserved by the
+fragment's own quantifier. -/
+inductive GuardTrue {α : Type} (s : SortTag) :
+    {n : ℕ} → (i : Fin n) → LRV.BoundedFormula α n → Prop
+  /-- the guard is a top-level conjunct of the antecedent -/
+  | imp {n : ℕ} {i : Fin n} {η ψ : LRV.BoundedFormula α n}
+      (h : InAntecedent s i η) : GuardTrue s i (η ⟹ ψ)
+  /-- a universal inherits junk-truth from its body -/
+  | all {n : ℕ} {i : Fin n} {χ : LRV.BoundedFormula α (n + 1)}
+      (h : GuardTrue s (Fin.castSucc i) χ) : GuardTrue s i (.all χ)
+
+/-- The `GuardTrue` obligation at an implication whose antecedent has the guard as a conjunct. -/
+theorem GuardTrue.of_inAntecedent {α : Type} {m : ℕ} {i : Fin m} {s : SortTag}
+    {η ψ : LRV.BoundedFormula α m} (h : InAntecedent s i η) :
+    GuardTrue s i (η ⟹ ψ) :=
+  GuardTrue.imp h
+
+/-- Case analysis on a top-level conjunct: either it is the guard atom itself, or the formula is a
+conjunction with the atom in one of its halves.  This is the elimination form of `InAntecedent`
+(the family is indexed, so a plain `cases` cannot abstract the formula). -/
+theorem InAntecedent.shape {α : Type} {m : ℕ} {i : Fin m} {s : SortTag}
+    {φ : LRV.BoundedFormula α m} (h : InAntecedent s i φ) :
+    φ = guardAtom s i ∨ ∃ a b : LRV.BoundedFormula α m, φ = a ⊓ b := by
+  induction h with
+  | atom => exact Or.inl rfl
+  | and_left _ _ => exact Or.inr ⟨_, _, rfl⟩
+  | and_right _ _ => exact Or.inr ⟨_, _, rfl⟩
 
 /-- **`GuardsLast s i χ`**: `χ` has the atom "the variable of index `i` lies in the sort `s`" as a
 conjunct of an antecedent, at its own level or under further quantifiers.  This is the syntactic
@@ -418,7 +486,13 @@ parameters `a : α` of sort `sα a` and the free variables of sort `sn`.
 * a quantifier is admitted only in guarded form: `∀ x, η → ψ` with `x` of sort `s` and `η`
   containing the conjunct `x ∈ s`.  Ill-sorted terms therefore never occur, and the value of a
   well-sorted formula at a tuple of the declared sorts is a function of the paper's two-sorted
-  structure alone. -/
+  structure alone;
+* **and the body of a quantifier is junk-true**: because `BoundedFormula.all` quantifies over the
+  whole one-sorted carrier, not just the tag `s`, the body must hold at elements outside `s` too.
+  That is the `GuardTrue` field, the author's ruling recorded in `Milestone0/DECISION.md`: the
+  sort predicate of the bound variable is a *top-level conjunct* of the body's antecedent, so the
+  antecedent is false — hence the body true — off the sort.  `GuardsLast` alone does not imply
+  it (`(x ∈ s ⟹ ⊥) ⟹ ψ` satisfies `GuardsLast` and is false at junk elements). -/
 inductive WellSorted {α : Type} (sα : α → SortTag) :
     {n : ℕ} → (Fin n → SortTag) → LRV.BoundedFormula α n → Prop
   /-- `⊥` -/
@@ -434,9 +508,10 @@ inductive WellSorted {α : Type} (sα : α → SortTag) :
   /-- implication -/
   | imp {n : ℕ} (sn : Fin n → SortTag) {a b : LRV.BoundedFormula α n} :
       WellSorted sα sn a → WellSorted sα sn b → WellSorted sα sn (.imp a b)
-  /-- the guarded universal quantifier `∀ x ∈ s, ψ` -/
+  /-- the guarded universal quantifier `∀ x ∈ s, ψ`, whose body is junk-true (`GuardTrue`) -/
   | all {n : ℕ} (sn : Fin n → SortTag) {s : SortTag} {χ : LRV.BoundedFormula α (n + 1)}
-      (hχ : WellSorted sα (Fin.snoc sn s) χ) (hg : GuardsLast s (Fin.last n) χ) :
+      (hχ : WellSorted sα (Fin.snoc sn s) χ) (hg : GuardsLast s (Fin.last n) χ)
+      (hj : GuardTrue s (Fin.last n) χ) :
       WellSorted sα sn (.all χ)
 /-! #### The sort of a term, symbol by symbol
 
@@ -623,10 +698,10 @@ theorem wellSorted_sortPredG {s : SortTag} {t : LRV.Term (α ⊕ Fin n)}
 /-! ##### Guards -/
 
 theorem Occurs.of_conj_left {m : ℕ} (i : Fin m) {s : SortTag} {a b : LRV.BoundedFormula α m}
-    (h : Occurs i s a) : Occurs i s (a ⊓ b) := Or.inl h
+    (h : Occurs i s a) : Occurs i s (a ⊓ b) := InAntecedent.and_left h
 
 theorem Occurs.of_conj_right {m : ℕ} (i : Fin m) {s : SortTag} {a b : LRV.BoundedFormula α m}
-    (h : Occurs i s b) : Occurs i s (a ⊓ b) := Or.inr h
+    (h : Occurs i s b) : Occurs i s (a ⊓ b) := InAntecedent.and_right h
 
 /-- an occurrence in an antecedent guards the implication -/
 theorem GuardsLast.of_occurs {m : ℕ} (i : Fin m) {s : SortTag} {η ψ : LRV.BoundedFormula α m}
@@ -634,8 +709,8 @@ theorem GuardsLast.of_occurs {m : ℕ} (i : Fin m) {s : SortTag} {η ψ : LRV.Bo
 
 /-- the atom `x_i ∈ s` occurs in `sortPred s (x_i)` -/
 theorem occurs_self (α : Type) {m : ℕ} (i : Fin m) (s : SortTag) :
-    @Occurs α m i s (sortPredG s (Term.var (Sum.inr i))) := by
-  cases s <;> rfl
+    @Occurs α m i s (sortPredG s (Term.var (Sum.inr i))) :=
+  InAntecedent.atom
 
 /-- **The guarded universal quantifier**: `∀ x ∈ s, (η → ψ)` is well-sorted when `ψ` and `η` are
 well-sorted in the extended context and `η` contains the conjunct `x ∈ s`. -/
@@ -645,6 +720,7 @@ theorem wellSorted_all_guarded {m : ℕ} {sn : Fin m → SortTag} {s : SortTag}
     (hg : Occurs (Fin.last m) s η) :
     WellSorted sα sn (.all (η ⟹ ψ)) :=
   WellSorted.all sn (WellSorted.imp _ hη hψ) (Or.inl hg)
+    (GuardTrue.of_inAntecedent hg)
 
 /-- **The guarded existential quantifier** `∃ x ∈ s, ψ`.  (The encoding writes it as
 `¬∀ x, ¬(x ∈ s ∧ ψ)`.) -/
@@ -659,9 +735,10 @@ theorem wellSorted_exSortedG {m : ℕ} {sn : Fin m → SortTag} {s : SortTag}
       (sortPredG s (Term.var (Sum.inr (Fin.last m)))) :=
     wellSorted_sortPredG sα _ (by rw [tmSort_var_inr, Fin.snoc_last])
   refine WellSorted.imp sn (WellSorted.all sn
-    (WellSorted.imp _ (wellSorted_inf sα _ hpred h) (WellSorted.falsum _)) (Or.inl (Or.inl ?_)))
+    (WellSorted.imp _ (wellSorted_inf sα _ hpred h) (WellSorted.falsum _))
+    (Or.inl (InAntecedent.and_left (occurs_self α (Fin.last m) s)))
+    (GuardTrue.of_inAntecedent (InAntecedent.and_left (α := α) InAntecedent.atom)))
     (WellSorted.falsum sn)
-  exact occurs_self α (Fin.last m) s
 
 
 /-- **The `VF`-guarded universal quantifier** `∀ x ∈ VF, ψ` — the quantifier shape of
@@ -714,7 +791,7 @@ theorem occurs_foldr_hyps {k : ℕ} (ss : Fin k → SortTag) :
     simp only [List.foldr_cons]
     rcases List.mem_cons.mp hi with rfl | hi'
     · exact Occurs.of_conj_left i (occurs_self Empty i (ss i))
-    · exact Or.inr (occurs_foldr_hyps ss l acc i hi')
+    · exact InAntecedent.and_right (occurs_foldr_hyps ss l acc i hi')
 
 theorem occurs_sortedHyps {k : ℕ} (ss : Fin k → SortTag) (i : Fin k) :
     Occurs i (ss i) (sortedHyps ss) :=
@@ -738,7 +815,8 @@ variable of that context occurs as a guard `x_i ∈ ss i` in a conjunct of an an
 then `∀ x_0 … ∀ x_{k-1}, χ` is well-sorted.  (`BoundedFormula.alls` binds the variables in this
 order, so the guard for the `d`-th binder is the occurrence at index `d`.) -/
 theorem wellSorted_alls {k : ℕ} {sα : Empty → SortTag} {χ : Bf k} {ss : Fin k → SortTag}
-    (h : WellSorted sα ss χ) (hg : ∀ d : Fin k, GuardsLast (ss d) d χ) :
+    (h : WellSorted sα ss χ) (hg : ∀ d : Fin k, GuardsLast (ss d) d χ)
+    (hj : ∀ d : Fin k, GuardTrue (ss d) d χ) :
     WellSorted sα (fun i : Fin 0 => i.elim0) (BoundedFormula.alls χ) := by
   induction k with
   | zero =>
@@ -746,12 +824,14 @@ theorem wellSorted_alls {k : ℕ} {sα : Empty → SortTag} {χ : Bf k} {ss : Fi
     rwa [hss] at h
   | succ k ih =>
     show WellSorted sα (fun i : Fin 0 => i.elim0) (BoundedFormula.alls (BoundedFormula.all χ))
-    refine ih (ss := fun d : Fin k => ss (Fin.castSucc d)) ?_ ?_
-    · refine WellSorted.all _ ?_ (hg (Fin.last k))
+    refine ih (ss := fun d : Fin k => ss (Fin.castSucc d)) ?_ ?_ ?_
+    · refine WellSorted.all _ ?_ (hg (Fin.last k)) (hj (Fin.last k))
       rw [fin_snoc_castSucc_last ss]
       exact h
     · intro d
       exact hg (Fin.castSucc d)
+    · intro d
+      exact GuardTrue.all (hj (Fin.castSucc d))
 
 /-- **The guarded universal sentence `allSorted ss φ` is well-sorted.** -/
 theorem wellSorted_allSorted {k : ℕ} {sα : Empty → SortTag} (ss : Fin k → SortTag) {φ : Bf k}
@@ -759,6 +839,7 @@ theorem wellSorted_allSorted {k : ℕ} {sα : Empty → SortTag} (ss : Fin k →
     WellSorted sα (fun i : Fin 0 => i.elim0) (allSorted ss φ) :=
   wellSorted_alls (WellSorted.imp ss (wellSorted_sortedHyps sα ss) hφ)
     (fun d => Or.inl (occurs_sortedHyps ss d))
+    (fun d => GuardTrue.of_inAntecedent (occurs_sortedHyps ss d))
 
 /-- `pInK t` is well-sorted at an `RV`-term. -/
 theorem wellSorted_pInK {n : ℕ} {sα : Empty → SortTag} {sn : Fin n → SortTag}
@@ -789,16 +870,22 @@ theorem wellSorted_allSortedK {k : ℕ} {sα : Empty → SortTag} {φ : Bf k}
   wellSorted_alls
     (WellSorted.imp _ (wellSorted_inf sα _ (wellSorted_sortedHyps sα _)
       (wellSorted_kHyps sα)) hφ)
-    (fun d => Or.inl (Or.inl (occurs_sortedHyps (fun _ => .rv) d)))
+    (fun d => Or.inl (InAntecedent.and_left (occurs_sortedHyps (fun _ => .rv) d)))
+    (fun d => GuardTrue.of_inAntecedent
+      (InAntecedent.and_left (occurs_sortedHyps (fun _ => .rv) d)))
 
 /-- **The universal closure of a guarded formula in one variable is well-sorted.** -/
 theorem wellSorted_allOne {sα : Empty → SortTag} {s : SortTag} {φ : Bf 1}
-    (hφ : WellSorted sα (fun _ => s) φ) (hg : GuardsLast s 0 φ) :
+    (hφ : WellSorted sα (fun _ => s) φ) (hg : GuardsLast s 0 φ)
+    (hj : GuardTrue s 0 φ) :
     WellSorted sα (fun i : Fin 0 => i.elim0) (allOne φ) :=
   wellSorted_alls (ss := fun _ => s) hφ (fun d => by
     have : d = 0 := by ext; omega
     rw [this]
-    exact hg)
+    exact hg) (fun d => by
+    have : d = 0 := by ext; omega
+    rw [this]
+    exact hj)
 
 end Alls
 
@@ -848,7 +935,8 @@ theorem wellSorted_ex_guarded {m : ℕ} {sn : Fin m → SortTag} {s : SortTag}
     WellSorted sα sn (BoundedFormula.ex (η ⊓ ψ)) :=
   WellSorted.imp sn (WellSorted.all sn
     (WellSorted.imp _ (wellSorted_inf sα _ hη hψ) (WellSorted.falsum _))
-    (Or.inl (Or.inl hg)))
+    (Or.inl (InAntecedent.and_left hg))
+    (GuardTrue.of_inAntecedent (InAntecedent.and_left (α := α) hg)))
     (WellSorted.falsum sn)
 
 end Connectives
@@ -890,7 +978,7 @@ theorem wellSorted_exSortedK {k : ℕ} {ss : Fin k → SortTag} {φ : Bf (k + 1)
       (wellSorted_pRVG sα _ (t := tv k (Nat.lt_succ_self k)) (tmSort_tv_last sα))
       (wellSorted_pInK (t := tv k (Nat.lt_succ_self k)) (tmSort_tv_last sα)))
     h
-    (Or.inl (occurs_self Empty (Fin.last k) .rv))
+    (InAntecedent.and_left (occurs_self Empty (Fin.last k) .rv))
 
 /-- `exSortedK` at a context of `RV`-variables: the shape of `acfSchemeK`'s body -/
 theorem wellSorted_exSortedK_k {k : ℕ} {φ : Bf (k + 1)}
@@ -929,11 +1017,13 @@ theorem wellSorted_kHyps_ss {k : ℕ} {ss : Fin k → SortTag} (hss : ∀ i, ss 
 theorem wellSorted_allSortedK_ss {k : ℕ} {ss : Fin k → SortTag} {φ : Bf k}
     (hss : ∀ i, ss i = .rv) (hφ : WellSorted sα ss φ) :
     WellSorted sα (fun i : Fin 0 => i.elim0) (allSortedK ss φ) := by
-  refine wellSorted_alls (WellSorted.imp ss ?_ hφ) ?_
+  refine wellSorted_alls (WellSorted.imp ss ?_ hφ) ?_ ?_
   · exact wellSorted_inf sα ss (wellSorted_sortedHyps sα ss)
       (wellSorted_kHyps_ss sα hss)
   · intro d
-    exact Or.inl (Or.inl (occurs_sortedHyps ss d))
+    exact Or.inl (InAntecedent.and_left (occurs_sortedHyps ss d))
+  · intro d
+    exact GuardTrue.of_inAntecedent (InAntecedent.and_left (occurs_sortedHyps ss d))
 
 end SortedHypsGeneric
 
