@@ -1102,3 +1102,111 @@ theorem model_field_of_valField (N : Type*) [Language.val.Structure N] (hN : N �
   simpa only [Sentence.Realize, Formula.Realize, LHom.realize_onBoundedFormula] using h
 
 end Reduct
+
+/-! ## 9. The prime model over a substructure of a valued field -/
+
+section PrimeField
+
+variable {S : Type} [Language.val.Structure S] [Language.ring.Structure S]
+  [valRingHom.IsExpansionOn S]
+variable {M : Type} [CommRing M] [Language.val.Structure M] [CompatibleRing M]
+  [valRingHom.IsExpansionOn M] [IsDomain M]
+
+/-- **The prime model of the theory of valued fields over `S`**: the fraction field of the
+coordinate ring `FreeCommRing S ⧸ relIdeal e`. -/
+noncomputable abbrev valPrimeField (e : S ↪[Language.val] M) : Type :=
+  FractionRing (coordRing e)
+
+/-- The valuation predicate of the prime model, by cross multiplication. -/
+noncomputable abbrev predVal (e : S ↪[Language.val] M) (x y : valPrimeField e) : Prop :=
+  predFrac (predCoord e) x y
+
+noncomputable instance valPrimeField.instValStruct (e : S ↪[Language.val] M) :
+    Language.val.Structure (valPrimeField e) :=
+  valStructOf (valPrimeField e) (predVal e)
+
+noncomputable instance valPrimeField.instField (e : S ↪[Language.val] M) :
+    Field (valPrimeField e) :=
+  inferInstanceAs (Field (FractionRing (coordRing e)))
+
+noncomputable instance valPrimeField.instCompatibleRing (e : S ↪[Language.val] M) :
+    CompatibleRing (valPrimeField e) :=
+  compatibleRingOfRing (valPrimeField e)
+
+noncomputable instance valPrimeField.instExpansion (e : S ↪[Language.val] M) :
+    valRingHom.IsExpansionOn (valPrimeField e) :=
+  ⟨fun {_} f _ => by cases f <;> rfl, fun {_} r _ => isEmptyElim r⟩
+
+/-- The prime model's predicate satisfies the axioms. -/
+theorem predVal_isValPred (e : S ↪[Language.val] M)
+    (h : @IsValPred M _ (predM : M → M → Prop)) :
+    @IsValPred (valPrimeField e) _ (predVal e) :=
+  predFrac_isValPred (predCoord_isValPred e h)
+
+/-- **The prime model is a model of `valField`.** -/
+theorem valPrimeField_model (e : S ↪[Language.val] M)
+    (h : @IsValPred M _ (predM : M → M → Prop)) :
+    @Theory.Model Language.val (valPrimeField e) (valPrimeField.instValStruct e) valField :=
+  valField_model (predVal_isValPred e h)
+
+/-- The map on the prime model commutes with the function symbols. -/
+theorem valPrimeMap_fun (e : S ↪[Language.val] M) {n : ℕ} (g : Language.val.Functions n)
+    (x : Fin n → S) :
+    algebraMap (coordRing e) (valPrimeField e)
+        (coordEmbedding e (Structure.funMap (L := Language.val) (M := S) g x))
+      = Structure.funMap (L := Language.val) (M := valPrimeField e) g
+          (fun i => algebraMap (coordRing e) (valPrimeField e) (coordEmbedding e (x i))) := by
+  have hce : coordEmbedding e (Structure.funMap (L := Language.val) (M := S) g x)
+      = Structure.funMap (L := Language.val) (M := coordRing e) g
+          (fun i => coordEmbedding e (x i)) :=
+    (coordEmbedding e).map_fun g x
+  rw [hce]
+  conv_rhs => rw [valFunMap_eq_ringVal (N := valPrimeField e) (g := g)
+    (x := fun i => algebraMap (coordRing e) (valPrimeField e) (coordEmbedding e (x i)))]
+  conv_lhs => rw [valFunMap_eq_ringVal (N := coordRing e) (g := g)
+    (x := fun i => coordEmbedding e (x i))]
+  exact ringHom_map_fun (algebraMap (coordRing e) (valPrimeField e)) (valToRing g)
+    (fun i => coordEmbedding e (x i))
+
+/-- **The embedding of `S` into its prime model.** -/
+noncomputable def valPrimeEmbedding (e : S ↪[Language.val] M)
+    (h : @IsValPred M _ (predM : M → M → Prop)) :
+    S ↪[Language.val] valPrimeField e where
+  toFun := fun s => algebraMap (coordRing e) (valPrimeField e) (coordEmbedding e s)
+  inj' := by
+    intro a b hab
+    exact (coordEmbedding e).injective
+      (IsFractionRing.injective (coordRing e) (valPrimeField e) hab)
+  map_fun' := fun {n} g x => valPrimeMap_fun e g x
+  map_rel' := by
+    intro n r x
+    cases r with
+    | le =>
+      have hL : Structure.RelMap (L := Language.val) (M := valPrimeField e) ValRel.le
+            ((fun s => algebraMap (coordRing e) (valPrimeField e) (coordEmbedding e s)) ∘ x)
+          ↔ predFrac (predCoord e)
+              (algebraMap (coordRing e) (valPrimeField e) (coordEmbedding e (x 0)))
+              (algebraMap (coordRing e) (valPrimeField e) (coordEmbedding e (x 1))) := by
+        rw [relMap_two]
+        rfl
+      have hR : Structure.RelMap (L := Language.val) (M := S) ValRel.le x
+          ↔ predM (x 0) (x 1) := relMap_two x
+      rw [hL, hR]
+      rw [← IsLocalization.mk'_one (M := nonZeroDivisors (coordRing e)) (S := valPrimeField e)
+          (x := coordEmbedding e (x 0)),
+        ← IsLocalization.mk'_one (M := nonZeroDivisors (coordRing e)) (S := valPrimeField e)
+          (x := coordEmbedding e (x 1)),
+        predFrac_iff (IsValPred.scale (predCoord_isValPred e h))]
+      show predM (coordEval e (coordEmbedding e (x 0) * 1))
+             (coordEval e (coordEmbedding e (x 1) * 1)) ↔ predM (x 0) (x 1)
+      rw [mul_one, mul_one]
+      have h1 : coordEval e (Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x 0))) = e (x 0) := by
+        rw [coordEval_mk, FreeCommRing.lift_of]
+      have h2 : coordEval e (Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x 1))) = e (x 1) := by
+        rw [coordEval_mk, FreeCommRing.lift_of]
+      show predM (coordEval e (Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x 0))))
+             (coordEval e (Ideal.Quotient.mk (relIdeal e) (FreeCommRing.of (x 1)))) ↔ predM (x 0) (x 1)
+      rw [h1, h2]
+      exact pred_emb_iff e (x 0) (x 1)
+
+end PrimeField
