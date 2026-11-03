@@ -1625,3 +1625,28 @@ use), deliver a compiled `Encoding.lean` plus the diff, and prove the axioms and
 translations are still well-sorted under the adopted predicate.  Same swarm, in parallel: **Section
 4's statement freeze** (the pattern of Section 3's `smw18ygko`), the `VFQ → WellSorted` bridge that
 h4's output needs, and the cross-check that the two predicates agree for `[Fintype α]`.
+
+### The frozen `IsCMinimal` is refuted twice, and the replacement is `IsCMinimalWS`
+
+Two independent refutations of the encoding's unrestricted `IsCMinimal`, both machine-checked:
+
+* `SMW18pb0w.m3`: two distinct `RV`-elements cannot be separated by a Boolean combination of balls
+  (all balls lie in the `VF` half) — `not_isCMinimal_of_two_rv`;
+* `m2` (`Dict.lean`): the singleton `{1}` of the `RV` sort is `Definable₁` over `{1}`
+  (`Set.Definable.singleton_of_mem`) but is not a ball combination, since `0 = ∞` is a distinct `RV`
+  element — `not_isCMinimal`.
+
+So `theorem_2_8_c_minimal` as originally frozen was **false, not unproved**, and the encoding had
+dropped the paper's "subset of `VF(M)`".  Both directions independently name the same replacement:
+the well-sorted, `VF`-restricted statement, which is what was frozen as `IsCMinimalWS` in `27b6c10`.
+
+m2's dictionary is the exact correspondence and is worth keeping beside the statement:
+`isBall_subset_iVF`, `rv_const_of_isBoolComb`/`dichotomy_of_isBoolComb` (a ball combination is
+constant on the `RV` half), `isBoolComb_iff_split`, `isCMinimal_iff`, and
+`IsCMinimal → IsCMinimalOnVF` (the paper's Definition 2.7) with the converse isolated as a
+*trace-definability* hypothesis, named rather than assumed.  `Bridge.lean`'s
+`isBoolComb_of_pattern` converts an arbitrary Boolean pattern over a finite family of sets into a
+`IsBoolComb`, which is what the ball combinatorics needed.
+
+Bookkeeping: `IsCMinimalWS ↔ IsCMinimalOnVF`, and `IsCMinimalWS`'s own `vfSet`-cut versus m3's
+`IsCMinimalVF`.
