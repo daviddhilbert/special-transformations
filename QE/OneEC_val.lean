@@ -1087,6 +1087,7 @@ variable {f : K →+* N} {w : Valuation N Γ'}
 
 /-- A single `K`-ball is a `Good` set. -/
 theorem good_of_isKBall {B : Set N} (h : IsKBall f w B) : Good f w B := by
+  classical
   refine ⟨PUnit, inferInstance, fun _ => B, fun S => decide S.Nonempty, fun _ => h, ?_⟩
   intro x
   show (x ∈ B) ↔ (decide {i : PUnit | x ∈ B}.Nonempty = true)
@@ -1135,41 +1136,73 @@ end Master
 
 section ProdSplit
 
-variable {K : Type} [Field K] {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
+variable {K : Type} [Field K] [DecidableEq K] {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
 
 /-- The occurrences of one element contribute a power to the product. -/
 theorem prod_filter_eq_pow (s : Multiset K) (g : K → Γ') (a : K) :
     ((s.filter (fun b => b = a)).map g).prod = g a ^ (s.count a) := by
   induction s using Multiset.induction with
-  | empty => rfl
+  | empty => simp
   | cons b s ih =>
     by_cases h : b = a
     · subst h
-      rw [Multiset.filter_cons, if_pos rfl, Multiset.count_cons, if_pos rfl, Multiset.map_add,
-        Multiset.map_singleton, Multiset.prod_add, Multiset.prod_singleton, ih, pow_succ, mul_comm]
-    · have h' : ¬ (a = b) := fun hab => h hab.symm
-      rw [Multiset.filter_cons, if_neg h, Multiset.count_cons, if_neg h']
-      simp only [Multiset.zero_add, ih, Nat.add_zero]
+      rw [Multiset.filter_cons_of_pos (p := fun x => x = b) s rfl,
+        Multiset.count_cons_self, Multiset.map_cons, Multiset.prod_cons, ih, pow_succ]
+      ac_rfl
+    · rw [Multiset.filter_cons_of_neg (p := fun x => x = a) s h,
+        Multiset.count_cons_of_ne (Ne.symm h), ih]
 
 /-- **Splitting a product at one element.** -/
 theorem prod_split (s : Multiset K) (g : K → Γ') (a : K) :
     (s.map g).prod = g a ^ (s.count a) * ((s.filter (fun b => b ≠ a)).map g).prod := by
   induction s using Multiset.induction with
-  | empty => rfl
+  | empty => simp
   | cons b s ih =>
     by_cases h : b = a
     · subst h
-      rw [Multiset.map_cons, Multiset.prod_cons, Multiset.count_cons, if_pos rfl,
-        Multiset.filter_cons, if_neg (by simp), Multiset.map_cons, Multiset.prod_cons, ih, pow_succ]
-      ring_nf
-    · have h' : ¬ (a = b) := fun hab => h hab.symm
-      rw [Multiset.map_cons, Multiset.prod_cons, Multiset.count_cons, if_neg h',
-        Multiset.filter_cons, if_pos h, Multiset.map_cons, Multiset.prod_cons, ih]
-      ring_nf
+      rw [Multiset.filter_cons_of_neg (p := fun x => x ≠ b) s (by simp), Multiset.count_cons_self]
+      simp only [Multiset.map_cons, Multiset.prod_cons, ih, pow_succ]
+      ac_rfl
+    · rw [Multiset.filter_cons_of_pos (p := fun x => x ≠ a) s h,
+        Multiset.count_cons_of_ne (Ne.symm h)]
+      simp only [Multiset.map_cons, Multiset.prod_cons, ih]
+      ac_rfl
 
 end ProdSplit
 
 /-! ### The master claim of the cluster induction -/
+
+section GammaAlgebra
+
+variable {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
+
+/-- Multiplying by a nonzero power is an order embedding. -/
+theorem le_mul_pow_iff {a b δ : Γ'} (hδ : δ ≠ 0) (m : ℕ) :
+    a * δ ^ m ≤ b * δ ^ m ↔ a ≤ b := by
+  have hcancel : b * δ ^ m * (δ ^ m)⁻¹ = b := by
+    rw [mul_assoc, mul_inv_cancel₀ (pow_ne_zero m hδ), mul_one]
+  have hcancel' : a * δ ^ m * (δ ^ m)⁻¹ = a := by
+    rw [mul_assoc, mul_inv_cancel₀ (pow_ne_zero m hδ), mul_one]
+  constructor
+  · intro h
+    have h' := mul_le_mul_left h ((δ ^ m)⁻¹)
+    rwa [hcancel, hcancel'] at h'
+  · intro h; exact mul_le_mul_left h _
+
+/-- Multiplying by a nonzero constant: `a / c ≤ b ↔ a ≤ b * c`. -/
+theorem le_mul_iff_div {a b c : Γ'} (hc : c ≠ 0) :
+    a * c⁻¹ ≤ b ↔ a ≤ b * c := by
+  have hcancel : a * c⁻¹ * c = a := by rw [mul_assoc, inv_mul_cancel₀ hc, mul_one]
+  have hcancel' : b * c * c⁻¹ = b := by rw [mul_assoc, mul_inv_cancel₀ hc, mul_one]
+  constructor
+  · intro h
+    have h' := mul_le_mul_left h c
+    rwa [hcancel] at h'
+  · intro h
+    have h' := mul_le_mul_left h c⁻¹
+    rwa [hcancel'] at h'
+
+end GammaAlgebra
 
 section MasterClaim
 
@@ -1222,7 +1255,7 @@ theorem good_pow_le_pow_same {a cP cQ : K} (m : ℕ) :
         = Set.univ := by
       ext x
       simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
-      exact mul_le_mul_right' h _
+      exact mul_le_mul_left h _
     rw [hset]; exact good_univ f w
   · push_neg at h
     rcases eq_or_ne m 0 with rfl | hm
@@ -1241,9 +1274,9 @@ theorem good_pow_le_pow_same {a cP cQ : K} (m : ℕ) :
           have hδ : w (x - f a) ≠ 0 := by
             intro h0
             exact hne (sub_eq_zero.mp (w.zero_iff.mp h0))
-          have hlt : w (f cQ) * (w (x - f a)) ^ m < w (f cP) * (w (x - f a)) ^ m :=
-            mul_lt_mul_right' h _
-          exact absurd hlt (not_lt.mpr hx)
+          have hle : w (f cP) ≤ w (f cQ) :=
+            (le_mul_pow_iff (δ := w (x - f a)) hδ m).mp hx
+          exact absurd hle (not_le.mpr h)
         · intro hx
           subst hx
           rw [show f a - f a = (0 : N) from sub_self _, map_zero,
@@ -1252,34 +1285,3 @@ theorem good_pow_le_pow_same {a cP cQ : K} (m : ℕ) :
 
 end MasterClaim
 
-section GammaAlgebra
-
-variable {Γ' : Type*} [LinearOrderedCommGroupWithZero Γ']
-
-/-- Multiplying by a nonzero power is an order embedding. -/
-theorem le_mul_pow_iff {a b δ : Γ'} (hδ : δ ≠ 0) (m : ℕ) :
-    a * δ ^ m ≤ b * δ ^ m ↔ a ≤ b := by
-  have hcancel : b * δ ^ m * (δ ^ m)⁻¹ = b := by
-    rw [mul_assoc, mul_inv_cancel₀ (pow_ne_zero m hδ), mul_one]
-  have hcancel' : a * δ ^ m * (δ ^ m)⁻¹ = a := by
-    rw [mul_assoc, mul_inv_cancel₀ (pow_ne_zero m hδ), mul_one]
-  constructor
-  · intro h
-    have h' := mul_le_mul_left h ((δ ^ m)⁻¹)
-    rwa [hcancel, hcancel'] at h'
-  · intro h; exact mul_le_mul_left h _
-
-/-- Multiplying by a nonzero constant: `a / c ≤ b ↔ a ≤ b * c`. -/
-theorem le_mul_iff_div {a b c : Γ'} (hc : c ≠ 0) :
-    a * c⁻¹ ≤ b ↔ a ≤ b * c := by
-  have hcancel : a * c⁻¹ * c = a := by rw [mul_assoc, inv_mul_cancel₀ hc, mul_one]
-  have hcancel' : b * c * c⁻¹ = b := by rw [mul_assoc, mul_inv_cancel₀ hc, mul_one]
-  constructor
-  · intro h
-    have h' := mul_le_mul_left h c
-    rwa [hcancel] at h'
-  · intro h
-    have h' := mul_le_mul_left h c⁻¹
-    rwa [hcancel'] at h'
-
-end GammaAlgebra

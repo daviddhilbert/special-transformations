@@ -225,15 +225,15 @@ in this revision:
 * Verified after the propagation: `make milestone0` (5 files), `make accepted` (14 files) and
   `make qe` (28 files) all exit 0 with no errors and no `sorry`; every `#print axioms` in all
   47 files is a subset of `{propext, Classical.choice, Quot.sound}`.
-* **Still open: `accepted/ACVF_residue_ops.lean`** (the residue-operations model).  Its encoding
-  half is converted (one constant; `tRVInfty`/`uRVInfty`/`iRVInfty` as definitions; `rvSurj` the
-  paper's surjectivity) and its carrier is two-layer (`C v = K ⊕ RV v`, `cKZero = cInfty`), but
-  the *model* half still has ~55 errors, all in the definitions and axiom proofs that were
-  written against the three-layer carrier (`cUnit`, `iota`/`jota`, the `fMap` cases, the axiom
-  lemmas) — blind textual substitution makes it worse, as trying it showed.  The partial
-  conversion and its error log are saved at `.ultramath/smw0dw2rp/partial/`; it needs a careful
-  pass over the model section with the already-converted `accepted/ACVFModel.lean` as the model.
-  Until then it is the one artifact still written against the earlier transcription.
+* **All twelve snapshots are converted.**  `accepted/ACVF_residue_ops.lean` was the last: the
+  three-layer `rv0Mul`/`le0` became `abbrev`s of `rvMul`/`rvLe` on the two-layer carrier (so every
+  statement naming them keeps its name and its meaning), the dead `fMap` clause for the deleted
+  constructor is gone, `model_rvSurj` is the paper's surjectivity, and
+  `model_ACVF_of_components` is byte-identical to the original.  Two mechanical passes of mine
+  failed on it before this one worked; the reason is worth recording: the partial conversion had
+  left `rv0Mul`/`le0` three-layer while the carrier had already moved, and a dead `fMap` clause
+  made `fMap` itself a `sorry`, which cascaded into ~40 errors that looked like a dozen unrelated
+  problems.
 
 Still to propagate (in progress): the standalone copies of the encoding inside
 `Milestone0/accepted/*.lean` and inside the `QE/` snapshots that embed it, then `make accepted`
