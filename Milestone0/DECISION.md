@@ -184,6 +184,38 @@ of which `rvGroup` (`accepted/` — m8's block) and `vfAlgClosed`
   model satisfies the stronger form, since `RV = Kˣ/(1+𝔪)` is by construction a quotient of
   `VF^×`. Not changed while the model artifacts in `accepted/` are proved against `d608de6`.
 
+## Revision on the author's instruction: `0` and `∞` are one element
+
+The author has ruled on the convention: **there is no separate `0` in `RV`.**  Writing
+`rv(0) = 0` makes `0` the absorbing element of `RV`, and the paper's `∞` is another name for
+it.  This is also what the paper's axiom (2) requires: `(RV^×, 1, ×)` is a divisible abelian
+*group*, and `RV^× = RV ∖ {∞}` — a set that is a group only if the removed element is the
+absorbing one.  So `RV = {rv(0)} ∪ RV^×`, `K^× ⊆ RV^×`, `RV^×/K^× = Γ`.
+
+This reverses the earlier repair recorded above as "`0` and `∞` are different points".  Applied
+in this revision:
+
+* `Fn.rvInfty` is deleted from the language: one constant, `rvZero`.  `tRVInfty`, `uRVInfty`
+  and `iRVInfty` remain as *definitions* equal to `tRVZero`, `uRVZero`, `iRVZero`, so that the
+  axioms and downstream files still read in the paper's notation.
+* `rvSurj` is now the paper's surjectivity: `t ≠ rv(0) → ∃ x ∈ VF, rv x = t`.  It was guarded
+  by `pUnits` (the class of `1`), which allowed `RV`-elements outside the image of `rv`.  With
+  the corrected axiom, `RV = rv(VF) ∪ {0}` follows in the theory, so there are no such
+  elements: the "junk" that the guarded axiom admitted is excluded by the axiom itself.
+* `RVModel.lean`: the `RV`-carrier is the two-layer `RV = Option (RVUnit) = {rv(0)} ∪ RV^×`;
+  `RVGroupAxioms` loses `zero_ne_infty`, `IsRVUnit t := t ≠ rvZero`, and the absorbing/top
+  element in the axioms is `rvZero`.  `rvGroupAxioms_intended` compiles, i.e. the intended
+  model satisfies the corrected RV layer with `0 = ∞`.
+* sha256 of `Encoding.lean` after the revision:
+  `3c14aa7cd8e9b2ae8d9bbb20f8e241aa280f0a9f2a7ee0ec77f81fbc9a30f2d0`.
+
+Still to propagate (in progress): the standalone copies of the encoding inside
+`Milestone0/accepted/*.lean` and inside the `QE/` snapshots that embed it, then `make accepted`
+and `make qe` against the new hash.  Each such file carries its own copy of `Fn`, the
+`tRVInfty` definition, `rvSurj`, and — in the model files — the three-layer carrier
+`RV0 = Option RV` with `cKZero ≠ cInfty`; the model files are the ones that need more than a
+mechanical edit.
+
 ## Open (Milestone 1)
 
 * **No proved model of the general `ACVF` over a nontrivial valuation.** `RVModel.lean` covers the RV-part; the field

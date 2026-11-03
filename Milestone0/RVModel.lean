@@ -355,7 +355,6 @@ structure LRVSig (VF : Type*) where
   rvOne : RV
   rvMul : RV → RV → RV
   rvZero : RV
-  rvInfty : RV
   Kx : Set RV
   rvAddK : RV → RV → RV
   rvNegK : RV → RV
@@ -369,8 +368,8 @@ variable {VF : Type*} (M : LRVSig VF)
 /-- `K = K^× ∪ {0}`, the residue field inside the `RV`-sort. -/
 def Kset : Set M.RV := M.Kx ∪ {M.rvZero}
 
-/-- `RV^× = RV ∖ {0, ∞}`: the residue-field zero is not a group element. -/
-def IsRVUnit (t : M.RV) : Prop := t ≠ M.rvZero ∧ t ≠ M.rvInfty
+/-- `RV^× = RV ∖ {0}`: the absorbing element `rv 0` is the only non-group element. -/
+def IsRVUnit (t : M.RV) : Prop := t ≠ M.rvZero
 
 /-- Powers in the `RV`-sort. -/
 def rvPow : M.RV → ℕ → M.RV
@@ -382,7 +381,6 @@ end LRVSig
 /-- The RV-layer of the axioms of `ACVF` (Definition 2.2 (2), the order axioms of (4), and
 the `rv`-part of (6)); same as in `LRVSorts.lean`. -/
 structure RVGroupAxioms {VF : Type*} [Field VF] (M : LRVSig VF) : Prop where
-  zero_ne_infty : M.rvZero ≠ M.rvInfty
   rvOne_unit : M.IsRVUnit M.rvOne
   rv_mul_comm : ∀ {t s : M.RV}, M.IsRVUnit t → M.IsRVUnit s → M.rvMul t s = M.rvMul s t
   rv_mul_assoc : ∀ {t s r : M.RV}, M.IsRVUnit t → M.IsRVUnit s → M.IsRVUnit r →
@@ -394,13 +392,15 @@ structure RVGroupAxioms {VF : Type*} [Field VF] (M : LRVSig VF) : Prop where
   /-- `t × 0 = 0` for `t ∈ K = K^× ∪ {0}`, split into the two cases. -/
   rv_mul_zero_Kx : ∀ {t : M.RV}, t ∈ M.Kx → M.rvMul t M.rvZero = M.rvZero
   rv_mul_zero_zero : M.rvMul M.rvZero M.rvZero = M.rvZero
-  rv_mul_infty : ∀ t : M.RV, M.rvMul t M.rvInfty = M.rvInfty
+  /-- `t × 0 = 0` for all `t` (the paper's `t × ∞ = ∞`; `∞ = rv 0 = 0`). -/
+  rv_mul_infty : ∀ t : M.RV, M.rvMul t M.rvZero = M.rvZero
   le_refl : ∀ t : M.RV, M.rvLe t t
   le_trans : ∀ {t s r : M.RV}, M.rvLe t s → M.rvLe s r → M.rvLe t r
   le_total : ∀ t s : M.RV, M.rvLe t s ∨ M.rvLe s t
-  le_infty : ∀ t : M.RV, M.rvLe t M.rvInfty
-  rv_zero : M.rvMap 0 = M.rvInfty
+  le_infty : ∀ t : M.RV, M.rvLe t M.rvZero
+  rv_zero : M.rvMap 0 = M.rvZero
   rv_mul : ∀ x y : VF, M.rvMap (x * y) = M.rvMul (M.rvMap x) (M.rvMap y)
+  /-- `rv` is surjective onto everything but `rv 0` (Definition 2.2(6)). -/
   rv_surj : ∀ {t : M.RV}, M.IsRVUnit t → ∃ x : VF, x ≠ 0 ∧ M.rvMap x = t
 
 /-- An admissible reading of the paper's multiplication on `RV_0 = RV ∪ {0}`: the group law
@@ -429,21 +429,20 @@ junk-valued totalisations of the paper's partial `+`/`-` on `K ⊂ RV`; the fiel
 on `K` (the residue field) is not constructed in this file, so the axioms of `ACVF` that
 mention them are not claimed here. -/
 noncomputable def intendedSig : LRVSig K where
-  RV := RV0 v
+  RV := RV v
   vfZero := 0
   vfOne := 1
   vfAdd := fun x y => x + y
   vfNeg := fun x => -x
   vfMul := fun x y => x * y
-  rvOne := some (rvOne v)
-  rvMul := rv0Mul v
+  rvOne := rvOne v
+  rvMul := rvMul
   rvZero := none
-  rvInfty := some none
-  Kx := Kx0 v
+  Kx := {t | ∃ q : RVUnit v, t = some q ∧ vrv v (some q) = 1}
   rvAddK := fun _ _ => none
   rvNegK := fun _ => none
-  rvLe := le0 v
-  rvMap := fun x => some (rv v x)
+  rvLe := fun t s => vrv v s ≤ vrv v t
+  rvMap := rv v
 
 @[simp] theorem rv0Mul_infty (t : RV0 v) : rv0Mul v t (some none) = some none := by
   match t with
@@ -458,19 +457,16 @@ theorem rv0Mul_some_rv (x y : K) :
   | some _, none => rfl
   | some a, some b => rfl
 
-/-- `t : RV_0` has the shape of a group element. -/
-theorem rv0_shape {t : RV0 v} (ht : (intendedSig v).IsRVUnit t) :
-    ∃ q : RVUnit v, t = some (some q) := by
-  match t, ht with
-  | none, h => exact absurd rfl h.1
-  | some none, h => exact absurd rfl h.2
-  | some (some q), _ => exact ⟨q, rfl⟩
-
 /-- `b : RV` is not `∞`. -/
 theorem rv_shape {b : RV v} (hb : b ≠ none) : ∃ c : RVUnit v, b = some c := by
   match b, hb with
   | none, h => exact absurd rfl h
   | some c, _ => exact ⟨c, rfl⟩
+
+/-- `t : RV_0` has the shape of a group element. -/
+theorem rv0_shape {t : RV v} (ht : (intendedSig (v := v)).IsRVUnit t) :
+    ∃ q : RVUnit v, t = some q :=
+  rv_shape (v := v) ht
 
 /-- The group law of `RV^×` at the level of `RVUnit`. -/
 theorem rvUnit_mul_comm (a b : RVUnit v) : a * b = b * a := mul_comm a b
@@ -513,80 +509,77 @@ theorem le0_infty (t : RV0 v) : le0 v t (some none) := by
   | some none => exact le_infty v none
   | some (some q) => exact le_infty v (some q)
 
-theorem rvPow_some_some (q : RVUnit v) : ∀ n : ℕ,
-    LRVSig.rvPow (intendedSig v) (some (some q)) n = some (some (q ^ n))
+theorem rvPow_intended (q : RVUnit v) : ∀ n : ℕ,
+    LRVSig.rvPow (intendedSig (v := v)) (some q) n = some (q ^ n)
   | 0 => by
-    rw [show LRVSig.rvPow (intendedSig v) (some (some q)) 0 = some (rvOne v) from rfl,
+    rw [show LRVSig.rvPow (intendedSig (v := v)) (some q) 0 = rvOne v from rfl,
       rvOne_eq, pow_zero]
   | n + 1 => by
-    rw [show LRVSig.rvPow (intendedSig v) (some (some q)) (n + 1)
-          = rv0Mul v (LRVSig.rvPow (intendedSig v) (some (some q)) n) (some (some q)) from rfl,
-      rvPow_some_some q n, pow_succ]
+    rw [show LRVSig.rvPow (intendedSig (v := v)) (some q) (n + 1)
+          = rvMul (LRVSig.rvPow (intendedSig (v := v)) (some q) n) (some q) from rfl,
+      rvPow_intended q n, pow_succ]
     rfl
 
 /-- **The theory's own axiom layer holds at the intended structure**: `RVGroupAxioms`
 (Definition 2.2 (2), the order axioms of (4) and the `rv`-part of (6)) is proved for
 `intendedSig v`.  `rv_surj` is asserted only for `t ∈ RV^×`: the residue zero is outside
 the image of `rv`, so the unguarded form would be false on this carrier. -/
-theorem rvGroupAxioms_intended [IsAlgClosed K] : RVGroupAxioms (intendedSig v) where
-  zero_ne_infty := by simp [intendedSig]
+theorem rvGroupAxioms_intended [IsAlgClosed K] :
+    RVGroupAxioms (intendedSig (v := v)) where
   rvOne_unit := by
-    constructor <;> simp [intendedSig, rvOne_eq]
+    show rvOne v ≠ (none : RV v)
+    rw [rvOne_eq]; simp
   rv_mul_comm := by
     intro t s ht hs
     obtain ⟨a, rfl⟩ := rv0_shape v ht
     obtain ⟨b, rfl⟩ := rv0_shape v hs
-    show rv0Mul v (some (some a)) (some (some b)) = rv0Mul v (some (some b)) (some (some a))
-    rw [rv0Mul_some_some, rv0Mul_some_some, rvUnit_mul_comm]
+    show rvMul (some a) (some b) = rvMul (some b) (some a)
+    rw [rvMul_some_some, rvMul_some_some, rvUnit_mul_comm]
   rv_mul_assoc := by
     intro t s r ht hs hr
     obtain ⟨a, rfl⟩ := rv0_shape v ht
     obtain ⟨b, rfl⟩ := rv0_shape v hs
     obtain ⟨c, rfl⟩ := rv0_shape v hr
-    show rv0Mul v (rv0Mul v (some (some a)) (some (some b))) (some (some c))
-      = rv0Mul v (some (some a)) (rv0Mul v (some (some b)) (some (some c)))
-    simp only [rv0Mul_some_some, rvUnit_mul_assoc]
+    show rvMul (rvMul (some a) (some b)) (some c) = rvMul (some a) (rvMul (some b) (some c))
+    simp only [rvMul_some_some, rvUnit_mul_assoc]
   rv_mul_one := by
     intro t ht
     obtain ⟨a, rfl⟩ := rv0_shape v ht
-    show rv0Mul v (some (some a)) (some (rvOne v)) = some (some a)
-    rw [rvOne_eq, rv0Mul_some_some, rvUnit_mul_one]
+    show rvMul (some a) (rvOne v) = some a
+    rw [rvOne_eq, rvMul_some_some, rvUnit_mul_one]
   rv_mul_inv := by
     intro t ht
     obtain ⟨a, rfl⟩ := rv0_shape v ht
     obtain ⟨c, hc⟩ := rvUnit_inv v a
-    refine ⟨some (some c), ⟨by simp [intendedSig], by simp [intendedSig]⟩, ?_⟩
-    show rv0Mul v (some (some a)) (some (some c)) = some (rvOne v)
-    rw [rv0Mul_some_some, rvOne_eq, hc]
+    refine ⟨some c, ?_, ?_⟩
+    · show (some c : RV v) ≠ none
+      simp
+    · show rvMul (some a) (some c) = rvOne v
+      rw [rvMul_some_some, rvOne_eq, hc]
   rv_divisible := by
     intro n hn t ht
     obtain ⟨q, rfl⟩ := rv0_shape v ht
     obtain ⟨s, hs⟩ := rvUnit_divisible v n hn q
-    refine ⟨some (some s), ⟨by simp [intendedSig], by simp [intendedSig]⟩, ?_⟩
-    show LRVSig.rvPow (intendedSig v) (some (some s)) n = some (some q)
-    rw [rvPow_some_some, hs]
+    refine ⟨some s, ?_, ?_⟩
+    · show (some s : RV v) ≠ none
+      simp
+    · show LRVSig.rvPow (intendedSig (v := v)) (some s) n = some q
+      rw [rvPow_intended, hs]
   rv_mul_zero_Kx := by
     intro t ht
     obtain ⟨q, rfl, -⟩ := ht
     rfl
   rv_mul_zero_zero := rfl
-  rv_mul_infty := fun t => rv0Mul_infty v t
-  le_refl := fun t => le0_refl v t
-  le_trans := fun h1 h2 => le0_trans v h1 h2
-  le_total := fun t s => le0_total v t s
-  le_infty := fun t => le0_infty v t
-  rv_zero := by simp [intendedSig]
-  rv_mul := fun x y => (rv0Mul_some_rv v x y).symm
+  rv_mul_infty := fun t => rvMul_infty t
+  le_refl := fun t => le_rfl
+  le_trans := fun h1 h2 => le_trans h2 h1
+  le_total := fun t s => le_total (vrv v s) (vrv v t)
+  le_infty := fun t => le_infty v t
+  rv_zero := rv_zero
+  rv_mul := fun x y => rv_mul x y
   rv_surj := by
     intro t ht
-    have hne : t ≠ (intendedSig v).rvZero := ht.1
-    have hinf : t ≠ (intendedSig v).rvInfty := ht.2
-    match t with
-    | none => exact absurd rfl hne
-    | some none => exact absurd rfl hinf
-    | some (some q) =>
-      obtain ⟨x, hx0, hx⟩ := rv_surjective (v := v) (t := (some q : RV v)) (by simp)
-      exact ⟨x, hx0, by simp [intendedSig, hx]⟩
+    exact rv_surjective (v := v) (t := t) ht
 
 end Theory
 
