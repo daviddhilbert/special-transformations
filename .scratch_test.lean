@@ -1,12 +1,23 @@
 import Mathlib
 open FirstOrder FirstOrder.Language
 open FirstOrder.Ring
+open Polynomial
 open scoped FirstOrder
-attribute [local instance 100] FirstOrder.Ring.compatibleRingOfRing
-set_option backward.isDefEq.respectTransparency false
-example {K N : Type*} [CommRing K] [CommRing N] [CompatibleRing N]
-    (ts : Fin 2 → Language.ring.Term (K ⊕ Fin 1)) (v : K ⊕ Fin 1 → N) :
-    Term.realize v (Term.func FirstOrder.ringFunc.add ts) =
-      Term.realize v (ts 0) + Term.realize v (ts 1) := by
-  rw [Term.realize_func]
-  simp
+#check @Function.Injective.commRing
+#check @Function.Injective.isDomain
+#check @IsFractionRing.lift
+#check @Ideal.exists_maximal
+#check @Ideal.Quotient.field
+#check @Algebra.TensorProduct.includeLeft_apply
+#check @Algebra.TensorProduct.includeRight_apply
+#check @Algebra.TensorProduct.tmul_one_eq_one_tmul
+#check @Algebra.TensorProduct.includeLeftRingHom
+#check @Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_isDomain
+#check @RingHom.algebraMap_toAlgebra
+#check @RingHom.toAlgebra
+#check @IsFractionRing.injective
+#check @FractionRing
+#check @IsFractionRing.liftAlgHom
+#check @IsLocalization.lift
+#check @IsFractionRing.lift_eq
+#check @IsFractionRing.to_map_eq_zero_iff
