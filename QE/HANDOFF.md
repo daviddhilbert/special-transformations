@@ -115,3 +115,16 @@ doing the `RV` work directly, which is what the paper's §4–§5 does.
     judge it in this session before starting the new one; otherwise treat the files under
     `.ultramath/smw1b0thh/{m1,m3}/` as unvetted and re-check them with `lean` before relying on
     them.
+
+## Recheck of the two unvetted swarm files (done here, as instructed)
+
+Ran in each member's own directory with `LEAN_PATH=$PWD:$LEAN_PATH lean FILE.lean`:
+
+| file | result |
+| --- | --- |
+| `.ultramath/smw1b0thh/m1/W1.lean` (w1, fragment Shoenfield criterion) | **green**: exit 0, 0 errors, no `sorry` warning. Usable, but read its statement before relying on it — in particular check whether it carries a saturation hypothesis, which would make it not a criterion. |
+| `.ultramath/smw1b0thh/m4/Main.lean` (w3, the worked instance on two `C v` models) | **does not compile**: `Main.lean:89:40 error: Function expected at WellSorted` (name not in scope where applied). Nothing in `m4/` should be relied on; if the instance is wanted, rebuild it against a fresh `Enc.olean` from `Milestone0/Encoding.lean`. |
+
+So of the two, only w1 is an artifact. w3 is not, and neither has been judged (a swarm belongs to the
+session that started it), so treat both as *unvetted input* even where green: `lean` exit 0 says the
+file elaborates, not that its statement is the one wanted.
