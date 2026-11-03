@@ -397,5 +397,6 @@ is the substance: the extraction, QE in `L_val`, the read-back, tuple-level QE
 into this statement is swarm `smw17pts2`'s h2–h4.
 
 ```
-sha256 of Milestone0/Encoding.lean after the restatement: 
+sha256 of Milestone0/Encoding.lean after the restatement:
+d01d590b7bdc0b8912617aea0eb44e9fb2acf7349db2535f9ee7f84961ddf995
 ```
