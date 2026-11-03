@@ -903,12 +903,94 @@ end SubstructureTheory
 
 open Axioms
 
-/-- A theory `T` of `L_RV` **admits quantifier elimination**: every formula is
-`T`-equivalent to a quantifier-free formula.  This is the paper's Theorem 2.3
-("the theory `ACVF` admits quantifier elimination"). -/
+/-- Sorted terms of the paper's two-sorted `L_RV`, over parameters `α` and free variables
+`Fin n` with declared sorts. -/
+inductive STm {α : Type} (sα : α → SortTag) {n : ℕ} (sn : Fin n → SortTag) : SortTag → Type
+  | param (a : α) : STm sα sn (sα a)
+  | var (i : Fin n) : STm sα sn (sn i)
+  | rv (t : STm sα sn .vf) : STm sα sn .rv
+  | vfAdd (t u : STm sα sn .vf) : STm sα sn .vf
+  | vfMul (t u : STm sα sn .vf) : STm sα sn .vf
+  | vfNeg (t : STm sα sn .vf) : STm sα sn .vf
+  | vfZero : STm sα sn .vf
+  | vfOne : STm sα sn .vf
+  | rvMul (t u : STm sα sn .rv) : STm sα sn .rv
+  | kAdd (t u : STm sα sn .rv) : STm sα sn .rv
+  | kNeg (t : STm sα sn .rv) : STm sα sn .rv
+  | rvZero : STm sα sn .rv
+  | rvOne : STm sα sn .rv
+
+/-- The translation of a sorted term into the one-sorted encoding. -/
+def STm.toLRV {α : Type} {sα : α → SortTag} {n : ℕ} {sn : Fin n → SortTag} {s : SortTag}
+    (t : STm sα sn s) : LRV.Term (α ⊕ Fin n) :=
+  match t with
+  | .param a => Term.var (Sum.inl a)
+  | .var i => Term.var (Sum.inr i)
+  | .rv t => Term.func Fn.rvMap ![t.toLRV]
+  | .vfAdd t u => Term.func Fn.vfAdd ![t.toLRV, u.toLRV]
+  | .vfMul t u => Term.func Fn.vfMul ![t.toLRV, u.toLRV]
+  | .vfNeg t => Term.func Fn.vfNeg ![t.toLRV]
+  | .vfZero => Term.func Fn.vfZero fun i => i.elim0
+  | .vfOne => Term.func Fn.vfOne fun i => i.elim0
+  | .rvMul t u => Term.func Fn.rvMul ![t.toLRV, u.toLRV]
+  | .kAdd t u => Term.func Fn.kAdd ![t.toLRV, u.toLRV]
+  | .kNeg t => Term.func Fn.kNeg ![t.toLRV]
+  | .rvZero => Term.func Fn.rvZero fun i => i.elim0
+  | .rvOne => Term.func Fn.rvOne fun i => i.elim0
+
+/-- Sorted formulas of the paper's two-sorted `L_RV`. -/
+inductive SBf {α : Type} (sα : α → SortTag) : {n : ℕ} → (Fin n → SortTag) → Type
+  | falsum {n : ℕ} {sn : Fin n → SortTag} : SBf sα sn
+  | eq {n : ℕ} {sn : Fin n → SortTag} {s : SortTag} (t u : STm sα sn s) : SBf sα sn
+  | memVF {n : ℕ} {sn : Fin n → SortTag} (t : STm sα sn .vf) : SBf sα sn
+  | memRV {n : ℕ} {sn : Fin n → SortTag} (t : STm sα sn .rv) : SBf sα sn
+  | units {n : ℕ} {sn : Fin n → SortTag} (t : STm sα sn .rv) : SBf sα sn
+  | le {n : ℕ} {sn : Fin n → SortTag} (t u : STm sα sn .rv) : SBf sα sn
+  | imp {n : ℕ} {sn : Fin n → SortTag} (φ ψ : SBf sα sn) : SBf sα sn
+  | all {n : ℕ} {sn : Fin n → SortTag} (s : SortTag) (φ : SBf sα (Fin.snoc sn s)) : SBf sα sn
+
+/-- The translation of a sorted formula into the one-sorted encoding: quantifiers become guarded
+quantifiers over the declared sort, which is what the encoding's `allSorted` idiom does. -/
+def SBf.toLRV {α : Type} {sα : α → SortTag} : {n : ℕ} → {sn : Fin n → SortTag} →
+    SBf sα sn → LRV.BoundedFormula α n
+  | _, _, .falsum => BoundedFormula.falsum
+  | _, _, .eq t u => BoundedFormula.equal t.toLRV u.toLRV
+  | _, _, .memVF t => BoundedFormula.rel Rel.memVF ![t.toLRV]
+  | _, _, .memRV t => BoundedFormula.rel Rel.memRV ![t.toLRV]
+  | _, _, .units t => BoundedFormula.rel Rel.memUnits ![t.toLRV]
+  | _, _, .le t u => BoundedFormula.rel Rel.rvLe ![t.toLRV, u.toLRV]
+  | _, _, .imp φ ψ => BoundedFormula.imp (SBf.toLRV φ) (SBf.toLRV ψ)
+  | _, _, .all s φ =>
+      match s with
+      | .vf => BoundedFormula.all ((BoundedFormula.rel Rel.memVF ![Term.var (Sum.inr (Fin.last _))]) ⟹ SBf.toLRV φ)
+      | .rv => BoundedFormula.all ((BoundedFormula.rel Rel.memRV ![Term.var (Sum.inr (Fin.last _))]) ⟹ SBf.toLRV φ)
+
+/-- **Well-sorted formulas**: the image of the paper's two-sorted syntax in the one-sorted
+encoding.  This is the fragment the target statement quantifies over — ill-sorted terms such as
+`rv (rv x)` are not in it, because the encoding's `BoundedFormula` admits them but the paper's
+language does not. -/
+def WellSorted {α : Type} (sα : α → SortTag) {n : ℕ} (sn : Fin n → SortTag)
+    (φ : LRV.BoundedFormula α n) : Prop :=
+  ∃ ψ : SBf sα sn, ψ.toLRV = φ
+
+/-- Whether an element of a model has a given sort. -/
+def sortEval {M : Type*} [LRV.Structure M] : SortTag → M → Prop
+  | .vf => fun x => Structure.RelMap (L := LRV) Rel.memVF ![x]
+  | .rv => fun x => Structure.RelMap (L := LRV) Rel.memRV ![x]
+
+/-- A theory `T` of `L_RV` **admits quantifier elimination on the well-sorted fragment**: every
+formula of the paper's two-sorted language — the image of `SBf` in the one-sorted encoding — is
+`T`-equivalent, at tuples respecting the declared sorts, to a quantifier-free formula of the same
+fragment.  This is the paper's Theorem 2.3 ("the theory `ACVF` admits quantifier elimination"),
+stated for the two-sorted `L_RV` it is about: the encoding's carrier admits ill-sorted terms such
+as `rv (rv x)`, whose values no axiom fixes, and those are not formulas of the paper's language. -/
 def HasQE (T : LRV.Theory) : Prop :=
-  ∀ (α : Type) (φ : LRV.Formula α), ∃ ψ : LRV.Formula α,
-    FirstOrder.Language.BoundedFormula.IsQF ψ ∧ T ⊨ᵇ (φ ⇔ ψ)
+  ∀ (α : Type) (sα : α → SortTag) (n : ℕ) (sn : Fin n → SortTag)
+    (φ : LRV.BoundedFormula α n), WellSorted sα sn φ →
+    ∃ ψ : LRV.BoundedFormula α n, ψ.IsQF ∧ WellSorted sα sn ψ ∧
+      ∀ (M : Type) [LRV.Structure M], M ⊨ T → ∀ (v : α → M) (x : Fin n → M),
+        (∀ a, sortEval (sα a) (v a)) → (∀ i, sortEval (sn i) (x i)) →
+        (φ.Realize v x ↔ ψ.Realize v x)
 
 /-! ### 6.1 The interpretation of the symbols in a model, for use in the statements -/
 

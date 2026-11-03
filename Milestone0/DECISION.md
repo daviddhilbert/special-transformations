@@ -374,3 +374,28 @@ sha256 2012dfe0dd103f0aa3ccd0a87114ad75ce844dc6388afd76e94f876e0c7c62f5
 
 The repaired theory is not known to be inconsistent; it is also not known to be consistent, since no
 model of it exists in the tree.
+
+### The target is restated over the well-sorted fragment (author's ruling)
+
+`HasQE` in this file no longer quantifies over all `BoundedFormula`s.  `L_RV` is a one-sorted
+encoding of a two-sorted language, so `BoundedFormula` admits ill-sorted terms (`rv (rv x)`, the
+`VF` operations at an `RV` element) whose values no axiom fixes; a quantifier-free witness cannot be
+equivalent to a formula that mentions them, so the unrestricted statement is *false*.  The paper's
+`L_RV` is two-sorted, so the ruling was to restate the target for the fragment that is actually the
+paper's language rather than to pin the junk values.
+
+Added: `STm`/`SBf` (sorted terms and formulas of the two-sorted language, over parameters `α` and
+variables `Fin n` with declared sorts), `STm.toLRV`/`SBf.toLRV` (their image in the encoding,
+quantifiers becoming sort-guarded ones), `WellSorted sα sn φ := ∃ ψ : SBf sα sn, ψ.toLRV = φ`,
+`sortEval`, and `HasQE` restricted to that fragment with the equivalence relativised to tuples
+respecting the declared sorts.
+
+**The proof is not in this file yet**: `theorem_2_3_quantifier_elimination` is still `sorry`, so no
+axiom footprint can be quoted for it at this hash.  What is proved elsewhere (`QE/Assembly_val.lean`)
+is the substance: the extraction, QE in `L_val`, the read-back, tuple-level QE
+(`hasQEb_of_hasQE`), the -quantifier elimination, and the well-sorted cover.  Assembling those
+into this statement is swarm `smw17pts2`'s h2–h4.
+
+```
+sha256 of Milestone0/Encoding.lean after the restatement: 
+```
