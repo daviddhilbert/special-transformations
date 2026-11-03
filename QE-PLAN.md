@@ -2124,3 +2124,77 @@ The disagreements to look for, in order of interest:
 
 Status: swarm `smw1b0thh` started with four directions (fragment criterion; `L_val` ⇒ `L_RV`
 QF-type transfer; a worked instance on two `C v` models; audit of the existing criterion files).
+
+## The QF-type assembly over the fragment: exact restatement, and what `NontrivialTransfer` becomes
+
+With the Marker ruling, the abstract criterion is free.  What is not free, and is what the
+assembly below isolates, is the ACVF-specific content.  The four definitions to restate are
+`TransferAt`, `NontrivialTransfer`, `TrivialTransfer`, `CaseSeparation`
+(`QE/Assembly_val.lean:15630–15653`); `CaseSplit` (`15657`) needs no change, since it speaks
+about one model.
+
+**`TransferAt`, fragment form.**  Keep it a family over a class `P` of models, and put the sort
+discipline in three places — the parameter tuples, the variable tuples, and the formula class on
+both sides of the implication:
+
+```lean
+def TransferAtWS (P : (M : Type) → [LRV.Structure M] → Prop) (T : LRV.Theory) : Prop :=
+  ∀ (α : Type) (sα : α → SortTag) (n : ℕ) (sn : Fin n → SortTag)
+    (M : Type) [LRV.Structure M] [Nonempty M] (hM : M ⊨ T), P M →
+  ∀ (N : Type) [LRV.Structure N] [Nonempty N] (hN : N ⊨ T), P N →
+  ∀ (v : α → M) (xs : Fin n → M) (w : α → N) (ys : Fin n → N),
+    (∀ a, sortEval (sα a) (v a)) → (∀ i, sortEval (sn i) (xs i)) →
+    (∀ a, sortEval (sα a) (w a)) → (∀ i, sortEval (sn i) (ys i)) →
+    (∀ ψ : LRV.BoundedFormula α n, WellSorted sα sn ψ → ψ.IsQF →
+      (ψ.Realize v xs ↔ ψ.Realize w ys)) →
+    ∀ φ : LRV.BoundedFormula α n, WellSorted sα sn φ →
+      (φ.Realize v xs ↔ φ.Realize w ys)
+
+def NontrivialTransferWS (T : LRV.Theory) : Prop := TransferAtWS IsNontrivialVF T
+def TrivialTransferWS (T : LRV.Theory) : Prop := TransferAtWS IsTrivialVF T
+```
+
+**What `NontrivialTransfer` becomes, item by item** (this is the answer to the question):
+
+1. **Same class predicate.**  `IsNontrivialVF M` is unchanged — `∃ x, iVF x ∧ x ≠ 0 ∧ ¬ (rv 1 ≤ rv x)`
+   is a statement about the model, not about the tuple, and needs no sort discipline.
+2. **Three new hypotheses, all about *sortedness of the data*:** both parameter tuples are
+   sort-respecting (`∀ a, sortEval (sα a) (v a)`, and the same for `w`), and both variable tuples
+   are (`∀ i, sortEval (sn i) (xs i)`, and the same for `ys`).  These are exactly the guards the
+   frozen `HasQE` carries, so the transfer hypothesis now speaks about the same objects the target
+   does.
+3. **The QF agreement is restricted to *well-sorted* QF formulas** (`WellSorted sα sn ψ` added),
+   not all QF formulas of the encoding.  This is the change that makes the hypothesis *provable*:
+   the unrestricted version ranges over `rv (rv x) = rv (rv x)` and its relatives, which no axiom
+   constrains — that is precisely the refutation recorded in `QE-PLAN.md`.
+4. **The conclusion is restricted to well-sorted `φ`.**  So the transfer no longer claims anything
+   about ill-sorted formulas, and the resulting assembly lands on `HasQEws WellSorted` /
+   `HasQEwsParam` rather than on the old unrestricted `Assembly_val.HasQE`.
+5. **`CaseSeparation` gets the same three kinds of restriction** (sorted tuples, well-sorted QF
+   formulas); its conclusion `IsNontrivialVF M ↔ IsNontrivialVF N` is unchanged.
+
+**Why this is not a weakening that makes the work disappear.**  Proving `NontrivialTransferWS` is
+where the guard repair now *bites*: to push the equivalence through a quantifier, the body's
+behaviour at elements outside the sort matters, because `BoundedFormula.all` ranges over the whole
+carrier.  That is exactly the `JunkTrueAt` obstruction that m1 isolated and that the `GuardTrue`
+edit addresses.  So the fragment restatement of the assembly and the guard repair are the same
+obligation seen from two sides — which is worth knowing before doing either: doing the guard repair
+makes `NontrivialTransferWS` provable, and attempting `NontrivialTransferWS` is the sharpest test
+of whether the repaired predicate is strong enough.
+
+**The assembly chain, fragment form**, mirroring `qfTypeDetermines_of_transfers` (15667) and
+`hasQE_ACVF_of_nontrivialTransfer` (16347):
+
+```
+TransferAtWS IsNontrivialVF T  +  TransferAtWS IsTrivialVF T  +  CaseSeparationWS T  +  CaseSplit T
+  ⟹  QFTypeDeterminesWS T                       (same case split as 15667, proved)
+  ⟹  HasQEws WellSorted T                        (needs the fragment compactness step)
+  ⟹  the frozen HasQE T                          (needs the semantic/syntactic guard bridge)
+```
+
+Step 2 is the one to check against Marker: the standard compactness argument is Marker's, but its
+*relativization to a fragment* is not verbatim in the book, so either it is proved (w1 of
+`smw1b0thh`) or it becomes a single named `Marker.*` axiom with its relativization documented.
+Step 3 is the bridge between the semantic `sortEval` guard of the frozen `HasQE` and the syntactic
+`sortedHyps` conjunction of `HasQEws` — a genuine but small obligation, and independent of both
+routes' remaining mathematics.
