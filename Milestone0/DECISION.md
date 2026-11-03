@@ -532,3 +532,43 @@ Two state corrections recorded at the same time:
   `.ultramath/smw18pb0w/m1/{Syntax,RVSort,QFFrame,Glue,Integration,ValueOnlyM4,AssemblyM3}.lean`
   (`import PreC`; replace by `import Pre_build`).  `QE-PLAN.md`'s "everything of value is merged
   here" is wrong on this point until those are merged.
+
+## Ruling (this session): keep the recursive `WellSorted`, add junk-truth on the guard of `.all`/`.ex`
+
+The obstruction: `Milestone0/Encoding.lean`'s `WellSorted.all` takes an arbitrary body `χ` (with
+`GuardsLast s (Fin.last n) χ`) and concludes `WellSorted sα sn (.all χ)`.  A body such as
+`(x ∈ s ⟹ ⊥) ⟹ ψ` satisfies `GuardsLast` and is *false* at an element outside the sort `s`,
+while the encoding's `BoundedFormula.all` quantifies over the whole carrier.  So a well-sorted
+formula of the fragment can fail at junk elements of the one-sorted carrier, and every induction
+which pushes a translation through a quantifier (the `exists_toFrag` step, in particular) needs
+more than `GuardsLast`: it needs the body to be *true* where the sort predicate fails.
+
+Author's ruling, verbatim: **"keep the recursive `WellSorted` but add the junk-truth condition to
+the guard in `.all`/`.ex`, and record it in DECISION.md."**
+
+Two consequences to respect when the edit is made.
+
+1. **The condition must be syntactic.**  `WellSorted` is a predicate on syntax with no model
+   parameter (`sα : α → SortTag`, `sn : Fin n → SortTag`, the formula), while "true at an element
+   outside the sort" is semantic (`Realize` in a model of `ACVF`).  The condition therefore cannot
+   be stated as a hypothesis mentioning a model; it must be a condition on the shape of the guard
+   that *entails* junk-truth in every model.  The paper's own discipline supplies exactly that: a
+   guarded quantifier is `∀ x (x ∈ s ⟹ …)`, so the body is of the form "the sort predicate is a
+   conjunct of the antecedent".  `WellSorted.all`/`.ex` will be stated with that shape, which is
+   also what `.ultramath/smw19wtoj/m1/W1.lean` calls `WSg` — so m1's `exists_toFrag_WSg`,
+   `WSg.toWellSorted` and `junkTrueAt_guard` become directly applicable, and the semantic
+   `JunkTrueAt` becomes a *derived* lemma rather than a hypothesis.
+2. **`sortedHyps`-shaped bodies must stay admitted.**  The axioms of `ACVF` are `allSorted ss φ`,
+   i.e. `alls (sortedHyps ss ⟹ φ)`, where the antecedent is a *conjunction* of sort predicates,
+   not a single `sortPred`.  So the syntactic guard condition must accept a top-level conjunction
+   of sort predicates on the bound variable (and only those), not a single-symbol shape; otherwise
+   `wellSorted_allSorted` — and with it Part 6.1's `wellSorted_ACVF` — is lost.  The condition is
+   therefore "the bound variable's sort predicate occurs as a top-level conjunct of the
+   antecedent", which is junk-false at non-`s` elements and hence makes the body junk-true.
+
+Status of the edit: **not yet applied.**  `Milestone0/Encoding.lean` remains at sha256
+`851d6a986b69c4df2075ebb81f1dd325f694bbfb0a17079e527e631077427a4c` (green, its two frozen
+`sorry`s), and `QE/Assembly_val.lean`'s embedded copy of the encoding must be re-synced in the
+same commit that changes it, since the two copies are separate declarations.  The `wellSorted_*`
+API in `Encoding.lean` (25 lemmas) and m1's `W1.lean` are the call sites that will need the new
+obligation discharged.
