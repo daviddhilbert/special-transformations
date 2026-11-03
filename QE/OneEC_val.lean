@@ -1,5 +1,12 @@
  /-
-**Hypothesis (iii) for `Language.val`, assembled down to two named inputs.**
+**Hypothesis (iii) for `Language.val`, assembled down to ONE named input.**
+
+STATUS (measured): `AtomGood` (Johnson 2.3.1(ii)) is **proved** — `atomGood_of_isAlgClosed`,
+section `MasterClaim` at the end of the file, by a finite cell decomposition over (nearest root,
+tie set).  The single remaining input of `oneECIn_of_inputs'` is `GoodMeetsBase`, i.e. Johnson
+2.3.8 in the `IsKBall` framework: `CheeseMeetsBase`.  (`boolCombCheese`, i.e. 2.3.2, is proved
+here.)  The header below is the state before 2.3.1(ii) was closed and is kept for its account of
+the framework and of the traps.
 
 This is the syntax bridge Johnson's Lemma 2.3.1 needs, plus the assembly of 1-ec from it:
 
@@ -17,7 +24,9 @@ This is the syntax bridge Johnson's Lemma 2.3.1 needs, plus the assembly of 1-ec
 * `oneECIn_of_inputs'`: `OneECIn` for `K ↪[val] L` from `AtomGood` and `GoodMeetsBase`
   (= 2.3.2 ∘ 2.3.8), in the exact shape of Johnson's hypothesis (iii).
 
-**Not proved here: `AtomGood`** — but its first layer is.  The section `Atom` at the end of this
+**Proved since this header was written: `AtomGood`.**  The section `MasterClaim` at the end of the
+file proves `atomGood_of_isAlgClosed`; what follows here is the account of its first layer, kept
+because the traps it records are still the reason the proof has the shape it has.  The section `Atom` at the end of this
 file proves, for `[IsAlgClosed K]`:
 
 * `eval₂_prod_roots_aux`, `eval₂_eq_prod_roots`, `val_eval₂_eq_prod_roots`:
