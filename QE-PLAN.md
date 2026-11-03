@@ -2368,3 +2368,49 @@ along a definable term), and "the `rv`-fibre of `t ∉ {rv 0, rv 1}` is infinite
 finite parameter set is countable".  The first is a frozen target, the second is formula relabelling,
 the third is a cardinality argument on formulas.  That is the shape recorded for the next attempt;
 none of it is started.
+
+## Swarm `smw1bwjo2` accepted output: junk-truth proved, and the transfer reduced to one step
+
+Two members submitted and both were checked here (compiled, read, `#print axioms` inspected); both
+accepted and merged into the tree, since `.ultramath/` is not a build directory.
+
+**m5, d2 — `QE/JunkTrue.lean`** (green, no `sorry`).  The semantic payload of the guard repair, and
+it needed *less* than expected: no `TmSort` soundness and no model axiom, only the realisation of the
+guard atom.
+
+| lemma | content |
+| --- | --- |
+| `Junk.guardAtom_realize` | `xᵢ ∈ s` realises to `sortEval s (x i)` |
+| `Junk.junkFalse` | `InAntecedent s i η` makes `η` false off the sort |
+| `Junk.junkTrue` | `GuardTrue s i χ` makes `χ` true off the sort (incl. the `.all` clause) |
+| `Junk.all_realize_iff_sorted` | at a junk-true body, the encoding's unguarded `∀` **is** the guarded one |
+| `Junk.junkTrueAt_sortedHyps` | the paper's body shape `sortedHyps ⟹ ψ` supplies `JunkTrueAt` |
+| `Junk.not_wellSorted_all_witnessG` | the junk-sensitivity witness is `GuardsLast`-guarded, has a well-sorted body, and is rejected by the repaired predicate |
+
+The last row is the one that closes the question `HANDOFF.md` opened with the experiment: the repair
+is not bookkeeping, and it is now machine-checked that it rejects exactly the witness that motivated
+it while admitting `sortedHyps`.
+
+**m8, d5 — `QE/FragmentTransfer.lean`** (green, no `sorry`).  The composition:
+
+```
+transferAtWS_of_qfStep : QFStep P T → TransferAtWS P T
+nontrivialTransferWS_ACVF_of_qfStep : QFStep IsNontrivialVF Axioms.ACVF → NontrivialTransferWS Axioms.ACVF
+```
+
+with `QFStep` = *for a sorted element of one model there is a sorted element of the other with the
+same well-sorted quantifier-free type at the extended tuple*.  The induction is
+`BoundedFormula.rec` with the sorted context and both tuples in the motive (inducing on the
+`WellSorted` derivation does not work — it is an indexed family), and the `all` case splits the bound
+value by `sortEval s`, closing the junk side with `Junk.junkTrue` and the sorted side with `QFStep`
+and the hypothesis.
+
+**So the frontier has moved and is now sharp:** `NontrivialTransferWS Axioms.ACVF` ⟸
+`QFStep IsNontrivialVF Axioms.ACVF`, with `AllNontrivial Axioms.ACVF` already proved
+(`Assembly_val`).  `QFStep` is *not* the conclusion in disguise — it quantifies only over
+quantifier-free formulas, at one added element — and it is precisely the one-element back-and-forth
+step that `QE/FailProbe.lean` had localized as the obstruction and that §3/§4 are supposed to supply.
+
+Three directions of the swarm died without a solution (m1 d8 fragment compactness, m6 d7 the
+mixed-context QF cover, m7 d2 sort soundness); m2 (parameter bridge), m3 (`mul` normal form) and m4
+(`TransferWS` plumbing) were still running when this was written.
