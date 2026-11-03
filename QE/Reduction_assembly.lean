@@ -26,7 +26,7 @@ definitions of `tRVZero`/`iRVZero`, `Axioms.rvSurj` is the paper's surjectivity
 textually and are now the `rvZero`-versions, and the `RV0` alias is the two-layer `RV`.
 The only theorem whose statement changed is `Axioms.rvSurj`.
 
-The unrestricted `rvSurj` has content: with it, `RV = rv(VF) ∪ {0}` is a *theorem* about models
+The unrestricted `rvSurj` has content: with it, `RV = rv(VF^×) ∪ {0}` is a *theorem* about models
 of `ACVF` (`RVeqRvVF_of_model`, proved here from the realization lemmas in the `Realize`
 section), whereas the old `Kˣ`-guarded axiom could not exclude "junk" `RV`-elements.  The
 hypothesis `AlgIngredients.rv` is therefore discharged: `theorem_2_3_of_three` is Theorem 3.10
@@ -537,7 +537,7 @@ def rvMulHom : LRV.Sentence :=
   allSorted ![.vf, .vf] (pEq (tRv (tVFMul &0 &1)) (tRVMul (tRv &0) (tRv &1)))
 /-- **`rv` is surjective**: every element of the `RV` sort other than `rv(0)` is `rv(x)` for
 some `x ∈ VF`.  (Definition 2.2(6): `rv : VF^× → RV^×` is surjective, augmented by
-`rv(0) = ∞ = 0`.  With `RV^× = RV ∖ {0}` this says: `RV = rv(VF) ∪ {0}`, so there are no
+`rv(0) = ∞ = 0`.  With `RV^× = RV ∖ {0}` this says: `RV = rv(VF^×) ∪ {0}`, so there are no
 `RV`-elements outside the image of `rv`.) -/
 def rvSurj : LRV.Sentence :=
   allSorted ![.rv] (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))
@@ -1046,7 +1046,7 @@ def IsVFGen (S : LRV.Substructure M) : Prop :=
   ∀ x : M, x ∈ S → iRV x → (∃ y : M, y ∈ S ∧ iVF y ∧ iRv y = x) ∨ x = iRVZero
 
 /-- In a model of `ACVF` every element of the `RV` sort is `rv` of an element of the `VF` sort,
-up to the residue zero: `RV = rv(VF) ∪ {0}`, where `0 = ∞ = rv(0)`.  This is the content of the
+up to the residue zero: `RV = rv(VF^×) ∪ {0}`, where `0 = ∞ = rv(0)`.  This is the content of the
 axiom `Axioms.rvSurj` (the paper's surjectivity of `rv : VF^× → RV^×`, which since the
 identification of `0` with `∞` reads "every `RV`-element other than `rv(0)` is `rv(x)`"), so it
 is a theorem about models of `ACVF`; `RVeqRvVF_of_model` below proves it.  It is kept as a
@@ -1199,7 +1199,7 @@ theorem model_allSorted_iff {k : ℕ} (ss : Fin k → SortTag) (φ : LRV.Bf k) :
     rw [FirstOrder.Language.BoundedFormula.realize_inf, h2]
   exact h3
 
-/-- **`RV = rv(VF) ∪ {0}` in every model of `ACVF`**: read off the axiom `Axioms.rvSurj`, which
+/-- **`RV = rv(VF^×) ∪ {0}` in every model of `ACVF`**: read off the axiom `Axioms.rvSurj`, which
 says that every `RV`-element other than `rv(0)` is `rv(x)`. -/
 theorem RVeqRvVF_of_model : RVeqRvVF M := by
   intro x hxRV
@@ -1397,7 +1397,7 @@ def ShoenfieldTest : Prop :=
 the models.  (Weispfenning's QE theorem for `L_v` enters through `vfgen`, via Remark 3.1;
 saturation enters each of them.) -/
 structure AlgIngredients : Prop where
-  /-- `RV = rv(VF) ∪ {0}`: this is the content of the axiom `Axioms.rvSurj` (the paper's
+  /-- `RV = rv(VF^×) ∪ {0}`: this is the content of the axiom `Axioms.rvSurj` (the paper's
   surjectivity of `rv`), so it is a *theorem* (`RVeqRvVF_of_model`).  It is kept as a field so
   that `theorem_2_3_of_hypotheses` keeps the shape it had; `theorem_2_3_of_three` discharges
   it. -/
@@ -1420,7 +1420,7 @@ theorem theorem_2_3_of_hypotheses (hShoen : ShoenfieldTest) (hAlg : AlgIngredien
   intro M N _ _ hM hN hSat S f
   exact prop39 hSat (hAlg.rv M hM) (hAlg.prep M N hSat) (hAlg.one M N hSat) (hAlg.vfgen M N) S f
 
-/-- **Theorem 3.10 with the `RV = rv(VF) ∪ {0}` hypothesis discharged.**  Since the axiom
+/-- **Theorem 3.10 with the `RV = rv(VF^×) ∪ {0}` hypothesis discharged.**  Since the axiom
 `Axioms.rvSurj` is the paper's surjectivity of `rv` (every `RV`-element other than `rv(0)` is
 `rv(x)`), the first ingredient of `AlgIngredients` is a theorem (`RVeqRvVF_of_model`), and only
 the three remaining ingredients are needed.  (Before the identification of `0` with `∞` the axiom

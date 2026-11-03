@@ -180,7 +180,7 @@ of which `rvGroup` (`accepted/` — m8's block) and `vfAlgClosed`
   `K^× = ker(vrv)`. The paper's axiom is `rv : VF^× → RV^×` surjective onto
   `RV^× = RV ∖ {0, ∞}`, the *whole* multiplicative group, of which `K^×` is the proper
   subgroup of value `1`. So a model may contain elements of `RV ∖ {0, ∞}` that are not in the
-  image of `rv`, and the QE reduction needs `RV = rv(VF) ∪ {0}` as an extra hypothesis
+  image of `rv`, and the QE reduction needs `RV = rv(VF^×) ∪ {0}` as an extra hypothesis
   (`.ultramath/smw081ptp/m1/Assembly.lean`, `AlgIngredients.rv`) because of it. Fixing it
   means guarding `rvSurj` by `t ≠ rvZero ∧ t ≠ rvInfty` instead of by `pUnits`; the intended
   model satisfies the stronger form, since `RV = Kˣ/(1+𝔪)` is by construction a quotient of
@@ -209,7 +209,7 @@ in this revision:
   axioms and downstream files still read in the paper's notation.
 * `rvSurj` is now the paper's surjectivity: `t ≠ rv(0) → ∃ x ∈ VF, rv x = t`.  It was guarded
   by `pUnits` (the class of `1`), which allowed `RV`-elements outside the image of `rv`.  With
-  the corrected axiom, `RV = rv(VF) ∪ {0}` follows in the theory, so there are no such
+  the corrected axiom, `RV = rv(VF^×) ∪ {0}` follows in the theory, so there are no such
   elements: the "junk" that the guarded axiom admitted is excluded by the axiom itself.
 * `RVModel.lean`: the `RV`-carrier is the two-layer `RV = Option (RVUnit) = {rv(0)} ∪ RV^×`;
   `RVGroupAxioms` loses `zero_ne_infty`, `IsRVUnit t := t ≠ rvZero`, and the absorbing/top

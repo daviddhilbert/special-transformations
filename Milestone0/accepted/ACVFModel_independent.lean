@@ -513,7 +513,7 @@ def rvEqInfty : LRV.Sentence := allSorted ![.vf] (pEq (tRv &0) tRVInfty ⟹ pEq 
 def rvMulHom : LRV.Sentence :=
   allSorted ![.vf, .vf] (pEq (tRv (tVFMul &0 &1)) (tRVMul (tRv &0) (tRv &1)))
 /-- **`rv` is surjective**: every element of the `RV` sort other than `rv(0)` is `rv(x)` for
-some `x ∈ VF`.  (With `RV^× = RV ∖ {0}` this is `RV = rv(VF) ∪ {0}`.) -/
+some `x ∈ VF`.  (With `RV^× = RV ∖ {0}` this is `RV = rv(VF^×) ∪ {0}`.) -/
 def rvSurj : LRV.Sentence :=
   allSorted ![.rv] (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))
 /-- the ultrametric inequality for `vv = vrv ∘ rv`: `vv(x+y) ≥ min(vv x, vv y)` -/
