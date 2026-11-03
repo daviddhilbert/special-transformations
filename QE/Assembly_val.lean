@@ -19812,3 +19812,29 @@ end QFRes
 #print axioms QFCover.exists_qf_of_covered
 #print axioms QFRes.qf_cover
 #print axioms QFRes.qfq_cover
+
+namespace SpecialTransformations.Milestone0.Transfer
+
+open scoped FirstOrder
+
+/-- **Quantifier elimination at tuples**, from the sentence-level form.  A formula with `n` free
+variables is a sentence over the parameter type `α ⊕ Fin n` (`BoundedFormula.toFormula`), and
+`T ⊨ᵇ` for that sentence says exactly that the equivalence holds at every tuple. -/
+theorem hasQEb_of_hasQE {T : LRV.Theory} (h : QECriterion.HasQE T) (α : Type) (n : ℕ)
+    (φ : LRV.BoundedFormula α n) :
+    ∃ ψ : LRV.Formula (α ⊕ Fin n), ψ.IsQF ∧
+      ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ T → ∀ (v : α → M) (x : Fin n → M),
+        (φ.Realize v x ↔ ψ.Realize (Sum.elim v x)) := by
+  obtain ⟨ψ, hQF, hIff⟩ := h (α ⊕ Fin n) (φ.toFormula)
+  refine ⟨ψ, hQF, ?_⟩
+  intro M _ _ hM v x
+  have h1 : φ.Realize v x ↔ (φ.toFormula).Realize (Sum.elim v x) := by
+    rw [BoundedFormula.realize_toFormula]
+    exact Iff.rfl
+  have h2 : (φ.toFormula).Realize (Sum.elim v x) ↔ ψ.Realize (Sum.elim v x) :=
+    hIff.realize_iff
+  exact h1.trans h2
+end SpecialTransformations.Milestone0.Transfer
+
+open scoped FirstOrder in
+#print axioms SpecialTransformations.Milestone0.Transfer.hasQEb_of_hasQE

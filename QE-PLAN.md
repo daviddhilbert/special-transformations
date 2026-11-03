@@ -1412,3 +1412,26 @@ so `(C v) ⊨ Axioms.ACVF` follows by combining `model_ACVFpaper` with `model_re
 `Theory.Model`s, then the sort axioms), and instantiated at `PadicComplex p` with `x = p` it also
 discharges `axNontrivialRV`.  That is bookkeeping over two unions, and it is the last step standing
 between the tree and "the repaired axioms have a model, in Lean".
+
+## The tuple-level QE is in the tree (`hasQEb_of_hasQE`)
+
+The direct route needs quantifier elimination *at tuples*, not only for sentences with parameters.
+That reduction is now proved:
+
+```
+Transfer.hasQEb_of_hasQE (h : QECriterion.HasQE T) (α) (n) (φ : LRV.BoundedFormula α n) :
+  ∃ ψ : LRV.Formula (α ⊕ Fin n), ψ.IsQF ∧
+    ∀ (M) [LRV.Structure M] [Nonempty M], M ⊨ T → ∀ v x,
+      (φ.Realize v x ↔ ψ.Realize (Sum.elim v x))
+```
+
+— a formula with `n` free variables is the sentence `φ.toFormula` over the parameter type
+`α ⊕ Fin n`, `T ⊨ᵇ` for that sentence is exactly the pointwise equivalence
+(`Theory.realize_iff`), and `BoundedFormula.realize_toFormula` identifies the two realizatons.  The
+witness is allowed to use the tuple as parameters, which is what the transfer consumes.
+
+With this, the two obligations that stood between the direct route and `HasQE` are down to one:
+`AtomCover` (assembly from `M2.translate_pLe`, `leOneF_iff_pUnits`, `inKF_iff_pInK`,
+`RepairFixed.leEqF_iff_pEq_of_link` and the cross-sort facts) — on the well-sorted fragment, whose
+`WellSorted` the swarm `smw17pts2` is building.  `NontrivialTransfer` does not appear anywhere on
+that route.
