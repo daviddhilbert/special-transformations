@@ -1610,3 +1610,18 @@ m5's predicate and generalise its parameter guard the way mine does (semantic `s
 relativisation), keeping the equivalence of the two predicates on `Fintype`-parameterised formulas as
 the cross-check.  Two facts to carry: `VFQ` does **not** imply `WellSorted` (matters, because h4's
 output is `VFQ`), and substitution closure is h2's.
+
+## Status of the `WellSorted` adoption (attempted, reverted, delegated)
+
+Tried to swap m5's recursive `WellSorted_block.lean` into `Milestone0/Encoding.lean` in place of the
+image-of-sorted-syntax definition: 26 errors, because m5's block is written for insertion after
+`def allOne` inside `namespace LRV`, and the spliced position does not match its signature
+placement.  Reverted; `Encoding.lean` is green again at
+`4d841a365904e177fd71f31241b193f60359cdbb4a53a34e53e94154eba8c313`.
+
+Delegated to swarm `smw1951gd` with the author's ruling attached: adopt m5's predicate, generalised
+so no `[Fintype α]` is needed (the semantic `sortEval` relativisation the frozen statements already
+use), deliver a compiled `Encoding.lean` plus the diff, and prove the axioms and the tree's
+translations are still well-sorted under the adopted predicate.  Same swarm, in parallel: **Section
+4's statement freeze** (the pattern of Section 3's `smw18ygko`), the `VFQ → WellSorted` bridge that
+h4's output needs, and the cross-check that the two predicates agree for `[Fintype α]`.
