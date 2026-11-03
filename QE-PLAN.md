@@ -679,3 +679,60 @@ This changes the status of the repair from a convenience to a necessity: with `l
 frozen, `theorem_2_3_quantifier_elimination` is not provable, exactly as the two-constant form of
 the axioms was not satisfiable by its own intended model.  The difference between the two cases is
 only that this one is refuted by a *model of the axioms* rather than by the intended model.
+
+### The slip is systematic: three axioms, not one
+
+Working out what the extracted predicate needs turned up the same mistake in two more places, and
+the pattern is now clear: wherever `qe.tex` Definition 2.2 says `RV^×` (the multiplicative group of
+*all* nonzero `RV`-elements, i.e. `pRV`), the encoding says `pUnits`, which is `Kˣ`, the subgroup of
+value `1`.  The three places that matter:
+
+| paper | encoding | what is missing |
+| --- | --- | --- |
+| item 6: `rv` onto `RV^×` | `rvSurj`, was `pUnits`-guarded | *already repaired* (author's ruling) |
+| item 5: `RV/Kˣ` an ordered group | `leMulCompat`, `pUnits`-guarded, one direction | scaling by a non-unit, and reflection |
+| item 2: `(RV^×, 1, ×)` a divisible group | `rvMulOne`, `rvMulInv`, `rvMulMem`, `rvDivisible`, all `pUnits`-guarded | `1 · t = t` and `t · t⁻¹ = 1` for `t ≠ 0` outside `Kˣ` |
+
+The encoding's `rvGroup` therefore axiomatises *`Kˣ`* as a group (which is true, and is the kernel of
+`vrv`), not `RV^×`; the group structure of the whole `RV^×` is never stated.  `Kˣ` and `RV^×` are
+respectively the identity class and the whole group of `Γ = RV^×/Kˣ`, which is exactly why the
+mistake is invisible in the intended model and fatal in the theory.
+
+The last row is not academic: `valField`'s `axScale` is unguarded in `x` and `y`, so the extraction
+needs the case `y = 0` of `predV x y ↔ predV (x z) (y z)`, i.e. `rv (x z) = ∞ ↔ rv x = ∞` for
+`z ≠ 0` — cancellation by a nonzero `RV`-element.  Cancellation follows from inverses in `RV^×`
+(`a = 1·a = (b⁻¹b)·a = b⁻¹·(ab) = ∞`), and from nothing weaker that the axioms contain.
+
+So the minimal repair that makes the transfer go through is three sentences:
+
+```lean
+def leMulCompat : LRV.Sentence :=            -- item 5
+  allSorted ![.rv, .rv, .rv]
+    (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))))
+def rvMulOne : LRV.Sentence :=               -- item 2, neutral law
+  allSorted ![.rv] (pRV &0 ⟹ pEq (tRVMul tRVOne &0) &0)
+def rvMulInv : LRV.Sentence :=               -- item 2, inverses
+  allSorted ![.rv] (pRV &0 ⟹ exSorted .rv (pRV &1 ⊓ pEq (tRVMul &1 &0) tRVOne))
+```
+
+(`rvMulMem` and `rvDivisible` are also `pUnits`-guarded; they are consequences in the intended model
+and are not needed for the transfer, but a faithful repair should move them too.)
+
+### What is landed, and what is waiting for the ruling
+
+Landed and green in `Assembly_val.lean` (frozen theory only, no repair needed):
+
+* `rv_mem` (`x ∈ VF → rv x ∈ RV`), and the extracted predicate
+  `predV x y := iLe (iRv y) (iRv x)` with **six of the seven** `valField` axioms:
+  `predV_refl`, `predV_trans`, `predV_zero_le`, `predV_zero_eq`, `predV_ultra`, `predV_total`
+  (plus the unguarded helpers `le_self` — reflexivity at `0` is the ultrametric inequality at
+  `0 + 0` — and `le_top'`).
+
+In `.scratch2/asm/` and not committed, because they need the ruled-on repair:
+
+* `leMulCompatFull`, `rvMulInvFull`, `rvMulOneFull` as sentences, `ACVFplus = ACVF ∪ {those}`, the
+  semantic forms `le_mul_compat_full`, `rv_mul_inv_full`, `rv_mul_one_full`, the cancellation lemma
+  `rv_mul_ne_infty`, `predV_scale` and `isValPred_predV`.  All of them are proved except the
+  bookkeeping at the end; `predV_scale` is the only place the repair is used.
+* also in the scratch file: `realize_tRVOne` and `mem_ACVF_rvGroup`, two utility lemmas the main
+  file does not have yet.

@@ -10871,6 +10871,91 @@ theorem rv_ultrametric {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x 
   simpa only [BoundedFormula.realize_sup, realize_pLe, realize_tRv, realize_tVFAdd, realize_tv, Term.realize_var, Sum.elim_inr, Function.comp_apply,
     Matrix.cons_val_zero, Matrix.cons_val_one] using h
 
+/-- `rv` of a `VF`-element is an `RV`-element. -/
+theorem rv_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) :
+    iRV (iRv x) := by
+  have hmem : allSorted ![.vf] (pRVsort (tRv &0)) ∈ Axioms.ACVF :=
+    mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList, Axioms.sdRv])
+  have h := allSorted_realize hM hmem ![x] (by intro i; fin_cases i; simpa using hx)
+  simpa only [pRVsort_realize, realize_tRv, realize_tv, Term.realize_var, Sum.elim_inr,
+    Function.comp_apply, Matrix.cons_val_zero] using h
+
+/-! ### The seven axioms for the extracted predicate -/
+
+section Extract
+
+variable {M : Type} [LRV.Structure M]
+
+/-- The predicate of the `L_val`-structure on the `VF` sort: `v x ≤ v y`, i.e. `rv y ≤ rv x` in
+the paper's `RV`-order (the two orders are reversed). -/
+def predV (x y : VFType (M := M)) : Prop := iLe (iRv y.1) (iRv x.1)
+
+/-- Reflexivity, unguarded: at `x = 0` it is the ultrametric inequality at `0 + 0`. -/
+theorem le_self (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iRV a) : iLe a a := by
+  by_cases h : a = iRVZero
+  · subst h
+    have h1 := rv_ultrametric hM (vf_zero_mem hM) (vf_zero_mem hM)
+    simpa [rv_zero_eq hM, vf_add_zero hM (vf_zero_mem hM)] using h1
+  · exact le_refl hM a ha h
+
+/-- Everything is below `∞ = rv 0`, unguarded. -/
+theorem le_top' (hM : M ⊨ Axioms.ACVF) {a : M} (ha : iRV a) : iLe a iRVZero := by
+  by_cases h : a = iRVZero
+  · subst h; exact le_self hM ha
+  · exact le_top hM a ha h
+
+theorem predV_refl (hM : M ⊨ Axioms.ACVF) (x : VFType (M := M)) : predV x x :=
+  le_self hM (rv_mem hM x.2)
+
+theorem predV_trans (hM : M ⊨ Axioms.ACVF) {x y z : VFType (M := M)}
+    (h1 : predV x y) (h2 : predV y z) : predV x z := by
+  have h1' : iLe (iRv y.1) (iRv x.1) := h1
+  have h2' : iLe (iRv z.1) (iRv y.1) := h2
+  show iLe (iRv z.1) (iRv x.1)
+  by_cases hx : iRv x.1 = iRVZero
+  · rw [hx]; exact le_top' hM (rv_mem hM z.2)
+  by_cases hz : iRv z.1 = iRVZero
+  · have hy : iRv y.1 = iRVZero := by
+      by_cases h : iRv y.1 = iRVZero
+      · exact h
+      · exact absurd (le_infty_eq hM _ (rv_mem hM y.2) h (by simpa [hz] using h2')) h
+    simpa [hz, hy] using h1'
+  · have hy : iRv y.1 ≠ iRVZero := by
+      intro h
+      exact hx (le_infty_eq hM _ (rv_mem hM x.2) hx (by simpa [h] using h1'))
+    exact le_trans hM (rv_mem hM z.2) (rv_mem hM y.2) (rv_mem hM x.2) hz hy hx h2' h1'
+
+theorem predV_zero_le (hM : M ⊨ Axioms.ACVF) (x : VFType (M := M)) :
+    predV (0 : VFType (M := M)) x := by
+  show iLe (iRv x.1) (iRv iVFZero)
+  rw [rv_zero_eq hM]
+  exact le_top' hM (rv_mem hM x.2)
+
+theorem predV_zero_eq (hM : M ⊨ Axioms.ACVF) {x : VFType (M := M)}
+    (h : predV x (0 : VFType (M := M))) : x = 0 := by
+  have h' : iLe (iRv iVFZero) (iRv x.1) := h
+  rw [rv_zero_eq hM] at h'
+  by_cases hx : iRv x.1 = iRVZero
+  · exact Subtype.ext (rv_eq_infty hM x.2 hx)
+  · exact absurd (le_infty_eq hM _ (rv_mem hM x.2) hx h') hx
+
+theorem predV_ultra (hM : M ⊨ Axioms.ACVF) (x y : VFType (M := M)) :
+    predV (x + y) x ∨ predV (x + y) y := by
+  have h := rv_ultrametric hM x.2 y.2
+  show iLe (iRv x.1) (iRv (iVFAdd x.1 y.1)) ∨ iLe (iRv y.1) (iRv (iVFAdd x.1 y.1))
+  exact h
+
+theorem predV_total (hM : M ⊨ Axioms.ACVF) (x y : VFType (M := M)) :
+    predV x y ∨ predV y x := by
+  by_cases hx : iRv x.1 = iRVZero
+  · left; show iLe (iRv y.1) (iRv x.1); rw [hx]; exact le_top' hM (rv_mem hM y.2)
+  by_cases hy : iRv y.1 = iRVZero
+  · right; show iLe (iRv x.1) (iRv y.1); rw [hy]; exact le_top' hM (rv_mem hM x.2)
+  · exact Or.symm (le_total (M := M) hM (iRv x.1) (iRv y.1)
+      (rv_mem hM x.2) (rv_mem hM y.2) hx hy)
+
+end Extract
+
 end SpecialTransformations.Milestone0.Transfer
 
 #print axioms SpecialTransformations.Milestone0.Transfer.valTermToRV_realize
@@ -10891,3 +10976,12 @@ end SpecialTransformations.Milestone0.Transfer
 #print axioms SpecialTransformations.Milestone0.Transfer.rv_eq_infty
 #print axioms SpecialTransformations.Milestone0.Transfer.rv_mul_hom
 #print axioms SpecialTransformations.Milestone0.Transfer.rv_ultrametric
+
+#print axioms SpecialTransformations.Milestone0.Transfer.rv_mem
+#print axioms SpecialTransformations.Milestone0.Transfer.le_self
+#print axioms SpecialTransformations.Milestone0.Transfer.predV_refl
+#print axioms SpecialTransformations.Milestone0.Transfer.predV_trans
+#print axioms SpecialTransformations.Milestone0.Transfer.predV_zero_le
+#print axioms SpecialTransformations.Milestone0.Transfer.predV_zero_eq
+#print axioms SpecialTransformations.Milestone0.Transfer.predV_ultra
+#print axioms SpecialTransformations.Milestone0.Transfer.predV_total

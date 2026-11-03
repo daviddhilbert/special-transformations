@@ -291,6 +291,13 @@ no quantifier-free formula can define there (restricted to `γ_a, γ_b > 0` the 
 atoms are finitely many lines through the origin, and a half-plane is not a Boolean combination of
 those).  So the frozen `HasQE ACVF` is false, not merely hard.
 
+The same slip — `pUnits` (`Kˣ`, the subgroup of value `1`) written where the paper has `RV^×` —
+also affects item 2: `rvMulOne`, `rvMulInv`, `rvMulMem`, `rvDivisible` are all `pUnits`-guarded, so
+the encoding axiomatises `Kˣ` as a group and never says that `RV^×` is one.  This is not academic:
+`valField`'s `axScale` is unguarded in `x`, `y`, so the extraction needs cancellation by a nonzero
+`RV`-element, which needs inverses in `RV^×`.  The minimal repair is therefore three sentences —
+item 5 plus the neutral law and inverses of item 2 — and `QE-PLAN.md` carries the Lean text.
+
 The repair restores the paper's item 5:
 
 ```lean
