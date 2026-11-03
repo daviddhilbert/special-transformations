@@ -1001,3 +1001,37 @@ quantifier-free type satisfy the same formulas.  That is what `m6/FinalAssembly.
 about the assembly stands; only the justification I gave for the case split was wrong, and the case
 split is now carried by `NontrivialTransfer` + `TrivialTransfer` + `CaseSeparation` + `CaseSplit`
 rather than by compactness on models.
+
+### The assembly's `CaseSplit` is false as stated (m6's definition vs m4's theorem)
+
+`m6/FinalAssembly.lean` states
+
+```lean
+IsNontrivialVF M : ∃ x, iVF x ∧ x ≠ iVFZero ∧ ¬ iLe (iRv iVFOne) (iRv x)
+IsTrivialVF M    : ∀ x, iVF x → x = iVFZero ∨ iRv x = iRv iVFOne
+CaseSplit T      : ∀ M, M ⊨ T → IsNontrivialVF M ∨ IsTrivialVF M
+```
+
+and m4's `no_coarse_triv` — accepted, machine-checked, merged into `Assembly_val.lean` — proves that
+`IsTrivialVF` in that form is **empty**: no model of `Axioms.ACVF` satisfies it.  So `CaseSplit`
+demands `IsNontrivialVF` in every model, and that fails in the fine-trivial case (a trivially valued
+algebraically closed field: `vv x = 0` for all `x ≠ 0`, so `iLe (iRv 1) (iRv x)` holds for every
+nonzero `x` and there is no witness for `IsNontrivialVF`).  `CaseSplit` is therefore not an open
+hypothesis to be proved — it is false as stated, for the same reason m4's correction gives.
+
+The right pairing is `IsNontrivialVF` against its **negation**, which reads
+
+```
+∀ x, iVF x → x ≠ iVFZero → iLe (iRv x) (iRv iVFOne)      -- every value is at most the value of 1
+```
+
+— "every nonzero element is in the valuation ring", which is the fine-trivial case and is exactly
+the `ord` half of m4's `FineTriv`.  Classical logic gives the disjunction at once; what does *not*
+come for free is the implication `x ∈ 𝒪 → vv x ≤ vv 1` for the inverse direction, since
+`vv (x⁻¹) ≥ 0` must be turned into `vv x ≤ 0`, and that is scaling by an element of `RV^×` — repair
+item 1 again.  So even this one-line case split waits on the same ruling.
+
+`TrivialTransfer` is stated against the empty predicate, so as written it is vacuously true and
+carries no content; when the trivial case is restated as the negation of `IsNontrivialVF`, m4's
+`FineTriv` dictionary is the right content for it.  This must be fixed before the assembly's
+hypothesis list is quoted anywhere.
