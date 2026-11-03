@@ -17,6 +17,8 @@ the other. Agreement between them is stronger evidence than either alone.
 | `Reduction_assembly.lean` | **the reduction.** `theorem_2_3_of_hypotheses (hShoen : ShoenfieldTest) (hAlg : AlgIngredients) : HasQE ACVF` in the frozen encoding. Proves Proposition 3.9 (`prop39`), the exhaustion of `K(M)` by Zorn on partial equivalences (`exists_vf_all`, via `DirectLimit.partialEquivLimit`), and Theorem 3.10 from Shoenfield's hard direction. Hypotheses: `ShoenfieldTest` (Prop 3.9 ⟹ QE), `AlgIngredients.rv` (`RV = rv(VF) ∪ {0}`, **not derivable from the frozen axioms** — see `../Milestone0/DECISION.md`), `.prep` (Lemma 3.3 + henselization), `.one` (Lemmas 3.4–3.8), `.vfgen` (Remark 3.1 + Weispfenning). | (A) reduction |
 | `BackAndForth.lean` | the general model theory it uses | (A) |
 
+| `Semantics_saturation.lean` | the semantic half of Remark 3.1. `embedding_realize_isQF`: quantifier-free formulas are preserved by **embeddings** (Mathlib has only the `EquivLike` version). `realize_iff_of_hasQE`: QE makes every monomorphism from a substructure of a model partial elementary, with model completeness as a corollary. `IsSaturated κ` as a definition, and `exists_extension_of_saturated_succ`: a `κ`-saturated `N` matches any `n` further elements of `M`, the tuple type being finitely satisfiable — the only use of QE in the argument, entering through `exs`. | (A)/(B) semantics |
+
 ## What is not here yet
 
 Nothing of layer (A) (the reduction), (B) (the criterion), or (D) (Weispfenning, which is a
