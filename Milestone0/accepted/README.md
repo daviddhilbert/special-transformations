@@ -16,10 +16,11 @@ converted to that transcription: `ACVF_general_model`, `ACVF_general_model_gamma
 `Obstruction`, `VFAlgClosed`, `ACVF_gamma_padic`, `ACVF_fragment` — each recompiled and
 axiom-checked after the conversion, with the original theorems preserved (the discrepancies are
 carrier-typed: `RV0` → `RV`, `cKZero = cInfty`, `some (some q)` → `some q`, and the lemmas that
-only existed to separate `0` from `∞`).  **`ACVF_residue_ops` remains to be converted**; its
-"encoding snapshot" column below therefore still names the earlier commit, as do the columns of
-the files whose conversion is recorded here but whose evidence runs against the current axioms.
-`make accepted` covers all of them in either case.
+only existed to separate `0` from `∞`).  `ACVF_residue_ops` was the last to be converted: its three-layer `rv0Mul`/`le0` are now
+`abbrev`s of `rvMul`/`rvLe` on the two-layer carrier, so every statement that mentions them
+keeps its name and meaning, and `model_ACVF_of_components` is byte-identical to before.
+**All twelve snapshots are now against the current axioms**; the "encoding snapshot" column
+below still records the commit each file was *written* against, which is history, not status.
 
 | File | What it proves | Encoding snapshot |
 | --- | --- | --- |
