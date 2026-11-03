@@ -10553,6 +10553,89 @@ theorem vf_mul_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : 
   rw [pVF_realize, realize_tVFMul] at h
   simpa using h
 
+/-! ### The field laws on the `VF` sort -/
+
+/-- Extract an equation from an `allSorted`-guarded `pEq` sentence. -/
+theorem eq_of_allSorted {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {k : ℕ}
+    {ss : Fin k → SortTag} {a b : Tm k} (hmem : allSorted ss (pEq a b) ∈ Axioms.ACVF)
+    (x : Fin k → M) (hx : ∀ i, (match ss i with
+      | .vf => iVF (x i)
+      | .rv => iRV (x i))) :
+    a.realize (Sum.elim (default : Empty → M) x)
+      = b.realize (Sum.elim (default : Empty → M) x) := by
+  have h := allSorted_realize hM hmem x hx
+  simpa only [pEq, BoundedFormula.realize_bdEqual] using h
+
+/-- The reduction of the `VF` field axioms to a list membership in `vfField`. -/
+theorem mem_vfField {s : LRV.Sentence} (h : s ∈ Axioms.vfField) : s ∈ Axioms.ACVF :=
+  mem_ACVF_vfField h
+
+theorem vf_add_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M}
+    (hx : iVF x) (hy : iVF y) (hz : iVF z) :
+    iVFAdd (iVFAdd x y) z = iVFAdd x (iVFAdd y z) := by
+  have hmem : allSorted ![.vf, .vf, .vf]
+      (pEq (tVFAdd (tVFAdd &0 &1) &2) (tVFAdd &0 (tVFAdd &1 &2))) ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := eq_of_allSorted hM hmem ![x, y, z] (by intro i; fin_cases i <;> simp [hx, hy, hz])
+  simpa [realize_tVFAdd, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    using h
+
+theorem vf_add_comm {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) : iVFAdd x y = iVFAdd y x := by
+  have hmem : allSorted ![.vf, .vf] (pEq (tVFAdd &0 &1) (tVFAdd &1 &0)) ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := eq_of_allSorted hM hmem ![x, y] (by intro i; fin_cases i <;> simp [hx, hy])
+  simpa [realize_tVFAdd, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] using h
+
+theorem vf_add_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : iVFAdd x iVFZero = x := by
+  have hmem : allSorted ![.vf] (pEq (tVFAdd &0 tVFZero) &0) ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := eq_of_allSorted hM hmem ![x] (by intro i; fin_cases i; simpa using hx)
+  simpa [realize_tVFAdd, realize_tVFZero, Matrix.cons_val_zero] using h
+
+theorem vf_add_neg {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : iVFAdd x (iVFNeg x) = iVFZero := by
+  have hmem : allSorted ![.vf] (pEq (tVFAdd &0 (tVFNeg &0)) tVFZero) ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := eq_of_allSorted hM hmem ![x] (by intro i; fin_cases i; simpa using hx)
+  simpa [realize_tVFAdd, realize_tVFNeg, realize_tVFZero, Matrix.cons_val_zero] using h
+
+theorem vf_mul_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M}
+    (hx : iVF x) (hy : iVF y) (hz : iVF z) :
+    iVFMul (iVFMul x y) z = iVFMul x (iVFMul y z) := by
+  have hmem : allSorted ![.vf, .vf, .vf]
+      (pEq (tVFMul (tVFMul &0 &1) &2) (tVFMul &0 (tVFMul &1 &2))) ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := eq_of_allSorted hM hmem ![x, y, z] (by intro i; fin_cases i <;> simp [hx, hy, hz])
+  simpa [realize_tVFMul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    using h
+
+theorem vf_mul_comm {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) : iVFMul x y = iVFMul y x := by
+  have hmem : allSorted ![.vf, .vf] (pEq (tVFMul &0 &1) (tVFMul &1 &0)) ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := eq_of_allSorted hM hmem ![x, y] (by intro i; fin_cases i <;> simp [hx, hy])
+  simpa [realize_tVFMul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] using h
+
+theorem vf_mul_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : iVFMul x iVFOne = x := by
+  have hmem : allSorted ![.vf] (pEq (tVFMul &0 tVFOne) &0) ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := eq_of_allSorted hM hmem ![x] (by intro i; fin_cases i; simpa using hx)
+  simpa [realize_tVFMul, realize_tVFOne, Matrix.cons_val_zero] using h
+
+theorem vf_left_distrib {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M}
+    (hx : iVF x) (hy : iVF y) (hz : iVF z) :
+    iVFMul x (iVFAdd y z) = iVFAdd (iVFMul x y) (iVFMul x z) := by
+  have hmem : allSorted ![.vf, .vf, .vf]
+      (pEq (tVFMul &0 (tVFAdd &1 &2)) (tVFAdd (tVFMul &0 &1) (tVFMul &0 &2)))
+      ∈ Axioms.ACVF :=
+    mem_vfField (by simp [Axioms.vfField, Axioms.ofList, Axioms.fieldAxioms])
+  have h := eq_of_allSorted hM hmem ![x, y, z] (by intro i; fin_cases i <;> simp [hx, hy, hz])
+  simpa [realize_tVFAdd, realize_tVFMul, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons] using h
+
 end SpecialTransformations.Milestone0.Transfer
 
 #print axioms SpecialTransformations.Milestone0.Transfer.valTermToRV_realize
