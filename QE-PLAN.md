@@ -100,28 +100,43 @@ from `JohnsonCriterion.qfDetermined` + `QE/H_of_qfDetermined.lean` (the last mil
 So layer (A) is now reachable in two steps, neither of them Shoenfield's:
 
 1. **QE in `L_val`** by `hasQE_of_johnson` at `L = Language.val`, `T₀` = valued fields,
-   `T` = nontrivially valued algebraically closed fields. Hypotheses: (i) prime models —
-   `QE/PrimeModels_valued.lean` has the mathematics in Mathlib terms (`vFrac`,
-   `prime_model_property`), and `QE/PrimeModels_val_partial.lean` now has the `Language.val`
-   theory `valField`, the `isValPred` dictionary, the fraction-field predicate and the
-   coordinate ring with `coordEmbedding : S ↪[val] coordRing e`; **the one step still missing is
-   the universal property** (`primeField = FractionRing (coordRing e)` as a `valField.ModelType`,
-   the embedding into it, and `IsFractionRing.lift`, with `v x ≤ v y` preserved and reflected —
-   `predFrac_iff` gives that by cross multiplication) and the packaging into
-   `HasPrimeModels`. `QE/PrimeModels_full.lean` is the `Language.ring` skeleton; (ii) amalgamation — `QE/Amalgamation_reduced.lean` modulo
-   ★ alone (Johnson 2.2.4/2.2.6 on `O₁ ⊗_{O₀} O₂`); (iii) 1-ec — Johnson §2.3, now: 2.3.2,
-   2.3.3, 2.3.4, 2.3.5, 2.3.6, 2.3.7, 2.3.8 all proved (`QE/Johnson23_valuation.lean`, with an
-   independent subfield version in `QE/Johnson23_subfield.lean`), and `QE/OneEC_val.lean`
-   assembles hypothesis (iii) down to the single named input `AtomGood` = 2.3.1(ii).
-   **2.3.1(ii) is the one analytic step left**, and it is subtler than Johnson's sketch: the
-   header of `QE/OneEC_val.lean` records the two failure modes of the naive arg-max argument
-   (`v(x-a) = v(x-a')` away from the roots is possible, so strict arg-max cells do not cover `N`;
-   and at `x = a` the max rule degenerates, `v(a-a') = M` while `v(x-a') = 0`), and the
-   cluster-merging decomposition that does work — split on `v(x-a) < γ_a`, `= γ_a`, `> γ_a`, where
-   `γ_a` is the distance from `a` to the nearest other root: constants in the first case, a
-   constant `a`-term in the second, and a merge of `a` with its nearest neighbour in the third, so
-   the number of distinct roots strictly decreases and the argument inducts.  2.3.9 (the
-   characterisation 1-ec = algebraically closed + nontrivially valued) then follows.
+   `T` = nontrivially valued algebraically closed fields. State of the three hypotheses
+   (measured, at commit 1c7ab23):
+
+   **(i) prime models: done.** `QE/PrimeModels_val_partial.lean` (1461 lines, compiles, axioms
+   clean) now has the whole chain: the `Language.val` theory `valField`, the `isValPred`
+   dictionary, the fraction-field predicate `predFrac` with `predFrac_isValPred`, the coordinate
+   ring `coordRing e` with `coordEmbedding`, the prime model `valPrimeField e = FractionRing
+   (coordRing e)` with `predVal e`, `valPrimeField_model`, `valPrimeEmbedding`, the universal
+   property `valPrimeField_universal`, the bridge `ringStructOfVal` + `model_field_of_valField`
+   (a `valField.ModelType` is a field in `L_ring`, which is what the packaging needs), and
+   `hasPrimeModels_valField : HasPrimeModels valField valField` with
+   `hasPrimeModels_mono : T' ⊆ T → HasPrimeModels T₀ T' → HasPrimeModels T₀ T`.  **Still to
+   write: the `L_val` axiomatisation `ACVF_val` of nontrivially valued algebraically closed
+   fields** (algebraically closed + nontrivial valuation as `L_val` sentences), then
+   `hasPrimeModels_mono h_ACVF_sub hasPrimeModels_valField` gives hypothesis (i).
+
+   **(ii) amalgamation: open.** `QE/Amalgamation_reduced.lean` reduces it to `star` alone, the
+   ring-theoretic amalgamation for valuation rings, which is Johnson 2.2.4–2.2.7: `O₁ ⊗_{O₀} O₂`
+   is nonzero (torsion-free over a valuation ring is flat), a minimal prime contracts to `0` in
+   each factor (2.2.6), a prime over the residue-field tensor contracts to `mᵢ`, and Chevalley
+   2.2.1(2) produces the valuation ring of the amalgam.  Johnson's proofs are in
+   `.ultramath/refs/johnson-ch2.txt` lines 190–360.  In progress in swarm `smw0fcnxx`.
+
+   **(iii) 1-ec: one input left.** `QE/OneEC_val.lean` (1838 lines, compiles, axioms clean) has
+   2.3.1(i), the syntax bridge, `boolCombCheese` (2.3.2), and now **`AtomGood` = 2.3.1(ii) is
+   proved**: `atomGood_of_isAlgClosed`, by the cell decomposition over (nearest root, tie set)
+   — see the commit message of `d06670d` for why the tie set must be part of the cell parameter.
+   The one input still missing for `oneECIn_of_inputs'` is **`CheeseMeetsBase`** (Johnson 2.3.8:
+   a nonempty swiss cheese over `K` meets the image of `K`), which is proved in the
+   `IsValBall` framework of `QE/Johnson23_valuation.lean` (`Johnson.lemma_2_3_8`, with 2.3.3 and
+   2.3.7 and `valueGroup_dlo`) but **not** in the `IsKBall` framework that `OneEC_val.lean`
+   uses; the port needs the nontriviality hypothesis `∃ x ≠ 0, w (f x) < 1`, which 2.3.8
+   genuinely requires.  In progress in swarm `smw0fobjd`.
+
+   Still entirely to write after (i)–(iii): `HasQE (L := Language.val) ACVF_val`.  Everything
+   above is at the level of concrete valued fields; `hasQE_of_johnson` wants the abstract
+   `L_val`-structures, which the `ringStructOfVal` bridge now makes reachable.
 
 2. **The transfer `L_val → L_RV`.** The paper's Theorem 2.3 is stated in `L_RV`
    (`paper.tex:509`, quoting `qe.tex` Theorem 3.10), so QE in `L_val` alone does not discharge
