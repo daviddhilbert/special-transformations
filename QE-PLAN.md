@@ -1570,3 +1570,27 @@ $\RV[*,\cdot]$ objects, the lifting map $\mathbb{L}$, special bijections — is 
 `smw18ygko` (4 directions) is on it: s1 freezes Section 3's statements in Lean the way the Section 2
 targets were frozen, s2 formalizes the objects and their category, s3 the lifting map, s4 the
 special bijection and its first theorem with the Section 2 facts named as hypotheses.
+
+## The unrestricted `IsCMinimal` is false — the restatement was the only true form
+
+Swarm `smw18pb0w` m3 (accepted, `Assembly.lean`, green) proves
+
+```
+CM.not_isCMinimal_of_two_rv (hM : M ⊨ ACVF) (hr : iRV r) (hs : iRV s) (hne : r ≠ s) : ¬ IsCMinimal M
+```
+
+Every ball lies inside `{x | iVF x}`, so a finite Boolean combination of balls cannot separate two
+distinct `RV`-elements, which every model of `ACVF` has.  The unrestricted `IsCMinimal` had dropped
+the paper's "subset of `VF(M)`".
+
+So `encoding.lean`'s original `theorem_2_8_c_minimal` was **false**, not merely unproved — and the
+restatement committed in `27b6c10` (`IsCMinimalWS`) is the only true form.  m3's `CM.IsCMinimalVF`
+(`s ⊆ vfSet M` plus definability) and `IsCMinimalWS` are the same repair reached independently; the
+two should be proved equivalent, which is bookkeeping now that both exist.
+
+Same section: `isBoolComb_of_HasQEws` assembles the frozen QE statement plus `BallsBridge` into the
+ball-combination conclusion for well-sorted one-variable `φ`, `ballsBridge_of_atomBridge` reduces the
+bridge to per-atom facts, and the dictionary (`rv_eq_set_eq` via `correctedLink_of_model`,
+`rv_eq_atom_of_bridges`, `leRV`, `unitRV`, `neRV`) is in place.  Missing and named: `ValueBridge`
+(b1) and `ZeroBridge`.  Caveat on record: over *all* ill-sorted atoms the quantifier-free bridge is
+false (`vfAdd (rv x) 1` is junk), so the dispatch must run on a sorted fragment.
