@@ -2227,3 +2227,24 @@ Three audit findings, recorded as obligations:
 Independence of the two routes is therefore partial: they share the mixed-context and `RV`-parameter
 obligations; the demonstrated gain is independence from the `GuardsLast`/`JunkTrueAt` repair, and
 that is an argument, not a compiled fact.
+
+## `L_val` reaches only a strict sub-fragment (`smw1b0thh` m2, accepted)
+
+`.ultramath/smw1b0thh/m2/W2.lean` (compiled on top of a byte copy of the assembly, 0 errors, no
+`sorry`, axioms clean):
+
+* `tmSort_valTermToRV` — `L_val` terms translate to `VF`-sorted terms;
+* `wellSorted_valFormulaToRVvf` — **and the image is inside the frozen fragment**, which the tree's
+  transfer (`VFRestrict.valFormulaToRVvf`) never established: it never mentioned `WellSorted`;
+* `transfer_of_qfType_VF` — two models of `ACVF` whose `VF` sorts model `ACVF_val`, at `VF`-tuples
+  with equal QF well-sorted `L_RV` type, have equal full `L_val` type — via guarded `L_val` QE, with
+  **no cover**, unlike `CoverBridge.transfer_at_vf_tuples`.
+
+**The boundary, which is the point:** `L_val` reaches only the image sub-fragment — atoms
+`s = t`, `v s ≤ v t`, and `VF`-guarded quantifiers.  `rv s = rv t`, `kAdd`/`kNeg`/`rvMul`, the
+`Kˣ` predicate and `RV`-quantifiers have no `L_val` preimage.  So w1's fragment-Shoenfield
+hypothesis cannot be discharged from `L_val` alone; this is the same wall as
+`Missing.VFQ_to_QFq` + `Missing.MixedContextCover` in the audit, seen from the second route.
+
+Named gaps: no compiled bridge `vfValStruct = vfStruct`; and `hasQE_ACVF_val` is `HasQE` at
+`n = 0`, while tuples need `HasQEb`.
