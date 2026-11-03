@@ -769,7 +769,8 @@ It is a fidelity gap to fix when the encoding is next touched, not a repair this
 `ValPM.ACVF_val` contains `axNontrivial` (`∃ x, x ≠ 0 ∧ ¬ v 1 ≤ v x`), and `oneECIn_of_nontrivial`
 says its `hnt` cannot be dropped (Johnson 2.3.8 is false for a trivially valued field).  The frozen
 `Axioms.ACVF` contains **no** nontriviality sentence — `qe.tex` Definition 2.2 does not either — so
-the trivially valued structure on an algebraically closed field is a model of it.  Swarm member m1
+trivially valued structures are models of it (see the correction below: the reading in which `rv` is
+injective on `VF^×`, not the one in which `rv` is constant).  Swarm member m1
 checked the axioms against that structure one by one (`HasNontrivVal`'s docstring in
 `.ultramath/smw14elno/m1/Scale.lean`): `vfField`/`vfAlgClosed` are those of the ACF, `kField`/
 `kAlgClosed` those of the residue field, `rvGroup` holds because `F` algebraically closed makes
@@ -909,3 +910,32 @@ edit rather than a change of mathematics:
 Items 1 and 2 are one-sentence edits to existing axioms; items 3 and 4 are two new sentences plus
 two conventions.  All four are decisions about the frozen encoding, and all four need the author's
 ruling before the target `HasQE Axioms.ACVF` can be true, let alone proved.
+
+### Correction on the "trivial valuation" case (swarm `smw1541fr`, m4)
+
+Earlier in this file — following m1's `HasNontrivVal` docstring — I wrote that the trivially valued
+structure on an algebraically closed field satisfies every axiom of the frozen `ACVF` and fails
+nontriviality.  That is only true of the **fine** reading.  The **coarse** reading, "every
+`VF`-element is `0` or has `rv x = rv 1`", is *inconsistent* with the frozen axioms: with `rvSurj`
+it forces `RV = {∞, 1}`, hence `K = pInK` has at most two elements, contradicting `kAlgClosed` at
+degree 2.  Machine-checked as `no_coarse_triv` in `.ultramath/smw1541fr/m4/Triv.lean`, with
+`exists_rv_ne_one` as the positive form.
+
+The consistent reading is m4's `FineTriv`: `rv` injective on `VF`, the order trivial
+(`iLe (rv x) (rv y) ↔ x ≠ 0 ∨ y = 0`), `Kˣ` the nonzero elements, and the residue operations the
+field's own.  In that case `HasNontrivVal` fails (all nonzero values are `≤ v 1`) and the structure
+is a model.  So the final theorem's case split is `HasNontrivVal` versus its **negation**, and the
+second case is `FineTriv`, not "rv constant".
+
+Two reusable by-products of that direction, both unconditional (every model, not just the trivial
+one):
+
+```
+rv_exists_vf  : (∃ a, iRV a ∧ ψ a) ↔ ψ ∞ ∨ ∃ x, iVF x ∧ x ≠ 0 ∧ ψ (rv x)
+exSorted_rv_realize_vf   -- the same at the level of BoundedFormula
+allSortedK_realize, kHyps_realize, exSortedK_realize   -- extraction for the pInK-guarded axioms
+```
+
+The first is exactly the `RV`-quantifier elimination step of the cover, from `rvSurj` alone; the
+last three fill a real gap, since the preamble had no extraction lemma for the `K`-guarded axioms
+and every residue-field argument needs one.
