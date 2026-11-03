@@ -1938,3 +1938,34 @@ pre-adoption encoding) proves `STm.realize_toLRV`, `SBf.realize_toLRV` at arbitr
 (the `WellSorted` witness cannot change the defined set). `AxiomReading.lean` (against the current
 `Encoding.lean`) reads the three carrier axioms: `carrier_cover`, `carrier_disjoint`, `units_mem_rv`,
 which is exactly why `WellSorted` excludes `sdCover`/`sdDisjoint`/`sdUnits` and nothing else of `ACVF`.
+
+**§3 restated over the interface in full, except two items.** `QE/Sec3_sat.lean` now also carries
+`SP.swl_dcl_to_ac` (`dcl:to:ac`: `IsAlgebraic ↥(VFGen S) (vfOf b hb)` from `acl S b`),
+`SP.swl_effectiveness` and `SP.swl_algebraic_balls_definable_centers` (the latter with centres
+definable over `S`), on top of `swl_alg_ind_image`, `swl_average_zero_rv_not_constant`,
+`swl_ball_proper_sub_center`. Six frozen statements, file green, six `sorry` warnings, no `axiom`.
+
+New vocabulary, and the reason for each shape:
+
+* `Sec3.VFType`/`Sec3.vfOf`, `Sec3.VFGen S = Subfield.closure (VF-part of S)` — the paper's
+  `VF(S)(ā)`.  The `Field` instance on `VFType` is `QE/Assembly_val.lean`'s `vfFieldOfModel`,
+  proved from the same axioms but in that file's copy of the encoding; it cannot be imported, so
+  the statements carry `[Field (Sec3.VFType M)]` as an instance argument.  The field laws are not
+  an extra hypothesis about the mathematics: they are determined by `Axioms`, and the argument
+  disappears when the two copies of the encoding are unified.
+* `Sec3.IsCentreOf` (a centre of a closed ball) and `Sec3.HasCenters` (a set meeting each ball of
+  the family in exactly one point, that point being a centre) — the paper's use is
+  `|A_t̄ ∩ b| = 1`, and "has centers" is *defined* here rather than quoted.
+* "algebraic set of closed balls" is **not** defined in this paper: it quotes QE:ACVF:min
+  Definition 4.13.  It is therefore a *parameter* `(IsAlgBalls : Set (Set M) → Prop)` of the two
+  statements that use it, so a later formalization of 4.13 instantiates them without restating
+  the lemmas.  This is the one hypothesis in §3 that is a placeholder, and it is visible in the
+  statement rather than hidden.
+* "`S` is `(VF, Γ)`-generated" is not formulable without the `Γ`-sort; it is recorded in the
+  docstring of `swl_algebraic_balls_definable_centers` and the conclusion is frozen with
+  `S`-relative definability.
+
+Two §3 items remain unstatable, each with its missing development named in the file header:
+`inf:RV:def:gam` (the `Γ`-side vocabulary of `LRVΓ`: `pMemGamma`, `gVrv`'s interpretation,
+`Γ(S)`, `vrv⁻¹(γ)`, and a monster model of the expansion) and `aclS:model` (`acl(S)` as an
+`LRV.Substructure` with relativized satisfaction, plus `Γ(acl(S))`).
