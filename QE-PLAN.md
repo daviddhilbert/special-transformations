@@ -2248,3 +2248,42 @@ hypothesis cannot be discharged from `L_val` alone; this is the same wall as
 
 Named gaps: no compiled bridge `vfValStruct = vfStruct`; and `hasQE_ACVF_val` is `HasQE` at
 `n = 0`, while tuples need `HasQEb`.
+
+## The guard repair landed, and the endgame for `ACVF` lost three of its four hypotheses
+
+**Guard repair applied** (commit `f18b6f5`).  `Milestone0/Encoding.lean` sha256 `86d7ea7e…`,
+green, 0 errors, the two frozen `sorry`s.  `QE/Assembly_val.lean`'s embedded copy re-spliced
+verbatim, also green.  `Occurs := InAntecedent`; `GuardTrue` is an inductive family with an `.all`
+clause (the existential of the earlier attempt cannot survive `wellSorted_alls`, which recurses to
+the body `BoundedFormula.all χ`); `WellSorted.all`, `wellSorted_alls`, `wellSorted_allOne` gain the
+`GuardTrue` hypothesis; every `wellSorted_allSorted*`/`exSorted*`/`all_guarded`/`ex_guarded`
+signature is unchanged, so Part 6.1's audit (`wellSorted_ACVF`) did not move.  Full inventory and
+the reasons for the shape are in `Milestone0/DECISION.md`, section "The guard repair: applied".
+
+**What the repair was for.**  `nontrivialTransferWS_ACVF` needs, in the `all` case, the body `χ` to
+be true at carrier elements *outside* the sort, because `BoundedFormula.all` quantifies over the
+whole one-sorted carrier.  `GuardsLast` does not imply that (m1's finding:
+`(x ∈ s ⟹ ⊥) ⟹ ψ` satisfies it and is false at junk elements); `GuardTrue` is the syntactic
+condition that does, and the `Semantic` bridge `GuardTrue → JunkTrueAt` is now the named next
+deliverable rather than an obstruction.
+
+**The case split closed.**  `TrivialHalf.allNontrivial_ACVF : AllNontrivial Axioms.ACVF`
+(`= ∀ M ⊨ ACVF, IsNontrivialVF M`), from `Transfer.isNontrivialVF_of_model`, whose compile status
+had been unrecorded.  Hence `caseSplit_ACVF`, `caseSeparation_ACVF`, and
+
+```
+Transfer.hasQE_ACVF_of_nontrivialTransfer : FinalAssembly.NontrivialTransfer Axioms.ACVF
+    → QECriterion.HasQE Axioms.ACVF
+```
+
+so the endgame has one hypothesis instead of four.  Side effect, recorded because the reverse was
+believed: `TrivialHalf.not_fineTriv` shows `TrivCase.FineTriv` has **no** model of the frozen
+`Axioms.ACVF` (`fineTriv_not_nontrivial` contradicts `isNontrivialVF_of_model`); the trivially
+valued model of §10 satisfies a weaker axiom set.  So "Theorem 2.3 has two cases" is not an
+obstruction here, and the `axNontrivialRV`-or-two-theorems choice is moot.
+
+**Swarm `smw1bwjo2`** (8 members, 150 min) is running on the layer above: d1 term-sort soundness,
+d2 the junk-truth induction (`GuardTrue → JunkTrueAt`), d3 the `TransferWS` plumbing, d4 the
+composition, d5 the parameter bridge's forward half, d6 the mixed-context QF cover, d7 the `mul`
+normal form, d8 fragment compactness.  Artifacts land under `.ultramath/smw1bwjo2/m{1..8}/` and
+are unvetted until compiled.

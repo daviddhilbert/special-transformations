@@ -820,3 +820,43 @@ the repair, so the file must be re-based on the current encoding before it can b
 `WSg`'s single-atom guard is `InAntecedent.atom` when `tvLast n` is `var (Fin.last n)`, so the fix
 is expected to be small); then `nontrivialTransferWS_ACVF` in `QE/TransferWS.lean`, whose first
 failure point was unknown and is now the next thing to find.
+
+
+## The case split is not an obstruction for the frozen theory (found while wiring the endgame)
+
+`QE-PLAN.md` and the memory of this project carried "Theorem 2.3 has two cases, and their union
+does not glue" as an open call with the author.  For the *frozen* encoding that call can be closed
+from the tree itself, and it is now closed in `QE/Assembly_val.lean`:
+
+* `Transfer.isNontrivialVF_of_model` (`Assembly_val:15763`) proves `IsNontrivialVF M` for every
+  `M ⊨ Axioms.ACVF` — `axNontrivialRV` gives `a ≠ 0` with `¬(v a ≤ v 1)`, an inverse in `RV^×`
+  lifts to `VF` by `rvSurj`, and `leMulCompatFull` scales `v 1 ≤ v x` to a contradiction.  Its
+  compile status had been "unrecorded"; it is green (the whole file is, `lean` exit 0).
+* `TrivialHalf.allNontrivial_ACVF : AllNontrivial Axioms.ACVF` composes that over all models, and
+  `TrivialHalf.caseSplit_ACVF`, `TrivialHalf.caseSeparation_ACVF` follow, as does
+  `Transfer.hasQE_ACVF_of_nontrivialTransfer`:
+
+```
+FinalAssembly.NontrivialTransfer Axioms.ACVF → QECriterion.HasQE Axioms.ACVF
+```
+
+i.e. the endgame for the frozen theory now has **one** hypothesis (the transfer), not four.  So
+"exclude the trivial valuation or state two theorems" is not a live choice for this tree: the
+trivial class is empty (`TrivialHalf.not_isTrivialVF`, unchanged) and so is every degenerate
+class that would need a second case.
+
+Two consequences to keep straight, because the records said the opposite:
+
+1. **`TrivCase.FineTriv` is empty over the frozen axioms.**  `TrivialHalf.not_fineTriv` proves
+   `M ⊨ Axioms.ACVF → ¬ FineTriv M`: `fineTriv_not_nontrivial` and `isNontrivialVF_of_model`
+   contradict each other.  The "trivially valued model" that `QE-PLAN.md` §10 and
+   `Assembly_val`'s `fineTriv_neither` docstring treat as a model of `Axioms.ACVF` is a model of a
+   *weaker* axiom set (pre-repair, or without `axNontrivialRV`).  Nothing about `FineQE`'s
+   *conditional* results changes — those are implications from `FineTriv M` — but the caution
+   "the two predicates do not exhaust the models" does not apply to `Axioms.ACVF`.
+2. **`QE/TransferWS.lean`'s `IsNontrivialVF` is not the `Assembly_val` one.**  It reads
+   `x ≠ iRVZero` where `Assembly_val` reads `x ≠ iVFZero` (the docstring there says "copied from
+   `QE/Assembly_val.lean`"; it is not).  The two are equivalent for `x ∈ VF` given `sdDisjoint`
+   and `rv 0 = ∞`, so nothing is unsound — but the fragment statement is the one that matters and
+   whoever closes `nontrivialTransferWS_ACVF` should decide which version it is.  Not changed here,
+   because `TransferWS.lean` is a statement file that a swarm is currently aiming at.

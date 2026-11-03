@@ -15950,6 +15950,21 @@ theorem caseSplit_of_allNontrivial {T : LRV.Theory} (h : AllNontrivial T) :
     FinalAssembly.CaseSplit T :=
   fun M _ _ hM => Or.inl (h M hM)
 
+/-- **Every model of the frozen `Axioms.ACVF` is nontrivially valued in the endgame's sense.**
+`axNontrivialRV` supplies `a ≠ 0` with `¬ (v a ≤ v 1)`; `Transfer.isNontrivialVF_of_model`
+turns it into the `IsNontrivialVF` form (`¬ (v 1 ≤ v x)`) by inverting in `RV^×` and scaling.
+So `AllNontrivial` is *proved*, not assumed, and with it the case split and the case separation
+of the endgame: the trivial case does not arise for this theory, and `TrivialTransfer`'s
+hypothesis class is empty for a second, independent reason. -/
+theorem allNontrivial_ACVF : AllNontrivial Axioms.ACVF :=
+  fun M _ _ hM => Transfer.isNontrivialVF_of_model hM
+
+theorem caseSplit_ACVF : FinalAssembly.CaseSplit Axioms.ACVF :=
+  caseSplit_of_allNontrivial allNontrivial_ACVF
+
+theorem caseSeparation_ACVF : FinalAssembly.CaseSeparation Axioms.ACVF :=
+  caseSeparation_of_allNontrivial allNontrivial_ACVF
+
 /-! ## 4. The endgame with one hypothesis instead of four -/
 
 /-- **The assembly without the trivial hypotheses**: `NontrivialTransfer` plus "every model is
@@ -15966,6 +15981,14 @@ theorem hasQE_ACVFplus_of_nontrivialTransfer (hnt : FinalAssembly.NontrivialTran
     SpecialTransformations.Milestone0.HasQE FinalAssembly.ACVFplus :=
   FinalAssembly.hasQE_ACVFplus_of_transfers hnt trivialTransfer_ACVFplus
     (caseSeparation_of_allNontrivial hn) (caseSplit_of_allNontrivial hn)
+/-- **The endgame for the frozen theory, with the transfer as the only hypothesis**: if two
+nontrivially valued models of `Axioms.ACVF` at the same quantifier-free type agree on every
+formula, then `ACVF` eliminates quantifiers.  Here the other three hypotheses of
+`FinalAssembly.hasQE_of_transfers` are discharged, not assumed. -/
+theorem hasQE_ACVF_of_nontrivialTransfer (hnt : FinalAssembly.NontrivialTransfer Axioms.ACVF) :
+    QECriterion.HasQE Axioms.ACVF :=
+  hasQE_of_nontrivialTransfer (subset_rfl) hnt allNontrivial_ACVF
+
 
 /-! ## 5. The fine trivial case is neither trivial nor nontrivial -/
 
@@ -15997,6 +16020,17 @@ theorem fineTriv_not_nontrivial (hM : M ⊨ Axioms.ACVF) (h : TrivCase.FineTriv 
 theorem fineTriv_neither (hM : M ⊨ Axioms.ACVF) (h : TrivCase.FineTriv M) :
     ¬ (FinalAssembly.IsNontrivialVF M ∨ FinalAssembly.IsTrivialVF M) :=
   fun hc => hc.elim (fineTriv_not_nontrivial hM h) (fineTriv_not_trivial hM h)
+
+/-- **The fine trivial class is empty over the frozen axioms.**  `fineTriv_not_nontrivial` and
+`Transfer.isNontrivialVF_of_model` contradict each other, so no model of `Axioms.ACVF` is
+`FineTriv`.  This matters for the record: `QE-PLAN.md` §10 and the note above
+(`fineTriv_neither`) treat `FineTriv` as the trivially valued model, and it is one — of a *weaker*
+axiom set (the pre-repair `ACVF`, or `ACVF` with `axNontrivialRV` removed).  Against the frozen
+`Axioms.ACVF` it is not inhabited, and the "the two predicates do not exhaust the models" caution
+does not apply: `allNontrivial_ACVF` says every model is `IsNontrivialVF`, so the case split of the
+endgame holds with the nontrivial disjunct. -/
+theorem not_fineTriv (hM : M ⊨ Axioms.ACVF) : ¬ TrivCase.FineTriv M :=
+  fun h => fineTriv_not_nontrivial hM h (Transfer.isNontrivialVF_of_model hM)
 
 /-- Consequence for the case split: any theory `T ⊇ Axioms.ACVF` that has a `FineTriv` model does
 **not** satisfy `CaseSplit T`.  (So `CaseSplit` can only be reached by adding nontriviality as an
