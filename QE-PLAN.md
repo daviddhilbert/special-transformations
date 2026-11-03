@@ -281,13 +281,24 @@ have 0 errors, and there are exactly **three** real `sorry`s in it —
 2.3) and `Milestone0/Encoding.lean:923,930` (`theorem_2_3_quantifier_elimination` and
 `theorem_2_8_c_minimal`).
 
-1. **`CheeseMeetsBase`** (Johnson 2.3.8 in the `IsKBall` framework).  The mathematics is in
-   `QE/Johnson23_valuation.lean` (`lemma_2_3_3`, `lemma_2_3_7`, `lemma_2_3_8`), but in the
-   `IsValBall`/`IsValBallK` framework, which has a `singleton` constructor that `IsKBall` does not;
-   `IsKBall` maps into it.  Two traps: the nontriviality `∃ x ≠ 0, w (f x) < 1` is essential
-   (without it the traces of the balls on `K` are points or everything and 2.3.7 is false in the
-   form used); and in the `IsKBall` framework every radius is a *value* `w (f b)`, never a general
-   element of the value group.
+1. **`CheeseMeetsBase`** — **proved** in `QE/CheeseMeetsBase.lean` (commit `eeb827b`,
+   swarm `smw0fobjd` member m4):
+   `cheeseMeetsBase [IsAlgClosed K] (f) (w) (hnt : ∃ x ≠ 0, w (f x) < 1) : CheeseMeetsBase f w`.
+   The file carries a private copy of the `OneEC_val.lean` framework (byte-identical), the body of
+   `Johnson23_valuation.lean` in `namespace Johnson`, and ~100 lines of bridge: `IsKBall` is
+   `IsValBallK` with the `singleton` constructor dropped (the radii need no transport because
+   `(w.comap f) b` is definitionally `w (f b)`, which is why the second trap below does not bite),
+   the trace on `K` of an `IsKBall` is an `IsValBall` for `w.comap f`, and 2.3.8 is re-proved for
+   an arbitrary `[Fintype ι]` — that is the index shape `SwissCheese` uses, Johnson states it for
+   `Fin n`, and the re-proof is where the work is.
+   **The nontriviality `hnt` is not removable**: with `w ∘ f` trivial the traces on `K` are points
+   or everything and 2.3.7 is false in the form used.
+   **Still to do, and it is bookkeeping, not mathematics**: merge this file with
+   `QE/OneEC_val.lean` to get `GoodMeetsBase` — `goodMeetsBase_of_swissCheese` composes
+   `boolCombCheese` (in `OneEC_val.lean`) with `cheeseMeetsBase` (in this file) — and then feed
+   `oneECIn_of_inputs'`.  The two files share the framework definition for definition, but the
+   merge has to be done by hand: appending the Johnson body to `OneEC_val.lean` by line arithmetic
+   broke the parse (my attempt did), so splice it deliberately.
 
 2. **`star`** (Johnson 2.2.4–2.2.7).  Blocked on one piece of commutative algebra: torsion-free
    over a valuation ring is flat, so `O₁ ⊗_O O₂ ↪ O₁ ⊗_O K₂ ↪ K₁ ⊗_O K₂`.  Johnson's full proof is
