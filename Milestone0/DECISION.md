@@ -611,3 +611,27 @@ State of the tree: `Milestone0/Encoding.lean` currently does **not** compile (co
 marked WIP): 5 errors in the four lemmas above.  `QE/Assembly_val.lean` has not been re-synced, so
 it still carries the *old* `WellSorted` and remains green on its own copy — the two copies must be
 brought back into step in the same commit that applies `inAntecedent_of_occurs`.
+
+### Progress on the bridge (this commit) and what is left
+
+Applied: `guardAtom := sortPredG s (Term.var (Sum.inr i))`; `inAntecedent_of_occurs`;
+`GuardTrue.of_inAntecedent`; the extra `GuardTrue` argument at three of the four sites
+(`wellSorted_all_guarded`, `wellSorted_exSortedG`, `wellSorted_ex_guarded`). Three of the four now
+elaborate.
+
+Left, precisely:
+
+1. `inAntecedent_of_occurs`'s second match arm. `Occurs`'s non-conjunction clause is
+   `φ = sortPredG s (Term.var (Sum.inr i))`, but in the dependent `match` the hypothesis is not
+   definitionally that equality, so `rw [h]` fails.  Fix: state the bridge as
+   `Occurs i s η → InAntecedent s i η` proved by *structural recursion on `η`* using
+   `Occurs`'s two equations (`simp only [Occurs] at h` then `h ▸ InAntecedent.atom`, with the
+   conjunction case by `Or.elim`), or add `InAntecedent.atom'` accepting
+   `φ = sortPredG s (Term.var (Sum.inr i))` as an equation.
+2. `wellSorted_alls` needed the extra hypothesis `hj : ∀ d, GuardTrue (ss d) d χ`, which broke its
+   four callers (lines 808, 814, 843, 852).  Each caller supplies `hg` from `occurs_sortedHyps`,
+   so each needs the matching `GuardTrue` line:
+   `fun d => GuardTrue.of_inAntecedent (inAntecedent_of_occurs (occurs_sortedHyps ss d))`.
+3. `QE/Assembly_val.lean`: not yet re-synced. Its embedded copy of the encoding must receive the
+   same two blocks (`guardAtom`/`InAntecedent`/`GuardTrue` and the `.all` hypothesis) plus the
+   same three site fixes, and then its own call sites audited.
