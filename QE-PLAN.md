@@ -1594,3 +1594,19 @@ bridge to per-atom facts, and the dictionary (`rv_eq_set_eq` via `correctedLink_
 `rv_eq_atom_of_bridges`, `leRV`, `unitRV`, `neRV`) is in place.  Missing and named: `ValueBridge`
 (b1) and `ZeroBridge`.  Caveat on record: over *all* ill-sorted atoms the quantifier-free bridge is
 false (`vfAdd (rv x) 1` is junk), so the dispatch must run on a sorted fragment.
+
+## The `WellSorted` decision (m5's recursive predicate vs mine)
+
+Two definitions now exist:
+
+| | definition | coverage proved | parameters |
+| --- | --- | --- | --- |
+| mine (`Encoding.lean`, commit `3307aad`) | image of the sorted syntax `STm`/`SBf` | closure under connectives, quantifiers, atoms (m2) | **arbitrary `α`**, sorts relativised semantically by `sortEval` |
+| m5's (`WellSorted_block.lean`, patch-ready) | recursive: `TmSort` (`none` = junk), `Occurs`/`GuardsLast`, inductive `WellSorted` | **`allSorted`, `allSortedK`, `allOne`, `exSortedK`, `sortedHyps`, `kHyps`, `alls`, `Cover.Frag.wellSorted_toRV`, `QF.wellSorted_toRV`** | needs `[Fintype α]` for the parameter guard |
+
+The coverage column is the one that decides it: `HasQE` needs *the axioms of `ACVF` and the tree's own
+translations* to be well-sorted, and only m5's definition has that proved.  So the plan is to adopt
+m5's predicate and generalise its parameter guard the way mine does (semantic `sortEval`
+relativisation), keeping the equivalence of the two predicates on `Fintype`-parameterised formulas as
+the cross-check.  Two facts to carry: `VFQ` does **not** imply `WellSorted` (matters, because h4's
+output is `VFQ`), and substitution closure is h2's.
