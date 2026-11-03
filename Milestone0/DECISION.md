@@ -400,3 +400,28 @@ into this statement is swarm `smw17pts2`'s h2–h4.
 sha256 of Milestone0/Encoding.lean after the restatement:
 d01d590b7bdc0b8912617aea0eb44e9fb2acf7349db2535f9ee7f84961ddf995
 ```
+
+### Theorem 2.8 is frozen over well-sorted parameters too (author's ruling)
+
+`IsCMinimal` quantifies over *all* parametrically definable subsets of the carrier, and the encoding
+admits ill-sorted parameters and ill-sorted terms — the same defect that forced the restatement of
+`HasQE`.  By the same ruling, Theorem 2.8's target is now stated as
+
+```lean
+def IsCMinimalWS (M) [LRV.Structure M] : Prop :=
+  ∀ (α) (sα : α → SortTag) (φ : LRV.BoundedFormula α 1),
+    WellSorted sα (fun _ => SortTag.vf) φ →
+    ∀ (v : α → M), (∀ a, sortEval (sα a) (v a)) →
+      IsBoolComb {b | IsBall b} {x : M | iVF x ∧ φ.Realize v ![x]}
+
+theorem theorem_2_8_c_minimal :
+  ∀ (M) [LRV.Structure M] [Nonempty M], M ⊨ ACVF → IsCMinimalWS M := by sorry
+```
+
+— every subset of the `VF` sort defined by a formula of the paper's two-sorted language, with
+parameters of declared sorts, is a finite Boolean combination of balls.  The unrestricted
+`IsCMinimal` is kept beside it for the record; the frozen target is the well-sorted one.
+
+```
+sha256 of Milestone0/Encoding.lean: 4d841a365904e177fd71f31241b193f60359cdbb4a53a34e53e94154eba8c313
+```

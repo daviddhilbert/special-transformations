@@ -1078,11 +1078,23 @@ admits quantifier elimination. -/
 theorem theorem_2_3_quantifier_elimination : HasQE ACVF := by
   sorry
 
+/-- **C-minimality over well-sorted parameters**: every subset of the `VF` sort defined by a
+formula of the paper's two-sorted language — well-sorted `φ` with one free `VF`-variable and
+parameters of declared sorts — is a finite Boolean combination of balls.  This is Definition 2.7
+with the same restriction the target `HasQE` carries: the encoding's carrier admits ill-sorted
+terms and ill-sorted parameters, and for those the statement is false, so the frozen target is
+stated for the paper's own language. -/
+def IsCMinimalWS (M : Type*) [LRV.Structure M] : Prop :=
+  ∀ (α : Type) (sα : α → SortTag) (φ : LRV.BoundedFormula α 1),
+    WellSorted sα (fun _ => SortTag.vf) φ →
+    ∀ (v : α → M), (∀ a, sortEval (sα a) (v a)) →
+      IsBoolComb {b | IsBall b} {x : M | iVF x ∧ φ.Realize v ![x]}
+
 /-- **Theorem 2.8** (Yin, op. cit.; quoted from arXiv:1006.1393, Theorem 4.2):
 `ACVF` is C-minimal, i.e. every model of `ACVF` is C-minimal in the sense of
-Definition 2.7. -/
+Definition 2.7, for the formulas of the paper's two-sorted language (`IsCMinimalWS`). -/
 theorem theorem_2_8_c_minimal :
-    ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ ACVF → IsCMinimal M := by
+    ∀ (M : Type) [LRV.Structure M] [Nonempty M], M ⊨ ACVF → IsCMinimalWS M := by
   sorry
 
 /-! ## Part 7. Definable subsets of `VF^n × RV^m`
