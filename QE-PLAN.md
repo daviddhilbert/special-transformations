@@ -142,36 +142,57 @@ So layer (A) is now reachable in two steps, neither of them Shoenfield's:
 
 ### The twelfth defect is now the last obstacle, and it may affect the *truth* of the target
 
-Checked against `Milestone0/Encoding.lean` and `Milestone0/DECISION.md`:
+**Convention (as the author states it).** There is no separate `0` in `RV`: writing `rv(0) = 0`
+makes `0` the absorbing element of `RV`, and the paper's `∞` is then just another name for it —
+one distinguished element, not two. Read that way, `RV = RV^× ∪ {rv(0)}` with `RV^×` the
+multiplicative group, `K^× ⊆ RV^×` the residue-field units, and `RV^× / K^× = Γ`.
 
-* the frozen `rvSurj` is `allSorted ![.rv] (pUnits &0 ⟹ exSorted .vf (pEq (tRv &1) &0))`, i.e.
-  `rv` is onto `pUnits` = `K^×` = the class of `1` (the residue-field units);
-* the paper's Definition 2.2(6) says `rv : VF^× → RV^×` is surjective, where `RV^× = RV ∖ {∞}`
-  — onto the *value classes* as well, not only the units.
+What the frozen encoding does with the two constants (checked in `Milestone0/Encoding.lean`):
+
+* `rvZeroEq : rv (0_VF) = rvInfty`, so **`rvInfty` is `rv(0)`**, the absorbing top
+  (`leTop`, `leInftyEq`, `rvMulInfty : t · ∞ = ∞` for all `t`);
+* `rvZero` is the residue field's zero, used in `pInK` and in the field axioms on
+  `K = K^× ∪ {0}`; `rvMulZeroK` makes it absorbing only for `t ∈ pInK`;
+* no axiom distinguishes `rvZero` from `rvInfty`, and none identifies them. In the author's
+  convention they coincide, in which case `pRV` (`t ≠ rvZero`) and `pK` (`t ≠ rvInfty`) are the
+  same predicate and one of the two constants is redundant.
+
+So the defect, stated in the corrected notation: the frozen axiom is
+
+```
+rvSurj : pUnits t → ∃ x (VF), rv x = t        -- rv hits only the residue-field units
+```
+
+whereas the paper's Definition 2.2(6) has `rv` **onto `RV ∖ {rv(0)}`**, i.e. onto the value
+classes as well. The single missing axiom is
+
+```
+rvSurj' : t ≠ rv(0) → ∃ x (VF), rv x = t
+```
+
+— one guard, `t ≠ rv(0)` (in the encoding: `t ≠ rvInfty`), with no second symbol. The intended
+model satisfies it, since `RV = K^×/(1+𝔪)` is by construction a quotient of `VF^×`.
 
 Two consequences, in increasing order of seriousness:
 
 1. **It blocks (T1).** The translation of an `RV`-quantifier is
-   `∃ y (RV), … ↦ y = 0 ∨ ∃ x (VF), …[rv x]`, and that needs every `RV`-element other than `0`
-   to be in the image of `rv`. With the frozen guard the translation is not justified. The fix
-   recorded in `DECISION.md` — guard `rvSurj` by `t ≠ rvZero ∧ t ≠ rvInfty` instead of by
-   `pUnits` — is exactly the missing axiom, and the intended model satisfies it
-   (`RV = K^×/(1+𝔪)` is by construction a quotient of `VF^×`, so every element is `rv x`).
+   `∃ y (RV), … ↦ y = rv(0) ∨ ∃ x (VF), …[rv x]`, and that needs every `RV`-element other than
+   `rv(0)` to be in the image of `rv`. With the frozen guard the translation is not justified.
 
 2. **It may make the frozen `HasQE ACVF` false**, which is the serious one. The frozen axioms
    confine `RV` only through the preorder, the multiplicative structure, `K ⊆ RV` as a field and
-   the guard above, so a model plausibly admits **junk**: an element `z ∈ RV`, `z ≠ 0`,
-   `z ≠ ∞`, `¬ pUnits z`, with `z` absorbing (`z · t = z`), placed in a fresh preorder class
-   between `1` and `∞`, and with the residue-field operations defined arbitrarily off `K`. On
-   such a model the formula
+   the guard above, so a model plausibly admits **junk**: an element `z ∈ RV` with
+   `z ≠ rv(0)`, `¬ pUnits z`, `z ∉ image(rv)` — absorbing (`z · t = z`), in a fresh preorder
+   class between `1` and `rv(0)`, with the residue-field operations defined arbitrarily off `K`.
+   On such a model the formula
 
    ```
    φ(x) := ∃ y (VF), rv y = x
    ```
 
-   defines `image(rv) = pUnits ∪ {∞}`, whereas in the intended (junk-free) model it defines
-   `RV ∖ {0}` — and no quantifier-free formula can tell a value class from junk `z`, because
-   every quantifier-free test available on `RV` is `pUnits`, `= 0`, `= ∞`, `≤`, `·` and the
+   defines `image(rv) = pUnits ∪ {rv(0)}`, whereas in the intended (junk-free) model it defines
+   `RV ∖ {rv(0)}` — and no quantifier-free formula can tell a value class from junk `z`, because
+   every quantifier-free test available on `RV` is `pUnits`, `= rv(0)`, `≤`, `·` and the
    operations on `K`. If such a model exists, no quantifier-free `ψ` has `ACVF ⊨ φ ↔ ψ`, i.e.
    the frozen statement is unprovable as frozen.
 
@@ -185,4 +206,7 @@ What settles it, in either direction:
   model, which is what the defect denies).
 
 Either way the outcome is a decision about the frozen encoding, not about the mathematics: the
-paper's theory is junk-free, and the repaired axiom is the paper's own.
+paper's theory is junk-free, and the repaired axiom is the paper's own. Note also that the
+correct convention (`rv(0)` the only absorbing element) suggests a second, smaller repair: the
+encoding's two constants `rvZero` and `rvInfty` should be identified, or at least one of them
+kept.
