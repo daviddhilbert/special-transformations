@@ -210,3 +210,32 @@ while the *guards* in them look innocuous.  Consequences:
    bodies) **is still needed for the criterion route's proof**, not for its statement.
 3. Which is the useful form of the answer: the repair is not bookkeeping — it is the difference
    between a fragment whose formulas are controlled by their sorted part and one that is not.
+
+## The criterion, in its smallest form (m4, accepted) — this is the target to attempt
+
+`.ultramath/smw1b0thh/m4/` — all four files compiled here (exit 0, 0 errors, no `sorry`):
+
+| file | what it gives |
+| --- | --- |
+| `FragQE.lean` | `FragmentQFTypeDetermines T` (QF-well-sorted type at sort-respecting tuples of two models determines the well-sorted type) → frozen `HasQE T`, plus the converse and the `iff` |
+| `FragQE1.lean` | the **one-directional** hypothesis suffices (compactness needs no more) |
+| `FragAtoms.lean` | the hypothesis **reduced to atoms** — term equations of one sort, `memVF`/`memRV`/`memUnits`/`rvLe` at their declared sorts; `qfType_iff_atoms` |
+| `SortSound.lean` | sort-discipline helpers; term induction stated as `TermSortSound` |
+
+**So the remaining mathematical obligation of the criterion route is one named statement:**
+
+```
+FragmentAtomQFTypeDetermines Axioms.ACVF        -- FragAtoms.lean:100
+```
+
+and by the proved equivalences it is iff `HasQE Axioms.ACVF` — the theorem in atom form, not a
+shortcut.  It is nevertheless the smallest form of the obligation anyone has produced: the `RV`-side
+work is now exactly "two models agreeing on the *atoms* agree on the atoms' Boolean combinations at
+sorted tuples", which is where §4–§5's special transformations enter.
+
+Two facts from its proof worth not rediscovering: the compactness set must include the sort
+assertions (themselves QF and well-sorted) or the witness tuple is not sorted; and `WellSorted` must
+survive the meet/join folds.  Also: the partial-isomorphism (Shoenfield-embedding) form is *unusable*
+in this encoding, because junk values lie outside the fragment — the QF-type form is the only one
+available.  That settles the comparison question: there is no second, independent formulation to
+check against; there is the criterion, sharp, in atom form.
