@@ -272,3 +272,52 @@ formalised as a transfer lemma.
 
 It is worth knowing that `QE/Reduction_assembly.lean` compiles and that `RVeqRvVF_of_model` is
 proved there: if saturation ever becomes available, that route is the shorter one.
+
+## What remains, item by item, with the specific difficulty of each
+
+Written at commit `e6fdc8a`.  The tree compiles: all 47 `.lean` files in `QE/` and `Milestone0/`
+have 0 errors, and there are exactly **three** real `sorry`s in it —
+`Milestone0/Balls.lean:502` (`infinite_boolComb_contains_openBall`, which Theorem 2.8 needs, not
+2.3) and `Milestone0/Encoding.lean:923,930` (`theorem_2_3_quantifier_elimination` and
+`theorem_2_8_c_minimal`).
+
+1. **`CheeseMeetsBase`** (Johnson 2.3.8 in the `IsKBall` framework).  The mathematics is in
+   `QE/Johnson23_valuation.lean` (`lemma_2_3_3`, `lemma_2_3_7`, `lemma_2_3_8`), but in the
+   `IsValBall`/`IsValBallK` framework, which has a `singleton` constructor that `IsKBall` does not;
+   `IsKBall` maps into it.  Two traps: the nontriviality `∃ x ≠ 0, w (f x) < 1` is essential
+   (without it the traces of the balls on `K` are points or everything and 2.3.7 is false in the
+   form used); and in the `IsKBall` framework every radius is a *value* `w (f b)`, never a general
+   element of the value group.
+
+2. **`star`** (Johnson 2.2.4–2.2.7).  Blocked on one piece of commutative algebra: torsion-free
+   over a valuation ring is flat, so `O₁ ⊗_O O₂ ↪ O₁ ⊗_O K₂ ↪ K₁ ⊗_O K₂`.  Johnson's full proof is
+   at `.ultramath/refs/johnson-ch2.txt` lines 190–360.  The `star`-to-`HasAmalgamation valField`
+   step additionally needs the `ValuationSubring`-level statement transported to
+   `valField.ModelType`s, which `exists_valuation_of_isValPred` (`e6fdc8a`) now makes possible.
+
+3. **Hypothesis (iii) at the `ModelType` level.**  `oneECIn_of_inputs'` is stated for concrete
+   valued fields with the `L_val` structure `valStructure w`; `hasQE_of_johnson` wants it for
+   `M N : valField.ModelType` with arbitrary `L_val` structures.  The missing lemma is
+
+   ```
+   valStruct_ext : (s : val.Structure M) → [Field M] → [CompatibleRing M] →
+     valRingHom.IsExpansionOn M → s = valStructOf M (predM : M → M → Prop)
+   ```
+
+   A first attempt failed with an **instance diamond**: declaring `IsExpansionOn` for
+   `valStructOf M predM` while the ambient `val.Structure M` is `s` makes typeclass search
+   synthesise an instance that is not definitionally the one the typing rules infer.  The fix is
+   not to declare the instance but to state the function-symbol equality as a plain `have` with
+   explicit `@Structure.funMap` applications, and to rewrite `x` to `![x 0, x 1]` on the relation
+   side (`predM x y` is `RelMap le ![x, y]`, and `x = ![x 0, x 1]` is `funext` + `fin_cases`).
+   Once that lemma exists, `OneECIn` transports along the structure equality and (iii) closes.
+
+4. **The assembly `HasQE (L := Language.val) ACVF_val`.**  `hasQE_of_johnson` takes the three
+   hypotheses plus `valField ⊆ ACVF_val` (proved); hypothesis (i) is `hasPrimeModels_ACVF_val`.
+   Nothing beyond 1–3 is missing.
+
+5. **The transfer `L_val → L_RV`.**  Not started.  Route (T1): `RV = rv(VF^×) ∪ {0}` (a theorem in
+   the frozen encoding, `RVeqRvVF_of_model`) lets an `RV`-quantifier `∃ y (RV), ψ` be written
+   `∃ y' (VF), y' ≠ 0 ∧ ψ[y'/y]`, with `rv (t)` read as `t` and `rv t ≤ rv s` as `v t ≤ v s`.
+   The work is the recursion through the *tagged* encoding of `Milestone0/Encoding.lean`
+   (`allSorted`, `tRVZero`, the junk conventions of each function symbol), not the mathematics.
