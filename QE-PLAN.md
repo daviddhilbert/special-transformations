@@ -109,10 +109,19 @@ So layer (A) is now reachable in two steps, neither of them Shoenfield's:
    the embedding into it, and `IsFractionRing.lift`, with `v x ≤ v y` preserved and reflected —
    `predFrac_iff` gives that by cross multiplication) and the packaging into
    `HasPrimeModels`. `QE/PrimeModels_full.lean` is the `Language.ring` skeleton; (ii) amalgamation — `QE/Amalgamation_reduced.lean` modulo
-   ★ alone (Johnson 2.2.4/2.2.6 on `O₁ ⊗_{O₀} O₂`); (iii) 1-ec — Johnson §2.3, where
-   `QE/Johnson23_valuation.lean` now has 2.3.4, 2.3.5, 2.3.6, 2.3.7 in full generality, ball
-   comparability, and the cell decomposition behind 2.3.2; missing are `cell_swissCheese`
-   (normalising a cell's complement family to subballs), 2.3.1, 2.3.3, 2.3.8, 2.3.9.
+   ★ alone (Johnson 2.2.4/2.2.6 on `O₁ ⊗_{O₀} O₂`); (iii) 1-ec — Johnson §2.3, now: 2.3.2,
+   2.3.3, 2.3.4, 2.3.5, 2.3.6, 2.3.7, 2.3.8 all proved (`QE/Johnson23_valuation.lean`, with an
+   independent subfield version in `QE/Johnson23_subfield.lean`), and `QE/OneEC_val.lean`
+   assembles hypothesis (iii) down to the single named input `AtomGood` = 2.3.1(ii).
+   **2.3.1(ii) is the one analytic step left**, and it is subtler than Johnson's sketch: the
+   header of `QE/OneEC_val.lean` records the two failure modes of the naive arg-max argument
+   (`v(x-a) = v(x-a')` away from the roots is possible, so strict arg-max cells do not cover `N`;
+   and at `x = a` the max rule degenerates, `v(a-a') = M` while `v(x-a') = 0`), and the
+   cluster-merging decomposition that does work — split on `v(x-a) < γ_a`, `= γ_a`, `> γ_a`, where
+   `γ_a` is the distance from `a` to the nearest other root: constants in the first case, a
+   constant `a`-term in the second, and a merge of `a` with its nearest neighbour in the third, so
+   the number of distinct roots strictly decreases and the argument inducts.  2.3.9 (the
+   characterisation 1-ec = algebraically closed + nontrivially valued) then follows.
 
 2. **The transfer `L_val → L_RV`.** The paper's Theorem 2.3 is stated in `L_RV`
    (`paper.tex:509`, quoting `qe.tex` Theorem 3.10), so QE in `L_val` alone does not discharge
