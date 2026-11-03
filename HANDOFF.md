@@ -63,6 +63,15 @@ and, for the public GitHub build, switch to a git requirement.
 Everything compiles; no theorem is proved yet. `Basic.lean` is the only library
 file with real Lean content; the real content lives in `Milestone0/`.
 
+## Cross-cutting: Theorem 2.3 (QE)
+
+Quantifier elimination is not one of the milestones below — they cover Sections 4-10 — but it
+is the engine behind Theorem 2.8 (C-minimality) and is being formalized separately. See
+[`QE-PLAN.md`](QE-PLAN.md): the statement sits in `Milestone0/Encoding.lean`
+(`theorem_2_3_quantifier_elimination : HasQE ACVF`), the target is Yin's reduction from
+Weispfenning's theorem for the two-sorted `L_v`, and Weispfenning itself is kept as an explicit
+hypothesis rather than an axiom.
+
 ## Recommended next steps
 
 ### Milestone 0 — language and syntax — **done**
