@@ -2452,3 +2452,36 @@ composition whose hypothesis is stronger than the conclusion's, and the frontier
 Either way the junk-truth half is closed (`QE/JunkTrue.lean`) and the composition is available for
 free, so the work that remains is the RV-side content and nothing else — the same conclusion the
 second route reached from the criterion side.
+
+### `smw1bwjo2` m2 (parameter bridge): the relabel half verified and merged, the bridge still open
+
+m2 delivered its direction in two files and said plainly that `hasQE_of_hasQE_empty` was not among
+them.  I compiled both (in the right order — `Relabel` imports `Shift`), 0 errors, no `sorry`, and
+`#print axioms` on `wellSorted_relabel`, `guardTrue_relabel`, `inAntecedent_relabel`,
+`realize_shiftAux` gives `{propext, Classical.choice, Quot.sound}`.  Merged as
+`QE/ParamBridgeShift.lean` and `QE/ParamBridgeRelabel.lean` (namespace `ParamBridge` unchanged;
+the `import Shift` line became `import ParamBridgeShift`).
+
+* `wellSorted_relabel` — the transport the *earlier* swarm recorded as not delivered:
+  `g : α → β ⊕ Fin m` sending each parameter to a same-sorted parameter or to one of `m` new leading
+  variables, `WellSorted sα sn ψ` ⟹ `WellSorted sβ (sortAssem sG sn) (ψ.relabel g)`.  The guard
+  transports by `InAntecedent`'s constructors, which is exactly what the compiled `Occurs` could not
+  do.  This is what §3 needs to move `acl` between parameter pairs, as well as the bridge.
+* `guardsLast_of_GuardTrue` — a fact about the frozen predicate: `GuardTrue s i χ → GuardsLast s i χ`,
+  so `WellSorted.all`'s `hg` field is *redundant* given `hj`.  The frozen constructor keeps both; the
+  guard information is carried once, not twice.  Recorded, not changed.
+* `realize_shiftAux` — full semantics of the variables→parameters gadget, which is the other half of
+  the bridge.
+
+**Verdict: rejected, once, with guidance** — the direction's named deliverable is absent and m2 had
+already diagnosed its own obstruction, so it continues rather than stops.  The guidance given: the
+stuck lemma `wellSorted_shift` looks like a *corollary of `wellSorted_relabel` at `β := α ⊕ Fin k`,
+`m := 0`*, since then the variable side does not move (`Fin (0 + n) = Fin n`, and `Fin.natAdd 0` is
+the identity), so the "index value fixed as the context grows" obstruction — the one that killed the
+earlier attempt — does not arise; the growth is entirely on the parameter side, which `hg` absorbs.
+If `shiftAux` also renumbers variables, the general-`N` formulation with `hN : N = n + k` at the use
+site is the fallback.
+
+**Still missing, so the bridge is still open:** `hasQE_of_hasQE_empty` itself, and the three lemmas
+between: `wellSorted_shift` (`tmSort_shift`, `shift_sortPredG'`, `inAntecedent_shift`,
+`guardTrue_shift`), whose intended statements are in `.ultramath/smw1bwjo2/m2/SUMMARY.md`.
