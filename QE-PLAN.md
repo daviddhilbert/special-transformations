@@ -1117,3 +1117,19 @@ familiar `a/b ∈ 1 + 𝔪`.  This is repair item 3 in its final form, and it is
 located the same obstruction (m3 from the residue operations, m2 from the order/predicate atoms), and
 two independently proved `rv 1 = 1`.  The repair list stands at five items, with items 1 and 5
 already in the tree as `leMulCompatFull` and (pending) `axNontrivialRV`.
+
+## The repair is applied, and the extraction is unconditional
+
+`Milestone0/Encoding.lean` now carries `Axioms.repairRV` (additive: `leMulCompatFull`,
+`rvMulOneRV`, `rvMulInvRV`, `kAddLink`, `kNegLink`, `rvEqLink`, `kJunkZero`,
+`kNegJunkZero`, `axNontrivialRV`), and `QE/Assembly_val.lean` carries the same set.  Consequences
+in the tree, all green and axiom-clean:
+
+* `Transfer.paperScale_of_model : M ⊨ ACVF → PaperScale M` — item 5 as a theorem, not a hypothesis;
+* `Transfer.hasNontrivVal_of_model : M ⊨ ACVF → HasNontrivVal M`;
+* `Transfer.model_ACVF_val_of_model : M ⊨ ACVF → (VFType) ⊨ ValPM.ACVF_val` — the extraction,
+  with no hypotheses at all.
+
+So the endgame is now: `hasQE_ACVF_val` (proved) + the cover (swarm `smw163dd5`) +
+`transfer_of_isQF` + `QFTypeDetermines` (proved) ⇒ `HasQE Axioms.ACVF`.  The case split is not
+needed, because nontriviality is an axiom now.

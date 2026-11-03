@@ -325,3 +325,37 @@ is translation-invariant.)  This moves the frozen hash of `Milestone0/Encoding.l
 same propagation as the `rvSurj` repair: every `QE/` and `accepted/` snapshot that carries a copy
 of the axiom set, plus `RVModel.lean`'s `rvGroupAxioms_intended`.  **Not applied**: awaiting the
 author's ruling.
+
+## The repair, applied (author: "edit anything as you see fit")
+
+The transcription defects recorded above are repaired in `Milestone0/Encoding.lean` **additively**:
+no axiom is removed or weakened, so every theorem proved before the repair stays proved, and each
+added sentence is true in the intended structure.  The new theory is `Axioms.repairRV`, included in
+`ACVFpaper`:
+
+| sentence | what the paper says | what the frozen axioms said |
+| --- | --- | --- |
+| `leMulCompatFull` | item 5: `RV/Kˣ = Γ` an **ordered** group, so `a ≤ b ↔ ac ≤ bc` for every `c ≠ rv 0` | `leMulCompat`, `pUnits c`-guarded — only the identity class of `Γ` |
+| `rvMulOneRV`, `rvMulInvRV` | item 2: `(RV^×, 1, ×)` a divisible **group** | `rvMulOne`, `rvMulInv`, `pUnits`-guarded — only the subgroup `Kˣ` |
+| `kAddLink`, `kNegLink` | items 3, 6: `K` is *the residue field* of `vv = vrv ∘ rv` | `kAdd`/`kNeg` constrained only inside `K`, never linked through `rv` |
+| `rvEqLink` | `rv a = rv b ↔ v (a - b) > v b` | nothing |
+| `kJunkZero`, `kNegJunkZero` | a fixed convention off `K` | the values off `K` were free |
+| `axNontrivialRV` | the valuation is **nontrivial** (needed by Theorems 2.3 and 2.8) | no nontriviality sentence |
+
+Each was necessary: for the first, the second and (jointly) the residue links there are explicit
+models of the frozen axioms refuting Theorem 2.3 — a coarsened order, a twisted residue addition,
+and a trivially valued field (which agrees with a nontrivially valued one on every quantifier-free
+sentence) — recorded with their arguments in `QE-PLAN.md`.
+
+```
+sha256 of Milestone0/Encoding.lean after the repair: 2cc0d20fc272c75a8b5adff30ca2663f6722c27d3bbee2b6d840a27ec87daffe
+```
+
+`QE/Assembly_val.lean` carries the same axiom set, and with it the extraction is now
+**unconditional**: `Transfer.model_ACVF_val_of_model (hM : M ⊨ Axioms.ACVF)` gives
+`ValPM.ACVF_val` on the `VF` sort with no side hypotheses, and
+`Transfer.paperScale_of_model`, `Transfer.hasNontrivVal_of_model` derive the two hypotheses that
+were previously assumed.  The snapshots in `Milestone0/accepted/` and the older files in `QE/`
+still carry their own copies of the *pre-repair* axiom set; since the repair only adds axioms, each
+of them remains a true statement about the theory it states, and re-verifying them against the new
+hash is bookkeeping to be done as they are next touched.

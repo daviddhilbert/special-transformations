@@ -516,7 +516,6 @@ def leClassOne : LRV.Sentence :=
 translation-invariant order -/
 def leMulCompat : LRV.Sentence :=
   allSorted ![.rv, .rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pUnits &2 ⟹ (pLe &0 &1 ⟹ pLe (tRVMul &0 &2) (tRVMul &1 &2))))))
-
 /-- Definition 2.2 item 4: `≤` is a preorder on `RV` with `∞` the top element and `Kˣ`
 the equivalence class of `1`. -/
 def preorderRV : LRV.Theory :=
@@ -550,9 +549,81 @@ def rvAxioms : LRV.Theory :=
 
 /-! ### 3.6 `ACVF` and `ACVF(0,0)` -/
 
+/-! ### 3.6a The repaired axioms: `RV^×` is a group, the order scales, the residue field is
+the residue field, and the valuation is nontrivial
+
+Each sentence below is **added** to Definition 2.2's axioms, never substituted for one: every
+`ACVF`-theorem proved before the repair stays proved, and each added sentence is true in the
+intended structure.  They exist because the transcription of Definition 2.2 left four things unsaid,
+and a model violating each of them refutes Theorem 2.3 (see `QE-PLAN.md` for the three explicit
+refutations):
+
+* `rvMulOneRV`, `rvMulInvRV` — item 2 makes `(RV^×, 1, ×)` a divisible **group**, i.e. decidability
+  of `rv`-equality needs cancellation by any nonzero element, not only by units;
+* `leMulCompatFull` — item 5 makes `RV/Kˣ = Γ` an **ordered** group, i.e. the order is invariant
+  under scaling by any `c ≠ rv 0`, not only by `Kˣ` (which is the identity class of `Γ`);
+* `kAddLink`, `kNegLink`, `rvEqLink`, `kJunkZero`, `kNegJunkZero` — items 3 and 6 say `K` is *the
+  residue field* of `vv = vrv ∘ rv`; without a link through `rv`, `kAdd` may be any field addition
+  on `K` sharing `×`, and twisting it by an automorphism of `(K^×, ·)` preserves every axiom while
+  destroying quantifier elimination;
+* `axNontrivialRV` — the target theorems are false for a trivially valued field: trivially and
+  nontrivially valued fields of the same residue characteristic agree on every quantifier-free
+  `L_RV` sentence, because closed terms are numerals and `rv` of numerals.
+-/
+
+/-- `1` is neutral for `×` on every nonzero `RV`-element. -/
+def rvMulOneRV : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ pEq (tRVMul tRVOne &0) &0)
+
+/-- every nonzero `RV`-element is invertible in `RV^×`. -/
+def rvMulInvRV : LRV.Sentence :=
+  allSorted ![.rv] (pRV &0 ⟹ exSorted .rv (pRV &1 ⊓ pEq (tRVMul &1 &0) tRVOne))
+
+/-- the order on `RV` is invariant under scaling by any `c ≠ rv 0`, in both directions.  The guards
+on the first two variables are dropped because `∞ = rv 0` is absorbing and top, so both sides hold
+there. -/
+def leMulCompatFull : LRV.Sentence :=
+  allSorted ![.rv, .rv, .rv] (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))
+
+/-- `kAdd` is the residue addition at units: `rv (x + y)` if that is a unit, and `0` if `x + y`
+drops into the maximal ideal. -/
+def kAddLink : LRV.Sentence :=
+  allSorted ![.vf, .vf]
+    (pUnits (tRv &0) ⟹ (pUnits (tRv &1) ⟹
+      ((pUnits (tRv (tVFAdd &0 &1)) ⟹
+          pEq (tKAdd (tRv &0) (tRv &1)) (tRv (tVFAdd &0 &1))) ⊓
+        (∼(pUnits (tRv (tVFAdd &0 &1))) ⟹
+          pEq (tKAdd (tRv &0) (tRv &1)) tRVZero))))
+
+/-- `kNeg` is the residue negation at units. -/
+def kNegLink : LRV.Sentence :=
+  allSorted ![.vf] (pUnits (tRv &0) ⟹ pEq (tKNeg (tRv &0)) (tRv (tVFNeg &0)))
+
+/-- two elements of `VF` have the same residue iff their difference has strictly larger value. -/
+def rvEqLink : LRV.Sentence :=
+  allSorted ![.vf, .vf]
+    (∼(pEq &1 tVFZero) ⟹
+      (pEq (tRv &0) (tRv &1) ⇔ ∼(pLe (tRv &1) (tRv (tVFAdd &0 (tVFNeg &1))))))
+
+/-- the junk convention for `kAdd` off `K`: the value is `0`. -/
+def kJunkZero : LRV.Sentence :=
+  allSorted ![.rv, .rv] ((∼(pInK &0) ⊔ ∼(pInK &1)) ⟹ pEq (tKAdd &0 &1) tRVZero)
+
+/-- the junk convention for `kNeg` off `K`. -/
+def kNegJunkZero : LRV.Sentence := allSorted ![.rv] (∼(pInK &0) ⟹ pEq (tKNeg &0) tRVZero)
+
+/-- **Nontriviality**: some nonzero element of `VF` has value strictly below the value of `1`,
+i.e. lies in the maximal ideal. -/
+def axNontrivialRV : LRV.Sentence :=
+  exSorted .vf (∼(pEq &0 tVFZero) ⊓ ∼(pLe (tRv &0) (tRv tVFOne)))
+
+/-- The added axioms, in one theory. -/
+def repairRV : LRV.Theory :=
+  ofList [rvMulOneRV, rvMulInvRV, leMulCompatFull, kAddLink, kNegLink, rvEqLink, kJunkZero,
+    kNegJunkZero, axNontrivialRV]
+
 /-- the paper's own content of `ACVF`: Definition 2.2, items 1–6 -/
 def ACVFpaper : LRV.Theory :=
-  vfField ∪ vfAlgClosed ∪ rvGroup ∪ kField ∪ kAlgClosed ∪ preorderRV ∪ rvAxioms
+  vfField ∪ vfAlgClosed ∪ rvGroup ∪ kField ∪ kAlgClosed ∪ preorderRV ∪ rvAxioms ∪ repairRV ∪ repairRV
 
 /-- **The theory `ACVF` of Definition 2.2**, in the tagged encoding: items 1–6 plus the
 sort discipline of the encoding. -/
