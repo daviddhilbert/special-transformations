@@ -2624,3 +2624,16 @@ Four obstacles, recorded in the file header so they are not repaid: atoms are `r
 does not mention is **not** in scope for its proof, so the model-free existence of the extracted term
 had to be obtained separately (`vfOpt_exists`, by instantiating the model-indexed soundness theorem at
 a junk `LRV.Structure PUnit`), with `vfOpt_val` carrying the model inside its conclusion.
+
+### Section 5 scaffold moved into the tree; `lake build` verified
+
+`.ultramath/smw18ygko/m1/Sec5.lean` is now `QE/Sec5.lean` (1110 lines, standalone `import Mathlib`,
+compiled here: exit 0, 0 errors, no `sorry`).  It could **not** be put in place of the library module
+`SpecialTransformations/SpecialBijection.lean`: the file carries its own copy of `RV` (as `AGENTS.md`
+§4 prescribes) and the two copies collide in one `lake build` — measured, `environment already
+contains 'SpecialTransformations.RV' from SpecialTransformations.Basic`.  So the library stub stays,
+and the content lives beside it; unifying the copies is Milestone 1–2 work.
+
+`lake build` is green (8717 jobs, 14 s) with the stub restored, and the `QE/` directory is now
+47 files, **all green**, 16 `sorry` warnings (2 of them the frozen Theorem 2.3 and 2 its copies in the
+assembly).  `MILESTONES.md` carries the updated numbers.

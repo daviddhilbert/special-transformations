@@ -26,7 +26,7 @@ From `HANDOFF.md` — Milestones 0–5 cover the paper's Sections 4–10; Theore
 | --- | --- | --- | --- | --- |
 | `Milestone0/*.lean` | 6 | **6** | 0 | 3 (`Encoding` 2 — the two frozen targets; `Balls` 1) |
 | `Milestone0/accepted/*.lean` | 10 | **10** | 0 | 0 |
-| `QE/*.lean` | 45 | **45** | 0 | 19 |
+| `QE/*.lean` | 47 | **47** | 0 | 16 |
 | `SpecialTransformations/*.lean` | 11 | — | — | stubs, 221 lines in total; `Main.lean`'s table is honest: every paper item "not started" |
 
 Two claims in the repository were **false** and are corrected in the commit that adds this file:
@@ -71,9 +71,13 @@ they are `def … := n`, i.e. definitional dimensions with no theorems), Lemmas 
 categories `VF[k,·]`/`RV[k,·]`, the lift `L`, and the Grothendieck semigroups —
 `SpecialTransformations/{Dimension,Categories}.lean` are 17-line stubs.
 
-**Milestone 3 — the scaffold is green but it is not in the tree.**
-`.ultramath/smw18ygko/m1/Sec5.lean`: 1122 lines, standalone (`import Mathlib`), compiled here —
-exit 0, 0 errors, **no `sorry`** — with 55 theorems: `Pt`, `key`, `SamePD`, `polydisc`, `rvHull`,
+**Milestone 3 — the scaffold is in the tree now, as `QE/Sec5.lean`.**
+`QE/Sec5.lean` (1110 lines, standalone `import Mathlib`, compiled: exit 0, 0 errors, **no `sorry`**)
+is the file the swarm left at `.ultramath/smw18ygko/m1/Sec5.lean`, moved in verbatim after the
+header; it cannot be the library module `SpecialTransformations/SpecialBijection.lean` because its own
+copy of `RV` clashes with `Basic.lean`'s in one `lake build` (`environment already contains
+'SpecialTransformations.RV'` — measured), and unifying the two copies is Milestone 1–2 work.  55
+theorems: `Pt`, `key`, `SamePD`, `polydisc`, `rvHull`,
 `IsRVPullback`, `Csharp`, `rvHullSharp`, the focus map, `eta`, `SpecialBijection` (a structure with
 `image`, `invMap`, `lh`, `refl`, `comp`), `IsDeformedRVPullback`, `eta_wellPosed` derived from its
 hypotheses, `etaInv ∘ eta = id`, and `exists_unique_contractionVF`.  The paper's 5.2/5.4/5.5 are
