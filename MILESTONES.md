@@ -316,3 +316,34 @@ paper_theorem_2_3, paper_theorem_2_3_sat, shoenfieldTestFS_of_sat
 `OneStepSizeFree`'s quantification also moves onto the saturated-with-room half of `PaperHyp`.
 `QE/Prop39Two.lean`'s header now records the vacuity explicitly; the file stays because the
 implication is what the repaired inputs plug into.
+
+## Gap 2 as it actually is (member m1, accepted; merged as `QE/M1Fix.lean`)
+
+The Shoenfield half of the theorem is now reduced to classical model theory, honestly named:
+
+* `card_le_of_prop39FS` — a third independent machine-check that frozen `Prop39FS` forces size
+  at every partial embedding, so it is no evidence for Theorem 2.3 at the frozen quantifier.
+* `hasQE_of_qfEAmalg` — elementary amalgamation at QF-well-sorted-identical tuples alone gives
+  `HasQE Axioms.ACVF`; `qfEAmalg_model` shows the amalgam is automatically an `ACVF` model.
+* `hasQE_of_modelComplete_monoAmalg` — Robinson's route: model completeness of `ACVF` in
+  `L_RV` (embeddings between models are well-sorted-elementary, `WellSortedElem`) + common-model
+  amalgamation at QF-identical tuples.
+* `qf_realize_embedding` — an `L_RV` embedding transfers *only* quantifier-free truth, which is
+  precisely why a `Prop39FS`-style monomorphism can never by itself be a proof of QE; the
+  elementary amalgam replaces it.
+
+So **Gap 2 = one of `QFEAmalg` or (`ModelCompleteRV` + `MonoAmalg`)**, both classical statements
+Mathlib does not have, and both of which the §3.1 route (into saturated models) is designed to
+supply.
+
+## Frontier, current form
+
+```
+ShoenfieldTestSize  (or QFEAmalg / ModelCompleteRV + MonoAmalg)
+PrepStepSize        Lemma 3.3 at pairs with Card M <= Card N
+OneStepSizeFree     Lemmas 3.4-3.8 (unchanged; Standing carries the size)
+```
+
+plus the flagged caveat that `OneStepVFP` may also fail at equal cardinality for
+value-group-dimension reasons (m5's Hahn-field argument; realizing it needs a concrete model of
+`Axioms.ACVF` in Lean, which the tree does not yet have).
