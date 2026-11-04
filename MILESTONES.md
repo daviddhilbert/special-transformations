@@ -1187,3 +1187,25 @@ and merged (one WIP left behind):
     `#Kˣ(M) ≤ #N`, so the hull slot's cardinality obstruction never applies at `relGate` pairs — the
     gate is exactly the cardinality the construction forces.
   - Also a gate-level split of the unit slot (for u1's worker).
+
+## smw2qpqe7 m1 (2026-11-04, accepted): RelUnit assembled; every slot is an EMBEDDING statement
+
+* `QE/RelUnit.lean` + `QE/RELUNIT.md` (m1, u1; verified 0 errors, 42 axiom heads clean):
+  - **§0 STRUCTURAL (no ACVF, no gate)**: for the slot conclusion shared by ALL five slots,
+    `Standing (Closure S m) ⇒ (SlotConcl S f m ↔ ClosureEmbedding S f m)`. So the `T`, `m ∈ T` and
+    `Standing T` conjuncts are NEVER extra content — **every slot's real content is the embedding
+    statement**. This is the general form of the ⊤-witness/attribution observations.
+  - `UnitSlot ⟺` the unit-cone implication (¬Separated is derivable at units — the hypothesis is
+    redundant) and `UnitSlot ⟺ UnitClosureEmbedding ∧ UnitClosureStanding` with the realisation half
+    NECESSARY (`closureEmbedding_of_unitSlot`).
+  - `RootData` reduced: `rootData_iff_rootData'` (the `iRv m ∈ S` row is redundant);
+    `slot34_holds` — **`M5P1.Slot34` is a theorem** (from `slot_of_liftAllRoot`);
+    `algebraicUnitSlot_of_rootData_via_slot34` identifies **3.4's content with `RootData` exactly**.
+  - Statement-level finding: the frozen `M8.ClaimStar` omits the paper's embedding half of
+    Claim (⋆); the transcendental CLASS half is DERIVED from the paper's hypotheses (residue
+    transcendence, `QuotExpansions`, `IsVFGen` closure, `VFInvClosedOn`) via `QE/UnitCase.lean` —
+    **no EP 3.4.3, no RVTrans**.
+  - Assembly: `unitSlot_of_34_and_36_paper`, `relUnit_of_parts`/`_gated_parts`/`_rootHull`/
+    `_rootHullRealisation`, and `paper_theorem_2_3_of_parts` (the five-part endgame with `RelUnit`
+    split). Residual named: `TranscendentalRealisation` (`f* : ⟨Ŝ,m⟩ → N`) + `RootData` + the
+    closure VF-part rows. `relGate` is never consumed — the assembly is per-pair.
