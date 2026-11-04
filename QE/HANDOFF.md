@@ -63,9 +63,13 @@ LedgerInput5P        ANALYZED (`QE/SatReal.lean` + `QE/QFAudit.lean`, e2): ⟺ o
                      `QE/QFRoute.lean`'s `paper_theorem_2_3_sat_of_qf` (Shoenfield + QFFinSat at
                      PaperHyp + inputs 2/3/4 + one-step). QFFinSat is Lemmas 3.2–3.8's content:
                      smw2k0btg f1/f2
-Hahn.OneStepPaper  ∀∀ PaperHyp → OneStepVFP — the ONLY surviving gate (QE/HahnObstruction.lean
-                     machine-refutes `OneStepSizeFree`, and `OneStepSizeBounded` too: size cannot
-                     repair the one-step, only saturation can); case-lemmas state: 3.2 ✓,
+Hahn.OneStepPaper  ∀∀ PaperHyp → OneStepVFP — an intermediate gate only (OneStepCases/FinalRoute
+                     consume it; the FINAL2 frontier does not). `QE/HahnAnatomy.lean` machine-checks
+                     that it FAILS at Archimedean-pair configurations (`not_oneStepPaper_of_config`)
+                     and that no domain strengthening repairs a one-step
+                     (`not_forall_embAt_of_infinitesimal`): its discharge must carry
+                     `¬ArchimedeanRV`. `QE/FinalAudit.lean`'s one-step slot is vacuous (⊤-witness),
+                     so none of this touches the canonical route; case-lemmas state: 3.2 ✓,
                      3.7 ✓, separated ✓, atomic transport ✓; assembly combinator + 3.8 value side
                      LANDED (`QE/OneStepCases.lean` `oneStepVFP_of_cases`: three slots — separated /
                      not-separated / new-rv — `caseSeparated_of_RVControl`/`_of_ResidualClasses`

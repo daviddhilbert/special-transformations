@@ -646,3 +646,35 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
 * Also recorded in the same merge: `QE/FinalAudit.lean` (f6, accepted earlier this session) — the
   seven-hypothesis collapse to `ShoenfieldTestSat + Prop39Sat`; `FinalRoute.olean` was missing from
   the shared chain (the audit exposed it) and is now built.
+
+## 2026-11-04 (smw2jkpn4 ended solved; sentinels): HenselDefect + HahnAnatomy
+
+* **smw2jkpn4 ended solved (4 accepted + 2 valuable abandoned-sentinel findings).** Accepted:
+  e8 (`QE/FinalRoute.lean`), e1 (`QE/ShoenfieldQuote.lean`, T4 resolved at `relGate`), e4
+  (`QE/OneStepCases.lean` + `QE/Case38Value.lean`), e2 (`QE/SatQuotes/SatReal/KOfBridge/QFRoute/
+  QFAudit`, QFFinSat residual). Its member m1's abandoned direction left the defect below.
+* **DEFECT FOUND + FIXED (m1's `HenselDefect`, sentinel).** `QE/M7Hensel.lean`'s `IsHenselianVF`
+  was vacuous: its constant-term clause read `¬iLe (rv 1) (rv (a 0))` (contradicts the coefficient
+  clause at `i = 0`); intended — and now restored — is `¬iLe (rv (a 0)) (rv 1)` (a₀ strictly below
+  1 in the reversed-reading order; cf. `QE/RVAdd.lean`'s `IsMax`). Consequence before the fix:
+  everything consuming the predicate was trivially satisfiable (including `HenselizationExists`),
+  which mattered only for *honesty of the hypothesis* — no proof step was unsound. Fix = argument
+  swap only; all 14 consumers (`M7Hensel`, `M5Ledger`, `FinalAudit`, `QFRoute`, `QFAudit`,
+  `M7PaperHyp`, `HahnAnatomy`, `ShoenfieldQuote`, `SatReal`, `KOfBridge`, `SatQuotes`,
+  `Case38Value`, `StandingHullRoute`) re-verified 0 errors after the patch.
+* **`QE/HahnAnatomy.lean` (smw2k0btg m4, accepted).** The Hahn obstruction is EXACTLY at the
+  embedding half (`EmbAt`: extension without `Standing`): `not_embAt_of_infinitesimal` excludes it
+  with no Standing or size, `not_forall_embAt_of_infinitesimal` covers every domain class — no
+  hull/KEqTop/GammaDiv strengthening repairs the one-step. `oneStepVFP_iff_gammaDivisible`:
+  the frozen one-step is degenerate (GammaDivisible only, KEqTop free). The Prop39
+  finite-satisfiability relation is pinned as the bifurcation locus: `embAt_of_finSat` (finite sat
+  ⟹ embedding half) but `not_finSat_of_archimedean` at the configuration — so **`SaturatedFS` cannot
+  imply `¬ArchimedeanRV`** (a saturated ACVF's Γ is divisible, hence Archimedean; the infinitesimal
+  sits in M, its N-side iff is exactly finite satisfiability, i.e. `QFFinSat`).
+  `not_oneStepPaper_of_config`: at a `PaperHyp` pair with an Archimedean-halved configuration, the
+  `OneStepPaper` gate fails — so `OneStepPaper` (hypothesis 7 of `paper_theorem_FINAL`, used only by
+  the intermediate forms) must rest on `¬ArchimedeanRV`, and the paper's route certainly did not
+  fold through it. The canonical FINAL2 route (Shoenfield + Prop39Sat = QFFinSat at relGate) is
+  untouched by all of this.
+* Chain note: `FinalRoute.olean` had been missing from `.scratch2/sec3` (exposed by f6's build) —
+  built alongside this batch; the chain is now current through `FinalAudit`.

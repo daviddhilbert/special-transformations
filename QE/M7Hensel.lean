@@ -165,7 +165,14 @@ root in `m(S)`.
 
 Equivalence with henselianity of the valued field `(VF(S), O(S))` is Engler–Prestel, *Valued
 Fields*, Theorem 4.1.3 and its corollaries.  This is valuation theory (not Marker), so it is
-*defined* here and only used, never assumed. -/
+*defined* here and only used, never assumed.
+
+**The constant-term clause**, i.e. the second `iLe`-disjunct: the intended "a₀ has strictly negative
+value" is `¬iLe (rv (a 0)) (rv 1)`.  ERRATUM (swarm smw2jkpn4 m1's `HenselDefect`, 2026-11-04):
+this used to read `¬iLe (rv 1) (rv (a 0))`, which contradicts the coefficient clause at `i = 0` and
+made the whole predicate vacuous (`IsHenselianVF S` held of *every* substructure — so everything
+consuming the predicate, notably `HenselizationExists`, was trivially satisfiable).  The clause was
+restored to the intended argument order; every consumption of `IsHenselianVF` is unaffected. -/
 def IsHenselianVF (S : LRV.Substructure M) : Prop :=
   ∀ (n : ℕ) (a : ℕ → M),
     1 ≤ n →
@@ -174,7 +181,7 @@ def IsHenselianVF (S : LRV.Substructure M) : Prop :=
       (∀ i, n < i → a i = Transfer.iVFZero (M := M)) →
       a n = Transfer.iVFOne (M := M) →
       (∀ i, i ≤ n → iLe (iRv (Transfer.iVFOne (M := M))) (iRv (a i))) →
-      (¬ iLe (iRv (Transfer.iVFOne (M := M))) (iRv (a 0))) →
+      (¬ iLe (iRv (a 0)) (iRv (Transfer.iVFOne (M := M)))) →
       iUnits (iRv (a 1)) →
       ∃ b : M, b ∈ S ∧ iVF b ∧ vfEval (M := M) a n b = Transfer.iVFZero (M := M) ∧
         ¬ iLe (iRv b) (iRv (Transfer.iVFOne (M := M)))
