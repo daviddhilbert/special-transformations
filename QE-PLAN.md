@@ -2803,3 +2803,31 @@ What its proof needs is now precisely known and it is the same missing piece twi
   which §3's `exchange` needs too.
 
 So one development unblocks both §3's exchange and §4's `dim:RV:fibers`.  m6 continues on it.
+
+### The one wall, three times: variable-level substitution is the critical path of §3–§4
+
+Three independent directions of `smw1jgnht` are now blocked on the *same* missing lemma, which makes
+it the critical path rather than an incidental chore:
+
+| direction | what it needs | why |
+| --- | --- | --- |
+| §3 `exchange` (→ `alg:ind:imag` → `aclS:model` → `prep`) | swap a variable with a parameter in the `acl`-witness formula | `relabel` moves parameters *into* variables; demoting a variable *back* into a parameter needs variable substitution |
+| §4 `dim:RV:fibers` (⇒) | compose the zero-padding `VF^{k'} ↪ VF^k` with a `DefinableFun` | renaming the free variables of a definable graph by terms |
+| §4 categories, pullback along a general definable map | pull a `VFObj`/`RVObj` back along a definable `f` | same: rename free variables by `f`'s graph terms |
+
+Mathlib provides `BoundedFormula.subst` for **parameters only** (`(α → Term β) → …`) and `relabel`
+(`(α → β ⊕ Fin m) → …`); there is no variable-level substitution.  So one development — variable
+substitution on `Term`/`BoundedFormula` with
+
+1. `TmSort` preservation under a sort-preserving substitution (term induction),
+2. `WellSorted` preservation (`InAntecedent`/`GuardTrue` transport by their constructors, as
+   `guardTrue_relabel` shows for the parameter case),
+3. the realization lemma,
+
+plus its `DefinableFun`-composition form — unblocks all three, and then `aclS:model` (the last §3
+item, and the one `prep` consumes) becomes reachable.  m6 is on it under its continuation.
+
+**Accepted and merged this round:** `QE/InfRVDefGam.lean` (`inf:RV:def:gam`, m7) and
+`QE/Sec4Categories.lean` (the §4 category layer, m8 — 38 theorems, all footprints clean).  **Merged
+for the layer, lemma still open:** `QE/Sec4Dim.lean` (§4 dimensions, m6 — the (⇒) direction of
+`dim:RV:fibers` is *not* proved; see the entry above).
