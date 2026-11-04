@@ -150,3 +150,41 @@ Open, in the paper's order:
    `rv` over `t ≠ ∞` is a coset of the unit ball and so is not small. It is carried as a hypothesis
    about cardinalities, never as a statement about `acl`. `exchange` (Yin 4.3) remains a frozen
    hypothesis, carried as `M5.ExchangeVF`.
+
+## The reduction's three defects, and `QE/Assembly_frozen.lean`
+
+Found in one pass while judging the QE swarm; all three are machine-checkable and all three are in
+`QE/Reduction_assembly.lean`.
+
+1. **Pre-repair snapshot.** Its header dates the encoding copy to `Milestone0/Encoding.lean` commit
+   `d608de6` (sha `78607b94…`); the frozen file is `86d7ea7e…` (`f18b6f5`). Its `ACVFpaper` therefore
+   omits the nine `repairRV` axioms, and its `HasQE` is the old unrestricted form while the frozen one
+   is well-sorted-guarded. `theorem_2_3_of_three` is a theorem about that snapshot.
+2. **`VFGenCase` without saturation is false** — repaired in `40abb97` by adding
+   `(hSat : Saturated N)`, which `prop39` already had in scope. With `S = ⊥` it asserted an injection
+   from an uncountable model of `ACVF` into a countable one.
+3. **`Assembly.Saturated` is too strong, so the main route is vacuous.**
+   `Assembly.extensionProperty_of_saturated` derives Proposition 3.9's conclusion from `Saturated`
+   alone, with no `hPrep`/`hOne`/`hVFGen`; `Assembly.shoenfieldTest_iff_hasQE` makes `ShoenfieldTest`
+   equivalent to the conclusion. `Saturated` must quantify over *finitely satisfiable* formula sets,
+   leaving Lemmas 3.3–3.8 to produce finite satisfiability. The repair is sketched in
+   `Assembly.SaturatedFS`/`saturatedFS_of_saturated`/`Prop39FS`/`ShoenfieldTestFS`/`theorem_2_3_of_fs`.
+
+Defect 1 is closed by construction in **`QE/Assembly_frozen.lean`** (green, no `sorry`, axioms
+`{propext, Classical.choice, Quot.sound}`): it is `import Enc` plus Parts B and C of
+`Reduction_assembly.lean`, so it states
+
+```
+theorem theorem_2_3_quantifier_elimination_of_ingredients
+    (hShoen : Assembly.ShoenfieldTest) (hPrep) (hOne) (hVFGen) : HasQE Axioms.ACVF
+```
+
+over the frozen `HasQE` and `Axioms.ACVF` with no copy to drift. (The frozen name itself is still the
+`sorry`-ed target, so the assembly cannot take it.) Note that this proves the *implication*, and at
+the present `Saturated` the implication is vacuous — defects 2 and 3 are what make its hypotheses
+mean something.
+
+Consequence for the campaign: everything the QE swarms proved for `prep`/`one`/`vfgen` survives as
+mathematics, but any file proved against `Reduction_assembly`'s axiom set has to be re-checked against
+the frozen one. `QE/ValBridge.lean` is the intended route for the Lemma 3.2/3.5/3.7 ports: they are
+instantiations at `K := VFType M`, not re-proofs.
