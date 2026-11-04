@@ -1076,3 +1076,38 @@ r7 (the final assembly ledger: what must be proved for `HasQE`, as named Props w
   `saturatedFS_of_satBridge_of_satRel`: `SatBridge ⇒ (no ACVF model is diagonally SatRel) ∨ (some
   ACVF model is SaturatedFS)`. The §5 circularity route is therefore closed as stated and re-opened
   only under the correct `NoSatModel` hypothesis.
+
+## smw2ox51x salvage (2026-11-04): six more files verified and merged (smarm ended solved, 2 acceptances)
+
+The swarm's other six members expired without submitting but left green work; verified judge-side
+and merged (one WIP left behind):
+
+* `QE/Lemma38EP.lean` + `QE/Lemma38Frozen.lean` (m6, r6 — the 3.8 EP question): the algebraic content
+  of Lemma 3.8 at genuine Mathlib valuations (`lemma38_algebraic_content`, `lemma38_of_rv_new`,
+  `value_transfer_of_divisible`) plus the sharp group-theoretic fact
+  `upgrade_needs_divisibility` and its realisation: in `Multiplicative ℤ` with `H = ⟨2⟩`, `g^2 ∈ H`
+  but `g ∉ H` — the ramified instance `ℚ ⊆ ℚ(√2)` at the 2-adic place, where `v(√2)² = v(2) ∈ Γ(ℚ)`
+  but `v(√2) ∉ Γ(ℚ)`. So 3.8's value-group upgrade NEEDS divisibility (which 3.6 has and 3.8 does
+  not — consistent with `gammaDivisible_top` being about the ambient model, not the subfield).
+  `Lemma38Frozen` states 3.8 at `CaseNewRV`'s hypotheses on the merged fragments.
+* `QE/RootHull.lean` (m1, r1): the root-hull route for 3.4 — `standing_top_via_rootClosed`,
+  `oneStepPaper_of_rootHullEmbedding`, `paper_theorem_2_3_sat_of_rootHullEmbedding`, and the
+  packaged `RootHullRealisation` with `oneStepPaper_of_rootHullRealisation`
+  (`paper_theorem_2_3_of_rootHullRealisation`): 3.4's content as ONE named realisation property of a
+  root hull, wired to the route.
+* `QE/D7Hull.lean` (m5, r4): the 3.5 step analysis — `not_hullBaseStep_of_cardinality`,
+  `hullBaseStep_KEqTop_trivial`, `rootStepResidual_standing_trivial`,
+  `hullBaseStep_iff_nonKEqTop`, `rootStepResidual_iff`, and
+  `extendsHere_iff_steps_and_oneStep`: Proposition 3.9 decomposed into the hull base step + root-step
+  residuals + the one-step, with the triviality tests showing which residuals are contentful.
+* `QE/RouteLedger.lean` (m7, r7 — the final ledger): `relCases_of_parts` (the relative-gate case
+  split: separated/unit/non-unit), **`paper_theorem_2_3_of_five_rel`**: Theorem 2.3 at the paper's
+  `relGate` from five named parts + ShoenfieldTestRel; `hull_and_cases_iff_satReal`,
+  `gatedHull_and_cases_iff_ledgerInput5P`, `relHull_and_cases_iff_input5R`,
+  `gatedHull_forces_units_size`. This is the route's final edition at the honest gate.
+* `QE/UnitCase.lean` (m3, r5): the unit-case analysis (namespace `M8`), merged after trimming three
+  dangling `#print axioms` lines for theorems that were planned but not written (the rest of its
+  audit is intact).
+* WIP left behind: m4's `RootLift.lean` (39 KB, one parse error in a theorem statement at :748 —
+  a mid-edit; kept at `.ultramath/smw2ox51x/m4/RootLift.lean` for the next 3.4 worker) and m3's
+  missing `M8` companion file.
