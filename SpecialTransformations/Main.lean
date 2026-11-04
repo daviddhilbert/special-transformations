@@ -10,8 +10,8 @@ paper's numbering and the current formal status.
 
 | Paper item | Informal statement | Lean status |
 |---|---|---|
-| Theorem 2.3 | ACVF admits quantifier elimination | not started |
-| Theorem 2.8 | ACVF is C-minimal | not started |
+| Theorem 2.3 | ACVF admits quantifier elimination | **stated** (`Milestone0/Encoding.lean`, frozen with `sorry`) and **reduced** to one hypothesis (`QFStep`); see `MILESTONES.md` |
+| Theorem 2.8 | ACVF is C-minimal | **stated** (`Milestone0/Encoding.lean`, frozen with `sorry`); the C-relation and one auxiliary `sorry` are in `Milestone0/Balls.lean` |
 | Theorem 5.4/5.5 | special bijections to RV-pullbacks | not started |
 | Corollary 5.6 | every definable set is a deformed RV-pullback | not started |
 | Corollary 5.7 | `L` is surjective on isomorphism classes | not started |

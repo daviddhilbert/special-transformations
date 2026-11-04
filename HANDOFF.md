@@ -60,8 +60,13 @@ and, for the public GitHub build, switch to a git requirement.
 - `SpecialTransformations/Main.lean`: item-by-item target table (all “not started”).
 - `blueprint/src/blueprint.tex`: minimal blueprint.
 
-Everything compiles; no theorem is proved yet. `Basic.lean` is the only library
-file with real Lean content; the real content lives in `Milestone0/`.
+The library modules (`SpecialTransformations/*.lean`) are stubs, 221 lines in total, and
+`Main.lean`'s table says "not started" for every paper item — that part is honest.  The real
+content lives in `Milestone0/` and `QE/`: see `MILESTONES.md` for a verified count (all
+`Milestone0/` files green, all ten `Milestone0/accepted/` snapshots green with no `sorry`, all 45
+`QE/` files green, 19 `sorry`s in `QE/` of which 2 are the frozen Theorem 2.3 and 2 are copies of
+those in the assembly).  `make milestone0` and `make qe` used to fail because they called `lean`
+with no search path while the files import `Enc`; both now build `Enc` first.
 
 ## Cross-cutting: Theorem 2.3 (QE)
 

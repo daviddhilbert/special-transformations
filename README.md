@@ -44,10 +44,13 @@ make milestone0   # elaborate the standalone Milestone 0 artifacts
 
 ## Formalization status
 
-The repository currently contains the **statement-level scaffold**: the
-dependency order, the target list, and the first algebraic definition (`RV`).
-The model-theoretic infrastructure (`L_RV`, definability, C-minimality) is the
-next milestone. See [`HANDOFF.md`](HANDOFF.md) for the detailed plan.
+The repository contains the **statement-level scaffold** in
+`SpecialTransformations/` (target table, dependency order, the first algebraic
+definition `RV`), and the real work in `Milestone0/` and `QE/`: the frozen encoding
+of `L_RV`/`ACVF` with Theorems 2.3 and 2.8 as statements, ten accepted model-building
+snapshots, and the quantifier-elimination assembly. `MILESTONES.md` is the verified
+per-milestone status (file counts, error and `sorry` counts, what each milestone still
+lacks); `HANDOFF.md` is the plan, `QE-PLAN.md` the chronological record.
 
 ## License
 

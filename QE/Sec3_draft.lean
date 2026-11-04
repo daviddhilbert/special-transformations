@@ -9,6 +9,9 @@ Draft, not part of the build: this file is the Section 3 statement draft and imp
 import Enc
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.Milestone0
+-- `WellSorted` lives in `namespace LRV` since the recursive predicate was adopted; the draft
+-- predates that and had silently stopped compiling.
+open LRV
 
 /-!
 # Section 3 of the paper, over sorted parameter pairs — draft statements
