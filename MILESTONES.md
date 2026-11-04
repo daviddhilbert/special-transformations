@@ -1013,3 +1013,20 @@ Quot.sound}) and merged:
 * **smw2ngn1z ended solved: 6 acceptances** (m4 audit+GroupCore, m3 GammaTorsion+EPQuotes, m1
   NewRVClaim/OldRVClaim, m7 UnitTranscend, m2 RatRank layer, m8 Lemma 3.6). Its board also carried
   the m6/m7 trdeg and 3.7 directions unfinished.
+
+## TREE-WIDE AUDIT (2026-11-04, after ~45 merges): 196 files, 0 errors, 19 known sorries
+
+`make milestones` over `Milestone0/*`, `Milestone0/accepted/*`, `QE/*` (196 files: 176 QE + 20
+Milestone0) finished `EXIT=0`: **every file exit=0, errors=0**. Sorry counts — unchanged from the
+recorded baseline, i.e. no new holes were introduced by today's merges:
+`Milestone0/Balls.lean` 1, `Milestone0/Encoding.lean` 2 (the two frozen targets),
+`QE/Assembly_val.lean` 2 (their copies), `QE/Sec3_frozen.lean` 4, `QE/Sec3_sat.lean` 8,
+`QE/TransferWS.lean` 2 — 19 total in 6 files.
+
+## smw2ox51x launched (2026-11-04, 8 members): the last case-lemma push
+
+Directions r1–r3 (Lemma 3.4's residuals `root_lift`/`embed`/`class_control` + the `Slot34`
+endgame), r4 (3.5's surviving exponent-one branch), r5 (the quote-free lift of `gamma_step` to the
+frozen predicates — would eliminate EP 3.4.3 from 3.6), r6 (3.8's EP question + slot statement),
+r7 (the final assembly ledger: what must be proved for `HasQE`, as named Props with status), r8
+(non-vacuity / finite satisfiability of the Archimedean configuration's pushed type).
