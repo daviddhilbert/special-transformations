@@ -194,3 +194,55 @@ Consequence for the campaign: everything the QE swarms proved for `prep`/`one`/`
 mathematics, but any file proved against `Reduction_assembly`'s axiom set has to be re-checked against
 the frozen one. `QE/ValBridge.lean` is the intended route for the Lemma 3.2/3.5/3.7 ports: they are
 instantiations at `K := VFType M`, not re-proofs.
+
+## The route compressed (member m7, accepted): two ingredients, no Weispfenning
+
+`.ultramath/smw1rx5g2/m7/M7_vfgen.lean` (green):
+
+* `eq_top_of_vf_all` — a substructure containing every `VF` element of a model of `ACVF` is `⊤`,
+  because every element is `VF` or `RV` (`Axioms.sdCover`, now also `QE/SortCover.lean`'s
+  `iVF_or_iRV`), every `RV` element is `rv` of a `VF` element or `rv 0` (`RVeqRvVF_of_model`), and
+  substructures are closed under `Fn.rvMap`.
+* `VFGenCaseP_top`, `prop39P_noVFGen`, `Prop39FS_of_two`, `theorem_2_3_of_two` —
+  the entire Proposition 3.9 follows from `PrepStepP` + `OneStepVFP`; `VFGenCaseP` is never
+  exercised, so Weispfenning's `L_v` QE is **not** on this route any more.
+
+The frontier is now exactly three hypotheses: `PrepStepP` (Lemma 3.3, henselization),
+`OneStepVFP` (Lemmas 3.4–3.8), `ShoenfieldTestFS`. In `QE/Assembly_frozen.lean` as
+`Assembly.theorem_2_3_of_fs`; member m7's `theorem_2_3_of_two` is the two-ingredient form.
+
+## Lemma 3.7 (`e:transc`) — done in the frozen encoding
+
+`.ultramath/smw1rx5g2/m5/Lemma37_frozen.lean` (green, accepted): `Transc.e_transc_of_gamma` with
+both former hypotheses discharged — `vsum_exists_min` (every nonempty partial sum has a
+minimal-term class, hence is nonzero) and `hdis_of_gamma` (the paper's cancellation by a power of
+`e`, from `leMulCompatFull` calculus). Lemma 3.2's syntactic half is also done (green):
+`.ultramath/smw1rx5g2/m6/M6Syntactic.lean` (`rv_root_lift_encoding`, `huniv_of_units`,
+`hred_of_residue_sum_zero`).
+
+## The tagged encoding has no junk elements (only junk terms)
+
+`QE/SortCover.lean` (green, axiom-clean): `iVF_or_iRV`, `not_both`, `sorted_exclusive` — every
+element of a model of `ACVF` is in exactly one of the two sorts, from `sdCover`/`sdDisjoint`, which
+are sentences of `Axioms.ACVF`. Consequences: the "(T2) prime-models junk" worry does not apply to
+elements; the junk in this encoding is a property of **ill-sorted terms** (`rv (rv x)`, `kAdd` at
+junk arguments), whose values no axiom constrains. The Johnson swarm confirmed the same from the
+other side: `M5OneEC.sorted_exclusive`, and the argument that the *unrestricted* frozen 1-ec is very
+likely false (`rv` at an `RV`-sorted element is unconstrained), so Johnson's route to the frozen
+target must use well-sorted 1-ec — if it is used at all (the main route no longer needs it).
+
+## Sections 3 and 4 of the paper — swarms ended solved
+
+`smw1qqehg` (§3) 8/8 accepted; `smw1qqem3` (§4) 6/6 accepted. Notable, beyond what the notes above
+already record: `acl(S)` closed under field operations (`M3AclField`); item 716 PROVED at finite `A`
+with the corrected target `RV^{n·k}` (M8); `average:0:rv:not:constant` settled plus a refutation of
+the frozen form (709); the centres statements refuted-as-frozen and repaired with Definition 4.14's
+function form (M7Centres); §4's renaming/Boolean-algebra layer (`Sec4Rename`), coordinate-map
+dimension bounds without the composition wall (M6Polydisc), §4.2's `RVMap` category isolating the
+composition wall to one definability field (Sec42Morphism), and the td non-vacuity model for the
+dimension axioms (Sec4DimACFModel).
+
+## `QE/Standing.lean` — every model is `Standing` at `⊤`
+
+Green, axiom-clean: `rv_one_units`, `vfPow`, `vfType_root` (n-th roots via
+`IsAlgClosed.exists_pow_nat_eq`), `gammaDivisible_top` (Γ(M) divisible), `standing_top`.
