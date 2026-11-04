@@ -95,6 +95,20 @@ theorem swl_average_conclusion_unsat {k : ℕ} (hk0 : 0 < k) (c : Fin k → 𝕄
   rintro ⟨i, j, -, -, hij⟩
   exact hij (by rw [hsame i, hsame j])
 
+/-- **`exchange`** (Yin, QE:ACVF:min, Lemma 4.3), `VF` half, over the monster model: *"For any
+`a, b ∈ VF`, if `a ∈ acl(b) ∖ acl(0)` then `b ∈ acl(a)`."*
+
+Stated here rather than in `QE/Sec3_frozen.lean` because exchange is a property of `acl` in a
+**saturated** model — it is what makes `acl` a pregeometry — and the paper's §3 is over the monster
+model `𝕄` (see `Milestone0/Saturation.lean`).  The frozen version in `Sec3_frozen` quantified over an
+arbitrary `M ⊨ ACVF`, which is the wrong setting for this particular statement.  (The `RV` half of the
+paper's lemma is not expressible in this encoding: `acl` is `VF`-sorted.) -/
+theorem swl_exchange (𝕄 : Sat.MonsterACVF) (S : SP 𝕄.M) (a b : 𝕄.M)
+    (ha : iVF a) (hb : iVF b) (hsmall : 𝕄.Small ↥(SP.paramSet S)) (hsmall' : 𝕄.Small ↥(SP.paramSet S ∪ {a}))
+    (h : acl (S.extendVFParam b hb) a) (hne : ¬ acl S a) :
+    acl (S.extendVFParam a ha) b := by
+  sorry
+
 /-- **`average:0:rv:not:constant`** (Yin, QE:ACVF:min, Lemma 4.9): if `c₁, …, c_k` (`k ≥ 2`) are
 distinct elements of `VF` with the same value `α`, and their average is `0`, then two of them
 satisfy `vv(c_i - c_j) = α`.  Stated as the two halves of that equality, because the encoding

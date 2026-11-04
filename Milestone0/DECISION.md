@@ -912,3 +912,31 @@ Two further corrections of a different kind:
 singleton solution set).  `acl_self` is also what makes the old `swl_exchange` transparently
 degenerate: with `acl (singleVF b) b` in hand, that statement's hypothesis is satisfiable for every
 `b` and its conclusion is free in `a`.
+
+
+### Section 3, second pass: `exchange` was frozen over the wrong models
+
+`swl_exchange` was stated in `QE/Sec3_frozen.lean` over an **arbitrary** `M ⊨ ACVF` (with
+`[Nonempty M]`).  That is the wrong setting, and it is why `alg:ind:imag` could not be attempted:
+exchange is a property of `acl` in a *saturated* model — it is what makes `acl` a pregeometry — while
+the paper's §3 is explicitly over the monster model.  Two consequences, both now acted on:
+
+* `swl_exchange` is **withdrawn** from `QE/Sec3_frozen.lean` (the docstring there points at the new
+  home) and **restated over `Sat.MonsterACVF`** in `QE/Sec3_sat.lean`, with the smallness hypotheses
+  on both parameter sets (`𝕄.Small ↥(SP.paramSet S)`, `𝕄.Small ↥(SP.paramSet S ∪ {a})`) that the
+  saturation proof will consume.
+* the statement is still a frozen `sorry`, so `alg:ind:imag` still cannot be closed without
+  `sorryAx`; what changed is that it is now a statement that *can* be true.
+
+This is the same species of defect as the earlier six (see "Section 3 statement audit" above) and the
+same lesson: §3's statements belong over `𝕄 : MonsterACVF`, not over an arbitrary model, and
+`Sat.MonsterModel`'s saturation is data, not a hypothesis that can be dropped.
+
+**Consequence for `alg:ind:imag`** (`SP.swl_alg_ind_image`): its three inputs are
+(i) exchange, now correctly stated over the monster model but unproved; (ii) the parameter transport,
+which `QE/ParamBridgeRelabel.lean` supplies (`wellSorted_relabel` with the sort-carrying hypothesis);
+(iii) the counting argument — the `rv`-fibre of `t` is infinite while the algebraic closure of a
+finite parameter set is small, which needs `𝕄.Small` plus the countability of the formula set of
+`L_RV` (a countable language with countably many variable contexts).  (iii) is the only one of the
+three that is pure bookkeeping; (i) is Yin, QE:ACVF:min, Lemma 4.3 and must be proved from
+`MonsterModel.realizes`/`exists_automorphism` before `alg:ind:imag` can move.

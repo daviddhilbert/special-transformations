@@ -193,13 +193,11 @@ theorem swl_acl_VF_transfer_acl_RV (S : SP M) (A : Set M) (hA : DefinableRV S A)
     acl S x := by
   sorry
 
-/-- **`exchange`** (Yin, QE:ACVF:min, Lemma 4.3), `VF` half, relativised to the parameters `S`:
-*"For any `a, b ∈ VF`, if `a ∈ acl(b) ∖ acl(0)` then `b ∈ acl(a)`."*  (The `RV` half of the paper's
-lemma is not expressible here -- see the file header.) -/
-theorem swl_exchange (S : SP M) (a b : M) (ha : iVF a) (hb : iVF b)
-    (h : acl (S.extendVFParam b hb) a) (hne : ¬ acl S a) :
-    acl (S.extendVFParam a ha) b := by
-  sorry
+/-! `exchange` is **not** stated here.  It was, at an arbitrary model of `ACVF`, and that is the wrong
+setting: exchange is a property of `acl` in a *saturated* model (Marker, the pregeometry of algebraic
+closure), not in an arbitrary one, and the paper's §3 is explicitly over the monster model.  It is
+restated over `Sat.MonsterACVF` in `QE/Sec3_sat.lean` (`swl_exchange`), where the saturation data
+needed for its proof is available.  Recorded in `DECISION.md` §"Section 3 statement audit". -/
 
 /-- **`function:rv:to:vf:finite:image`** (Yin, Lemma 4.12, via `dcl:to:ac`): *"Let `A ⊆ RV^m` and
 `f : A -> VF^n` a definable function.  Then `f(A)` is finite."*  Definability of `f` is a

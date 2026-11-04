@@ -2665,3 +2665,18 @@ countability of `acl` of a finite set contradicts).  Exchange is `SP.swl_exchang
 `wellSorted_relabel` is the parameter transport, and `QE/ParamBridge.lean`'s support machinery is what
 counts the solutions — but exchange itself has to be proved first (it is Yin, QE:ACVF:min, Lemma 4.3,
 i.e. the matroid property of `acl` in `ACVF`).
+
+### §3: `exchange` moved to the monster model (it was frozen over arbitrary models)
+
+`swl_exchange` was stated over an arbitrary `M ⊨ ACVF`.  That is the wrong setting: exchange is a
+property of `acl` in a *saturated* model (it is what makes `acl` a pregeometry), and §3 of the paper is
+over the monster model.  Withdrawn from `QE/Sec3_frozen.lean` (green, 4 `sorry`s) and restated in
+`QE/Sec3_sat.lean` over `Sat.MonsterACVF` with `𝕄.Small` on both parameter sets (green, 8 `sorry`s).
+Still a frozen target, so `alg:ind:imag` remains unprovable without `sorryAx` — but the statement is
+now one that can be true.
+
+So `alg:ind:imag` has exactly three inputs, in dependency order: exchange (must be proved from
+`MonsterModel.realizes`/`exists_automorphism`; Yin QE:ACVF:min 4.3), the parameter transport (in
+`QE/ParamBridgeRelabel.lean`, `wellSorted_relabel`), and the counting argument (`rv`-fibre infinite vs
+`acl` of a finite set small — needs countability of the `L_RV` formula set).  Recorded in
+`DECISION.md`.
