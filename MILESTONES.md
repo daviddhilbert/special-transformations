@@ -967,3 +967,23 @@ Quot.sound}) and merged:
   half by itself.
 * `QE/UnitTranscendWitness.lean`: a top-witness for `ResidueTranscendental` (trivial residue field)
   and the hypothesis repair (injective exponents), keeping the definition honest.
+
+## smw2ngn1z m2 (2026-11-04, accepted): the value-group layer, general form with sharpness
+
+* `QE/RatRank.lean` (m2, d3; Mathlib-only, at exactly `GammaOf M`'s instance signature):
+  `RatRankZero H K := K ≤ divHull H` (`ratRankZero_iff_le_divHull`, `Iff.rfl`),
+  `eq_of_divisible_of_ratRankZero` (H ≤ K → DivisibleSubgroup H → ratrank zero → K = H; uses
+  torsion-freeness via `pow_right_injective`), and **`maximal_extension_iff`** — with a root-closed
+  ambient G, the inference holds for EVERY K ≥ H iff H is divisible: divisibility is not a side
+  condition but the exact content of the inference. `RootableBy` bridge to `GammaDiv`'s form.
+* `QE/RatRankTensor.lean`: the canonical Mathlib rational rank, `Module.rank ℚ (ℚ ⊗[ℤ] A)`, with
+  `rationalRank_eq_zero_iff_torsion` — a Prestel–Engel quote in rational-rank form now has a correct
+  target statement, and `eq_of_divisible_of_rationalRank_eq_zero` consumes it.
+* `QE/RatRankSharp.lean`: sharpness on the nose — divisibility necessary (ℤ in ℚ: ratrank zero, not
+  divisible, hull = ⊤ ≠ ℤ), rational rank necessary (ℚ×ℚ vs ℚ×{0}), root-existence necessary;
+  non-vacuity at ℚ and at `Γ(M)`.
+* `QE/GammaInstantiation.lean`: the step applies verbatim at the tree's `GammaOf M`.
+* Relation to the frontier: m7's `QE/UnitTranscend.lean` shows Lemma 3.6's Γ-step needs no dimension
+  inequality at all, so this layer is not on the critical path — it is the correct general statement
+  of the quote-based route plus the reusable tensor characterisation, and it pins (by sharpness)
+  which hypotheses any future rational-rank argument must carry.
