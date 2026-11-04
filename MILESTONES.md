@@ -1136,3 +1136,12 @@ and merged (one WIP left behind):
 * Verdict of the matrix (to be quoted): u1–u5 cannot be short-circuited by a blanket
   `QFFinSat@relGate`, but **their conjunction is exactly `Input5R`**; the canonical frontier is the
   split form, and the case lemmas are needed at the non-Archimedean targets.
+
+## TREE BASELINE (2026-11-04, second full audit after the day's merges): 211 files, 0 errors, 18 sorries
+
+`make milestones` over `Milestone0/*`, `Milestone0/accepted/*`, `QE/*`: **211 files** (191 `QE/` +
+20 `Milestone0*`), `EXIT=0`, **0 errors and 0 non-zero exits**, **18 sorries in 5 files**:
+`Milestone0/Encoding.lean` 2 (the frozen Theorem 2.3 and 2.8 targets), `QE/Assembly_val.lean` 2
+(their copies), `QE/Sec3_frozen.lean` 4, `QE/Sec3_sat.lean` 8, `QE/TransferWS.lean` 2.
+`Milestone0/Balls.lean` no longer appears — its sorry was eliminated in a clean build (the proof of
+`infinite_boolComb_contains_openBall` holds from scratch, not just incrementally).
