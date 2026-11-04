@@ -2955,3 +2955,44 @@ presentation, not about the mathematics.  `hcomp` is now buildable from `QE/Subs
 
 Open: the general "only if" of `full:dim:open:poly` (`def FullDimOpenPoly`, assumed nowhere), whose
 induction needs `dim:VF:pullback` and `VF:dim:tran:deg` over `dcl(b̄)`.
+
+### `swl_exchange`: why it is not a lemma, and what is true about it
+
+Spent a working block on it; the outcome is an analysis, not a proof, and the analysis changes what
+should be attempted next.
+
+**1. Exchange for this `acl` is FALSE in arbitrary structures.**  `acl` here is "`x` lies in a finite
+solution set of a well-sorted formula over the parameters".  Take a structure with one binary relation
+`R` whose `y`-fibre at `y = b` is finite and contains `a`, and whose fibres at infinitely many other
+`y` are infinite.  Then `a ∈ acl(b)`, `a ∉ acl(∅)`, and the swapped set `{y : a ∈ R(y, ·)}` is
+infinite, so `b ∉ acl(a)`.  Exchange is a property of `acl` in a **saturated** model — it is what
+makes `acl` a pregeometry — which is why restating it over `Sat.MonsterACVF` was necessary and why the
+frozen version over an arbitrary model could never close.
+
+**2. The paper does not prove it either.**  `paper.tex:696` is a `lem` carrying
+`[\cite[Lemma 4.3]{Yin:QE:ACVF:min}]`.  So `swl_exchange` is a *quoted* theorem, in the same category
+as `average:…` and `function:rv:to:vf:finite:image` — and `alg:ind:imag` correctly takes it as the
+hypothesis `ExchangeVF` rather than assuming it silently.
+
+**3. What its proof needs, precisely.**  The swap (variable ↔ parameter) is no longer the hard part:
+`QE/ParamBridgeRelabel.lean` promotes a parameter to a variable, `QE/SubstVar.lean` demotes it back.
+The hard part is *finiteness of the swapped set*, and the standard route needs one missing
+ingredient:
+
+> in a `κ`-saturated model, a set definable over a *small* parameter set is finite or has cardinality
+> at least `κ`.
+
+That is provable from `MonsterModel.realizes` by compactness (if `D` is infinite and `|D| < κ`, the
+type "`x ∈ D`, and `x ≠ d` for every `d ∈ D`" is finitely satisfiable over `D`, hence realized, hence
+a new element — contradiction).  With it, `b ∉ acl(S a)` (a non-algebraic type, so `κ` many
+realizations) plus the finite-fibre bound at `b` gives the paper's contradiction.
+
+**4. Started and parked.**  `QE/SubstParam.lean` is **not** in the tree (the tree stays green); it is
+at `.scratch/SubstParam_wip.lean`, error list in `.scratch/SubstParam_wip.log`.  It is the *parameter*
+substitution companion of `QE/SubstVar.lean`: `TmSort`/`WellSorted` preservation under Mathlib's
+`BoundedFormula.subst (α → Term β)`, which is what the `t = rv 0` case of `alg:ind:imag` needs
+(replace the single `RV` parameter by the closed term `rv 0`) and what `acl`-monotonicity under a
+definable parameter needs.  11 mechanical errors at park time: `Term.subst`'s `@[simp]` equations are
+fine, but `BoundedFormula.subst` is `mapTermRel`, which has no `@[simp]` lemmas, so each constructor
+needs explicit unfolding, and `subst_guardAtom` needs `Function.comp_apply` plus per-`SortTag` cases.
+Nothing mathematical is missing.
