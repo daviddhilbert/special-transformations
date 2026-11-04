@@ -3199,7 +3199,7 @@ The paper is unambiguous (`qe.tex:552`): *"If `L` is sufficiently saturated then
 `hSat : Saturated N` in scope at the point where it applies `VFGenCase`, so demanding it costs
 nothing — the saturation was simply dropped when the field was written down.
 
-**Repair applied** (commit `18c1f34`): `VFGenCase (hSat : Saturated N)`, the `vfgen` field of
+**Repair applied** (commit `40abb97`): `VFGenCase (hSat : Saturated N)`, the `vfgen` field of
 `AlgIngredients` and the hypothesis of `theorem_2_3_of_three` gained `(hSat : Saturated N)`, and
 `prop39` passes its own `hSat`.  The file compiles and `theorem_2_3_of_hypotheses`,
 `theorem_2_3_of_three`, `prop39` are all still `{propext, Classical.choice, Quot.sound}`.

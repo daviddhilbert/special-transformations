@@ -35,6 +35,8 @@ open FirstOrder FirstOrder.Language
 open scoped FirstOrder
 open Polynomial
 
+set_option linter.style.haveILetI false
+
 open SpecialTransformations.Milestone0
 open SpecialTransformations.Milestone0.LRV
 
@@ -50,7 +52,7 @@ variable {M : Type} [LRV.Structure M]
 theorem exists_valued_vfType (hM : M ⊨ Axioms.ACVF) :
     ∃ (Γ : Type) (_ : LinearOrderedCommGroupWithZero Γ)
       (w : Valuation (Transfer.VFType (M := M)) Γ),
-      ∀ x y : Transfer.VFType (M := M), iLe (iRv (y : M)) (iRv (x : M)) ↔ w x ≤ w y :=
+      ∀ x y : Transfer.VFType (M := M), iLe (iRv y.1) (iRv x.1) ↔ w x ≤ w y :=
   M4ValueOnly.exists_valuation_predV (M := M) (hM := hM)
 
 /-- **The `VF`-sort of a model of `ACVF` is an algebraically closed field** — the hypothesis
@@ -69,14 +71,19 @@ structure ValuedModel (hM : M ⊨ Axioms.ACVF) where
   /-- the valuation on the `VF`-sort -/
   w : Valuation (Transfer.VFType (M := M)) Γ
   /-- `iLe` on `RV` is the valuation order, reversed -/
-  le_iff : ∀ x y : Transfer.VFType (M := M), iLe (iRv (y : M)) (iRv (x : M)) ↔ w x ≤ w y
+  le_iff : ∀ x y : Transfer.VFType (M := M), iLe (iRv y.1) (iRv x.1) ↔ w x ≤ w y
 
 /-- The packaged form: every model of `ACVF` is a valued field in Mathlib's sense.  Use it as
 `let V := valuedModel hM; letI := V.instΓ`, and then `V.w` is the valuation and `V.le_iff` is the
-dictionary back into the encoding. -/
-noncomputable def valuedModel (hM : M ⊨ Axioms.ACVF) : ValuedModel (M := M) hM :=
+dictionary back into the encoding.  (`ValuedModel` bundles a *type*, so it cannot be eliminated out
+of an `Exists` directly; `valuedModel_nonempty` does the elimination into `Prop` first.) -/
+theorem valuedModel_nonempty (hM : M ⊨ Axioms.ACVF) : Nonempty (ValuedModel (M := M) hM) :=
   let ⟨Γ, hΓ, w, hw⟩ := exists_valued_vfType (M := M) hM
-  ⟨Γ, hΓ, w, hw⟩
+  ⟨⟨Γ, hΓ, w, hw⟩⟩
+
+/-- See `valuedModel_nonempty`. -/
+noncomputable def valuedModel (hM : M ⊨ Axioms.ACVF) : ValuedModel (M := M) hM :=
+  Classical.choice (valuedModel_nonempty (M := M) hM)
 
 /-- **Lemma 3.2 (`rv:root:lift:vf`) holds at every model of the frozen `ACVF`, with no port.**
 

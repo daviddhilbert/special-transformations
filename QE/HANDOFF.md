@@ -310,7 +310,13 @@ hypothesis as `huniv`/`hred`, which needs `iRv x = iRv y ↔ YinRV.rv w x = YinR
 **The olean in `.scratch2/Assembly_val.olean` is stale and must be rebuilt before importing it**
 (checked 2026-11-04: olean 22:40, source 23:41, and the olean then lacks `M4ValueOnly` entirely —
 `#check @M4ValueOnly.exists_valuation_predV` fails against it while the current source has the
-declaration).  Build with `cd .scratch2 && cp ../QE/Assembly_val.lean . && LEAN_PATH=$PWD:$LEAN_PATH
-lean Assembly_val.lean`; it takes tens of minutes, so start it before anything that needs it.  This
-is the "Assembly_val drift" the W1/`Pre_build` note at the end of this file warns about, in its most
-basic form: **a stale olean silently removes declarations**, it does not warn.
+declaration).  Build with
+
+    cd .scratch2 && LEAN_PATH=$PWD:$PWD/sec3:$LEAN_PATH lean -o Assembly_val.olean Assembly_val.lean
+
+which took 75 s on the 4-core VM (26.7 MB olean).  **The `-o` is not optional**: this `lean` writes
+*no* olean from `lean Foo.lean` alone. Verified on a one-line file — `lean Ot.lean` leaves no
+`Ot.olean`, `lean -o Ot.olean Ot.lean` does. So every "rebuild the prelude" instruction in this file
+and in `QE-PLAN.md` means `lean -o …`. This is the root cause of the "Assembly_val drift" the
+W1/`Pre_build` note at the end of this file warns about, in its most basic form: **a stale olean
+silently removes declarations**, it does not warn, and a plain `lean` run will not refresh it.
