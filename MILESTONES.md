@@ -799,3 +799,34 @@ generation running; m4 residue-induction, m6 Hahn consistency, m8 non-vacuity st
   attribution was rotated).
 * Residuals named by the file: `root_lift` (needs the hred + Polynomial↔vfEval transport),
   `embed` (Engler–Prestel), `class_control` (fundamental inequality) — feeding 3.4's proof.
+
+## smw2mluv7 salvage (2026-11-04): the separated-slot bookkeeping + the CaseNewRV analysis
+
+Two members expired with green, unsubmitted files; verified judge-side and merged:
+
+* `QE/Bookkeeping.lean` (m2, p2 — the Lemma 3.4 bookkeeping half). `bookkeeping_half`: for a
+  separated step `S ≤ T` with `Standing S`, `VFInvClosedOn S`, `IsVFGen T`, `QuotExpansions S T e` —
+  concludes `Standing T` ∧ `GammaEqQ S T` ∧ `gammaSub T = gammaSub S` ∧ `RVGenCover S T (rv e)` ∧
+  `ResidualClasses S T`. Machinery: `RVNatSpanCls`/`RVIntSpanCls` (natural/integer monomial spans),
+  `rvGenCover_iff_residualClasses`, `gammaEqQ_of_residualClasses`,
+  `gammaHullInitial_of_residualClasses`, `divHull_gammaSub_of_gammaEqQ`. **Constraint recorded**: in
+  the separated branch `IsVFGen S` is refuted (`not_separated_of_isVFGen`), so the group form needs
+  `RVInvClosedOn S` as an extra hypothesis (not derivable from Γ-divisibility,
+  `root_closed_not_neg_closed`); hence the `ℕ`-monomial form. Also `cls_one_of_iUnits`: `Cls` is
+  Γ-equality, so the residue-field half is invisible to it.
+* `QE/SlotWire.lean` (m2): `caseSeparated_of_structuralResidual` — `CaseSeparated` from the
+  residual "(realisation of the extension) + `VFInvClosedOn S` + `IsVFGen T` + `QuotExpansions S T m`",
+  with the Γ/RV content discharged by `bookkeeping_half`; `caseSeparated_bookkeeping` gives the extra
+  conclusions at every separated step. **So the separated slot owes only realisation +
+  field-generatedness, nothing about Γ/RV.**
+* `QE/NewRVGlue.lean` (m6, d8 — the CaseNewRV analysis, machine-checked). §1–§2: `CaseNewRV`
+  (= `M5.OneStepRVNew`) is a REALISATION statement — refutable at Hahn configurations
+  (`not_oneStepRVNew_of_infinitesimal`), not repaired by Γ-divisibility
+  (`oneStepRVNew_iff_gammaDivisible`, `not_oneStepRVNewGam_of_infinitesimal`); the tree's
+  `ClassStepP`/`StepObligation` interfaces cannot even state the new-`rv` case
+  (`not_classStepP_of_newRV`, `not_stepObligation_of_newRV`). §3: the slot's conclusion DEMANDS the
+  divisible hull of `Γ(S) + ℤ·vv(m)` from any `Standing` witness (`hull_demand_of_standing`).
+  §4: the one positive source is the total-extension property (`oneStepRVNew_of_total_extension`).
+  Structural note: the fragments (`Lemma37`, `Lemma37_transcendental`, `Lemma38RV`, `Case38Value`)
+  have NO consumer in the merged tree — the missing consumer is Remark 3.1's `L_v → L_RV`
+  conversion, which the canonical route bypasses by taking realisation (`Input5R`) as hypothesis.
