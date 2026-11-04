@@ -625,3 +625,24 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   i.e. case lemmas 3.4/3.6 + the separated-slot discharge (smw2k0btg f1/f2) — plus input 3/4
   half-content and quote transcription (smw2k0btg f3/f4 alternatives), gated at `relGate`
   per e1's resolution. Consistency (e6) runs orthogonal.
+
+## smw2k0btg f3 (2026-11-04, accepted): Γ(M) divisible, hypothesis-free — one PE quote retired
+
+* `QE/GammaDiv.lean` (m6): `gamma_divisible : ∀ n ≥ 1, ∀ a : GammaOf M, ∃ b, b ^ n = a` in EVERY
+  model of `Axioms.ACVF`, from `StandingTree.gammaDivisible_top` alone (no saturation, no gate).
+  `gammaDivisible_top_iff_forall_root` identifies the frozen `Assembly.GammaDivisible ⊤` with group
+  divisibility exactly (residue factor killed by `gammaMk_unit_eq_one`); `RootableBy (GammaOf M) ℕ`
+  and `ℤ` instances; `gamma_pow_inj`, `one_le_pow_iff`, `existsUnique_gamma_root`.
+* Bridges for the ledger: `GammaEqQ`/`GammaHullInitialQ` (quotient forms) ⟺ `M5Ledger.GammaEq`/
+  `GammaHullInitial` (`gammaEq_iff_gammaMk`, `gammaHullInitial_iff_gammaMk_pow`);
+  `gammaHullInitial_of_gammaEq` (clamp strictly weaker than `GammaEq`).
+* Stress tests: `forall_root_including_zero_subsingleton` (n = 0 excluded essentially — allowing it
+  forces Γ trivial), `gamma_divisible_at_any_cardinality`.
+* Negative, recorded: `Transfer.iRVInv` is a choice witness, not a term symbol — `Γ(S)` is only a
+  submonoid of `Γ(M)`; use `GammaHullInitialQ`, not subgroup-valued lift lemmas.
+* Consequence: input 4's divisibility half is a THEOREM of the frozen axioms (the value group of
+  ACVF is divisible — as it should be); the anticipated Prestel–Engler divisibility quote is
+  retired. What remains of input 4 (`DivisibilityStep`) is clamp + embedding content.
+* Also recorded in the same merge: `QE/FinalAudit.lean` (f6, accepted earlier this session) — the
+  seven-hypothesis collapse to `ShoenfieldTestSat + Prop39Sat`; `FinalRoute.olean` was missing from
+  the shared chain (the audit exposed it) and is now built.

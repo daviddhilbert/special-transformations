@@ -5,8 +5,18 @@ Read this first if you are picking up Theorem 2.3. Deliberately short; the detai
 
 ## The route, exactly as it stands
 
-**Frontier (after `QE/FinalRoute.lean`, smw2jkpn4 e8 accepted):** the reduction layer is
-COMPLETE — `QE/FinalRoute.lean`'s `paper_theorem_FINAL` proves
+**Frontier (after `QE/FinalAudit.lean`, smw2k0btg f6 accepted):** the seven hypotheses of the
+final route COLLAPSE TO TWO, machine-checked. The frozen `Assembly.PrepStepP`/`OneStepVFP` carry
+no `VF`/`Γ`-clamps on the extension `T`, so `SaturationRealization` discharges each with the
+`⊤`-witness; and `LedgerInput5P ↔ Prop39Sat` exactly (`FinalAudit.ledgerInput5P_iff_prop39Sat`,
+via `Embedding.domRestrict` and `prop39P_noVFGen`). The remaining route is
+`FinalAudit.paper_theorem_FINAL2/3`: **ShoenfieldTestSat (the Marker quote, e1-resolved at
+`relGate`) + Prop39Sat (the paper's §3 extension property) ⟹ HasQE Axioms.ACVF**. The paper's
+Lemma 3.3/3.4–3.8 clauses are NOT vacuous (`FinalAudit.paperLemma33Clauses_top`) — they remain
+the PROOF STRATEGY for Prop39Sat (case lemmas + QFFinSat compactness + hull + Γ), even though
+the frozen scaffolding is satisfied trivially once Prop39Sat is given. The §9 `SizeHyp` form of
+input 5 is machine-REFUTED (`FinalAudit.not_ledgerInput5_of_roomObstruction`), so the PaperHyp /
+relGate gate is essential. (The earlier seven-hypothesis form `QE/FinalRoute.lean` proves
 
 ```
 ShoenfieldTestSat → LedgerInput1P → LedgerInput2 → LedgerInput3P → LedgerInput4P
@@ -39,8 +49,12 @@ LedgerInput1P        DISCHARGE FORM LANDED (`QE/SatQuotes.lean`, e2): Marker uni
 LedgerInput2         HenselizationExists ∀ M — QUOTED, done (QE/M7Hensel.lean) ✓
 LedgerInput3P        ResidueStep at PaperHyp — REAL WORK (inputs 3; m8's exists_standing_superset
                      reduces its closure half to a theorem; embedding extension remains)
-LedgerInput4P        DivisibilityStep at PaperHyp — REAL WORK (input 4; PE DivisibleHullExists
-                     quoted in ClassicalProps; Γ-divisibility API: smw2jkpn4 e7)
+LedgerInput4P        DivisibilityStep at PaperHyp — Γ-divisibility side DONE as a theorem
+                     (`QE/GammaDiv.lean`, smw2k0btg f3: `gamma_divisible`, RootableBy ℕ/ℤ, and the
+                     exact bridges `gammaEq_iff_gammaMk` / `gammaHullInitial_iff_gammaMk_pow` —
+                     no Prestel–Engler quote needed for this half; `iRVInv` is a choice witness,
+                     so Γ(S) is a submonoid and `GammaHullInitialQ` is the right clamp form);
+                     remaining content is the clamp + embedding, not the divisibility
 LedgerInput5P        ANALYZED (`QE/SatReal.lean` + `QE/QFAudit.lean`, e2): ⟺ one-element atomic
                      realization `QFSat` (satReal_iff_qfsat), ⟺ `Prop39Pair` (prop39Pair_iff_satReal —
                      input 5 IS the pair-level target); at PaperHyp the residual is just
