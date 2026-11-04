@@ -276,13 +276,11 @@ the target.
 
 ## Two swarm files that must not be relied on as-is (one line each)
 
-* **`W1.lean`** (fragment criterion, `.ultramath/smw1b0thh/m1/`) is **superseded** by
-  `.ultramath/smw1b0thh/m4/{FragQE,FragQE1,FragAtoms}.lean`, which is stronger (hypothesis reduced
-  to atoms) and imports only `Enc`, so it is immune to `Assembly_val` drift.  `W1.lean` is *not*
-  current-prelude-green: rebuilt against the merged `Assembly_val` it fails at 272, 276 (`show`
-  pattern) and 304 (`Type mismatch`).  Do not fix it unless the *embedding-form argument* is wanted
-  — that lives in its `REPORT.md` prose and in `W1.hasQE_of_embedding` / `QFTypeEmbeddable` — or
-  `W1.exists_list_of_models_bounded` (compactness with parameters).
+* **`W1.lean`** (fragment criterion, `.ultramath/smw1b0thh/m1/`) — **superseded, no work owed.**
+  Use `.ultramath/smw1b0thh/m4/{FragQE,FragQE1,FragAtoms}.lean` instead: stronger (hypothesis
+  reduced to atoms) and imports only `Enc`, so `Assembly_val` drift cannot reach it.  If the
+  *embedding-form argument* is ever wanted, it is in `W1.lean`'s `REPORT.md` prose and in
+  `W1.hasQE_of_embedding`/`QFTypeEmbeddable` — read them, do not rebuild the file.
 * **`smw18pb0w` m4's `ValueOnly.lean`** is byte-identical to the already-merged
   `m1/ValueOnlyM4.lean`; nothing new in it.
 
