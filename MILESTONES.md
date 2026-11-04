@@ -830,3 +830,23 @@ Two members expired with green, unsubmitted files; verified judge-side and merge
   Structural note: the fragments (`Lemma37`, `Lemma37_transcendental`, `Lemma38RV`, `Case38Value`)
   have NO consumer in the merged tree — the missing consumer is Remark 3.1's `L_v → L_RV`
   conversion, which the canonical route bypasses by taking realisation (`Input5R`) as hypothesis.
+
+## smw2ngn1z m4 (2026-11-04, accepted): the slot attribution confirmed and sharpened; 3.6's Γ-step done
+
+* `QE/Lemma36Audit.lean` (m4, d2; verified 0 errors, axioms clean): independent confirmation of the
+  unit exclusion (`separated_not_units`, via `units_cls_one` from `Axioms.leClassOne` — a different
+  route from m1's `not_separated_of_units`), and the SHARPENING: `not_separated_of_vpow_mem` — a root
+  of `X^n − a` with `a ∈ S`, `a ≠ 0` is ¬Separated (test at k = n, x = 1, y = a), so **Lemma 3.5's
+  element too is never `CaseSeparated`**. Net: `CaseSeparated` is the value-growth regime
+  (Lemmas 3.7/3.8) ONLY, and `caseSeparated_empty_of_vfgen` shows it is EMPTY at `IsVFGen`
+  substructures (e.g. Ŝ) — the slot is trivially true exactly where the paper's Lemma 3.3 leaves `S`
+  VF-generated. Non-vacuity of the ¬Separated slot pinned by `lemma36UnitsHyp_satisfiable` (S = ⊤,
+  e = 1) and `separated_top_forces_zero`.
+* `QE/GroupCore.lean` (m4; Mathlib-only, no frozen imports): **3.6's Γ-unchanged step, modulo the
+  quote**. `le_of_ratRankZeroIn` / `eq_top_of_ratRankZero` / `mem_of_ratRankZero`: a divisible
+  subgroup with rational-rank-zero quotient contains everything; `EP343_ratRankZero` is EP 3.4.3
+  transcribed as a hypothesis and `gamma_unchanged_of_EP343` is the wiring (qe.tex:762-765).
+  Sharpness: `divisibility_necessary` (2ℤ) and `torsion_is_obstruction` (ZMod 2) — both inputs are
+  needed.
+* Remaining for 3.6 per this member: rv(e)-transcendence, the descent, the b/b* induction, EP
+  3.3.4's residue half — the directions other q-members hold.
