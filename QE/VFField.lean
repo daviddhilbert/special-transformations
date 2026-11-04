@@ -1,19 +1,19 @@
 /-
-**The `VF` field laws and the `Field` instance on `VFType`, from the frozen axioms.**
+**The `VF` field laws and the `Field` instance on `VFType`, over the frozen encoding.**
 
-`Milestone0/Encoding.lean` states `Axioms.vfField` as a list of `allSorted`-guarded sentences and
-contains no realization lemmas for them, so until now nothing in a file importing `Enc` could treat
-`VF` as a field.  This file ports the layer from `QE/Assembly_val.lean` (where it is proved against
-that file's own copy of the encoding) to the frozen encoding, so that
+`Milestone0/Encoding.lean` states `Axioms.vfField` as `allSorted`-guarded sentences and contains no
+realisation lemmas for them, so nothing importing `Enc` could treat the `VF` sort as a field.  This
+file ports that layer from `QE/Assembly_val.lean` (where it is proved against that file's own copy of
+the encoding) onto the frozen one.
 
-* `QF/ValBridge`-style arguments can put a Mathlib `Valuation` on `VFType M`, and
-* the paper's valuation-theoretic lemmas (`rv:root:lift:vf`, `lift:divisible:hull`,
-  `e:transc`) can be instantiated at a model of the frozen `ACVF` instead of re-proved.
+It sits on `QF2Fragment` (which already supplies the term-realisation and sort-discipline lemmas) and
+`RVCalc` (the `iLe`/`rv` order calculus), so it contains only what those two do not: the `VF` sort
+as a type, its `Zero`/`One`/`Add`/`Neg`/`Mul` instances, the field laws, and `vfFieldOfModel`.
 
-Nothing here is new mathematics: it is the axiom extraction, term realization and field laws that
-`Assembly_val` already had, re-pointed at `Enc`.
+Payoff: with `Field (VFType M)` available, `VFValued` can put a genuine Mathlib `Valuation` on it and
+the paper's valuation-theoretic lemmas become instantiable at a model of the frozen `ACVF`.
 -/
-import Enc
+import RVCalc
 
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
@@ -22,256 +22,6 @@ open SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Milestone0
 
 namespace Transfer
-
-/-! The two missing constants: `Milestone0/Encoding.lean` defines `iVFAdd`, `iVFMul`, `iVFNeg` but
-not the `VF`-sorted `0` and `1` as elements of the carrier. -/
-
-/-- `0` of the `VF` sort. -/
-def iVFZero {M : Type} [LRV.Structure M] : M :=
-  FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfZero fun i => i.elim0
-
-/-- `1` of the `VF` sort. -/
-def iVFOne {M : Type} [LRV.Structure M] : M :=
-  FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfOne fun i => i.elim0
-
-theorem realize_tVFZero {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M) :
-    (tVFZero (n := n)).realize v = iVFZero := by
-  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfZero
-      (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i)) = iVFZero
-  rw [show (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i))
-      = (fun i => i.elim0) from by funext i; exact i.elim0]
-  rfl
-
-theorem realize_tVFOne {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M) :
-    (tVFOne (n := n)).realize v = iVFOne := by
-  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfOne
-      (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i)) = iVFOne
-  rw [show (fun i => Term.realize (L := LRV) v ((fun j : Fin 0 => j.elim0) i))
-      = (fun i => i.elim0) from by funext i; exact i.elim0]
-  rfl
-
-theorem realize_tVFAdd {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M)
-    (a b : Tm n) : (tVFAdd a b).realize v = iVFAdd (a.realize v) (b.realize v) := by
-  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfAdd
-      (fun i => Term.realize (L := LRV) v (![a, b] i)) = iVFAdd (a.realize v) (b.realize v)
-  rw [show (fun i => Term.realize (L := LRV) v (![a, b] i)) = ![a.realize v, b.realize v] from by
-    funext i
-    fin_cases i <;> simp]
-  rfl
-
-theorem realize_tVFMul {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M)
-    (a b : Tm n) : (tVFMul a b).realize v = iVFMul (a.realize v) (b.realize v) := by
-  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfMul
-      (fun i => Term.realize (L := LRV) v (![a, b] i)) = iVFMul (a.realize v) (b.realize v)
-  rw [show (fun i => Term.realize (L := LRV) v (![a, b] i)) = ![a.realize v, b.realize v] from by
-    funext i
-    fin_cases i <;> simp]
-  rfl
-
-theorem realize_tVFNeg {M : Type} [LRV.Structure M] {n : ℕ} (v : Empty ⊕ Fin n → M)
-    (a : Tm n) : (tVFNeg a).realize v = iVFNeg (a.realize v) := by
-  show FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfNeg
-      (fun i => Term.realize (L := LRV) v (![a] i)) = iVFNeg (a.realize v)
-  rw [show (fun i => Term.realize (L := LRV) v (![a] i)) = ![a.realize v] from by
-    funext i
-    fin_cases i
-    simp]
-  rfl
-
-
-/-! ### The sort discipline, semantically -/
-
-theorem realize_tv {M : Type} [LRV.Structure M] {k : ℕ} (i : Fin k) (v : Empty → M)
-    (x : Fin k → M) : (tv i.1 i.2).realize (Sum.elim v x) = x i := rfl
-
-theorem pVF_realize {M : Type} [LRV.Structure M] {k : ℕ} (t : Tm k) (v : Empty → M)
-    (x : Fin k → M) : (pVF t).Realize v x ↔ iVF (t.realize (Sum.elim v x)) := by
-  show FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memVF
-      (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
-      ↔ iVF (t.realize (Sum.elim v x))
-  rw [show (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
-      = ![t.realize (Sum.elim v x)] from by
-    funext i
-    fin_cases i
-    simp]
-  rfl
-
-theorem pRVsort_realize {M : Type} [LRV.Structure M] {k : ℕ} (t : Tm k) (v : Empty → M)
-    (x : Fin k → M) : (pRVsort t).Realize v x ↔ iRV (t.realize (Sum.elim v x)) := by
-  show FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memRV
-      (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
-      ↔ iRV (t.realize (Sum.elim v x))
-  rw [show (fun i => Term.realize (L := LRV) (Sum.elim v x) (![t] i))
-      = ![t.realize (Sum.elim v x)] from by
-    funext i
-    fin_cases i
-    simp]
-  rfl
-
-theorem sortPred_realize {M : Type} [LRV.Structure M] {k : ℕ} (s : SortTag) (t : Tm k)
-    (v : Empty → M) (x : Fin k → M) :
-    (sortPred s t).Realize v x ↔
-      (match s with
-        | .vf => iVF (t.realize (Sum.elim v x))
-        | .rv => iRV (t.realize (Sum.elim v x))) := by
-  cases s with
-  | vf => exact pVF_realize t v x
-  | rv => exact pRVsort_realize t v x
-
-/-- **The conjunction of sort hypotheses realises as the pointwise sort conditions.** -/
-theorem sortedHyps_foldr_realize {M : Type} [LRV.Structure M] {k : ℕ} (ss : Fin k → SortTag)
-    (l : List (Fin k)) (v : Empty → M) (x : Fin k → M) :
-    (l.foldr (fun i acc => sortPred (ss i) (tv i.1 i.2) ⊓ acc) ⊤).Realize v x
-      ↔ ∀ i ∈ l, (match ss i with
-          | .vf => iVF (x i)
-          | .rv => iRV (x i)) := by
-  induction l with
-  | nil => simp
-  | cons a l ih =>
-    rw [List.foldr_cons, BoundedFormula.realize_inf, ih]
-    have hhead : (sortPred (ss a) (tv a.1 a.2)).Realize v x
-        ↔ (match ss a with | .vf => iVF (x a) | .rv => iRV (x a)) := by
-      rw [sortPred_realize, realize_tv]
-    rw [hhead]
-    constructor
-    · rintro ⟨ha, hall⟩ i hi
-      rcases List.mem_cons.mp hi with rfl | hi
-      · exact ha
-      · exact hall i hi
-    · intro h
-      exact ⟨h a List.mem_cons_self, fun i hi => h i (List.mem_cons_of_mem a hi)⟩
-
-/-- **The gateway lemma**: `sortedHyps ss` realises as the pointwise sort conditions. -/
-theorem sortedHyps_realize {M : Type} [LRV.Structure M] {k : ℕ} (ss : Fin k → SortTag)
-    (v : Empty → M) (x : Fin k → M) :
-    (sortedHyps ss).Realize v x ↔ ∀ i, (match ss i with
-        | .vf => iVF (x i)
-        | .rv => iRV (x i)) := by
-  rw [sortedHyps, sortedHyps_foldr_realize]
-  constructor
-  · intro h i
-    exact h i (List.mem_finRange i)
-  · intro h i _
-    exact h i
-
-/-- **Uniform extraction from an `allSorted`-guarded sentence.**  If `∀ x̄ ∈ s̄, φ` is in a theory
-`T` and `M ⊨ T`, then `φ` holds at every tuple of the prescribed sorts.  Every axiom of `ACVF`
-that constrains the `VF` order or the `RV` order has this shape. -/
-theorem allSorted_realize {M : Type} [LRV.Structure M] {T : LRV.Theory} (hM : M ⊨ T)
-    {k : ℕ} {ss : Fin k → SortTag} {φ : Bf k} (hmem : allSorted ss φ ∈ T) :
-    ∀ x : Fin k → M, (∀ i, (match ss i with
-        | .vf => iVF (x i)
-        | .rv => iRV (x i)))
-      → @BoundedFormula.Realize LRV M _ Empty k φ (default : Empty → M) x := by
-  intro x hx
-  have h := hM.realize_of_mem (allSorted ss φ) hmem
-  simp only [allSorted, Sentence.Realize, BoundedFormula.realize_alls,
-    BoundedFormula.realize_imp] at h
-  exact h x ((sortedHyps_realize ss (default : Empty → M) x).mpr hx)
-
-/-- Extraction from a sentence closed by a single universal quantifier. -/
-theorem allOne_realize {M : Type} [LRV.Structure M] {T : LRV.Theory} (hM : M ⊨ T)
-    {φ : Bf 1} (hmem : allOne φ ∈ T) :
-    ∀ x : Fin 1 → M,
-      @BoundedFormula.Realize LRV M _ Empty 1 φ (default : Empty → M) x := by
-  intro x
-  have h := hM.realize_of_mem (allOne φ) hmem
-  simp only [allOne, Sentence.Realize, BoundedFormula.realize_alls] at h
-  exact h x
-
-/-- Extraction from a sentence with no quantifiers. -/
-theorem sentence_realize {M : Type} [LRV.Structure M] {T : LRV.Theory} (hM : M ⊨ T)
-    {φ : LRV.Sentence} (hmem : φ ∈ T) : M ⊨ φ :=
-  hM.realize_of_mem φ hmem
-/-! ### Membership of the axioms, and closure of the `VF` sort -/
-
-/-- A member of the sort closure is an axiom of `ACVF`. -/
-theorem mem_ACVF_sortClosure {s : LRV.Sentence} (h : s ∈ Axioms.sortClosure) : s ∈ Axioms.ACVF := by
-  simp only [Axioms.ACVF, Axioms.sortAxioms, Set.mem_union]
-  tauto
-
-/-- A member of `vfField` is an axiom of `ACVF`. -/
-theorem mem_ACVF_vfField {s : LRV.Sentence} (h : s ∈ Axioms.vfField) : s ∈ Axioms.ACVF := by
-  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
-  tauto
-
-/-- A member of `vfAlgClosed` is an axiom of `ACVF`. -/
-theorem mem_ACVF_vfAlgClosed {s : LRV.Sentence} (h : s ∈ Axioms.vfAlgClosed) : s ∈ Axioms.ACVF := by
-  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
-  tauto
-
-/-- A member of `preorderRV` is an axiom of `ACVF`. -/
-theorem mem_ACVF_preorderRV {s : LRV.Sentence} (h : s ∈ Axioms.preorderRV) : s ∈ Axioms.ACVF := by
-  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
-  tauto
-
-/-- A member of `rvAxioms` is an axiom of `ACVF`. -/
-theorem mem_ACVF_rvAxioms {s : LRV.Sentence} (h : s ∈ Axioms.rvAxioms) : s ∈ Axioms.ACVF := by
-  simp only [Axioms.ACVF, Axioms.ACVFpaper, Set.mem_union]
-  tauto
-
-theorem mem_ACVF_sdVFZero : Axioms.sdVFZero ∈ Axioms.ACVF :=
-  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
-
-theorem mem_ACVF_sdVFOne : Axioms.sdVFOne ∈ Axioms.ACVF :=
-  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
-
-theorem mem_ACVF_sdVFAdd : Axioms.sdVFAdd ∈ Axioms.ACVF :=
-  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
-
-theorem mem_ACVF_sdVFNeg : Axioms.sdVFNeg ∈ Axioms.ACVF :=
-  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
-
-theorem mem_ACVF_sdVFMul : Axioms.sdVFMul ∈ Axioms.ACVF :=
-  mem_ACVF_sortClosure (by simp [Axioms.sortClosure, Axioms.ofList])
-
-/-- `0` of the ring language lies in the `VF` sort. -/
-theorem vf_zero_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
-    iVF (iVFZero (M := M)) := by
-  have h := sentence_realize hM (φ := Axioms.sdVFZero) mem_ACVF_sdVFZero
-  rw [Axioms.sdVFZero, Sentence.Realize] at h
-  simp only [Formula.Realize] at h
-  rw [pVF_realize, realize_tVFZero] at h
-  exact h
-
-/-- `1` of the ring language lies in the `VF` sort. -/
-theorem vf_one_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
-    iVF (iVFOne (M := M)) := by
-  have h := sentence_realize hM (φ := Axioms.sdVFOne) mem_ACVF_sdVFOne
-  rw [Axioms.sdVFOne, Sentence.Realize] at h
-  simp only [Formula.Realize] at h
-  rw [pVF_realize, realize_tVFOne] at h
-  exact h
-
-/-- The `VF` sort is closed under `+`. -/
-theorem vf_add_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
-    (hx : iVF x) (hy : iVF y) : iVF (iVFAdd x y) := by
-  have h := allSorted_realize hM (T := Axioms.ACVF) mem_ACVF_sdVFAdd ![x, y] (by
-    intro i
-    fin_cases i <;> simp [hx, hy])
-  rw [pVF_realize, realize_tVFAdd] at h
-  simpa using h
-
-/-- The `VF` sort is closed under `-`. -/
-theorem vf_neg_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
-    (hx : iVF x) : iVF (iVFNeg x) := by
-  have h := allSorted_realize hM (T := Axioms.ACVF) mem_ACVF_sdVFNeg ![x] (by
-    intro i
-    fin_cases i
-    simpa using hx)
-  rw [pVF_realize, realize_tVFNeg] at h
-  simpa using h
-
-/-- The `VF` sort is closed under `×`. -/
-theorem vf_mul_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
-    (hx : iVF x) (hy : iVF y) : iVF (iVFMul x y) := by
-  have h := allSorted_realize hM (T := Axioms.ACVF) mem_ACVF_sdVFMul ![x, y] (by
-    intro i
-    fin_cases i <;> simp [hx, hy])
-  rw [pVF_realize, realize_tVFMul] at h
-  simpa using h
-
-/-! ### The field laws on the `VF` sort -/
 
 /-- Extract an equation from an `allSorted`-guarded `pEq` sentence. -/
 theorem eq_of_allSorted {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {k : ℕ}
@@ -286,7 +36,7 @@ theorem eq_of_allSorted {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {k
 
 /-- The reduction of the `VF` field axioms to a list membership in `vfField`. -/
 theorem mem_vfField {s : LRV.Sentence} (h : s ∈ Axioms.vfField) : s ∈ Axioms.ACVF :=
-  mem_ACVF_vfField h
+  RVCalc.mem_ACVF_vfField h
 
 theorem vf_add_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M}
     (hx : iVF x) (hy : iVF y) (hz : iVF z) :
