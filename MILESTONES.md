@@ -850,3 +850,25 @@ Two members expired with green, unsubmitted files; verified judge-side and merge
   needed.
 * Remaining for 3.6 per this member: rv(e)-transcendence, the descent, the b/b* induction, EP
   3.3.4's residue half — the directions other q-members hold.
+
+## smw2ngn1z m3 (2026-11-04, accepted): the EP quotes transcribed; DivisibilityStep's Γ-content done
+
+* `QE/EPQuotes.lean` (m3): BOTH Engler–Prestel inequalities transcribed as quoted Props in the
+  Mathlib valuation vocabulary the consumers use —
+  `EP343_dimension_inequality` (e transcendental over K + residue-transcendental ⇒ the value group
+  is torsion over Γ(K); the ratrank-0 form Lemma 3.6 consumes) and
+  `EP334_fundamental_inequality` (residue degree ≤ field degree for a finite extension of valued
+  fields, with the equality case giving value-group equality; the form Lemmas 3.4/3.8 consume) —
+  with wiring and stress lemmas. Author ruling: quoted, not proved.
+* `QE/EPAudit.lean` + `QE/EP_LEDGER.md` (m3): the Mathlib 4.33.1 inventory behind that decision —
+  vocabulary present (`Valuation`, `IsLocalRing.ResidueField` as an algebra giving residue degrees,
+  `Module.finrank`, `Transcendental`, `HasExtension`); the CONTENT absent (no Abhyankar, no rational
+  rank, no dimension inequality, no residue-degree theorems). So both inequalities, and EP 3.2's
+  residue facts, must stay hypotheses.
+* `QE/GammaTorsion.lean` (m3): **DivisibilityStep's Γ-content, wired**: 
+  `gammaEqQ_of_gammaDivisible_of_hullInitial : Assembly.GammaDivisible S → GammaHullInitialQ S T →
+  GammaEqQ S T` — the ledger's input-4 conclusion from its two Γ-hypotheses; and
+  `exists_vf_class_witness` — the paper's VF-sorted value normalization
+  (∀ t ∈ T with iRV t, t ≠ 0, ∃ a ∈ VF(S) with class equality `gammaMk t = gammaMk (rv a)`, given
+  `IsVFGen S`), which is exactly the shape Lemma 3.6's b/b* induction consumes. Sharpness: 
+  divisibility is not removable (G = Multiplicative ℤ, K = {g + g}); the exponent must be positive.
