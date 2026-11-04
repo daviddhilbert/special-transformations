@@ -549,3 +549,21 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
 * Board leftovers: m7's `Transport.lean`/`HahnObstruction.lean` (OneStepPaper gate) delivered as
   findings but never submitted; first-hand verification assigned to smw2jkpn4 e8. d8 consistency
   witness abandoned empty; relaunched as smw2jkpn4 e6.
+
+## 2026-11-04 (cont.): the reduction layer is COMPLETE — `QE/FinalRoute.lean` (smw2jkpn4 e8, accepted)
+
+* `paper_theorem_FINAL : M7Paper.ShoenfieldTestSat → M5Ledger.LedgerInput1P → LedgerInput2 →
+  LedgerInput3P → LedgerInput4P → LedgerInput5P → Hahn.OneStepPaper → HasQE Axioms.ACVF`
+  (`QE/FinalRoute.lean`), with `frozen_conclusion_shape` machine-identifying the conclusion with
+  the frozen target by `rfl`. The proof: §10b ledger → `PrepStepPaper`, `prop39Sat_FINAL` joins
+  with the one-step gate, Shoenfield closes. No saturation/size/henselization hypothesis is
+  introduced by the composition itself.
+* Merged with it: m7's OneStep-shape work (finally first-hand verified):
+  `QE/Transport.lean` (embedding reflection of `iLe`, infinitesimal transport) and
+  `QE/HahnObstruction.lean` (`ArchimedeanRV`, `not_oneStepVFP_of_infinitesimal`,
+  `OneStepPaper`, `paper_theorem_2_3_sat_of_paper`; the `PRCopy` byte-copy replaced by the
+  canonical `import PaperRoute` — byte-identity of the rest sha256-checked).
+* Audit: each SizeHyp-gated input implies its PaperHyp form, so FINAL assumes strictly less than
+  the old frozen gates; `oneStepSizeFree_refutable`/`oneStepSizeBounded_refutable` re-exported.
+* The campaign's open set is now exactly the FINAL's seven hypotheses + T4 contingency
+  (SaturatedFS strength, e2) + e6 consistency (orthogonal). No more glue work on the route.

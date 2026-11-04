@@ -5,9 +5,21 @@ Read this first if you are picking up Theorem 2.3. Deliberately short; the detai
 
 ## The route, exactly as it stands
 
-**Frontier (after the author ruling 2026-11-04 adopting §10b):** the canonical route is
-`QE/M5Ledger.lean` §10b — everything on the line to `Enc.HasQE Axioms.ACVF` is seven named
-hypotheses, each at the paper's `PaperHyp` shape (`SaturatedFS N ∧ #M ≤ #N`),
+**Frontier (after `QE/FinalRoute.lean`, smw2jkpn4 e8 accepted):** the reduction layer is
+COMPLETE — `QE/FinalRoute.lean`'s `paper_theorem_FINAL` proves
+
+```
+ShoenfieldTestSat → LedgerInput1P → LedgerInput2 → LedgerInput3P → LedgerInput4P
+                  → LedgerInput5P → Hahn.OneStepPaper → HasQE Axioms.ACVF
+```
+
+where the conclusion is machine-identified with the frozen target
+(`frozen_conclusion_shape`, by `rfl`). Everything on the line to Theorem 2.3 is therefore
+exactly these seven hypotheses, each gated at `PaperHyp` (`SaturatedFS N ∧ #M ≤ #N`). The
+ledger road here: §10b of `QE/M5Ledger.lean` (adopted by author ruling) — hypotheses 1–5 are the
+ledger's five inputs at the paper's pair, plus Shoenfield's test and the `OneStepPaper` gate (the
+only one-step shape that survives: `QE/HahnObstruction.lean` machine-refutes both stronger
+shapes):
 
 ```
 ShoenfieldTestSat    (Marker quote; transcription: smw2jkpn4 e1)
@@ -19,13 +31,15 @@ LedgerInput3P        ResidueStep at PaperHyp — REAL WORK (inputs 3; m8's exist
 LedgerInput4P        DivisibilityStep at PaperHyp — REAL WORK (input 4; PE DivisibleHullExists
                      quoted in ClassicalProps; Γ-divisibility API: smw2jkpn4 e7)
 LedgerInput5P        SaturationRealization at PaperHyp (Marker quote: smw2jkpn4 e2)
-OneStepSizeFree      historically frozen; m7 machine-REFUTED the ∀∀ and SizeHyp-gated shapes;
-                     the surviving gate is OneStepPaper (∀∀ PaperHyp → OneStepVFP), which
-                     composes with §10b verbatim (case lemmas: 3.2 ✓, 3.7 ✓, separated ✓,
-                     atomic transport ✓; 3.4/3.6/3.8 open — smw2jkpn4 e3/e4)
+Hahn.OneStepPaper  ∀∀ PaperHyp → OneStepVFP — the ONLY surviving gate (QE/HahnObstruction.lean
+                     machine-refutes `OneStepSizeFree`, and `OneStepSizeBounded` too: size cannot
+                     repair the one-step, only saturation can); case-lemmas state: 3.2 ✓,
+                     3.7 ✓, separated ✓, atomic transport ✓; 3.4/3.6/3.8 open — smw2jkpn4 e3/e4
 ```
 
-with `paper_theorem_2_3_sat_of_ledger_paperHyp` proving §10b end-to-end. The earlier frozen
+The join is `prop39Sat_FINAL` + `hShoen`, three lines; the audit also proves each SizeHyp-gated
+input implies its PaperHyp form, so the FINAL assumes strictly less than the old frozen shape.
+The earlier frozen
 `paper_theorem_2_3` route (`ShoenfieldTestSize → PrepStepSize → OneStepSizeFree`) still compiles
 but its gates are refuted or under-powered (`QE/M5Ledger.lean` finding: `SizeHyp` does not supply
 `#K(M) ≤ #K(N)` that input 1 forces; m7's `HahnObstruction.lean`: size cannot repair the
