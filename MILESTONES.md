@@ -894,3 +894,10 @@ Two members expired with green, unsubmitted files; verified judge-side and merge
   removal everywhere. A consumer that can accept the ratio form gets the hypothesis for free.
 * Stress: `not_separated_top` makes the ⊤-witness test of these hypotheses necessarily negative
   (honestly so, not vacuously).
+
+### Flagged discrepancy (unverified): which lemmas consume the EP inequalities
+
+m1's report states "Lemma 3.8 does not consume EP 3.3.4/3.4.3; only 3.4 and 3.6 do", while
+`QE/Lemma38RV.lean:71`'s comment says the converse for 3.8's `vv(e) ∉ Γ(Ŝ)` step. Neither has been
+checked against the other by a judge; whoever next touches 3.8 should settle it in Lean (does
+`lift:value:full`'s proof need the fundamental inequality, or only the residue-side algebra?).
