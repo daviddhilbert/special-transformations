@@ -1,322 +1,120 @@
-# Handoff: the QE thread (state at end of the long session)
+# Handoff: the QE thread (state at `a4daebf..1dfc6bd`, 2026-11-04)
 
-Read this first if you are picking up Theorem 2.3. It is deliberately short; the detail is in
-`QE-PLAN.md` (chronological record) and `Milestone0/DECISION.md` (rulings and specifications).
+Read this first if you are picking up Theorem 2.3. Deliberately short; the detail is in
+`QE-PLAN.md` (chronology), `Milestone0/DECISION.md` (rulings), `MILESTONES.md` (ledger).
 
-## What is green right now
+## The route, exactly as it stands
 
-| file | sha / status | what it is |
-| --- | --- | --- |
-| `Milestone0/Encoding.lean` | `851d6a98…`, 0 errors, 2 `sorry`s | the frozen target; the two `sorry`s are `theorem_2_3_quantifier_elimination`, `theorem_2_8_c_minimal` |
-| `Milestone0/Saturation.lean` | green, no `sorry` | Marker-shaped `Saturated`/`MonsterModel`/`MonsterACVF` |
-| `QE/Sec3_sat.lean` | green, 7 `sorry`s | §3 over the monster model: `alg:ind:imag`, `average`, `ball:proper:sub:center`, `dcl:to:ac`, `effectiveness`, `algebraic:balls:…`, `rv:effectiveness` |
-| `QE/TransferWS.lean` | green, 2 `sorry`s | the QF-type assembly over the fragment: `TransferAtWS`, `NontrivialTransferWS`, `TrivialTransferWS`, `CaseSeparationWS`; targets `nontrivialTransferWS_ACVF`, `caseSplit_ACVF` |
-| `QE/Assembly_val.lean` | green, 23 246 lines, **2 `sorry`s** (the embedded copy of the frozen targets) | the assembly; the QF balls bridge is merged in |
-| `QE/Sec3_frozen.lean` | green, 5 `sorry`s | §3 over arbitrary models, `SP`/`acl`/`dcl` |
-
-Build recipes: §3/Saturation/TransferWS files use `import Enc` (a compiled `Milestone0/Encoding.lean`);
-see the header of `QE/Sec3_sat.lean` for the exact commands. `Assembly_val` and the swarm files are
-standalone `import Mathlib`.
-
-## The one thing being worked on: the guard repair
-
-Author's ruling: keep the recursive `WellSorted`, add the junk-truth condition on the guard of
-`.all`. The specification (in `DECISION.md`, section "`Occurs := InAntecedent`") is:
-
-1. move `guardAtom`/`InAntecedent` above `Occurs` (done in the attempts, see below);
-2. **define `Occurs i s η := InAntecedent s i η`** — replacing the compiled match, which cannot be
-   bridged because its discriminator looks inside subterms;
-3. delete `inAntecedent_of_occurs` (it becomes `id`);
-4. restate `occurs_self` → `InAntecedent.atom`, `occurs_foldr_hyps`/`occurs_sortedHyps` →
-   `.and_left`/`.and_right` chains;
-5. `wellSorted_alls` keeps `(hj : ∀ d, GuardTrue (ss d) d χ)`; its four callers gain
-   `fun d => GuardTrue.of_inAntecedent (occurs_sortedHyps ss d)`.
-
-The attempt at exactly this produced **17 mechanical errors**; the inventory by line number is in
-`DECISION.md` and the two working attempts are commits `604f968` and `35be8be` (both WIP, both
-red). `git show 35be8be:Milestone0/Encoding.lean` is the base to continue from.
-
-## After the repair
-
-1. `nontrivialTransferWS_ACVF` (frozen in `QE/TransferWS.lean`) — the sharp test of the repaired
-   predicate; expect the first failure in the `all`/`ex` cases.
-2. `caseSplit_ACVF`, `trivialTransferWS_ACVF` (should follow from the unrestricted
-   `trivialTransfer_ACVF` in `Assembly_val`), `CaseSeparationWS`.
-3. The fragment compactness step (`QFTypeDeterminesWS → HasQEws WellSorted`), then the
-   `sortEval`/`sortedHyps` bridge to the frozen `HasQE`.
-4. Still open from the main route: the mixed-context elimination (needs the `mul`-cancellation
-   normal form for elements off `K`) and the forward half of the parameter bridge
-   (`hasQE_of_hasQE_empty`; shrink side is green in `.ultramath/smw19wtoj/m2/`).
-
-## Assets from swarms worth reading before re-proving anything
-
-* `.ultramath/smw19wtoj/m1/W1.lean` — `exists_toFrag_WSg` (all cases, both sorts), `WSg`, `JunkTrueAt`.  (Name clash: this is a *different* `W1.lean` from the criterion file below; same basename, different swarm.)
-* `.ultramath/smw19wtoj/m4/SubstRv.lean` — `substLastRv`, `tmSort_substLastRv`, `wellSorted_substLastRv`.
-* `.ultramath/smw19wtoj/m3/QF2.lean` — `QF2`/`QFq2` mixed-context fragment, image in `WellSorted`.
-* `.ultramath/smw19wtoj/m5/Main.lean` — `qf_witness_of_exists_toFrag`, `hasQEws_of_exists_toFrag`.
-* `.ultramath/smw19wtoj/m2/SortTransport.lean` — shrink side of the parameter bridge.
-* `QE/Semantics_saturation.lean` (`QESat`) — QF-preservation under embeddings, the back-and-forth step.
-* `QE/Sec3_sat.lean` and `Milestone0/DECISION.md` — the saturation interface and every ruling.
-
-## Discipline that has cost time when skipped
-
-* A file is green only if `lean FILE.lean` exits 0; `grep -c "error"`, never `grep "error("`.
-* Stale oleans have caused four false alarms: always build your own `.olean` from the current file.
-* `Assembly_val.lean` carries a copy of `Encoding.lean`; any change to the encoding must be
-  re-synced into it in the same commit.
-* Do not report a theorem as proved without `#print axioms` ⊆ {propext, Classical.choice, Quot.sound}.
-
-## Update: the second route is closed as stated (read this before re-attempting it)
-
-Two swarm results landed after the section above and both change the plan.
-
-**1. `NontrivialTransfer Axioms.ACVF` is false, not merely unproved.**
-`Missing.nontrivialTransfer_iff_hasQEb` (`.ultramath/smw1b0thh/m3/AvAudit.lean:264`, compiled,
-axioms clean) proves
+**Frontier:** everything on the line to `Enc.HasQE Axioms.ACVF` is three named hypotheses, each
+at the paper's own quantifier shape (qe.tex:578),
 
 ```
-FinalAssembly.NontrivialTransfer Axioms.ACVF  ↔  QECriterion.HasQEb (L := LRV) Axioms.ACVF
+ShoenfieldTestSize   (or QFEAmalg / ModelCompleteRV + MonoAmalg — see QE/M1Fix.lean)
+PrepStepSize         Lemma 3.3 at pairs with Card M <= Card N  (SizeHyp)
+OneStepSizeFree      Lemmas 3.4-3.8 (= Assembly.OneStepVFP; Standing S carries the size)
 ```
 
-i.e. the tree's one remaining hypothesis for the frozen target (`hasQE_ACVF_of_nontrivialTransfer`,
-`Assembly_val:16347`) is equivalent to *unrestricted* QE, which is false — three refutations are in
-`QE-PLAN.md`.  So that theorem is vacuous.  **Do not try to prove `NontrivialTransfer`.**  The live
-form is `QE/TransferWS.lean`'s `NontrivialTransferWS`, which is the same assembly over the fragment.
+and `QE/PaperRoute.lean` proves `paper_theorem_2_3 : ShoenfieldTestSize → PrepStepSize →
+OneStepSizeFree → HasQE Axioms.ACVF`, green and axiom-clean, together with
+`prop39Size_of_two` (PrepStepSize + OneStepSizeFree → Prop39Size) and
+`shoenfieldTestFS_of_sat`.
 
-Same audit, three recorded obligations: none of the seven criterion files proves a *relativised*
-Shoenfield test; missing are the fragment transfer and a fragment compactness step
-(`FragAudit.MissingFragmentCriterion`); and `hasQE_ACVF_val` + the ball dictionary does **not**
-suffice — `Missing.HasQEb_ACVF_val`, `Missing.VFQ_to_QFq`, `Missing.MixedContextCover`.
+**Why not the older statements:**
 
-**2. `L_val` reaches only a strict sub-fragment.**  `.ultramath/smw1b0thh/m2/W2.lean` proves
-`wellSorted_valFormulaToRVvf` (the `L_val` image lies inside the frozen fragment — the tree's
-transfer never said this) and `transfer_of_qfType_VF` (equal QF well-sorted `L_RV` type at
-`VF`-tuples gives equal full `L_val` type, *without* a cover).  But the image contains only
-`s = t`, `v s ≤ v t` and `VF`-guarded quantifiers: `rv s = rv t`, `kAdd`/`kNeg`/`rvMul`, `Kˣ` and
-`RV`-quantifiers have no `L_val` preimage.  Two named gaps: no compiled bridge
-`vfValStruct = vfStruct`; `hasQE_ACVF_val` is `HasQE` at `n = 0` while tuples need `HasQEb`.
+* Universally-quantified `∀ M N, PrepStepP` is **refutable as stated** — machine-checked three
+  independent ways (`QE/M5OneStep.lean` `units_le_of_prepStepP`, `QE/PaperRoute.lean`
+  `prepStepP_forces_units_size` + `prop39FS_forces_size`, and m1's `card_le_of_prop39FS`):
+  `KEqTop T` places every unit of M in the embedded substructure, forcing `#Kˣ(M) ≤ #N` at
+  arbitrary pairs, which false model pairs violate. The paper fixes `N` `‖M‖⁺`-saturated
+  (qe.tex:578) before Lemmas 3.3–3.8; only Lemma 3.3 needs the size hypothesis;
+  `OneStepVFP`'s `Standing S` already carries it.
+* `QE/Prop39Two.lean` (**valid implication, refuted hypotheses** — header says so, do not treat
+  its two hypotheses as open lemmas): Weispfenning is *redundant* on this route — exhausting
+  the VF elements exhausts the model (`Assembly.eq_top_of_vf_all`), since the tagged encoding
+  has no junk elements in models (`QE/SortCover.lean`, from `sdCover`/`sdDisjoint`), so the
+  `VFGenCaseP` instance is proved outright (`Assembly.VFGenCaseP_top`).
+* Flagged caveat not machine-checked (would need a concrete model of `Axioms.ACVF`, which the
+  tree does not have): m5's AUDIT argues `OneStepVFP` also fails at equal cardinality for
+  value-group-dimension reasons (`v(m)/2` must exist in Γ(N)).
 
-**The one conclusion that has survived every direction: the residue-field and `RV`-side atoms are
-the irreducible content.**  No translation to the valuation language reaches them; closing QE means
-doing the `RV` work directly, which is what the paper's §4–§5 does.
+## Ingredients state (Lemmas 3.2-3.8)
 
-## Swarms, and what happens to them when this session ends
+| item | state |
+|---|---|
+| 3.2 `rv:root:lift:vf` | Mathlib-level proof done (`QE/Lemma32_root_lifting.lean`); instantiated at a model (`QE/Lemma32_at_model.lean`); **syntactic transport done** (`QE/M6Syntactic.lean`); consumption shape done (`QE/M6Wire*.lean`, chain form `hred` automatic at a root) |
+| 3.3 `PrepStepSize` | **open** (henselization + get `Standing`; the SizeHyp bound is what the paper's 578 supplies) |
+| 3.4/3.6/3.8 | **open** as tagged case lemmas; one-step skeleton in `QE/M5OneStep.lean` (`RVStepP`, `OneStepRV*`, `oneStepVFP_of_two_steps`, `standing_of_RV_le`) |
+| 3.5 `lift:divisible:hull` | **open**; the old base had a *vacuous* hypothesis, machine-checked and now fixed (`QE/M8Stars.lean`: `hne`, `exists_rv_vfSum'`) |
+| 3.7 `e:transc` | **proved** in the frozen encoding, both former hypotheses discharged (`QE/Lemma37.lean`) |
+| Remark 3.1 + Weispfenning | **not needed on this route** (see above) |
+| `ShoenfieldTestSize` | **open**; m1 reduced it to classical statements: `QE/M1Fix.lean` (`hasQE_of_qfEAmalg`, `hasQE_of_modelComplete_monoAmalg`); an embedding transfers only QF truth (`qf_realize_embedding`), so Prop39-style monomorphisms alone can never prove QE |
 
-* `smw1b0thh` (the Shoenfield/criterion route, 4 members, 120 min): w4 audit and w2 transfer
-  **accepted and recorded above**; w1 (fragment Shoenfield criterion) and w3 (worked instance on
-  two `C v` models) still running when this was written.
-* Older swarms still listed as "running" (`smw17pts2`, `smw18pb0w`) have no working members; their
-  accepted output is already merged or recorded in `QE-PLAN.md`.  Nothing is owed by them.
-* **A swarm belongs to the session that started it.**  A new session cannot see, judge or resume
-  these; `ultramath_status` only lists its own session's swarms.  So:
-  - anything a member delivers lands as ordinary files under `.ultramath/<swarm>/m<k>/` — those
-    survive, and the new session can use them as artifacts (the accepted ones are listed above);
-  - anything not yet submitted will not be judged.  If w1 or w3 matters, wait for the reminder and
-    judge it in this session before starting the new one; otherwise treat the files under
-    `.ultramath/smw1b0thh/{m1,m3}/` as unvetted and re-check them with `lean` before relying on
-    them.
+## The frozen target and its integrity
 
-## Recheck of the two unvetted swarm files (done here, as instructed)
+- `Milestone0/Encoding.lean` carries the two frozen `sorry`s: `theorem_2_3_quantifier_elimination`,
+  `theorem_2_8_c_minimal`. Everything else in `Milestone0/`, `Milestone0/accepted/`, `QE/` compiles
+  green (`make milestones`, full pass), with **one exception: `QE/ValBridge.lean` (1 error)** —
+  a superseded file of mine; nothing imports it; deletion needs a person to approve; do not build
+  on it.
+- The guard repair is **applied** (`86d7ea7e…`): `Occurs := InAntecedent`, `GuardTrue` inductive,
+  `junkFalse`/`junkTrue` semantics in `QE/JunkTrue.lean`. Anything copied from
+  `QE/Reduction_assembly.lean` (or from `Assembly_val`) is a **pre-repair snapshot** that omits
+  the nine `repairRV` axioms and has the old unrestricted `HasQE` — re-check everything compiled
+  against it (m6's RVCalc established: `rv(-x)=rv(x)` fails there, works over the frozen axioms).
+- `Assembly.PrepStep`/`OneStepVF`/`VFGenCase` bodies never mention the saturation argument
+  (`Iff.rfl` against every saturation notion), and `Assembly.Saturated` is too strong to be
+  meaningful (it proves Prop 3.9's conclusion outright). Those facts are recorded with
+  `Assembly.prepStep_iff` etc. in `QE/Assembly_frozen.lean`.
+- Saturation (Frank: `SaturatedFS`) is *not* where the size bound lives, and a pure size bound is
+  not sufficient either (value-group dimension). Correct route quantifiers are the paper's own.
 
-Ran in each member's own directory with `LEAN_PATH=$PWD:$LEAN_PATH lean FILE.lean`:
+## Sections of the paper: what is in the tree
 
-| file | result |
-| --- | --- |
-| `.ultramath/smw1b0thh/m1/W1.lean` (w1, fragment Shoenfield criterion) | green **against its own pre-merge olean only**; superseded by `smw1b0thh/m4/{FragQE,FragQE1,FragAtoms}.lean` — see the pointer at the end. No work owed. |
-| `.ultramath/smw1b0thh/m4/Main.lean` (w3, the worked instance on two `C v` models) | **does not compile**: `Main.lean:89:40 error: Function expected at WellSorted` (name not in scope where applied). Nothing in `m4/` should be relied on; if the instance is wanted, rebuild it against a fresh `Enc.olean` from `Milestone0/Encoding.lean`. |
+* §3: all 17 items in the tree (`QE/Sec3*`, `Exchange`, `M3AclField`, `M8*`, `BallSec3`,
+  `M7Centres`, `AclFibres`, `UniformCover`, `Sec3Corrected`, `Sec3Count`, `Sec3Fibre`). Notable
+  hazards recorded there: frozen `IsSetOfCenters` was wrong (function form repaired), frozen
+  `SP.AclConstOfFibres` was false (repaired with `A.Nonempty`), `average:0:rv:not:constant`'s
+  frozen form is refuted (char-0 needed), `finite:VF:project:RV` now proved at finite `A` with
+  target `RV^{n·k}`, and `alg:ind:imag` stands on `M5.ExchangeVF` alone (rv-fibres infinite).
+  `QE/Exchange.lean`'s `SwapFinite` is exactly Yin's C-minimality content still owed.
+* §4: merged (`Sec4Rename`, `Sec4FibreDim`, `Sec42Morphism`, `M6Polydisc`, `Sec4EK`,
+  `Sec4DimACFModel`, plus the breakthrough: **`QE/Compose.lean` — the `DefinableFun` composition
+  wall is down**, `comp`/`comp_of_mapsTo`, and `QE/Fibre.lean` first applications, e.g.
+  `dimVF_fibre_le`; `QE/Proj.lean` projection lemma). The td non-vacuity model is in.
+* §5: `QE/Sec5.lean`.
+* §6: `QE/HenS.lean`, `QE/Sec6QE.lean`, `QE/Sec6.lean` (HenS(0,0) + `cut:to:hensel:substru` +
+  `hasVFQE_of_step`).
+* §7: `QE/Sec7Gamma.lean` (Def 7.1, "some (hence all)" proved), `QE/Sec7GammaHensel.lean`
+  (hensel:lemma's proof body), `QE/Sec7Lift.lean`, `QE/Sec7Cor77.lean`.
+* §8: `QE/Sec8Points.lean`, `QE/Sec8AlmostCont.lean` + `QE/Sec8Top.lean`
+  (`fun:almost:cont` at `closure (DiscSet f)`), `QE/Sec8ValCons.lean`.
+* §9: `QE/Sec9Limits.lean`, `QE/Sec9AE.lean`.
+* §10: `QE/Sec10.lean`, `QE/Sec10RVVol.lean` (hreduce disclosure kept visible).
 
-So of the two, only w1 is an artifact. w3 is not, and neither has been judged (a swarm belongs to the
-session that started it), so treat both as *unvetted input* even where green: `lean` exit 0 says the
-file elaborates, not that its statement is the one wanted.
+## Build/check discipline that has already cost a day, now codified
 
-## w1 judged (accepted): the fragment criterion exists, and it is sharp
+* `lean FILE.lean` **does not write an olean** in this environment; `lean -o FILE.olean FILE.lean`
+  does. A stale olean silently *removes* declarations; build your own constants before judging.
+* Run counts with `grep -c ': error'`, never `'error('`.
+* Never report a theorem proved without `lean` on the actual file + `#print axioms` ⊆
+  {propext, Classical.choice, Quot.sound}. A reminder-trigger retry may re-verify outdated work.
+* Do not `import QE/Assembly_val.lean` together with `Enc` (module-name collision: it embeds its
+  own copy of the encoding). Port constructions the way `QE/VFField.lean`/`QE/VFValued.lean` did.
+* A hypothesis that is its own conclusion is worse than an open lemma. This project has been
+  refuted-by-itself at least seven times (`VFGenCase`-sans-saturation, `Saturated`,
+  `CoverVF`/`AtomCover`, `IsSetOfCenters`, `SP.AclConstOfFibres`,
+  `swl_algebraic_balls_definable_centers`, the unrestricted `HasQE`); every new hypothesis gets the
+  cardinality/vacuity stress test BEFORE the verdict, and any "ingredient" file being accepted is
+  itself machine-checked for a hidden restatement of its target.
+* `.ultramath/<swarm>/` files are unvetted until compiled in the current tree. Oleans for
+  `Enc` + the main `QE/` modules live in `.scratch2/sec3/`; work there:
+  `cd .scratch2/sec3 && LEAN_PATH=$PWD:$LEAN_PATH lean [-o X.olean] X.lean`.
 
-`.ultramath/smw1b0thh/m1/W1.lean` (checked by compiling: exit 0, 0 errors, no `sorry`):
+## What a new session should do first
 
-* `W1.QFTypeDetermines T` — two models, `∀ α sα n sn`, `sortEval` sortedness on *both* parameter
-  tuples and *both* variable tuples, QF agreement restricted to well-sorted formulas.  **No
-  saturation hypothesis**, so it is a criterion and not a step.
-* `W1.hasQE_of_qfTypeDetermines : QFTypeDetermines T → HasQE T` with the frozen `HasQE` as
-  conclusion; `W1.hasQE_iff_qfTypeDetermines` — the two are **equivalent**.
-* `W1.hasQE_of_embedding` — the substructure-embedding shape is *strictly weaker* in this encoding
-  (ill-sorted term values unconstrained), so a bridge `QFTypeEmbeddable` is genuinely needed.
-* `W1.exists_list_of_models_bounded` — compactness with parameters, via `Formula.equivSentence`;
-  sortedness must be named by sentences, else the extraction is over unsorted tuples.
-
-**Consequence to keep in mind:** because of the equivalence, `QFTypeDetermines Axioms.ACVF` is
-exactly as hard as Theorem 2.3.  The criterion *relocates* the content; it does not reduce it.
-So the second route is now a sharp statement of where the work is, not a second proof.
-
-## Sequencing decision: repair first, then use it as the probe of the `RV` work
-
-Both routes now agree that the irreducible content is the residue-field/`RV` side
-(`Missing.VFQ_to_QFq`, `Missing.MixedContextCover`, and `QFTypeDetermines Axioms.ACVF`, which by
-`W1.hasQE_iff_qfTypeDetermines` is *equivalent* to the theorem).  So the `RV` work is the real
-destination and everything else is either bounded bookkeeping or a probe.
-
-Order, and why:
-
-1. **The guard repair** — bounded (a 17-error inventory, one pass, spec in `DECISION.md`).  It is
-   required by the translation route's soundness whether or not the criterion route needs it, and
-   it is the only way to state `NontrivialTransferWS`.
-2. **One cheap experiment *before* grinding the repair**, because it may change the order: check
-   whether the *unrepaired* `WellSorted` already satisfies `QFTypeDetermines` at a single
-   quantifier.  m1's criterion is compiled against the current predicate, so if junk elements can
-   never influence a well-sorted formula *at sorted tuples*, the repair is unnecessary for the
-   criterion route and is only needed for `exists_toFrag`'s induction.  The case to try:
-   `∀x (pVF x ⟹ ((pVF x ⟹ ⊥) ⟹ ψ))` — at `x ∈ VF` the inner guard is false, so the body is `⊤`,
-   which suggests junk-insensitivity, but that is one formula, not a proof.
-3. **`nontrivialTransferWS_ACVF` far enough to locate its first failure** (frozen in
-   `QE/TransferWS.lean`).  That failure point *is* the `RV`-side work stated minimally — it is the
-   cheapest probe available, and it converts "do the `RV` work" from a direction into a lemma.
-4. **Then the `RV`-side proper**, with the §5 skeleton already in hand:
-   `.ultramath/smw18ygko/m1/Sec5.lean` (definition 5.1's apparatus, `eta_wellPosed`,
-   `exists_unique_contractionVF`; statements 5.2/5.4/5.5 frozen).
-
-Do **not** spend further effort on criterion variants: `hasQE_iff_qfTypeDetermines` makes them
-sharply equivalent to the theorem, so a variant buys a reformulation, not progress.
-
-## The junk-sensitivity experiment: answered (junk-sensitivity is real; repair still needed)
-
-Question: can a formula that is `WellSorted` under the **unrepaired** predicate have its truth at
-*sorted* tuples influenced by elements outside the sorts?  If not, the guard repair would be
-unnecessary for the criterion route.
-
-**Answer: yes, and here is the witness.**  Take `s = .vf` and
-
-```
-φ  =  ∀x ( ((x ∈ VF) ⟹ ⊥) ⟹ (x = 0_VF) )
-```
-
-* `WellSorted` holds: the body is `.imp η ψ` with `η = ((pVF x) ⟹ ⊥)`, and `GuardsLast` fires on
-  `η` because `Occurs i .vf (pVF x)` holds (`pVF x` *is* `sortPredG .vf (var i)`); `ψ = (x = 0)` is
-  a well-sorted atom at sort `.vf`; so `WellSorted.all` applies under the unrepaired predicate.
-* **At `x ∈ VF` the body is `⊤`** (`x ∈ VF` is true, so `(x ∈ VF ⟹ ⊥)` is `⊥`, so the implication
-  is `⊤`) — so on the `VF` sort `φ` is vacuous.
-* **At `x` outside `VF`** — i.e. at an `RV`-element, which exists in every model by `sdCover` and
-  `sdDisjoint` — the body is `x = 0_VF`, i.e. it asks whether that `RV`-element equals the `VF`
-  zero.  So `φ` says "every element outside `VF` equals the `VF`-zero", which is a real condition
-  on the junk part of the model.
-
-So the unrepaired `WellSorted` admits formulas whose truth is decided entirely by junk elements,
-while the *guards* in them look innocuous.  Consequences:
-
-1. **The criterion's statement is unaffected** — `QFTypeDetermines` is equivalent to the target
-   (`W1.hasQE_iff_qfTypeDetermines`), and the target is what it is.  Junk-sensitivity does not
-   refute it, because such a `φ` must still have a QF equivalent if the theorem is true.
-2. **The proof is affected.**  Any induction on `WellSorted` derivations that pushes an equivalence
-   through `∀` must bound the body's truth at junk values, and this witness shows the unrepaired
-   predicate gives no such bound.  So the guard repair (or the equivalent invariant `JunkTrueAt` on
-   bodies) **is still needed for the criterion route's proof**, not for its statement.
-3. Which is the useful form of the answer: the repair is not bookkeeping — it is the difference
-   between a fragment whose formulas are controlled by their sorted part and one that is not.
-
-## The criterion, in its smallest form (m4, accepted) — this is the target to attempt
-
-`.ultramath/smw1b0thh/m4/` — all four files compiled here (exit 0, 0 errors, no `sorry`):
-
-| file | what it gives |
-| --- | --- |
-| `FragQE.lean` | `FragmentQFTypeDetermines T` (QF-well-sorted type at sort-respecting tuples of two models determines the well-sorted type) → frozen `HasQE T`, plus the converse and the `iff` |
-| `FragQE1.lean` | the **one-directional** hypothesis suffices (compactness needs no more) |
-| `FragAtoms.lean` | the hypothesis **reduced to atoms** — term equations of one sort, `memVF`/`memRV`/`memUnits`/`rvLe` at their declared sorts; `qfType_iff_atoms` |
-| `SortSound.lean` | sort-discipline helpers; term induction stated as `TermSortSound` |
-
-**So the remaining mathematical obligation of the criterion route is one named statement:**
-
-```
-FragmentAtomQFTypeDetermines Axioms.ACVF        -- FragAtoms.lean:100
-```
-
-and by the proved equivalences it is iff `HasQE Axioms.ACVF` — the theorem in atom form, not a
-shortcut.  It is nevertheless the smallest form of the obligation anyone has produced: the `RV`-side
-work is now exactly "two models agreeing on the *atoms* agree on the atoms' Boolean combinations at
-sorted tuples", which is where §4–§5's special transformations enter.
-
-Two facts from its proof worth not rediscovering: the compactness set must include the sort
-assertions (themselves QF and well-sorted) or the witness tuple is not sorted; and `WellSorted` must
-survive the meet/join folds.  Also: the partial-isomorphism (Shoenfield-embedding) form is *unusable*
-in this encoding, because junk values lie outside the fragment — the QF-type form is the only one
-available.  That settles the comparison question: there is no second, independent formulation to
-check against; there is the criterion, sharp, in atom form.
-
-## State after the guard repair (this session)
-
-| file | status |
-| --- | --- |
-| `Milestone0/Encoding.lean` | **repaired**, sha256 `86d7ea7e…`, `lean` exit 0, 0 errors, 2 frozen `sorry`s |
-| `QE/Assembly_val.lean` | green, 0 errors, 2 frozen `sorry`s; embedded encoding re-spliced verbatim |
-| `QE/TransferWS.lean` | green against the repaired encoding (2 `sorry`s, by design) |
-| `QE/FailProbe.lean` | green; the transfer's first failure point, machine-checked |
-
-The repair: `Occurs := InAntecedent`; `GuardTrue` is an inductive family with an `.all` clause;
-`WellSorted.all`, `wellSorted_alls`, `wellSorted_allOne` carry it; every `wellSorted_allSorted*` /
-`exSorted*` signature is unchanged.  Details and the reasons in `DECISION.md` §"The guard repair:
-applied, green, and what it changed".
-
-**The endgame lost three of its four hypotheses.**  `TrivialHalf.allNontrivial_ACVF` (every model of
-`Axioms.ACVF` is `IsNontrivialVF`, from `Transfer.isNontrivialVF_of_model`, now checked) gives
-`caseSplit_ACVF`, `caseSeparation_ACVF`, and
-
-```
-Transfer.hasQE_ACVF_of_nontrivialTransfer : FinalAssembly.NontrivialTransfer Axioms.ACVF
-    → QECriterion.HasQE Axioms.ACVF
-```
-
-So there is **no two-case question for the frozen theory**, and `TrivCase.FineTriv` is empty over it
-(`TrivialHalf.not_fineTriv`) — the trivially valued model of §10 above satisfies a weaker axiom set.
-
-**The transfer's first failure is located** (`QE/FailProbe.lean`): the induction on `WellSorted` has
-an immediate atom/`imp` case, and its `all` case splits on the bound element into (i) junk-truth of
-the body — the repair's payload, now an unproved semantic lemma rather than an obstruction — and
-(ii) for a *sorted* bound element, a sorted `a : M` with the same QF type over the parameters, i.e.
-realization of a QF type in a fixed model, which `TransferAtWS`'s hypothesis does not supply.  This
-is why the transfer is a reformulation of QE rather than a reduction, and why the atom form above is
-the target.
-
-## Two swarm files that must not be relied on as-is (one line each)
-
-* **`W1.lean`** (fragment criterion, `.ultramath/smw1b0thh/m1/`) — **superseded, no work owed.**
-  Use `.ultramath/smw1b0thh/m4/{FragQE,FragQE1,FragAtoms}.lean` instead: stronger (hypothesis
-  reduced to atoms) and imports only `Enc`, so `Assembly_val` drift cannot reach it.  If the
-  *embedding-form argument* is ever wanted, it is in `W1.lean`'s `REPORT.md` prose and in
-  `W1.hasQE_of_embedding`/`QFTypeEmbeddable` — read them, do not rebuild the file.
-* **`smw18pb0w` m4's `ValueOnly.lean`** is byte-identical to the already-merged
-  `m1/ValueOnlyM4.lean`; nothing new in it.
-
-**Rule.** `lean` against a member's own olean proves only "elaborates against that snapshot".
-Rebuild the prelude before relying on a file importing `Pre_build`/`Pre2`/`PreC`/`AV`; files
-importing only `Enc` or `Mathlib` are safe from `Assembly_val` drift.
-
-## Porting Lemma 3.2 / 3.5 / 3.7: do not re-prove them, instantiate them
-
-The five Mathlib-level files (`QE/Lemma32_root_lifting.lean`, `Lemma35_divisible_hull.lean`,
-`Lemma37_transcendental.lean`, `Lifting_transcendental.lean`, `RV_henselian.lean`) are stated for
-`(K, v)` with `[Field K]`, `[IsAlgClosed K]`, `v : Valuation K Γ₀` — nothing else.  And
-`QE/Assembly_val.lean` already proves that the `VF`-sort of a model of the frozen `ACVF` *is* such a
-field:
-
-* `M4ValueOnly.exists_valuation_predV` (`:21033`) gives `w : Valuation (VFType M) Γ` with
-  `iLe (iRv y) (iRv x) ↔ w x ≤ w y` (the two orders are reversed: `Mathlib.Valuation` is the
-  absolute-value convention);
-* `VFAlgClosed.isAlgClosed_vfType` (`:11575`) gives `[IsAlgClosed (VFType M)]`.
-
-So "porting" is an instantiation at `K := VFType M` plus the `iRv`/`iLe` dictionary, not a proof.
-`QE/ValBridge.lean` packages the two (`M5.exists_valued_vfType`, `M5.isAlgClosed_vfType`,
-`M5.ValuedModel`, `M5.valuedModel`) and carries `M5.rv_root_lift_at_model` as the demonstration.
-What a port still owes is only the *syntactic* half: reading the encoding's `RV`-polynomial
-hypothesis as `huniv`/`hred`, which needs `iRv x = iRv y ↔ YinRV.rv w x = YinRV.rv w y`.
-
-**The olean in `.scratch2/Assembly_val.olean` is stale and must be rebuilt before importing it**
-(checked 2026-11-04: olean 22:40, source 23:41, and the olean then lacks `M4ValueOnly` entirely —
-`#check @M4ValueOnly.exists_valuation_predV` fails against it while the current source has the
-declaration).  Build with
-
-    cd .scratch2 && LEAN_PATH=$PWD:$PWD/sec3:$LEAN_PATH lean -o Assembly_val.olean Assembly_val.lean
-
-which took 75 s on the 4-core VM (26.7 MB olean).  **The `-o` is not optional**: this `lean` writes
-*no* olean from `lean Foo.lean` alone. Verified on a one-line file — `lean Ot.lean` leaves no
-`Ot.olean`, `lean -o Ot.olean Ot.lean` does. So every "rebuild the prelude" instruction in this file
-and in `QE-PLAN.md` means `lean -o …`. This is the root cause of the "Assembly_val drift" the
-W1/`Pre_build` note at the end of this file warns about, in its most basic form: **a stale olean
-silently removes declarations**, it does not warn, and a plain `lean` run will not refresh it.
+1. `git log --oneline -15` and read `MILESTONES.md`'s last two sections (the route diagram).
+2. Check running swarms (`ultramath_status`) before starting any: judge any `waiting_for_verdict`
+   first. Do not start a fresh swarm over directions with `state: active` unless they are stuck.
+3. The QE-critical three: `PrepStepSize` (Lemma 3.3, biggest open), the 3.4/3.5/3.6/3.8 case
+   lemmas (skeleton in `QE/M5OneStep.lean`, fixed RV algebra in `QE/M8Stars.lean`), and
+   `ShoenfieldTestSize` / `QFEAmalg` / `ModelCompleteRV + MonoAmalg` (form in `QE/M1Fix.lean`).
