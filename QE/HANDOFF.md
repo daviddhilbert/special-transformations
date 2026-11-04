@@ -50,7 +50,7 @@ red). `git show 35be8be:Milestone0/Encoding.lean` is the base to continue from.
 
 ## Assets from swarms worth reading before re-proving anything
 
-* `.ultramath/smw19wtoj/m1/W1.lean` — `exists_toFrag_WSg` (all cases, both sorts), `WSg`, `JunkTrueAt`.
+* `.ultramath/smw19wtoj/m1/W1.lean` — `exists_toFrag_WSg` (all cases, both sorts), `WSg`, `JunkTrueAt`.  (Name clash: this is a *different* `W1.lean` from the criterion file below; same basename, different swarm.)
 * `.ultramath/smw19wtoj/m4/SubstRv.lean` — `substLastRv`, `tmSort_substLastRv`, `wellSorted_substLastRv`.
 * `.ultramath/smw19wtoj/m3/QF2.lean` — `QF2`/`QFq2` mixed-context fragment, image in `WellSorted`.
 * `.ultramath/smw19wtoj/m5/Main.lean` — `qf_witness_of_exists_toFrag`, `hasQEws_of_exists_toFrag`.
@@ -122,7 +122,7 @@ Ran in each member's own directory with `LEAN_PATH=$PWD:$LEAN_PATH lean FILE.lea
 
 | file | result |
 | --- | --- |
-| `.ultramath/smw1b0thh/m1/W1.lean` (w1, fragment Shoenfield criterion) | **green**: exit 0, 0 errors, no `sorry` warning. Usable, but read its statement before relying on it — in particular check whether it carries a saturation hypothesis, which would make it not a criterion. |
+| `.ultramath/smw1b0thh/m1/W1.lean` (w1, fragment Shoenfield criterion) | green **against its own pre-merge olean only**; superseded by `smw1b0thh/m4/{FragQE,FragQE1,FragAtoms}.lean` — see the pointer at the end. No work owed. |
 | `.ultramath/smw1b0thh/m4/Main.lean` (w3, the worked instance on two `C v` models) | **does not compile**: `Main.lean:89:40 error: Function expected at WellSorted` (name not in scope where applied). Nothing in `m4/` should be relied on; if the instance is wanted, rebuild it against a fresh `Enc.olean` from `Milestone0/Encoding.lean`. |
 
 So of the two, only w1 is an artifact. w3 is not, and neither has been judged (a swarm belongs to the
