@@ -53,11 +53,29 @@ are the `![…]`-shaped abbreviations, so every atom case needs `ts` rewritten t
 (`hts : ts = ![ts 0, ts 1]`) before the realization lemma applies; and `rvMap`'s argument is a *VF*
 term, so the `RV` extraction has to call `vfOpt_sound` rather than its own induction hypothesis.
 
-**Still `sorry`:** `qf2_cover` itself, the formula induction.  Its cases are all in place in the
-sketch recorded in `QE-PLAN.md` — atoms via the extraction, `imp` via `IsQF.imp`, `all` excluded by
-`BoundedFormula.not_all_isQF` — and the two technical hazards are that `QF2.Eval` is a
-pattern-matching `def` (so its constructor equations must be stated separately, each by `rfl`) and
-that the atom realization lemmas must be stated at general `ts`. -/
+**Proved, no `sorry`:** `qf2_cover` itself (`qf2_cover_eval` in `QF2.Eval` form, `qf2_cover` in the
+`toRV`/`Realize` form), axioms within {propext, Classical.choice, Quot.sound}.  The formula induction:
+atoms via the extraction, connectives via `QF2.imp`/`QF2.falsum`, and the `all` case is excluded by
+`IsQF` (`BoundedFormula.not_all_isQF`) — the fragment needs no quantifier case, which is the whole
+point of stating the cover over the *quantifier-free* fragment.
+
+Four things cost a round each; they are recorded here because they are the kind of detail that is
+invisible until it bites:
+1. the encoding writes atoms as `rel R ts` for a general `ts`, while `pVF`/`pRVsort`/`pUnits`/`pLe`
+   are the `![…]` abbreviations — so each atom needs a realization lemma at general `ts`
+   (`realize_rel_memVF` and companions), proved by `Iff.rfl` to the `RelMap` form and then rewriting
+   the assignment function to the matrix with `funext`/`fin_cases`;
+2. `QF2.Eval` is a pattern-matching `def`, so its constructor equations are separate `Iff.rfl`
+   lemmas (`eval_inVF`, …) rather than `show`-able;
+3. `IsQF` is an inductive with an `of_isAtomic` case that is impossible at an implication, so the
+   `imp` case needs the destructor `isQF_imp_inv`;
+4. `vfOpt_sound` is stated at a fixed model, and a section variable that a statement does not
+   mention is *not* in scope for its proof — so the model-free existence of the extracted term needs
+   `vfOpt_exists`, proved by instantiating the soundness theorem at a junk `LRV.Structure PUnit`
+   (declared here for that purpose), with `vfOpt_val` carrying the model inside its conclusion.
+   Without that split the atom cases cannot produce the `QF2` witness before the statement's `∀ M`.
+
+-/
 
 /-- Extract a fragment `VF`-term, undoing `TmSort` symbol by symbol.  Proof-free, so that the
 recursion is structural on the term; the sort hypothesis is used only in `vfOpt_sound`. -/
@@ -220,19 +238,221 @@ theorem rvOpt_sound {M : Type} [LRV.Structure M] :
     | vfNeg => exact absurd hres (by decide)
     | vfMul => exact absurd hres (by decide)
 
+/-! ## The model-free part of the extraction
+
+`vfOpt_sound`/`rvOpt_sound` are stated at a fixed model (the value equation lives there), but the
+*term* they produce does not depend on the model.  The two accessors below split that:
+`vfOpt_exists` is model-free (its statement mentions neither the model nor the structure, so the
+section variables do not become parameters), and `vfOpt_val` carries the model inside its
+conclusion.  Without the split, the cover's atom cases cannot produce the `QF2` witness before the
+model is introduced by the statement's `∀`. -/
+
+/-- A junk `L_RV`-structure on `PUnit`.  It is *not* a model of `ACVF` and is used for one purpose
+only: the extraction and its value equation depend on the model, but the extracted *term* does not,
+so the model-free existence statement below is proved by instantiating the soundness theorem here
+(a section variable that the statement does not mention is not in scope for its proof, and a
+`∀ M`-free statement cannot otherwise be obtained from a model-indexed one). -/
+instance : LRV.Structure PUnit where
+  RelMap := fun _ _ => True
+  funMap := fun _ _ => ⟨⟩
+
+theorem vfOpt_exists (t : Tm n) (h : TmSort sE sn t = some .vf) :
+    ∃ s : VFT2 sn, vfOpt sn t = some s := by
+  obtain ⟨s, hs, -⟩ := vfOpt_sound (M := PUnit) t h
+  exact ⟨s, hs⟩
+
+theorem rvOpt_exists (t : Tm n) (h : TmSort sE sn t = some .rv) :
+    ∃ u : RVT2 sn, rvOpt sn t = some u := by
+  obtain ⟨u, hu, -⟩ := rvOpt_sound (M := PUnit) t h
+  exact ⟨u, hu⟩
+
+theorem vfOpt_val (t : Tm n) (h : TmSort sE sn t = some .vf) {s : VFT2 sn}
+    (hs : vfOpt sn t = some s) :
+    ∀ (M : Type) [LRV.Structure M] (x : Fin n → M),
+      s.Val x = t.realize (Sum.elim (default : Empty → M) x) := by
+  intro M inst x
+  obtain ⟨s', hs', hv⟩ := vfOpt_sound (M := M) t h
+  rw [hs] at hs'
+  cases hs'
+  exact hv x
+
+theorem rvOpt_val (t : Tm n) (h : TmSort sE sn t = some .rv) {u : RVT2 sn}
+    (hu : rvOpt sn t = some u) :
+    ∀ (M : Type) [LRV.Structure M] (x : Fin n → M),
+      u.Val x = t.realize (Sum.elim (default : Empty → M) x) := by
+  intro M inst x
+  obtain ⟨u', hu', hv⟩ := rvOpt_sound (M := M) t h
+  rw [hu] at hu'
+  cases hu'
+  exact hv x
+
 /-! ## `qf2_cover`
 
-The target: a well-sorted quantifier-free formula over a sorted context is, at sorted tuples, the
-image of a `QF2` term.  The atom cases are the extraction above; the connectives are `QF2.imp` and
-`QF2.falsum`, and `pVF`/`pRV`/`pUnits`/`pLe`/`pEq` map to `inVF`/`inRV`/`unitRV`/`leRV`/`eqVF`
-(resp. `eqRV` when both terms are `RV`). -/
+Everything is at the assignment `(default : Empty → M)`, which is what `VFT2.Val` and
+`QF2.realize_toRV` use; the frozen target's `(fun e : Empty => e.elim)` is the same function,
+converted once in `qf2_cover`. -/
+
+section AtomRealize
+
+variable {M : Type} [LRV.Structure M] {x : Fin n → M}
+
+@[simp] theorem eval_inVF (a : VFT2 sn) : QF2.Eval x (.inVF a) ↔ iVF (VFT2.Val a x) := Iff.rfl
+@[simp] theorem eval_inRV (a : RVT2 sn) : QF2.Eval x (.inRV a) ↔ iRV (RVT2.Val a x) := Iff.rfl
+@[simp] theorem eval_unitRV (a : RVT2 sn) :
+    QF2.Eval x (.unitRV a) ↔ iUnits (RVT2.Val a x) := Iff.rfl
+@[simp] theorem eval_leRV (a b : RVT2 sn) :
+    QF2.Eval x (.leRV a b) ↔ iLe (RVT2.Val a x) (RVT2.Val b x) := Iff.rfl
+@[simp] theorem eval_eqVF (a b : VFT2 sn) :
+    QF2.Eval x (.eqVF a b) ↔ VFT2.Val a x = VFT2.Val b x := Iff.rfl
+@[simp] theorem eval_eqRV (a b : RVT2 sn) :
+    QF2.Eval x (.eqRV a b) ↔ RVT2.Val a x = RVT2.Val b x := Iff.rfl
+@[simp] theorem eval_imp (a b : QF2 sn) :
+    QF2.Eval x (.imp a b) ↔ (QF2.Eval x a → QF2.Eval x b) := Iff.rfl
+
+/-- The destructor of `IsQF` at an implication (the inductive has an `of_isAtomic` case too, which
+is impossible at an implication). -/
+theorem isQF_imp_inv {k : ℕ} {φ ψ : Bf k} (h : (φ.imp ψ).IsQF) : φ.IsQF ∧ ψ.IsQF := by
+  cases h with
+  | imp h1 h2 => exact ⟨h1, h2⟩
+  | of_isAtomic h1 => cases h1
+
+/-- `t ∈ VF` at a general `ts` (the encoding's atoms are `rel R ts`, not the `![…]` forms). -/
+theorem realize_rel_memVF (ts : Fin 1 → Tm n) (v : Empty → M) (x : Fin n → M) :
+    (BoundedFormula.rel (L := LRV) Rel.memVF ts).Realize v x ↔
+      iVF ((ts 0).realize (Sum.elim v x)) := by
+  have h : (BoundedFormula.rel (L := LRV) Rel.memVF ts).Realize v x
+      ↔ Structure.RelMap (L := LRV) Rel.memVF (fun i => (ts i).realize (Sum.elim v x)) := Iff.rfl
+  rw [h]
+  have h2 : (fun i => (ts i).realize (Sum.elim v x))
+      = (fun i => ![(ts 0).realize (Sum.elim v x)] i) := by funext i; fin_cases i; rfl
+  rw [h2]; exact Iff.rfl
+
+theorem realize_rel_memRV (ts : Fin 1 → Tm n) (v : Empty → M) (x : Fin n → M) :
+    (BoundedFormula.rel (L := LRV) Rel.memRV ts).Realize v x ↔
+      iRV ((ts 0).realize (Sum.elim v x)) := by
+  have h : (BoundedFormula.rel (L := LRV) Rel.memRV ts).Realize v x
+      ↔ Structure.RelMap (L := LRV) Rel.memRV (fun i => (ts i).realize (Sum.elim v x)) := Iff.rfl
+  rw [h]
+  have h2 : (fun i => (ts i).realize (Sum.elim v x))
+      = (fun i => ![(ts 0).realize (Sum.elim v x)] i) := by funext i; fin_cases i; rfl
+  rw [h2]; exact Iff.rfl
+
+theorem realize_rel_memUnits (ts : Fin 1 → Tm n) (v : Empty → M) (x : Fin n → M) :
+    (BoundedFormula.rel (L := LRV) Rel.memUnits ts).Realize v x ↔
+      iUnits ((ts 0).realize (Sum.elim v x)) := by
+  have h : (BoundedFormula.rel (L := LRV) Rel.memUnits ts).Realize v x
+      ↔ Structure.RelMap (L := LRV) Rel.memUnits (fun i => (ts i).realize (Sum.elim v x)) := Iff.rfl
+  rw [h]
+  have h2 : (fun i => (ts i).realize (Sum.elim v x))
+      = (fun i => ![(ts 0).realize (Sum.elim v x)] i) := by funext i; fin_cases i; rfl
+  rw [h2]; exact Iff.rfl
+
+theorem realize_rel_rvLe (ts : Fin 2 → Tm n) (v : Empty → M) (x : Fin n → M) :
+    (BoundedFormula.rel (L := LRV) Rel.rvLe ts).Realize v x ↔
+      iLe ((ts 0).realize (Sum.elim v x)) ((ts 1).realize (Sum.elim v x)) := by
+  have h : (BoundedFormula.rel (L := LRV) Rel.rvLe ts).Realize v x
+      ↔ Structure.RelMap (L := LRV) Rel.rvLe (fun i => (ts i).realize (Sum.elim v x)) := Iff.rfl
+  rw [h]
+  have h2 : (fun i => (ts i).realize (Sum.elim v x))
+      = (fun i => ![(ts 0).realize (Sum.elim v x), (ts 1).realize (Sum.elim v x)] i) := by
+    funext i; fin_cases i <;> rfl
+  rw [h2]; exact Iff.rfl
+
+end AtomRealize
+
+/-- **The cover, in `Eval` form.** -/
+theorem qf2_cover_eval {n : ℕ} {sn : Fin n → SortTag} :
+    ∀ (φ : Bf n), WellSorted sE sn φ → φ.IsQF →
+      ∃ q : QF2 sn, ∀ (M : Type) [LRV.Structure M], M ⊨ Axioms.ACVF → ∀ x : Fin n → M,
+        (∀ i, sortEval (sn i) (x i)) →
+        (φ.Realize (default : Empty → M) x ↔ q.Eval x) := by
+  intro φ
+  induction φ with
+  | falsum =>
+    intro _ _
+    exact ⟨.falsum, fun M _ _ x _ => Iff.rfl⟩
+  | equal t u =>
+    intro hws _
+    cases hws with
+    | equal sn' ht hu =>
+      rcases hs : TmSort sE sn t with _ | s
+      · rw [hs] at ht; exact absurd ht (by simp)
+      · rcases hu' : TmSort sE sn u with _ | s'
+        · rw [hu'] at hu; exact absurd hu (by simp)
+        · have hss : s = s' := by
+            rw [hs] at ht; rw [hu'] at hu
+            exact (Option.some.inj ht).trans (Option.some.inj hu).symm
+          subst hss
+          cases s with
+          | vf =>
+            obtain ⟨a, ha⟩ := vfOpt_exists t hs
+            obtain ⟨b, hb⟩ := vfOpt_exists u hu'
+            refine ⟨.eqVF a b, fun M _ _ x _ => ?_⟩
+            rw [eval_eqVF]
+            change (Term.realize (Sum.elim (default : Empty → M) x) t =
+              Term.realize (Sum.elim (default : Empty → M) x) u ↔
+              VFT2.Val a x = VFT2.Val b x)
+            rw [vfOpt_val t hs ha, vfOpt_val u hu' hb]
+          | rv =>
+            obtain ⟨a, ha⟩ := rvOpt_exists t hs
+            obtain ⟨b, hb⟩ := rvOpt_exists u hu'
+            refine ⟨.eqRV a b, fun M _ _ x _ => ?_⟩
+            rw [eval_eqRV]
+            change (Term.realize (Sum.elim (default : Empty → M) x) t =
+              Term.realize (Sum.elim (default : Empty → M) x) u ↔
+              RVT2.Val a x = RVT2.Val b x)
+            rw [rvOpt_val t hs ha, rvOpt_val u hu' hb]
+  | rel R ts =>
+    intro hws _
+    cases hws with
+    | rel sn' R' ts' h =>
+      cases R with
+      | memVF =>
+        obtain ⟨a, ha⟩ := vfOpt_exists (ts 0) (h 0)
+        refine ⟨.inVF a, fun M _ _ x _ => ?_⟩
+        rw [eval_inVF, realize_rel_memVF (v := default), vfOpt_val (ts 0) (h 0) ha]
+      | memRV =>
+        obtain ⟨u, hu⟩ := rvOpt_exists (ts 0) (h 0)
+        refine ⟨.inRV u, fun M _ _ x _ => ?_⟩
+        rw [eval_inRV, realize_rel_memRV (v := default), rvOpt_val (ts 0) (h 0) hu]
+      | memUnits =>
+        obtain ⟨u, hu⟩ := rvOpt_exists (ts 0) (h 0)
+        refine ⟨.unitRV u, fun M _ _ x _ => ?_⟩
+        rw [eval_unitRV, realize_rel_memUnits (v := default), rvOpt_val (ts 0) (h 0) hu]
+      | rvLe =>
+        obtain ⟨u, hu⟩ := rvOpt_exists (ts 0) (h 0)
+        obtain ⟨w, hw⟩ := rvOpt_exists (ts 1) (h 1)
+        refine ⟨.leRV u w, fun M _ _ x _ => ?_⟩
+        rw [eval_leRV, realize_rel_rvLe (v := default), rvOpt_val (ts 0) (h 0) hu,
+          rvOpt_val (ts 1) (h 1) hw]
+  | imp a b iha ihb =>
+    intro hws hqf
+    cases hws with
+    | imp sn' ha hb =>
+      obtain ⟨hqa, hqb⟩ := isQF_imp_inv hqf
+      obtain ⟨qa, hva⟩ := iha ha hqa
+      obtain ⟨qb, hvb⟩ := ihb hb hqb
+      refine ⟨.imp qa qb, fun M inst hM x hx => ?_⟩
+      rw [eval_imp, BoundedFormula.realize_imp]
+      exact ⟨fun h h1 => (hvb M hM x hx).mp (h ((hva M hM x hx).mpr h1)),
+        fun h h1 => (hvb M hM x hx).mpr (h ((hva M hM x hx).mp h1))⟩
+  | all χ ih =>
+    intro _ hqf
+    exact absurd hqf (BoundedFormula.not_all_isQF χ)
+
+/-- **`qf2_cover`**: a well-sorted quantifier-free formula over a sorted context is, at sorted
+tuples in every model of `ACVF`, the image `q.toRV` of a `QF2` term. -/
 theorem qf2_cover {n : ℕ} (sn : Fin n → SortTag) (φ : Bf n) (hws : WellSorted sE sn φ)
     (hqf : φ.IsQF) :
     ∃ q : QF2 sn, ∀ (M : Type) [LRV.Structure M], M ⊨ Axioms.ACVF → ∀ x : Fin n → M,
       (∀ i, sortEval (sn i) (x i)) →
       (φ.Realize (fun e : Empty => e.elim) x ↔
         (q.toRV).Realize (fun e : Empty => e.elim) x) := by
-  sorry
+  obtain ⟨q, hq⟩ := qf2_cover_eval (sn := sn) φ hws hqf
+  refine ⟨q, fun M _ hM x hx => ?_⟩
+  have hv : (fun e : Empty => e.elim) = (default : Empty → M) := funext (fun e => e.elim)
+  rw [hv]
+  exact (hq M hM x hx).trans (QF2.realize_toRV q x).symm
 
 end Extract
 

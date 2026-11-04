@@ -2609,3 +2609,18 @@ constructor equations are separate `rfl` lemmas, and `IsQF` is an inductive
 (`falsum`/`of_isAtomic`/`imp`), with `BoundedFormula.not_all_isQF` excluding the quantifier case.
 The atom realization lemmas need stating at general `ts` (`(rel Rel.memVF ts).Realize v x ↔
 iVF ((ts 0).realize v)` and three companions), not via `pVF`.
+
+### `qf2_cover` proved
+
+`QE/QF2Cover.lean` is green with **no `sorry`**: `qf2_cover` and its `Eval` form `qf2_cover_eval`,
+axioms within {propext, Classical.choice, Quot.sound}.  So the quantifier-free fragment over a sorted
+context is covered by the sorted-context fragment `QF2` at sorted tuples in every model of `ACVF` —
+the piece that `qfq_cover` needed and that the `mul` normal form was for.
+
+Four obstacles, recorded in the file header so they are not repaid: atoms are `rel R ts` at general
+`ts` (so each needs its own realization lemma, not `pVF`'s); `QF2.Eval` is a pattern-matching `def`
+(hence separate `Iff.rfl` constructor equations); `IsQF` is an inductive with an impossible
+`of_isAtomic` case at an implication (hence `isQF_imp_inv`); and a section variable that a statement
+does not mention is **not** in scope for its proof, so the model-free existence of the extracted term
+had to be obtained separately (`vfOpt_exists`, by instantiating the model-indexed soundness theorem at
+a junk `LRV.Structure PUnit`), with `vfOpt_val` carrying the model inside its conclusion.

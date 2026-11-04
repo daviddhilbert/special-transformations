@@ -93,7 +93,8 @@ Statements: `Milestone0/Encoding.lean` (frozen, 2 `sorry`s).  Supporting structu
 that the repair rejects the junk-sensitivity witness), `QE/FragmentTransfer.lean` (the fragment
 transfer reduced to one hypothesis, `QFStep`), `QE/ParamBridge*.lean` (the parameter bridge:
 `hasQE_of_hasQE_empty`), `QE/MulNormalForm.lean` (`mul` cancellation off `Kˣ`), `QE/QF2Fragment.lean`
-(the sorted-context fragment), `QE/QF2Cover.lean` (`qf2_cover` stated, 2 `sorry`s),
+(the sorted-context fragment), `QE/QF2Cover.lean` (**`qf2_cover` proved**, no `sorry`: the
+quantifier-free fragment over a sorted context is covered by `QF2`),
 `QE/TransferWS.lean` (the frozen fragment statement), `QE/Assembly_val.lean` (the assembly; still
 carries a copy of the encoding, hence the same 2 `sorry`s), `QE/{Sec3_frozen,Sec3_sat}.lean` (§3
 over parameter pairs and over the monster model), `QE/{FailProbe}.lean` (the located obstruction).
@@ -102,8 +103,8 @@ Open, in order of sharpness:
 
 1. **`QFStep IsNontrivialVF Axioms.ACVF`** — the one-element back-and-forth step.  With it,
    `NontrivialTransferWS Axioms.ACVF` follows, and `AllNontrivial Axioms.ACVF` is already proved.
-2. **`QFRes2.qf2_cover`** — stated; needs the `Option`-valued term extraction (`vfOpt`/`rvOpt`) and
-   its soundness induction, then the formula induction.
+2. ~~**`QFRes2.qf2_cover`**~~ — **done**: extraction, soundness and the formula induction are all
+   proved in `QE/QF2Cover.lean`, no `sorry`.
 3. The remaining §3 item with a printed proof, `alg:ind:imag` (needs exchange — frozen — plus the
    parameter transport `QE/ParamBridgeRelabel.lean` now supplies, plus the `rv`-fibre/countability
    argument).
