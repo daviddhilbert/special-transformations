@@ -2584,3 +2584,28 @@ check, because the sort hypothesis is consumed inside a `cases f` block and the 
 `sizeOf (ts 0) < 1 + l` (`l` an arity, not a size).  The `Option`-valued extraction (`vfOpt`/`rvOpt`,
 descending on `t` with no proof argument, soundness by a separate induction on `t`) is the way round;
 `QE/QF2Cover.lean` states it that way.  Both remain `sorry`.
+
+### `qf2_cover`: the term extraction is proved
+
+`QE/QF2Cover.lean` (green, 1 `sorry` = `qf2_cover` itself): `vfOpt`, `rvOpt` and **both** soundness
+theorems are proved — `vfOpt_sound`/`rvOpt_sound : TmSort sE sn t = some s → ∃ s', vfOpt sn t = some s'
+∧ ∀ x, (Val s' x) = t.realize (…)`, axioms within {propext, Classical.choice, Quot.sound}.  The
+`Option`-valued design was the right call: the proof-carrying version does not pass the termination
+checker (recorded above), while this one descends on the term with no proof argument and needs the
+sort hypothesis only in soundness.
+
+Three things cost a round each, recorded so they are not rediscovered:
+
+1. the encoding writes atoms as `rel R ts` for a general `ts`, while `pVF`/`pRVsort`/`pUnits`/`pLe`
+   are the `![…]` abbreviations — so every `func` case must rewrite `ts` to `![ts 0]` /
+   `![ts 0, ts 1]` before the realization lemma fires;
+2. `rvMap`'s argument is a *VF* term, so `rvOpt_sound` must call `vfOpt_sound` (there is no mutual
+   induction here, since `vfOpt` never recurses into `rvOpt`);
+3. the arity-0 realization lemmas (`realize_tVFZero`, …) leave `M` undetermined under `.symm`, so
+   they need `(M := M) (n := n)` explicitly or the instance search gets stuck.
+
+Remaining for `qf2_cover`: the formula induction.  `QF2.Eval` is a pattern-matching `def`, so its
+constructor equations are separate `rfl` lemmas, and `IsQF` is an inductive
+(`falsum`/`of_isAtomic`/`imp`), with `BoundedFormula.not_all_isQF` excluding the quantifier case.
+The atom realization lemmas need stating at general `ts` (`(rel Rel.memVF ts).Realize v x ↔
+iVF ((ts 0).realize v)` and three companions), not via `pVF`.
