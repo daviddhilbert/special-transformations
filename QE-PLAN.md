@@ -2907,3 +2907,27 @@ tree.
 work is unblocked and stated precisely in `QE/SubstVar.lean`'s header: iterated `exSortedG` to
 eliminate the intermediate tuple, then zero-padding, giving `PaperStraightening` from
 `FibreSeparating`).
+
+### `alg:ind:imag` accepted (m5) — the paper's silent step proved, one small case left
+
+`QE/AlgIndImag.lean` (510 lines, compiled here: 0 errors, no `sorry`, axioms clean) proves the
+paper's Corollary `alg:ind:imag` (`paper.tex:702`) over the monster model, and the part that matters
+is that its *silent* step is proved rather than assumed: `M5.acl_of_rv_eq` transports a formula
+well-sorted over the single `RV`-parameter `t` to one over the single `VF`-parameter `b` via `rv b`,
+using the member's own term/formula substitution (`tmSort_substTerm`, `wellSorted_substFormula`
+preserving `Occurs`/`InAntecedent`/`GuardsLast`/`GuardTrue`, `realize_substFormula`).  Then
+`fibre_subset_acl` and the cardinality contradiction.
+
+The two monster-model inputs are named, not buried: `ExchangeVF` (Yin 4.3, a hypothesis) and `hfib`
+(the fibre is not small); `hacl` (`acl(a)` small) is *derived* from `Countable`-of-formulas and
+`ℵ₀ < κ` in `acl_small_of_countable`/`alg_ind_imag_of_countable`.
+
+**One case is left**: `t = rv 0 = ∞`, where `rv⁻¹(t) = {0}` and `hfib` fails.  The claim there is
+`acl(rv 0) ⊆ acl(∅)`-shaped and it needs only the **parameter** substitution Mathlib has
+(`BoundedFormula.subst` with the parameter ↦ `tRVZero`), plus `realize_subst` and a
+`WellSorted`-preservation induction for that substitution — bounded work, no new infrastructure.
+
+**Note the pattern, which is worth keeping:** three of the four accepted items this swarm are held
+together by the *same* two operations (variable substitution and its parameter twin).  The encoding
+proves `WellSorted`-ness for its constructors but never the realisation/transport lemmas for
+substitution — that gap, not the model theory, is what has been costing rounds.
