@@ -997,6 +997,123 @@ def ShoenfieldTestFS : Prop := Prop39FS → HasQE Axioms.ACVF
 theorem theorem_2_3_of_fs (hShoen : ShoenfieldTestFS) (h39 : Prop39FS) : HasQE Axioms.ACVF :=
   hShoen h39
 
+/-! ### The three ingredients at `SaturatedFS`, and what `Prop39FS` actually owes
+
+`PrepStep`, `OneStepVF` and `VFGenCase` take the saturation notion as a *parameter their bodies never
+use*.  Restating them at `SaturatedFS` is therefore not a change of statement, and saying so is the
+fidelity audit of this section: the vacuity of the reduction was never in the ingredients, it was in
+`prop39` using `Saturated` to realize a type outright.  What changes is `Prop39FS`: it acquires the
+obligation that the pushed type of an element be *individually* realizable in `N`, which is precisely
+what Lemmas 3.2-3.8 (root lifting, divisible hull, transcendental lifting) establish. -/
+
+/-- **Lemma 3.3 + henselization, at `SaturatedFS`** — body identical to `PrepStep`. -/
+def PrepStepFS {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : SaturatedFS N) : Prop :=
+  ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N),
+    ∃ (T : LRV.Substructure M) (g : T ↪[LRV] N) (hST : S ≤ T),
+      (∀ x : S, g ⟨(x : M), hST x.2⟩ = f x) ∧ Standing T
+
+/-- **Lemmas 3.4-3.8, at `SaturatedFS`** — body identical to `OneStepVF`. -/
+def OneStepVFFS {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : SaturatedFS N) : Prop :=
+  ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N), Standing S → ∀ m : M, iVF m →
+    ∃ (T : LRV.Substructure M) (g : T ↪[LRV] N) (hST : S ≤ T),
+      (∀ x : S, g ⟨(x : M), hST x.2⟩ = f x) ∧ m ∈ T ∧ Standing T
+
+/-- **Remark 3.1 + Weispfenning, at `SaturatedFS`** — body identical to `VFGenCase`. -/
+def VFGenCaseFS {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : SaturatedFS N) : Prop :=
+  ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N), IsVFGen S →
+    ∃ g : M ↪[LRV] N, ∀ x : S, g (x : M) = f x
+
+/-- **Fidelity audit for `PrepStepFS`.**  The restatement is the *same statement*: the body never
+mentions the saturation notion, so the two are equal for any two saturation witnesses.  That is the
+precise sense in which only the saturation notion, and not the ingredient, changed. -/
+theorem prepStepFS_iff {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hFS : SaturatedFS N) (hS : Saturated N) :
+    PrepStepFS (M := M) (N := N) hFS ↔ PrepStep (M := M) (N := N) hS :=
+  Iff.rfl
+
+/-- **Fidelity audit for `OneStepVFFS`.** -/
+theorem oneStepVFFS_iff {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hFS : SaturatedFS N) (hS : Saturated N) :
+    OneStepVFFS (M := M) (N := N) hFS ↔ OneStepVF (M := M) (N := N) hS :=
+  Iff.rfl
+
+/-- **Fidelity audit for `VFGenCaseFS`.** -/
+theorem vfGenCaseFS_iff {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hFS : SaturatedFS N) (hS : Saturated N) :
+    VFGenCaseFS (M := M) (N := N) hFS ↔ VFGenCase (M := M) (N := N) hS :=
+  Iff.rfl
+
+/-- **Atomic-type realization from one clause.**  If a single `b` realizes every formula true at `m`
+over the pushed parameters, it realizes the atomic type of `m`.  Factored out of
+`realizesAtomic_of_saturated` so that `SaturatedFS` can feed it its satisfiability hypothesis, which
+is where Lemmas 3.2-3.8 enter. -/
+theorem realizesAtomic_of_clause {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (S : LRV.Substructure M) (f : S ↪[LRV] N) (m : M)
+    (h : ∃ b : N, ∀ (φ : LRV.Formula (S ⊕ Unit)),
+      φ.Realize (Realize.mv S m) → φ.Realize (Realize.wv f b)) :
+    ∃ b : N, Realize.RealizesAtomic S f m b := by
+  classical
+  obtain ⟨b, hb⟩ := h
+  have hb' : ∀ φ : LRV.Formula (S ⊕ Unit),
+      φ.Realize (Realize.mv S m) → φ.Realize (Realize.wv f b) := hb
+  have key : ∀ (u v : LRV.Term (S ⊕ Unit)),
+      (u.realize (Realize.mv S m) = v.realize (Realize.mv S m) ↔
+        u.realize (Realize.wv f b) = v.realize (Realize.wv f b)) := by
+    intro u v
+    constructor
+    · intro h
+      have h2 : (Term.equal u v).Realize (Realize.wv f b) := hb' (Term.equal u v) (by
+        simpa only [Formula.realize_equal] using h)
+      simpa only [Formula.realize_equal] using h2
+    · intro h
+      by_contra hc
+      have h1 : (Term.equal u v).not.Realize (Realize.mv S m) := by
+        simpa only [Formula.realize_not, Formula.realize_equal] using hc
+      have h2 : ¬ (Term.equal u v).Realize (Realize.wv f b) := hb' (Term.equal u v).not h1
+      exact h2 (by simpa only [Formula.realize_equal] using h)
+  have keyR : ∀ (n : ℕ) (r : LRV.Relations n) (ts : Fin n → LRV.Term (S ⊕ Unit)),
+      (Structure.RelMap r (fun i => (ts i).realize (Realize.mv S m)) ↔
+        Structure.RelMap r (fun i => (ts i).realize (Realize.wv f b))) := by
+    intro n r ts
+    constructor
+    · intro h
+      have h2 : (r.formula ts).Realize (Realize.wv f b) := hb' (r.formula ts) (by
+        simpa only [Formula.realize_rel] using h)
+      simpa only [Formula.realize_rel] using h2
+    · intro h
+      by_contra hc
+      have h1 : (r.formula ts).not.Realize (Realize.mv S m) := by
+        simpa only [Formula.realize_not, Formula.realize_rel] using hc
+      have h2 : ¬ (r.formula ts).Realize (Realize.wv f b) := hb' (r.formula ts).not h1
+      exact h2 (by simpa only [Formula.realize_rel] using h)
+  exact ⟨b, fun u v => key u v, fun n r ts => keyR n r ts⟩
+
+/-- **Atomic-type realization from `SaturatedFS` plus individual realizability.** -/
+theorem realizesAtomic_of_saturatedFS {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : SaturatedFS N)
+    (S : LRV.Substructure M) (f : S ↪[LRV] N) (m : M)
+    (hreal : ∀ (φ : LRV.Formula (S ⊕ Unit)),
+      φ.Realize (Realize.mv S m) → ∃ b : N, φ.Realize (Realize.wv f b)) :
+    ∃ b : N, Realize.RealizesAtomic S f m b :=
+  realizesAtomic_of_clause S f m (hSat M S f m hreal)
+
+/-- **Proposition 3.9 over a fixed pair of models, at `SaturatedFS`, reduced to its two real
+inputs**: saturated realization of finitely satisfiable types, and individual realizability of the
+pushed type of every element.  The second is exactly what Lemmas 3.2-3.8 and Remark 3.1 must supply,
+and it is *not* implied by `SaturatedFS` — that is the whole difference from the vacuous `prop39`. -/
+theorem prop39FS_of_individual {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : SaturatedFS N)
+    (hreal : ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N) (m : M)
+      (φ : LRV.Formula (S ⊕ Unit)),
+      φ.Realize (Realize.mv S m) → ∃ b : N, φ.Realize (Realize.wv f b)) :
+    ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N), ∃ g : M ↪[LRV] N, ∀ x : S, g (x : M) = f x := by
+  intro S f
+  exact Realize.exists_total_embedding_of_realizesAtomic
+    (fun S f m _ => realizesAtomic_of_saturatedFS hSat S f m (hreal S f m)) S f
+
 /-! ### The paper's Section 3.1, from the three lemma-props -/
 
 /-- The paper's Section 3.1 in one structure, from the three lemma-props, with the `RV`-field
@@ -1052,6 +1169,9 @@ end SpecialTransformations
 #print axioms SpecialTransformations.Milestone0.Assembly.shoenfieldTest_iff_hasQE
 #print axioms SpecialTransformations.Milestone0.Assembly.hasQE_of_shoenfieldTest_only
 #print axioms SpecialTransformations.Milestone0.Assembly.saturatedFS_of_saturated
+#print axioms SpecialTransformations.Milestone0.Assembly.prepStepFS_iff
+#print axioms SpecialTransformations.Milestone0.Assembly.realizesAtomic_of_saturatedFS
+#print axioms SpecialTransformations.Milestone0.Assembly.prop39FS_of_individual
 #print axioms SpecialTransformations.Milestone0.Assembly.theorem_2_3_of_fs
 #print axioms SpecialTransformations.Milestone0.Assembly.algIngredients_of_three
 #print axioms SpecialTransformations.Milestone0.Assembly.theorem_2_3_of_hypotheses
