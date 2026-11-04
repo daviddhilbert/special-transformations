@@ -2637,3 +2637,31 @@ and the content lives beside it; unifying the copies is Milestone 1–2 work.
 `lake build` is green (8717 jobs, 14 s) with the stub restored, and the `QE/` directory is now
 47 files, **all green**, 16 `sorry` warnings (2 of them the frozen Theorem 2.3 and 2 its copies in the
 assembly).  `MILESTONES.md` carries the updated numbers.
+
+### Milestone 1 correction, and `alg:ind:imag`'s blocker
+
+**The milestone check under-reported Milestone 1.**  It said "no `vrv` exact sequence as a theorem";
+that is false.  `Milestone0/accepted/IntendedModel.lean` (and five sibling snapshots:
+`ACVF_fragment`, `ACVF_gamma_padic`, `ACVF_general_model`, `ACVF_general_model_gamma`,
+`ACVF_residue_ops`) prove, for the intended model built from a Mathlib `Valuation`:
+`vrv_mul : vrv (rvMul t s) = vrv t * vrv s`, `vrv_range` (`vrv` is onto the value group),
+`vrv_kernel` (`vrv t = 1 ↔ t` is a residue unit), `vrv_rv`, and `rvLe` induced by `vrv`.  That *is*
+`1 → Kˣ → RV → Γ → 0`.  `MILESTONES.md` is corrected.
+
+**The abstract version is blocked, and this is a statement defect of the same species as the earlier
+two.**  `gammaAxioms` link `Γ` to `RV` only through `gVrvMul` (guarded by `uUnits ⊓ uUnits`),
+`gVrvEq` (kernel criterion) and `gLeVrv` (order).  Nothing makes `vrv` additive on all of
+`RV ∖ {0}`, nothing says `vrv u = ⊤ → u = 0`, and nothing makes `vrv` surjective onto `Γ`.  So "the
+exact sequence holds in every model of `ACVF00Γ`" is not derivable from the frozen axioms; the paper's
+item 5 ("`Γ` *is* the quotient") is stronger than what was transcribed.  Recorded, not changed — the
+axiomatisation is frozen and a change is the author's call.
+
+**`alg:ind:imag` cannot be proved yet, and the reason is exact.**  `QE/Sec3_sat.lean`'s
+`swl_alg_ind_image` needs exchange (the paper's proof: `a ∈ acl(t)` ⟹ `a ∈ acl(b)` for every `b` in
+the `rv`-fibre of `t`; exchange gives `b ∈ acl(a)`, which the fibre's infiniteness against the
+countability of `acl` of a finite set contradicts).  Exchange is `SP.swl_exchange` in
+`QE/Sec3_frozen.lean`, still a frozen `sorry`, so any proof of `alg:ind:imag` today would carry
+`sorryAx`.  The two halves of the paper's argument are in place — `QE/ParamBridgeRelabel.lean`'s
+`wellSorted_relabel` is the parameter transport, and `QE/ParamBridge.lean`'s support machinery is what
+counts the solutions — but exchange itself has to be proved first (it is Yin, QE:ACVF:min, Lemma 4.3,
+i.e. the matroid property of `acl` in `ACVF`).

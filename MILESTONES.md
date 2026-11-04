@@ -12,7 +12,7 @@ From `HANDOFF.md` — Milestones 0–5 cover the paper's Sections 4–10; Theore
 | # | milestone | paper | state |
 | --- | --- | --- | --- |
 | 0 | language and syntax | §2 | **done** (statements frozen) |
-| 1 | algebraic layer: `vrv`, exact sequence, balls, polydiscs, valuative centre | §3–§4 | **partly, inside the encoding**; nothing as a theorem |
+| 1 | algebraic layer: `vrv`, exact sequence, balls, polydiscs, valuative centre | §3–§4 | **done for the intended model**; the abstract route from `gammaAxioms` is blocked (see below) |
 | 2 | definable sets and dimensions: `acl`/`dcl`, `dimVF`/`dimRV`/`dimfib`, 4.2/4.4/4.6, `VF[k,·]`/`RV[k,·]`, `L`, Grothendieck semigroups | §4 | **`acl`/`dcl` only**; dimensions and categories absent |
 | 3 | special bijections: 5.1, 5.4, 5.5, 5.6, 5.7 | §5 | **scaffold green, but only in `.ultramath/`**; 5.2/5.4/5.5 are statements |
 | 4 | lifting functions: Hensel 7.2, Thm 7.6, Cor 7.7 | §7 | **nothing** |
@@ -54,7 +54,31 @@ green with no `sorry`.  `Balls.lean` has the C-relation and one `sorry`
 `ACVF_general_model`, `ACVF_residue_ops`, `IntendedModel`, `Obstruction`, `RepairedTheory`, … — the
 models that make the axiom checks non-vacuous.
 
-**Milestone 1 — the `Γ` side exists inside the encoding, the exact sequence does not.**  Part 4 of
+**Milestone 1 — the exact sequence IS proved, and this row of the check was wrong the first time.**
+`Milestone0/accepted/IntendedModel.lean` (green, no `sorry`) *is* the exact sequence, for the intended
+model built from a Mathlib `Valuation`:
+
+| what | where |
+| --- | --- |
+| `vrv : RV v → Γ₀`, `vrv_none`, `vrv_some`, `vrv_mk`, `vrv_rv` | `IntendedModel.lean:701-726` |
+| `vrv_mul : vrv (rvMul t s) = vrv t * vrv s` | `:728` |
+| `vrv_range : (∃ t, vrv t = γ) ↔ ∃ x, v x = γ` — `vrv` is onto | `:737` |
+| `vrv_kernel : vrv t = 1 ↔ t` is a residue unit | `:752` |
+| `rvLe` induced by `vrv`, `le_iff`, `lt_iff`, `le_class_of_one_iff` | `:778-798` |
+
+and the same four facts are proved in `ACVF_fragment`, `ACVF_gamma_padic`, `ACVF_general_model`,
+`ACVF_general_model_gamma`, `ACVF_residue_ops` — six independent snapshots, all green.
+
+**What is *not* available is the abstract version**, and it cannot be, from the frozen `gammaAxioms`:
+they link `Γ` to `RV` only by units-multiplicativity (`gVrvMul`, guarded by `uUnits ⊓ uUnits`), the
+kernel criterion (`gVrvEq`), and the order (`gLeVrv`).  There is **no** axiom making `vrv` additive on
+all of `RV ∖ {0}`, **no** axiom `vrv u = ⊤ → u = 0`, and **no** surjectivity axiom onto `Γ`.  So a
+theorem "the exact sequence holds in every model of `ACVF00Γ`" is not derivable; the concrete route
+above is the content, and if the abstract version is wanted the axiomatisation has to grow.  (This is
+the same species as the two earlier encoding defects: the axioms are weaker than the paper's item 5,
+which says `Γ` *is* the quotient.)
+
+Part 4 of
 `Encoding.lean` has the expansion `LRVΓ = LRV.sum LΓ`, `gVrv`, `pMemGamma`, and the `Γ` axioms
 (`gammaAxioms`), which is the vocabulary `vrv` needs; balls are `IsBall`/`IsClosedBall`/`IsOpenBall`
 in Part 7 and the C-relation in `Balls.lean`; the `rv`-ball is `Sec3.rvBall`; a centre is
