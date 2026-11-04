@@ -274,57 +274,18 @@ realization of a QF type in a fixed model, which `TransferAtWS`'s hypothesis doe
 is why the transfer is a reformulation of QE rather than a reduction, and why the atom form above is
 the target.
 
-## Fresh-rebuild check of the h4 → W1 dependency (important, and it changes a claim)
+## Two swarm files that must not be relied on as-is (one line each)
 
-`W1.lean` (the fragment criterion, accepted earlier) imports `H4Base.lean`, which imports
-`Pre_build.olean`.  Both oleans were built *before* the balls bridge was merged into
-`QE/Assembly_val.lean`, so "W1 is green" was true only relative to that prelude snapshot.
+* **`W1.lean`** (fragment criterion, `.ultramath/smw1b0thh/m1/`) is **superseded** by
+  `.ultramath/smw1b0thh/m4/{FragQE,FragQE1,FragAtoms}.lean`, which is stronger (hypothesis reduced
+  to atoms) and imports only `Enc`, so it is immune to `Assembly_val` drift.  `W1.lean` is *not*
+  current-prelude-green: rebuilt against the merged `Assembly_val` it fails at 272, 276 (`show`
+  pattern) and 304 (`Type mismatch`).  Do not fix it unless the *embedding-form argument* is wanted
+  — that lives in its `REPORT.md` prose and in `W1.hasQE_of_embedding` / `QFTypeEmbeddable` — or
+  `W1.exists_list_of_models_bounded` (compactness with parameters).
+* **`smw18pb0w` m4's `ValueOnly.lean`** is byte-identical to the already-merged
+  `m1/ValueOnlyM4.lean`; nothing new in it.
 
-Rebuilt the chain from scratch against the **current** `QE/Assembly_val.lean` (23 246 lines,
-bridge merged), in `.ultramath/smw19wtoj/m1/`:
-
-```
-cp ../../../QE/Assembly_val.lean Pre_build.lean
-lean -o Pre_build.olean Pre_build.lean     # exit 0 (~45 s)
-lean -o H4Base.olean H4Base.lean           # exit 0, 0 errors
-lean W1.lean                               # 3 errors: 272, 276, 304
-```
-
-* `W1.lean:272:4` and `:276:4` — `'show' tactic failed, pattern` (the goal no longer matches the
-  stated pattern definitionally);
-* `W1.lean:304:4` — `Type mismatch`.
-
-**Diagnosis:** the merged bridge added `simp` lemmas (`atom_*_iff`, `VFQF_*`, `isBoolComb_*`) that
-fire inside `W1.lean`'s proofs and change the goal shapes the `show` patterns were written against.
-The mathematics is untouched; the file needs a three-error fix-up (replace the two `show` patterns by
-`change`/`convert` with the new normal form, and repair the type mismatch at 304), and then re-check.
-
-**Consequence for the record:** the earlier acceptance of w1 stands as `H4Base`-relative, not as
-current-prelude-green.  Any swarm file whose olean predates the balls-bridge merge must be rebuilt
-before being relied on: `H4Base.lean`'s own content survived the rebuild (exit 0), so the
-dependency direction is fine — it is `W1.lean`'s tactic scripts that need re-pointing.
-
-### Priority for the `W1.lean` fix-up: deprioritise it
-
-`W1.lean` is **superseded** as a criterion by `.ultramath/smw1b0thh/m4/` (`FragQE.lean`,
-`FragQE1.lean`, `FragAtoms.lean`), which is stronger (`FragmentAtomQFTypeDetermines` — hypothesis
-reduced to atoms; one-directional form; compactness set containing the sort assertions) and, more
-importantly for this problem, **prelude-stable**: those files import `Enc` only (a verbatim
-`Milestone0/Encoding.lean`), not `Assembly_val`, so the balls-bridge merge cannot break them.  The
-`W1` breakage is precisely because it imports `Pre_build` = `Assembly_val`.
-
-So: **do not spend a session on the three errors** unless one of the two things `W1` has and m4
-does not is needed —
-
-* `W1.hasQE_of_embedding` + `QFTypeEmbeddable`: the analysis of *why* the substructure-embedding
-  (Shoenfield) form is unusable in this encoding.  m4 states the conclusion ("junk values lie
-  outside the fragment"); `W1` has it as a theorem plus a bridge hypothesis.
-* `W1.exists_list_of_models_bounded`: compactness with parameters via `Formula.equivSentence`.
-
-If needed, the fix is local: two `show` patterns at 272/276 become `change`/`convert` against the
-post-merge normal form, and the `Type mismatch` at 304 is caused by a `simp` lemma now firing
-earlier — find it with `set_option trace.Meta.Tactic.simp.rewrite true` in that goal only.
-
-Rule to carry: for any swarm file, `lean` against the member's own olean proves only
-"elaborates against that snapshot".  Rebuild the prelude first if the file imports `Pre_build`/
-`Pre2`/`PreC`/`AV`; files importing only `Enc` or `Mathlib` are safe from the Assembly_val drift.
+**Rule.** `lean` against a member's own olean proves only "elaborates against that snapshot".
+Rebuild the prelude before relying on a file importing `Pre_build`/`Pre2`/`PreC`/`AV`; files
+importing only `Enc` or `Mathlib` are safe from `Assembly_val` drift.
