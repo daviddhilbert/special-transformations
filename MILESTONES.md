@@ -1111,3 +1111,28 @@ and merged (one WIP left behind):
 * WIP left behind: m4's `RootLift.lean` (39 KB, one parse error in a theorem statement at :748 —
   a mid-edit; kept at `.ultramath/smw2ox51x/m4/RootLift.lean` for the next 3.4 worker) and m3's
   missing `M8` companion file.
+
+## smw2qpqe7 m6 (2026-11-04, accepted): THE MATRIX — the route's definitive accounting
+
+* `QE/Matrix.lean` + `QE/MATRIX.md` (m6, u6; verified 0 errors, 39 axiom heads clean). The
+  per-part matrix, machine-checked:
+  - **per pair, no size needed**: `SatRel ∧ QFFinSat ⇒` hull, `CaseSeparated`, `UnitSlot`,
+    `NonUnitSlot`, `CaseNewRV` — **and it produces `SizeHyp`**;
+  - gated: `relHull/relSeparated/relUnit/relNonUnit/relNewRV_of_finSat`, jointly
+    `fiveParts_of_finSat`;
+  - **EXACTNESS**: `fiveParts_pair_iff_satReal`, **`fiveParts_iff_input5R`** (the five-part list IS
+    Marker's saturated realisation — no part is slack), `relCases_iff_parts`,
+    `unit_nonunit_iff_notSeparated`, `separated_and_notSeparated_iff_oneStepRVOld` (the u1/u2 split
+    loses nothing);
+  - weaker rows → tree interfaces: `relHull_iff_prepStepP`,
+    `relUnit_of_rootData_slot34_transcendental`, `relNonUnit_of_branch`,
+    `relNewRV_iff_oneStepRVNew`;
+  - **REFUTATION row**: `not_finSatAtRelGate_of_config` (the ∀-form of `QFFinSat@relGate` dies at
+    Archimedean-config pairs) and `not_finSat_of_config` (the pointwise form too) — consistent with
+    `QE/NonVacuity2.lean`; the blanket `QFFinSat@relGate` route is therefore NOT usable as stated;
+  - **CANONICAL form**: `paper_theorem_rel_of_finSat_split : ShoenfieldTestRel → FinSatAtArchimedean
+    → FinSatOffArchimedean → HasQE`, with `no_refutingConfig_of_arch_half` (the Archimedean half is
+    not refutable by the tree's configuration) and `two_routes_agree`.
+* Verdict of the matrix (to be quoted): u1–u5 cannot be short-circuited by a blanket
+  `QFFinSat@relGate`, but **their conjunction is exactly `Input5R`**; the canonical frontier is the
+  split form, and the case lemmas are needed at the non-Archimedean targets.
