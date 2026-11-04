@@ -693,3 +693,38 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   g5 two-value-groups, g6 Hahn-series consistency witness.
 * Chain state: oleans for every merged file through `FinalAudit` are current in `.scratch2/sec3`
   (FinalRoute's missing olean was rebuilt when f6's build exposed it).
+
+## smw2ku6gn sentinel salvage (2026-11-04): four deliverables verified judge-side and merged
+
+Five of smw2ku6gn's eight members expired WITHOUT submitting; their four delivered files were
+verified first-hand and merged (the two case-lemma directions produced nothing for the second
+generation running; m4 residue-induction, m6 Hahn consistency, m8 non-vacuity still run):
+
+* `QE/Prop39Decomp.lean` (m3/g3): Proposition 3.9 at a fixed pair ⟺ `HullExtension` ∧
+  `OneStepVFP` (⟺ HullExtension ∧ `OneStepCases.Cases`) — `extendsHere_iff_hullExtension_and_oneStep`;
+  `satReal_iff_hullExtension_and_oneStep` — Marker's saturation-realization input 5 IS the paper's
+  §3 (3.3 + 3.4–3.8) EXACTLY, gate-free; `extendsAt_rel_iff_input5R` — at the paper's relGate,
+  input 5 = Prop 3.9 (relGate form of FinalAudit §3); and `paper_theorem_rel_two :
+  ShoenfieldTestRel → Input5R → HasQE Axioms.ACVF` (the two-quote final at the honest gate).
+  REFUTATIONS: `not_extendsHere_of_archimedean`, `not_prop39Sat_of_archimedean_config`,
+  `not_extendsAt_rel_of_archimedean_config`, `not_finSat_at_pair_of_archimedean` — the canonical
+  frontier is vacuous at any PaperHyp pair carrying an Archimedean target + the Hahn
+  configuration; the non-vacuity requirement (whether the paper's gate excludes it) is the open
+  question handed to m8. GATE-MATCHING: pairing ShoenfieldTestRel with the frozen Prop39Sat
+  silently needs `SatBridge`; only matched pairings are theorem-free.
+* `QE/ValueGroupBridge.lean` + `QE/BridgeStress.lean` + `QE/WireIn.lean` (m7/g5): Γ(M) is
+  literally a Mathlib value group — `vGammaValuation : Valuation (VFType M) (WithZero (GammaOf M))`
+  (explicit, no choice); the `O`/`m` order characterizations; `gv_surjective` (axiom `rvSurj`).
+  The brief's naive order-translation was machine-checked FALSE as written (`BridgeStress.wrong_direction`)
+  — Mathlib's `Valuation` is the absolute-value convention, so the correct swapped form is
+  `VGBridge.le_iff_gv_le_of_valuation` (w x ≤ w y ↔ gv y ≤ gv x); PE quotes instantiate at a model
+  (`WireIn`: `HenselizationExists → Nonempty (HenselizationOf (vGammaValuation _))`, same Γ).
+* `QE/HullAudit.lean` (m2/g2, audit rather than the 3.6 slot): `ClassicalProps.DivisibleHullExists`
+  is an ISOMORPHISM at the only instantiable value group `Additive (GammaOf M)`
+  (`divisibleHullExists_at_gammaMk_surjective` — Γ(M) already divisible, the quote adds nothing);
+  it cannot instantiate at Γ(Ŝ) (submonoid only, no inverses — GammaDiv §9); the paper's
+  Γ(S*) = hull Γ(S) IS proved from the two clamp conjuncts + initiality
+  (`divisibilityStep_pins_hull`); zero prior consumers in the tree. Consequence: case 3.6's content
+  is NOT the Prestel–Engler quote — it is the construction itself.
+* Chain note: `Lifting_transcendental.olean` was missing from the shared chain (HullAudit exposed
+  it); now built; the chain is current through every file above.
