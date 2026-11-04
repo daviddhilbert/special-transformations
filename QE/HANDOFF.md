@@ -287,3 +287,30 @@ the target.
 **Rule.** `lean` against a member's own olean proves only "elaborates against that snapshot".
 Rebuild the prelude before relying on a file importing `Pre_build`/`Pre2`/`PreC`/`AV`; files
 importing only `Enc` or `Mathlib` are safe from `Assembly_val` drift.
+
+## Porting Lemma 3.2 / 3.5 / 3.7: do not re-prove them, instantiate them
+
+The five Mathlib-level files (`QE/Lemma32_root_lifting.lean`, `Lemma35_divisible_hull.lean`,
+`Lemma37_transcendental.lean`, `Lifting_transcendental.lean`, `RV_henselian.lean`) are stated for
+`(K, v)` with `[Field K]`, `[IsAlgClosed K]`, `v : Valuation K Γ₀` — nothing else.  And
+`QE/Assembly_val.lean` already proves that the `VF`-sort of a model of the frozen `ACVF` *is* such a
+field:
+
+* `M4ValueOnly.exists_valuation_predV` (`:21033`) gives `w : Valuation (VFType M) Γ` with
+  `iLe (iRv y) (iRv x) ↔ w x ≤ w y` (the two orders are reversed: `Mathlib.Valuation` is the
+  absolute-value convention);
+* `VFAlgClosed.isAlgClosed_vfType` (`:11575`) gives `[IsAlgClosed (VFType M)]`.
+
+So "porting" is an instantiation at `K := VFType M` plus the `iRv`/`iLe` dictionary, not a proof.
+`QE/ValBridge.lean` packages the two (`M5.exists_valued_vfType`, `M5.isAlgClosed_vfType`,
+`M5.ValuedModel`, `M5.valuedModel`) and carries `M5.rv_root_lift_at_model` as the demonstration.
+What a port still owes is only the *syntactic* half: reading the encoding's `RV`-polynomial
+hypothesis as `huniv`/`hred`, which needs `iRv x = iRv y ↔ YinRV.rv w x = YinRV.rv w y`.
+
+**The olean in `.scratch2/Assembly_val.olean` is stale and must be rebuilt before importing it**
+(checked 2026-11-04: olean 22:40, source 23:41, and the olean then lacks `M4ValueOnly` entirely —
+`#check @M4ValueOnly.exists_valuation_predV` fails against it while the current source has the
+declaration).  Build with `cd .scratch2 && cp ../QE/Assembly_val.lean . && LEAN_PATH=$PWD:$LEAN_PATH
+lean Assembly_val.lean`; it takes tens of minutes, so start it before anything that needs it.  This
+is the "Assembly_val drift" the W1/`Pre_build` note at the end of this file warns about, in its most
+basic form: **a stale olean silently removes declarations**, it does not warn.

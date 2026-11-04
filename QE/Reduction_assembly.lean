@@ -1280,8 +1280,16 @@ def OneStepVF (hSat : Saturated N) : Prop :=
 
 /-- **Remark 3.1** (`L:v:and:L:RV`) together with Weispfenning's QE theorem for `L_v`
 (Theorem `weis:qe`, an explicit hypothesis of this development, never an axiom): a monomorphism
-whose domain is `VF`-generated extends to all of `M` when the target is saturated. -/
-def VFGenCase : Prop :=
+whose domain is `VF`-generated extends to all of `M` when the target is saturated.
+
+**The `Saturated N` parameter is not optional.**  Without it the statement is false: `⊥` is
+`VF`-generated (it contains the constants, and `rv 1` is `rv` of the constant `1`), so the
+saturation-free form asserts `∃ g : M ↪[LRV] N` for *every* pair of models of `ACVF`, in particular
+an injection from an uncountable model into a countable one.  The paper's step is exactly the
+saturated one — `qe.tex:552`: *"If `L` is sufficiently saturated then, by Theorem 2.7, `f'` may be
+extended to an `L_v`-monomorphism `f : K → L`"* — and `prop39` already has `hSat` in scope when it
+uses this, so demanding it costs nothing. -/
+def VFGenCase (hSat : Saturated N) : Prop :=
   ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N), IsVFGen S →
     ∃ g : M ↪[LRV] N, ∀ x : S, g (x : M) = f x
 
@@ -1373,7 +1381,7 @@ theorem isVFGen_of_vf_all (hRv : RVeqRvVF M) {T : LRV.Substructure M}
 Remark 3.1. -/
 theorem prop39 (hSat : Saturated N) (hRv : RVeqRvVF M)
     (hPrep : PrepStep (M := M) (N := N) hSat) (hOne : OneStepVF (M := M) (N := N) hSat)
-    (hVFGen : VFGenCase (M := M) (N := N)) (S : LRV.Substructure M) (f : S ↪[LRV] N) :
+    (hVFGen : VFGenCase (M := M) (N := N) hSat) (S : LRV.Substructure M) (f : S ↪[LRV] N) :
     ∃ g : M ↪[LRV] N, ∀ x : S, g (x : M) = f x := by
   obtain ⟨T, g, hST, hagree, hall⟩ := exists_vf_all hSat hPrep hOne S f
   obtain ⟨g', hg'⟩ := hVFGen T g (isVFGen_of_vf_all hRv hall)
@@ -1409,8 +1417,8 @@ structure AlgIngredients : Prop where
   one : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF]
     (hSat : Saturated N), OneStepVF (M := M) (N := N) hSat
   /-- Remark 3.1 + Weispfenning's QE theorem for `L_v` -/
-  vfgen : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF],
-    VFGenCase (M := M) (N := N)
+  vfgen : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF]
+    (hSat : Saturated N), VFGenCase (M := M) (N := N) hSat
 
 /-- **Theorem 3.10 of arXiv:1006.1393 = Theorem 2.3 of arXiv:1006.2467**, modulo the four
 hypotheses listed in `AlgIngredients` and the hard direction of Shoenfield's test. -/
@@ -1418,7 +1426,7 @@ theorem theorem_2_3_of_hypotheses (hShoen : ShoenfieldTest) (hAlg : AlgIngredien
     HasQE ACVF := by
   apply hShoen
   intro M N _ _ hM hN hSat S f
-  exact prop39 hSat (hAlg.rv M hM) (hAlg.prep M N hSat) (hAlg.one M N hSat) (hAlg.vfgen M N) S f
+  exact prop39 hSat (hAlg.rv M hM) (hAlg.prep M N hSat) (hAlg.one M N hSat) (hAlg.vfgen M N hSat) S f
 
 /-- **Theorem 3.10 with the `RV = rv(VF^×) ∪ {0}` hypothesis discharged.**  Since the axiom
 `Axioms.rvSurj` is the paper's surjectivity of `rv` (every `RV`-element other than `rv(0)` is
@@ -1430,8 +1438,8 @@ theorem theorem_2_3_of_three (hShoen : ShoenfieldTest)
       (hSat : Saturated N), PrepStep (M := M) (N := N) hSat)
     (hOne : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF]
       (hSat : Saturated N), OneStepVF (M := M) (N := N) hSat)
-    (hVFGen : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF],
-      VFGenCase (M := M) (N := N)) :
+    (hVFGen : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ ACVF] [N ⊨ ACVF]
+      (hSat : Saturated N), VFGenCase (M := M) (N := N) hSat) :
     HasQE ACVF :=
   theorem_2_3_of_hypotheses hShoen
     { rv := fun M _ _ => RVeqRvVF_of_model (M := M)

@@ -3171,3 +3171,39 @@ With the file green, `alg:ind:imag` (`paper.tex` §3) is now proved for **every*
 case split, whose only remaining input is the geometric cardinality fact
 `t ≠ rv 0 → ¬ Small (rv⁻¹ t)` (the fibre is a coset of the unit ball).  That is stated as a
 hypothesis about cardinalities, not about `acl`, and it is the last §3 gap on the `prep` path.
+
+## `VFGenCase` was stated saturation-free, and that made it false
+
+Found while judging the QE swarm's `vfgen` direction.  `QE/Reduction_assembly.lean` had
+
+```
+def VFGenCase : Prop :=
+  ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N), IsVFGen S →
+    ∃ g : M ↪[LRV] N, ∀ x : S, g (x : M) = f x
+```
+
+with **no** saturation hypothesis on `N`, while its own docstring says "extends to all of `M` *when
+the target is saturated*".  The statement is false as written: `⊥` is `VF`-generated (a substructure
+contains the constants, `rv 1` is `rv` of the constant `1`, and `rv 0 = rvZero` is the second
+disjunct), so the saturation-free form asserts `∃ g : M ↪[LRV] N` for **every** pair of models of
+`ACVF` — an injection from an uncountable model into a countable one.  By Löwenheim–Skolem there are
+models of every infinite cardinality, so this is refutable mathematically, and `M ↪[LRV] N` forces
+`Cardinal.mk M ≤ Cardinal.mk N` in Lean.
+
+This is the same species of defect as `CoverVF`/`AtomCover` (a hypothesis nobody checked, silently
+making the reduction vacuous), and it is worse than those because it sits on the *main* route:
+`theorem_2_3_of_three` would have been "proved" from a false hypothesis.
+
+The paper is unambiguous (`qe.tex:552`): *"If `L` is sufficiently saturated then, by Theorem 2.7,
+`f'` may be extended to an `L_v`-monomorphism `f : K → L`."*  And `prop39` already has
+`hSat : Saturated N` in scope at the point where it applies `VFGenCase`, so demanding it costs
+nothing — the saturation was simply dropped when the field was written down.
+
+**Repair applied** (commit `18c1f34`): `VFGenCase (hSat : Saturated N)`, the `vfgen` field of
+`AlgIngredients` and the hypothesis of `theorem_2_3_of_three` gained `(hSat : Saturated N)`, and
+`prop39` passes its own `hSat`.  The file compiles and `theorem_2_3_of_hypotheses`,
+`theorem_2_3_of_three`, `prop39` are all still `{propext, Classical.choice, Quot.sound}`.
+
+**Consequence for anyone proving `vfgen`**: the statement to prove is now the true one.  The
+saturation-free version is not provable, so a member who returns "reduced to the residual that `S`
+is VF-generated implies cardinality bounds" has found the defect, not a gap.
