@@ -3117,3 +3117,26 @@ is settled; the remaining obstruction is one Lean typing fact:
 
 The fix is `simp only [SP.singleRV]` (or a `show` at the reduced type) *before* the map is applied, at
 each of the four sites.  Recorded so that the next attempt starts there rather than rediscovering it.
+
+### AclZero: the fix is a restatement, not a tactic
+
+Tried `set_option backward.isDefEq.respectTransparency false` (which fixed the same species of
+projection problem in `QE/Sec3_frozen.lean`) and `simp only [SP.singleRV]`: neither works here,
+because the offending occurrence is a *proof term's type*, not a rewriting site — `Sum.inr i` really is
+typed `Sum (Fin (SP.singleRV …).n) (Fin (SP.singleRV …).m)`, and a term whose type is not type-correct
+at implicit transparency is not a rewrite target at all.
+
+So the fix is structural: either
+
+* define the parameter map at the projection type —
+  `zeroMap : (Fin (SP.singleRV (iRVZero) hvz).n ⊕ Fin (SP.singleRV … hvz).m) → Term (Fin SP.base.n ⊕ Fin SP.base.m)`
+  — ugly but it typechecks, or
+* state the reduction for a *generic* single-`RV`-parameter pair written out literally
+  (`⟨0, 1, Fin.elim0, fun _ => iRVZero, …⟩`) so that no projection appears anywhere in the statement,
+  and derive the `SP.singleRV` form from it by `SP.sortMap_singleRV`/`SP.toFun_singleRV` (which exist
+  and are `rfl`).
+
+The second is right.  The mathematics of the case is settled (it is the reduction described in
+`QE/AlgIndImag.lean`'s header: replace the single `RV` parameter by the closed term `rv 0` using
+`QE/SubstParam.lean`), and `QE/SubstParam.lean` — the file that was needed for it — is finished and in
+the tree.  Only the statement's shape is left.
