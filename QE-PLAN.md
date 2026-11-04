@@ -2771,3 +2771,13 @@ The first step exists; steps two and three need a variable-level substitution th
 
 That is the missing infrastructure for `swl_exchange` and for `alg:ind:imag`; it is independent of
 model theory and can be assigned as its own item.
+
+### `inf:RV:def:gam` proved (§3, swarm `smw1jgnht` m7, accepted)
+
+`QE/InfRVDefGam.lean` (green, no `sorry`, axioms within {propext, Classical.choice, Quot.sound}):
+the paper's lemma at `paper.tex:746` — *`V = {γ : vrv⁻¹(γ) ∩ A` nonempty and finite`}` is finite and
+definable* — in the `LRVΓ` expansion, from the paper's two uses of C-minimality (`hbdd`, the
+compactness bound that produces the defining formula, and `hCM`, "by C-minimality again `V` is
+finite", applied to `smallPart A` so it is not the conclusion).  This closes one of the two Section-3
+items recorded as *unstatable* for lack of `Γ`-vocabulary; `aclS:model` is the remaining one, and it
+is what `prep` in `Reduction_assembly` consumes.

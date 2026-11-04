@@ -904,8 +904,16 @@ Two further corrections of a different kind:
 * exchange at the `RV` sort (`t, s ∈ RV`, `t ∈ acl(s) ∖ acl(∅) ⟹ s ∈ acl(t)`) — `acl` here is a
   `VF`-sorted predicate (`WellSorted … (fun _ => .vf)`), and the paper proves the `RV` half through
   the `Γ`-sort and its `ρ`-function.  Nothing in §3–§5 consumes that half.
-* `inf:RV:def:gam` and `aclS:model` — unchanged from the earlier record (`Γ`-side vocabulary, and
-  `acl(S)` as an `LRV.Substructure` with relativized satisfaction).
+* ~~`inf:RV:def:gam`~~ — **proved** (`QE/InfRVDefGam.lean`, green, no `sorry`, axioms clean): the
+  paper's lemma at `paper.tex:746`, stated in the `LRVΓ` expansion, from the paper's own two uses of
+  C-minimality (`hbdd` = the compactness bound on finite fibres, which produces the defining formula;
+  `hCM` = "by C-minimality again `V` is finite", applied to `smallPart A`, so not the conclusion in
+  disguise).  The `Γ`-vocabulary obstacle is gone.  Caveats in the file header: `hRV` (A avoids
+  `∞ = rv 0`) is stronger than the paper's `A ⊆ RV` but harmless, since the fibres over `Γ` never
+  contain `∞`; `Vset` ranges over the carrier and `Vset_subset_isGamma` discharges it.
+* `aclS:model` — unchanged from the earlier record (`acl(S)` as an `LRV.Substructure` with relativized
+  satisfaction, plus `Γ(acl(S))` nontrivial).  It is the remaining Section 3 blocker, and it is the
+  one `prep` in `QE/Reduction_assembly.lean` consumes.
 
 **Proved, as the first instalment of §3 content** (`QE/Sec3_frozen.lean`, no `sorry`, axioms clean):
 `SP.dcl_subset_acl` and `SP.acl_self` (`a` is algebraic over `{a}` — the formula `x = a` has the
