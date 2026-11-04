@@ -2996,3 +2996,33 @@ definable parameter needs.  11 mechanical errors at park time: `Term.subst`'s `@
 fine, but `BoundedFormula.subst` is `mapTermRel`, which has no `@[simp]` lemmas, so each constructor
 needs explicit unfolding, and `subst_guardAtom` needs `Function.comp_apply` plus per-`SortTag` cases.
 Nothing mathematical is missing.
+
+## Swarm `smw1jgnht` closed solved: §3–§4 in six accepted files
+
+Final board: **6 accepted**, 1 direction dead (m6's d4 — but it came back under d9 and closed the
+item it had been rejected for), 0 running.  Every file below was compiled here, and every reported
+`#print axioms` was re-run here; all footprints are subsets of {propext, Classical.choice,
+Quot.sound}.
+
+| file | paper item | note |
+| --- | --- | --- |
+| `QE/InfRVDefGam.lean` | §3 `inf:RV:def:gam` | the `Γ`-vocabulary obstacle is gone |
+| `QE/Sec3Infra.lean` | §3 infrastructure | `DefinableAt`, Boolean-comb algebra, rv-fibres, `acl:VF:transfer:acl:RV` from §3's first lemma — **and `IsClosedBall (rvFibre t)` is FALSE** (the `RV` order is a preorder) |
+| `QE/AlgIndImag.lean` | §3 `alg:ind:imag` | the paper's silent step *proved* (`acl_of_rv_eq`); one case left (`t = rv 0`) |
+| `QE/SubstVar.lean` | infrastructure | variable substitution — the wall behind three items |
+| `QE/Sec4Dim.lean` | §4 dimension layer | `Tup`, `Definable`, `DefinableFun`, `HasDim`, `dimVF`; the (⇒) of `dim:RV:fibers` was `PaperStraightening` |
+| `QE/Sec4Categories.lean` | §4 categories | `VF[k,·]`, `RV[k,·]`, weight, `E_k`, `RVObj.lift`, subobjects, volumetric |
+| `QE/Sec4Polydisc.lean` | §4 `full:dim:open:poly` | both directions at the base, plus **the negative result**: under definability, transfer along a finite-to-one map fails (a fibre lives in `VF^n × RV^0`, not inside `A`) |
+| `QE/Sec4Pair.lean` | §4 `dim:RV:fibers` | **proved**, with `FibreSeparating` (= Yin 4.10 + compactness) as the only mathematical hypothesis; `PaperStraightening` in `Sec4Dim` is now dischargeable |
+
+**The method worth keeping**: `Sec4Pair`'s `pairFun` avoids the composition/quantifier wall entirely
+by placing `g`'s and `h`'s values as *coordinates of the target tuple* — the graph is then one
+substituted conjunction with nothing quantified.  The wall (variable substitution) still had to be
+built for it, but the `DefinableFun`-composition corollary and the guarded-existential route are
+*not* needed for `dim:RV:fibers`.
+
+**What remains, in the paper's order** (from `MILESTONES.md`): `ShoenfieldTest` → `AlgIngredients.prep`
+→ `.one` → `.vfgen`; on the §3–§4 side: `swl_exchange` (quoted — Yin 4.3 — with the saturation
+ingredient `infinite+small ⟹ ≥κ` identified), the `t = rv 0` case of `alg:ind:imag` (needs the parked
+`SubstParam`), `aclS:model`, `ball:RV:finite`, the transcendental-degree corollary, and the general
+"only if" of `full:dim:open:poly`.

@@ -13,7 +13,7 @@ From `HANDOFF.md` — Milestones 0–5 cover the paper's Sections 4–10; Theore
 | --- | --- | --- | --- |
 | 0 | language and syntax | §2 | **done** (statements frozen) |
 | 1 | algebraic layer: `vrv`, exact sequence, balls, polydiscs, valuative centre | §3–§4 | **done for the intended model**; the abstract route from `gammaAxioms` is blocked (see below) |
-| 2 | definable sets and dimensions: `acl`/`dcl`, `dimVF`/`dimRV`/`dimfib`, 4.2/4.4/4.6, `VF[k,·]`/`RV[k,·]`, `L`, Grothendieck semigroups | §4 | **`acl`/`dcl` only** (5 of §3's 6 closure statements are frozen targets, corrected this session); dimensions and categories absent |
+| 2 | definable sets and dimensions: `acl`/`dcl`, `dimVF`/`dimRV`/`dimfib`, 4.2/4.4/4.6, `VF[k,·]`/`RV[k,·]`, `L`, Grothendieck semigroups | §4 | **most of it, in the tree** (`QE/Sec4Dim.lean`, `Sec4Categories.lean`, `Sec4Polydisc.lean`, `Sec4Pair.lean`): `dimVF` with its layer, `dim:RV:fibers` proved from Yin 4.10 + compactness, the categories `VF[k,·]`/`RV[k,·]` with weight and `E_k`, `full:dim:open:poly`'s two directions at the base.  Absent: the lift `L`, the Grothendieck semigroups, `dimfib`, and the general "only if" of `full:dim:open:poly` |
 | 3 | special bijections: 5.1, 5.4, 5.5, 5.6, 5.7 | §5 | **scaffold green and now in the tree** (`QE/Sec5.lean`); 5.2/5.4/5.5 are statements |
 | 4 | lifting functions: Hensel 7.2, Thm 7.6, Cor 7.7 | §7 | **nothing** |
 | 5 | differentiation and volume forms: 9.1–9.14, 9.16, 10.4, 10.5, 10.6 | §9–§10 | **nothing** |
