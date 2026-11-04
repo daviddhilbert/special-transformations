@@ -1114,6 +1114,126 @@ theorem prop39FS_of_individual {M N : Type} [LRV.Structure M] [LRV.Structure N]
   exact Realize.exists_total_embedding_of_realizesAtomic
     (fun S f m _ => realizesAtomic_of_saturatedFS hSat S f m (hreal S f m)) S f
 
+/-! ### The three ingredients are saturation-free, so Proposition 3.9 is too
+
+`PrepStep`, `OneStepVF` and `VFGenCase` take the saturation notion as a parameter, and **not one of
+their bodies uses it**.  So the paper's Proposition 3.9 needs no saturation hypothesis at all: the
+extension property follows from the three ingredients alone.  (Saturation is needed for *other*
+things — realising types — but not here, and the tree's `Assembly.Saturated` being strong enough to
+prove the extension property on its own is a defect of that definition, not the source of this
+route.)
+
+Recording it explicitly removes the `Saturated`/`SaturatedFS` question from the main route: the
+three ingredients are stated once, with no saturation parameter, and every later restatement is the
+same statement. -/
+
+/-- **Lemma 3.3 + henselization**, with the saturation parameter removed. -/
+def PrepStepP {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] : Prop :=
+  ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N),
+    ∃ (T : LRV.Substructure M) (g : T ↪[LRV] N) (hST : S ≤ T),
+      (∀ x : S, g ⟨(x : M), hST x.2⟩ = f x) ∧ Standing T
+
+/-- **Lemmas 3.4-3.8**, with the saturation parameter removed. -/
+def OneStepVFP {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] : Prop :=
+  ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N), Standing S → ∀ m : M, iVF m →
+    ∃ (T : LRV.Substructure M) (g : T ↪[LRV] N) (hST : S ≤ T),
+      (∀ x : S, g ⟨(x : M), hST x.2⟩ = f x) ∧ m ∈ T ∧ Standing T
+
+/-- **Remark 3.1 + Weispfenning**, with the saturation parameter removed. -/
+def VFGenCaseP {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] : Prop :=
+  ∀ (S : LRV.Substructure M) (f : S ↪[LRV] N), IsVFGen S →
+    ∃ g : M ↪[LRV] N, ∀ x : S, g (x : M) = f x
+
+theorem prepStep_iff {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : Saturated N) :
+    PrepStep (M := M) (N := N) hSat ↔ PrepStepP (M := M) (N := N) := Iff.rfl
+
+theorem oneStepVF_iff {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : Saturated N) :
+    OneStepVF (M := M) (N := N) hSat ↔ OneStepVFP (M := M) (N := N) := Iff.rfl
+
+theorem vfGenCase_iff {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : Saturated N) :
+    VFGenCase (M := M) (N := N) hSat ↔ VFGenCaseP (M := M) (N := N) := Iff.rfl
+
+theorem prepStepFS_iffP {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : SaturatedFS N) :
+    PrepStepFS (M := M) (N := N) hSat ↔ PrepStepP (M := M) (N := N) := Iff.rfl
+
+theorem oneStepVFFS_iffP {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : SaturatedFS N) :
+    OneStepVFFS (M := M) (N := N) hSat ↔ OneStepVFP (M := M) (N := N) := Iff.rfl
+
+theorem vfGenCaseFS_iffP {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hSat : SaturatedFS N) :
+    VFGenCaseFS (M := M) (N := N) hSat ↔ VFGenCaseP (M := M) (N := N) := Iff.rfl
+
+/-- The one-step exhaustion step, saturation-free (same proof as `oneStepVF_pe`). -/
+theorem oneStepVF_peP {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (h : OneStepVFP (M := M) (N := N)) :
+    ∀ (G : M ≃ₚ[LRV] N), Standing G.dom → ∀ m : M, iVF m →
+      ∃ G' : M ≃ₚ[LRV] N, G ≤ G' ∧ Standing G'.dom ∧ m ∈ G'.dom := by
+  intro G hStandG m hm
+  obtain ⟨T, g, hGT, hagree, hmT, hStandT⟩ := h G.dom (PartialEquiv.toEmbedding G) hStandG m hm
+  refine ⟨embPE g, ?_, hStandT, hmT⟩
+  rw [PartialEquiv.le_iff]
+  refine ⟨hGT, ?_, ?_⟩
+  · rintro y hy
+    refine ⟨⟨((G.toEquiv.symm ⟨y, hy⟩ : G.dom) : M), hGT (G.toEquiv.symm ⟨y, hy⟩).2⟩, ?_⟩
+    show g ⟨((G.toEquiv.symm ⟨y, hy⟩ : G.dom) : M), hGT (G.toEquiv.symm ⟨y, hy⟩).2⟩ = y
+    rw [hagree]
+    simp
+  · intro x
+    apply Subtype.ext
+    show ((G.toEquiv x : G.cod) : N) = (g ⟨(x : M), hGT x.2⟩ : N)
+    rw [hagree]
+    rfl
+
+/-- **The exhaustion**, saturation-free. -/
+theorem exists_vf_allP {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hPrep : PrepStepP (M := M) (N := N))
+    (hOne : OneStepVFP (M := M) (N := N)) (S : LRV.Substructure M) (f : S ↪[LRV] N) :
+    ∃ (T : LRV.Substructure M) (g : T ↪[LRV] N) (hST : S ≤ T),
+      (∀ x : S, g ⟨(x : M), hST x.2⟩ = f x) ∧ (∀ y : M, iVF y → y ∈ T) := by
+  obtain ⟨T₀, f₀, hST₀, hagree₀, hStand₀⟩ := hPrep S f
+  obtain ⟨G, hG₀G, hStand, hall⟩ :=
+    exists_exhaust (L := LRV) (M := M) (N := N) (fun G => Standing G.dom) (fun m => iVF m)
+      (fun c hne hch hP => Standing_chainSup hne hch hP)
+      (oneStepVF_peP hOne) (embPE f₀) hStand₀
+  refine ⟨G.dom, PartialEquiv.toEmbedding G, hST₀.trans (PartialEquiv.dom_le_dom hG₀G), ?_, hall⟩
+  intro x
+  have h1 : (PartialEquiv.toEmbedding G
+        ⟨(x : M), PartialEquiv.dom_le_dom hG₀G (hST₀ x.2)⟩ : N)
+      = ((G.toEquiv ⟨(x : M), PartialEquiv.dom_le_dom hG₀G (hST₀ x.2)⟩ : G.cod) : N) := rfl
+  rw [h1, agree_of_le f₀ hG₀G ⟨(x : M), hST₀ x.2⟩ (PartialEquiv.dom_le_dom hG₀G (hST₀ x.2))]
+  exact hagree₀ x
+
+/-- **Proposition 3.9 (`lrv:mono:lift`), saturation-free.** -/
+theorem prop39P {M N : Type} [LRV.Structure M] [LRV.Structure N]
+    [M ⊨ Axioms.ACVF] [N ⊨ Axioms.ACVF] (hRv : RVeqRvVF M) (hPrep : PrepStepP (M := M) (N := N))
+    (hOne : OneStepVFP (M := M) (N := N)) (hVFGen : VFGenCaseP (M := M) (N := N))
+    (S : LRV.Substructure M) (f : S ↪[LRV] N) :
+    ∃ g : M ↪[LRV] N, ∀ x : S, g (x : M) = f x := by
+  obtain ⟨T, g, hST, hagree, hall⟩ := exists_vf_allP hPrep hOne S f
+  obtain ⟨g', hg'⟩ := hVFGen T g (isVFGen_of_vf_all hRv hall)
+  exact ⟨g', fun x => by rw [hg' ⟨(x : M), hST x.2⟩, hagree x]⟩
+
+/-- `Prop39FS` from the saturation-free ingredients. -/
+theorem Prop39FS_of_P
+    (hRv : ∀ (M : Type) [LRV.Structure M], M ⊨ Axioms.ACVF → RVeqRvVF M)
+    (hPrep : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ Axioms.ACVF]
+      [N ⊨ Axioms.ACVF], PrepStepP (M := M) (N := N))
+    (hOne : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ Axioms.ACVF]
+      [N ⊨ Axioms.ACVF], OneStepVFP (M := M) (N := N))
+    (hVFGen : ∀ (M N : Type) [LRV.Structure M] [LRV.Structure N] [M ⊨ Axioms.ACVF]
+      [N ⊨ Axioms.ACVF], VFGenCaseP (M := M) (N := N)) :
+    Prop39FS := by
+  intro M N _ _ hM hN hSat S f
+  exact prop39P (hRv M hM) (hPrep M N) (hOne M N) (hVFGen M N) S f
+
 /-! ### The paper's Section 3.1, from the three lemma-props -/
 
 /-- The paper's Section 3.1 in one structure, from the three lemma-props, with the `RV`-field
@@ -1169,6 +1289,8 @@ end SpecialTransformations
 #print axioms SpecialTransformations.Milestone0.Assembly.shoenfieldTest_iff_hasQE
 #print axioms SpecialTransformations.Milestone0.Assembly.hasQE_of_shoenfieldTest_only
 #print axioms SpecialTransformations.Milestone0.Assembly.saturatedFS_of_saturated
+#print axioms SpecialTransformations.Milestone0.Assembly.prop39P
+#print axioms SpecialTransformations.Milestone0.Assembly.Prop39FS_of_P
 #print axioms SpecialTransformations.Milestone0.Assembly.prepStepFS_iff
 #print axioms SpecialTransformations.Milestone0.Assembly.realizesAtomic_of_saturatedFS
 #print axioms SpecialTransformations.Milestone0.Assembly.prop39FS_of_individual

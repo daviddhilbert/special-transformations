@@ -3253,3 +3253,42 @@ Also settled: the `SignInvariant` hypothesis that a port needed is an artifact o
 `Reduction_assembly.lean`'s pre-repair axiom copy, not of the mathematics — `rv(-x) = rv(x)` follows
 from the frozen `repairRV` (`leMulCompatFull`), and is proved outright in
 `.ultramath/smw1kqpdp/m6/RVCalc.lean` (`rv_neg_class`, `rv_neg_one_units`).
+
+## The criterion family is about the *unrestricted* `HasQE`, not the frozen one
+
+`QE/QF_type_bridge.lean:20` says so in its own comment: "`HasQE T` is the formula-level statement
+that every `L`-formula is `T`-equivalent to a quantifier-free one. It has the same shape as
+`SpecialTransformations.Milestone0.HasQE` (`Milestone0/Encoding.lean`), only at a general language
+`L`" — and that was true when it was written, but it is **no longer true**. The guard repair
+(`f18b6f5`) made the frozen `HasQE` well-sorted-guarded:
+
+```
+def HasQE (T : LRV.Theory) : Prop :=
+  ∀ (α) (sα : α → SortTag) (n) (sn : Fin n → SortTag) (φ : LRV.BoundedFormula α n),
+    WellSorted sα sn φ →
+    ∃ ψ, ψ.IsQF ∧ WellSorted sα sn ψ ∧ ∀ (M) [LRV.Structure M], M ⊨ T → ∀ v x, (sorted) → φ.Realize v x ↔ ψ.Realize v x
+```
+
+while `ShoenfieldQE.HasQE T := ∀ α φ, ∃ ψ, ψ.IsQF ∧ T ⊨ᵇ (φ ⇔ ψ)` quantifies over **all** formulas and
+does not ask the witness to be well-sorted.
+
+So `QE/QF_type_bridge.lean`, `QE/H_of_qfDetermined.lean`, `QE/Merged_end_to_end.lean`, and the whole
+criterion family (`FragmentTransfer`, `QF2Fragment`, `TransferWS`, `JunkTrue`) prove things about the
+**unrestricted** `HasQE`. That is the pre-repair shape. The bridge `ShoenfieldQE.HasQE T → Enc.HasQE T`
+is **not built**, and it is not trivial: the unrestricted version gives a QF witness `ψ` whose terms
+need not be `WellSorted` at the context `sα, sn`, and `HasQE`'s witness must be.
+
+This is the same species as the `Reduction_assembly` drift (pre-repair copy) and the `Saturated`
+defect: an interface that was correct when written and silently changed underneath. Two consequences:
+
+* `Assembly.shoenfieldTest_iff_hasQE` and everything in `QE/Assembly_frozen.lean` is stated against the
+  **frozen** `HasQE`, so it is the right one; the criterion files are the ones out of step.
+* A proof of `ShoenfieldTestFS : Prop39FS → HasQE` cannot simply import `QE/Merged_end_to_end.lean`;
+  either the criterion is redone with the well-sorted `HasQE`, or the unrestricted→well-sorted bridge
+  is built first. The bridge looks provable (a QF formula equivalent to a well-sorted one on sorted
+  tuples can be taken well-sorted, since the sorts of the terms are determined by the context and
+  junk-values of ill-sorted terms are unconstrained), but it is a real piece of work and nobody has
+  attempted it.
+
+**Recorded so that the next session does not assume `Merged_end_to_end.hasQE_of_qfDet` lands on the
+frozen target.** It does not.
