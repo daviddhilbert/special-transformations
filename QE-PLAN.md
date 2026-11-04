@@ -3140,3 +3140,34 @@ The second is right.  The mathematics of the case is settled (it is the reductio
 `QE/AlgIndImag.lean`'s header: replace the single `RV` parameter by the closed term `rv 0` using
 `QE/SubstParam.lean`), and `QE/SubstParam.lean` — the file that was needed for it — is finished and in
 the tree.  Only the statement's shape is left.
+
+### Correction to the above: neither restatement is needed — the projection just has to be reducible
+
+`QE/AclZero.lean` is **green** (commit `f0b8a8a` and following) and the whole obstruction was two
+lines of header, not a change of statement:
+
+```
+set_option allowUnsafeReducibility true
+set_option backward.isDefEq.respectTransparency false
+attribute [local reducible] SpecialTransformations.Milestone0.SP.base
+attribute [local reducible] SpecialTransformations.Milestone0.SP.singleRV
+```
+
+Why the earlier attempts failed and this works: `SP.base` and `SP.singleRV` are `def`s, so
+`SP.base.n` is stuck at `.reducible` transparency — which is what elaboration uses for `isDefEq`.
+`backward.isDefEq.respectTransparency false` alone does *not* help because the definition is still
+semireducible; `simp only [SP.singleRV]` does not help because a `simp` rewrite cannot fire on an
+occurrence that sits in a proof term's *type*.  Marking the two `def`s `[local reducible]` is what
+changes the transparency class, and then `SP.singleRV t ht`'s parameter type *is* literally
+`Fin 0 ⊕ Fin 1` for unification.  (`allowUnsafeReducibility` is required because the `def`s live in
+another file; the attribute is `local`, so no global behaviour changes.)
+
+Recorded because this is a general technique for the tagged encoding: any `SP`-shaped record used in a
+dependent type position needs this treatment at the use site, and it is cheaper than restating.
+
+With the file green, `alg:ind:imag` (`paper.tex` §3) is now proved for **every** `t ∈ RV`:
+`M5.acl_singleRV_zero` is the `t = rv 0` case (the closed term `rv 0` is substituted for the single
+`RV` parameter — a term of the language is not an `acl`-generator), and `M5.alg_ind_imag_all` is the
+case split, whose only remaining input is the geometric cardinality fact
+`t ≠ rv 0 → ¬ Small (rv⁻¹ t)` (the fibre is a coset of the unit ball).  That is stated as a
+hypothesis about cardinalities, not about `acl`, and it is the last §3 gap on the `prep` path.

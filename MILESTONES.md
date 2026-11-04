@@ -142,6 +142,11 @@ Open, in the paper's order:
    `NontrivialTransferWS Axioms.ACVF` follows, and `AllNontrivial Axioms.ACVF` is already proved.
 2. ~~**`QFRes2.qf2_cover`**~~ — **done**: extraction, soundness and the formula induction are all
    proved in `QE/QF2Cover.lean`, no `sorry`.
-3. The remaining §3 item with a printed proof, `alg:ind:imag` (needs exchange — frozen — plus the
-   parameter transport `QE/ParamBridgeRelabel.lean` now supplies, plus the `rv`-fibre/countability
-   argument).
+3. ~~The remaining §3 item with a printed proof, `alg:ind:imag`~~ — **proved for every `t ∈ RV`**
+   (`QE/AclZero.lean`, green, axioms clean). `M5.acl_singleRV_zero` covers `t = rv 0` — the closed
+   term `rv 0` is substituted for the single `RV` parameter, since a term of the language is not an
+   `acl`-generator — and `M5.alg_ind_imag_all` is the case split against `M5.alg_ind_imag`. The one
+   input still owed is geometric, not algebraic: `t ≠ rv 0 → ¬ Small (rv⁻¹ t)`, i.e. the fibre of
+   `rv` over `t ≠ ∞` is a coset of the unit ball and so is not small. It is carried as a hypothesis
+   about cardinalities, never as a statement about `acl`. `exchange` (Yin 4.3) remains a frozen
+   hypothesis, carried as `M5.ExchangeVF`.
