@@ -3056,3 +3056,36 @@ Everything else in the file is green: `substAssign`, `tmSort_substParam` (the te
 which was the hard half), `subst_guardAtom`, `inAntecedent_substParam`, `guardTrue_substParam`.
 
 Parked at `.scratch/SubstParam_wip.lean` (log: `.scratch/SubstParam_wip.log`), so the tree stays green.
+
+### `SubstParam` finished: the parameter substitution is in the tree
+
+`QE/SubstParam.lean` is **green with no `sorry`** (axioms within {propext, Classical.choice,
+Quot.sound}): the *parameter* twin of `QE/SubstVar.lean`, i.e. `TmSort`/`WellSorted` preservation under
+Mathlib's `BoundedFormula.subst (α → Term β)` — the direction that replaces a *parameter* by a term
+(which `relabel` cannot do: it maps parameters into parameters-or-*new variables*).
+
+```
+tmSort_substParam            -- term level
+tmSort_relabel_inl_indep     -- TmSort of a parameter-only term is independent of the variable context
+subst_guardAtom              -- the guard atom is parameter-free, hence fixed
+inAntecedent_substParam, guardTrue_substParam
+wellSorted_substParam        -- formula level
+```
+
+Three things had to be got right, and they are the reason this took several attempts:
+
+1. `WellSorted` cannot be inducted on directly — its index contains the sort assignment `sn`, so every
+   case returns with a fresh one.  The proof goes by `BoundedFormula.rec` with the motive quantifying
+   `sn` **inside** (the shape `qf2_cover_eval` already needed).
+2. The substitution must be stated at `subst`'s *own* assignment `Sum.elim (Term.relabel Sum.inl ∘ f)
+   (Term.var ∘ Sum.inr)`, not a hand-written equivalent: `BoundedFormula.subst` is `mapTermRel`, so
+   `rw` sees the raw form and nothing else.
+3. The `.all` case needs `TmSort`-independence from the variable context for parameter-only terms
+   (`tmSort_relabel_inl_indep`) to transport the sort hypothesis from `sn` to `Fin.snoc sn s`.
+
+**Parked**: `QE/AclZero.lean` — the `t = rv 0` case of `alg:ind:imag`, which is what this file was
+for — is at `.scratch/AclZero_wip.lean` (log `.scratch/AclZero_wip.log`, 11 errors, all of the
+`Term.relabel`-on-an-arity-0-symbol kind: `(func rvZero fun _ => i.elim0).relabel g` is *not*
+syntactically `func rvZero fun _ => i.elim0`, so each needs `congr 1; funext i; exact i.elim0`).
+The proof structure is right and the reduction is the one described in `alg:ind:imag`'s header; only
+the term-level bookkeeping is unfinished.
