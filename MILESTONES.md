@@ -379,3 +379,23 @@ type realization; saturation itself is now quoted). `QE/PaperRoute.lean`'几乎�
 therefore a proof of Theorem 2.3 modulo exactly those two algebra bundles (and the classical
 statements it consumes). Swarm `smw1v42vv` was stopped and replaced by `smw1vehvn`, whose
 directions are algebra/encoding-only (3.3, Γ-room, 3.8, WS-bridge, residue-extension).
+
+## The one-element step is now a two-halves decomposition (both in the tree)
+
+`smw1ukwfb` ended solved (3 accepted, all merged):
+
+* **Algebraic half** (`QE/M5L34_36.lean`, m5): the paper's Claim (⋆) as a Γ-statement.
+  `cls_ratio_units` + `mem_of_cls_mem` bridge the gap the paper leaves implicit — Γ-class
+  identities become `RV`-membership through `KEqTop S`; the polynomial half
+  (`cls_vsum_monomial`, separated case `OneStepSeparatedP`), the quotient step
+  (qe.tex:645), and Standing for free once class control is exhibited.
+* **Semantic half** (`QE/M1QFStep.lean`, m1): atomic-type agreement over `S` already produces
+  the `LRV`-embedding of `closure (S ∪ range a)` into `N` (saturation realization is Marker
+  content, quoted). `Frozen.StepObligation` records exactly what each case lemma owes:
+  (i) an atomic match `m ↦ n` in `N`, (ii) `RV(closure(S,m)) ⊆ S`.
+
+Two negative facts both parts record, kept visible: `RV(closure (S ∪ {m})) ⊆ S` is NOT
+derivable from `Axioms.ACVF` at a general `S` (junk-term values are unconstrained), so the
+case lemmas need the `IsVFGen` restriction on the target; and the divisible hull
+`Γ(S) + ℤ·v(m)` is exactly what `Standing T` forces when `iRv m ∉ S` (where the Γ-room of
+`smw1vehvn`'s Hahn direction lands).
