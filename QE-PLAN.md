@@ -2781,3 +2781,25 @@ compactness bound that produces the defining formula, and `hCM`, "by C-minimalit
 finite", applied to `smallPart A` so it is not the conclusion).  This closes one of the two Section-3
 items recorded as *unstatable* for lack of `Γ`-vocabulary; `aclS:model` is the remaining one, and it
 is what `prep` in `Reduction_assembly` consumes.
+
+### §4 dimensions: the layer in, the paper's lemma still open (m6, rejected once)
+
+`QE/Sec4Dim.lean` (swarm `smw1jgnht` m6; compiled here, 0 errors, no `sorry`) contributes the
+substance of §4 part 1: `Tup M n m` (the paper's `VF^n × RV^m` as sorted tuples in the one-carrier
+encoding), `Definable`/`DefinableFun`/`FibreFinite`/`InjOn`, `HasDim`, `dimVF` as an `sInf`, `dimRV`,
+and the elementary theory (`dimVF_le_iff` — the minimum is attained, `hasDim_self` via the identity
+graph, `dimVF_mono`, `dimVF_eq_zero_iff`, `dimRV_le_iff`, closure of `Definable` under the Boolean
+operations).
+
+**Not proved: the (⇒) direction of `dim:RV:fibers`** (`paper.tex:815`), i.e. `dim_VF A ≤ k` gives a
+definable *injection* into `VF^k × RV_Γ^l`.  The file assumed it as `PaperStraightening`, and that
+hypothesis *is* the lemma's content, so the lemma as reported was not proved — hence the rejection.
+What its proof needs is now precisely known and it is the same missing piece twice:
+
+* `finite:VF:project:RV` (Yin 4.10) fibrewise + compactness — §3 inputs, allowed as given;
+* the elementary zero-padding `VF^{k'} ↪ VF^k`;
+* **a composition lemma for `DefinableFun`** (rename the free variables of a definable graph by the
+  terms of another definable function) — i.e. variable-level substitution, which Mathlib lacks and
+  which §3's `exchange` needs too.
+
+So one development unblocks both §3's exchange and §4's `dim:RV:fibers`.  m6 continues on it.
