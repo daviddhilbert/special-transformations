@@ -2485,3 +2485,57 @@ site is the fallback.
 **Still missing, so the bridge is still open:** `hasQE_of_hasQE_empty` itself, and the three lemmas
 between: `wellSorted_shift` (`tmSort_shift`, `shift_sortPredG'`, `inAntecedent_shift`,
 `guardTrue_shift`), whose intended statements are in `.ultramath/smw1bwjo2/m2/SUMMARY.md`.
+
+## Swarm `smw1bwjo2` closed solved — three of the three named blockers are done
+
+m2's second round delivered the parameter bridge, and accepting it ended the swarm (it was the last
+member working).  Final board: **3 accepted**, 3 abandoned (fragment compactness, the mixed-context
+QF cover, sort soundness), and 2 (m3, m4) that ended without a verdict — m3's file is green and
+merged below, m4 submitted nothing.
+
+**The bridge is closed** (m2, plus two elaboration errors fixed here):
+
+```
+QE/ParamSupport.lean        support/paramsOf of a formula, realize_congr
+QE/ParamShrink.lean         shrinkAux V k, realize_shrinkAux   (the inverse gadget)
+QE/ParamSortTransport.lean  wellSorted_shrink_of_isQF
+QE/ParamBridgeShift.lean    the variables→parameters gadget, realize_shiftAux
+QE/ParamBridgeRelabel.lean  wellSorted_relabel, guardTrue_relabel, guardsLast_of_GuardTrue
+QE/ParamBridge.lean         hasQE_of_hasQE_empty_aux : ∀ T, HasQEempty T → HasQE T
+```
+
+All six compile in dependency order, no `sorry`, axioms within {propext, Classical.choice,
+Quot.sound}, and the `HasQE` on the right is the encoding's *frozen* one — the hypothesis of
+`theorem_2_3_quantifier_elimination`, quantifying over every `α` and every `Fin n`.  So one of the
+three blockers the handoff named is gone: QE at the empty parameter context gives full QE.
+
+The construction (m2's) is worth recording because the key step is not obvious: the parameter type is
+shrunk to the formula's finite support, *and then one extra witness is adjoined for each sort that
+occurs* (`sα (V (g a)) = sα a` must hold for **every** parameter, not only those in the support, or
+`wellSorted_relabel` does not apply); the parameters are promoted to leading variables so that
+`HasQEempty` fires at context `card + n`; then `shrinkAux` brings the quantifier-free witness back
+(quantifier-free is what lets `wellSorted_shrink_of_isQF` transport it), and `realize_relabel`,
+`realize_congr`, `realize_shrinkAux` match the truth values.  The two things I closed were `hleft`'s
+`Sum.inr` case (`Function.comp_apply` must be unfolded *before* `rw [hga]`, and kept in the simp set
+after it, because the rewrite re-creates the composition) and the argument order of
+`realize_shrinkAux` (`V, k, χ, v, x` — `(fun e => e.elim)` was landing in the `k` slot).
+
+**The `mul` normal form is closed too** (m3, verified and merged as `QE/MulNormalForm.lean`; its report
+arrived after the swarm had ended, so there is no verdict on record — the file is checked here
+instead: 0 errors, no `sorry`, axioms clean on the five headline theorems).  Cancellation off `Kˣ`
+works because the *repaired* `rvMulOneRV`/`rvMulInvRV` are unguarded:
+`rv_mul_eq_mul_iff : a ≠ 0 → (a * b = a * c ↔ b = c)`, `rv_mul_solution_unique`, and the word layer
+`mkMul` with `mkMul_perm`, `mkMul_pow_times_factor` (`tⁿ · rest`), plus the formula layer
+`pEq_tRVMul_iff`/`pEq_mkMul_cons_iff`.  That is exactly what `qfq_cover` (`smw19wtoj` m3's named gap)
+was missing.
+
+**So the state of the three blockers named at `65d3c7e`:**
+
+| blocker | state |
+| --- | --- |
+| frozen `WellSorted.all`/`.ex` too weak | **closed** — the guard repair, with junk-truth and sharpness machine-checked |
+| no mixed-context cover, no `mul` normal form | `mul` normal form **closed** (`QE/MulNormalForm.lean`); the cover `qfq_cover` still open |
+| the forward half of the parameter bridge | **closed** — `hasQE_of_hasQE_empty` |
+
+and the frontier for the main theorem is `QFStep IsNontrivialVF Axioms.ACVF` (the one-element
+back-and-forth step) or the §4 special transformations, with every input around it now available.
