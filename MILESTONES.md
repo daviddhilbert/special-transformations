@@ -399,3 +399,19 @@ derivable from `Axioms.ACVF` at a general `S` (junk-term values are unconstraine
 case lemmas need the `IsVFGen` restriction on the target; and the divisible hull
 `Γ(S) + ℤ·v(m)` is exactly what `Standing T` forces when `iRv m ∉ S` (where the Γ-room of
 `smw1vehvn`'s Hahn direction lands).
+
+## Ruling applied to both routes (2026-11-04, author)
+
+* **Shoenfield's test**: statement-given (Marker). Nothing in the tree proves the test itself;
+  `ShoenfieldTestSat`/`ShoenfieldTestSize`/`Assembly.ShoenfieldTestFS` are consumed as named
+  hypotheses, and `QE/ShoenfieldWS.lean`/`QE/M1Fix.lean` are encoding-specific derivations
+  *from* classical statements, not proofs of them.
+* **Johnson's approach**: the same rule applies. Marker covers model completeness of ACF,
+  amalgamation, Robinson's criterion. It does NOT cover Johnson's specific machinery from
+  *Fun with Fields* ch. 2 (the valuation-ring amalgamation construction 2.2.4–2.2.7, the 1-ec
+  "cheese" lemmas 2.3.x) — and that machinery is exactly what is **already proved in this tree**
+  (`QE/Amalgamation_reduced.lean`, `QE/CheeseMeetsBase.lean`, `QE/OneEC_val.lean`,
+  `QE/Johnson23_valuation.lean`), completing `Assembly_val.hasQE_ACVF_val` for `L_val`. The
+  tagged `L_RV` version (T2) stays dormant: 1-ec unrestricted is very likely false in the frozen
+  encoding; it would need *well-sorted* 1-ec if ever used. The main route does not use it;
+  keep it as the check, not the frontier.
