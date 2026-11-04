@@ -2539,3 +2539,48 @@ was missing.
 
 and the frontier for the main theorem is `QFStep IsNontrivialVF Axioms.ACVF` (the one-element
 back-and-forth step) or the §4 special transformations, with every input around it now available.
+
+## `qfq_cover`: what the swarm left, and the real statement of the gap
+
+Checked both leftovers before starting.
+
+* **m4 left nothing usable for this.**  Its `out.lean`/`T1.lean` (777 lines) are a copy of
+  `Assembly_val`'s realization prelude (`realize_tVFAdd`, `sortedHyps_realize`, `mem_ACVF_*`, …) in
+  the `Transfer` namespace — plumbing for its `TransferWS` direction, and it never reported, so
+  nothing was judged.  Not merged.
+* **m6's `QFCoverMixed.lean` is the fragment layer, and it is green** (1263 lines, 0 errors, no
+  `sorry`, `import Enc`).  Merged as `QE/QF2Fragment.lean`: `VFT2`/`RVT2`/`QF2`/`QFq2` over a *sorted*
+  context `Fin n → SortTag` with an `RV`-sorted variable constructor (`RVT2.rvar`), their `val`/`Val`
+  semantics, `tmSort_toLRV` for both, `realize_toRV`/`wellSorted_toRV` for both, closure under the
+  connectives, `VFT2.val_mem`/`RVT2.val_mem`, and the junk conventions derived from `Axioms.ACVF`
+  alone.  It stops exactly before the cover.
+
+**The audit's statement of the gap is wrong, and this matters.**  `Missing.MixedContextCover`
+(`.ultramath/smw1b0thh/m3/AvAudit.lean:158`) asks for a well-sorted `φ` to be matched by a
+*parameter-free* `φ'` and an all-`VF` tuple `y`:
+
+```
+∃ φ' : Bf n, ∀ M ⊨ ACVF, ∀ v x, sorted → ∃ y (all VF), (φ.Realize v x ↔ φ'.Realize y)
+```
+
+Since `y` may depend on `(v, x)` and `φ'` cannot mention `v`, the only thing this can require of `φ'`
+is that it have a true and a false instance — take `φ' := pVF (tv 0 …)`, which has both in every
+model of `ACVF` — and it then holds for *every* `φ`.  So gap D as written is vacuous and is not the
+content; "no mixed-context cover" was never the right name for the obstruction.  Not fixed in the
+audit file (it is a swarm artifact); recorded here.
+
+**The real target, now stated:** `QFRes2.qf2_cover` in `QE/QF2Cover.lean` — for a well-sorted
+*quantifier-free* `φ : Bf n` over a sorted context `sn`, there is `q : QF2 sn` agreeing with `φ` at
+every sorted tuple in every model of `ACVF`, i.e. the QF fragment is covered by the sorted-context
+fragment.  The atom cases are a term extraction; `pVF`/`pRV`/`pUnits`/`pLe`/`pEq` map to
+`inVF`/`inRV`/`unitRV`/`leRV`/`eqVF`, and the connectives to `QF2.imp`/`QF2.falsum`, so with
+`RVT2.rvar` in the fragment the cover needs no normal form for its *statement* — the `mul` cancellation
+(`QE/MulNormalForm.lean`) is what will be needed for the `RV`-term extraction, where a term built from
+`rvMul`/`kAdd` must be flattened.
+
+**One design fact paid for, so it is not paid again:** the proof-carrying extraction
+`(t : Tm n) → TmSort sE sn t = some .vf → VFT2 sn` does **not** pass Lean's structural-recursion
+check, because the sort hypothesis is consumed inside a `cases f` block and the residual goal is
+`sizeOf (ts 0) < 1 + l` (`l` an arity, not a size).  The `Option`-valued extraction (`vfOpt`/`rvOpt`,
+descending on `t` with no proof argument, soundness by a separate induction on `t`) is the way round;
+`QE/QF2Cover.lean` states it that way.  Both remain `sorry`.
