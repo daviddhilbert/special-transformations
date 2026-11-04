@@ -678,3 +678,18 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   untouched by all of this.
 * Chain note: `FinalRoute.olean` had been missing from `.scratch2/sec3` (exposed by f6's build) —
   built alongside this batch; the chain is now current through `FinalAudit`.
+
+## smw2k0btg ENDED (2026-11-04, solved: 3 accepted + 4 sentinels); smw2ku6gn launched on the two-hypothesis frontier
+
+* smw2k0btg's accepted: f6 (`QE/FinalAudit.lean` — seven ⟹ two: Shoenfield + Prop39Sat), f3
+  (`QE/GammaDiv.lean` — Γ divisible hypothesis-free, one PE quote retired), f4-revised
+  (`QE/HahnAnatomy.lean` — obstruction at the embedding half, OneStepPaper needs ¬ArchimedeanRV,
+  Prop39FS is the locus). Sentinel findings with no files: d2 hull-collapse composition, d4 case
+  3.4, d5 case 3.6, d8 gate-demand table. Consistency (e6) produced nothing in either swarm.
+* The canonical frontier is now exactly: `ShoenfieldTestRel + Prop39Sat ⟹ HasQE Axioms.ACVF`
+  (`QE/FinalAudit.lean`'s FINAL2/3; e1's relGate resolves T4 and the disjoint question).
+* **smw2ku6gn (8 members, 360 min)** re-briefed onto that frontier: g1 case 3.4 (`lift:all:root`),
+  g2 case 3.6 (`lift:divisible:hull`), g3 hull-collapse composition, g4 gate-demand table,
+  g5 two-value-groups, g6 Hahn-series consistency witness.
+* Chain state: oleans for every merged file through `FinalAudit` are current in `.scratch2/sec3`
+  (FinalRoute's missing olean was rebuilt when f6's build exposed it).
