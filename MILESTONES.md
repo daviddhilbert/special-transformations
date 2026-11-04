@@ -987,3 +987,29 @@ Quot.sound}) and merged:
   inequality at all, so this layer is not on the critical path — it is the correct general statement
   of the quote-based route plus the reusable tensor characterisation, and it pins (by sharpness)
   which hypotheses any future rational-rank argument must carry.
+
+## smw2ngn1z m8 (2026-11-04, accepted): LEMMA 3.6 PROVED at the frozen level, modulo EP 3.4.3; swarm closed
+
+* `QE/Lemma36Gamma.lean` (m8, d1, no residual): `gammaEq_of_gammaHullInitial` — **`GammaDivisible S` +
+  `M5Ledger.GammaHullInitial S T ⇒ M5Ledger.GammaEq S T`** at the TREE's predicates (proof: root
+  extraction `gamma_root_of_gammaDivisible` + torsion-free injectivity `gamma_pow_inj`); then
+  `ResidualClasses S T` (Claim (⋆) in class form) and `Standing T`, with NO
+  `VFInvClosedOn`/`QuotExpansions`/`IsVFGen`. See also `divisibility_essential` (Γ = ℤ, 2ℤ): the
+  divisibility cannot be dropped — that branch is Lemma 3.8's.
+* `QE/PEQuotes.lean`: both EP theorems as quoted Props, specialised and wired — EP 3.4.3 ⇒
+  `GammaHullInitial` under `rv(e)` transcendental + `e ∈ U(M)`; EP 3.3.4 ⇒ `GammaBoundBy` (the
+  value-group half) in the algebraic case; `RVTrans`, `AlgebraicOverVF` definitions; wired to
+  `Standing ⟨Ŝ,e⟩`; stress tests.
+* `QE/Lemma36Statement.lean`: `Lemma36Hyp` (pair-level named hypotheses, no ∀M∀N gate), `ClaimStar`
+  (= `ResidualClasses` at `closure (S ∪ {e})` ∧ `Standing`), and
+  **`lemma36_claim_star : EPDimensionInequality → Lemma36Hyp → ClaimStar`** — Lemma 3.6
+  (`lift:transcendental`) PROVED modulo the single EP 3.4.3 quote, plus `exists_vf_of_rv` (the
+  paper's `d ∈ VF(N)`). Stated-and-unused residuals: `TranscendenceDescent` (q1a),
+  `RVTransImpliesSeparated`.
+* Complementarity: this is the tree-vocabulary counterpart of m7's Mathlib-level `UnitTranscend`.
+  Lemma 3.6 now has two routes: WITH the quote (m8, frozen level, fully wired) or WITHOUT
+  (m7, Mathlib level; the lift of m7's `gamma_step` to `GammaDivisible`/`GammaHullInitial` is the
+  remaining piece for a quote-free 3.6).
+* **smw2ngn1z ended solved: 6 acceptances** (m4 audit+GroupCore, m3 GammaTorsion+EPQuotes, m1
+  NewRVClaim/OldRVClaim, m7 UnitTranscend, m2 RatRank layer, m8 Lemma 3.6). Its board also carried
+  the m6/m7 trdeg and 3.7 directions unfinished.
