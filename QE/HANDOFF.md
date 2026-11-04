@@ -122,10 +122,17 @@ Finding that the frozen `SizeHyp` guard is under-powered: input 1 forces a resid
 inequality it does not supply; corrected shapes `PrepStepSizeK` and `PrepStepPaper` are in the
 file). Judge-verified: exit 0, 0 errors, all `#print axioms` ⊆ {propext, Classical.choice,
 Quot.sound}. Oleans `ClassicalProps`, `GammaGroup`, `KAlgClosed`, `M5Ledger` are built into
-`.scratch2/sec3/`. Still running: d2 (Γ order half, m2), d8 (OneStep quantifier shape / Hahn
-obstruction, m7), m3/m6/m8 (unclaimed directions: d3 valuation bridge, d6 Standing T, d7 case
-lemmas 3.4/3.6/3.8). Also re-verified: `QE/Assembly_val.lean` green and `hasQE_ACVF_val`
-axiom-clean — the L_val QE theorem stands.
+`.scratch2/sec3/`. Also accepted: **d7/d-ADD** (`QE/RVAdd.lean`, m3 — self-scoped direction): the
+valuation-ring layer, hypothesis-free from `Axioms.ACVF` (`O = {1 ≤ rv x}` subring, `m` ideal =
+non-units, `rv_inv`, `isInt_or_inv`, equality-form strict triangle `rv_add_eq_of_lt'`, ball
+congruences); removed the `w`/`hw` hypotheses `M6Syntactic`/`M6Wire` carried; its item (i) was
+machine-checked FALSE (vacuous at VF-elements, value 0 not preserved by `+`) and the corrected
+forms were delivered — credited. Hazard note recorded (shared board f9): `VFType M` lacks
+`LeftDistribClass`/`RightDistribClass` instances, so `ring`/`mul_sub` fail there — prove
+multiplicative facts at the `M` level and transport by `Subtype.ext`. Still running: d2 (Γ order
+half, m2), d8 (OneStep quantifier shape / Hahn obstruction, m7). Unclaimed: d3 valuation bridge,
+d6 Standing T (≡ ledger inputs 3/4). Also re-verified: `QE/Assembly_val.lean` green and
+`hasQE_ACVF_val` axiom-clean — the L_val QE theorem stands.
 
 ## What a new session should do first
 

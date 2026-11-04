@@ -483,3 +483,22 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   territory), input 5 (Marker saturation realization), and the ClassicalProps transcription of the
   saturated-field universality/homogeneity statements named in the `ACFExtends`/`SaturationRealization`
   docstrings.
+
+## smw2ioy2w (2026-11-04, continued): the valuation-ring layer — d7 accepted
+
+* `QE/RVAdd.lean` (m3, accepted, self-scoped direction d-ADD): `O = {x | 1 ≤ rv x}` is a subring
+  (`isInt_zero/one/add/neg/mul/sub`), `m = {x | rv x < 1}` is an ideal and exactly the non-units
+  (`iUnits_iff_isInt_and_not_isMax`), `rv_inv : rv (x⁻¹) = iRVInv (rv x)`,
+  `isInt_or_inv : x ≠ 0 → x ∈ O ∨ x⁻¹ ∈ O`, the strict triangle as an EQUALITY
+  (`rv_add_eq_of_lt'`), residue invariance (`rv_add_eq_of_isMax`), `1 + m ⊆ Kˣ`, and balls as
+  cosets (`inBall_congr`, unit ball = O). All from `Axioms.ACVF` alone — no `w`, no `hw`, unlike
+  the `M6Syntactic`/`M6Wire` versions it supersedes. This is the additive layer the ledger inputs
+  3/4 and the case lemmas consume.
+* Discipline note: the direction's own item (i), as registered, was false — vacuous at VF-elements
+  (`sdUnits`/`sdDisjoint`: `iUnits` is ill-sorted there) and false on the intended reading (value 0
+  is not preserved by `+`). The member machine-checked both failures and shipped the corrected
+  `isInt_add`/`isMax_add`/`not_isMax_add_of_unit`; the falsification is recorded in the tree.
+* Hazard recorded (board f9): `VFType M` has no `LeftDistribClass`/`RightDistribClass` instances
+  (`Field.ofMinimalAxioms` does not register them), so `ring`/`mul_sub` fail at `VFType`; work at
+  the `M` level and transport with `Subtype.ext`. Workaround lemmas `vf_mul_add_vf`/`vf_add_mul_vf`
+  are in `QE/RVAdd.lean`.
