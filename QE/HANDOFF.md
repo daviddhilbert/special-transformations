@@ -22,7 +22,15 @@ only one-step shape that survives: `QE/HahnObstruction.lean` machine-refutes bot
 shapes):
 
 ```
-ShoenfieldTestSat    (Marker quote; transcription: smw2jkpn4 e1)
+ShoenfieldTestSat    RESOLVED as transcription + gate audit (`QE/ShoenfieldQuote.lean`, e1):
+                     the book quote is `ShoenfieldTestRel` at `relGate` (pair-relative
+                     ‖M‖⁺-saturation); the frozen gate's ∀M `SaturatedFS` is the wrong quantifier
+                     order (`SatBridge` = `SatRel → SaturatedFS`, no book supplies it; and if
+                     `SaturatedFS` is uninhabited the frozen input 1 IS the target —
+                     `shoenfieldTestSat_iff_hasQE_of_no_saturatedFS`, machine-checked). Canonical
+                     discharge route is `paper_theorem_2_3_rel` at `relGate`; FINAL's input 1 is
+                     DERIVED there (`shoenfieldTestSat_of_relLedger_gated`), and route assembly is
+                     gate-polymorphic (`paper_theorem_2_3_of_gate H`)
 LedgerInput1P        ACFExtends at PaperHyp (Marker quote; algebraic half consumable
                      via QE/KAlgClosedQuote.lean; universality half: smw2jkpn4 e2)
 LedgerInput2         HenselizationExists ∀ M — QUOTED, done (QE/M7Hensel.lean) ✓

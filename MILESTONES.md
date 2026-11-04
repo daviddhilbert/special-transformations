@@ -567,3 +567,20 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   the old frozen gates; `oneStepSizeFree_refutable`/`oneStepSizeBounded_refutable` re-exported.
 * The campaign's open set is now exactly the FINAL's seven hypotheses + T4 contingency
   (SaturatedFS strength, e2) + e6 consistency (orthogonal). No more glue work on the route.
+
+## smw2jkpn4 e1 (2026-11-04, accepted): Shoenfield transcribed — and the T4/gate question is settled
+
+* `QE/ShoenfieldQuote.lean` (m5): the quote is `ShoenfieldTestRel := QEOfGate relGate` where
+  `relGate M N := M1Fix.SatRel M N ∧ #M ≤ #N` — the paper's *pair-relative* `‖M‖⁺`-saturation.
+  The frozen `ShoenfieldTestSat` is `QEOfGate paperGate` by `Iff.rfl`, and `paperGate ⊆ relGate`
+  makes the frozen input strictly stronger: the fit is exact up to `SatBridge` = the quantifier-order
+  upgrade `SatRel M N → Assembly.SaturatedFS N`, which NO book supplies (`satBridge_diagonal`).
+* **Circularity check (machine-checked):** if `SaturatedFS` holds of no structure, the frozen gate
+  is empty and `ShoenfieldTestSat ↔ HasQE Axioms.ACVF` — the frozen input 1 would BE the target.
+  The paper's gate (`relGate`) is inhabited in the paper's setting; the frozen `∀ M` reading is
+  the quantifier-order defect `QE/M1Fix.lean` §2 warned about. Discharge-side gates (e2's
+  transcriptions, f1/f2 case lemmas, f6's adversarial audit) should all be stated at `relGate`.
+* The repair: `paper_theorem_2_3_of_gate H` (gate-polymorphic route); `paper_theorem_2_3_rel`
+  is the canonical discharge theorem at the book's gate; `shoenfieldTestSat_of_relLedger_gated`
+  DERIVES the frozen input 1 from quote + five inputs at `relGate` + `relGate`-gated one-step, so
+  the merged `QE/FinalRoute.lean` remains valid as the conservative (paperGate) form.
