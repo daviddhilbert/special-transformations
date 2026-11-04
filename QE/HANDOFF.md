@@ -273,3 +273,33 @@ the body — the repair's payload, now an unproved semantic lemma rather than an
 realization of a QF type in a fixed model, which `TransferAtWS`'s hypothesis does not supply.  This
 is why the transfer is a reformulation of QE rather than a reduction, and why the atom form above is
 the target.
+
+## Fresh-rebuild check of the h4 → W1 dependency (important, and it changes a claim)
+
+`W1.lean` (the fragment criterion, accepted earlier) imports `H4Base.lean`, which imports
+`Pre_build.olean`.  Both oleans were built *before* the balls bridge was merged into
+`QE/Assembly_val.lean`, so "W1 is green" was true only relative to that prelude snapshot.
+
+Rebuilt the chain from scratch against the **current** `QE/Assembly_val.lean` (23 246 lines,
+bridge merged), in `.ultramath/smw19wtoj/m1/`:
+
+```
+cp ../../../QE/Assembly_val.lean Pre_build.lean
+lean -o Pre_build.olean Pre_build.lean     # exit 0 (~45 s)
+lean -o H4Base.olean H4Base.lean           # exit 0, 0 errors
+lean W1.lean                               # 3 errors: 272, 276, 304
+```
+
+* `W1.lean:272:4` and `:276:4` — `'show' tactic failed, pattern` (the goal no longer matches the
+  stated pattern definitionally);
+* `W1.lean:304:4` — `Type mismatch`.
+
+**Diagnosis:** the merged bridge added `simp` lemmas (`atom_*_iff`, `VFQF_*`, `isBoolComb_*`) that
+fire inside `W1.lean`'s proofs and change the goal shapes the `show` patterns were written against.
+The mathematics is untouched; the file needs a three-error fix-up (replace the two `show` patterns by
+`change`/`convert` with the new normal form, and repair the type mismatch at 304), and then re-check.
+
+**Consequence for the record:** the earlier acceptance of w1 stands as `H4Base`-relative, not as
+current-prelude-green.  Any swarm file whose olean predates the balls-bridge merge must be rebuilt
+before being relied on: `H4Base.lean`'s own content survived the rebuild (exit 0), so the
+dependency direction is fine — it is `W1.lean`'s tactic scripts that need re-pointing.
