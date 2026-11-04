@@ -457,3 +457,29 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   ⊆ {propext, Classical.choice, Quot.sound} — the QE-in-`L_val` theorem stands.
 * Stale record closed: `QE/ValBridge.lean` was removed at `009a684`; the full pass has no known
   exception.
+
+## smw2ioy2w (2026-11-04, continued): the Lemma 3.3 ledger landed — and a guard finding
+
+* `QE/M5Ledger.lean` (m5, accepted): the complete formal skeleton of Lemma 3.3.
+  `prepStepP_of_ledger : ACFExtends → HenselizationExists M → ResidueStep → DivisibilityStep →
+  SaturationRealization → Assembly.PrepStepP` (#line ~407), via the tower
+  `S → henselize → T₁ → residues → T₂ → divisible hull → T₃`; henselianity transported by the
+  paper's `VF(T₂) = VF(T₁)` mechanism (`M7Hens.henselian_congr`), `KEqTop` by monotonicity.
+  Prestel–Engler route (`ImmediateLift` for input 5) also proved (`prepStepP_of_ledger_hens`).
+* **FINDING (route shape, recorded).** Input 1 (`ACFExtends`) forces `#K(M) ≤ #K(N)`; the frozen
+  guard `SizeHyp := #M ≤ #N` does NOT imply it (K(M) can be as large as M while K(N) stays small).
+  The paper supplies the inequality from `‖M‖⁺`-saturation (residue fields of saturated models are
+  saturated, hence universal). So `M7Paper.PrepStepSize` (SizeHyp-only guard) is under-powered for
+  the Marker discharge. Corrected shapes in the file: `PrepStepSizeK` (adds the K-inequality) and
+  **§10b (recommended)**: `PrepStepPaper` at `PaperHyp`, with
+  `paper_theorem_2_3_sat_of_ledger_paperHyp : ShoenfieldTestSat → LedgerInput1P → LedgerInput2 →
+  LedgerInput3P → LedgerInput4P → LedgerInput5P → OneStepSizeFree → HasQE Axioms.ACVF` proved
+  end-to-end — no `ImmediateLift`, no henselian one-step hypothesis.
+* Stress tests machine-checked: the bare forms ARE vacuous (`bare_KEqTop_trivial`,
+  `bare_gammaDivisible_trivial`, `standing_top_trivial`); the Γ-conjuncts (`GammaEq`,
+  `GammaHullInitial`) are exactly what blocks `T = ⊤`; cardinality audit on all four inputs
+  (`acfExtends_field_size`, `saturationRealization_forces_size`, `units_size_of_sizeHypK`).
+* What remains to discharge for Lemma 3.3: inputs 3/4 (the paper's two constructions — d6/d7
+  territory), input 5 (Marker saturation realization), and the ClassicalProps transcription of the
+  saturated-field universality/homogeneity statements named in the `ACFExtends`/`SaturationRealization`
+  docstrings.

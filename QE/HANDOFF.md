@@ -42,7 +42,7 @@ OneStepSizeFree → HasQE Axioms.ACVF`, green and axiom-clean, together with
 | item | state |
 |---|---|
 | 3.2 `rv:root:lift:vf` | Mathlib-level proof done (`QE/Lemma32_root_lifting.lean`); instantiated at a model (`QE/Lemma32_at_model.lean`); **syntactic transport done** (`QE/M6Syntactic.lean`); consumption shape done (`QE/M6Wire*.lean`, chain form `hred` automatic at a root) |
-| 3.3 `PrepStepSize` | **assembly now unblocked on the Γ/K side** (smw2ioy2w d5 ledger, d6 Standing T, both running): landed are `QE/KAlgClosed.lean` (`IsAlgClosed (KOf M)` + instance, `K(M)^×` divisible), `QE/KAlgClosedQuote.lean` (Marker's ACF-extension quote instantiated at `K(M) → K(N)` — step (i) consumable), `QE/GammaGroup.lean` (`CommGroup (RVStar M)`, `KStar`, `RVStar ⧸ KStar` = Γ(M) as a group); henselization quoted at `QE/M7Hensel.lean`; the SizeHyp bound is what the paper's 578 supplies |
+| 3.3 `PrepStepSize` | **assembly ledger landed** (`QE/M5Ledger.lean`, smw2ioy2w m5): five inputs → `Assembly.PrepStepP`; **FINDING: the frozen `SizeHyp` guard is under-powered** — input 1 forces `#K(M) ≤ #K(N)`, which `#M ≤ #N` does not imply (paper gets it from `‖M‖⁺`-saturation). Recommended shape is §10b: `PrepStepPaper` at `PaperHyp`, and `paper_theorem_2_3_sat_of_ledger_paperHyp : ShoenfieldTestSat → five inputs → OneStepSizeFree → HasQE Axioms.ACVF` is proved end-to-end. Inputs now dischargeable: (i) `ACFExtends` — Marker quote consumable (`QE/KAlgClosedQuote.lean`); (ii) henselization quoted (`QE/M7Hensel.lean`). Still to discharge: inputs 3/4 (paper constructions, d6/d7 territory) and 5 (Marker saturation) |
 | 3.4/3.6/3.8 | **open** as tagged case lemmas; one-step skeleton in `QE/M5OneStep.lean` (`RVStepP`, `OneStepRV*`, `oneStepVFP_of_two_steps`, `standing_of_RV_le`) |
 | 3.5 `lift:divisible:hull` | **open**; the old base had a *vacuous* hypothesis, machine-checked and now fixed (`QE/M8Stars.lean`: `hne`, `exists_rv_vfSum'`) |
 | 3.7 `e:transc` | **proved** in the frozen encoding, both former hypotheses discharged (`QE/Lemma37.lean`) |
@@ -113,14 +113,19 @@ OneStepSizeFree → HasQE Axioms.ACVF`, green and axiom-clean, together with
 
 Accepted and merged this session: **d1** (`QE/GammaGroup.lean`: `commGroupRVStar`,
 `KStar : Subgroup (RVStar M)`, quotient `CommGroup (RVStar ⧸ KStar)` — the paper's Γ(M) as a
-group, zero added hypotheses) and **d4** (`QE/KAlgClosed.lean` + `QE/KAlgClosedQuote.lean`:
+group, zero added hypotheses), **d4** (`QE/KAlgClosed.lean` + `QE/KAlgClosedQuote.lean`:
 `IsAlgClosed (KOf M)` extracted from the frozen `Axioms.kAlgClosed`; `exists_pow_kOf`;
-`ACFExtendsAlgebraicEmbeddings` instantiated at the residue fields). Judge-verified: exit 0,
-0 errors, all `#print axioms` ⊆ {propext, Classical.choice, Quot.sound}. Oleans `ClassicalProps`,
-`GammaGroup`, `KAlgClosed` are built into `.scratch2/sec3/`. Still running: d2 (Γ order half,
-m2), d5 (PrepStep ledger, m5), d8 (OneStep quantifier shape / Hahn obstruction, m7); m3/m6/m8
-were on their first run at merge time. Also re-verified: `QE/Assembly_val.lean` green and
-`hasQE_ACVF_val` axiom-clean — the L_val QE theorem stands.
+`ACFExtendsAlgebraicEmbeddings` instantiated at the residue fields) and **d5**
+(`QE/M5Ledger.lean`: the complete formal skeleton of Lemma 3.3 — five inputs → `PrepStepP`,
+the §10b `PaperHyp` route to `HasQE`, machine-checked vacuity and cardinality audits, and the
+Finding that the frozen `SizeHyp` guard is under-powered: input 1 forces a residue-field size
+inequality it does not supply; corrected shapes `PrepStepSizeK` and `PrepStepPaper` are in the
+file). Judge-verified: exit 0, 0 errors, all `#print axioms` ⊆ {propext, Classical.choice,
+Quot.sound}. Oleans `ClassicalProps`, `GammaGroup`, `KAlgClosed`, `M5Ledger` are built into
+`.scratch2/sec3/`. Still running: d2 (Γ order half, m2), d8 (OneStep quantifier shape / Hahn
+obstruction, m7), m3/m6/m8 (unclaimed directions: d3 valuation bridge, d6 Standing T, d7 case
+lemmas 3.4/3.6/3.8). Also re-verified: `QE/Assembly_val.lean` green and `hasQE_ACVF_val`
+axiom-clean — the L_val QE theorem stands.
 
 ## What a new session should do first
 
