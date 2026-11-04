@@ -437,3 +437,23 @@ So what remains is the **assembly** of those five into the frozen `PrepStepP`/`P
 statement, which is Lean work, not mathematics. The KEqTop obligation is irreducible content
 (`M5.units_le_of_prepStepP`), hence the size hypothesis stays; the rest is quoted or built.
 Swarm `smw1vehvn` was already directed accordingly (henselization-existence as named Prop).
+
+## smw2ioy2w (2026-11-04): Γ(M) and K(M) infrastructure landed — d1, d4 accepted and merged
+
+* `QE/GammaGroup.lean` (m1, accepted): `RVStar M` is a `CommGroup` (`commGroupRVStar`); `Kˣ` is a
+  subgroup (`KStar`); `RVStar M ⧸ KStar` — the paper's `Γ(M)` as a group — is a Mathlib
+  `CommGroup` with no further congruence work. Zero hypotheses beyond the ambient model.
+  (Order half is d2, running: value-class setoid `Cls`, `GammaOf`, `LinearOrder`,
+  `CovariantClass` from `RVCalc.le_mul_iff`.)
+* `QE/KAlgClosed.lean` (m4, accepted): `IsAlgClosed (KOf M)` — the residue field's algebraic
+  closedness is the frozen `Axioms.kAlgClosed` scheme (Yin's Def. 2.2 item 3); the content was
+  extraction (`acfSchemeK_realize`, `hornerPoly_realize_K`, `IsAlgClosed.of_exists_root`).
+  Corollaries `exists_root_kOf`, `exists_pow_kOf` (`K(M)^×` divisible — the field-level
+  `rvDivisible` at units), plus instance `instIsAlgClosedKOf`.
+* `QE/KAlgClosedQuote.lean`: Marker's `ACFExtendsAlgebraicEmbeddings` (as transcribed in
+  `QE/ClassicalProps.lean`) instantiates at `K(M) → K(N)` with `[IsAlgClosed (KOf N)]` discharged —
+  Lemma 3.3 step (i) is now consumable by the PrepStep assembly (d5 ledger, m5 running).
+* Re-verified this session: `QE/Assembly_val.lean` full elaboration green, `hasQE_ACVF_val`
+  ⊆ {propext, Classical.choice, Quot.sound} — the QE-in-`L_val` theorem stands.
+* Stale record closed: `QE/ValBridge.lean` was removed at `009a684`; the full pass has no known
+  exception.

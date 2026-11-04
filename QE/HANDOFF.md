@@ -1,4 +1,4 @@
-# Handoff: the QE thread (state at `a4daebf..1dfc6bd`, 2026-11-04)
+# Handoff: the QE thread (state at the smw2ioy2w d1+d4 merge — `QE/GammaGroup.lean`, `QE/KAlgClosed*.lean`, 2026-11-04)
 
 Read this first if you are picking up Theorem 2.3. Deliberately short; the detail is in
 `QE-PLAN.md` (chronology), `Milestone0/DECISION.md` (rulings), `MILESTONES.md` (ledger).
@@ -42,7 +42,7 @@ OneStepSizeFree → HasQE Axioms.ACVF`, green and axiom-clean, together with
 | item | state |
 |---|---|
 | 3.2 `rv:root:lift:vf` | Mathlib-level proof done (`QE/Lemma32_root_lifting.lean`); instantiated at a model (`QE/Lemma32_at_model.lean`); **syntactic transport done** (`QE/M6Syntactic.lean`); consumption shape done (`QE/M6Wire*.lean`, chain form `hred` automatic at a root) |
-| 3.3 `PrepStepSize` | **open** (henselization + get `Standing`; the SizeHyp bound is what the paper's 578 supplies) |
+| 3.3 `PrepStepSize` | **assembly now unblocked on the Γ/K side** (smw2ioy2w d5 ledger, d6 Standing T, both running): landed are `QE/KAlgClosed.lean` (`IsAlgClosed (KOf M)` + instance, `K(M)^×` divisible), `QE/KAlgClosedQuote.lean` (Marker's ACF-extension quote instantiated at `K(M) → K(N)` — step (i) consumable), `QE/GammaGroup.lean` (`CommGroup (RVStar M)`, `KStar`, `RVStar ⧸ KStar` = Γ(M) as a group); henselization quoted at `QE/M7Hensel.lean`; the SizeHyp bound is what the paper's 578 supplies |
 | 3.4/3.6/3.8 | **open** as tagged case lemmas; one-step skeleton in `QE/M5OneStep.lean` (`RVStepP`, `OneStepRV*`, `oneStepVFP_of_two_steps`, `standing_of_RV_le`) |
 | 3.5 `lift:divisible:hull` | **open**; the old base had a *vacuous* hypothesis, machine-checked and now fixed (`QE/M8Stars.lean`: `hne`, `exists_rv_vfSum'`) |
 | 3.7 `e:transc` | **proved** in the frozen encoding, both former hypotheses discharged (`QE/Lemma37.lean`) |
@@ -53,9 +53,8 @@ OneStepSizeFree → HasQE Axioms.ACVF`, green and axiom-clean, together with
 
 - `Milestone0/Encoding.lean` carries the two frozen `sorry`s: `theorem_2_3_quantifier_elimination`,
   `theorem_2_8_c_minimal`. Everything else in `Milestone0/`, `Milestone0/accepted/`, `QE/` compiles
-  green (`make milestones`, full pass), with **one exception: `QE/ValBridge.lean` (1 error)** —
-  a superseded file of mine; nothing imports it; deletion needs a person to approve; do not build
-  on it.
+  green (`make milestones`, full pass). (The one earlier exception, `QE/ValBridge.lean`, was
+  removed at `009a684`.)
 - The guard repair is **applied** (`86d7ea7e…`): `Occurs := InAntecedent`, `GuardTrue` inductive,
   `junkFalse`/`junkTrue` semantics in `QE/JunkTrue.lean`. Anything copied from
   `QE/Reduction_assembly.lean` (or from `Assembly_val`) is a **pre-repair snapshot** that omits
@@ -109,6 +108,19 @@ OneStepSizeFree → HasQE Axioms.ACVF`, green and axiom-clean, together with
 * `.ultramath/<swarm>/` files are unvetted until compiled in the current tree. Oleans for
   `Enc` + the main `QE/` modules live in `.scratch2/sec3/`; work there:
   `cd .scratch2/sec3 && LEAN_PATH=$PWD:$LEAN_PATH lean [-o X.olean] X.lean`.
+
+## smw2ioy2w (launched 2026-11-04, running): Γ/K infrastructure and the frontier
+
+Accepted and merged this session: **d1** (`QE/GammaGroup.lean`: `commGroupRVStar`,
+`KStar : Subgroup (RVStar M)`, quotient `CommGroup (RVStar ⧸ KStar)` — the paper's Γ(M) as a
+group, zero added hypotheses) and **d4** (`QE/KAlgClosed.lean` + `QE/KAlgClosedQuote.lean`:
+`IsAlgClosed (KOf M)` extracted from the frozen `Axioms.kAlgClosed`; `exists_pow_kOf`;
+`ACFExtendsAlgebraicEmbeddings` instantiated at the residue fields). Judge-verified: exit 0,
+0 errors, all `#print axioms` ⊆ {propext, Classical.choice, Quot.sound}. Oleans `ClassicalProps`,
+`GammaGroup`, `KAlgClosed` are built into `.scratch2/sec3/`. Still running: d2 (Γ order half,
+m2), d5 (PrepStep ledger, m5), d8 (OneStep quantifier shape / Hahn obstruction, m7); m3/m6/m8
+were on their first run at merge time. Also re-verified: `QE/Assembly_val.lean` green and
+`hasQE_ACVF_val` axiom-clean — the L_val QE theorem stands.
 
 ## What a new session should do first
 
