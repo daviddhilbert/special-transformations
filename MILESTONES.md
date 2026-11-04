@@ -1168,3 +1168,22 @@ and merged (one WIP left behind):
   - `paper_theorem_2_3_of_rel_parts_no_nonunit`: the other four parts + `QFFinSat@relGate` already
     give `HasQE` — so `RelNonUnit` is strictly weaker than the realisation row.
   - Non-vacuity: `exists_nonunit` (extracted from `axNontrivialRV`).
+
+## smw2qpqe7 m5 (2026-11-04, accepted): the frontier's shape is FORCED, not chosen
+
+* `QE/Shrink.lean` + `QE/SHRINK.md` (m5, d8; verified 0 errors, 18 axiom heads clean):
+  - **`input5R_iff_relHull_and_fourParts`**: `Input5R ⟺ RelHull ∧ RelSeparated ∧ RelUnit ∧
+    RelNonUnit ∧ RelNewRV` — the six-part list is the SAME assertion as the two-hypothesis endgame
+    `paper_theorem_rel_two`. So no restructuring can shorten the list: a shorter list needs a part
+    PROVED, and the only dischargeable hypothesis is the quote (Shoenfield's test), which Mathlib
+    cannot supply. **The frontier's shape is machine-checked, not a choice of presentation.**
+  - **`hullExtension_iff_nonStanding`**: `HullExtension ⟺ (∀ S, ¬Standing S → HullExtensionAt S)`.
+    All four case slots carry `Standing S`, so **none of them can discharge `RelHull`** — the precise
+    structural reason it must stay a separate hypothesis.
+  - `relHull_iff_baseRootResidual`: `RelHull ⟺ D7Hull.HullBaseStep ∧ RootStepResidual` per relGate
+    pair, with the converse `rootStepResidual_of_hullRootStep` that `QE/D7Hull.lean` lacked, and the
+    content localized to the `¬KEqTop` and `KEqTop ∧ ¬Standing` domains.
+  - `relGate_units_card` + `relGate_no_card_obstruction`: `relGate`'s size conjunct gives
+    `#Kˣ(M) ≤ #N`, so the hull slot's cardinality obstruction never applies at `relGate` pairs — the
+    gate is exactly the cardinality the construction forces.
+  - Also a gate-level split of the unit slot (for u1's worker).
