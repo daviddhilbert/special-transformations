@@ -584,3 +584,21 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   is the canonical discharge theorem at the book's gate; `shoenfieldTestSat_of_relLedger_gated`
   DERIVES the frozen input 1 from quote + five inputs at `relGate` + `relGate`-gated one-step, so
   the merged `QE/FinalRoute.lean` remains valid as the conservative (paperGate) form.
+
+## smw2jkpn4 e4 (2026-11-04, accepted): the one-step case assembly + Lemma 3.8's value side
+
+* `QE/OneStepCases.lean` (m4): the paper's 3.4–3.8 case split as three hypothesis-family slots —
+  `CaseSeparated` (3.4/3.6), `CaseNotSeparated` (3.5), `CaseNewRV` = `M5.OneStepRVNew` (3.7/3.8) —
+  with `oneStepVFP_of_cases : Cases → Assembly.OneStepVFP` at a fixed pair, NO gate/size/saturation,
+  so m7's `OneStepPaper` gate applies by specialization (`oneStepPaper_of_cases`), and
+  `paper_theorem_2_3_sat_of_cases` absorbs the five §10b inputs up to `HasQE`. Discharge interfaces:
+  separated slot from `RVControl` or `ResidualClasses` (M5L34_36 vocabulary), plus
+  `cases_of_oneStepRVOld`/`cases_of_stepObligation`/`cases_of_classStepP`/`cases_of_global_extension`.
+* **Finding (recorded):** the tree's separated-case hypothesis `M5L.VFInvClosedOn` is NOT derivable
+  from `Standing` — `L_RV` has no VF-inverse symbol, so `VF(S)` is only a subring. The slots omit it;
+  the separated-case discharge must supply it by computation (`M5L.rvPoly_mem_of_separated` etc.),
+  not by hypothesis inheritance.
+* `QE/Case38Value.lean`: `lift:value:full`'s value side over genuine Mathlib valuations
+  (`lemma38_transfer`: algebraically-closed-in-L subfields + divisible value group + isometry σ ⇒
+  transcendence of e,d + value transfer across `K(e) → K'(d)`), with a concrete `RatFunc ℚ` stress
+  model (`inftyVQ_two`, `sameRV_not_implied_by_value`).

@@ -42,7 +42,12 @@ LedgerInput5P        SaturationRealization at PaperHyp (Marker quote: smw2jkpn4 
 Hahn.OneStepPaper  ∀∀ PaperHyp → OneStepVFP — the ONLY surviving gate (QE/HahnObstruction.lean
                      machine-refutes `OneStepSizeFree`, and `OneStepSizeBounded` too: size cannot
                      repair the one-step, only saturation can); case-lemmas state: 3.2 ✓,
-                     3.7 ✓, separated ✓, atomic transport ✓; 3.4/3.6/3.8 open — smw2jkpn4 e3/e4
+                     3.7 ✓, separated ✓, atomic transport ✓; assembly combinator + 3.8 value side
+                     LANDED (`QE/OneStepCases.lean` `oneStepVFP_of_cases`: three slots — separated /
+                     not-separated / new-rv — `caseSeparated_of_RVControl`/`_of_ResidualClasses`
+                     discharge forms; `QE/Case38Value.lean`; caveat recorded: `M5L.VFInvClosedOn` is
+                     NOT Standing-derivable — no VF-inverse symbol — so the slots omit it);
+                     3.4 `lift:all:root` and 3.6 `lift:divisible:hull` open — smw2k0btg f1/f2
 ```
 
 The join is `prop39Sat_FINAL` + `hShoen`, three lines; the audit also proves each SizeHyp-gated
