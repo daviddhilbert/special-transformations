@@ -347,3 +347,14 @@ OneStepSizeFree     Lemmas 3.4-3.8 (unchanged; Standing carries the size)
 plus the flagged caveat that `OneStepVFP` may also fail at equal cardinality for
 value-group-dimension reasons (m5's Hahn-field argument; realizing it needs a concrete model of
 `Axioms.ACVF` in Lean, which the tree does not yet have).
+
+## Tree-wide compile state (`make milestones`, full pass, 2026-11-04)
+
+Every file in `Milestone0/`, `Milestone0/accepted/`, and `QE/` (116 files) compiles with
+`exit=0, errors=0`, with **one exception: `QE/ValBridge.lean` (exit 1, one error)** — my own
+superseded file from before the `VFField`/`VF policy` overhaul (it was written against
+`Assembly_val`'s `M4ValueOnly` before the bare-`Enc` port existed; `QE/VFField.lean` +
+`QE/VFValued.lean` replace it). Nothing in the tree imports it. It should be deleted; the
+deletion needs a person to approve it and nobody is currently at the desk, so it is recorded
+here instead — do not build on it, and do not let a future session "Exc: 1 error" claim the tree
+is green without quoting this line.
