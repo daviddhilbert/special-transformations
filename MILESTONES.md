@@ -358,3 +358,24 @@ superseded file from before the `VFField`/`VF policy` overhaul (it was written a
 deletion needs a person to approve it and nobody is currently at the desk, so it is recorded
 here instead — do not build on it, and do not let a future session "Exc: 1 error" claim the tree
 is green without quoting this line.
+
+## Author ruling (2026-11-04): Marker model theory is quotable, never proved
+
+**Model theory in Dave Marker's book may be taken as given — transcribe the statement as a named
+Prop, with the book's content in its docstring — never attempt a proof.** Concretely, for this
+project: Shoenfield's test, Robinson's model-completeness criterion, ACF model completeness,
+Löwenheim–Skolem–Tarski, elementary amalgamation, saturated-model existence/universality/
+homogeneity, compactness. `ShoenfieldTestSize`/`ShoenfieldTestSat`, `QFEAmalg`,
+`ModelCompleteRV`, `MonoAmalg` are thereby **given classical statements**, and the remaining
+content of Theorem 2.3 is exactly:
+
+```
+PrepStepSize      Lemma 3.3 + henselization at pairs with Card M <= Card N  + Γ divisible
+OneStepSizeFree   Lemmas 3.4-3.8 (3.7 proved; 3.2 transported and wired; 3.4/3.5/3.6/3.8 open)
+```
+
+Both live at `PaperHyp = SaturatedFS N ∧ SizeHyp` pairs (the existence half of the one-step needs
+type realization; saturation itself is now quoted). `QE/PaperRoute.lean`'几乎是 calibrated route is
+therefore a proof of Theorem 2.3 modulo exactly those two algebra bundles (and the classical
+statements it consumes). Swarm `smw1v42vv` was stopped and replaced by `smw1vehvn`, whose
+directions are algebra/encoding-only (3.3, Γ-room, 3.8, WS-bridge, residue-extension).
