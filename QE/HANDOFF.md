@@ -1,23 +1,35 @@
-# Handoff: the QE thread (state at the smw2ioy2w d1+d4 merge — `QE/GammaGroup.lean`, `QE/KAlgClosed*.lean`, 2026-11-04)
+# Handoff: the QE thread (state at the Γ(M) completion + §10b adoption + second swarm launch, 2026-11-04)
 
 Read this first if you are picking up Theorem 2.3. Deliberately short; the detail is in
 `QE-PLAN.md` (chronology), `Milestone0/DECISION.md` (rulings), `MILESTONES.md` (ledger).
 
 ## The route, exactly as it stands
 
-**Frontier:** everything on the line to `Enc.HasQE Axioms.ACVF` is three named hypotheses, each
-at the paper's own quantifier shape (qe.tex:578),
+**Frontier (after the author ruling 2026-11-04 adopting §10b):** the canonical route is
+`QE/M5Ledger.lean` §10b — everything on the line to `Enc.HasQE Axioms.ACVF` is seven named
+hypotheses, each at the paper's `PaperHyp` shape (`SaturatedFS N ∧ #M ≤ #N`),
 
 ```
-ShoenfieldTestSize   (or QFEAmalg / ModelCompleteRV + MonoAmalg — see QE/M1Fix.lean)
-PrepStepSize         Lemma 3.3 at pairs with Card M <= Card N  (SizeHyp)
-OneStepSizeFree      Lemmas 3.4-3.8 (= Assembly.OneStepVFP; Standing S carries the size)
+ShoenfieldTestSat    (Marker quote; transcription: smw2jkpn4 e1)
+LedgerInput1P        ACFExtends at PaperHyp (Marker quote; algebraic half consumable
+                     via QE/KAlgClosedQuote.lean; universality half: smw2jkpn4 e2)
+LedgerInput2         HenselizationExists ∀ M — QUOTED, done (QE/M7Hensel.lean) ✓
+LedgerInput3P        ResidueStep at PaperHyp — REAL WORK (inputs 3; m8's exists_standing_superset
+                     reduces its closure half to a theorem; embedding extension remains)
+LedgerInput4P        DivisibilityStep at PaperHyp — REAL WORK (input 4; PE DivisibleHullExists
+                     quoted in ClassicalProps; Γ-divisibility API: smw2jkpn4 e7)
+LedgerInput5P        SaturationRealization at PaperHyp (Marker quote: smw2jkpn4 e2)
+OneStepSizeFree      historically frozen; m7 machine-REFUTED the ∀∀ and SizeHyp-gated shapes;
+                     the surviving gate is OneStepPaper (∀∀ PaperHyp → OneStepVFP), which
+                     composes with §10b verbatim (case lemmas: 3.2 ✓, 3.7 ✓, separated ✓,
+                     atomic transport ✓; 3.4/3.6/3.8 open — smw2jkpn4 e3/e4)
 ```
 
-and `QE/PaperRoute.lean` proves `paper_theorem_2_3 : ShoenfieldTestSize → PrepStepSize →
-OneStepSizeFree → HasQE Axioms.ACVF`, green and axiom-clean, together with
-`prop39Size_of_two` (PrepStepSize + OneStepSizeFree → Prop39Size) and
-`shoenfieldTestFS_of_sat`.
+with `paper_theorem_2_3_sat_of_ledger_paperHyp` proving §10b end-to-end. The earlier frozen
+`paper_theorem_2_3` route (`ShoenfieldTestSize → PrepStepSize → OneStepSizeFree`) still compiles
+but its gates are refuted or under-powered (`QE/M5Ledger.lean` finding: `SizeHyp` does not supply
+`#K(M) ≤ #K(N)` that input 1 forces; m7's `HahnObstruction.lean`: size cannot repair the
+one-step, only saturation can).
 
 **Why not the older statements:**
 
@@ -113,7 +125,11 @@ OneStepSizeFree → HasQE Axioms.ACVF`, green and axiom-clean, together with
 
 Accepted and merged this session: **d1** (`QE/GammaGroup.lean`: `commGroupRVStar`,
 `KStar : Subgroup (RVStar M)`, quotient `CommGroup (RVStar ⧸ KStar)` — the paper's Γ(M) as a
-group, zero added hypotheses), **d4** (`QE/KAlgClosed.lean` + `QE/KAlgClosedQuote.lean`:
+group, zero added hypotheses) **plus the order half** (m2's direction was abandoned on budget
+*after* delivering: file verified judge-side and merged — `Cls` setoid, `GammaOf M` with
+`CommGroup` + `LinearOrder` + `IsOrderedMonoid`, `gamma_isLinearOrderedAbelianGroup`,
+`gammaMk_eq_one_iff_units`; **Γ(M) is now a full linearly-ordered abelian group in the tree**),
+**d4** (`QE/KAlgClosed.lean` + `QE/KAlgClosedQuote.lean`:
 `IsAlgClosed (KOf M)` extracted from the frozen `Axioms.kAlgClosed`; `exists_pow_kOf`;
 `ACFExtendsAlgebraicEmbeddings` instantiated at the residue fields) and **d5**
 (`QE/M5Ledger.lean`: the complete formal skeleton of Lemma 3.3 — five inputs → `PrepStepP`,

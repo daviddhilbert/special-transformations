@@ -502,3 +502,29 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   (`Field.ofMinimalAxioms` does not register them), so `ring`/`mul_sub` fail at `VFType`; work at
   the `M` level and transport with `Subtype.ext`. Workaround lemmas `vf_mul_add_vf`/`vf_add_mul_vf`
   are in `QE/RVAdd.lean`.
+
+## 2026-11-04 (later): Γ(M) completed; §10b ADOPTED by author ruling; second swarm launched
+
+* **Γ(M) complete.** m2's order-half file (delivered at budget exhaustion as a finding, verified
+  judge-side and merged into `QE/GammaGroup.lean`): `Cls` value-class setoid, `GammaOf M`,
+  descended `CommGroup` + `LinearOrder` + `IsOrderedMonoid` + `CovariantClass`, the 10-conjunct
+  `gamma_isLinearOrderedAbelianGroup`, `gammaMk_eq_one_iff_units`/`gammaMk_eq_iff_units_mul`
+  (classes = Kˣ-cosets), `gammaVal_eq_iff_le`. All 22 audit heads axiom-clean.
+* **Author ruling 2026-11-04: the canonical route is §10b** (`QE/M5Ledger.lean`'s
+  `paper_theorem_2_3_sat_of_ledger_paperHyp`: ShoenfieldTestSat + five inputs at `PaperHyp` +
+  OneStep gate → `HasQE Axioms.ACVF`). Decision on quote presentation left open by the author
+  (quotations stay hypotheses by the standing convention unless he says otherwise).
+* m7's machine-checked shape results (findings, files verified by smw2jkpn4 e8 during assembly):
+  `OneStepSizeFree` is refuted both frozen and `SizeHyp`-gated (`ArchimedeanRV` obstruction,
+  `not_oneStepVFP_of_infinitesimal`); the surviving gate is `OneStepPaper` (`∀∀ PaperHyp →`),
+  which fits §10b by direct specialization.
+* m8's machine-checked construction (finding): `exists_standing_superset` — every substructure
+  has a `Standing` superset outright (residue + divisibility closure, directed union
+  `standing_iSup`), so ledger inputs 3/4's closure side is a THEOREM; their remaining content is
+  the embedding extension (saturation).
+* **Second swarm `smw2jkpn4` (8 members, 360 min)** launched on the seven-hypothesis frontier:
+  e1 Shoenfield transcription, e2 saturation transcriptions (LedgerInput1P/5P wiring), e3 case
+  lemmas 3.4/3.6 ledger, e4 case 3.8 + `oneStepVFP_of_cases` combinator, e5 valuation bridge
+  (`GammaOf` vs `VFValued`'s `w`), e6 consistency witness (scoped Hahn-series ledger), e7
+  Γ-divisibility API, e8 final route document. Banned overlaps: m7's OneStep shape and m8's
+  Standing-T construction (smw2ioy2w still running them).
