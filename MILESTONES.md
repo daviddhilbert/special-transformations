@@ -415,3 +415,25 @@ case lemmas need the `IsVFGen` restriction on the target; and the divisible hull
   tagged `L_RV` version (T2) stays dormant: 1-ec unrestricted is very likely false in the frozen
   encoding; it would need *well-sorted* 1-ec if ever used. The main route does not use it;
   keep it as the check, not the frontier.
+
+## Second axiom-of-quotation (2026-11-04, author): Prestel-Engler valuation theory
+
+**General valuation theory found in Prestel-Engler may be taken as given — statements only.**
+Concretely for this project: henselization exists; the henselization has the same residue field
+and the same value group; a valued-field embedding extends along the henselization on both
+sides; the divisible hull of a value group exists and is initial; `Kˣ`/`O`/maximal-ideal algebra;
+Newton-polygon facts. Folded into the second ruling's discipline: transcribe as named Prop with
+the book statement in the docstring, never prove.
+
+After both rulings, **Lemma 3.3 (`PrepStepP` at SizeHyp pairs) decomposes as**:
+
+1. `g : K(M) → K(N)` extending `f ↾ K(S)` — Marker (ACF extension of embeddings), quoted.
+2. henselization of `VF(Ŝ)` + `K` and `Γ` preserved — Prestel-Engler, quoted.
+3. adjoining representatives of all residue classes gives `K(S*) = K(M)` — construction.
+4. `Γ(S*)` divisible via the (Prestel-Engler) divisible hull — construction-meets-quote.
+5. extending the monomorphism — Marker (saturation realization), quoted.
+
+So what remains is the **assembly** of those five into the frozen `PrepStepP`/`PrepStepSize`
+statement, which is Lean work, not mathematics. The KEqTop obligation is irreducible content
+(`M5.units_le_of_prepStepP`), hence the size hypothesis stays; the rest is quoted or built.
+Swarm `smw1vehvn` was already directed accordingly (henselization-existence as named Prop).
