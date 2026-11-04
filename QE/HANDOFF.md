@@ -303,3 +303,28 @@ The mathematics is untouched; the file needs a three-error fix-up (replace the t
 current-prelude-green.  Any swarm file whose olean predates the balls-bridge merge must be rebuilt
 before being relied on: `H4Base.lean`'s own content survived the rebuild (exit 0), so the
 dependency direction is fine — it is `W1.lean`'s tactic scripts that need re-pointing.
+
+### Priority for the `W1.lean` fix-up: deprioritise it
+
+`W1.lean` is **superseded** as a criterion by `.ultramath/smw1b0thh/m4/` (`FragQE.lean`,
+`FragQE1.lean`, `FragAtoms.lean`), which is stronger (`FragmentAtomQFTypeDetermines` — hypothesis
+reduced to atoms; one-directional form; compactness set containing the sort assertions) and, more
+importantly for this problem, **prelude-stable**: those files import `Enc` only (a verbatim
+`Milestone0/Encoding.lean`), not `Assembly_val`, so the balls-bridge merge cannot break them.  The
+`W1` breakage is precisely because it imports `Pre_build` = `Assembly_val`.
+
+So: **do not spend a session on the three errors** unless one of the two things `W1` has and m4
+does not is needed —
+
+* `W1.hasQE_of_embedding` + `QFTypeEmbeddable`: the analysis of *why* the substructure-embedding
+  (Shoenfield) form is unusable in this encoding.  m4 states the conclusion ("junk values lie
+  outside the fragment"); `W1` has it as a theorem plus a bridge hypothesis.
+* `W1.exists_list_of_models_bounded`: compactness with parameters via `Formula.equivSentence`.
+
+If needed, the fix is local: two `show` patterns at 272/276 become `change`/`convert` against the
+post-merge normal form, and the `Type mismatch` at 304 is caused by a `simp` lemma now firing
+earlier — find it with `set_option trace.Meta.Tactic.simp.rewrite true` in that goal only.
+
+Rule to carry: for any swarm file, `lean` against the member's own olean proves only
+"elaborates against that snapshot".  Rebuild the prelude first if the file imports `Pre_build`/
+`Pre2`/`PreC`/`AV`; files importing only `Enc` or `Mathlib` are safe from the Assembly_val drift.
