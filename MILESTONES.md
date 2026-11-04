@@ -901,3 +901,44 @@ m1's report states "Lemma 3.8 does not consume EP 3.3.4/3.4.3; only 3.4 and 3.6 
 `QE/Lemma38RV.lean:71`'s comment says the converse for 3.8's `vv(e) ∉ Γ(Ŝ)` step. Neither has been
 checked against the other by a judge; whoever next touches 3.8 should settle it in Lean (does
 `lift:value:full`'s proof need the fundamental inequality, or only the residue-side algebra?).
+
+## smw2mluv7 ended (solved; 1 formal acceptance) — its last five files salvaged and merged
+
+The swarm dissolved with only m1's formal submission, but five members left green unsubmitted work;
+all verified judge-side (exit 0, 0 errors, 0 sorryAx, axiom heads ⊆ {propext, Classical.choice,
+Quot.sound}) and merged:
+
+* `QE/NonVacuity.lean` (m7, p7 — the highest-stakes direction). §1 gate analysis:
+  `relGate_of_saturatedFS`/`relGate_diag_of_saturatedFS` (SaturatedFS gives gate pairs; the diagonal
+  gate is saturation-hard via `saturatedFS_of_relGate_diag`, i.e. `SatBridge`);
+  `qeOfGate_iff_hasQE_of_empty` + `shoenfieldTestRel_iff_hasQE_of_no_relGate` (**empty gate ⇒ the
+  quotation is equivalent to the target — circularity**); `shoenfieldTestRel_of_not_extendsAt`
+  (failed extension ⇒ quotation trivially true); `hasQE_iff_qfTypeDetWS`; `input5R_implies_prop39Sat`.
+  §2 the exact obligation: `not_finSatAt_iff` — failure of finite satisfiability at a triple is ONE
+  formula of the pushed type with no realisation; and `configHuge_ordinal_core_finsat` /
+  `configTiny_ordinal_core_finsat` — every finite piece of the configuration's **ordinal core** is
+  realised in EVERY model of ACVF (c^{N₀+1}; (N₀+1)-th root via Γ-divisibility), so the failing
+  formula must come from the **residue/quantifier part** of the pushed type. §3 (documented, not
+  machine-checked, and correctly flagged as using QE-for-ACVF — an argument about the statement, not
+  in its proof): the expected answer is that the type IS finitely satisfiable, `SatRel` then realises
+  it, contradicting `ArchimedeanRV N` — so no gate pair carries the configuration and
+  `Prop39Decomp`'s Archimedean refutations are vacuous rather than fatal. This narrows the open
+  question to: finite satisfiability of the config's non-ordinal (residue/quantifier) part.
+* `QE/Case35Slot.lean` (m5, p5 — 32 theorems): the exact slot statements and the obstruction.
+  `SeparatedBelow` with `separated_iff_forall_separatedBelow` (Separated = all finite truncations),
+  `exists_minimal_violation`/`separatedBelow_of_minimal`; the paper's branch hypothesis
+  `RootStepHyp`; and the KEY finding — at `Standing S` (Γ(S) divisible) the `m^n = a` shape with
+  separation-below-`n` (n ≥ 2) is **inconsistent**, so the paper's 3.5-shaped step belongs to the
+  PREP (divisible-hull, Lemma 3.3) construction, not to the one-step slot at Standing S; the correct
+  branch statement there is the exponent-one (`RVOldClass`) form. Wiring:
+  `cases_of_branch`, `caseNotSeparated_of_paper_branch_and_global`; non-vacuity
+  `caseNotSeparated_hyp_satisfiable`.
+* `QE/HensDemand.lean` (m8, p8): the Polynomial↔vfEval bridge (`polyOf`, `eval_polyOf`,
+  `monic_polyOf`) and the henselianity facts: `isHenselianVF_of_vf_full` (full-VF substructures are
+  henselian) and `isHenselianVF_top` — so `IsHenselianVF ⊤` holds (the predicate is inhabited, not
+  vacuous, after the erratum fix).
+* `QE/InterfaceClosure.lean` (m3, p6): polynomial-expansion interface — `PolyExpansions`,
+  `polyExpansions_quot`, `rv_mem_of_polyExpansions`, `ResidualClasses_of_poly`,
+  `standing_of_poly_hypotheses`, `SlotRealization`, `SlotFieldData`.
+* Chain note: `RV_henselian.olean` was missing from `.scratch2/sec3` (never built with `-o`); now
+  built.
