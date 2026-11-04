@@ -2931,3 +2931,27 @@ The two monster-model inputs are named, not buried: `ExchangeVF` (Yin 4.3, a hyp
 together by the *same* two operations (variable substitution and its parameter twin).  The encoding
 proves `WellSorted`-ness for its constructors but never the realisation/transport lemmas for
 substitution — that gap, not the model theory, is what has been costing rounds.
+
+### §4 `full:dim:open:poly`: the two directions and a negative result (m2, accepted)
+
+`QE/Sec4Polydisc.lean` (415 lines, compiled here: 0 errors, no `sorry`, axioms clean).  Corrected
+resubmission: the first version's `DimLe` had no definability constraint, i.e. a different notion.
+Now everything is over `QE/Sec4Dim.lean`'s `Tup`/`DefinableFun`/`HasDim`/`dimVF` (least `k`).
+
+Proved: the "if" of `full:dim:open:poly` (`dim_VF A = n` when a fibre contains an open polydisc, from
+the single hypothesis `PolydiscDim` = `VF:dim:tran:deg` for a polydisc); the "only if" at `n = 1` from
+C-minimality (`dimVF_ne_one_of_finite` supplies the paper's "since `A` is infinite"); `VF:dim:mono`
+from `VF:dim:tran:deg` + `td` on finite images; `dim:rv:polydisc`'s one direction;
+`dimVF_eq_zero_of_finite`.
+
+**The negative result is the keeper, and it is recorded in the file header.**  Under the definability
+constraint, `dim_VF A ≤ n`, monotonicity and *finite ⟹ 0* survive, but **transfer along a
+finite-to-one map does not**: it needs `DefinableFun`-composition (carried as the explicit hypothesis
+`hcomp`, correctly), and `dimVF_fibre_le` — the trivial half of `dim:VF:pullback` — fails for a
+*representation* reason: a fibre lives in `VF^n × RV^0`, not inside `A`.  So the paper's
+"the other direction is trivial" is not trivial in this encoding, and that is a fact about the tuple
+presentation, not about the mathematics.  `hcomp` is now buildable from `QE/SubstVar.lean` +
+`QE/ExSortedG.lean`.
+
+Open: the general "only if" of `full:dim:open:poly` (`def FullDimOpenPoly`, assumed nowhere), whose
+induction needs `dim:VF:pullback` and `VF:dim:tran:deg` over `dcl(b̄)`.
