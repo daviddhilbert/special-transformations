@@ -3026,3 +3026,33 @@ built for it, but the `DefinableFun`-composition corollary and the guarded-exist
 ingredient `infinite+small ⟹ ≥κ` identified), the `t = rv 0` case of `alg:ind:imag` (needs the parked
 `SubstParam`), `aclS:model`, `ball:RV:finite`, the transcendental-degree corollary, and the general
 "only if" of `full:dim:open:poly`.
+
+### `SubstParam`: the two obstacles left, now precisely known
+
+Down to 7 errors, all in `wellSorted_substParam`, and they are two structural facts rather than case
+chasing:
+
+1. **`WellSorted` cannot be inducted on directly here.**  Its index includes the sort assignment
+   `sn : Fin n → SortTag`, so `induction h` reverts `sn` and every case's hypothesis comes back with a
+   *fresh* `sn✝` — which is why `WellSorted.falsum (sα := sβ) sn` reports a mismatch against `sn✝`.
+   The proof has to go by `BoundedFormula.rec` with the motive
+
+   ```
+   fun m ψ => ∀ (sn : Fin m → SortTag) (f : α → Term β),
+       (∀ a, TmSort sβ sn ((f a).relabel Sum.inl) = some (sα a)) → WellSorted sα sn ψ →
+         WellSorted sβ sn (ψ.subst f)
+   ```
+
+   quantifying `sn` *inside*, so that the `.all` case gets its hypothesis at `Fin.snoc sn s` and
+   `n + 1`.  That is the same shape as `qf2_cover_eval` (`QE/QF2Cover.lean`), which went through this
+   lesson already.
+2. **`TmSort` of a parameter-only term is independent of the variable context.**  In the `.all` case
+   `hf` must be transported from `sn` to `Fin.snoc sn s`; the terms `(f a).relabel Sum.inl` contain no
+   `Sum.inr` variables, so their `TmSort` is the same in both — but that is a lemma, and it has to be
+   proved (term induction; the encoding has `tmSort_relabel_castSucc` for the *variable* side and
+   nothing for this).
+
+Everything else in the file is green: `substAssign`, `tmSort_substParam` (the term-level statement,
+which was the hard half), `subst_guardAtom`, `inAntecedent_substParam`, `guardTrue_substParam`.
+
+Parked at `.scratch/SubstParam_wip.lean` (log: `.scratch/SubstParam_wip.log`), so the tree stays green.
