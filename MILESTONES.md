@@ -281,3 +281,38 @@ Sections 4, 7, 8, 9 and 10; `QE/Proj.lean` supplies the matching projection lemm
 * §4 of the paper fully merged (`QE/Sec4Rename`, `QE/Sec4FibreDim`, `QE/Sec42Morphism`,
   `QE/M6Polydisc`, `QE/Sec4EK`, `QE/Sec4DimACFModel`) plus the composition wall above and the td
   non-vacuity model.
+
+## The cardinality objection is the defect that matters (two members, two ways, machine-checked)
+
+The tree's universally-quantified two-ingredient route is implicationally valid but **refutable as
+stated**, and this is now machine-checked, independent×2:
+
+* `smw1tqlqv` **m5** (`M5_OneStep.lean`): `units_le_of_prepStepP` —
+  `PrepStepP (M := M) (N := N)` forces `Cardinal.mk {x : M // iUnits x} ≤ Cardinal.mk N`, because
+  `KEqTop T` puts every unit of `M` in the substructure `T ↪[LRV] N`. Contrapositive in-file.
+* `smw1tqlqv` **m7** (`PaperRoute.lean`, merged as `QE/PaperRoute.lean`): the paper fixes
+  `N` `‖M‖⁺`-saturated before Lemmas 3.3–3.8 (qe.tex:578, whose first step is `#K(M) ≤ #K(N)`);
+  `prepStepP_forces_units_size`, `prop39FS_forces_size`, `vfGenCaseP_forces_size`,
+  `standing_forces_units_size`, and the repair (below).
+* m5's AUDIT adds the independently-argued point (labelled as argument, to be machine-checked
+  before reliance): `OneStepVFP` appears to fail also at equal cardinality — Hahn fields
+  `M = ℂ((t^{ℚ²}))`, `N = ℂ((t^ℚ))` — because divisibility at `rv(m)`, n=2, creates
+  `v(m)/2 ∈ Γ(T)`, i.e. the value group of `N` must have room. That failure is what saturation is
+  actually for, and a pure size bound will not repair it.
+
+**The repair, already in the tree** (`QE/PaperRoute.lean`): only Lemma 3.3 changes —
+
+```
+PrepStepSize       ∀ M N models, SizeHyp M N → PrepStepP           (SizeHyp M N := #M ≤ #N)
+OneStepSizeFree    ∀ M N models, OneStepVFP                        (unchanged -- Standing S carries it)
+Prop39Size/Sat, prop39Size_of_two, prop39Sat_of_size,
+paper_theorem_2_3, paper_theorem_2_3_sat, shoenfieldTestFS_of_sat
+```
+
+`paperHyp_supplies_units_size` shows the repair is not itself refutable in the same way.
+
+**Live frontier (now)**: `ShoenfieldTestSize` (or `ShoenfieldTestSat`), `PrepStepSize`, and
+`OneStepSizeFree` — with the caveat that, if m5's OneStepVFP counterexample machine-checks,
+`OneStepSizeFree`'s quantification also moves onto the saturated-with-room half of `PaperHyp`.
+`QE/Prop39Two.lean`'s header now records the vacuity explicitly; the file stays because the
+implication is what the repaired inputs plug into.

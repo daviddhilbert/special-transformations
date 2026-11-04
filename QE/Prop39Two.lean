@@ -28,6 +28,20 @@ Headline theorems, everything else intermediate:
 * `Prop39FS_of_two      -- Prop39FS from PrepStepP + OneStepVFP alone`
 * `theorem_2_3_of_two   -- HasQE ACVF from ShoenfieldTestFS + PrepStepP + OneStepVFP`
 
+**Implicationally valid, but its two hypotheses are FALSE as universally quantified** — swarm
+`smw1tqlqv` members m5 and m7 machine-checked the defect independently in two ways
+(`prepStepP_forces_units_size` / `PaperRoute.standing_forces_units_size` /
+`PaperRoute.prop39FS_forces_size`): the reduction's universally-quantified `∀ M N, PrepStepP`
+forces `Cardinal.mk {x : M // iUnits x} ≤ Cardinal.mk N` at every pair — the paper's
+`K(S) = K(M)`, read through `KEqTop` — which arbitrary pairs of models of `ACVF` do not satisfy
+(`M5_OneStep.lean`'s `not_prepStepP_of_not_units_le` is the contrapositive; the paper's remedy
+is `N` `‖M‖⁺`-saturated, `qe.tex:578`).  The live form of the route is therefore the repaired
+one in **`QE/PaperRoute.lean`** (`paper_theorem_2_3` / `paper_theorem_2_3_sat`: the ingredients
+demanded only at pairs with `SizeHyp M N`, i.e. `#M ≤ #N`, the paper's saturation bound at the
+size consequence it actually uses).  This file stays because the implication itself is still
+exactly what `paperSize`-style inputs plug into, and deleting it would lose the discharging
+work; do not treat its hypotheses as open lemmas to chip at — they are refuted as stated.
+
 (Merged from swarm `smw1rx5g2` member m7, `.ultramath/smw1rx5g2/m7/M7_vfgen.lean`, which was
 verified green and axiom-clean by the judge before merging; nothing here changes its content.)
 -/
