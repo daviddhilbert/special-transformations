@@ -2872,3 +2872,38 @@ compactness lemma, which is exactly the split the paper makes.
 2. `vrv`-graph definability at formula level needs a realisation lemma for the `LRVΓ` function
    symbols — it sticks at `funMap (Sum.inr FnΓ.vrv)` under `Term.realize`.  Infrastructure, not
    mathematics; recorded as the next `Γ`-side item.
+
+### The wall is down: variable substitution is in the tree
+
+`QE/SubstVar.lean` (from `smw1jgnht` m6, compiled here: 0 errors, no `sorry`) is the operation
+Mathlib does not have, and it was behind three separate items at once:
+
+```
+Term.substVar (σ : Fin n → Term (α ⊕ Fin m))        -- x_i ↦ σ i, parameters untouched
+BoundedFormula.substVar                             -- with Subst.lift at the quantifier
+tmSort_substVar                                     -- sort preservation
+substVar_guardAtom, inAntecedent_substVar, guardsLast_substVar, guardTrue_substVar
+wellSorted_substVar
+realize_substVar_term, realize_substVar             -- the semantics
+```
+
+The guard transport is the part that matters for this encoding: at a quantifier the substitution is
+*lifted*, so the bound variable is fixed and the `InAntecedent`/`GuardTrue` conditions transport
+verbatim — the same observation that made `guardTrue_relabel` go through.
+
+**Also added by me, because m6 named it as the only obstacle to the pairing step**:
+`QE/ExSortedG.lean` — `exSortedG_realize : (exSortedG s ψ).Realize v xs ↔ ∃ a, sortEval s a ∧
+ψ.Realize v (Fin.snoc xs a)`.  The encoding proves `wellSorted_exSortedG` but never realises the
+guarded existential; three lines from `realize_ex`, `realize_inf` and `Junk.guardAtom_realize`.
+
+**So `swl_exchange` is now within reach**, and its route is concrete: promote the last `VF` parameter
+to a variable with `QE/ParamBridgeRelabel.lean`'s `wellSorted_relabel` (giving a two-variable formula
+over `Fin S.n ⊕ Fin S.m`), then `substVar` with `σ 0 = var (Sum.inr 0)` and
+`σ 1 = var (Sum.inl (Sum.inl (Fin.last S.n)))` to demote the second variable back into the parameter
+slot — that is the swap, and `realize_substVar` gives its semantics.  Everything it needs is in the
+tree.
+
+**Still open**: the `DefinableFun` pairing corollary (m6's direction died after two rejections; the
+work is unblocked and stated precisely in `QE/SubstVar.lean`'s header: iterated `exSortedG` to
+eliminate the intermediate tuple, then zero-padding, giving `PaperStraightening` from
+`FibreSeparating`).
