@@ -2831,3 +2831,21 @@ item, and the one `prep` consumes) becomes reachable.  m6 is on it under its con
 `QE/Sec4Categories.lean` (the §4 category layer, m8 — 38 theorems, all footprints clean).  **Merged
 for the layer, lemma still open:** `QE/Sec4Dim.lean` (§4 dimensions, m6 — the (⇒) direction of
 `dim:RV:fibers` is *not* proved; see the entry above).
+
+### A trap worth recording: `dim_VF` without definability (m2, §4 polydiscs, rejected once)
+
+m2's `Sec4_polydisc.lean` (408 lines, green, no `sorry`, axioms clean, `FullDimOpenPoly` left as an
+open `def` assumed nowhere) proves the elementary dimension lemmas — subset, fibre, finite ⟹ `0`,
+monotonicity, finite-to-one does not raise dimension — and the easy direction of
+`full:dim:open:poly` plus its `n = 1` base case.  **But its `DimLe` quantifies over an arbitrary
+function** `A → VF^k × RV^l`, whereas `paper.tex:807` requires the witnessing map to be
+**definable**.  So the file is about the combinatorial dimension, not `dim_VF`, and the lemmas
+transfer only after the constraint is added (with the extra constraint the set of witnesses shrinks,
+so monotonicity and the fibre lemmas are no longer immediate).
+
+Not merged, for that reason.  The member was told to restate over `QE/Sec4Dim.lean`'s `Tup`/
+`Definable`/`DefinableFun` (its `Sec4Dim.olean` is now in `.scratch2/sec3/`, so `import Sec4Dim`
+works) and to rebuild the elementary lemmas on top.  **The general lesson, which has now cost two
+rounds in this swarm:** a hypothesis-discharged "dimension" or "definability" that drops the paper's
+constraint is worse than an open lemma, because everything downstream is about a different object.
+Same species as `PaperStraightening` in m6's file.
