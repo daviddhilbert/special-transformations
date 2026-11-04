@@ -2680,3 +2680,64 @@ So `alg:ind:imag` has exactly three inputs, in dependency order: exchange (must 
 `QE/ParamBridgeRelabel.lean`, `wellSorted_relabel`), and the counting argument (`rv`-fibre infinite vs
 `acl` of a finite set small — needs countability of the `L_RV` formula set).  Recorded in
 `DECISION.md`.
+
+## Correction, from the source: there is ONE route, and it goes through `L_v` QE
+
+I had been treating "Route A" (`L_RV` direct, QF-type/Shoenfield) and "Route B" (`L_val` reduction,
+`Assembly_val`) as rival proofs of `HasQE ACVF`.  That is wrong, and the source says so explicitly.
+
+**1. `paper.tex` does not prove Theorem 2.3.**  It states it as `theorem[cite[Theorem 3.10]{Yin:QE:ACVF:min}]`
+(`paper.tex:508`): the QE content is `qe.tex` (arXiv:1006.1393) Theorem 3.10.
+
+**2. `qe.tex` §3 opens by reducing QE to Weispfenning's `L_v` theorem** (`qe.tex:549`):
+
+> "In this section we shall use Shoenfield's test to show that `ACVF`, `ACVF†`, and `ACVF‡` all
+> admit QE.  Our strategy is to **reduce the task to a case where we may apply Theorem 2.7**
+> (`weis:qe`: *the theory of algebraically closed valued fields **as formulated in `L_v`** admits
+> QE*)."
+
+**3. The reduction is Remark `L:v:and:L:RV`** (`qe.tex:552`), and it is exactly the VF-generated
+condition:
+
+> "`L_RV` may be viewed as an expansion of `L_v`. … Let `f'` be an `L_RV`-isomorphism of two
+> `L_RV`-substructures.  **If `K'` is VF-generated** then `f'` may also be treated as an
+> `L_v`-isomorphism.  If `L` is sufficiently saturated then, by Theorem 2.7, `f'` may be extended to
+> an `L_v`-monomorphism `f : K → L`, which is also an `L_RV`-monomorphism.  **Note that this procedure
+> may fail if `K'` is not VF-generated, that is, if `rv(VF(K')) ≠ RV(K')`.**"
+
+**4. Everything else in `qe.tex` §3 is the repair of the non-VF-generated case** — and it is exactly
+the lemma set the tree already carries as `QE/Lemma32_root_lifting.lean` (`rv:root:lift:vf`),
+`QE/Lemma35_divisible_hull.lean` (`lift:divisible_hull`), `QE/Lemma37_transcendental.lean`,
+`QE/Lifting_transcendental.lean`, `QE/RV_henselian.lean`, plus `aclS:model` and
+`algebraic:balls:definable:centers` from §4.  So the "non-VF-generated case" *is* the paper-specific
+content, and it is where §3/§4's structure theory (and `alg:ind:imag`) is used.
+
+**5. The tree already states the paper's route, faithfully.**  `QE/Reduction_assembly.lean`:
+
+```
+structure AlgIngredients : Prop where
+  rv    : ∀ M ⊨ ACVF, RVeqRvVF M                       -- RV = rv(VF×) ∪ {0}   (PROVED: RVeqRvVF_of_model)
+  prep  : ∀ M N hSat, PrepStep M N hSat                 -- Lemma 3.3 + henselization
+  one   : ∀ M N hSat, OneStepVF M N hSat                -- Lemmas 3.4–3.8
+  vfgen : ∀ M N, VFGenCase M N                          -- Remark 3.1 + Weispfenning's L_v QE   ← the person's point
+theorem theorem_2_3_of_hypotheses (hShoen : ShoenfieldTest) (hAlg : AlgIngredients) : HasQE ACVF
+```
+
+So the frontier of the main route is `ShoenfieldTest` + `prep` + `one` + `vfgen`, and **`vfgen`
+contains Weispfenning's `L_v` QE** — the `L_val` QE is not an alternative route but a load-bearing
+input of the one route.  `theorem_2_3_of_three` already discharges the `rv` field.
+
+**Consequences for the plan, and for what I have been doing.**
+
+* The **criterion family** (`TransferWS`, `FragmentTransfer`, `QF2Fragment`, `QF2Cover`,
+  `MulNormalForm`, `ParamBridge*`, `JunkTrue`, `FailProbe`) is a *third* formulation, equivalent to
+  the target (`W1.hasQE_iff_qfTypeDetermines`, `Missing.nontrivialTransfer_iff_hasQEb`).  It is
+  **check**, not route — it can validate, and pieces of it (`qf2_cover`, junk-truth) are reusable,
+  but closing `QFStep` would not close Theorem 2.3 by the paper's argument.
+* The **§3/§4 structure theory is on the critical path**, through `prep`/`one` (and `aclS:model`),
+  not a side-quest.  `alg:ind:imag` matters because `aclS:model` needs it.
+* `Assembly_val`'s `L_val` assembly (`hasQE_ACVF_val`, the Johnson/Chevalley/prime-models family) is
+  the natural home of `vfgen`, i.e. of Weispfenning's theorem — which is where Route B's machinery
+  actually belongs: as a *proof of `vfgen`*, not as a rival end-to-end route.
+* **Keep both families alive** (author's instruction this session), but the priority order is now:
+  `ShoenfieldTest` → `prep` → `one` → `vfgen`, with the criterion family as the independent check.

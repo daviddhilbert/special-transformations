@@ -77,6 +77,17 @@ is the engine behind Theorem 2.8 (C-minimality) and is being formalized separate
 Weispfenning's theorem for the two-sorted `L_v`, and Weispfenning itself is kept as an explicit
 hypothesis rather than an axiom.
 
+**The shape of that reduction, checked against the source (`qe.tex` §3, `paper.tex:508`).**  There is
+one route, not two: Shoenfield's test, with the extension step reduced to Weispfenning's `L_v` QE
+*for VF-generated substructures* (`qe.tex:552`, Remark `L:v:and:L:RV`), and the non-VF-generated case
+repaired by the §3/§4 structure theory (`rv:root:lift:vf`, `lift:divisible_hull`, the transcendental
+case, `aclS:model`, `algebraic:balls:definable:centers`).  `QE/Reduction_assembly.lean` states exactly
+this: `AlgIngredients` with `prep`, `one`, `vfgen` (the last is "Remark 3.1 + Weispfenning's `L_v`
+QE") and `theorem_2_3_of_hypotheses (hShoen : ShoenfieldTest) (hAlg : AlgIngredients)`.  So
+Weispfenning's `L_v` QE is a *load-bearing input of the sole route*, and the QF-type/criterion family
+(`TransferWS`, `FragmentTransfer`, `QF2Cover`, …) is a third, equivalent formulation — a check, not a
+route.
+
 ## Recommended next steps
 
 ### Milestone 0 — language and syntax — **done**

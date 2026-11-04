@@ -127,9 +127,18 @@ quantifier-free fragment over a sorted context is covered by `QF2`),
 carries a copy of the encoding, hence the same 2 `sorry`s), `QE/{Sec3_frozen,Sec3_sat}.lean` (§3
 over parameter pairs and over the monster model), `QE/{FailProbe}.lean` (the located obstruction).
 
-Open, in order of sharpness:
+**The route is the paper's, and it goes through Weispfenning.**  `QE/Reduction_assembly.lean` has
+`theorem_2_3_of_hypotheses (hShoen : ShoenfieldTest) (hAlg : AlgIngredients)`, where `AlgIngredients`
+is `prep` (Lemma 3.3 + henselization), `one` (Lemmas 3.4–3.8) and `vfgen` — *"Remark 3.1 +
+Weispfenning's QE theorem for `L_v`"*.  So `L_v` QE is a load-bearing input of the one route
+(`qe.tex:549-552`), the `L_RV`-specific content is the non-VF-generated case (Remark `L:v:and:L:RV`),
+and the QF-type/criterion family below is an equivalent *check*, not a second route.
 
-1. **`QFStep IsNontrivialVF Axioms.ACVF`** — the one-element back-and-forth step.  With it,
+Open, in the paper's order:
+
+0. **`ShoenfieldTest`, `AlgIngredients.prep`, `.one`, `.vfgen`** — the four hypotheses of
+   `theorem_2_3_of_hypotheses`; `.rv` is already discharged (`theorem_2_3_of_three`).
+1. **`QFStep IsNontrivialVF Axioms.ACVF`** (criterion side, i.e. the check) — the one-element back-and-forth step.  With it,
    `NontrivialTransferWS Axioms.ACVF` follows, and `AllNontrivial Axioms.ACVF` is already proved.
 2. ~~**`QFRes2.qf2_cover`**~~ — **done**: extraction, soundness and the formula induction are all
    proved in `QE/QF2Cover.lean`, no `sorry`.
