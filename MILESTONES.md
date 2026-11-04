@@ -942,3 +942,28 @@ Quot.sound}) and merged:
   `standing_of_poly_hypotheses`, `SlotRealization`, `SlotFieldData`.
 * Chain note: `RV_henselian.olean` was missing from `.scratch2/sec3` (never built with `-o`); now
   built.
+
+## smw2ngn1z m7 (2026-11-04, accepted): Lemma 3.6's Γ-step needs NO dimension inequality
+
+* `QE/UnitTranscend.lean` (m7, d6): **`val_sum_eq_one`** — for a unit `e` (`v e = 1`) whose residue is
+  transcendental over the base residue field (as the no-vanishing-residue-polynomial hypothesis),
+  an expansion `Σ cᵢ e^mᵢ` with integral coefficients, one of value exactly 1, has value exactly 1:
+  there is NO cancellation. Proof: ultrametric bound, then if the value is < 1 the residue vanishes,
+  residue-linearity splits it into the residue polynomial, and transcendence forces the value-1
+  coefficient's residue to 0 — contradiction. **`gamma_step`** then gives, for any quotient of
+  expansions (i.e. any `b ∈ VF(⟨Ŝ,e⟩)`), a base element `a` with `v b = v a` and `v(b/a) = 1` — the
+  paper's `Γ(⟨Ŝ,e⟩) = Γ(Ŝ)` and value normalization (qe.tex:741-747) **without Engler–Prestel
+  Thm 3.4.3**. So EP 3.4.3 can be DROPPED from Lemma 3.6's hypotheses: a strict reduction in
+  quote-dependence. (Lifting to the frozen encoding still needs `iUnits`-form unit-ness and the
+  `VFInvClosedOn`/`IsVFGen` fraction-field representation — the latter needed by 3.5 anyway.)
+* `QE/UnitSharpness.lean`: the countermodel — `t` in `R[[Z]]` with `addVal` is transcendental over
+  the constants, the base value group {0} is divisible, yet `addVal t = 1` is not a base value: the
+  unit hypothesis is exactly what substitutes for the quote.
+* `QE/EPQuotesGamma.lean`: `gamma_collapse` (torsion + divisible ⇒ equal, PROVED) — the only use of
+  EP 3.4.3 at qe.tex:743, now a theorem; plus `RatRankZero`, `ResidueDegreeLeFieldDegree`.
+  **Correction recorded**: EP 3.3.4 gives residue degree ≤ field degree; Lemma 3.4's *equality*
+  needs defectless + unramified (the other half from `F` monic + `F̄` irreducible + `e` a unit) —
+  so `EP334_fundamental_inequality` (QE/EPQuotes.lean) should not be read as supplying the equality
+  half by itself.
+* `QE/UnitTranscendWitness.lean`: a top-witness for `ResidueTranscendental` (trivial residue field)
+  and the hypothesis repair (injective exponents), keeping the definition honest.
