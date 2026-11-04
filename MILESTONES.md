@@ -246,3 +246,38 @@ dimension axioms (Sec4DimACFModel).
 
 Green, axiom-clean: `rv_one_units`, `vfPow`, `vfType_root` (n-th roots via
 `IsAlgClosed.exists_pow_nat_eq`), `gammaDivisible_top` (Γ(M) divisible), `standing_top`.
+
+## The `DefinableFun` composition wall is down
+
+`QE/Compose.lean` (green, axiom-clean): `Sec4FunComp.DefinableFun.comp` and
+`DefinableFun.comp_of_mapsTo` — the composition of definable functions is definable. The guarded
+iterated existential `exsG` (the only shape `WellSorted` admits for eliminating the composite's
+intermediate tuple) with `wellSorted_exsG`, plus non-degeneracy (`compForm_idForm`). First
+applications in `QE/Fibre.lean`: `dimVF_fibre_le` (the "other direction is trivial" of
+`dim:VF:pullback`, paper.tex:842), `dimVF_le_of_finFib'`, and the unconditional
+`dimVF_fibre_le_zero`, with the parameter discipline (`τ` naming `t̄`) carried explicitly and shown
+strictly weaker than the old `hcomp`. This was the wall recorded as blocking six items across
+Sections 4, 7, 8, 9 and 10; `QE/Proj.lean` supplies the matching projection lemma
+(`Definable.exists_snocRV`).
+
+## Everything else the shared ledger should know right now
+
+* The route to Theorem 2.3 is exactly three hypotheses: `PrepStepP`, `OneStepVFP`,
+  `ShoenfieldTestFS` (`QE/Prop39Two.lean`, `Assembly.theorem_2_3_of_two`). Weispfenning is not on
+  it.
+* `QE/Lemma37.lean` — Lemma 3.7 proved in the frozen encoding with both former hypotheses
+  discharged.
+* `QE/M6Syntactic.lean` — Lemma 3.2's syntactic transport (`rv_root_lift_encoding`).
+* `QE/Jm2T1.lean` — every `RV`-sorted quantifier is a `VF`-sorted one substituted by `rv`
+  (`exSorted_rv_iff_vf`); the `L_val → L_RV` QF translation preserves well-sortedness and truth;
+  `L_val` QE + the named residual `RVAtomElim` would yield `HasQE` at the all-VF context.
+* `QE/Standing.lean` — every model is `Standing` at `⊤`; `rv_one_units`, n-th roots,
+  `gammaDivisible_top`.
+* `QE/SortCover.lean` — no junk elements in any model; junk is a property of ill-sorted terms only.
+* §3 of the paper fully merged (`QE/Sec3*`, `QE/Acl*`, `QE/UniformCover`, `QE/Exchange`,
+  `QE/M3AclField`, `QE/M8*`, `QE/BallSec3`, `QE/M7Centres`): 670 repaired, 709 settled, 716 proved
+  at finite A, the centre statements refuted-as-frozen and repaired with the function form, and
+  `alg:ind:imag` stands on `M5.ExchangeVF` alone (fibres infinite).
+* §4 of the paper fully merged (`QE/Sec4Rename`, `QE/Sec4FibreDim`, `QE/Sec42Morphism`,
+  `QE/M6Polydisc`, `QE/Sec4EK`, `QE/Sec4DimACFModel`) plus the composition wall above and the td
+  non-vacuity model.
