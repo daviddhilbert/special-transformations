@@ -872,3 +872,25 @@ Two members expired with green, unsubmitted files; verified judge-side and merge
   (∀ t ∈ T with iRV t, t ≠ 0, ∃ a ∈ VF(S) with class equality `gammaMk t = gammaMk (rv a)`, given
   `IsVFGen S`), which is exactly the shape Lemma 3.6's b/b* induction consumes. Sharpness: 
   divisibility is not removable (G = Multiplicative ℤ, K = {g + g}); the exponent must be positive.
+
+## smw2ngn1z m1 (2026-11-04, accepted): Claim (⋆)'s RV-containment, both branches, inverse-free
+
+* `QE/NewRVClaim.lean` (m1, d5): the new-`rv` branch's `RV`-containment (Lemma 3.7's second half /
+  3.8's residue-side RV-containment — the part `QE/Lemma37.lean` left unformalized). The key device:
+  `L_RV` has no RV-inverse, so membership in `⟨RV(S), rv e⟩` is written inverse-free with two
+  witnesses — `StarMem S e y := ∃ s t j k, s,t ∈ S∩VF nonzero with rv s, rv t ∈ S ∧
+  Cls (y·rv s·(rv e)^j) (rv t·(rv e)^k)`. `rvQuotExpansion_star` (the quotient step: pair the
+  minimal monomials, multiply by rv x, transitivity) gives `ResidualClassesNew_of_VFGen`:
+  `IsVFGen T + QuotExpansions S T e + Separated S e ⇒ every RV element of T is StarMem or rv 0`.
+  No `rv e ∈ S`, no inverse closure.
+* `QE/OldRVClaim.lean` (m1): the same "keep the factor" move for the old-`rv` branch:
+  `RatioInS` (the ratio form), `rvQuotExpansion_ratio`, `ResidualClassesRatio_of_VFGen` — the
+  RV-containment in ratio form with NO `VFInvClosedOn` and NO `KEqTop` — plus
+  `ResidualClasses_of_VFGen'` re-deriving the tree's `ResidualClasses` while dropping `KEqTop`, and
+  `ratio_of_residual` (the converse, at VF-generated `S`).
+  **Caveat recorded**: converting the ratio form back to the tree's class form still consumes
+  `VFInvClosedOn` (`ResidualClasses_of_Ratio` needs the inverse `s'` to eliminate the class
+  representative), so the precise claim is "the ratio form is `VFInvClosedOn`-free", not its
+  removal everywhere. A consumer that can accept the ratio form gets the hypothesis for free.
+* Stress: `not_separated_top` makes the ⊤-witness test of these hypotheses necessarily negative
+  (honestly so, not vacuously).
