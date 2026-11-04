@@ -1053,3 +1053,26 @@ r7 (the final assembly ledger: what must be proved for `HasQE`, as named Props w
      finite-satisfiability failure is gate-free.
   4. Honest residual: the residue/quantifier part of finite satisfiability is QE for ACVF itself —
      identified as such, not papered over.
+
+## smw2ox51x m2 (2026-11-04, accepted): a tree `sorry` ELIMINATED; the gate hypothesis corrected
+
+* **`Milestone0/Balls.lean` is now sorry-free** (applied in place and re-verified: exit 0, 0 errors,
+  0 `uses .sorry`, `infinite_boolComb_contains_openBall` axiom-clean). `Milestone0/Balls.lean:499`'s
+  frozen target — "an infinite Boolean combination of balls contains an open ball" — is PROVED
+  (from swarm m2's `Balls_target.lean`, differing from the tree file by exactly the proof block and
+  the theorem's proof; the STATEMENT is verbatim). Proof: normal forms (`rvBall_normal`: an
+  `rv`-ball is an open ball or a point; `IsBallN`), atoms as fibres of the membership-pattern map, an
+  infinite union of finitely many atoms has an infinite atom, and at a nonzero point every ball
+  containing it is a point (finitely many) or contains an open ball at it.
+  **Hypothesis finding**: `hne` is UNUSED (the theorem keeps its verbatim statement, so the
+  redundancy is documented, not exercised); `s.Infinite` is essential.
+  Tree sorry count: **19 → 18** (remaining: the 2 frozen Encoding targets, their 2 copies in
+  `Assembly_val`, `Sec3_frozen` 4, `Sec3_sat` 8, `TransferWS` 2).
+* `QE/Gate.lean` (m2, second file; 0 errors, axioms clean): `ShoenfieldQuote.lean` §5's hypothesis
+  `∀ N, ¬ SaturatedFS N` is **FALSE as written** — `saturatedFS_of_subsingleton` +
+  `paperGate_subsingleton_inhabited` show a subsingleton `LRV.Structure` satisfies `SaturatedFS`, so
+  that conditional theorem is vacuous. Corrected form: `NoSatModel := ∀ N ⊨ ACVF, ¬ SaturatedFS N`,
+  with `shoenfieldTestSat_iff_hasQE_of_noSatModel`, `noSatModel_of_forall_not`, and the dichotomy
+  `saturatedFS_of_satBridge_of_satRel`: `SatBridge ⇒ (no ACVF model is diagonally SatRel) ∨ (some
+  ACVF model is SaturatedFS)`. The §5 circularity route is therefore closed as stated and re-opened
+  only under the correct `NoSatModel` hypothesis.

@@ -491,15 +491,277 @@ theorem IsBoolCombOfBalls.diff {s s' : Set K} (hs : IsBoolCombOfBalls v s)
   rw [Set.sdiff_eq]
   exact hs.inter hs'.compl
 
-/-- The combinatorial workhorse behind every use of Definition 2.7 in the paper:
-an infinite Boolean combination of balls contains an open ball.  (Provable from
-`openBall_subset_or_subset` by choosing, at a point of the combination, the
-minimal ball containing it; left as a target here.) -/
+/- The combinatorial workhorse behind every use of Definition 2.7 in the paper:
+an infinite Boolean combination of balls contains an open ball.  Proved below. -/
+set_option autoImplicit false
+/-! ## 1. Every ball is an open ball, a closed ball, `univ` or a point
+
+`IsBall` also allows `rv`-balls.  At a nonzero point an `rv`-ball *is* an open ball
+(`rvBall_eq_openBall`), and an `rv`-ball is either empty or the `rv`-ball of one of its points, so
+every `rv`-ball is an open ball or a point.  We therefore work with the four normal forms below. -/
+
+/-- Balls in normal form: open ball, closed ball, the whole space, a point. -/
+def IsBallN (s : Set K) : Prop :=
+  (∃ a γ, s = openBall v a γ) ∨ (∃ a γ, s = closedBall v a γ) ∨
+    s = Set.univ ∨ (∃ a, s = pointBall a)
+
+/-- An `rv`-ball is empty or the open ball of radius `v a` around any of its points, unless that
+point is `0`, in which case it is the point `0`. -/
+theorem rvBall_normal (t : RV v) :
+    (∃ a γ, rvBall v t = openBall v a γ) ∨ (∃ a, rvBall v t = pointBall a) := by
+  by_cases h : ∃ a, a ∈ rvBall v t
+  · obtain ⟨a, ha⟩ := h
+    by_cases h0 : a = 0
+    · right
+      refine ⟨0, ?_⟩
+      have ht : t = rv v 0 := by rw [← ha, h0]
+      ext y
+      rw [mem_rvBall, mem_pointBall, ht, rv_zero, rv_eq_none_iff]
+    · left
+      refine ⟨a, v a, ?_⟩
+      rw [← rvBall_eq_openBall v h0, ← ha]
+  · push_neg at h
+    left
+    refine ⟨0, 0, ?_⟩
+    rw [openBall_zero]
+    ext y
+    simp only [mem_rvBall, Set.mem_empty_iff_false, iff_false]
+    exact h y
+
+/-- Every ball is in normal form. -/
+theorem isBallN_of_isBall {s : Set K} (hs : IsBall v s) : IsBallN (v := v) s := by
+  rcases hs with ⟨a, γ, rfl⟩ | ⟨a, γ, rfl⟩ | ⟨t, rfl⟩ | rfl | ⟨a, rfl⟩
+  · exact Or.inl ⟨a, γ, rfl⟩
+  · exact Or.inr (Or.inl ⟨a, γ, rfl⟩)
+  · rcases rvBall_normal t with ⟨a, γ, h⟩ | ⟨a, h⟩
+    · exact Or.inl ⟨a, γ, h⟩
+    · exact Or.inr (Or.inr (Or.inr ⟨a, h⟩))
+  · exact Or.inr (Or.inr (Or.inl rfl))
+  · exact Or.inr (Or.inr (Or.inr ⟨a, rfl⟩))
+
+/-! ## 2. A ball that is not a point contains an open ball at each of its nonzero-vicinity points -/
+
+theorem pos_val_of_ne {x a : K} (h : x ≠ a) : 0 < v (x - a) := by
+  rcases eq_or_ne (v (x - a)) 0 with h0 | h0
+  · exact absurd (v.zero_iff.mp h0) (sub_ne_zero.mpr h)
+  · exact lt_of_le_of_ne zero_le (Ne.symm h0)
+
+/-- If `x` lies in the ball `s` and `s` is not contained in `{x}`, then an open ball around `x` lies
+in `s`.  (`s = {x}` is exactly the excluded case: the point balls.) -/
+theorem exists_openBall_subset_of_mem {s : Set K} (hs : IsBallN (v := v) s) {x : K} (hx : x ∈ s)
+    (hnot : ¬ s ⊆ {x}) : ∃ γ, 0 < γ ∧ openBall v x γ ⊆ s := by
+  rcases hs with ⟨a, δ, rfl⟩ | ⟨a, δ, rfl⟩ | rfl | ⟨a, rfl⟩
+  · -- open ball
+    have hδ : 0 < δ := lt_of_le_of_lt (zero_le : (0 : Γ₀) ≤ v (x - a)) hx
+    refine ⟨δ, hδ, fun y hy => ?_⟩
+    rw [mem_openBall] at hy hx ⊢
+    exact lt_of_le_of_lt (v_sub_le_max v y x a) (max_lt hy hx)
+  · -- closed ball
+    by_cases hδ : δ = 0
+    · exfalso
+      apply hnot
+      have hxa : x = a := by
+        rw [hδ, closedBall_zero_eq_singleton] at hx
+        exact hx
+      intro y hy
+      rw [hδ, closedBall_zero_eq_singleton] at hy
+      exact hy.trans hxa.symm
+    · have hδpos : 0 < δ := lt_of_le_of_ne zero_le (Ne.symm hδ)
+      refine ⟨δ, hδpos, fun y hy => ?_⟩
+      rw [mem_openBall] at hy
+      rw [mem_closedBall]
+      exact le_trans (v_sub_le_max v y x a) (max_le (le_of_lt hy) hx)
+  · -- univ
+    exact ⟨1, zero_lt_one, fun y _ => Set.mem_univ y⟩
+  · -- point
+    exfalso
+    apply hnot
+    intro y hy
+    rw [mem_pointBall] at hy hx
+    exact hy.trans hx.symm
+
+/-- If `x` lies outside the ball `s`, then an open ball around `x` misses `s`. -/
+theorem exists_openBall_disjoint {s : Set K} (hs : IsBallN (v := v) s) {x : K} (hx : x ∉ s) :
+    ∃ γ, 0 < γ ∧ ∀ y, y ∈ openBall v x γ → y ∉ s := by
+  rcases hs with ⟨a, δ, rfl⟩ | ⟨a, δ, rfl⟩ | rfl | ⟨a, rfl⟩
+  · -- open ball
+    by_cases hδ : δ = 0
+    · refine ⟨1, zero_lt_one, fun y _ => ?_⟩
+      rw [hδ, openBall_zero]
+      exact Set.notMem_empty y
+    · have hδpos : 0 < δ := lt_of_le_of_ne zero_le (Ne.symm hδ)
+      have hxa : x ≠ a := by
+        rintro rfl
+        exact hx (by rw [mem_openBall]; simpa using hδpos)
+      have hge : δ ≤ v (x - a) := by
+        rw [mem_openBall] at hx
+        exact not_lt.mp hx
+      have hγpos : 0 < v (x - a) := lt_of_lt_of_le hδpos hge
+      refine ⟨v (x - a), hγpos, fun y hy hyb => ?_⟩
+      rw [mem_openBall] at hy hyb
+      have hle := v_sub_le_max v x y a
+      rw [v.map_sub_swap x y] at hle
+      exact absurd (max_lt hy (lt_of_lt_of_le hyb hge)) (not_lt.mpr hle)
+  · -- closed ball
+    have hxa : x ≠ a := by
+      rintro rfl
+      exact hx (by rw [mem_closedBall]; simpa using (zero_le : (0 : Γ₀) ≤ δ))
+    have hgt : δ < v (x - a) := by
+      rw [mem_closedBall] at hx
+      exact not_le.mp hx
+    refine ⟨v (x - a), lt_of_le_of_lt zero_le hgt, fun y hy hyb => ?_⟩
+    rw [mem_openBall] at hy
+    rw [mem_closedBall] at hyb
+    have hle := v_sub_le_max v x y a
+    rw [v.map_sub_swap x y] at hle
+    exact absurd (max_lt hy (lt_of_le_of_lt hyb hgt)) (not_lt.mpr hle)
+  · -- univ
+    exact absurd (Set.mem_univ x) hx
+  · -- point
+    have hxa : x ≠ a := by
+      rintro rfl
+      exact hx rfl
+    refine ⟨v (x - a), pos_val_of_ne hxa, fun y hy hyb => ?_⟩
+    rw [mem_pointBall] at hyb
+    subst hyb
+    rw [mem_openBall, v.map_sub_swap] at hy
+    exact lt_irrefl _ hy
+
+/-! ## 3. Atoms
+
+The atom of `x` for a finite family `b` is the set of points with the same membership pattern. -/
+
+/-- The atom of `x`: same membership pattern in the family `b`. -/
+def atom {ι : Type} (b : ι → Set K) (x : K) : Set K := {y | ∀ i, (y ∈ b i ↔ x ∈ b i)}
+
+theorem mem_atom_self {ι : Type} (b : ι → Set K) (x : K) : x ∈ atom b x :=
+  fun _ => Iff.rfl
+
+/-- **An infinite atom of a finite family of balls contains an open ball around any of its nonzero
+points.**  Each ball either contains the point (and is not a point, so it contains a ball there) or
+is at positive distance from it.  Finitely many positive radii have a positive minimum. -/
+theorem atom_contains_openBall {ι : Type} [Fintype ι] [Nonempty ι] {b : ι → Set K}
+    (hb : ∀ i, IsBall v (b i)) {x : K} (hx0 : x ≠ 0) (hinf : (atom b x).Infinite) :
+    ∃ γ, 0 < γ ∧ openBall v x γ ⊆ atom b x := by
+  classical
+  have key : ∀ i, ∃ γ : Γ₀, 0 < γ ∧
+      ((x ∈ b i → openBall v x γ ⊆ b i) ∧ (x ∉ b i → ∀ y, y ∈ openBall v x γ → y ∉ b i)) := by
+    intro i
+    by_cases hxi : x ∈ b i
+    · have hnot : ¬ b i ⊆ {x} := by
+        intro hsub
+        have hsub' : atom b x ⊆ {x} := fun y hy => hsub ((hy i).mpr hxi)
+        exact hinf (Set.Finite.subset (Set.finite_singleton x) hsub')
+      obtain ⟨γ, hγ0, hγsub⟩ :=
+        exists_openBall_subset_of_mem (isBallN_of_isBall (hb i)) hxi hnot
+      exact ⟨γ, hγ0, fun _ => hγsub, fun h => absurd hxi h⟩
+    · obtain ⟨γ, hγ0, hγ⟩ := exists_openBall_disjoint (isBallN_of_isBall (hb i)) hxi
+      exact ⟨γ, hγ0, fun h => absurd h hxi, fun _ => hγ⟩
+  let f : ι → Γ₀ := fun i => (key i).choose
+  have hf0 : ∀ i, 0 < f i := fun i => (key i).choose_spec.1
+  have hfmem : ∀ i, x ∈ b i → openBall v x (f i) ⊆ b i :=
+    fun i => (key i).choose_spec.2.1
+  have hfdis : ∀ i, x ∉ b i → ∀ y, y ∈ openBall v x (f i) → y ∉ b i :=
+    fun i => (key i).choose_spec.2.2
+  refine ⟨Finset.univ.inf' Finset.univ_nonempty f, ?_, ?_⟩
+  · exact (Finset.lt_inf'_iff Finset.univ_nonempty).mpr (fun i _ => hf0 i)
+  · intro y hy i
+    have hyle : y ∈ openBall v x (f i) := by
+      rw [mem_openBall] at hy ⊢
+      exact lt_of_lt_of_le hy (Finset.inf'_le f (Finset.mem_univ i))
+    by_cases hxi : x ∈ b i
+    · exact ⟨fun _ => hxi, fun _ => hfmem i hxi hyle⟩
+    · exact ⟨fun hyb => absurd hyb (hfdis i hxi y hyle), fun h => absurd h hxi⟩
+
+/-! ## 4. The target: an infinite finite Boolean combination of balls contains an open ball -/
+
+attribute [local instance] Classical.propDecidable
+
+/-- The atom of `x` is the fibre of the membership pattern over the pattern of `x`. -/
+theorem mem_atom_iff {ι : Type} (b : ι → Set K) (a y : K) :
+    y ∈ atom b a ↔ (fun i => decide (y ∈ b i)) = (fun i => decide (a ∈ b i)) := by
+  constructor
+  · intro h
+    funext i
+    exact decide_eq_decide.mpr (h i)
+  · intro h i
+    exact decide_eq_decide.mp (congrFun h i)
+
+/-- **The frozen target of `Milestone0/Balls.lean`.**  `IsBoolCombOfBalls` is a *finite* Boolean
+combination of balls (`Fintype ι`), so the family has finitely many atoms; an infinite union of
+finitely many sets has an infinite atom, and an infinite atom contains an open ball (§3).  The
+hypothesis `hne` of the frozen statement is *not* used and is not needed. -/
+theorem infinite_boolComb_contains_openBall_core {s : Set K}
+    (hs : IsBoolCombOfBalls v s) (hinf : s.Infinite) :
+    ∃ a γ, openBall v a γ ⊆ s := by
+  classical
+  obtain ⟨ι, hι, b, t, hb, ht⟩ := hs
+  -- adjoin one dumb ball so that the index type is nonempty; the atoms are unchanged
+  set b' : Option ι → Set K := fun o => o.elim Set.univ b with hb'
+  have hb'ball : ∀ o, IsBall v (b' o) := by
+    intro o
+    cases o with
+    | none => exact Or.inr (Or.inr (Or.inr (Or.inl rfl)))
+    | some i => exact hb i
+  -- some atom meeting `s` is infinite
+  have hex : ∃ p : Option ι → Bool, ({y : K | (fun o => decide (y ∈ b' o)) = p} ∩ s).Infinite := by
+    by_contra h
+    have hf : ∀ p, ({y : K | (fun o => decide (y ∈ b' o)) = p} ∩ s).Finite := by
+      intro p
+      exact Set.not_infinite.mp (fun hp => h ⟨p, hp⟩)
+    have hsub : s ⊆ ⋃ p : (Option ι → Bool),
+        ({y : K | (fun o => decide (y ∈ b' o)) = p} ∩ s) := by
+      intro x hx
+      exact Set.mem_iUnion.mpr ⟨(fun o => decide (x ∈ b' o)), rfl, hx⟩
+    have hU : (⋃ p : (Option ι → Bool),
+        ({y : K | (fun o => decide (y ∈ b' o)) = p} ∩ s)).Finite := by
+      have hfin := Set.Finite.biUnion (s := (Set.univ : Set (Option ι → Bool)))
+        (t := fun p => ({y : K | (fun o => decide (y ∈ b' o)) = p} ∩ s))
+        Set.finite_univ (fun p _ => hf p)
+      simpa using hfin
+    exact hinf (hU.subset hsub)
+  obtain ⟨p, hp⟩ := hex
+  -- an infinite set has a nonzero point
+  have hne0 : ∃ x : K, x ∈ ({y : K | (fun o => decide (y ∈ b' o)) = p} ∩ s) ∧ x ≠ 0 := by
+    by_contra h
+    have hall : ∀ x : K, x ∈ ({y : K | (fun o => decide (y ∈ b' o)) = p} ∩ s) → x = 0 := by
+      intro x hx
+      by_contra hx0
+      exact h ⟨x, hx, hx0⟩
+    exact hp (Set.Finite.subset (Set.finite_singleton 0) hall)
+  obtain ⟨x, hxF, hx0⟩ := hne0
+  -- the atom of `x` is that infinite fibre
+  have hatomx : atom b' x = {y : K | (fun o => decide (y ∈ b' o)) = p} := by
+    ext y
+    rw [mem_atom_iff b' x y, hxF.1]
+    exact Iff.rfl
+  have hFinf : (atom b' x).Infinite := by
+    rw [hatomx]
+    exact hp.mono Set.inter_subset_left
+  obtain ⟨γ, hγ0, hγsub⟩ := atom_contains_openBall hb'ball hx0 hFinf
+  -- the atom of a point of `s` lies in `s`
+  have hatoms : atom b' x ⊆ s := by
+    intro y hy
+    have hy' : (fun o => decide (y ∈ b' o)) = (fun o => decide (x ∈ b' o)) :=
+      (mem_atom_iff b' x y).mp hy
+    have hxa : t (fun i => decide (x ∈ b i)) = true := ht x |>.mp hxF.2
+    have hspec : (fun i => decide (y ∈ b i)) = (fun i => decide (x ∈ b i)) := by
+      funext i
+      have h := congrFun hy' (some i)
+      simpa [hb'] using h
+    exact (ht y).mpr (by rw [hspec]; exact hxa)
+  exact ⟨x, γ, fun z hz => hatoms (hγsub hz)⟩
+
+
+/-- **The frozen target of this file** (statement verbatim, proof complete): an infinite Boolean
+combination of balls contains an open ball.  The hypothesis `hne` is not needed. -/
 theorem infinite_boolComb_contains_openBall {s : Set K}
     (hne : ∀ a : K, ∃ γ, ∃ b : K, v (b - a) < γ)
     (hs : IsBoolCombOfBalls v s) (hinf : s.Infinite) :
-    ∃ a γ, openBall v a γ ⊆ s := by
-  sorry
+    ∃ a γ, openBall v a γ ⊆ s :=
+  infinite_boolComb_contains_openBall_core hs hinf
+
+#print axioms infinite_boolComb_contains_openBall
 
 end BoolCombLemmas
 
