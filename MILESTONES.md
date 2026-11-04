@@ -142,7 +142,13 @@ Open, in the paper's order:
    `NontrivialTransferWS Axioms.ACVF` follows, and `AllNontrivial Axioms.ACVF` is already proved.
 2. ~~**`QFRes2.qf2_cover`**~~ — **done**: extraction, soundness and the formula induction are all
    proved in `QE/QF2Cover.lean`, no `sorry`.
-3. ~~The remaining §3 item with a printed proof, `alg:ind:imag`~~ — **proved for every `t ∈ RV`**
+3. **OFF THE QE PATH** (source-checked): `alg:ind:imag`, `exchange` and `aclS:model` are in
+   `qe.tex` Section 4 (`\section{Minimality in ACVF}` starts at line 879; `exchange` is 918,
+   `aclS:model` 1177), i.e. *downstream* of quantifier elimination. The QE section is 547–878 and
+   its content is Lemmas 3.2–3.8, Remark 3.1 and Proposition 3.9. So the item below is a §4 result,
+   not progress on Theorem 2.3; the earlier claim that "`aclS:model` is what `prep` consumes" was
+   wrong. Recorded in `QE-PLAN.md`.
+   ~~The remaining §3 item with a printed proof, `alg:ind:imag`~~ — **proved for every `t ∈ RV`**
    (`QE/AclZero.lean`, green, axioms clean). `M5.acl_singleRV_zero` covers `t = rv 0` — the closed
    term `rv 0` is substituted for the single `RV` parameter, since a term of the language is not an
    `acl`-generator — and `M5.alg_ind_imag_all` is the case split against `M5.alg_ind_imag`. The one

@@ -3207,3 +3207,49 @@ nothing — the saturation was simply dropped when the field was written down.
 **Consequence for anyone proving `vfgen`**: the statement to prove is now the true one.  The
 saturation-free version is not provable, so a member who returns "reduced to the residual that `S`
 is VF-generated implies cardinality bounds" has found the defect, not a gap.
+
+## Critical-path correction: `exchange`, `alg:ind:imag` and `aclS:model` are Section 4, not Section 3
+
+Source-checked (member m1 of swarm `smw1kv9xm`, verified against `.ultramath/refs/qe.tex`):
+
+```
+547  \section{Quantifier elimination}\label{section:qe}
+577    \subsection{QE in ACVF}
+837    \subsection{QE in ACVF† and ACVF‡}
+879  \section{Minimality in ACVF}
+884    \subsection{C-minimality and some basic structural properties}
+       918  \begin{lem}\label{exchange}
+      1177  \begin{cor}\label{aclS:model}
+```
+
+So the QE section ends at 878, and `exchange` (918), `alg:ind:imag`, `aclS:model` (1177) are all in
+**Section 4, downstream of quantifier elimination**. The paper proves Theorem 2.3 from Proposition
+`lrv:mono:lift` (3.9), which uses only Section 3's lemmas plus Weispfenning — that is `prep`, `one`
+and `vfgen`, nothing else.
+
+Therefore:
+
+* The recorded claim that `aclS:model` is "the statement `prep` consumes" is **wrong**, and so is
+  "`alg:ind:imag` matters because `aclS:model` needs it" *as a QE statement*. Both are §4 results
+  (C-minimality and its consequences), needed for the paper's later sections, not for Theorem 2.3.
+* `QE/AclZero.lean` and the `alg:ind:imag` work are **off the QE critical path**. They remain correct
+  and remain useful for §4, but they are not progress towards the frozen target.
+* The QE critical path is exactly: Lemmas 3.2–3.8 (`prep`, `one`), Remark 3.1 + Weispfenning
+  (`vfgen`), and Shoenfield's test — over the frozen encoding, in `QE/Assembly_frozen.lean`.
+* The swarm direction I wrote as "§3's `aclS:model`" was mis-scoped by me, not by the member that
+  took it.
+
+Two independent refutations of a frozen Section 3 statement were also produced, from opposite ends:
+
+* `SP.AclConstOfFibres` (`QE/Sec3Infra.lean:462`), hence `swl_acl_const_of_fibres`, is **false** —
+  it omits `A.Nonempty`, and at `A = ∅` the hypothesis is vacuous while the conclusion `acl S x`
+  implies `iVF x`. Refuted independently by `smw1kv9xm` m1 (`SP.not_aclConstOfFibres`) and m3
+  (`swl_acl_const_of_fibres` vacuous at `A = ∅`). Repaired as `SP.AclConstOfFibresNonempty`.
+* `swl_effectiveness` / `swl_algebraic_balls_definable_centers` are refutable as frozen
+  (`not_hasCenters_of_nested`): the frozen `IsSetOfCenters` is not the paper's Definition 4.14, which
+  is a *function* on a set of balls. Third and fourth refutable §3 statement found.
+
+Also settled: the `SignInvariant` hypothesis that a port needed is an artifact of
+`Reduction_assembly.lean`'s pre-repair axiom copy, not of the mathematics — `rv(-x) = rv(x)` follows
+from the frozen `repairRV` (`leMulCompatFull`), and is proved outright in
+`.ultramath/smw1kqpdp/m6/RVCalc.lean` (`rv_neg_class`, `rv_neg_one_units`).
