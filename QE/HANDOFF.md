@@ -31,14 +31,24 @@ ShoenfieldTestSat    RESOLVED as transcription + gate audit (`QE/ShoenfieldQuote
                      discharge route is `paper_theorem_2_3_rel` at `relGate`; FINAL's input 1 is
                      DERIVED there (`shoenfieldTestSat_of_relLedger_gated`), and route assembly is
                      gate-polymorphic (`paper_theorem_2_3_of_gate H`)
-LedgerInput1P        ACFExtends at PaperHyp (Marker quote; algebraic half consumable
-                     via QE/KAlgClosedQuote.lean; universality half: smw2jkpn4 e2)
+LedgerInput1P        DISCHARGE FORM LANDED (`QE/SatQuotes.lean`, e2): Marker universality of
+                     saturated ACFs transcribed (`MarkerSaturatedFieldUniversal`); the only
+                     missing piece is named `ResidueInduced` and `acfExtends_of_universal_induced`
+                     proves quote + size (from PaperHyp) + `ResidueInduced` ⟹ the input —
+                     or bypassed entirely: `LedgerInput1P ⟸ LedgerInput5P` (`QE/QFRoute.lean`)
 LedgerInput2         HenselizationExists ∀ M — QUOTED, done (QE/M7Hensel.lean) ✓
 LedgerInput3P        ResidueStep at PaperHyp — REAL WORK (inputs 3; m8's exists_standing_superset
                      reduces its closure half to a theorem; embedding extension remains)
 LedgerInput4P        DivisibilityStep at PaperHyp — REAL WORK (input 4; PE DivisibleHullExists
                      quoted in ClassicalProps; Γ-divisibility API: smw2jkpn4 e7)
-LedgerInput5P        SaturationRealization at PaperHyp (Marker quote: smw2jkpn4 e2)
+LedgerInput5P        ANALYZED (`QE/SatReal.lean` + `QE/QFAudit.lean`, e2): ⟺ one-element atomic
+                     realization `QFSat` (satReal_iff_qfsat), ⟺ `Prop39Pair` (prop39Pair_iff_satReal —
+                     input 5 IS the pair-level target); at PaperHyp the residual is just
+                     `QFFinSat` (per-formula finite satisfiability — the compactness/case-lemma
+                     content), `ledgerInput5P_of_saturatedFS_finSat`; honest frontier route:
+                     `QE/QFRoute.lean`'s `paper_theorem_2_3_sat_of_qf` (Shoenfield + QFFinSat at
+                     PaperHyp + inputs 2/3/4 + one-step). QFFinSat is Lemmas 3.2–3.8's content:
+                     smw2k0btg f1/f2
 Hahn.OneStepPaper  ∀∀ PaperHyp → OneStepVFP — the ONLY surviving gate (QE/HahnObstruction.lean
                      machine-refutes `OneStepSizeFree`, and `OneStepSizeBounded` too: size cannot
                      repair the one-step, only saturation can); case-lemmas state: 3.2 ✓,

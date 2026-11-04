@@ -602,3 +602,26 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   (`lemma38_transfer`: algebraically-closed-in-L subfields + divisible value group + isometry σ ⇒
   transcendence of e,d + value transfer across `K(e) → K'(d)`), with a concrete `RatFunc ℚ` stress
   model (`inftyVQ_two`, `sameRV_not_implied_by_value`).
+
+## smw2jkpn4 e2 (2026-11-04, accepted): saturation transcribed — input 5 analyzed to its residual
+
+* `QE/SatQuotes.lean` (m2): Marker's universality/homogeneity of κ-saturated algebraically closed
+  fields transcribed (`SatAt`, `SatField`, `FieldUniversal`, `MarkerSaturatedFieldUniversal`,
+  `SameType`); the paper's input-1 route factors as quote + `ResidueInduced` (the only missing
+  piece, named) via `acfExtends_of_universal_induced`, the size side `#K(M) < κ` from `PaperHyp`.
+* `QE/SatReal.lean`: `SaturationRealization ⟺ QFSat` (one-element atomic realization), and at
+  `PaperHyp` pairs with `SaturatedFS` the ONLY residual is `QFFinSat` — finite satisfiability of
+  the pushed type per formula — `ledgerInput5P_of_saturatedFS_finSat`. The case lemmas 3.2–3.8
+  are precisely the QFFinSat-discharge mechanism: one-element steps iterated.
+* `QE/KOfBridge.lean`: `kOfHom` — a total L_RV embedding induces the residue-field ring hom:
+  `LedgerInput5P ⟹ LedgerInput1P`.
+* `QE/QFAudit.lean`: `prop39Pair_iff_satReal` — input 5 IS the pair-level Proposition 3.9
+  conclusion; `hasQE_of_ledgerInput5P` (Shoenfield + input 5 → HasQE). Combined with m8's
+  `prepStepP_iff_hullExtension`: the prep side is all monomorphism extension.
+* `QE/QFRoute.lean`: `paper_theorem_2_3_sat_of_qf` — the honest frontier:
+  Shoenfield + `QFFinSat`-at-PaperHyp + inputs 2/3/4 + one-step. (Seam noted: it keeps the ungated
+  `OneStepSizeFree`; the gated variant is one line via `ShoenfieldQuote.paper_theorem_2_3_of_gate`.)
+* Frontier state after e1+e2+e4: the remaining irreducible content is `QFFinSat`-at-PaperHyp —
+  i.e. case lemmas 3.4/3.6 + the separated-slot discharge (smw2k0btg f1/f2) — plus input 3/4
+  half-content and quote transcription (smw2k0btg f3/f4 alternatives), gated at `relGate`
+  per e1's resolution. Consistency (e6) runs orthogonal.
