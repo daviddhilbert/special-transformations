@@ -55,14 +55,13 @@ LedgerInput4P        DivisibilityStep at PaperHyp — Γ-divisibility side DONE 
                      no Prestel–Engler quote needed for this half; `iRVInv` is a choice witness,
                      so Γ(S) is a submonoid and `GammaHullInitialQ` is the right clamp form);
                      remaining content is the clamp + embedding, not the divisibility
-LedgerInput5P        ANALYZED (`QE/SatReal.lean` + `QE/QFAudit.lean`, e2): ⟺ one-element atomic
-                     realization `QFSat` (satReal_iff_qfsat), ⟺ `Prop39Pair` (prop39Pair_iff_satReal —
-                     input 5 IS the pair-level target); at PaperHyp the residual is just
-                     `QFFinSat` (per-formula finite satisfiability — the compactness/case-lemma
-                     content), `ledgerInput5P_of_saturatedFS_finSat`; honest frontier route:
-                     `QE/QFRoute.lean`'s `paper_theorem_2_3_sat_of_qf` (Shoenfield + QFFinSat at
-                     PaperHyp + inputs 2/3/4 + one-step). QFFinSat is Lemmas 3.2–3.8's content:
-                     smw2k0btg f1/f2
+LedgerInput5P        RESOLVED to its content: ⟺ `Prop39Sat` ⟺ at relGate `Input5R` ⟺ at gated
+                     pairs `QFFinSat` (QE/FinalAudit + QE/Prop39Decomp); the canonical discharge
+                     route is now `QE/Prop39Decomp.paper_theorem_rel_two : ShoenfieldTestRel →
+                     Input5R → HasQE Axioms.ACVF`, with `QFFinSat`-forms
+                     (`paper_theorem_rel_of_qffinsat`) as the proof-strategy halves; the gate MUST
+                     match the quote (`SatBridge` is what the mixed pairing needs — e1's finding,
+                     now machine-pinned by `extendsAt_rel_iff_input5R`)
 Hahn.OneStepPaper  ∀∀ PaperHyp → OneStepVFP — an intermediate gate only (OneStepCases/FinalRoute
                      consume it; the FINAL2 frontier does not). `QE/HahnAnatomy.lean` machine-checks
                      that it FAILS at Archimedean-pair configurations (`not_oneStepPaper_of_config`)
