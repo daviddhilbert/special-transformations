@@ -750,3 +750,25 @@ generation running; m4 residue-induction, m6 Hahn consistency, m8 non-vacuity st
   p6 separated-slot closure; p7 non-vacuity at relGate; p8 henselianity reconciliation; plus an
   m6-chosen direction assembling 3.7/3.8 into the CaseNewRV slot). No submissions yet.
 * smw2ku6gn: m4 ended (salvaged above); m6 (Hahn-series consistency) still running.
+
+## smw2ku6gn ENDED (exhausted, no accepted submissions) — salvage and the Hahn-model state
+
+* Board: g1 (case 3.4) and g2 (3.6-as-audit) directions produced nothing beyond what was already
+  merged; g3 (hull-collapse) delivered the Prop39Decomp refutations (merged); g5 (two value groups)
+  delivered ValueGroupBridge/BridgeStress/WireIn (merged); g6 (Hahn consistency) was mid-work at the
+  end; residue-induction direction delivered ResidueInduction (merged). All accepted artifacts were
+  merged judge-side across this session; the swarm itself closed with 0 formal acceptances because
+  its members expired without submitting — its output lives in the tree anyway.
+* `QE/HahnModel.lean` (m6, salvage, verified 0 errors, no sorry): a concrete Hahn-series model of
+  the frozen `L_RV` — carrier `VFT ⊕ RV` with `VFT = ℂ((t^ℚ))` (`HahnSeries ℚ ℂ`), `RV = Option (kfˣ × VG)`
+  (`none` = 0 = ∞), `rv x = (leadingCoeff, order)`; **the sort axioms are proved**: `model_sdUnits`,
+  `model_sdCover`, `model_sdDisjoint`, `model_sdKAdd`, `model_sdKNeg`, `model_sdKMul`,
+  `model_sortClosure`, `model_sortAxioms`. This is part 1 of the consistency witness; part 2 (the
+  algebraic axiom groups) is WIP — `.ultramath/smw2ku6gn/m6/F2.lean` (original, mid-edit) and
+  `.scratch2/repair/F2_wip.lean` (partially repaired: 4 known errors, three at `pUnits`-unfolding
+  sites) — NOT merged.
+* FINDING recorded in HahnModel's header (encoding-level, worth remembering): the order on `RV`
+  is forced by the frozen `rvUltrametric` to be `val t ≤ val s` with `val none = ⊤` (paper's ∞ on
+  top); the alternative reading used by `Milestone0/RVModel.lean` (`t ≤ s ↔ vrv s ≤ vrv t`)
+  satisfies `leTop`/`leClassOne` but FALSIFIES `rvUltrametric` — explicit counterexample
+  `x = 1 + t`, `y = -1` in `ℂ((t))`. Any future model construction must use the forced reading.
