@@ -3089,3 +3089,31 @@ for — is at `.scratch/AclZero_wip.lean` (log `.scratch/AclZero_wip.log`, 11 er
 syntactically `func rvZero fun _ => i.elim0`, so each needs `congr 1; funext i; exact i.elim0`).
 The proof structure is right and the reduction is the one described in `alg:ind:imag`'s header; only
 the term-level bookkeeping is unfinished.
+
+## Working method (author's instruction this session): sections done independently
+
+**Each section of the paper is done independently, assuming the *previous* sections as given.**  So a
+section's file carries the earlier sections' results as *explicit named hypotheses* (`Prop`-valued or
+structure fields, never axioms) and proves its own numbered items; the docstring of each hypothesis
+says which paper item it is.  This is the shape `QE/Sec3Infra.lean`, `QE/Sec4Dim.lean`,
+`QE/Sec4Polydisc.lean` and `QE/Sec4Pair.lean` already have, and it is what makes a section assignable
+to one worker without dragging the whole paper along.
+
+Applied so far: **§3** (`QE/Sec3_frozen.lean`, `Sec3_sat.lean`, `Sec3Infra.lean`,
+`AlgIndImag.lean`, `InfRVDefGam.lean`), **§4** (`Sec4Dim.lean`, `Sec4Categories.lean`,
+`Sec4Polydisc.lean`, `Sec4Pair.lean`), **§5** (`QE/Sec5.lean`, the scaffold: Definition 5.1's
+apparatus with 5.2/5.4/5.5 still statements).
+
+### `AclZero`: the `t = rv 0` case, parked with an exact diagnosis
+
+`.scratch/AclZero_wip.lean` (log `.scratch/AclZero_wip.log`) is the reduction
+`acl (singleRV (rv 0)) ⊆ acl (∅)` via `QE/SubstParam.lean`'s parameter substitution.  The mathematics
+is settled; the remaining obstruction is one Lean typing fact:
+
+> `Sum.inr i` in that context has type `Fin (SP.singleRV iRVZero hvz).n ⊕ Fin (SP.singleRV …).m`,
+> *not* `Fin 0 ⊕ Fin 1` — the projections of the `SP` record do not reduce syntactically — so the
+> parameter map `zeroMap` (whose domain is `Fin 0 ⊕ Fin 1`) does not apply, and neither `rw` nor
+> `simp` will rewrite under a term that is not type-correct at implicit transparency.
+
+The fix is `simp only [SP.singleRV]` (or a `show` at the reduced type) *before* the map is applied, at
+each of the four sites.  Recorded so that the next attempt starts there rather than rediscovering it.
