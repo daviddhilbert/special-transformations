@@ -528,3 +528,24 @@ Swarm `smw1vehvn` was already directed accordingly (henselization-existence as n
   (`GammaOf` vs `VFValued`'s `w`), e6 consistency witness (scoped Hahn-series ledger), e7
   Γ-divisibility API, e8 final route document. Banned overlaps: m7's OneStep shape and m8's
   Standing-T construction (smw2ioy2w still running them).
+
+## smw2ioy2w ENDED (2026-11-04, solved): 5 accepted + 1 salvaged; d6 anchored the Lemma 3.3 reduction
+
+* `QE/StandingHull.lean` + `QE/StandingHullRoute.lean` (m8, accepted): `standingHull S` is the
+  least, Zeroth-Order-constructible `Standing` superset — closure under Kˣ(M) and all n-th roots
+  of stage elements (roots from `StandingTree.gammaDivisible_top`), ω-union (`standing_iSup`),
+  minimality via `units_of_pow_units`; full closure-operator API (`standingHull_idem`,
+  `standingHull_top`, `standingHull_eq_self_iff ↔ Standing`). Route file:
+  **`prepStepP_iff_hullExtension`** — frozen Lemma 3.3 ⟺ every monomorphism `S ↪ N` extends to
+  the FIXED hull; `PrepStepSize_iff_hullExtension`, `paper_theorem_2_3_sat_of_hullExtension`,
+  and the cardinality stress test `hullExtension_forces_unitsN_size`. Explicitly NOT claimed
+  (correct): paper Lemma 3.3's `VF(S*) = VF(S)` and Γ-hull clauses.
+* Consequence for the route: `PrepStepPaper` (the §10b prep half) reduces to
+  `HullExtension`-at-PaperHyp-pairs, which is exactly the shape `SaturationRealization` supplies
+  (smw2jkpn4 e2) — the two may collapse into one transcription item; composition check pending.
+* Author ruling 2026-11-04 (third): Marker/Prestel–Engler quotations REMAIN HYPOTHESES of the
+  final theorem — "100% reliable math, harmless as axioms, but hypotheses they are if that is the
+  convention." It is.
+* Board leftovers: m7's `Transport.lean`/`HahnObstruction.lean` (OneStepPaper gate) delivered as
+  findings but never submitted; first-hand verification assigned to smw2jkpn4 e8. d8 consistency
+  witness abandoned empty; relaunched as smw2jkpn4 e6.

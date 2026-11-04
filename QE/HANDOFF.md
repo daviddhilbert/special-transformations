@@ -121,7 +121,7 @@ one-step, only saturation can).
   `Enc` + the main `QE/` modules live in `.scratch2/sec3/`; work there:
   `cd .scratch2/sec3 && LEAN_PATH=$PWD:$LEAN_PATH lean [-o X.olean] X.lean`.
 
-## smw2ioy2w (launched 2026-11-04, running): Γ/K infrastructure and the frontier
+## smw2ioy2w (2026-11-04, ENDED solved: 5 accepted + 1 salvaged): Γ/K infrastructure and the frontier
 
 Accepted and merged this session: **d1** (`QE/GammaGroup.lean`: `commGroupRVStar`,
 `KStar : Subgroup (RVStar M)`, quotient `CommGroup (RVStar ⧸ KStar)` — the paper's Γ(M) as a
@@ -145,10 +145,17 @@ congruences); removed the `w`/`hw` hypotheses `M6Syntactic`/`M6Wire` carried; it
 machine-checked FALSE (vacuous at VF-elements, value 0 not preserved by `+`) and the corrected
 forms were delivered — credited. Hazard note recorded (shared board f9): `VFType M` lacks
 `LeftDistribClass`/`RightDistribClass` instances, so `ring`/`mul_sub` fail there — prove
-multiplicative facts at the `M` level and transport by `Subtype.ext`. Still running: d2 (Γ order
-half, m2), d8 (OneStep quantifier shape / Hahn obstruction, m7). Unclaimed: d3 valuation bridge,
-d6 Standing T (≡ ledger inputs 3/4). Also re-verified: `QE/Assembly_val.lean` green and
-`hasQE_ACVF_val` axiom-clean — the L_val QE theorem stands.
+multiplicative facts at the `M` level and transport by `Subtype.ext`. Also accepted: **d6**
+(`QE/StandingHull.lean` + `QE/StandingHullRoute.lean`, m8): `standingHull S` — the LEAST
+`Standing` superset, built outright in M (closure-operator API, rigidity `units_of_pow_units`),
+and `prepStepP_iff_hullExtension`: frozen Lemma 3.3 ⟺ extending monomorphisms to the fixed hull;
+its VF/Γ-equality clauses of paper Lemma 3.3 are explicitly NOT claimed. Swarm end state: d2's
+order half salvaged and merged (see above); d8 consistency witness abandoned with no output
+(relaunched as smw2jkpn4 e6); m7's OneStep-shape files (`Transport.lean`,
+`HahnObstruction.lean`) delivered as findings, judge-verification assigned to smw2jkpn4 e8.
+Also re-verified: `QE/Assembly_val.lean` green and `hasQE_ACVF_val` axiom-clean — the L_val QE
+theorem stands. Author ruling 2026-11-04: Marker/Prestel–Engler quotations remain HYPOTHESES
+of the final theorem (the standing convention; the author notes they are 100% reliable math).
 
 ## What a new session should do first
 
