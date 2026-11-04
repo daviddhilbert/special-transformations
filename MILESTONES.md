@@ -1030,3 +1030,26 @@ endgame), r4 (3.5's surviving exponent-one branch), r5 (the quote-free lift of `
 frozen predicates — would eliminate EP 3.4.3 from 3.6), r6 (3.8's EP question + slot statement),
 r7 (the final assembly ledger: what must be proved for `HasQE`, as named Props with status), r8
 (non-vacuity / finite satisfiability of the Archimedean configuration's pushed type).
+
+## smw2ox51x m8 (2026-11-04, accepted): the Archimedean question determined; the frontier SPLITS
+
+* `QE/NonVacuity2.lean` (m8, r8; verified 0 errors, 24 axiom heads clean). The statement-level
+  question is settled as far as the tree allows:
+  1. **Both configurations contradict Archimedean-ness of their own SOURCE model**
+     (`not_archimedean_of_configHuge`, `not_archimedean_of_configTiny`): every firing pair has a
+     non-Archimedean source and an Archimedean target. Non-vacuity of the route therefore reduces to
+     the existence of a `SatRel` pair with an **Archimedean target and non-Archimedean source** —
+     not decidable in the tree (no ACVF model with non-Archimedean Γ; no `SatRel` pair at a model
+     target).
+  2. The configuration's **ordinal atoms are realised by ONE element in EVERY target**, Archimedean
+     or not (`huge/tiny_ordinal_core_in_target`, `huge_ordinal_atoms_realizable`) — so the failing
+     formula of `not_finSatAt_iff` is provably NOT ordinal; the value-group reading is refuted.
+  3. The ledger, all machine-checked: `RefutingConfig → ¬Input5R`, `→ ¬ExtendsHere`,
+     `→ ¬QFFinSat` (formula level), `→ ¬Archimedean source`. And the key refinement:
+     **`input5R_of_finSat_split`**: `Input5R` = `FinSatAtArchimedean` + `QFFinSat` at
+     **non-Archimedean targets**. So **the case lemmas 3.4–3.8 need be proved only at
+     non-Archimedean targets**, where the tree's Archimedean refutations do not fire; conversely a
+     `RefutingConfig` would falsify the whole input. `not_finSat_of_configTiny_gateFree`: the
+     finite-satisfiability failure is gate-free.
+  4. Honest residual: the residue/quantifier part of finite satisfiability is QE for ACVF itself —
+     identified as such, not papered over.
