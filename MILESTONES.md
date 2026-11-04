@@ -1145,3 +1145,26 @@ and merged (one WIP left behind):
 (their copies), `QE/Sec3_frozen.lean` 4, `QE/Sec3_sat.lean` 8, `QE/TransferWS.lean` 2.
 `Milestone0/Balls.lean` no longer appears — its sorry was eliminated in a clean build (the proof of
 `infinite_boolComb_contains_openBall` holds from scratch, not just incrementally).
+
+## smw2qpqe7 m2 (2026-11-04, accepted): RelNonUnit reduced; the slots' missing clamp diagnosed
+
+* `QE/NonUnitAssembly.lean` + `QE/NonUnitNOTES.md` (m2, u2; verified 0 errors, 26 axiom heads
+  clean):
+  - `relNonUnit_of_qffinsat` — `QFFinSat@relGate ⇒ RelNonUnit`;
+  - **`nonUnitSlot_of_extAlongStanding`** — the slot follows from monomorphism-extension along
+    `Standing` inclusions, a hypothesis that never mentions `m`, `¬iUnits` or `¬Separated`: the
+    non-unit slot has **no pure-`M` content**; the hull row is trivial (`nonUnitHull_holds`, `T = ⊤`,
+    costing exactly relGate's `SizeHyp`); `SlotTotalExt` isolated as the weakest realisation row;
+    sandwich with `SlotAtomic` (NonUnitSlot ⇒ SlotAtomic; SlotAtomic + `Standing (closure (S∪{m}))`
+    ⇒ NonUnitSlot).
+  - **THE DIAGNOSIS**: the `Γ`-clamp `M5Ledger.GammaHullInitial` (which `DivisibilityStep` uses to
+    forbid `T = ⊤`) is ABSENT from all four `M4Cases` slots, so their hull rows are trivially
+    satisfiable — the slot-level counterpart of `QE/FinalAudit.lean`'s ⊤-witness finding. Lemma 3.5's
+    content therefore belongs to the hull/`QFFinSat` row, and `ClampedNonUnitHull` (with the clamp;
+    satisfiable) is the paper-faithful restatement.
+  - Honest dead-end checks: at perturbation points that ARE slot points, `ResidualClasses`/RV-control
+    fail; `RVOldClass ⟺ ¬Separated`, so `Case35`'s branch restricts only by its conclusion;
+    `Bookkeeping`/`InterfaceClosure` need `Separated` and are inapplicable here.
+  - `paper_theorem_2_3_of_rel_parts_no_nonunit`: the other four parts + `QFFinSat@relGate` already
+    give `HasQE` — so `RelNonUnit` is strictly weaker than the realisation row.
+  - Non-vacuity: `exists_nonunit` (extracted from `axNontrivialRV`).
