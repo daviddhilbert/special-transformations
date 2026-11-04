@@ -2741,3 +2741,33 @@ input of the one route.  `theorem_2_3_of_three` already discharges the `rv` fiel
   actually belongs: as a *proof of `vfgen`*, not as a rival end-to-end route.
 * **Keep both families alive** (author's instruction this session), but the priority order is now:
   `ShoenfieldTest` → `prep` → `one` → `vfgen`, with the criterion family as the independent check.
+
+### The swap lemma exchange needs: Mathlib has no variable substitution
+
+Checked in the pinned Mathlib (`Mathlib/ModelTheory/Syntax.lean`): the only substitutions on
+`BoundedFormula` are
+
+```
+def subst  (φ : BoundedFormula α n) (f : α → L.Term β) : BoundedFormula β n      -- PARAMETERS only
+def relabel (φ : BoundedFormula α n) (g : α → β ⊕ Fin m) : BoundedFormula β m    -- parameters → params/new vars
+def castLE, liftAt, alls, ex                                                  -- no variable substitution
+```
+
+So there is **no** operation that substitutes a *variable* (`Fin n`), and therefore none that demotes a
+variable to a parameter — which is exactly what exchange needs.  The swap is: promote the last `VF`
+parameter to a second variable (`wellSorted_relabel` does this, it is in `QE/ParamBridgeRelabel.lean`),
+interchange the two variables, then demote the second variable back into the last `VF` parameter slot.
+The first step exists; steps two and three need a variable-level substitution that
+`Mathlib` does not provide.
+
+**So the swap lemma is a development, not a lemma**: a `BoundedFormula`/`Term` variable substitution
+`Bf α (n+1) → Bf (α ⊕ Fin 1) n` (or a general variable renaming), with
+
+* `TmSort` preservation under a *sort-preserving* variable substitution (term induction),
+* `WellSorted` preservation (formula induction, with the `GuardTrue` field transported — `InAntecedent`
+  and `GuardTrue` transport by their constructors, as `guardTrue_relabel` already shows for the
+  parameter case),
+* the realization lemma (a third induction, or a simultaneous one).
+
+That is the missing infrastructure for `swl_exchange` and for `alg:ind:imag`; it is independent of
+model theory and can be assigned as its own item.
