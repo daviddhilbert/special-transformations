@@ -77,7 +77,14 @@ Hahn.OneStepPaper  ∀∀ PaperHyp → OneStepVFP — an intermediate gate only 
                      not-separated / new-rv — `caseSeparated_of_RVControl`/`_of_ResidualClasses`
                      discharge forms; `QE/Case38Value.lean`; caveat recorded: `M5L.VFInvClosedOn` is
                      NOT Standing-derivable — no VF-inverse symbol — so the slots omit it);
-                     3.4 `lift:all:root` and 3.6 `lift:divisible:hull` open — smw2k0btg f1/f2
+                     **ATTRIBUTION CORRECTED** (`QE/Case34Slot.lean`, smw2mluv7 m1):
+                     `M5L.Separated` is FALSE at every unit (`not_separated_of_units`), so 3.4 AND
+                     3.6 are the `CaseNotSeparated` unit half, not `CaseSeparated`;
+                     `CaseSeparated` = the infinite-order configuration only;
+                     `caseNotSeparated_iff_unit_and_nonunit`; the paper's 3.4 statement is `Slot34`
+                     and `slot_of_liftAllRoot : Claim (⋆) ⇒ Slot34`; m4's `DivHullCover` refuted at
+                     S = ⊤, m = 1. Still open: 3.4's residual `root_lift`/`embed`/`class_control`,
+                     3.5's slot proof, 3.6's full proof — smw2mluv7 + smw2ngn1z
 ```
 
 The join is `prop39Sat_FINAL` + `hShoen`, three lines; the audit also proves each SizeHyp-gated

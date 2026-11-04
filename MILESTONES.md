@@ -772,3 +772,30 @@ generation running; m4 residue-induction, m6 Hahn consistency, m8 non-vacuity st
   top); the alternative reading used by `Milestone0/RVModel.lean` (`t ≤ s ↔ vrv s ≤ vrv t`)
   satisfies `leTop`/`leClassOne` but FALSIFIES `rvUltrametric` — explicit counterexample
   `x = 1 + t`, `y = -1` in `ℂ((t))`. Any future model construction must use the forced reading.
+
+## smw2mluv7 m1 (2026-11-04, accepted): the case-slot attribution is CORRECTED
+
+* `QE/Case34Slot.lean` (m1, verified 0 errors, 22 axiom heads clean): **`M5L.Separated` is false at
+  every unit** — `separated_imp_pow_not_cls_one` (test at x = y = 1: no positive power of `rv m`
+  may have the class of 1) + `not_separated_of_units` (a unit has `Cls (rv m) 1` at k = 1 via
+  `units_iff_le_one`). Consequences, all machine-checked:
+  * Lemma 3.4's `e ∈ U(M)` and Lemma 3.6's `e ∈ U(M)` both refute `Separated`
+    (`liftAllRoot_not_separated`, `liftTranscendental_not_separated`), so **3.4 and 3.6 are never
+    `CaseSeparated` configurations** — carrying both is inconsistent:
+    `slot34_at_caseSeparated_hypotheses_vacuous`;
+  * `CaseSeparated` (with `Separated`) is the infinite-order configuration only (Lemma 3.7's
+    hypothesis);
+  * `caseNotSeparated_iff_unit_and_nonunit`: `CaseNotSeparated` = unit half (3.4/3.6) ∪ non-unit
+    half (3.5) — a proof of only the `m^n = a` shape is provably incomplete;
+  * `DivHullCover` (m4's proposal) is REFUTED: at `S = ⊤`, `m = 1` there is no `HasDivHullConfig`
+    (the truncated separation fails at k = 1) — caveat: conditional on an embedding `⊤ ↪ N`.
+* Deliverables besides the finding: `MonicO`/`IsRootOf`/`LiftAllRoot` (paper hypotheses +
+  isolated residuals root_lift/embed/class_control), `Slot34` (the correct slot form, with
+  `¬Separated`), `slot_of_liftAllRoot : Claim (⋆) ⇒ Slot34` (T = closure(S ∪ {m}), `Standing` via
+  `standing_of_ClassControl`), `separated_of_pow_notin` (converse, pinned to `VFInvClosedOn`),
+  `unit_class_in_S`. Stress tests: `MonicO`/`IsRootOf` inhabited by F = X − 1, e = 1; slot
+  satisfiable at T = ⊤ (`slot_of_global_extension`).
+* `QE/OneStepCases.lean`'s slot comments corrected in the same commit (the "separated = 3.4/3.6"
+  attribution was rotated).
+* Residuals named by the file: `root_lift` (needs the hred + Polynomial↔vfEval transport),
+  `embed` (Engler–Prestel), `class_control` (fundamental inequality) — feeding 3.4's proof.

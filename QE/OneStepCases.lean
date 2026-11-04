@@ -124,9 +124,18 @@ abbrev CaseNewRV : Prop := M5.OneStepRVNew (M := M) (N := N)
 
 /-- The paper's case split for Lemmas 3.4–3.8 at the fixed pair `(M, N)`. -/
 structure Cases : Prop where
-  /-- Lemmas 3.4/3.6, separated. -/
+  /-- Lemmas 3.4/3.6, separated.
+  **ATTRIBUTION CORRECTION (QE/Case34Slot.lean, swarm smw2mluv7 m1, machine-checked):** this is NOT
+  where Lemma 3.4 belongs — 3.4's hypothesis `e ∈ U(M)` makes `M5L.Separated` FALSE
+  (`not_separated_of_units`), so the 3.4 data is never a `CaseSeparated` configuration
+  (`liftAllRoot_not_separated`, `slot34_at_caseSeparated_hypotheses_vacuous`). The separated slot is
+  the infinite-order configuration only (Lemma 3.7's hypothesis). Lemma 3.4 — and 3.6, also a unit
+  case — live in `CaseNotSeparated`, which therefore splits into a unit half (3.4/3.6) and a
+  non-unit half (3.5): `caseNotSeparated_iff_unit_and_nonunit`. A proof of only the `m^n = a` half is
+  provably incomplete. -/
   separated : CaseSeparated (M := M) (N := N)
-  /-- Lemma 3.5, not separated. -/
+  /-- Lemma 3.5, not separated — and, per QE/Case34Slot.lean, also Lemmas 3.4 and 3.6 (the unit
+  half): see `caseNotSeparated_iff_unit_and_nonunit`. -/
   notSeparated : CaseNotSeparated (M := M) (N := N)
   /-- Lemmas 3.7/3.8, `rv`-new. -/
   newRV : CaseNewRV (M := M) (N := N)
