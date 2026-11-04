@@ -2849,3 +2849,26 @@ works) and to rebuild the elementary lemmas on top.  **The general lesson, which
 rounds in this swarm:** a hypothesis-discharged "dimension" or "definability" that drops the paper's
 constraint is worse than an open lemma, because everything downstream is about a different object.
 Same species as `PaperStraightening` in m6's file.
+
+### §3 infrastructure accepted (m1), with a statement-level trap worth knowing
+
+`QE/Sec3Infra.lean` (516 lines, compiled here: 0 errors, no `sorry`, axioms clean):
+`SP.DefinableAt` (definability at a declared sort) with `DefinableVF`/`DefinableRV` as instances and
+Boolean closure; `IsBoolComb` as a Boolean algebra; the **rv-fibre layer** (`SP.rvFibre t = rv⁻¹(t) ∩
+VF` definable by `rv x = t`, over a sorted pair and over a bare `RV` parameter, and `iUnion_rvFibre`:
+the fibres partition `VF`); two C-minimality applications; and — the useful part —
+`acl:VF:transfer:acl:RV` **derived from §3's first lemma**, which is carried as the hypothesis
+`SP.AclConstOfFibres` in general-sort form with the corrected shape (`acl (S.extendParam (sn 0) a ha)
+x`).  So the two §3 targets I re-transcribed in `QE/Sec3_frozen.lean` earlier this session
+(`swl_acl_const_of_fibres`, `swl_acl_VF_transfer_acl_RV`) are now proved *modulo* the paper's
+compactness lemma, which is exactly the split the paper makes.
+
+**Two findings recorded in the file header:**
+
+1. **`IsClosedBall (SP.rvFibre t)` is false** — the encoding's `RV` order is a preorder, so an rv-fibre
+   is not a closed ball.  Consequence for the statements: `ball:RV:finite` (`paper.tex:731`) and
+   `rv:effectiveness` must not identify the paper's *rv-ball* with a closed ball; in this encoding
+   they are different objects.  (Checked by the member, not assumed.)
+2. `vrv`-graph definability at formula level needs a realisation lemma for the `LRVΓ` function
+   symbols — it sticks at `funMap (Sum.inr FnΓ.vrv)` under `Term.realize`.  Infrastructure, not
+   mathematics; recorded as the next `Γ`-side item.
