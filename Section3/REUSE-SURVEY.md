@@ -205,3 +205,40 @@ must contain a root. No auxiliary definable choice, saturation or extra
 characteristic assumption is used. Full compiler/type/axiom records now cover
 102 modules and 198 headlines. The remaining K-term normal form, RV exchange
 and Gamma-generation obligations are not supplied by these syntax lemmas.
+
+Value-fibre follow-up (November 5): re-audited `InfRVDefGam.lean` before reuse.
+Its uniform bound and C-minimality consequence are explicit hypotheses, so it
+is not imported as a proof of Lemma 3.15. Its generic counting construction
+had already been attributed and ported in `Counting`. The new proof derives
+both missing inputs: a finite Boolean ball basis has only finitely many
+balls avoiding zero, each contained in one RV class; zero-containing balls
+are radial. Positive natural multiples give infinitely many distinct RV
+classes at each nonzero value using the audited residue-characteristic-zero
+unit theorem. Pinned Mathlib finite images, cardinality comparisons and
+first-order finite counting finish the proof. The actual Gamma quotient and
+full representative preimage supply imaginary-set definability without a
+named section. `Sec3Fibre.fibre_one_infinite` concerns a VF-to-RV fibre, not
+an RV-to-Gamma fibre, and was unsuitable for the latter requirement.
+
+Remark 3.19 was checked against arXiv:1006.2467v1, printed page 7, lines
+411–414 in the extracted primary PDF. `Remark319Audit.signs` is an actual
+multiplicative subgroup of VF units, with point image {1,-1}; the complete
+original-base definability, non-ball assertion and inequality with the full
+valuation-unit group have checked types and only standard axioms. This is
+an obstruction to the printed unrestricted statement. No silent corrected
+classification or claim that Remark 3.19 is complete is introduced.
+The certificate now covers 111 integrated modules and 226 headlines.
+
+Additive-subgroup follow-up search (November 5, work still in scratch): native
+pinned Mathlib searches for valuation/AddSubgroup/ball and finite initial-set
+APIs, plus web discovery queries `Lean formalization C-minimal definable
+additive subgroups valued field balls`, `site:github.com lean4 valuation
+definable AddSubgroup ball` and the corresponding Mathlib GitHub query, found
+no directly usable formal proof in these searches. Mathematical expositions
+and unrelated discrete valuation formalizations are not checked dependencies.
+The existing broad catalog survey remains applicable; this focused pass did
+not repeat every catalog. The intended small bridge uses our already checked
+finite Boolean ball basis, natural-number units and RV equality criterion,
+plus Mathlib `Set.Finite.exists_minimal`/`exists_maximal`; the subgroup theorem
+is not assumed as a standard input. Compilation of these scratch additions
+will be recorded separately when available.

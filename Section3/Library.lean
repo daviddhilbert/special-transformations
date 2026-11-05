@@ -33,6 +33,8 @@ import Section3.ValueQuotient
 import Section3.ClosedBallQuotient
 import Section3.BallDefinablePoint
 import Section3.RVFibreConstancy
+import Section3.FiniteValueDefinability
+import Section3.Remark319Audit
 
 /-!
 # Checked Section 3 library

@@ -751,7 +751,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "NearestRootDefinability",
@@ -759,7 +759,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "EncodedBallGeometry",
@@ -767,7 +767,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "BallDefinablePoint",
@@ -775,7 +775,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "MixedPolynomialSyntax",
@@ -783,7 +783,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "MixedPolynomialSupport",
@@ -791,7 +791,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "MixedRootFree",
@@ -799,7 +799,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RVFibreConstancy",
@@ -807,11 +807,83 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "RVUnaryLift",
+      "source_sha256": "a8263d3f36d692e0e51269e697dac43229660e7a19446f4dd5584df50b393b0d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "FiniteBallBasis",
+      "source_sha256": "cd8b136d973ba24d144cd15464223f26e01dfde47679720feaa260222242a3a8",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "RadialBalls",
+      "source_sha256": "6c1d3b836bf2947f0c1b123e728b94c01b65d7a434103e6f08e2e97763264c48",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "AngularPattern",
+      "source_sha256": "e5b45929be2a38ad4b066c3f93b4b6e204a8e8551690fc454fb6f33c0cd20087",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "InfiniteValueFibres",
+      "source_sha256": "0093ecc06e68f420b37051ebd36818e650aef2b847709cd595dfcc58c0898195",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "FiniteValueFibres",
+      "source_sha256": "9570fcfc620b1149571a18e76a9cf79f60b45349491770cdf58782617b18d379",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "GammaDefinability",
+      "source_sha256": "11d9a658bdcb3380a5b29639291be68e40740660861f168ec070f59b1e9b6ac7",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "FiniteValueDefinability",
+      "source_sha256": "3399b8a0f0484628dc85367918b4bbb1ecfda27ce868e0a80dbbf38f3d5b6a3f",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "Remark319Audit",
+      "source_sha256": "db1c95345e9fb2c4dfa29527c40acf5f1209b204982226317eabdb8eb8389e26",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "c1d5ef6e64e0b26b780bc677a75fe43542760b350c84e5acf79dad79d5380abc",
+      "source_sha256": "2a93085374514181fee11b56638e019216ec3c50f764d8e3069eec9aa374ae95",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -819,7 +891,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "1645d24c77212855055e6c3d50e86c4e71c82c3b11013799310164ac4093e3fb",
+      "source_sha256": "898e8d536abb3394f451704948adb848b3dfc7a3474ec8bbf5adb8c2db8027d7",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -835,7 +907,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "102 integrated Section3 modules; matching compiler caches reused where indicated; fresh 198-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "111 integrated Section3 modules; matching compiler caches reused where indicated; fresh 226-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -1819,8 +1891,147 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.BooleanCombinations.finite_basis": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.closedDisc_zero_radial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.openDisc_zero_radial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ball_zero_radial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ball_avoiding_zero_rv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.DefinableAt.rv_preimage": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.DefinableAt.isBoolComb_balls": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rv_set_finite_angular_exceptions": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.positive_multiples_rv_injective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.infinite_gamma_fibre": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.finite_nonempty_values_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.finite_value_fibres_uniform_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaOf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.GammaDefinable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawValueFibres.relation_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawValueFibres.relation_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawValueFibres.relation_normalized_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawValueFibres.smallNonempty_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawValueFibres.fibre_image_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawValueFibres.smallNonempty_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.finite_nonempty_values_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.lemma_3_15": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.signs": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.signs_image": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.rawSigns_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.zero_not_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.rawSigns_not_ball": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.rawSigns_not_valuation_units": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "370aadae6b15d3394fd8c52cb84d01a4ce26e14de5e372c516a25bdeb21a5275"
+  "verifier_sha256": "ca8289d1ca2354d6ac976a8422743bc91a87c37284e2341da34675f8bed4fa12"
 }

@@ -146,6 +146,22 @@ headlines += ['Balls.nearestRoots_nonempty', 'Balls.nearestRoots_mem_closedDisc'
 explicit_types |= {'rv_difference_normalize', 'isBall_normalize', 'lemma_3_11',
     'mixed_finite_definable_obstacles', 'corollary_3_12'}
 
+headlines += ['BooleanCombinations.finite_basis', 'Balls.closedDisc_zero_radial',
+    'Balls.openDisc_zero_radial', 'ball_zero_radial', 'ball_avoiding_zero_rv',
+    'DefinableAt.rv_preimage', 'DefinableAt.isBoolComb_balls', 'rv_set_finite_angular_exceptions',
+    'Values.positive_multiples_rv_injective', 'Values.infinite_gamma_fibre',
+    'Values.finite_nonempty_values_finite', 'Values.finite_value_fibres_uniform_bound',
+    'Values.gammaOf', 'Values.GammaDefinable', 'RawValueFibres.relation_definable',
+    'RawValueFibres.relation_normalize', 'RawValueFibres.relation_normalized_definable',
+    'RawValueFibres.smallNonempty_definable', 'RawValueFibres.fibre_image_eq',
+    'RawValueFibres.smallNonempty_iff', 'Values.finite_nonempty_values_definable', 'lemma_3_15',
+    'Remark319Audit.signs', 'Remark319Audit.signs_image', 'Remark319Audit.rawSigns_definable',
+    'Remark319Audit.zero_not_mem', 'Remark319Audit.rawSigns_not_ball',
+    'Remark319Audit.rawSigns_not_valuation_units']
+explicit_types |= {'Values.GammaDefinable', 'RawValueFibres.relation_normalized_definable',
+    'lemma_3_15', 'Remark319Audit.signs_image', 'Remark319Audit.rawSigns_not_ball',
+    'Remark319Audit.rawSigns_not_valuation_units'}
+
 def qualify(h):
     return h if h.startswith(('SpecialTransformations.', 'ValOneEC.')) else 'SpecialTransformations.Section3.' + h
 env = os.environ.copy()
