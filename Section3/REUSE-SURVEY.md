@@ -242,3 +242,26 @@ finite Boolean ball basis, natural-number units and RV equality criterion,
 plus Mathlib `Set.Finite.exists_minimal`/`exists_maximal`; the subgroup theorem
 is not assumed as a standard input. Compilation of these scratch additions
 will be recorded separately when available.
+
+Additive subgroup and coset follow-up (November 5): implemented the focused
+route described above in the released Enc language. The affine sequence
+c+(n+1)b has pairwise distinct RV classes when v(c)<=v(b); pairwise differences
+have value v(b), using residue-characteristic-zero natural units. At most one
+term has a smaller absolute value. A finite ball basis then proves subgroup
+downward closure. The endpoint argument ports no external proof: it uses
+Mathlib's finite minimal/maximal elements and the elementary nesting of initial
+sets. No classification hypothesis is left in the exported theorem.
+Uniform polynomial support gives finite varying fibres for any partition into
+balls, then a checked translation/actual-additive-quotient bridge proves 3.18(1).
+
+For Gamma comparison, inspected pinned Mathlib
+`Algebra/GroupWithZero/Range.lean` (`ValueGroup₀.restrict₀_surjective`) and
+`RingTheory/Valuation/Basic.lean` (`restrict_inj`, `restrict_le_iff`,
+`restrict_eq_zero_iff`), and reused the pinned ACVF-QE
+`CanonicalRV.equivOfSameFibers`/`equivOfSameFibers_apply`. The resulting
+comparison and units equivalence are on the actual value quotient. The
+compatibility of RV multiplication and the reversal of inequalities are
+proved. The comparison is not used as a substitute for the still-open
+imaginary-parameter and Gamma-generation interfaces. All seven new modules
+have fresh compiler checks; the combined certificate covers 118 modules,
+251 actual headline type/axiom checks and a fresh root import.

@@ -162,6 +162,20 @@ explicit_types |= {'Values.GammaDefinable', 'RawValueFibres.relation_normalized_
     'lemma_3_15', 'Remark319Audit.signs_image', 'Remark319Audit.rawSigns_not_ball',
     'Remark319Audit.rawSigns_not_valuation_units'}
 
+headlines += ['InitialSegments.nested', 'InitialSegments.eq_basis',
+    'Balls.closedDisc_zero_downward', 'Balls.openDisc_zero_downward', 'ball_zero_downward',
+    'AdditiveBalls.multiples_value', 'AdditiveBalls.multiples_sub_value',
+    'AdditiveBalls.affine_rv_injective', 'AdditiveBalls.affine_small_finite',
+    'AdditiveBalls.affine_ball_finite', 'AdditiveBalls.subgroup_downward',
+    'AdditiveBalls.move_away', 'AdditiveBalls.subgroup_isBall', 'definable_additive_subgroup_isBall',
+    'BallFibreConstancy.mem_graph', 'BallFibreConstancy.finite_exceptions',
+    'AdditiveCosets.coset_discs', 'lemma_3_18_1',
+    'Values.valueEquiv', 'Values.valueEquiv_apply_vf', 'Values.valueEquiv_infinity',
+    'Values.valueEquiv_eq_zero', 'Values.valueEquiv_rv_le', 'Values.valueEquiv_rv_mul',
+    'Values.gammaUnitsEquiv']
+explicit_types |= {'definable_additive_subgroup_isBall', 'lemma_3_18_1',
+    'Values.valueEquiv', 'Values.gammaUnitsEquiv', 'Values.valueEquiv_rv_le'}
+
 def qualify(h):
     return h if h.startswith(('SpecialTransformations.', 'ValOneEC.')) else 'SpecialTransformations.Section3.' + h
 env = os.environ.copy()

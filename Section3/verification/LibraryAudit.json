@@ -815,7 +815,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FiniteBallBasis",
@@ -823,7 +823,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RadialBalls",
@@ -831,7 +831,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "AngularPattern",
@@ -839,7 +839,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "InfiniteValueFibres",
@@ -847,7 +847,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FiniteValueFibres",
@@ -855,7 +855,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "GammaDefinability",
@@ -863,7 +863,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FiniteValueDefinability",
@@ -871,7 +871,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "Remark319Audit",
@@ -879,11 +879,67 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "AdditiveRadial",
+      "source_sha256": "4764a7009c1dac9bf996e9ee56bfbbe848882625e0168cd8679b12ab46ca0769",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "BallInitial",
+      "source_sha256": "60faae3427c7eb5d64d58b4819eeec61590a4f9579dd3e36f51caa26fae2d8d5",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "InitialSegments",
+      "source_sha256": "744eddc24fb932f515162bd9063cc15af99efea533aa07bf47c7a2f6f2f37862",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "AdditiveClassification",
+      "source_sha256": "a758b12da572dbd164370360c9063026f892da228aa17292b9b3cb84ab9b8c63",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "BallFibreConstancy",
+      "source_sha256": "8f2ebf451e917b66e5c3013438f3e0b06a7f3b5acce02a39507fc8a45f5e1e81",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "AdditiveCosets",
+      "source_sha256": "c601308ba4d063fa83a493eeb29a6ffbacc87df2f786a785857d41df167ecc19",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "GammaValueEquiv",
+      "source_sha256": "6ccd9b62b51a8316d849e78865a7178925c756c8eab0c195b9a7e4b962d1bf39",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "2a93085374514181fee11b56638e019216ec3c50f764d8e3069eec9aa374ae95",
+      "source_sha256": "b0d2cbad4e830efd51e7d6eb9635630eebb3566c8c4a24e9973f2d7edc40924b",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -891,7 +947,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "898e8d536abb3394f451704948adb848b3dfc7a3474ec8bbf5adb8c2db8027d7",
+      "source_sha256": "9c60cd7a7cedee4a4f33cbea3a6804e780552486cb2984d37b427e747ff45c32",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -907,7 +963,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "111 integrated Section3 modules; matching compiler caches reused where indicated; fresh 226-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "118 integrated Section3 modules; matching compiler caches reused where indicated; fresh 251-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -2030,8 +2086,132 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.InitialSegments.nested": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.InitialSegments.eq_basis": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.closedDisc_zero_downward": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.openDisc_zero_downward": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ball_zero_downward": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveBalls.multiples_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveBalls.multiples_sub_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveBalls.affine_rv_injective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveBalls.affine_small_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveBalls.affine_ball_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveBalls.subgroup_downward": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveBalls.move_away": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveBalls.subgroup_isBall": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definable_additive_subgroup_isBall": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFibreConstancy.mem_graph": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFibreConstancy.finite_exceptions": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveCosets.coset_discs": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AdditiveCosets.lemma_3_18_1": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.valueEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.valueEquiv_apply_vf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.valueEquiv_infinity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.valueEquiv_eq_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.valueEquiv_rv_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.valueEquiv_rv_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaUnitsEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "ca8289d1ca2354d6ac976a8422743bc91a87c37284e2341da34675f8bed4fa12"
+  "verifier_sha256": "d5e6b9538a8c479a532c85a06dbff7b8a42ac14f8660e80bcda357a50040be78"
 }

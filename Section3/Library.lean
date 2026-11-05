@@ -35,6 +35,8 @@ import Section3.BallDefinablePoint
 import Section3.RVFibreConstancy
 import Section3.FiniteValueDefinability
 import Section3.Remark319Audit
+import Section3.AdditiveCosets
+import Section3.GammaValueEquiv
 
 /-!
 # Checked Section 3 library
