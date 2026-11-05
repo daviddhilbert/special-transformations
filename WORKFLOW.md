@@ -108,6 +108,13 @@ Stop at a requested handoff; otherwise continue the authorized objective.
 and manual dispatch after it is published to GitHub. Runs appear under
 **Actions**; commits themselves appear in the repository's commit history.
 
+The pinned QE release declares only its root module in Lake, although its
+proofs use sibling module names. `scripts/prepare_ci.py` registers all shipped
+proof modules as library roots in the CI checkout before the build. It checks
+the exact dependency revision, leaves every Lean source unchanged, and saves
+source hashes and the configuration change in the verification artifact.
+Review this workaround when updating the dependency pin.
+
 The workflow builds the pinned project root and audits the published QE
 headline types and axioms. It runs the Section 3 and Section 4 verifiers when
 they are present in the checked-out revision. It retains logs, audits and status

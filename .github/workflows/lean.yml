@@ -22,24 +22,34 @@ jobs:
       PYTHONUNBUFFERED: "1"
     steps:
       - name: Check out this revision
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
-      - name: Build the pinned project
-        id: build
+      - name: Set up Lean and cached Mathlib dependencies
+        id: setup
         uses: leanprover/lean-action@v1
         with:
           auto-config: "false"
-          build: "true"
+          build: "false"
           test: "false"
           lint: "false"
           use-mathlib-cache: "true"
+
+      - name: Register the pinned QE package's sibling modules
+        run: python3 scripts/prepare_ci.py
+
+      - name: Build the pinned project from source
+        id: build
+        shell: bash
+        run: |
+          mkdir -p .scratch/ci-verified
+          lake -R build 2>&1 | tee .scratch/ci-verified/Build.log
 
       - name: Audit published QE headline types and axioms
         id: foundation
@@ -77,7 +87,7 @@ jobs:
 
       - name: Retain verification evidence
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: lean-verification-${{ github.sha }}
           include-hidden-files: true
