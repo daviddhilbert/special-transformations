@@ -1,0 +1,111 @@
+LOCAL QE PROOF -- no GitHub writes
+
+Repository baseline: fa3867c686314cc1ad49bbaf8b0562c066d460b9.
+The requested refresh was performed at 2026-11-05 00:11:08 UTC.
+
+Current integration verification: PASSED on 2026-11-05 at 05:45 UTC
+(2026-11-04 at 21:45 America/Los_Angeles).
+All 86 modules passed, followed by a fresh combined import with exit code 0.
+The headline has no additional mathematical hypotheses. Its exact checked type
+is HasQE Axioms.ACVF, with no theorem arguments. All final axiom audits contain
+only propext, Classical.choice, and Quot.sound; no sorryAx or custom axioms.
+The previous 78-module, three-input result is retained below as history.
+
+Entry point: QE/LocalQE/Theorem23.lean
+  SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination
+Conclusion: HasQE Axioms.ACVF, using the exact definition in Encoding.lean:
+well-sorted input and output, arbitrary parameters and numbers of variables,
+and a single quantifier-free formula uniform over all models and assignments.
+
+The formerly quoted inputs are supplied by:
+  ProvedResidueClosure.provedResidueClosure
+    The existing ValOneEC.Johnson.isAlgClosed_residueField theorem.
+  ProvedACFExtension.markerACFSaturatedEmbeddingExtension
+    The existing pure ACF application of Johnson's criterion, extracted into
+    JohnsonACFGeometry, JohnsonACFPrime, and JohnsonACFMain, followed by the
+    generic QESaturatedExtension theorem. Covers all characteristics.
+  CountableQECriterion.fullQE_of_saturatedExtension
+    The proved countable-language saturated-model QE test. Downward
+    Lowenheim--Skolem reduces each existential test to a countable elementary
+    source. A nonprincipal ultrapower supplies a genuinely saturated elementary
+    target. Existing compactness supplies uniform QE. CanonicalCountable
+    proves countability of the actual RV language.
+    The arbitrary-language MarkerProposition4328 interface is not asserted
+    as a closed theorem and is not used by the new headline.
+  JohnsonValuedExtension.markerNotesProposition45
+    Previously connected: Johnson's ordinary ACVF QE gives valued-field
+    embedding extension, with exact language, model, subfield, and saturation
+    translations.
+
+External proof reuse:
+  CountableSaturatedExtension adapts the ordinary ultrapower construction in
+  Elliot Glazer's definable-saturated repository, commit
+  e683bba9e758323b43dd1d6206ed2f6fc9510f06, found through Palomar entry
+  PALOMAR-2026-09-19-000005, version 1. Ported from Lean 4.34.0-rc1 to 4.33.1.
+  Attribution, Apache-2.0 license, and NOTICE: vendor/definable-saturated/.
+  It realizes all finitely satisfiable one-variable types over countable
+  parameter sets, with arbitrary parameter maps. No continuum hypothesis,
+  forcing assumption, or cardinality bound on the extension is used.
+  The registry listing alone is not treated as a compiler verification.
+
+Proof map:
+  1. Extract the RV subgroup and residue subfield of an actual substructure
+     and the maps induced by its language embedding.
+  2. Interpret the residue field in the tagged model; prove saturation transfer
+     by translating formulas and finitely satisfiable types.
+  3. Extend the residue embedding using proved ACF QE; glue it to the old RV
+     group map after proving agreement on their intersection.
+  4. Construct a compatible VF subfield embedding representing every RV pair,
+     using residue algebraic/transcendental and finite/infinite value-degree
+     extensions and a maximal partial-field-map argument.
+  5. Apply ordinary ACVF extension derived from Johnson's QE; recover the
+     whole RV-language embedding.
+  6. Apply the proved countable-language QE criterion and translate canonical
+     totalizations back to the exact well-sorted target.
+
+No Preparation hypothesis remains. The maximal-map argument does not assume
+divisibility of the partial RV group or henselianity of the initial subfield.
+
+Author-confirmed language correction:
+The original transcription omitted RV inversion as a function. Encoding now
+names it, with inv(0)=0 and the nonzero inverse law, so generated substructures
+contain inverses. The QE sorry in Encoding was replaced by Theorem23Goal;
+the proof is downstream in Theorem23.lean. The separate C-minimality placeholder
+remains outside the QE proof's dependencies. Historical inverse-obstruction
+audit modules concern the earlier inverse-free transcription and are unused
+by the headline.
+
+Completed verification history (November 5, 2026 UTC):
+  03:23: 68-module RV theorem with four explicit standard inputs.
+  04:35: five LocalJohnson modules and both ordinary QE headlines; the original
+         Assembly_val prefix was independently checked.
+  05:11: 78-module RV theorem with three inputs after Johnson integration.
+  05:45: 86-module RV theorem with no additional mathematical hypotheses;
+         fresh combined import and all final signature/axiom audits passed.
+All had exit code 0 and final audits using only propext, Classical.choice,
+and Quot.sound, with Lean 4.33.1 and full Mathlib imports. These times fall on
+November 4 in America/Los_Angeles.
+
+Verification:
+With pinned Lean 4.33.1 on PATH and matching Mathlib package paths in LEAN_PATH:
+  python3 QE/LocalQE/verify.py
+The verifier stages shared Encoding as Enc, compiles all local QE and Johnson
+modules in dependency order, checks axiom audits, and imports everything
+together with fresh signature and axiom audits. Unchanged checked modules may
+be reused by source/dependency/compiler hashes; the combined audit is fresh.
+VERIFICATION.tsv and AXIOMS.txt record the last completed integration run.
+The eight newly checked modules were adopted from .scratch/remaining-inputs/
+only after successful compiler status, source equality, dependency/compiler
+fingerprints, log/axiom checks, and artifact-order checks. LocalAssembly and
+Theorem23 were then checked afresh, followed by the fresh combined import.
+Sources, logs, oleans, and manifest: .scratch/local-qe-check/.
+status.txt is 0 only after every module and the combined audit pass.
+Both .scratch/local-qe-check/status.txt and
+.scratch/remaining-integrated-verification.status currently report 0.
+
+The local verifier avoids the machine-specific Lake path /opt/mathlib. It
+checks this QE development and dependencies, not all older standalone snapshots
+or C-minimality. The default scaffold root does not import this entry point.
+
+All changes remain local. No push, commit, or remote coordination was performed.
+

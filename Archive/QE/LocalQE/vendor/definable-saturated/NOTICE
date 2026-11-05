@@ -1,0 +1,11 @@
+definable-saturated
+Copyright 2026 Elliot Glazer
+
+This project builds on the Lean 4 port and extensions of Flypitch contained in
+the public erdos501 dependency. Flypitch is Copyright 2019 The Flypitch Project
+and is distributed under the Apache License 2.0.
+
+The mathematical research and Lean implementation were developed with agent
+assistance. See formalization.yaml for provenance and review disclosures.
+The GPT-6 Astra output "Small-index subgroups of the automorphism group of a
+Cohen algebra" was provided to the project by Jason Chen.

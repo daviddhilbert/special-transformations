@@ -1,0 +1,22 @@
+JohnsonACF.hasQEb : QECriterion.HasQEb ACFValidation.acf
+'JohnsonACF.hasQEb' depends on axioms: [propext, Classical.choice, Quot.sound]
+ProvedResidueClosure.provedResidueClosure : ResidueEmbeddingExtension.EPAlgebraicallyClosedResidue
+'ProvedResidueClosure.provedResidueClosure' depends on axioms: [propext, Classical.choice, Quot.sound]
+ProvedACFExtension.markerACFSaturatedEmbeddingExtension : ResidueEmbeddingExtension.MarkerACFSaturatedEmbeddingExtension
+'ProvedACFExtension.markerACFSaturatedEmbeddingExtension' depends on axioms: [propext, Classical.choice, Quot.sound]
+JohnsonValuedExtension.markerNotesProposition45 : ValuedFieldExtension.MarkerNotesProposition45
+'JohnsonValuedExtension.markerNotesProposition45' depends on axioms: [propext, Classical.choice, Quot.sound]
+CountableSaturatedExtension.exists_saturated_elementary_extension : ∀ (L : FirstOrder.Language) [Countable L.Symbols]
+  (M : Type) [inst : L.Structure M] [Nonempty M],
+  ∃ N sN, MarkerBridge.SatAt L N (Order.succ Cardinal.aleph0) ∧ Nonempty (L.ElementaryEmbedding M N)
+'CountableSaturatedExtension.exists_saturated_elementary_extension' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@CountableQECriterion.fullQE_of_saturatedExtension : ∀ {L : FirstOrder.Language} [Countable L.Symbols] {T : L.Theory},
+  Nonempty (L.Functions 0) → MarkerBridge.SaturatedEmbeddingExtension T → MarkerBridge.FullQE T
+'CountableQECriterion.fullQE_of_saturatedExtension' depends on axioms: [propext, Classical.choice, Quot.sound]
+SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination : SpecialTransformations.Milestone0.HasQE
+  SpecialTransformations.Milestone0.Axioms.ACVF
+'SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

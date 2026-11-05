@@ -1,0 +1,9 @@
+JohnsonACF.hasQEb : QECriterion.HasQEb ACFValidation.acf
+'JohnsonACF.hasQEb' depends on axioms: [propext, Classical.choice, Quot.sound]
+hasQEb_ACVF_val : QECriterion.HasQEb ValPM.ACVF_val
+'hasQEb_ACVF_val' depends on axioms: [propext, Classical.choice, Quot.sound]
+SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination : SpecialTransformations.Milestone0.HasQE
+  SpecialTransformations.Milestone0.Axioms.ACVF
+'SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

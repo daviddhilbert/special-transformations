@@ -1,57 +1,65 @@
-# special-transformations
+# Special transformations in algebraically closed valued fields
 
-Lean 4 formalization of:
+Yimu Yin, APAL (2010), [arXiv:1006.2467](https://arxiv.org/abs/1006.2467).
 
-> Yimu Yin, **Special transformations in algebraically closed valued fields**,
-> Annals of Pure and Applied Logic (2010). arXiv:1006.2467.
+This repository is now a thin coordination project for formalizing the paper
+section by section. The completed ACF/ACVF/RV quantifier-elimination proofs
+live in [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE), pinned here at
+`f3ef4ee679f921079aa8f742a2807a9cc724d2d6`.
 
-This is the **paper repository**. Reusable, paper-independent background belongs in
-the separate foundation repository [`hilbert-mathlib`](https://github.com/daviddhilbert/hilbert-mathlib).
+## Continue here
 
-## Environment
+Read [Section3/HANDOFF.md](Section3/HANDOFF.md) in the next session. Its scope
+is **all of Section 3 and the material in Section 2 after Theorem 2.3**.
+QE is finished and is a dependency of this work.
 
-- Lean 4.33.1, Mathlib prebuilt read-only at `/opt/mathlib`.
-- `lakefile.toml` depends on Mathlib by path, so builds use the VM's prebuilt
-  Mathlib and do not rebuild it.
-- `.lake/packages` is populated on first build (about 400 MB of dependency
-  sources; no Mathlib oleans are downloaded).
-
-## Layout
-
-| Path | Purpose |
+| Folder | Scope |
 | --- | --- |
-| `SpecialTransformations.lean` | Library root, imports all paper modules |
-| `SpecialTransformations/Basic.lean` | `RV = Kˣ/(1+M)`, `rv : K → RV` |
-| `SpecialTransformations/Language.lean` | The language `L_RV`, theory `ACVF_S(0,0)` |
-| `SpecialTransformations/Definable.lean` | Definable sets, balls, C-minimality |
-| `SpecialTransformations/Dimension.lean` | `dimVF`, `dimRV`, `dimfib` |
-| `SpecialTransformations/Categories.lean` | `VF[k,·]`, `RV[k,·]`, Grothendieck semigroups, `L` |
-| `SpecialTransformations/SpecialBijection.lean` | RV-pullbacks, special bijections |
-| `SpecialTransformations/Hensel.lean` | Hensel, lifting functions, Theorem 7.6 |
-| `SpecialTransformations/Differentiation.lean` | Non-archimedean derivatives and Jacobians |
-| `SpecialTransformations/VolumeForms.lean` | Volume-form categories, Section 10 |
-| `SpecialTransformations/Main.lean` | Target theorem list and formal status |
-| `Milestone0/` | Language decision and artifacts — start at `Milestone0/DECISION.md` |
+| [Section3/](Section3/README.md) | Next task; structural properties and remaining Section 2 preliminaries |
+| [Section4/](Section4/README.md) | Dimensions, definable categories, and Grothendieck constructions |
+| Section5/ | RV-pullbacks and special bijections |
+| Section6/ | Henselian-field QE and descent |
+| Section7/ | Lifting functions |
+| Section8/ | Further structural properties |
+| Section9/ | Differentiation |
+| Section10/ | Categories with volume forms |
+| [Archive/](Archive/README.md) | Older QE campaign, model-building snapshots, scaffolds, and historical notes |
 
-## Build
+The relocated section files are **legacy candidates**, not a new verified
+section library. Their proofs, hypotheses, and old headers need auditing
+against the paper. No Section 3 or Section 4 completion is claimed.
 
-```bash
+## Build and inspect
+
+Lean 4.33.1 and the matching Mathlib revision are pinned. `lake build` builds
+the coordination root, which imports the completed `ACVFQE` library. Legacy
+section snapshots are deliberately not imported into that root automatically.
+
+```sh
+lake exe cache get
 lake build
-make check FILE=SpecialTransformations/Basic.lean
-make sorry
-make milestone0   # elaborate the standalone Milestone 0 artifacts
+python3 Archive/inspect_legacy.py --check-moves
+python3 Archive/inspect_legacy.py --plan Section3/Sec3Fibre.lean
 ```
 
-## Formalization status
+[Archive/MOVE-INDEX.json](Archive/MOVE-INDEX.json) records original paths,
+new paths, and SHA-256 hashes. The reorganization preserved every moved file
+byte for byte. Old paths and build instructions inside historical comments
+can be resolved through that index. The earlier Makefile and project config
+are preserved under `Archive/History/`.
 
-The repository contains the **statement-level scaffold** in
-`SpecialTransformations/` (target table, dependency order, the first algebraic
-definition `RV`), and the real work in `Milestone0/` and `QE/`: the frozen encoding
-of `L_RV`/`ACVF` with Theorems 2.3 and 2.8 as statements, ten accepted model-building
-snapshots, and the quantifier-elimination assembly. `MILESTONES.md` is the verified
-per-milestone status (file counts, error and `sorry` counts, what each milestone still
-lacks); `HANDOFF.md` is the plan, `QE-PLAN.md` the chronological record.
+The new root import and QE headline audits passed under the pinned Lake
+environment using existing checked dependency artifacts. See
+[cleanup checks](Archive/REORGANIZATION-CHECK.json) for the precise scope;
+the legacy section proofs were not recompiled during this reorganization.
+
+The section folders are ordinary subdirectories of this repository. No nested
+Git repository or submodule was added. The author chose this layout over the
+newer OpenMathOS changes; the pre-cleanup remote tip is retained on
+`codex/pre-section-layout-06c840f` and in the merge history.
 
 ## License
 
-MIT.
+Project code retains the MIT license declared by the original project.
+External code retains its own notices; ACVF-QE includes an attributed
+Apache-2.0 ultrapower adaptation. Preserve those notices when reusing it.

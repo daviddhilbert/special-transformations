@@ -1,0 +1,712 @@
+{
+  "kind": "static source inventory, not a proof audit",
+  "files": [
+    {
+      "old": "QE/AclFibres.lean",
+      "new": "Section3/AclFibres.lean",
+      "sha256": "6adf42ef14c14bb50b8c89517ab923850f8942df2c025a53205fb2d7cf1a336a",
+      "current_sha256": "6adf42ef14c14bb50b8c89517ab923850f8942df2c025a53205fb2d7cf1a336a",
+      "imports": [
+        "Sec3Infra"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/AclZero.lean",
+      "new": "Section3/AclZero.lean",
+      "sha256": "d3414a3b4e9affbd638e529cf7b6588b78796810f63e70b1e9b5b8c106131939",
+      "current_sha256": "d3414a3b4e9affbd638e529cf7b6588b78796810f63e70b1e9b5b8c106131939",
+      "imports": [
+        "AlgIndImag",
+        "SubstParam"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/AlgIndImag.lean",
+      "new": "Section3/AlgIndImag.lean",
+      "sha256": "7b48835fc4206d5f1d205b117de9cc991f0a64b2f8f4b632cbddf8acf2f393c3",
+      "current_sha256": "7b48835fc4206d5f1d205b117de9cc991f0a64b2f8f4b632cbddf8acf2f393c3",
+      "imports": [
+        "Sat",
+        "Sec3Frozen"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/BallSec3.lean",
+      "new": "Section3/BallSec3.lean",
+      "sha256": "197c957adb8a03fa1d130daaaf3a9089024efd3f04a4ebea5378deceeea4a548",
+      "current_sha256": "197c957adb8a03fa1d130daaaf3a9089024efd3f04a4ebea5378deceeea4a548",
+      "imports": [
+        "Enc",
+        "MulNormalForm"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Compose.lean",
+      "new": "Section4/Compose.lean",
+      "sha256": "198ac942e502bb62d83d110fa4c5c70d6021e2d0b403c474f26f2470c887ead1",
+      "current_sha256": "198ac942e502bb62d83d110fa4c5c70d6021e2d0b403c474f26f2470c887ead1",
+      "imports": [
+        "SubstVar",
+        "ExSortedG"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Exchange.lean",
+      "new": "Section3/Exchange.lean",
+      "sha256": "498410675ed8625e45f6efeba86976f0042506334efc704dbbd5dfa5ab276c85",
+      "current_sha256": "498410675ed8625e45f6efeba86976f0042506334efc704dbbd5dfa5ab276c85",
+      "imports": [
+        "Sat",
+        "Sec3Frozen",
+        "AlgIndImag",
+        "SubstVar",
+        "ParamBridgeRelabel",
+        "ExSortedG"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Fibre.lean",
+      "new": "Section4/Fibre.lean",
+      "sha256": "e401c6e9acda134ef83738a014cbfc0cc036da40e1a5086f48f4b9f541207d86",
+      "current_sha256": "e401c6e9acda134ef83738a014cbfc0cc036da40e1a5086f48f4b9f541207d86",
+      "imports": [
+        "Compose",
+        "Sec4Polydisc"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/InfRVDefGam.lean",
+      "new": "Section3/InfRVDefGam.lean",
+      "sha256": "98a452042d165e2762b695733c6c47eff47e054259b3f8e73f66432c9a1a521b",
+      "current_sha256": "98a452042d165e2762b695733c6c47eff47e054259b3f8e73f66432c9a1a521b",
+      "imports": [
+        "Enc"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/M3AclField.lean",
+      "new": "Section3/M3AclField.lean",
+      "sha256": "c5987068f7051739de214c53c7834fb00aa5c3f76aae3f0c42e6f8f791b62092",
+      "current_sha256": "c5987068f7051739de214c53c7834fb00aa5c3f76aae3f0c42e6f8f791b62092",
+      "imports": [
+        "Enc",
+        "Sat",
+        "Sec3Frozen",
+        "VFField",
+        "SubstVar",
+        "ExSortedG"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/M6Polydisc.lean",
+      "new": "Section4/M6Polydisc.lean",
+      "sha256": "86d490e8b7d32b38a55a18e643e9c1f015eadf9054f18d67795d31f6d1d3d906",
+      "current_sha256": "86d490e8b7d32b38a55a18e643e9c1f015eadf9054f18d67795d31f6d1d3d906",
+      "imports": [
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/M7Centres.lean",
+      "new": "Section3/M7Centres.lean",
+      "sha256": "ba332eb3b75e2a4049f006f1e7d63c4c96abb2ea84fb5ec291091a0eafc31251",
+      "current_sha256": "ba332eb3b75e2a4049f006f1e7d63c4c96abb2ea84fb5ec291091a0eafc31251",
+      "imports": [
+        "Sec3Sat",
+        "BallSec3"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/M8FinImage.lean",
+      "new": "Section3/M8FinImage.lean",
+      "sha256": "d9319e6c203581f3450c58533923d46c4e4dae265fa15348ccb89e5fd242e763",
+      "current_sha256": "d9319e6c203581f3450c58533923d46c4e4dae265fa15348ccb89e5fd242e763",
+      "imports": [
+        "Enc",
+        "Sec3Frozen",
+        "RVCalc"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/M8ProjectRV.lean",
+      "new": "Section3/M8ProjectRV.lean",
+      "sha256": "be763addd7c36dfc60e1142cf024188df2f68f619c28280f92912de3e4d3a062",
+      "current_sha256": "be763addd7c36dfc60e1142cf024188df2f68f619c28280f92912de3e4d3a062",
+      "imports": [
+        "M8FinImage",
+        "Sec3Frozen",
+        "RVCalc",
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/M8ProjectRVN.lean",
+      "new": "Section3/M8ProjectRVN.lean",
+      "sha256": "79f95124eaea01700adda83e70038946c4acbea55848cc40b61eeacf69dd4615",
+      "current_sha256": "79f95124eaea01700adda83e70038946c4acbea55848cc40b61eeacf69dd4615",
+      "imports": [
+        "M8ProjectRV"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Proj.lean",
+      "new": "Section4/Proj.lean",
+      "sha256": "1eb72e8b1bbac127562460ad175dab8b6427be16b17d1771eca4c2f714642825",
+      "current_sha256": "1eb72e8b1bbac127562460ad175dab8b6427be16b17d1771eca4c2f714642825",
+      "imports": [
+        "Compose"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec10.lean",
+      "new": "Section10/Sec10.lean",
+      "sha256": "2dbd205198d5b0cab21f8f7d731bc6bfa5752530414bda55ee3b29d9b32a6bd0",
+      "current_sha256": "2dbd205198d5b0cab21f8f7d731bc6bfa5752530414bda55ee3b29d9b32a6bd0",
+      "imports": [
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec10RVVol.lean",
+      "new": "Section10/Sec10RVVol.lean",
+      "sha256": "c3160a86f0c46bc82a6884e99c0bc4239f4ea0605054e3f2291aaaf227f2630d",
+      "current_sha256": "c3160a86f0c46bc82a6884e99c0bc4239f4ea0605054e3f2291aaaf227f2630d",
+      "imports": [
+        "Sec4Categories",
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3_draft.lean",
+      "new": "Section3/Sec3_draft.lean",
+      "sha256": "276091b2a62dea49dd730ae5adf235a64789eac52e50428b78be884d9caef4c1",
+      "current_sha256": "276091b2a62dea49dd730ae5adf235a64789eac52e50428b78be884d9caef4c1",
+      "imports": [
+        "Enc"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3_frozen.lean",
+      "new": "Section3/Sec3_frozen.lean",
+      "sha256": "122bbd050a2896f752b065f9e1968ef872c043e10cf23d00c1755772b9174d20",
+      "current_sha256": "122bbd050a2896f752b065f9e1968ef872c043e10cf23d00c1755772b9174d20",
+      "imports": [
+        "Enc"
+      ],
+      "placeholder_tokens": 4,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3_sat.lean",
+      "new": "Section3/Sec3_sat.lean",
+      "sha256": "8690d5786da45d27ec1268acc409a2bdffd62d5f899ef992746a786efd2b0edc",
+      "current_sha256": "8690d5786da45d27ec1268acc409a2bdffd62d5f899ef992746a786efd2b0edc",
+      "imports": [
+        "Sat",
+        "Sec3Frozen"
+      ],
+      "placeholder_tokens": 8,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3Average.lean",
+      "new": "Section3/Sec3Average.lean",
+      "sha256": "e72b2e538db5c3f591b7ddfb0380af4eae99cdc42be2dfc8156d2eb2db3b29be",
+      "current_sha256": "e72b2e538db5c3f591b7ddfb0380af4eae99cdc42be2dfc8156d2eb2db3b29be",
+      "imports": [
+        "VFValued"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3Corrected.lean",
+      "new": "Section3/Sec3Corrected.lean",
+      "sha256": "dccde5bb493222d5b1692a5602a093c475676d661c156228c51cd27c1299cce0",
+      "current_sha256": "dccde5bb493222d5b1692a5602a093c475676d661c156228c51cd27c1299cce0",
+      "imports": [
+        "Sec3Infra",
+        "AclFibres"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3Count.lean",
+      "new": "Section3/Sec3Count.lean",
+      "sha256": "8ea033da2b2581c3ebb57264258b4a797526e872684ed1e12790db6119668d87",
+      "current_sha256": "8ea033da2b2581c3ebb57264258b4a797526e872684ed1e12790db6119668d87",
+      "imports": [
+        "Sec3Infra",
+        "SubstVar",
+        "ExSortedG",
+        "UniformCover"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3Fibre.lean",
+      "new": "Section3/Sec3Fibre.lean",
+      "sha256": "8e78b5e2e944f7b409dc59b699efd77ee8b5f2842413763fb1f0eca20cc8fbf4",
+      "current_sha256": "8e78b5e2e944f7b409dc59b699efd77ee8b5f2842413763fb1f0eca20cc8fbf4",
+      "imports": [
+        "AclZero",
+        "MulNormalForm",
+        "RVCalc",
+        "VFField",
+        "Sat"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3FunIntoPower.lean",
+      "new": "Section3/Sec3FunIntoPower.lean",
+      "sha256": "31b5f6561a2fbe4673c3bac7d85c2ed58432576dfd07d94c27805049f8d0d838",
+      "current_sha256": "31b5f6561a2fbe4673c3bac7d85c2ed58432576dfd07d94c27805049f8d0d838",
+      "imports": [
+        "Sec3Infra"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3Infra.lean",
+      "new": "Section3/Sec3Infra.lean",
+      "sha256": "f36a6c8c0fd25dd834800b22e6bc261fcb0db531c46817006793cd4fdefbcd42",
+      "current_sha256": "f36a6c8c0fd25dd834800b22e6bc261fcb0db531c46817006793cd4fdefbcd42",
+      "imports": [
+        "Sec3Frozen"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3Tail.lean",
+      "new": "Section3/Sec3Tail.lean",
+      "sha256": "ced1d43a932819d33ba3eeadfa76d36baf79806ae99ea0364fe7cc6e844e6f2e",
+      "current_sha256": "ced1d43a932819d33ba3eeadfa76d36baf79806ae99ea0364fe7cc6e844e6f2e",
+      "imports": [
+        "Sec3FunIntoPower"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec3TailGamma.lean",
+      "new": "Section3/Sec3TailGamma.lean",
+      "sha256": "1eddd68fb0c4b17ebb72ce6e5c46c634637818cf3f9b987c8e1fe7311ed5caa3",
+      "current_sha256": "1eddd68fb0c4b17ebb72ce6e5c46c634637818cf3f9b987c8e1fe7311ed5caa3",
+      "imports": [
+        "Sec3Tail"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec42Morphism.lean",
+      "new": "Section4/Sec42Morphism.lean",
+      "sha256": "37e1713e1aac3b7899a5a658440fe823844b8b5a78ce89df45317f155c501c1f",
+      "current_sha256": "37e1713e1aac3b7899a5a658440fe823844b8b5a78ce89df45317f155c501c1f",
+      "imports": [
+        "Sec4Categories"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec4Categories.lean",
+      "new": "Section4/Sec4Categories.lean",
+      "sha256": "7663bd9f28930fcab3976cb4416c4f42406ffcc54b8760e8aba4f96ec302abde",
+      "current_sha256": "7663bd9f28930fcab3976cb4416c4f42406ffcc54b8760e8aba4f96ec302abde",
+      "imports": [
+        "Sec3Frozen"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec4Dim.lean",
+      "new": "Section4/Sec4Dim.lean",
+      "sha256": "7aef5f5e199a77b86d42411e6af08f597efdf27ad82a6c9e6667290a95b6e63a",
+      "current_sha256": "7aef5f5e199a77b86d42411e6af08f597efdf27ad82a6c9e6667290a95b6e63a",
+      "imports": [
+        "Sec3Frozen"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec4DimACFModel.lean",
+      "new": "Section4/Sec4DimACFModel.lean",
+      "sha256": "bfe42dc1bae505214e9b49918593bd093fa0654511660622c4f273eeaeb32274",
+      "current_sha256": "bfe42dc1bae505214e9b49918593bd093fa0654511660622c4f273eeaeb32274",
+      "imports": [
+        "Mathlib"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec4EK.lean",
+      "new": "Section4/Sec4EK.lean",
+      "sha256": "3f6d409a6aa16802fe01b450ef4fc712f62146d3c8730b8cc52bfd4218f51ef7",
+      "current_sha256": "3f6d409a6aa16802fe01b450ef4fc712f62146d3c8730b8cc52bfd4218f51ef7",
+      "imports": [
+        "Sec4Categories"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec4FibreDim.lean",
+      "new": "Section4/Sec4FibreDim.lean",
+      "sha256": "e0d72c4972bfd1b4373a20d5da7cc6194a4cfc84af483b7143e1c84618dcc24c",
+      "current_sha256": "e0d72c4972bfd1b4373a20d5da7cc6194a4cfc84af483b7143e1c84618dcc24c",
+      "imports": [
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec4Pair.lean",
+      "new": "Section4/Sec4Pair.lean",
+      "sha256": "10b6178650aec29765cb4be5d99302a9e86de0c25f91ab362bc8d056c725bffb",
+      "current_sha256": "10b6178650aec29765cb4be5d99302a9e86de0c25f91ab362bc8d056c725bffb",
+      "imports": [
+        "SubstVar"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec4Polydisc.lean",
+      "new": "Section4/Sec4Polydisc.lean",
+      "sha256": "73612eb51b5b789fe68ac13b9bc2d67d983719694d6db5860c1fc5f77af37d30",
+      "current_sha256": "73612eb51b5b789fe68ac13b9bc2d67d983719694d6db5860c1fc5f77af37d30",
+      "imports": [
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec4Rename.lean",
+      "new": "Section4/Sec4Rename.lean",
+      "sha256": "c487ba5ff8e134dc51da683601640ba2dbd7ff19cb8e07b39c29083f05cf3d93",
+      "current_sha256": "c487ba5ff8e134dc51da683601640ba2dbd7ff19cb8e07b39c29083f05cf3d93",
+      "imports": [
+        "SubstVar"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec5.lean",
+      "new": "Section5/Sec5.lean",
+      "sha256": "0c614c8a927b10ceed6653c6460ca1c05548391376d7687721481f2284286f93",
+      "current_sha256": "0c614c8a927b10ceed6653c6460ca1c05548391376d7687721481f2284286f93",
+      "imports": [
+        "Mathlib"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec6.lean",
+      "new": "Section6/Sec6.lean",
+      "sha256": "184a24f148ce3234d0d56d60f8232f805d4e7c68020ac604b00308c9ded87454",
+      "current_sha256": "184a24f148ce3234d0d56d60f8232f805d4e7c68020ac604b00308c9ded87454",
+      "imports": [
+        "SubstVar",
+        "SubstParam"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec6QE.lean",
+      "new": "Section6/Sec6QE.lean",
+      "sha256": "2407f724cf39759cd820ecfccf11d5c2357f98767ba9b05729e53dad685268c8",
+      "current_sha256": "2407f724cf39759cd820ecfccf11d5c2357f98767ba9b05729e53dad685268c8",
+      "imports": [
+        "Enc"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec7Cor77.lean",
+      "new": "Section7/Sec7Cor77.lean",
+      "sha256": "97500e837ed9612351a3efd3c1e77cea0a9bdeec93757627efb45df42b26a4b5",
+      "current_sha256": "97500e837ed9612351a3efd3c1e77cea0a9bdeec93757627efb45df42b26a4b5",
+      "imports": [
+        "Sec4Categories",
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec7Gamma.lean",
+      "new": "Section7/Sec7Gamma.lean",
+      "sha256": "3fd3480eedaf975d4dc930d63435b84f9dcfc48cdf0c1f6ecbaf30a47df16dfc",
+      "current_sha256": "3fd3480eedaf975d4dc930d63435b84f9dcfc48cdf0c1f6ecbaf30a47df16dfc",
+      "imports": [
+        "Mathlib"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec7GammaHensel.lean",
+      "new": "Section7/Sec7GammaHensel.lean",
+      "sha256": "40168971471ecc7eaad14274657c38399adc0d03548bfe46149fd189d2e2dc23",
+      "current_sha256": "40168971471ecc7eaad14274657c38399adc0d03548bfe46149fd189d2e2dc23",
+      "imports": [
+        "Mathlib"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec7Lift.lean",
+      "new": "Section7/Sec7Lift.lean",
+      "sha256": "0ad71fb0fd8cce59b452193127beefcfebe17edf2b2a4bace3fd5340cc7190f2",
+      "current_sha256": "0ad71fb0fd8cce59b452193127beefcfebe17edf2b2a4bace3fd5340cc7190f2",
+      "imports": [
+        "Sec4Categories"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec8AlmostCont.lean",
+      "new": "Section8/Sec8AlmostCont.lean",
+      "sha256": "a28ff77aa20c910035aa75f887521d7f41e3b1918f6c948e514d6bb7185f4aec",
+      "current_sha256": "a28ff77aa20c910035aa75f887521d7f41e3b1918f6c948e514d6bb7185f4aec",
+      "imports": [
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec8Points.lean",
+      "new": "Section8/Sec8Points.lean",
+      "sha256": "73612eb51b5b789fe68ac13b9bc2d67d983719694d6db5860c1fc5f77af37d30",
+      "current_sha256": "73612eb51b5b789fe68ac13b9bc2d67d983719694d6db5860c1fc5f77af37d30",
+      "imports": [
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec8Top.lean",
+      "new": "Section8/Sec8Top.lean",
+      "sha256": "4b09b92141a1b489965d9e5530f415464bfd1723fcdbf810a58fab29a682a556",
+      "current_sha256": "4b09b92141a1b489965d9e5530f415464bfd1723fcdbf810a58fab29a682a556",
+      "imports": [
+        "Sec8AlmostCont"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec8ValCons.lean",
+      "new": "Section8/Sec8ValCons.lean",
+      "sha256": "05810a89d5e78d3bc27bc7f8e7d4e4d99a65cee9a5a9bd3e79b1378407c2752f",
+      "current_sha256": "05810a89d5e78d3bc27bc7f8e7d4e4d99a65cee9a5a9bd3e79b1378407c2752f",
+      "imports": [
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec9AE.lean",
+      "new": "Section9/Sec9AE.lean",
+      "sha256": "0d1fff9927109313752d88701b4014843f6bec3b7339517b2c2745bb99403c55",
+      "current_sha256": "0d1fff9927109313752d88701b4014843f6bec3b7339517b2c2745bb99403c55",
+      "imports": [
+        "Sec4Dim"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/Sec9Limits.lean",
+      "new": "Section9/Sec9Limits.lean",
+      "sha256": "789f39cb58d554520df30c9bdda3b02a42716468ad8d038dc97276bb685d18bd",
+      "current_sha256": "789f39cb58d554520df30c9bdda3b02a42716468ad8d038dc97276bb685d18bd",
+      "imports": [
+        "Mathlib"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "QE/UniformCover.lean",
+      "new": "Section3/UniformCover.lean",
+      "sha256": "41f7190df431b67e889822e4acb470ee17b2d826318137d4bbae3146b8745d5b",
+      "current_sha256": "41f7190df431b67e889822e4acb470ee17b2d826318137d4bbae3146b8745d5b",
+      "imports": [
+        "Sec3Infra",
+        "SubstVar",
+        "ParamBridgeRelabel"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "Milestone0/Balls.lean",
+      "new": "Section3/Balls.lean",
+      "sha256": "c5f25d366e61df5a191c7756cbe4e509c2003b7ab22419bc80a83d82516347d3",
+      "current_sha256": "c5f25d366e61df5a191c7756cbe4e509c2003b7ab22419bc80a83d82516347d3",
+      "imports": [
+        "Mathlib"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "SpecialTransformations/Basic.lean",
+      "new": "Section3/LegacyScaffold/Basic.lean",
+      "sha256": "b9e8e3367d3f2cd95c68570163fbfd742586ea32dc279fdcbab7e4aa3ae6bb74",
+      "current_sha256": "b9e8e3367d3f2cd95c68570163fbfd742586ea32dc279fdcbab7e4aa3ae6bb74",
+      "imports": [
+        "Mathlib"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "SpecialTransformations/Categories.lean",
+      "new": "Section4/LegacyScaffold/Categories.lean",
+      "sha256": "1230ef0677728e451f32cf30eb319b7bee4ce4448d9fb4c3617df1fb9ac12cf4",
+      "current_sha256": "1230ef0677728e451f32cf30eb319b7bee4ce4448d9fb4c3617df1fb9ac12cf4",
+      "imports": [
+        "SpecialTransformations.Dimension"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "SpecialTransformations/Definable.lean",
+      "new": "Section3/LegacyScaffold/Definable.lean",
+      "sha256": "04ba1fed502ce96e00a0b73e2ae1b97b3c2eb724e0af451acfff63528c74cf18",
+      "current_sha256": "04ba1fed502ce96e00a0b73e2ae1b97b3c2eb724e0af451acfff63528c74cf18",
+      "imports": [
+        "SpecialTransformations.Basic",
+        "SpecialTransformations.Language"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "SpecialTransformations/Differentiation.lean",
+      "new": "Section9/LegacyScaffold/Differentiation.lean",
+      "sha256": "ddba2289754777c722829bc6f54242c842399c323ade562acaeff03833402ec5",
+      "current_sha256": "ddba2289754777c722829bc6f54242c842399c323ade562acaeff03833402ec5",
+      "imports": [
+        "SpecialTransformations.Hensel"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "SpecialTransformations/Dimension.lean",
+      "new": "Section4/LegacyScaffold/Dimension.lean",
+      "sha256": "52542b412347af6d413603a4f6af360c95a6048085ee2d5d09eda34fd906de27",
+      "current_sha256": "52542b412347af6d413603a4f6af360c95a6048085ee2d5d09eda34fd906de27",
+      "imports": [
+        "SpecialTransformations.Definable"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "SpecialTransformations/Hensel.lean",
+      "new": "Section7/LegacyScaffold/Hensel.lean",
+      "sha256": "34fe19674c6aff8bc6f8241afc7e6df6e43b98cd3fa72d913c0d30ce2a5913a9",
+      "current_sha256": "34fe19674c6aff8bc6f8241afc7e6df6e43b98cd3fa72d913c0d30ce2a5913a9",
+      "imports": [
+        "SpecialTransformations.SpecialBijection"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "SpecialTransformations/Language.lean",
+      "new": "Section3/LegacyScaffold/Language.lean",
+      "sha256": "53ed73558417dc9b1e4f26e2cb5a5043d98cd182c28332b02c22e0d558d11b90",
+      "current_sha256": "53ed73558417dc9b1e4f26e2cb5a5043d98cd182c28332b02c22e0d558d11b90",
+      "imports": [
+        "Mathlib"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "SpecialTransformations/SpecialBijection.lean",
+      "new": "Section5/LegacyScaffold/SpecialBijection.lean",
+      "sha256": "4a5ba5b25158d6008747389cfc1e4bc7fa0a716401250c38d8c64c37c2c4ff5c",
+      "current_sha256": "4a5ba5b25158d6008747389cfc1e4bc7fa0a716401250c38d8c64c37c2c4ff5c",
+      "imports": [
+        "SpecialTransformations.Categories"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    },
+    {
+      "old": "SpecialTransformations/VolumeForms.lean",
+      "new": "Section10/LegacyScaffold/VolumeForms.lean",
+      "sha256": "3b5230606362bdc5bc32ec4bd5ab38d758e73b9fdd95937adced5b80adc7a44d",
+      "current_sha256": "3b5230606362bdc5bc32ec4bd5ab38d758e73b9fdd95937adced5b80adc7a44d",
+      "imports": [
+        "SpecialTransformations.Differentiation"
+      ],
+      "placeholder_tokens": 0,
+      "verification": "not freshly compiled during reorganization"
+    }
+  ]
+}

@@ -1,21 +1,12 @@
-import SpecialTransformations.Basic
-import SpecialTransformations.Language
-import SpecialTransformations.Definable
-import SpecialTransformations.Dimension
-import SpecialTransformations.Categories
-import SpecialTransformations.SpecialBijection
-import SpecialTransformations.Hensel
-import SpecialTransformations.Differentiation
-import SpecialTransformations.VolumeForms
-import SpecialTransformations.Main
+import ACVFQE
 
 /-!
-# Special transformations in algebraically closed valued fields
+# Special transformations: section-by-section coordination root
 
-Formalization of:
+Quantifier elimination is supplied by the pinned independent ACVF-QE package.
+The relocated section snapshots are not imported automatically: their proof
+status and interfaces must be audited before integration.
 
-  Yimu Yin, *Special transformations in algebraically closed valued fields*,
-  Annals of Pure and Applied Logic (2010), arXiv:1006.2467.
-
-This root module imports the paper's modules in dependency order.
+Continue with Section3/HANDOFF.md. New checked section modules can be added
+here as they are completed.
 -/

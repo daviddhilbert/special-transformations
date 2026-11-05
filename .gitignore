@@ -1,5 +1,8 @@
-/.lake
-/build
-/.scratch
-/blueprint/print
-/blueprint/web
+.lake/
+build/
+.scratch/
+.scratch2/
+.tools/
+__pycache__/
+*.olean
+*.ilean

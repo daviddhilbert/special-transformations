@@ -1,18 +1,20 @@
-name = "special-transformations"
+name = "special_transformations"
 version = "0.1.0"
-description = "Formalization of Yimu Yin, Special transformations in algebraically closed valued fields (2010)"
-keywords = ["math", "logic", "valued fields", "motivic integration"]
+description = "Section-by-section formalization of Yimu Yin's Special transformations"
 license = "MIT"
 authors = ["Yimu Yin"]
 defaultTargets = ["SpecialTransformations"]
 
-# Mathlib is prebuilt and read-only in this VM; depend on it by path so Lake
-# reuses /opt/mathlib's artifacts instead of fetching and rebuilding Mathlib.
 [[require]]
 name = "mathlib"
-path = "/opt/mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "0df444a360eaa60ab8c11dca51a86af692955474"
+
+[[require]]
+name = "acvf_qe"
+git = "https://github.com/daviddhilbert/ACVF-QE.git"
+rev = "f3ef4ee679f921079aa8f742a2807a9cc724d2d6"
 
 [[lean_lib]]
 name = "SpecialTransformations"
-srcDir = "."
 roots = ["SpecialTransformations"]

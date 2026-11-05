@@ -1,57 +1,60 @@
-# Working agreement with Yimu (read this first)
+# Working agreement and current structure
 
-These are standing instructions from the author of the paper. They apply to **every** session
-that works in this repository. Follow them without being asked again.
+Read `Section3/HANDOFF.md` before the next proof session. This repository has
+been organized by paper section. QE is finished in `daviddhilbert/ACVF-QE`;
+do not restart its proof. The original standing instructions are preserved
+in `Archive/History/AGENTS.md`; these current paths supersede its old layout.
 
-## 1. Do not stop until told to stop
+## Author's standing instructions
 
-> "You really should write it down somewhere that you don't stop working until I tell you so."
+- Work persistently on the authorized objective; do not stop at a partial
+  result or ask repeatedly whether to continue. Stop for the requested handoff
+  when the user explicitly wants to continue in a new session.
+- Preserve the author's work and existing uncommitted edits. Further
+  paper-repository pushes require an explicit instruction. The author authorized
+  publishing this section layout and ignoring the newer OpenMathOS content;
+  the old remote tip is retained on a backup branch and in the merge history.
+- A Lean result is verified only after compiler exit 0 and a checked headline
+  type and axiom audit. Accept only `propext`, `Classical.choice`, `Quot.sound`.
+  Explicit theorem hypotheses must also be checked. A definition of an open
+  obligation or a theorem assuming that obligation is not a completed proof.
+- Model theory in Dave Marker's *Model Theory: An Introduction* and valued-field
+  results in Engler--Prestel's *Valued Fields* may be used as explicitly stated
+  hypotheses under the author's authorization. Do not silently turn citations
+  to Yin's other paper into proved inputs. Prefer existing checked proofs.
+- Use genuine small-parameter saturation and homogeneity, not a structure
+  bundling the desired paper lemmas as its definition of saturation.
+- Survey existing formalizations before rebuilding a substantial prerequisite;
+  follow `FORMALIZATION-REUSE-GUIDELINES.md`. Preserve licenses and source credit.
+- Scratch output goes in `.scratch/`, not into source or version control.
 
-* Keep working continuously. Do **not** end a turn to report progress, ask whether to continue,
-  or summarise where things stand. End a turn only when
-  * the requested theorem is actually proved and landed, **or**
-  * you are genuinely stuck on the mathematics after trying several approaches, **or**
-  * a decision is needed that is only his to make (e.g. changing the frozen encoding).
-* When you must pause for one of those reasons, say which one it is in one line, then continue
-  with whatever is next.
-* Chain sessions: set a `conversation_remind` for yourself before ending a turn, so the next turn
-  picks up the same thread, with the concrete next step in the reminder text.
-* "if you are stuck on something, try at least three more approaches before you stop and consult
-  with me."
-* "I hate to come back to check whether you have stopped every 15 minutes."
+## Fixed conventions
 
-## 2. Honesty about state
+- Use the released ACVF-QE language and theory as the common starting point.
+  Its RV inversion captures the author's group-language convention. The missing
+  inverse symbol was an error in the Lean transcription, not in the paper.
+- RV has one absorbing element, `rv(0)`, written as zero/infinity in the paper's
+  conventions. Do not add a second absorbing point. `pK` is the nonzero group;
+  `pInK` is the full residue-field predicate including zero.
+- Mathlib's multiplicative valuation order is reversed relative to the paper's
+  value-group order. Track the reversal in every comparison and ball definition.
+- The material after Definition 2.4 works over pure characteristic zero and an
+  appropriately saturated model, with the stated small base substructure.
+  Preserve theorem-specific scope: Theorem 2.8 is stated for ACVF itself.
+- Distinguish same valuation from same RV class. Do not repeat older comments
+  attributing defects in a Lean transcription to the paper.
 
-* A file is green only if `lean FILE.lean` exits 0. Count **all** errors: `grep -c "error"`,
-  never `grep "error("` — Lean's parse errors and "unsolved goals" carry no error code and slip
-  through that pattern. This exact mistake produced a false "all 47 files compile" claim once.
-* Never report a theorem as proved unless it compiles with no `sorry` and
-  `#print axioms ⊆ {propext, Classical.choice, Quot.sound}`.
-* When a claim in a header, README or plan is falsified (e.g. a file that "compiles" but does
-  not), fix the claim in the same commit that establishes the truth. `QE-PLAN.md`,
-  `QE/README.md` and file headers have all been wrong before.
+## Layout and verification
 
-## 3. The mathematics
-
-* The target is Theorem 2.3 of *Special transformations in algebraically closed valued fields*
-  (APAL 2010): quantifier elimination for `ACVF` in the language `L_RV`, as frozen in
-  `Milestone0/Encoding.lean` (`theorem_2_3_quantifier_elimination`).
-* `RV = rv(VF^×) ∪ {0}` — the paper's `0` and `∞` are one element, `rv(0)`, the absorbing one.
-  Axiom (2) forces this (`RV^× = RV ∖ {∞}` must be a group). Settled; do not re-litigate.
-* `pK` (`t ≠ ∞`) is `RV ∖ {0}` = the multiplicative group, **not** the residue field. The
-  residue field is `pInK` (which contains the absorbing element).
-* Note the two order conventions, which are **reversed** and cost a wrong turn once already:
-  Mathlib's `Valuation` is the absolute-value convention (`v (x+y) ≤ max (v x) (v y)`,
-  `v 0 = 0` minimal) and `IsValPred` is stated in it; the frozen encoding's `vv = vrv ∘ rv` is
-  the paper's value-group order (`vv (x+y) ≥ min`, `O = rv⁻¹(RV^{≥ 1})`). So
-  `v x ≤ v y` in `L_val` is `vv y ≤ vv x` in `L_RV`.
-
-## 4. Housekeeping
-
-* Every `.lean` file here is a **standalone snapshot**: `import Mathlib` only, private copies of
-  the definitions it needs. Two files' copies of a language are *different* types, so any
-  cross-file theorem needs a file that carries one copy of each.
-* The main assembly file is `QE/Assembly_val.lean`; `QE-PLAN.md` records the state and the plan.
-  Keep both current in the commit that changes the state.
-* Scratch work goes in `.scratch/` (or `.scratch2/`), never committed, never in `/tmp`.
-* Do not run `make` in the background while editing files.
+- `Section3/` includes the remaining Section 2 tasks. `Section4/` through
+  `Section10/` hold the later sections. Existing Lean files there are legacy
+  snapshots whose contents were moved unchanged, not automatically imported
+  components of the new library.
+- `Archive/MOVE-INDEX.json` maps historical paths to current files. The inventory
+  and dependency planner are static tools, not Lean verification reports.
+- Shared syntax/logic candidates remain recoverable in `Archive/QE/`, and old
+  language/model snapshots in `Archive/Milestone0/`. Port them into one shared
+  language graph; do not import competing standalone copies of a language.
+- Build new modules through the portable pinned Lake project. Record source,
+  target statement, remaining hypotheses, compiler status and headline axioms
+  separately. Historical headers and milestone totals are not current evidence.

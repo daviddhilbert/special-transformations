@@ -1,0 +1,6 @@
+* text=auto eol=lf
+
+# Relocation provenance records the exact bytes of these legacy snapshots.
+# Keep their existing line endings unchanged on every platform.
+Archive/** -text
+Section*/** -text

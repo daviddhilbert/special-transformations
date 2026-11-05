@@ -1,0 +1,12 @@
+{
+  "relocated_files": 336,
+  "byte_hash_check": true,
+  "section3_section4_plans": 42,
+  "unresolved_plans": [],
+  "lean_proof_changes": "none; all relocated source bytes preserved",
+  "legacy_lean_verification": "not run; static planning is not compilation",
+  "root_import_audit": "passed: Lake environment, exact root source plus fresh checks of QE headline types and axioms",
+  "dependency_artifacts": "previously checked matching Mathlib/ACVF-QE oleans reused; not a full clean lake build",
+  "qe_commit": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
+  "publication_tracking": "See Git history; these checks record the layout before publication."
+}
