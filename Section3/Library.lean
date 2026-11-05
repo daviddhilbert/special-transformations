@@ -14,6 +14,9 @@ import Section3.FibreDescent
 import Section3.AlgebraicFinite
 import Section3.VFAlgebraicity
 import Section3.FiniteImage
+import Section3.CMinimal
+import Section3.DiscCentres
+import Section3.RVIndependence
 
 /-!
 # Checked Section 3 library

@@ -93,3 +93,15 @@ Polynomial-root and finite-image follow-up: reused Mathlib's
 `Set.Definable.image_comp` and `Set.Finite.pi'`. New syntax bridges use the
 released LRV language. `FiniteImage` proves the compactness step from the
 genuine saturation API; it does not reuse the contrary legacy header claim.
+
+C-minimality bridge follow-up: checked the released `CanonicalRV`,
+`CanonicalResidueOperations`, `ValuedModelMap` and `VFAlgClosed` interfaces.
+Reused their actual RV/residue arithmetic identities and the Mathlib definable
+function composition, inverse-graph, case-split and preimage APIs. The new
+representative and formula translations are proved, rather than assumed as
+an interpretation premise. `GeometryBridge` transports Johnson's finite
+Boolean ball representation to the exact frozen encoded ball definitions.
+No call to the inherited Theorem 2.8 placeholder is used. Also inspected
+Mathlib's algebraic matroid, its closure characterization and transcendence
+basis interfaces as candidates for the remaining field-closure consequences;
+that inspection alone does not prove those paper targets.

@@ -255,7 +255,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "PolynomialRoots",
@@ -263,7 +263,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RootDefinability",
@@ -271,7 +271,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FieldBase",
@@ -279,7 +279,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FiniteImage",
@@ -287,11 +287,91 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "RVRepresentatives",
+      "source_sha256": "fd74cdc2a5b072be6589aa5b86777436a0a03ea6d7acad3afb8f00498c38fee9",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "LiftTerms",
+      "source_sha256": "2b71632de87d8f4e4f58917ffa834e99943ca58d610fde3804bb0c7400182254",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "ValuedDefinability",
+      "source_sha256": "ec38ec104969f735288c22ee5d5632f80c9b16ec73502e20637a140cdf0e625d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "RepresentativeDefinability",
+      "source_sha256": "37e7480d22cf4430bcf98f0f47ebeaf64a4237efa1af1ac67ab3e30aeac835f8",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "QFInterpretation",
+      "source_sha256": "fb253006f3f09379ae76f017b89f064038827699135f83d12bb060e1a05124b4",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "BooleanCombinations",
+      "source_sha256": "bfd7591d3a5ac071ae98fbca1d484635fbf8778e4758d1fd9ddebd686bb598a4",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "GeometryBridge",
+      "source_sha256": "39e2ff35cb54449420cd168cbf9778e19ac56a92f6e61992b9274bab8f9aabc3",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "CMinimal",
+      "source_sha256": "71c2040afa98becfe3e22ebeeb5ab5d9c52dab80f7ddb176d3a06bcb54b14678",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "DiscCentres",
+      "source_sha256": "2ec7135968083f759f97ba9905f19120249a3907afeafdd99be5066646d6c78f",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "RVIndependence",
+      "source_sha256": "74bfeb21122b3bb56ff87a13ca5e31bfca21d1e5419aeafe8e7b2bf7cb81e462",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "84e1f5df12764ade39e67ddb77b7516931b2c7e0e3deae39fa64a9dea382ca8e",
+      "source_sha256": "aa169abada084e6dc5b1a503b4621275b37d23c0599092bb9fcde1bb8260e502",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -299,7 +379,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "b11e763653801faed556cf3ddc808950cace7b75d14ef6dc9dcbba612593a9b7",
+      "source_sha256": "e47322b0b411579f514036df367c6712451202aafa06ba1716c71d03a7849801",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -315,7 +395,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "37 integrated Section3 modules; matching compiler caches reused where indicated; fresh combined headline audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "47 integrated Section3 modules; matching compiler caches reused where indicated; fresh combined headline audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -536,6 +616,71 @@
       "Quot.sound"
     ],
     "SpecialTransformations.Section3.corollary_3_5": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BooleanCombinations.boolean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.add_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.neg_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.inv_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.liftFn_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.liftTerm_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.qf_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.good_vfImage": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.theorem_2_8_c_minimal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicAt_vf_union_rv_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.corollary_3_7_vf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.closedDisc_rv_constant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.openDisc_rv_constant": [
       "propext",
       "Classical.choice",
       "Quot.sound"

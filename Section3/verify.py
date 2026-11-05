@@ -58,6 +58,12 @@ headlines += ['RingSyntax.realizes', 'PolynomialRoots.term_realize',
     'PolynomialRoots.rootSet_definable', 'PolynomialRoots.rootSet_finite',
     'PolynomialRoots.algebraicAt_of_isAlgebraic_named', 'VFFieldBase.algebraicAt_iff',
     'finite_rv_to_vf_tuple_relation_image', 'corollary_3_5']
+headlines += ['BooleanCombinations.boolean', 'RVRepresentatives.add_correct',
+    'RVRepresentatives.neg_correct', 'RVRepresentatives.inv_correct',
+    'RVRepresentatives.liftFn_correct', 'RVRepresentatives.liftTerm_correct',
+    'RVRepresentatives.qf_definable', 'good_vfImage', 'theorem_2_8_c_minimal',
+    'algebraicAt_vf_union_rv_iff', 'corollary_3_7_vf',
+    'Balls.closedDisc_rv_constant', 'Balls.openDisc_rv_constant']
 env = os.environ.copy()
 env['LEAN_PATH'] = str(LIB) + os.pathsep + env.get('LEAN_PATH', '')
 rows = []
