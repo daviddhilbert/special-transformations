@@ -26,14 +26,16 @@ QE is finished and is a dependency of this work.
 | [Shared/](Shared/README.md) | Seven syntax/parameter helpers required by the section code |
 | [Archive/](Archive/README.md) | Remaining model-building snapshots and limited historical evidence |
 
-The relocated section files are **legacy candidates**, not a new verified
-section library. Their proofs, hypotheses, and old headers need auditing
-against the paper. No Section 3 or Section 4 completion is claimed.
+The relocated section files are **legacy candidates**. The new Section 3
+library has a separate [entry point](Section3/Library.lean) and
+[precise status](Section3/STATUS.md). The legacy snapshots are excluded from
+that entry point. Completion of all Section 3 or Section 4 is not claimed.
 
 ## Build and inspect
 
 Lean 4.33.1 and the matching Mathlib revision are pinned. `lake build` builds
-the coordination root, which imports the completed `ACVFQE` library. Legacy
+the coordination root, which imports the completed `ACVFQE` library and the
+new Section 3 entry point. Legacy
 section snapshots are deliberately not imported into that root automatically.
 
 ```sh
@@ -46,9 +48,10 @@ python3 Archive/inspect_legacy.py --plan Section3/Sec3Fibre.lean
 [Archive/MOVE-INDEX.json](Archive/MOVE-INDEX.json) records original paths,
 new paths, SHA-256 hashes, and retention/removal status. After the initial
 reorganization, the author requested deletion of the obsolete QE campaign.
-The 93 retained entries still match their original bytes; 243 obsolete entries
+Of the 93 retained entries, 89 still match their original bytes and four have
+documented comment-only corrections in `Archive/LEGACY-REVISIONS.json`; 243 obsolete entries
 were removed, including the duplicate encoding and old QE planning material.
-Seven required helpers are retained in `Shared/`. Completed QE code is supplied
+Seven required legacy helpers are retained in `Shared/`. Completed QE code is supplied
 by the pinned ACVF-QE dependency, rather than duplicated in this repository.
 
 The new root import and QE headline audits passed under the pinned Lake

@@ -29,10 +29,11 @@ hypotheses rather than the conclusion:
    hypothesis is load-bearing, not decorative.  `average_zero_counterexample` below is the
    machine-checked refutation: in a model with `v(2) > 0` the pair `c = (1, -1)` satisfies every
    hypothesis of the frozen statement and has no pair with `vv(c_i - c_j) = α`.
-2. The paper's second clause ("hence `rv` is not constant on the set") is a *slip*: `rv` **is**
-   constant on that set by hypothesis; what is non-constant is the difference.  This is recorded
-   in the tree already, with a machine-checked proof, as `SP.swl_average_conclusion_unsat`
-   (`QE/Sec3_sat.lean:96`), and is not repeated here.
+2. The legacy `Sec3_sat` transcription assumed the same RV class, whereas the
+   paper assumes only the same valuation. The paper's RV nonconstancy conclusion
+   is correct. The new `Section3/Average.lean` proves both conclusions and derives
+   the integer-unit premise from ACVF(0,0); this legacy file alone still exposes
+   that premise and proves only the valuation conclusion.
 
 What this file delivers, in the frozen `L_RV` encoding, on the `VF` sort as the field
 `Transfer.VFType` (`QE/VFField.lean`), with the valuation-order calculus of `QE/RVCalc.lean`:
@@ -74,8 +75,8 @@ variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 
 /-! ## 0. The value of a `VF`-element, and the elementary calculus -/
 
-/-- **The paper's `vv(x)`**, read on the `VF` sort: `vv(x) = vrv(rv x)`, and `vrv` is injective,
-so it is the `RV`-element `rv x`.  This is the paper's `α` in `average:0:rv:not:constant`. -/
+/-- **The paper's `vv(x)`**, read on the `VF` sort: `vv(x) = vrv(rv x)`. Here `val` retains the RV representative,
+while equality of valuations is expressed by mutual `iLe`, not RV equality.  This is the paper's `α` in `average:0:rv:not:constant`. -/
 noncomputable def val (x : VFType (M := M)) : M := iRv x.1
 
 theorem val_mem (x : VFType (M := M)) : iRV (val x) := rv_mem hM x.2

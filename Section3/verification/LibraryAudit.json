@@ -1,0 +1,465 @@
+{
+  "lean": "Lean (version 4.33.1, x86_64-unknown-linux-gnu, commit 819816b2e0a3bf405af45ae5c7af2491d8f5bee6, Release)",
+  "files": [
+    {
+      "module": "Parameters",
+      "source_sha256": "928c94bcf9b383ccee958a0dcfab2ac69c5bf143fbc93ac14a22c70a12d944e6",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "ModelContext",
+      "source_sha256": "11db58c2b247fe1b3b797ae223be83723567fdaee58001845f728a36c8e8e160",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "Compactness",
+      "source_sha256": "85530b1d188a37e953219d39cf9d757cdcebeadfa280740e1013df938967cdd4",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "QuantifierFree",
+      "source_sha256": "595c820a60ca7027c018597c22c75ea5e97c0a9e72a3c9eb74bf6684084e61a0",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "Coordinates",
+      "source_sha256": "6222dc098498b624cb6843f16be79fc216c9d2b3f0a5641feefcfaab434a451b",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "Average",
+      "source_sha256": "105014d7b7822442936580cfa126210b6bc301da5a02aee0656d0d6f4e330eed",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "QuotientFamilies",
+      "source_sha256": "a9e3bd2ec4b6c20e52bafdb9fa6623e1b766151b8edc2b345405a23a7360e53d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "ValuedCMinimal",
+      "source_sha256": "dce85950c27a8e4a2b4f9af5d27571d013245608be17e1c5da6dfbeaf6742e5e",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "BallGeometry",
+      "source_sha256": "2aaf79419b64498c9f132d2a1a17d55f51218abf7342fcb58d14b4a0ae2872ad",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "RVLiteralReduction",
+      "source_sha256": "62337add8c6d323a076b1997ac769a38e3409573ea8646c803d1fbd49b227d66",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "RVNormalForm",
+      "source_sha256": "44fc488651b11f725aed8b59c759fe7adea78e63e50ba94d36e5186331cd20a3",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "ParameterBridge",
+      "source_sha256": "6d77c322ae422a041ad9e9acad653b114b2e4a4f8c1b7e8a66a5d628281405f9",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "DefinableCompactness",
+      "source_sha256": "90be350e378df2380cf9c7a91a522ec580023619c60c68a3087e593c0c52c655",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "Counting",
+      "source_sha256": "0bb1a7078c2bf129988f788b6cee125042ee72a5ac854d656b92ea7945e37366",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "RawAlgebraicity",
+      "source_sha256": "62d642dcf1274719c4e7dab12fa8856d27f378509fb3804edf1d623bcb4214e3",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "FiniteRelations",
+      "source_sha256": "425677ab1ea67af1e33a792e3c2df4a1aec68612355f2d6ecb102a22f51c3a29",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "AlgebraicityDescent",
+      "source_sha256": "81c0df34658ca318e9b6853f9f051364324a8822376d9c1252e4306cbb1d3131",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "TuplePromotion",
+      "source_sha256": "d651615e481029bf46c7b28e8e9dd75d04685ade90a34a04a88879567922c6cc",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "TupleRelations",
+      "source_sha256": "2b87c0f954a71d05f9191b07735f0e775f1317acd9caf56b41d6adf14ee2122c",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "TupleCompactness",
+      "source_sha256": "99457d55625b3f160aea0221bfde39e37b3639dec5ed184668f813e373d3edfb",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "TupleDescent",
+      "source_sha256": "d49e606e57fe97e88624504dedb82d86b39ce5de6e766e7553f78444e6ca278a",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "ClosureBridge",
+      "source_sha256": "c095960ee11d0c2e218dc67f4b196970d2b994637bd78546aecb82d0637b7a13",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "FibreDescent",
+      "source_sha256": "0304780cb1f5ab70797e41de1708c83f643f7d8e082fd4921c57ad8a964ec971",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "AlgebraicFinite",
+      "source_sha256": "f870dde4af63cbcf5ef4984ea0ed8db0e5f7ea8530f7b2075b002726c88bbc62",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "PolynomialSyntax",
+      "source_sha256": "3c16c40d196791b53814e02504624c2ef0335304f58ced4b4b385d8449761ac0",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "PolynomialLocal",
+      "source_sha256": "3b9565e31ccc94dfe3791911555406842dacbb998e3f476459c55bc5476b0d02",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "RVTermLocal",
+      "source_sha256": "d946d1e4c3e8336be20c6add90d7f22fa0fd7b9f92b261d521f5915ad0fa074f",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "QFLocal",
+      "source_sha256": "0a43a3728359b2c1b2bd12ac5c2fb7a901631c945829359c6f5972060ece32b6",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "ValuedNeighbourhood",
+      "source_sha256": "91c069db226bf4a52adccae4da886683d808d72785801e30ba41643cd854a6ea",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "VFAclField",
+      "source_sha256": "58e766c90ce3bbe3845c3db73871179ecaa236b85a3932daa5de1968ca38c576",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "VFAlgebraicity",
+      "source_sha256": "f217ff0dc191abed352d9414f8fe03ada4513f96d3ebe3d32e1c674d2f46b25a",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "Library",
+      "source_sha256": "21163288f8547307812d4fc57870cb1d43d5728fdf1b0da13733dd86c67031ea",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "HeadlineAudit",
+      "source_sha256": "3da049310ea82642c6720b9965f84cf22d764738fd2dc4b2145cac228b4ed388",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "Root",
+      "source_sha256": "550f8d14b23ab49d41d9145d06bb937f48ed7494a8aa7847f37ab9185e53adfc",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    }
+  ],
+  "date": "2026-11-05 America/Los_Angeles",
+  "scope": "32 integrated Section3 modules; unchanged matching compiler caches reused where indicated; fresh combined headline audit and root import. Other paper targets remain open; see STATUS.md.",
+  "dependency_pins": {
+    "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
+    "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
+  },
+  "axioms": {
+    "SpecialTransformations.Section3.DefinableOver.finite_character": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AlgebraicAt.finite_character": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definableClosureAt_of_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BaseContext.model": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Saturated.finite_inconsistent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Saturated.finite_subcover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.DefinableOver.quantifier_free": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Coordinates.fibre_nonempty_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Average.lemma_3_8": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.QuotientFamilies.notation_3_16": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.c_minimal_valued_language": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.c_minimal_valued_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.rvFibre_eq_openDisc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.realize_rvEquality": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rvOnly_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.DefinableAt.raw_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AlgebraicAt.raw_finite_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BaseContext.namedModel": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.small_insert": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Saturated.definable_finite_subcover_tuple": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawClosure.Tuple.promote_tuple": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawClosure.Tuple.good_relation_of_algebraic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawClosure.Tuple.algebraicity_descent_raw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.raw_definable_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicAt_iff_raw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.lemma_3_1": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.corollary_3_2_vf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawClosure.finite_of_definable_subset_algebraic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolynomialSyntax.realizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.polynomial_rv_locally_constant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.infinite_valued_neighbourhood": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rvTerm_local": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.qf_local": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicAt_vf_isAlgebraic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.vfParameterField_union_rv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.lemma_3_3": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
+  }
+}

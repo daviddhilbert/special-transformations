@@ -84,10 +84,10 @@ theorem swl_alg_ind_image (a t : 𝕄.M) (ha : iVF a) (ht : iRV t)
 
 /-- The conclusion the first transcription of `average:0:rv:not:constant` froze is *unsatisfiable*
 given its own hypothesis: it asked, in addition to `vv(c_i - c_j) = α`, that `rv (c i) ≠ rv (c j)`,
-while `hsame` says all `rv (c i)` agree.  Recorded here because the paper's own sentence ("... and
-hence `rv` is not constant on the set `{c₁, …, c_k}`") carries the same slippage: `rv` *is* constant
-on that set, and what is not constant is `rv` on the differences — which is how the paper uses it
-(`qe.tex` line 1239, on `A_i - a_i`).  Machine-checked, no `sorry`. -/
+while the legacy `hsame` transcription says all `rv (c i)` agree. This is a
+transcription error: Lemma 3.8 assumes equal valuations, not equal RV classes.
+Its conclusion is correct; see the checked port in `Section3/Average.lean`.
+-/
 theorem swl_average_conclusion_unsat {k : ℕ} (hk0 : 0 < k) (c : Fin k → 𝕄.M)
     (hsame : ∀ i, iRv (c i) = iRv (c ⟨0, hk0⟩)) :
     ¬ ∃ i j : Fin k, i ≠ j ∧

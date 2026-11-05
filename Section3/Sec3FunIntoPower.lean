@@ -32,10 +32,10 @@ unique).  That is what this file proves, in full:
 * `descends_discrete` — the second of the paper's two "forms", `VFⁿ × Γˡ → 𝓟(RVᵐ)`: on the *first*
   factor the relation may be anything (`R₁` arbitrary), and if the second relation is trivial then
   the saturation half is vacuous, so the condition collapses to `R₁`-invariance;
-* `descends_ker_rv` — the first form, `VF / 𝔐 → 𝓟(RVᵐ)`: taking `R₁ = ker rv` (the paper's `𝔐`,
-  see the docstring of `rvSetoid`) the descent is the same thing as an `rv`-invariant fibration,
-  and it factors through the `RV` sort itself (`iRv`), which is the set-theoretic content of
-  "functions on the residue field".
+* `descends_ker_rv` — a leading-term-invariant fibration. This is not the
+  additive quotient by the maximal ideal; the original identification was a
+  transcription error. Generic descent is ported to `QuotientFamilies.lean`.
+
 
 Nothing here is left unfinished: no `sorry`, no extra axiom, no `decide`/`native_decide`.
 
@@ -291,27 +291,24 @@ theorem not_descends_diag : ¬ Descends (⊤ : Setoid Bool) (topSetoid Bool) {p 
   simp only [fib, Set.mem_ofPred_eq] at hfalse
   exact absurd hfalse (by decide)
 
-/-! ## 4. The first of the paper's two forms: `VF / 𝔐 → 𝓟(RVᵐ)`
+/-! ## 4. A separate quotient: equality of leading terms
 
-The paper's `𝔐` is the maximal ideal of `VF`, so `VF/𝔐` is the residue field.  In `L_RV` the
-residue of `x` is `rv x` itself (`Axioms.rvEqLink`: `rv a = rv b ↔ ¬(v (a - b) ≤ v b)` for `b ≠ 0`,
-i.e. `x ≡ y (mod 𝔐) ↔ rv x = rv y` when `v x = v y`), so the formal counterpart of `VF/𝔐` is the
-quotient of `VF` by `ker rv`.  `rvSetoid` is that quotient; `quotient_of_rvSetoid_equiv_range`
-records that `VF/𝔐` embeds in the `RV` sort through `rv`, which is why a function
-`VF/𝔐 → 𝓟(RVᵐ)` can be written as a function of `rv` — and that is the form
-`descends_ker_rv` produces. -/
+`ker rv` is not congruence modulo the additive maximal ideal. For nonzero y,
+`rv x = rv y` says that x-y has value strictly greater than y, a relative
+condition. The quotient below is a leading-term quotient only; it does not
+formalize the paper's additive VF/maximal-ideal example.
+-/
 
 section RV
 
 variable {M : Type*} [LRV.Structure M]
 
-/-- **The paper's `VF / 𝔐`**, formally: `x ~ y` iff `rv x = rv y` (for `x, y` of equal value this is
-`x - y ∈ 𝔐`, by `Axioms.rvEqLink`). -/
+/-- Equality of leading terms on the tagged carrier. -/
 def rvSetoid : Setoid M := Setoid.ker iRv
 
 theorem rvSetoid_rel {x y : M} : (rvSetoid).r x y ↔ iRv x = iRv y := Iff.rfl
 
-/-- `VF/𝔐` sits inside the `RV` sort: the quotient map `VF → VF/𝔐` followed by `rv` is injective. -/
+/-- The quotient by `ker rv` injects into the range of rv. -/
 theorem quotient_of_rvSetoid_injective :
     Function.Injective (Quotient.lift (s := rvSetoid) (fun x : M => iRv x) (fun _ _ h => h)) := by
   intro q q' hq
@@ -322,10 +319,7 @@ theorem quotient_of_rvSetoid_injective :
       have hxy : iRv x = iRv y := hq
       exact Quotient.sound (s := rvSetoid) hxy
 
-/-- **`fun:into:power` at `VF/𝔐`**: a subset `B ⊆ VF × A₂` whose fibres are `R₁`-invariant for
-`R₁ = ker rv` (the paper's `𝔐`) is a function `VF/𝔐 → 𝓟(A₂/R₂)`.  Via
-`quotient_of_rvSetoid_injective` the quotient `VF/𝔐` is a subset of the `RV` sort, so this is the
-paper's "function `VF/𝔐 → 𝓟(RVᵐ)`". -/
+/-- Descent for equality of leading terms, a separate set-theoretic example. -/
 theorem descends_ker_rv {A₂ : Type*} (s₂ : Setoid A₂) (B : Set (M × A₂))
     (hinv : ∀ c₁ c₂ : M, iRv c₁ = iRv c₂ → fib B c₁ = fib B c₂)
     (hsat : ∀ c : M, IsUnionOfClasses s₂.r (fib B c)) :

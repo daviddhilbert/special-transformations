@@ -49,6 +49,10 @@ def check_moves():
     bad = []
     retained = 0
     removed = 0
+    revised = 0
+    revisions_path = ROOT / 'Archive/LEGACY-REVISIONS.json'
+    revisions = {r['path']: r for r in json.loads(revisions_path.read_text(encoding='utf-8'))} \
+        if revisions_path.exists() else {}
     for row in MOVES:
         p = ROOT / row['new']
         if row.get('status') == 'removed_obsolete_qe':
@@ -56,12 +60,22 @@ def check_moves():
             if p.exists(): bad.append(row['new'] + ' (marked removed but still present)')
             continue
         retained += 1
-        if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest() != row['sha256']:
+        expected = row['sha256']
+        if row['new'] in revisions:
+            revision = revisions[row['new']]
+            if revision['original_sha256'] != expected:
+                bad.append(row['new'] + ' (revision provenance mismatch)')
+                continue
+            expected = revision['current_sha256']
+            revised += 1
+        if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest() != expected:
             bad.append(row['new'])
     if bad:
         print('Different from initial relocation snapshot:', *bad, sep='\n', file=sys.stderr)
         return 1
-    print(f'PASS: {retained} retained files match original hashes; {removed} obsolete QE entries are absent.')
+    print(f'PASS: {retained - revised} retained files match original hashes; '
+          f'{revised} documented comment-only revisions match their audit; '
+          f'{removed} obsolete QE entries are absent.')
     return 0
 
 

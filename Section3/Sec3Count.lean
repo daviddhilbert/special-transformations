@@ -11,12 +11,10 @@ subset that contains `s`."*
 directory) formalises the last sentence for a **single** formula.  The step that is missing is the
 compactness step, and to state its conclusion *inside the encoding* one needs a formula
 `atMost k φ(Y)` saying that `{x : iVF x ∧ φ(x, Y)}` has at most `k` elements — finiteness is not
-first-order, only *bounded* finiteness is.  This file builds that formula for a two-variable context
-`(X, Y)` and proves its realisation lemma:
-
-`atMost2 k ψ` realises at `![x, y]` exactly when there is no injective map `Fin (k+1) → M` into
-`{z : iVF z ∧ ψ.Realize v ![z, y]}`, i.e. "no `k+1` distinct solutions" — which is
-`Set.Finite ∧ ncard ≤ k` by the pigeonhole lemma of `QE/InfRVDefGam.lean`.
+first-order, only *bounded* finiteness is. This file constructs that formula
+and proves the separate `countBody_realize` and `iterEx_realize` identities.
+It does not export their composition as an `atMost2` realization theorem, nor
+the finite-cardinality equivalence mentioned in the historical header.
 
 Everything is built with the encoding's own syntax (`exSortedG` for the guarded existential,
 `Sec4Compose.BoundedFormula.substVar` for the variable renaming), so `atMost2 k ψ` carries

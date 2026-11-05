@@ -4,6 +4,7 @@ Source: [arXiv:1006.2467v1](https://arxiv.org/pdf/1006.2467v1), Sections 2--3.
 The numbering below was checked against that version. These are target
 descriptions, not claims of completed formalization. All entries require
 statement review, current compilation, and dependency/hypothesis audits.
+Current item-level progress and verification scope are in [STATUS.md](STATUS.md).
 
 ## Section 2 after the statement of Theorem 2.3
 

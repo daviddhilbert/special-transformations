@@ -1,4 +1,5 @@
 import ACVFQE
+import Section3.Library
 
 /-!
 # Special transformations: section-by-section coordination root

@@ -1,0 +1,23 @@
+import Section3.ModelContext
+import Section3.Compactness
+import Section3.QuantifierFree
+import Section3.Coordinates
+import Section3.Average
+import Section3.QuotientFamilies
+import Section3.ValuedCMinimal
+import Section3.BallGeometry
+import Section3.RVLiteralReduction
+import Section3.RVNormalForm
+import Section3.ParameterBridge
+import Section3.ClosureBridge
+import Section3.FibreDescent
+import Section3.AlgebraicFinite
+import Section3.VFAlgebraicity
+
+/-!
+# Checked Section 3 library
+
+This entry point uses the released ACVF-QE language. It does not import the
+legacy Section 3 targets or their placeholders. See STATUS.md for the exact
+paper coverage; importing this file is not a claim that all targets are closed.
+-/
