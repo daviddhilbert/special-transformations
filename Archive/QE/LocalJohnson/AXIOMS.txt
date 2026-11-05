@@ -1,4 +1,0 @@
-hasQE_ACVF_val : QECriterion.HasQE ValPM.ACVF_val
-'hasQE_ACVF_val' depends on axioms: [propext, Classical.choice, Quot.sound]
-hasQEb_ACVF_val : QECriterion.HasQEb ValPM.ACVF_val
-'hasQEb_ACVF_val' depends on axioms: [propext, Classical.choice, Quot.sound]

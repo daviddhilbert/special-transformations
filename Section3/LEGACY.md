@@ -22,8 +22,11 @@ encoding, a conditional theorem, or a superseded statement.
 | `Balls.lean` | Earlier Section 2 ball geometry. Its extra `RV0` wrapper and C-minimality placeholder need auditing against the released encoding; do not import a competing RV language. |
 | `LegacyScaffold/` | Earlier Basic/Language/Definable stubs, preserved as history. |
 
-Shared candidates retained in `../Archive/QE/`: `SubstVar.lean`, `ExSortedG.lean`,
-`ParamBridgeRelabel.lean`, `SubstParam.lean` and related parameter-transport tools.
+Shared candidates retained in `../Shared/`: `SubstVar.lean`, `ExSortedG.lean`,
+`ParamBridgeRelabel.lean`, `ParamBridgeShift.lean`, `SubstParam.lean`,
+`JunkTrue.lean` and `MulNormalForm.lean`. `Enc`, `RVCalc`, `VFField` and
+`VFValued` are supplied by the pinned ACVF-QE dependency; their duplicate
+local copies and the rest of the old QE campaign have been removed.
 `../Section4/Compose.lean` supplies a candidate definable-function composition
 layer; using shared infrastructure does not expand the next task to Section 4.
 `../Archive/Milestone0/Saturation.lean` is the historical `Sat` interface.

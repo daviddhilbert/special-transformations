@@ -32,9 +32,12 @@ of Theorem 2.8 and is not a QE dependency. Do not use that placeholder.
 ## What changed in this working copy
 
 The root is now an index and portable build configuration. Existing work is
-organized in `Section3/` through `Section10/`. Old QE material and milestone-0
-snapshots are preserved in `Archive/`; old root handoffs and plans are in
-`Archive/History/`. `Archive/MOVE-INDEX.json` records the 336 unchanged moves.
+organized in `Section3/` through `Section10/`. The author then requested removal
+of the obsolete QE campaign, since completed QE work belongs in ACVF-QE.
+Seven required helpers were retained in `Shared/`; old model snapshots remain
+in `Archive/Milestone0/`, but the duplicate `Encoding.lean` was removed.
+`Archive/MOVE-INDEX.json` records the initial 336 relocations and their current
+retention/removal status: 93 entries retained, 243 intentionally removed.
 
 `Section3/` contains 27 relocated files, including three earlier scaffolds;
 `Section4/` contains 15. These counts describe files, not proved paper results.
@@ -42,8 +45,10 @@ No legacy Section 3/4 compiler check was performed during relocation. Static
 source inventory and dependency planning do not establish Lean correctness.
 Use `LEGACY.md` and `TARGETS.md`, not old "green" headers, as the starting map.
 
-Cleanup checks passed: every moved file matches its recorded original hash,
-and static dependency plans resolve for all 42 Section 3/4 source files.
+Cleanup checks passed: every retained relocation matches its original hash,
+the 243 removed obsolete entries are absent, and static dependency plans
+resolve for all 42 Section 3/4 source files against retained helpers and
+published ACVF-QE modules.
 The new top-level root source, with fresh QE headline checks appended, also
 compiled successfully under the pinned Lake environment; all three QE audits
 list only the standard Lean axioms. That check reused the matching installed
@@ -53,9 +58,10 @@ Records: `Archive/REORGANIZATION-CHECK.json` and `Archive/ROOT-IMPORT-AUDIT.txt`
 
 The cleanup included substantial pre-existing local work, all preserved in the
 relocation. The author subsequently authorized publishing this layout while
-ignoring the newer OpenMathOS content. The pre-cleanup remote tip is retained
-on `codex/pre-section-layout-06c840f` and in the merge history. Inspect current
-`git status` before editing and preserve any new working-copy changes.
+ignoring the newer OpenMathOS content and deleting the obsolete QE campaign.
+Earlier commits remain in Git history, without keeping their obsolete QE files
+in the current tree. Inspect current `git status` before editing and preserve
+any new working-copy changes.
 The user chose section **subdirectories**, so do not create nested `.git`
 directories, GitHub section repositories, or submodules.
 

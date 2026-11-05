@@ -2,8 +2,8 @@
 
 Read `Section3/HANDOFF.md` before the next proof session. This repository has
 been organized by paper section. QE is finished in `daviddhilbert/ACVF-QE`;
-do not restart its proof. The original standing instructions are preserved
-in `Archive/History/AGENTS.md`; these current paths supersede its old layout.
+do not restart its proof. The author's standing instructions are summarized below; Git history preserves
+the previous layout. These current paths supersede older instructions.
 
 ## Author's standing instructions
 
@@ -13,7 +13,8 @@ in `Archive/History/AGENTS.md`; these current paths supersede its old layout.
 - Preserve the author's work and existing uncommitted edits. Further
   paper-repository pushes require an explicit instruction. The author authorized
   publishing this section layout and ignoring the newer OpenMathOS content;
-  the old remote tip is retained on a backup branch and in the merge history.
+  earlier commits remain in Git history. The author also requested removal of
+  the obsolete QE campaign from the current tree.
 - A Lean result is verified only after compiler exit 0 and a checked headline
   type and axiom audit. Accept only `propext`, `Classical.choice`, `Quot.sound`.
   Explicit theorem hypotheses must also be checked. A definition of an open
@@ -52,9 +53,11 @@ in `Archive/History/AGENTS.md`; these current paths supersede its old layout.
   components of the new library.
 - `Archive/MOVE-INDEX.json` maps historical paths to current files. The inventory
   and dependency planner are static tools, not Lean verification reports.
-- Shared syntax/logic candidates remain recoverable in `Archive/QE/`, and old
-  language/model snapshots in `Archive/Milestone0/`. Port them into one shared
-  language graph; do not import competing standalone copies of a language.
+- Seven required syntax/parameter helpers are retained in `Shared/`. Shared
+  `Enc`, `RVCalc`, `VFField` and `VFValued` modules come from pinned ACVF-QE.
+  Older model snapshots remain in `Archive/Milestone0/`; its duplicate encoding
+  and the obsolete QE campaign have been removed. Do not introduce competing
+  standalone copies of the published language.
 - Build new modules through the portable pinned Lake project. Record source,
   target statement, remaining hypotheses, compiler status and headline axioms
   separately. Historical headers and milestone totals are not current evidence.

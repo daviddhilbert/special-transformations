@@ -23,7 +23,8 @@ QE is finished and is a dependency of this work.
 | Section8/ | Further structural properties |
 | Section9/ | Differentiation |
 | Section10/ | Categories with volume forms |
-| [Archive/](Archive/README.md) | Older QE campaign, model-building snapshots, scaffolds, and historical notes |
+| [Shared/](Shared/README.md) | Seven syntax/parameter helpers required by the section code |
+| [Archive/](Archive/README.md) | Remaining model-building snapshots and limited historical evidence |
 
 The relocated section files are **legacy candidates**, not a new verified
 section library. Their proofs, hypotheses, and old headers need auditing
@@ -43,10 +44,12 @@ python3 Archive/inspect_legacy.py --plan Section3/Sec3Fibre.lean
 ```
 
 [Archive/MOVE-INDEX.json](Archive/MOVE-INDEX.json) records original paths,
-new paths, and SHA-256 hashes. The reorganization preserved every moved file
-byte for byte. Old paths and build instructions inside historical comments
-can be resolved through that index. The earlier Makefile and project config
-are preserved under `Archive/History/`.
+new paths, SHA-256 hashes, and retention/removal status. After the initial
+reorganization, the author requested deletion of the obsolete QE campaign.
+The 93 retained entries still match their original bytes; 243 obsolete entries
+were removed, including the duplicate encoding and old QE planning material.
+Seven required helpers are retained in `Shared/`. Completed QE code is supplied
+by the pinned ACVF-QE dependency, rather than duplicated in this repository.
 
 The new root import and QE headline audits passed under the pinned Lake
 environment using existing checked dependency artifacts. See
@@ -55,8 +58,8 @@ the legacy section proofs were not recompiled during this reorganization.
 
 The section folders are ordinary subdirectories of this repository. No nested
 Git repository or submodule was added. The author chose this layout over the
-newer OpenMathOS changes; the pre-cleanup remote tip is retained on
-`codex/pre-section-layout-06c840f` and in the merge history.
+newer OpenMathOS changes. Earlier commits remain recoverable from Git history;
+their obsolete QE files are not part of the current source tree.
 
 ## License
 

@@ -9,6 +9,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parent.parent
 MOVES = json.loads((ROOT / 'Archive/MOVE-INDEX.json').read_text(encoding='utf-8-sig'))
+PUBLISHED = set(json.loads((ROOT / 'Shared/ACVF-QE-MODULES.json').read_text(encoding='utf-8-sig'))['modules'])
 
 
 def code_only(source):
@@ -46,20 +47,28 @@ def imports(path):
 
 def check_moves():
     bad = []
+    retained = 0
+    removed = 0
     for row in MOVES:
         p = ROOT / row['new']
+        if row.get('status') == 'removed_obsolete_qe':
+            removed += 1
+            if p.exists(): bad.append(row['new'] + ' (marked removed but still present)')
+            continue
+        retained += 1
         if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest() != row['sha256']:
             bad.append(row['new'])
     if bad:
         print('Different from initial relocation snapshot:', *bad, sep='\n', file=sys.stderr)
         return 1
-    print(f'PASS: all {len(MOVES)} relocated files match their original SHA-256 hashes.')
+    print(f'PASS: {retained} retained files match original hashes; {removed} obsolete QE entries are absent.')
     return 0
 
 
 def inventory():
     rows = []
     for row in MOVES:
+        if row.get('status') == 'removed_obsolete_qe': continue
         if row['new'].startswith('Section') and row['new'].endswith('.lean'):
             raw = (ROOT / row['new']).read_bytes()
             code = code_only(raw.decode('utf-8-sig'))
@@ -77,6 +86,7 @@ def inventory():
 def plan(target):
     aliases = {}
     for row in MOVES:
+        if row.get('status') == 'removed_obsolete_qe': continue
         old, new = Path(row['old']), row['new']
         if old.suffix != '.lean': continue
         # The independent LocalQE/LocalJohnson checkers have their own module
@@ -86,7 +96,7 @@ def plan(target):
         aliases[Path(new).with_suffix('').as_posix().replace('/', '.')] = new
         if len(old.parts) == 2 and old.parts[0] in ('QE','Milestone0'):
             aliases[old.stem] = new
-    for name, old in {'Enc':'Milestone0/Encoding.lean', 'Sat':'Milestone0/Saturation.lean',
+    for name, old in {'Sat':'Milestone0/Saturation.lean',
                       'Sec3Frozen':'QE/Sec3_frozen.lean', 'Sec3Sat':'QE/Sec3_sat.lean',
                       'Sec3':'QE/Sec3_draft.lean'}.items():
         aliases[name] = next(r['new'] for r in MOVES if r['old'] == old)
@@ -94,7 +104,7 @@ def plan(target):
     if not p.is_relative_to(ROOT) or not p.is_file():
         raise ValueError('Target must be an existing file inside this repository')
     target = p.relative_to(ROOT).as_posix()
-    ordered, visiting, seen, missing, cycles = [], [], set(), [], []
+    ordered, visiting, seen, missing, cycles, supplied = [], [], set(), [], [], set()
     external = {'Mathlib','Lean','Std','Init','Batteries','Aesop','Qq','ProofWidgets','Cli','Plausible','ImportGraph'}
     def visit(path):
         if path in seen: return
@@ -102,11 +112,13 @@ def plan(target):
             cycles.append(visiting[visiting.index(path):] + [path]); return
         visiting.append(path)
         for dep in imports(path):
-            if dep in aliases: visit(aliases[dep])
+            if dep in PUBLISHED: supplied.add(dep)
+            elif dep in aliases: visit(aliases[dep])
             elif dep.split('.')[0] not in external: missing.append((path, dep))
         visiting.pop(); seen.add(path); ordered.append(path)
     visit(target)
     print('Static dependency plan only; no Lean compilation or proof certification.')
+    if supplied: print('Provided by pinned ACVF-QE: ' + ', '.join(sorted(supplied)))
     for path in ordered: print(path)
     for path, dep in missing: print(f'UNRESOLVED: {path}: {dep}', file=sys.stderr)
     for cycle in cycles: print('CYCLE: ' + ' -> '.join(cycle), file=sys.stderr)
