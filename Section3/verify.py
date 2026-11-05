@@ -64,6 +64,15 @@ headlines += ['BooleanCombinations.boolean', 'RVRepresentatives.add_correct',
     'RVRepresentatives.qf_definable', 'good_vfImage', 'theorem_2_8_c_minimal',
     'algebraicAt_vf_union_rv_iff', 'corollary_3_7_vf',
     'Balls.closedDisc_rv_constant', 'Balls.openDisc_rv_constant']
+headlines += ['SpecialTransformations.DefinableConstants.eliminate_parameters',
+    'definableClosureAt_iff_raw', 'AlgebraicAt.eliminate_definable_params',
+    'vfDefinableClosureField', 'algebraicAt_vf_iff_parameterField',
+    'relativeTrdeg_eq_of_algebraic', 'mem_vfAlgebraicClosureField', 'corollary_3_4',
+    'algebraicAt_vf_iff_matroid_closure', 'lemma_3_6_vf',
+    'definableClosure_idempotent', 'algebraicAt_definableClosure_iff',
+    'definableClosureSubstructure']
+def qualify(h):
+    return h if h.startswith('SpecialTransformations.') else 'SpecialTransformations.Section3.' + h
 env = os.environ.copy()
 env['LEAN_PATH'] = str(LIB) + os.pathsep + env.get('LEAN_PATH', '')
 rows = []
@@ -118,7 +127,7 @@ for module in modules:
     run(module, source, LIB / 'Section3' / (module + '.olean'), fingerprints[module])
 source = BUILD / 'HeadlineAudit.lean'
 source.write_text('import Section3.Library\n' + '\n'.join(
-    '#check @SpecialTransformations.Section3.' + h + '\n#print axioms SpecialTransformations.Section3.' + h
+    '#check @' + qualify(h) + '\n#print axioms ' + qualify(h)
     for h in headlines) + '\n', encoding='utf-8')
 output = run('HeadlineAudit', source)
 audits = re.findall(r"'([^'\n]+)' depends on axioms:\s*\[([^]]*)\]", output)

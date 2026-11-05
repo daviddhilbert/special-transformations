@@ -17,6 +17,9 @@ import Section3.FiniteImage
 import Section3.CMinimal
 import Section3.DiscCentres
 import Section3.RVIndependence
+import Section3.TranscendenceDegrees
+import Section3.VFExchange
+import Section3.ClosureConventions
 
 /-!
 # Checked Section 3 library

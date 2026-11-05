@@ -229,7 +229,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "status": "compiled legacy candidate",
-      "current_sha256": "ba332eb3b75e2a4049f006f1e7d63c4c96abb2ea84fb5ec291091a0eafc31251",
+      "current_sha256": "2963d467e25d1c282fdb90a68a57aa2090e4b6e13f4aac097c7d188640850ebc",
       "current_noncomment_tokens_match_compiled_snapshot": true
     },
     {

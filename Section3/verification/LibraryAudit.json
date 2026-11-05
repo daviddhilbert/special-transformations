@@ -250,6 +250,14 @@
       "reused": true
     },
     {
+      "module": "DefinableConstants",
+      "source_sha256": "f51dd6f618141a489b5bed479493ba8c93bdcc44d7f7e81163a41653f0d92270",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
       "module": "RingSyntax",
       "source_sha256": "d77859e8b8b1198d9f4457374e7fbc61a5dc70c9e0e57dc7c2dc2066df4029a4",
       "compiler_exit": 0,
@@ -274,6 +282,94 @@
       "reused": true
     },
     {
+      "module": "VFDefinableClosure",
+      "source_sha256": "1519aa018491f36c97a8124f2bbedd1ef6238681005cd817310819b1548707e0",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "FiniteImage",
+      "source_sha256": "8a62f1fba0ef9a9156196351b54bbbf027c384bd48cab84f1be9695f2cbbe2c9",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "RVRepresentatives",
+      "source_sha256": "fd74cdc2a5b072be6589aa5b86777436a0a03ea6d7acad3afb8f00498c38fee9",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "LiftTerms",
+      "source_sha256": "2b71632de87d8f4e4f58917ffa834e99943ca58d610fde3804bb0c7400182254",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "ValuedDefinability",
+      "source_sha256": "ec38ec104969f735288c22ee5d5632f80c9b16ec73502e20637a140cdf0e625d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "RepresentativeDefinability",
+      "source_sha256": "37e7480d22cf4430bcf98f0f47ebeaf64a4237efa1af1ac67ab3e30aeac835f8",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "QFInterpretation",
+      "source_sha256": "fb253006f3f09379ae76f017b89f064038827699135f83d12bb060e1a05124b4",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "BooleanCombinations",
+      "source_sha256": "bfd7591d3a5ac071ae98fbca1d484635fbf8778e4758d1fd9ddebd686bb598a4",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GeometryBridge",
+      "source_sha256": "39e2ff35cb54449420cd168cbf9778e19ac56a92f6e61992b9274bab8f9aabc3",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "CMinimal",
+      "source_sha256": "71c2040afa98becfe3e22ebeeb5ab5d9c52dab80f7ddb176d3a06bcb54b14678",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "DiscCentres",
+      "source_sha256": "2ec7135968083f759f97ba9905f19120249a3907afeafdd99be5066646d6c78f",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
       "module": "FieldBase",
       "source_sha256": "2fe114226056087a75a4ad399b1ec7b787e4930a3aa288dde2641fd77ba7a1d0",
       "compiler_exit": 0,
@@ -282,88 +378,40 @@
       "reused": true
     },
     {
-      "module": "FiniteImage",
-      "source_sha256": "26796da4402acc83facfb9c19e27abc323289b97b0b0a19d7c543a798c43ce89",
+      "module": "RVIndependence",
+      "source_sha256": "74bfeb21122b3bb56ff87a13ca5e31bfca21d1e5419aeafe8e7b2bf7cb81e462",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
       "reused": true
     },
     {
-      "module": "RVRepresentatives",
-      "source_sha256": "fd74cdc2a5b072be6589aa5b86777436a0a03ea6d7acad3afb8f00498c38fee9",
+      "module": "SubfieldTrdeg",
+      "source_sha256": "c71a6ae2b81c25133ccfac5d4a9b970152841de147b215ea4f95545bed880143",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
       "reused": false
     },
     {
-      "module": "LiftTerms",
-      "source_sha256": "2b71632de87d8f4e4f58917ffa834e99943ca58d610fde3804bb0c7400182254",
+      "module": "TranscendenceDegrees",
+      "source_sha256": "504d21ac0e1804527934867259d051b6321e7e960b7774e6f2a9dbbfa2451bb7",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
       "reused": false
     },
     {
-      "module": "ValuedDefinability",
-      "source_sha256": "ec38ec104969f735288c22ee5d5632f80c9b16ec73502e20637a140cdf0e625d",
+      "module": "VFExchange",
+      "source_sha256": "9b5ec4494621e37e7d60ae195807b43dbefa2c1f2cb286d56fcbed1dfba04a38",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
       "reused": false
     },
     {
-      "module": "RepresentativeDefinability",
-      "source_sha256": "37e7480d22cf4430bcf98f0f47ebeaf64a4237efa1af1ac67ab3e30aeac835f8",
-      "compiler_exit": 0,
-      "error_occurrences": 0,
-      "passed": true,
-      "reused": false
-    },
-    {
-      "module": "QFInterpretation",
-      "source_sha256": "fb253006f3f09379ae76f017b89f064038827699135f83d12bb060e1a05124b4",
-      "compiler_exit": 0,
-      "error_occurrences": 0,
-      "passed": true,
-      "reused": false
-    },
-    {
-      "module": "BooleanCombinations",
-      "source_sha256": "bfd7591d3a5ac071ae98fbca1d484635fbf8778e4758d1fd9ddebd686bb598a4",
-      "compiler_exit": 0,
-      "error_occurrences": 0,
-      "passed": true,
-      "reused": false
-    },
-    {
-      "module": "GeometryBridge",
-      "source_sha256": "39e2ff35cb54449420cd168cbf9778e19ac56a92f6e61992b9274bab8f9aabc3",
-      "compiler_exit": 0,
-      "error_occurrences": 0,
-      "passed": true,
-      "reused": false
-    },
-    {
-      "module": "CMinimal",
-      "source_sha256": "71c2040afa98becfe3e22ebeeb5ab5d9c52dab80f7ddb176d3a06bcb54b14678",
-      "compiler_exit": 0,
-      "error_occurrences": 0,
-      "passed": true,
-      "reused": false
-    },
-    {
-      "module": "DiscCentres",
-      "source_sha256": "2ec7135968083f759f97ba9905f19120249a3907afeafdd99be5066646d6c78f",
-      "compiler_exit": 0,
-      "error_occurrences": 0,
-      "passed": true,
-      "reused": false
-    },
-    {
-      "module": "RVIndependence",
-      "source_sha256": "74bfeb21122b3bb56ff87a13ca5e31bfca21d1e5419aeafe8e7b2bf7cb81e462",
+      "module": "ClosureConventions",
+      "source_sha256": "21252eed298d5066511dd27e95d61939c58cee8f2a685746aee9d2b48bff636f",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -371,7 +419,7 @@
     },
     {
       "module": "Library",
-      "source_sha256": "aa169abada084e6dc5b1a503b4621275b37d23c0599092bb9fcde1bb8260e502",
+      "source_sha256": "1a6627bee2400003938c398ac8884ad1e99b22815c047b16a3eb630f33a44c93",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -379,7 +427,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "e47322b0b411579f514036df367c6712451202aafa06ba1716c71d03a7849801",
+      "source_sha256": "4c94a21c9f4c53d54456084a11e7f897e31dbf4e4db96aabda80a6bcc8bac1f9",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -395,7 +443,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "47 integrated Section3 modules; matching compiler caches reused where indicated; fresh combined headline audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "53 integrated Section3 modules; matching compiler caches reused where indicated; fresh combined headline audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -685,6 +733,72 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.DefinableConstants.eliminate_parameters": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definableClosureAt_iff_raw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.AlgebraicAt.eliminate_definable_params": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.vfDefinableClosureField": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicAt_vf_iff_parameterField": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.relativeTrdeg_eq_of_algebraic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.mem_vfAlgebraicClosureField": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.corollary_3_4": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicAt_vf_iff_matroid_closure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.lemma_3_6_vf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definableClosure_idempotent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicAt_definableClosure_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definableClosureSubstructure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
-  }
+  },
+  "environment": "Exact Lean 4.33.1 compiler restored in persistent WSL elan installation; exact pinned dependencies and 8690 Mathlib cache artifacts restored in a persistent Linux dependency cache before this audit."
 }

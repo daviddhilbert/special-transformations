@@ -1,4 +1,4 @@
-import Section3.FieldBase
+import Section3.VFDefinableClosure
 import Section3.ClosureBridge
 import Section3.AlgebraicFinite
 set_option backward.isDefEq.respectTransparency false
@@ -31,7 +31,7 @@ theorem relation_image_definable {m : ℕ} (S : Set M)
 
 theorem finite_rv_to_vf_relation_image (hc : CanonicalStructure.IsCanonical (M := M))
     {κ : Cardinal} (hs : Saturated M κ) (S : Set M) (hsmall : Cardinal.mk S < κ)
-    (F : VFFieldBase S) {m : ℕ} (R : Set ((Fin m → M) × M))
+    {m : ℕ} (R : Set ((Fin m → M) × M))
     (hR : RawClosure.Tuple.RelationDefinable S R)
     (hsort : ∀ t b, (t, b) ∈ R → (∀ j, iRV (t j)) ∧ iVF b)
     (hf : ∀ t, {b | (t, b) ∈ R}.Finite) : {b | ∃ t, (t, b) ∈ R}.Finite := by
@@ -43,24 +43,24 @@ theorem finite_rv_to_vf_relation_image (hc : CanonicalStructure.IsCanonical (M :
     ⟨{b | (t, b) ∈ R}, relation_fibre_definable S R hR t, hf t, htb⟩
   have halg := (algebraicAt_iff_raw hc _ .vf b).mpr ⟨hraw, hb⟩
   let b' : VFType (M := M) := ⟨b, hb⟩
-  have he' : _root_.IsAlgebraic F.field b' := by
-    apply algebraicAt_vf_isAlgebraic (S ∪ Set.range t) F.field ?_ ⟨b, hb⟩ halg
+  have he' : _root_.IsAlgebraic (vfParameterField S) b' := by
+    apply algebraicAt_vf_isAlgebraic (S ∪ Set.range t) (vfParameterField S) ?_ ⟨b, hb⟩ halg
     intro x hx
     rcases hx with hx | ⟨j, hj⟩
-    · exact (F.mem_iff x).mpr hx
+    · exact Subfield.subset_closure hx
     · have hh := CanonicalStructure.sort_unique hM (s := .vf) (t := .rv)
         x.property (hj ▸ ht j)
       cases hh
-  exact ((VFFieldBase.algebraicAt_iff S F ⟨b, hb⟩).mpr he').raw_finite_witness
+  exact ((algebraicAt_vf_iff_parameterField hc S ⟨b, hb⟩).mpr he').raw_finite_witness
 
 
 /-- Finite-valued RV-to-VF relations have finite image in every output arity.
-The base is unchanged. The field assumption is the standing VF(S) convention;
-the saturation premise is genuine small-parameter saturation. -/
+The base is unchanged and may be any small set. The saturation premise is
+genuine small-parameter saturation; no field-base convention is required. -/
 theorem finite_rv_to_vf_tuple_relation_image
     (hc : CanonicalStructure.IsCanonical (M := M))
     {κ : Cardinal} (hs : Saturated M κ) (S : Set M) (hsmall : Cardinal.mk S < κ)
-    (F : VFFieldBase S) {m n : ℕ} (G : Set (Fin m ⊕ Fin n → M))
+    {m n : ℕ} (G : Set (Fin m ⊕ Fin n → M))
     (hG : S.Definable LRV G)
     (hsort : ∀ t y, Sum.elim t y ∈ G → (∀ j, iRV (t j)) ∧ ∀ j, iVF (y j))
     (hf : ∀ t, {y | Sum.elim t y ∈ G}.Finite) :
@@ -91,7 +91,7 @@ theorem finite_rv_to_vf_tuple_relation_image
     rw [he]
     exact hG.image_comp π
   have hcoord (j : Fin n) : {b | ∃ t, (t, b) ∈ R j}.Finite := by
-    apply finite_rv_to_vf_relation_image hc hs S hsmall F (R j) (hR j)
+    apply finite_rv_to_vf_relation_image hc hs S hsmall (R j) (hR j)
     · rintro t b ⟨y, hy, rfl⟩
       exact ⟨(hsort t y hy).1, (hsort t y hy).2 j⟩
     · intro t
@@ -109,7 +109,7 @@ theorem finite_rv_to_vf_tuple_relation_image
 partial domain A. Definability means the graph over the original base S. -/
 theorem corollary_3_5 (hc : CanonicalStructure.IsCanonical (M := M))
     {κ : Cardinal} (hs : Saturated M κ) (S : Set M) (hsmall : Cardinal.mk S < κ)
-    (F : VFFieldBase S) {m n : ℕ} (A : Set (Fin m → M))
+    {m n : ℕ} (A : Set (Fin m → M))
     (f : A → Fin n → M) (hA : ∀ t ∈ A, ∀ j, iRV (t j))
     (hf : ∀ t j, iVF (f t j))
     (hgraph : S.Definable LRV {z : Fin m ⊕ Fin n → M |
@@ -140,6 +140,6 @@ theorem corollary_3_5 (hc : CanonicalStructure.IsCanonical (M := M))
     · rintro ⟨t, a, _, hay⟩
       exact ⟨a, hay⟩
   rw [he]
-  exact finite_rv_to_vf_tuple_relation_image hc hs S hsmall F G hgraph hsort hfin
+  exact finite_rv_to_vf_tuple_relation_image hc hs S hsmall G hgraph hsort hfin
 
 end SpecialTransformations.Section3

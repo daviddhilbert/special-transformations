@@ -105,3 +105,13 @@ No call to the inherited Theorem 2.8 placeholder is used. Also inspected
 Mathlib's algebraic matroid, its closure characterization and transcendence
 basis interfaces as candidates for the remaining field-closure consequences;
 that inspection alone does not prove those paper targets.
+
+Closure and transcendence follow-up: used Mathlib's finite-parameter
+character theorem and definable-map preimages to eliminate parameters
+already definable over the base. Reused its relative algebraic closure,
+`trdeg_add_eq`, `trdeg_eq_zero`, `isAlgebraic_algHom_iff`,
+`IntermediateField.adjoin_toSubfield`, the checked fraction-field instance
+in `IntermediateField.algebraAdjoinAdjoin`,
+`AlgebraicIndependent.matroid_closure_eq` and `Matroid.closure_exchange`.
+The new bridges identify the actual sorted closures and coefficient fields;
+the generic field/matroid facts are not substituted for those bridges.
