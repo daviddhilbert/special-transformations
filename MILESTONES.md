@@ -1232,3 +1232,27 @@ and merged (one WIP left behind):
   Remaining named residuals: `RootData` (3.4's root data), `TranscendentalRealisation` (3.6's
   map), the realisation row for 3.5 (`SlotTotalExt`/`SlotAtomic`), and the hull step for
   `RelNewRV`/`RelHull` — all realisation statements at `relGate`.
+
+## smw2qpqe7 salvage (2026-11-04): the expired members' files, verified and merged (5 of 6)
+
+* `QE/Lemma36NoEP.lean` (m7, u7b — **the quote-free 3.6, done**):
+  `lemma36_claim_star_of_residueTranscendental`, `lemma36_claim_star_of_RVTrans`,
+  `lemma36_claim_star_of_expansionValMin`, `claimStar_routes_agree` — Claim (⋆) for Lemma 3.6
+  without Engler–Prestel Thm 3.4.3, at the frozen level, on `QE/UnitCase.lean`'s residue
+  machinery. Lemma 3.6 now has three routes: with EP 3.4.3 (`Lemma36Statement`), quote-free at
+  Mathlib level (`UnitTranscend`), quote-free at frozen level (this file).
+* `QE/RootLift.lean` (m7, u7a — **the WIP repaired and finished**): the 3.4 embedding half that
+  `.ultramath/smw2ox51x/m4/RootLift.lean` had left with a parse error. Green now:
+  `not_prefixUnits_of_first`, `not_prefixUnits_of_cons`, `aFour_chain_*`, `firstTerm_aFour`,
+  `coeff_PL_val`, `chain_prefix_units_not_automatic`.
+* `QE/RelSeparatedSlot.lean` (m3, u3): the separated-slot route —
+  `cases_iff_qfsat_of_hullExtension`, `caseSeparated_of_hullExtension_slotRealization`,
+  `relSeparated_of_relHull_slotFinSat`, `caseSeparated_of_qfsat` (direct from atomic
+  realisation), `oneStepVFP_of_hullExtension_slotRealization`, plus `SepHyp` with its stress tests
+  (`sepHyp_empty_of_vfgen`, `sepHyp_at_top_forces_zero`).
+* `QE/RelNewRVRoute.lean` (m4, u4): the NewRV route — `caseNewRV_iff`, `NewRVAtomSat` (atomic
+  realisation as the core), `caseNewRV_of_hull_of_atomSat`, `newRVAtomSat_of_finSat`,
+  `relNewRV_of_relHull_finSat`, `relNewRV_of_relHull_atomSat`, `relAtomSat_of_input5R`,
+  `paper_theorem_2_3_of_finSat_and_four_gated`.
+* WIP left behind: m7's `ResidueBridge.lean` (2 errors: an unsolved goal and a placeholder at
+  :333/:336 — genuinely unfinished; kept at `.ultramath/smw2qpqe7/m7/ResidueBridge.lean`).
