@@ -25,7 +25,8 @@ points use a nonempty proper subset without naming the containing ball.
 Uniform polynomial support also proves finite RV-fibre exceptions. Lemma 3.15
 uses the actual Gamma quotient and preserves the original base. A separate audit
 records the {1,-1} obstruction to the unrestricted classification in Remark 3.19;
-that remark is not marked complete. Additive subgroups are proved to be balls,
+the author has [retracted the whole remark](RETRACTIONS.md), which is excluded
+from the remaining proof obligations. Additive subgroups are proved to be balls,
 and the uniform root set gives the finite exceptional additive cosets in 3.18(1).
 The closed-ball alternative of 3.18(2) includes the complete original-base
 quotient graph and a realizing representative in every class. The entry point

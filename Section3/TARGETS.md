@@ -44,7 +44,7 @@ Current item-level progress and verification scope are in [STATUS.md](STATUS.md)
 | Lemma 3.17 | A definable VF^times-to-powerset(RV^m) family whose value-group image is bounded on both sides is constant on a sufficiently small punctured ball. |
 | Lemma 3.18(1) | Constancy on additive subgroup cosets outside finitely many exceptional cosets. |
 | Lemma 3.18(2) | Definable quotient-valued representative family when the subgroup is a closed ball or S is (VF,Gamma)-generated; include the subgroup's ball classification. |
-| Remark 3.19 | Multiplicative counterpart and its special unit-group case; preserve its stated alternatives. |
+| Remark 3.19 | **Retracted by the author, November 5, 2026.** Excluded from proof obligations; see [RETRACTIONS.md](RETRACTIONS.md). |
 
 The checklist includes cited results. A citation to the companion paper is not
 itself a checked Lean proof. The author permits standard Marker/Engler--Prestel

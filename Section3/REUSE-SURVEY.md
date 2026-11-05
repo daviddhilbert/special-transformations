@@ -296,3 +296,16 @@ comparison. Drafts remain in scratch and have not been compiler-certified.
 In particular the reversed top order must not acquire an incorrect
 zero-minimal ordered-group-with-zero instance. The imaginary-parameter and
 Gamma-generation interfaces are separate outstanding obligations.
+
+
+## Retraction of Remark 3.19 (November 5, 2026)
+
+The author retracted the whole remark, conditional on its not being used later.
+A complete arXiv v1 HTML search found one visible occurrence of “3.19” (its own
+heading), no links to its anchor, and no other “multiplicative subgroup” phrase.
+Sections 4–10 have no reference to `fun:quo:rep:mult`, `FunQuoRepMult` or
+`Remark319Audit`, and no imports of `Sec3Tail` or `Sec3TailGamma`.
+See [RETRACTIONS.md](RETRACTIONS.md) for the precise scope and decision.
+The checked counterexample remains imported as an audit result; no replacement
+classification or theorem is assumed. This documentation change does not alter
+Lean source or the existing 125-module / 284-headline certificate.
