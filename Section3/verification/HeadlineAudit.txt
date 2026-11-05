@@ -5144,3 +5144,818 @@ SpecialTransformations.Section3.ClosedBallCodes.body_sorted : SpecialTransformat
 'SpecialTransformations.Section3.ClosedCosetChoice.lemma_3_18_2_closed' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+@SpecialTransformations.Section3.Values.presentationType : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] → Type
+'SpecialTransformations.Section3.Values.presentationType' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.presentationOrder : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      LinearOrderedCommGroupWithZero SpecialTransformations.Section3.Values.presentationType
+'SpecialTransformations.Section3.Values.presentationOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.presentationValuation : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      Valuation SpecialTransformations.Milestone0.Transfer.VFType
+        SpecialTransformations.Section3.Values.presentationType
+'SpecialTransformations.Section3.Values.presentationValuation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Values.presentation_compatible : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Milestone0.VFValued.predV x y ↔
+    SpecialTransformations.Section3.Values.presentationValuation x ≤
+      SpecialTransformations.Section3.Values.presentationValuation y
+'SpecialTransformations.Section3.Values.presentation_compatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Values.paperValueEquiv : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.Values.GammaTop ≃
+        (MonoidWithZeroHom.ofClass SpecialTransformations.Section3.Values.presentationValuation).ValueGroup₀ᵒᵈ
+'SpecialTransformations.Section3.Values.paperValueEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.paperGammaEquiv : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.Values.Gamma ≃
+        (MonoidWithZeroHom.ofClass SpecialTransformations.Section3.Values.presentationValuation).ValueGroup₀ˣᵒᵈ
+'SpecialTransformations.Section3.Values.paperGammaEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaTopGroup : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      CommGroupWithZero SpecialTransformations.Section3.Values.GammaTop
+'SpecialTransformations.Section3.Values.gammaTopGroup' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaTopOrder : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      LinearOrder SpecialTransformations.Section3.Values.GammaTop
+'SpecialTransformations.Section3.Values.gammaTopOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.paperValue_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  SpecialTransformations.Section3.Values.paperValueEquiv 0 = 0
+'SpecialTransformations.Section3.Values.paperValue_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.paperValue_one : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  SpecialTransformations.Section3.Values.paperValueEquiv 1 = 1
+'SpecialTransformations.Section3.Values.paperValue_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.paperValue_mul : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (x y : SpecialTransformations.Section3.Values.GammaTop),
+  SpecialTransformations.Section3.Values.paperValueEquiv (x * y) =
+    SpecialTransformations.Section3.Values.paperValueEquiv x * SpecialTransformations.Section3.Values.paperValueEquiv y
+'SpecialTransformations.Section3.Values.paperValue_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.paperValue_inv : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (x : SpecialTransformations.Section3.Values.GammaTop),
+  SpecialTransformations.Section3.Values.paperValueEquiv x⁻¹ =
+    (SpecialTransformations.Section3.Values.paperValueEquiv x)⁻¹
+'SpecialTransformations.Section3.Values.paperValue_inv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.infinity_eq_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  SpecialTransformations.Section3.Values.infinity = 0
+'SpecialTransformations.Section3.Values.infinity_eq_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaTopIsOrderedMonoid : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  IsOrderedMonoid SpecialTransformations.Section3.Values.GammaTop
+'SpecialTransformations.Section3.Values.gammaTopIsOrderedMonoid' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Values.vrv_le_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (t u : CanonicalRV.RVSort M),
+  SpecialTransformations.Section3.Values.vrv t ≤ SpecialTransformations.Section3.Values.vrv u ↔
+    SpecialTransformations.Milestone0.iLe ↑t ↑u
+'SpecialTransformations.Section3.Values.vrv_le_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.vrv_mul : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (t u : CanonicalRV.RVSort M),
+  SpecialTransformations.Section3.Values.vrv ⟨SpecialTransformations.Milestone0.iRVMul ↑t ↑u, ⋯⟩ =
+    SpecialTransformations.Section3.Values.vrv t * SpecialTransformations.Section3.Values.vrv u
+'SpecialTransformations.Section3.Values.vrv_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaTopUnitsEquiv : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.Values.Gamma ≃ SpecialTransformations.Section3.Values.GammaTopˣ
+'SpecialTransformations.Section3.Values.gammaTopUnitsEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaOrder : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] → LinearOrder SpecialTransformations.Section3.Values.Gamma
+'SpecialTransformations.Section3.Values.gammaOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaGroup : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] → CommGroup SpecialTransformations.Section3.Values.Gamma
+'SpecialTransformations.Section3.Values.gammaGroup' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaUnits_mul : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (x y : SpecialTransformations.Section3.Values.Gamma),
+  SpecialTransformations.Section3.Values.gammaTopUnitsEquiv (x * y) =
+    SpecialTransformations.Section3.Values.gammaTopUnitsEquiv x *
+      SpecialTransformations.Section3.Values.gammaTopUnitsEquiv y
+'SpecialTransformations.Section3.Values.gammaUnits_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gamma_val_one : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  ↑1 = 1
+'SpecialTransformations.Section3.Values.gamma_val_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gamma_val_mul : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (x y : SpecialTransformations.Section3.Values.Gamma), ↑(x * y) = ↑x * ↑y
+'SpecialTransformations.Section3.Values.gamma_val_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gamma_val_inv : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (x : SpecialTransformations.Section3.Values.Gamma), ↑x⁻¹ = (↑x)⁻¹
+'SpecialTransformations.Section3.Values.gamma_val_inv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gamma_le_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (x y : SpecialTransformations.Section3.Values.Gamma),
+  x ≤ y ↔
+    SpecialTransformations.Section3.Values.gammaTopUnitsEquiv x ≤
+      SpecialTransformations.Section3.Values.gammaTopUnitsEquiv y
+'SpecialTransformations.Section3.Values.gamma_le_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaIsOrderedMonoid : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  IsOrderedMonoid SpecialTransformations.Section3.Values.Gamma
+'SpecialTransformations.Section3.Values.gammaIsOrderedMonoid' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.le_infinity : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (γ : SpecialTransformations.Section3.Values.GammaTop), γ ≤ SpecialTransformations.Section3.Values.infinity
+'SpecialTransformations.Section3.Values.le_infinity' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.vf_value_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  SpecialTransformations.Section3.Values.vrv (CanonicalRV.encodedRv 0) = 0
+'SpecialTransformations.Section3.Values.vf_value_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.vf_value_one : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  SpecialTransformations.Section3.Values.vrv (CanonicalRV.encodedRv 1) = 1
+'SpecialTransformations.Section3.Values.vf_value_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.vf_value_mul : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section3.Values.vrv (CanonicalRV.encodedRv (x * y)) =
+    SpecialTransformations.Section3.Values.vrv (CanonicalRV.encodedRv x) *
+      SpecialTransformations.Section3.Values.vrv (CanonicalRV.encodedRv y)
+'SpecialTransformations.Section3.Values.vf_value_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.vfValueHom : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Milestone0.Transfer.VFType →*₀ SpecialTransformations.Section3.Values.GammaTop
+'SpecialTransformations.Section3.Values.vfValueHom' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaValHom : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.Values.Gamma →* SpecialTransformations.Section3.Values.GammaTop
+'SpecialTransformations.Section3.Values.gammaValHom' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.vf_pred_iff_gamma_le : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Milestone0.VFValued.predV x y ↔
+    SpecialTransformations.Section3.Values.vfValueHom y ≤ SpecialTransformations.Section3.Values.vfValueHom x
+'SpecialTransformations.Section3.Values.vf_pred_iff_gamma_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gamma_pow_surjective : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (n : ℕ), n ≠ 0 → Function.Surjective fun γ => γ ^ n
+'SpecialTransformations.Section3.Values.gamma_pow_surjective' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaRootable : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] → RootableBy SpecialTransformations.Section3.Values.Gamma ℕ
+'SpecialTransformations.Section3.Values.gammaRootable' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaNontrivial : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  Nontrivial SpecialTransformations.Section3.Values.Gamma
+'SpecialTransformations.Section3.Values.gammaNontrivial' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Values.gammaDenselyOrdered : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  DenselyOrdered SpecialTransformations.Section3.Values.Gamma
+'SpecialTransformations.Section3.Values.gammaDenselyOrdered' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Code : {M : Type} →
+  [SpecialTransformations.Milestone0.LRV.Structure M] → Type
+'SpecialTransformations.Section3.GammaParameters.Code' depends on axioms: [propext]
+@SpecialTransformations.Section3.GammaParameters.raw : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] → SpecialTransformations.Section3.GammaParameters.Code → M
+'SpecialTransformations.Section3.GammaParameters.raw' depends on axioms: [propext]
+@SpecialTransformations.Section3.GammaParameters.value : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Code → SpecialTransformations.Section3.Values.Gamma
+'SpecialTransformations.Section3.GammaParameters.value' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.raw_rv : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (t : SpecialTransformations.Section3.GammaParameters.Code),
+  SpecialTransformations.Milestone0.iRV (SpecialTransformations.Section3.GammaParameters.raw t)
+'SpecialTransformations.Section3.GammaParameters.raw_rv' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.raw_ne_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (t : SpecialTransformations.Section3.GammaParameters.Code),
+  SpecialTransformations.Section3.GammaParameters.raw t ≠ SpecialTransformations.Milestone0.iRVZero
+'SpecialTransformations.Section3.GammaParameters.raw_ne_zero' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.raw_injective : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  Function.Injective SpecialTransformations.Section3.GammaParameters.raw
+'SpecialTransformations.Section3.GammaParameters.raw_injective' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.value_surjective : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  Function.Surjective SpecialTransformations.Section3.GammaParameters.value
+'SpecialTransformations.Section3.GammaParameters.value_surjective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.value_eq_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (t u : SpecialTransformations.Section3.GammaParameters.Code),
+  SpecialTransformations.Section3.GammaParameters.value t = SpecialTransformations.Section3.GammaParameters.value u ↔
+    SpecialTransformations.Milestone0.iLe (SpecialTransformations.Section3.GammaParameters.raw t)
+        (SpecialTransformations.Section3.GammaParameters.raw u) ∧
+      SpecialTransformations.Milestone0.iLe (SpecialTransformations.Section3.GammaParameters.raw u)
+        (SpecialTransformations.Section3.GammaParameters.raw t)
+'SpecialTransformations.Section3.GammaParameters.value_eq_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.representative : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.Values.Gamma → SpecialTransformations.Section3.GammaParameters.Code
+'SpecialTransformations.Section3.GammaParameters.representative' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.representative_value : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (γ : SpecialTransformations.Section3.Values.Gamma),
+  SpecialTransformations.Section3.GammaParameters.value
+      (SpecialTransformations.Section3.GammaParameters.representative γ) =
+    γ
+'SpecialTransformations.Section3.GammaParameters.representative_value' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.rawTuple : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    {n : ℕ} → (Fin n → SpecialTransformations.Section3.GammaParameters.Code) → Fin n → M
+'SpecialTransformations.Section3.GammaParameters.rawTuple' depends on axioms: [propext]
+@SpecialTransformations.Section3.GammaParameters.values : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {n : ℕ} →
+        (Fin n → SpecialTransformations.Section3.GammaParameters.Code) →
+          Fin n → SpecialTransformations.Section3.Values.Gamma
+'SpecialTransformations.Section3.GammaParameters.values' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Proper : {M : Type} →
+  [SpecialTransformations.Milestone0.LRV.Structure M] → {n : ℕ} → (Fin n → M) → Prop
+'SpecialTransformations.Section3.GammaParameters.Proper' depends on axioms: [propext]
+@SpecialTransformations.Section3.GammaParameters.rawTuple_proper : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (t : Fin n → SpecialTransformations.Section3.GammaParameters.Code),
+  SpecialTransformations.Section3.GammaParameters.Proper (SpecialTransformations.Section3.GammaParameters.rawTuple t)
+'SpecialTransformations.Section3.GammaParameters.rawTuple_proper' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.ofRaw : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    {n : ℕ} →
+      (a : Fin n → M) →
+        SpecialTransformations.Section3.GammaParameters.Proper a →
+          Fin n → SpecialTransformations.Section3.GammaParameters.Code
+'SpecialTransformations.Section3.GammaParameters.ofRaw' depends on axioms: [propext]
+@SpecialTransformations.Section3.GammaParameters.rawTuple_ofRaw : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (a : Fin n → M) (ha : SpecialTransformations.Section3.GammaParameters.Proper a),
+  SpecialTransformations.Section3.GammaParameters.rawTuple
+      (SpecialTransformations.Section3.GammaParameters.ofRaw a ha) =
+    a
+'SpecialTransformations.Section3.GammaParameters.rawTuple_ofRaw' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.rawTuple_injective : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ}, Function.Injective SpecialTransformations.Section3.GammaParameters.rawTuple
+'SpecialTransformations.Section3.GammaParameters.rawTuple_injective' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.ofRaw_rawTuple : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (t : Fin n → SpecialTransformations.Section3.GammaParameters.Code),
+  SpecialTransformations.Section3.GammaParameters.ofRaw (SpecialTransformations.Section3.GammaParameters.rawTuple t) ⋯ =
+    t
+'SpecialTransformations.Section3.GammaParameters.ofRaw_rawTuple' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.representatives : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {n : ℕ} →
+        (Fin n → SpecialTransformations.Section3.Values.Gamma) →
+          Fin n → SpecialTransformations.Section3.GammaParameters.Code
+'SpecialTransformations.Section3.GammaParameters.representatives' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.representatives_values : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (γ : Fin n → SpecialTransformations.Section3.Values.Gamma),
+  SpecialTransformations.Section3.GammaParameters.values
+      (SpecialTransformations.Section3.GammaParameters.representatives γ) =
+    γ
+'SpecialTransformations.Section3.GammaParameters.representatives_values' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.values_surjective : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ}, Function.Surjective SpecialTransformations.Section3.GammaParameters.values
+'SpecialTransformations.Section3.GammaParameters.values_surjective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.values_eq_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (t u : Fin n → SpecialTransformations.Section3.GammaParameters.Code),
+  SpecialTransformations.Section3.GammaParameters.values t = SpecialTransformations.Section3.GammaParameters.values u ↔
+    ∀ (i : Fin n),
+      SpecialTransformations.Milestone0.iLe (SpecialTransformations.Section3.GammaParameters.rawTuple t i)
+          (SpecialTransformations.Section3.GammaParameters.rawTuple u i) ∧
+        SpecialTransformations.Milestone0.iLe (SpecialTransformations.Section3.GammaParameters.rawTuple u i)
+          (SpecialTransformations.Section3.GammaParameters.rawTuple t i)
+'SpecialTransformations.Section3.GammaParameters.values_eq_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      Set M → ℕ → (n : ℕ) → (Fin n → SpecialTransformations.Milestone0.SortTag) → Type
+'SpecialTransformations.Section3.GammaParameters.Relation' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation.fibre : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {S : Set M} →
+        {k n : ℕ} →
+          {sn : Fin n → SpecialTransformations.Milestone0.SortTag} →
+            SpecialTransformations.Section3.GammaParameters.Relation S k n sn →
+              (Fin k → SpecialTransformations.Section3.Values.Gamma) → Set (Fin n → M)
+'SpecialTransformations.Section3.GammaParameters.Relation.fibre' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation.row_eq_fibre : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : ℕ} {sn : Fin n → SpecialTransformations.Milestone0.SortTag}
+  (R : SpecialTransformations.Section3.GammaParameters.Relation S k n sn)
+  (t : Fin k → SpecialTransformations.Section3.GammaParameters.Code)
+  (γ : Fin k → SpecialTransformations.Section3.Values.Gamma),
+  SpecialTransformations.Section3.GammaParameters.values t = γ →
+    {b | (SpecialTransformations.Section3.GammaParameters.rawTuple t, b) ∈ R.carrier} = R.fibre γ
+'SpecialTransformations.Section3.GammaParameters.Relation.row_eq_fibre' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation.mem_fibre_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : ℕ} {sn : Fin n → SpecialTransformations.Milestone0.SortTag}
+  (R : SpecialTransformations.Section3.GammaParameters.Relation S k n sn)
+  (t : Fin k → SpecialTransformations.Section3.GammaParameters.Code)
+  (γ : Fin k → SpecialTransformations.Section3.Values.Gamma),
+  SpecialTransformations.Section3.GammaParameters.values t = γ →
+    ∀ (b : Fin n → M), b ∈ R.fibre γ ↔ (SpecialTransformations.Section3.GammaParameters.rawTuple t, b) ∈ R.carrier
+'SpecialTransformations.Section3.GammaParameters.Relation.mem_fibre_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation.fibre_proper : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : ℕ} {sn : Fin n → SpecialTransformations.Milestone0.SortTag}
+  (R : SpecialTransformations.Section3.GammaParameters.Relation S k n sn)
+  (γ : Fin k → SpecialTransformations.Section3.Values.Gamma),
+  ∀ b ∈ R.fibre γ, ∀ (i : Fin n), SpecialTransformations.Milestone0.sortEval (sn i) (b i)
+'SpecialTransformations.Section3.GammaParameters.Relation.fibre_proper' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation.full_preimage : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : Nat} {sn : Fin n → SpecialTransformations.Milestone0.SortTag}
+  (R : @SpecialTransformations.Section3.GammaParameters.Relation M sM hM S k n sn)
+  (t : Fin k → @SpecialTransformations.Section3.GammaParameters.Code M sM) (b : Fin n → M),
+  Iff
+    (@Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M))
+      (@SpecialTransformations.Section3.GammaParameters.Relation.fibre M sM hM S k n sn R
+        (@SpecialTransformations.Section3.GammaParameters.values M sM hM k t))
+      b)
+    (@Membership.mem (Prod (Fin k → M) (Fin n → M)) (Set (Prod (Fin k → M) (Fin n → M)))
+      (@Set.instMembership (Prod (Fin k → M) (Fin n → M)))
+      (@SpecialTransformations.Section3.GammaParameters.Relation.carrier M sM hM S k n sn R)
+      (@Prod.mk (Fin k → M) (Fin n → M) (@SpecialTransformations.Section3.GammaParameters.rawTuple M sM k t) b))
+'SpecialTransformations.Section3.GammaParameters.Relation.full_preimage' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableWith : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      Set M →
+        {k n : ℕ} →
+          (Fin k → SpecialTransformations.Section3.Values.Gamma) →
+            (Fin n → SpecialTransformations.Milestone0.SortTag) → Set (Fin n → M) → Prop
+'SpecialTransformations.Section3.GammaParameters.DefinableWith' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableWith.proper : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : ℕ} {γ : Fin k → SpecialTransformations.Section3.Values.Gamma}
+  {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {A : Set (Fin n → M)},
+  SpecialTransformations.Section3.GammaParameters.DefinableWith S γ sn A →
+    ∀ b ∈ A, ∀ (i : Fin n), SpecialTransformations.Milestone0.sortEval (sn i) (b i)
+'SpecialTransformations.Section3.GammaParameters.DefinableWith.proper' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Base : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] → Type
+'SpecialTransformations.Section3.GammaParameters.Base' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableOverBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base →
+        {n : ℕ} → (Fin n → SpecialTransformations.Milestone0.SortTag) → Set (Fin n → M) → Prop
+'SpecialTransformations.Section3.GammaParameters.DefinableOverBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableAtBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → SpecialTransformations.Milestone0.SortTag → Set M → Prop
+'SpecialTransformations.Section3.GammaParameters.DefinableAtBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → SpecialTransformations.Milestone0.SortTag → M → Prop
+'SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableClosureAtBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → SpecialTransformations.Milestone0.SortTag → M → Prop
+'SpecialTransformations.Section3.GammaParameters.DefinableClosureAtBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GammaDefinableOverBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → Set SpecialTransformations.Section3.Values.Gamma → Prop
+'SpecialTransformations.Section3.GammaParameters.GammaDefinableOverBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → SpecialTransformations.Section3.Values.Gamma → Prop
+'SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → SpecialTransformations.Section3.Values.Gamma → Prop
+'SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.closureBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → SpecialTransformations.Section3.GammaParameters.Base
+'SpecialTransformations.Section3.GammaParameters.closureBase' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGeneratedBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → Prop
+'SpecialTransformations.Section3.GammaParameters.VFGeneratedBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → Prop
+'SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.with_zero_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) {n : Nat}
+  (γ :
+    Fin (@OfNat.ofNat Nat (nat_lit 0) (instOfNatNat (nat_lit 0))) →
+      @SpecialTransformations.Section3.Values.Gamma M sM hM)
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)),
+  Iff
+    (@SpecialTransformations.Section3.GammaParameters.DefinableWith M sM hM S
+      (@OfNat.ofNat Nat (nat_lit 0) (instOfNatNat (nat_lit 0))) n γ sn A)
+    (@SpecialTransformations.Section3.DefinableOver M sM S n sn A)
+'SpecialTransformations.Section3.GammaParameters.with_zero_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.base_empty_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) {n : Nat} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)),
+  Iff
+    (@SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM
+      (@SpecialTransformations.Section3.GammaParameters.Base.mk M sM hM S
+        (@EmptyCollection.emptyCollection (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+          (@Set.instEmptyCollection (@SpecialTransformations.Section3.Values.Gamma M sM hM))))
+      n sn A)
+    (@SpecialTransformations.Section3.DefinableOver M sM S n sn A)
+'SpecialTransformations.Section3.GammaParameters.base_empty_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.at_base_empty_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (σ : SpecialTransformations.Milestone0.SortTag) (A : Set M),
+  SpecialTransformations.Section3.GammaParameters.DefinableAtBase { real := S, gamma := ∅ } σ A ↔
+    SpecialTransformations.Section3.DefinableAt S σ A
+'SpecialTransformations.Section3.GammaParameters.at_base_empty_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraic_base_empty_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (σ : SpecialTransformations.Milestone0.SortTag) (b : M),
+  SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase { real := S, gamma := ∅ } σ b ↔
+    SpecialTransformations.Section3.AlgebraicAt S σ b
+'SpecialTransformations.Section3.GammaParameters.algebraic_base_empty_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.dcl_base_empty_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (σ : SpecialTransformations.Milestone0.SortTag) (b : M),
+  SpecialTransformations.Section3.GammaParameters.DefinableClosureAtBase { real := S, gamma := ∅ } σ b ↔
+    SpecialTransformations.Section3.DefinableClosureAt S σ b
+'SpecialTransformations.Section3.GammaParameters.dcl_base_empty_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RawClosure.Tuple.uniform_good_relation_cover : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : Nat} {κ : Cardinal.{0}},
+  @SpecialTransformations.Section3.Saturated M inst κ →
+    ∀ (S B : Set M),
+      @LE.le (Set M) (@Set.instLE M) S B →
+        ∀ (A : Set (Fin n → M)) (b : M),
+          @LT.lt Cardinal.{0}
+              (@Preorder.toLT Cardinal.{0} (@PartialOrder.toPreorder Cardinal.{0} Cardinal.partialOrder))
+              (Cardinal.mk (@Set.Elem M (@insert M (Set M) (@Set.instInsert M) b B))) κ →
+            @Set.Definable M B SpecialTransformations.Milestone0.LRV inst (Fin n) A →
+              (∀ (a : Fin n → M),
+                  @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) A a →
+                    @SpecialTransformations.Section3.RawClosure.AlgebraicOver M inst
+                      (@Union.union (Set M) (@Set.instUnion M) S (@Set.range M (Fin n) a)) b) →
+                ∃ R,
+                  ∀ (a : Fin n → M),
+                    @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) A a →
+                      @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                        (@Set.instMembership (Prod (Fin n → M) M))
+                        (@Subtype.val (Set (Prod (Fin n → M) M))
+                          (fun R =>
+                            And (@SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable M inst n S R)
+                              (∀ (a : Fin n → M),
+                                @Set.Finite M
+                                  (@Set.ofPred M fun x =>
+                                    @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                      (@Set.instMembership (Prod (Fin n → M) M)) R (@Prod.mk (Fin n → M) M a x))))
+                          R)
+                        (@Prod.mk (Fin n → M) M a b)
+'SpecialTransformations.Section3.RawClosure.Tuple.uniform_good_relation_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableWith.specialize : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : Nat} {γ : Fin k → @SpecialTransformations.Section3.Values.Gamma M sM hM}
+  {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {A : Set (Fin n → M)},
+  @SpecialTransformations.Section3.GammaParameters.DefinableWith M sM hM S k n γ sn A →
+    ∀ (t : Fin k → @SpecialTransformations.Section3.GammaParameters.Code M sM),
+      @Eq (Fin k → @SpecialTransformations.Section3.Values.Gamma M sM hM)
+          (@SpecialTransformations.Section3.GammaParameters.values M sM hM k t) γ →
+        @SpecialTransformations.Section3.DefinableOver M sM
+          (@Union.union (Set M) (@Set.instUnion M) S
+            (@Set.range M (Fin k) (@SpecialTransformations.Section3.GammaParameters.rawTuple M sM k t)))
+          n sn A
+'SpecialTransformations.Section3.GammaParameters.DefinableWith.specialize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableOverBase.specialize : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : SpecialTransformations.Section3.GammaParameters.Base} {n : ℕ}
+  {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {A : Set (Fin n → M)},
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B sn A →
+    ∃ k t,
+      SpecialTransformations.Section3.DefinableOver
+        (B.real ∪ Set.range (SpecialTransformations.Section3.GammaParameters.rawTuple t)) sn A
+'SpecialTransformations.Section3.GammaParameters.DefinableOverBase.specialize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableAtBase.specialize : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : SpecialTransformations.Section3.GammaParameters.Base} {σ : SpecialTransformations.Milestone0.SortTag}
+  {A : Set M},
+  SpecialTransformations.Section3.GammaParameters.DefinableAtBase B σ A →
+    ∃ k t,
+      SpecialTransformations.Section3.DefinableAt
+        (B.real ∪ Set.range (SpecialTransformations.Section3.GammaParameters.rawTuple t)) σ A
+'SpecialTransformations.Section3.GammaParameters.DefinableAtBase.specialize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.real_definableOverBase : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) {n : ℕ}
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)),
+  SpecialTransformations.Section3.DefinableOver B.real sn A →
+    SpecialTransformations.Section3.GammaParameters.DefinableOverBase B sn A
+'SpecialTransformations.Section3.GammaParameters.real_definableOverBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.real_definableAtBase : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (σ : SpecialTransformations.Milestone0.SortTag)
+  (A : Set M),
+  SpecialTransformations.Section3.DefinableAt B.real σ A →
+    SpecialTransformations.Section3.GammaParameters.DefinableAtBase B σ A
+'SpecialTransformations.Section3.GammaParameters.real_definableAtBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.small_union_finite : ∀ {M : Type} [SpecialTransformations.Milestone0.LRV.Structure M]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ → ∀ (S : Set M), Cardinal.mk ↑S < κ → ∀ (F : Set M), F.Finite → Cardinal.mk ↑(S ∪ F) < κ
+'SpecialTransformations.Section3.small_union_finite' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.small_union_range : ∀ {M : Type} [SpecialTransformations.Milestone0.LRV.Structure M]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    ∀ (S : Set M), Cardinal.mk ↑S < κ → ∀ {n : ℕ} (a : Fin n → M), Cardinal.mk ↑(S ∪ Set.range a) < κ
+'SpecialTransformations.Section3.small_union_range' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraic_vf_iff_real : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M inst
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M inst hM)
+  (b : @SpecialTransformations.Milestone0.Transfer.VFType M inst),
+  Iff
+    (@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M inst hM B
+      SpecialTransformations.Milestone0.SortTag.vf
+      (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iVF M inst x) b))
+    (@SpecialTransformations.Section3.AlgebraicAt M inst
+      (@SpecialTransformations.Section3.GammaParameters.Base.real M inst hM B)
+      SpecialTransformations.Milestone0.SortTag.vf
+      (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iVF M inst x) b))
+'SpecialTransformations.Section3.GammaParameters.algebraic_vf_iff_real' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraic_vf_iff_parameterField : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (b : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B SpecialTransformations.Milestone0.SortTag.vf ↑b ↔
+    IsAlgebraic (↥(SpecialTransformations.Section3.vfParameterField B.real)) b
+'SpecialTransformations.Section3.GammaParameters.algebraic_vf_iff_parameterField' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.lemma_3_3_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) {n m : ℕ}
+  (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType) (t : Fin m → M),
+  (∀ (j : Fin m), SpecialTransformations.Milestone0.iRV (t j)) →
+    ∀ (b : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase
+          { real := (B.real ∪ Set.range fun i => ↑(a i)) ∪ Set.range t, gamma := B.gamma }
+          SpecialTransformations.Milestone0.SortTag.vf ↑b →
+        IsAlgebraic (↥(SpecialTransformations.Section3.vfParameterField (B.real ∪ Set.range fun i => ↑(a i)))) b
+'SpecialTransformations.Section3.GammaParameters.lemma_3_3_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.lemma_3_6_vf_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (F : SpecialTransformations.Section3.VFFieldBase B.real)
+  (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase { real := insert (↑b) B.real, gamma := B.gamma }
+      SpecialTransformations.Milestone0.SortTag.vf ↑a →
+    ¬SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B SpecialTransformations.Milestone0.SortTag.vf ↑a →
+      SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase { real := insert (↑a) B.real, gamma := B.gamma }
+        SpecialTransformations.Milestone0.SortTag.vf ↑b
+'SpecialTransformations.Section3.GammaParameters.lemma_3_6_vf_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.corollary_3_7_vf_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (T : Set M),
+  (∀ t ∈ T, SpecialTransformations.Milestone0.iRV t) →
+    ∀ (G : Set SpecialTransformations.Section3.Values.Gamma) (b : SpecialTransformations.Milestone0.Transfer.VFType),
+      ¬SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B SpecialTransformations.Milestone0.SortTag.vf
+            ↑b →
+        ¬SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase { real := B.real ∪ T, gamma := B.gamma ∪ G }
+            SpecialTransformations.Milestone0.SortTag.vf ↑b
+'SpecialTransformations.Section3.GammaParameters.corollary_3_7_vf_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.c_minimal_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (A : Set M),
+  SpecialTransformations.Section3.GammaParameters.DefinableAtBase B SpecialTransformations.Milestone0.SortTag.vf A →
+    SpecialTransformations.Milestone0.IsBoolComb {C | SpecialTransformations.Milestone0.IsBall C} A
+'SpecialTransformations.Section3.GammaParameters.c_minimal_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.corollary_3_5_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+        Cardinal.mk ↑B.real < κ →
+          ∀ {m n : ℕ} (A : Set (Fin m → M)) (f : ↑A → Fin n → M),
+            (∀ t ∈ A, ∀ (j : Fin m), SpecialTransformations.Milestone0.iRV (t j)) →
+              (∀ (t : ↑A) (j : Fin n), SpecialTransformations.Milestone0.iVF (f t j)) →
+                SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                    SpecialTransformations.Section3.rvvfSort (SpecialTransformations.Section3.rvvfGraph A f) →
+                  (Set.range f).Finite
+'SpecialTransformations.Section3.GammaParameters.corollary_3_5_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.additive_subgroup_isBall_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (P : SpecialTransformations.Section3.GammaParameters.Base)
+      (H : AddSubgroup SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Section3.GammaParameters.DefinableAtBase P SpecialTransformations.Milestone0.SortTag.vf
+          (Subtype.val '' ↑H) →
+        SpecialTransformations.Milestone0.IsBall (Subtype.val '' ↑H)
+'SpecialTransformations.Section3.GammaParameters.additive_subgroup_isBall_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.corollary_3_12_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (P : SpecialTransformations.Section3.GammaParameters.Base) {m : ℕ} (B : Set M)
+  (f : ↑(SpecialTransformations.Section3.RVFibreConstancy.domain B) → Fin m → M),
+  (∀ (a : ↑(SpecialTransformations.Section3.RVFibreConstancy.domain B)) (i : Fin m),
+      SpecialTransformations.Milestone0.iRV (f a i)) →
+    SpecialTransformations.Section3.GammaParameters.DefinableOverBase P
+        SpecialTransformations.Section3.MixedPolynomialSyntax.contextSort
+        (SpecialTransformations.Section3.RVFibreConstancy.graph B f) →
+      {t |
+          t ∈ B ∧
+            ∃ a b,
+              SpecialTransformations.Milestone0.iRv ↑↑a = t ∧
+                SpecialTransformations.Milestone0.iRv ↑↑b = t ∧ f a ≠ f b}.Finite
+'SpecialTransformations.Section3.GammaParameters.corollary_3_12_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.lemma_3_18_1_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (P : SpecialTransformations.Section3.GammaParameters.Base)
+      (H : AddSubgroup SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Section3.GammaParameters.DefinableAtBase P SpecialTransformations.Milestone0.SortTag.vf
+          (Subtype.val '' ↑H) →
+        ∀ {m : ℕ} (f : SpecialTransformations.Milestone0.Transfer.VFType → Set (Fin m → M)),
+          (∀ (x : SpecialTransformations.Milestone0.Transfer.VFType),
+              ∀ ys ∈ f x, ∀ (i : Fin m), SpecialTransformations.Milestone0.iRV (ys i)) →
+            SpecialTransformations.Section3.GammaParameters.DefinableOverBase P
+                SpecialTransformations.Section3.MixedPolynomialSyntax.contextSort
+                (SpecialTransformations.Section3.BallFibreConstancy.graph f) →
+              {d | ∃ x y, (QuotientAddGroup.mk' H) x = d ∧ (QuotientAddGroup.mk' H) y = d ∧ f x ≠ f y}.Finite
+'SpecialTransformations.Section3.GammaParameters.lemma_3_18_1_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation.mk : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM :
+        @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+          SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {S : Set M} →
+        {k n : Nat} →
+          {sn : Fin n → SpecialTransformations.Milestone0.SortTag} →
+            (carrier : Set (Prod (Fin k → M) (Fin n → M))) →
+              @Set.Definable M S SpecialTransformations.Milestone0.LRV (@CanonicalStructure.normalize M sM)
+                  (Sum (Fin k) (Fin n))
+                  (@Set.ofPred (Sum (Fin k) (Fin n) → M) fun z =>
+                    @Membership.mem (Prod (Fin k → M) (Fin n → M)) (Set (Prod (Fin k → M) (Fin n → M)))
+                      (@Set.instMembership (Prod (Fin k → M) (Fin n → M))) carrier
+                      (@Prod.mk (Fin k → M) (Fin n → M)
+                        (@Function.comp (Fin k) (Sum (Fin k) (Fin n)) M z (@Sum.inl (Fin k) (Fin n)))
+                        (@Function.comp (Fin n) (Sum (Fin k) (Fin n)) M z (@Sum.inr (Fin k) (Fin n))))) →
+                (∀ (p : Prod (Fin k → M) (Fin n → M)),
+                    @Membership.mem (Prod (Fin k → M) (Fin n → M)) (Set (Prod (Fin k → M) (Fin n → M)))
+                        (@Set.instMembership (Prod (Fin k → M) (Fin n → M))) carrier p →
+                      And
+                        (@SpecialTransformations.Section3.GammaParameters.Proper M sM k
+                          (@Prod.fst (Fin k → M) (Fin n → M) p))
+                        (∀ (i : Fin n),
+                          @SpecialTransformations.Milestone0.sortEval M sM (sn i)
+                            (@Prod.snd (Fin k → M) (Fin n → M) p i))) →
+                  (∀ (t u : Fin k → @SpecialTransformations.Section3.GammaParameters.Code M sM),
+                      @Eq (Fin k → @SpecialTransformations.Section3.Values.Gamma M sM hM)
+                          (@SpecialTransformations.Section3.GammaParameters.values M sM hM k t)
+                          (@SpecialTransformations.Section3.GammaParameters.values M sM hM k u) →
+                        ∀ (b : Fin n → M),
+                          Iff
+                            (@Membership.mem (Prod (Fin k → M) (Fin n → M)) (Set (Prod (Fin k → M) (Fin n → M)))
+                              (@Set.instMembership (Prod (Fin k → M) (Fin n → M))) carrier
+                              (@Prod.mk (Fin k → M) (Fin n → M)
+                                (@SpecialTransformations.Section3.GammaParameters.rawTuple M sM k t) b))
+                            (@Membership.mem (Prod (Fin k → M) (Fin n → M)) (Set (Prod (Fin k → M) (Fin n → M)))
+                              (@Set.instMembership (Prod (Fin k → M) (Fin n → M))) carrier
+                              (@Prod.mk (Fin k → M) (Fin n → M)
+                                (@SpecialTransformations.Section3.GammaParameters.rawTuple M sM k u) b))) →
+                    @SpecialTransformations.Section3.GammaParameters.Relation M sM hM S k n sn
+'SpecialTransformations.Section3.GammaParameters.Relation.mk' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Base.mk : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      Set M → Set SpecialTransformations.Section3.Values.Gamma → SpecialTransformations.Section3.GammaParameters.Base
+'SpecialTransformations.Section3.GammaParameters.Base.mk' depends on axioms: [propext, Classical.choice, Quot.sound]

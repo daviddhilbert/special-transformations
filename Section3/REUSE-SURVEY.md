@@ -309,3 +309,45 @@ See [RETRACTIONS.md](RETRACTIONS.md) for the precise scope and decision.
 The checked counterexample remains imported as an audit result; no replacement
 classification or theorem is assumed. This documentation change does not alter
 Lean source or the existing 125-module / 284-headline certificate.
+
+
+## Actual Gamma parameters and consequence audit (November 5, 2026)
+
+Completed the small transfer bridge surveyed above using pinned Mathlib's
+Apache-2.0 Equiv/injective pullback APIs. `GammaOperations` credits the
+GroupWithZero transfer pattern (Johannes Hoelzl). Ordered comparisons and
+multiplication are proved to coincide with the actual released RV quotient.
+The infinity class is maximal, so the implementation avoids an incompatible
+zero-minimal ordered-group-with-zero instance. Divisibility uses the checked
+ACVF-QE `VFAlgClosed.isAlgClosed_vfType` and Mathlib
+`IsAlgClosed.exists_pow_nat_eq`; density uses a square root of b/a. No new
+algebraic-closure assumption is imported.
+
+For parameters, reused the already checked raw/sorted normalization bridges,
+Mathlib first-order definable preimages and finite-support semantics, and the
+existing actual quotient. `GammaParameters.Relation` requires a normalized
+LRV first-order full preimage and global invariance on every pair of proper
+RV code tuples with equal values. Choosing a representative is confined to
+proofs of surjectivity and specialization. The real base is not enlarged in
+the definition. An empty Gamma base is proved equivalent to the existing
+real-base API in every finite arity. Constructor types, not only wrappers,
+are included in the explicit headline audit. No standard-input structure
+bundles a paper conclusion. Closure and generated-base predicates are only
+definitions; their algebraic laws are still obligations.
+
+`AlgebraicUniformCover` adapts the already checked tuple-descent finite-cover
+proof: temporary domain parameters may appear in compactness, but the finite
+relation remains over the original S. `SmallFiniteParameters` iterates the
+checked cardinal bound for finite insertions. VF algebraicity after Gamma
+specialization then follows by the checked RV-parameter independence theorem.
+C-minimality, finite images and finite exceptions transfer through explicit
+specialization; all representative parameters are visible in intermediate
+types, and are not silently retained in base-sensitive conclusions. The
+remaining base-sensitive Gamma extensions are listed separately in STATUS.md.
+
+All fourteen added modules have compiler exit 0. The combined record covers
+139 modules, 386 actual headline type/axiom checks and a fresh root, with only
+the three allowed standard axioms. The pinned source commits and licenses
+are unchanged. The newly documented RV-inversion language erratum changes
+attribution, not these definitions or proofs. Scratch Gamma descent and finite
+coding extensions are not included in this certificate.

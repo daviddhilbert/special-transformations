@@ -39,6 +39,13 @@ import Section3.AdditiveCosets
 import Section3.GammaValueEquiv
 import Section3.ClosedCosetChoice
 
+import Section3.GammaDensity
+import Section3.AlgebraicUniformCover
+import Section3.GammaBaseVFAlgebraicity
+import Section3.GammaBaseCMinimal
+import Section3.GammaBaseFiniteImage
+import Section3.GammaBaseFiniteExceptions
+
 /-!
 # Checked Section 3 library
 

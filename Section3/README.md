@@ -33,6 +33,14 @@ quotient graph and a realizing representative in every class. The entry point
 does not certify every item in the section. See [STATUS.md](STATUS.md) for the
 exact hypotheses and the remaining work.
 
+The actual Gamma quotient now has its ordered divisible group operations and
+full invariant-preimage parameter interface. The checked Gamma-base extensions
+include C-minimality, VF algebraicity and exchange, finite RV-to-VF tuple images,
+RV-fibre exceptions, and additive-coset exceptions. Other base-sensitive results
+still need their Gamma extensions; defining the closure predicates does not
+prove their closure or generation laws. The current combined certificate covers
+139 modules and 386 actual headline type/axiom checks, plus a fresh root import.
+
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
 legacy compiler audit. Neither script pushes anything.

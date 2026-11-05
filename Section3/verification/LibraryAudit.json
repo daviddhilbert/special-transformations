@@ -47,7 +47,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": true
+      "reused": false
     },
     {
       "module": "QuotientFamilies",
@@ -71,7 +71,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": true
+      "reused": false
     },
     {
       "module": "RVLiteralReduction",
@@ -943,7 +943,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClassCenterRelation",
@@ -951,7 +951,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClosedClassGeometry",
@@ -959,7 +959,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ProfileComposition",
@@ -967,7 +967,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClosedQuotientChoice",
@@ -975,7 +975,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "DefinableCosets",
@@ -983,7 +983,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClosedCosetChoice",
@@ -991,19 +991,131 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
-      "module": "Library",
-      "source_sha256": "8ba2d4200635a670ebedbbce3e1078dc563e116dd2e2259d89257b9d748172e6",
+      "module": "GammaPresentation",
+      "source_sha256": "b9571da0a380d0effa0c9cbf71cbbe927fabd1f5c5fa846c776508bf2fe7b2a6",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
+    },
+    {
+      "module": "GammaOperations",
+      "source_sha256": "2689e231aecbf690edf41f6926075b0858de97fc13ffdaf930fbbf01718658d9",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaValueLaws",
+      "source_sha256": "92190af40cecbee676556a597d5c20e2202cc88784a3ca454412dff5c490f956",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaDensity",
+      "source_sha256": "e4f219e45477c2f888cdc6c0c2996fae869384cdcbc8e67ce1199ef4e3d40856",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "AlgebraicUniformCover",
+      "source_sha256": "5c19a797c0e9a5cf55d721bf65f8a18b85fa01ba0283bbe5d39a8f4d649bcad7",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaCodes",
+      "source_sha256": "23be5cf162e7d164c4be5fdbf8c95218f77d614d470d16b779cb60f297402aec",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaParameters",
+      "source_sha256": "103c77ad7bfad99a063dd3996077ce0f33e68d362e76ce2527467984a6d05c5a",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaParameterBridge",
+      "source_sha256": "322d299da3924c3df573346e31bd11c815e56815c313d98f8aa0dab0c0dbda77",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaSpecialization",
+      "source_sha256": "636a0a3e608209cea1444973048fdc133e21558463436de952faf07749158a6d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaBaseVFAlgebraicity",
+      "source_sha256": "676045e83dac227b4199e9eb1f8a722c0068ca1346d2f76bd7814655f2abb301",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaBaseCMinimal",
+      "source_sha256": "7cf19462bab4bbf047be044f8793370cc09b085da3f8cf9bbe87eabe605c52e7",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "SmallFiniteParameters",
+      "source_sha256": "ea369c0234d05b155123762c0b7efc7110848f076efcdfcd7f3b43cfafd880f0",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaBaseFiniteImage",
+      "source_sha256": "8d7553711f2f81a8aad534d5ee23406ae81a4fea172eb5fa11b1e7b7cd0e9409",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaBaseFiniteExceptions",
+      "source_sha256": "726f9ef3f4ade1d350a2172f44f845f0b4d8af10e51ecacd98d058161074d9d9",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "Library",
+      "source_sha256": "848319f76f42dd1afcc8a681541ac2fa26eb18cc5a7957213ccb97eadec91104",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "ac30ed2374ca1f95b31e2f403429eaca8ca37f7876f1965a5e15cfc4477075a8",
+      "source_sha256": "8cec3fb094013d77ccb1e754616889c58b59ef9a523f46832eb2c94540dc51a1",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1019,7 +1131,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "125 integrated Section3 modules; matching compiler caches reused where indicated; fresh 284-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "139 integrated Section3 modules; matching compiler caches reused where indicated; fresh 386-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -2420,8 +2532,501 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.Values.presentationType": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.presentationOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.presentationValuation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.presentation_compatible": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.paperValueEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.paperGammaEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaTopGroup": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaTopOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.paperValue_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.paperValue_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.paperValue_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.paperValue_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.infinity_eq_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaTopIsOrderedMonoid": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vrv_le_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vrv_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaTopUnitsEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaOrder": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaGroup": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaUnits_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gamma_val_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gamma_val_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gamma_val_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gamma_le_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaIsOrderedMonoid": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.le_infinity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vf_value_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vf_value_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vf_value_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vfValueHom": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaValHom": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vf_pred_iff_gamma_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gamma_pow_surjective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaRootable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaNontrivial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gammaDenselyOrdered": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Code": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.raw": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.raw_rv": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.raw_ne_zero": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.raw_injective": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.value_surjective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.value_eq_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.representative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.representative_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rawTuple": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Proper": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rawTuple_proper": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.ofRaw": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rawTuple_ofRaw": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rawTuple_injective": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.ofRaw_rawTuple": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.representatives": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.representatives_values": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.values_surjective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.values_eq_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.fibre": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.row_eq_fibre": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.mem_fibre_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.fibre_proper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.full_preimage": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableWith": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableWith.proper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableAtBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableClosureAtBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GammaDefinableOverBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.closureBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGeneratedBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.with_zero_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.base_empty_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.at_base_empty_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraic_base_empty_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.dcl_base_empty_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawClosure.Tuple.uniform_good_relation_cover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableWith.specialize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.specialize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableAtBase.specialize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.real_definableOverBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.real_definableAtBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.small_union_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.small_union_range": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraic_vf_iff_real": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraic_vf_iff_parameterField": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_3_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_6_vf_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.corollary_3_7_vf_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.c_minimal_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.corollary_3_5_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.additive_subgroup_isBall_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.corollary_3_12_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_18_1_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Base.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "e8c13f916f2315c1bc5ca57d7c0bc90fed04e8016f7b93c60fedf667c005ce26"
+  "verifier_sha256": "c3baefd92dbd54e75da2920bdee96b680b9a6828109168710e977c67650faa46"
 }

@@ -4,15 +4,25 @@ Work is in progress. **All of Section 3 is not yet formalized.** The new
 `Library.lean` entry point deliberately excludes the legacy target files.
 QE is imported from the unchanged ACVF-QE pin.
 
-The current combined certificate covers **125 modules, 284 headline type/axiom
+The current combined certificate covers **139 modules, 386 headline type/axiom
 checks and a fresh root import**. Every checked source and dependency fingerprint
 matches this checkpoint; only the three permitted standard axioms occur.
-The pinned compiler and dependencies are unchanged.
+The pinned compiler and dependencies are unchanged. QE uses the released
+language with named RV inversion.
+
+Unless a row explicitly uses `GammaParameters.Base`, its parameter set `S : Set M`
+contains real VF/RV parameters only. Such a result does not automatically cover
+a base with named Gamma imaginaries. The new interface and bridges distinguish
+those scopes; Gamma closure and generation laws remain separate obligations.
 
 ## Checked components
 
 | Component | Exact scope and remaining work |
 | --- | --- |
+| `GammaPresentation`, `GammaOperations`, `GammaValueLaws`, `GammaDensity` | The actual Gamma quotient has a nontrivial divisible densely ordered commutative group structure; GammaTop has the one absorbing infinity class, maximal in the paper order. Operations and comparisons agree with the released RV multiplication and preorder. VF valuation is a multiplicative map into GammaTop and reverses the compatible Mathlib valuation order. All ACVF; no characteristic, saturation or extra representative parameters. No zero-minimal ordered-group-with-zero instance is introduced. |
+| `GammaCodes`, `GammaParameters`, `GammaParameterBridge`, `GammaSpecialization` | Genuine imaginary parameters via full, globally invariant first-order preimages on all nonzero RV representatives, over exactly the real base S. The semantic relation constructor and empty-Gamma equivalences for definability, acl and dcl have checked types. Specialization explicitly adjoins RV names; it is not their elimination. Arbitrary Gamma sets are handled through finite formula support. Gamma closure/generation predicates are definitions only; their closure laws are open. |
+| `GammaBaseVFAlgebraicity` | Named Gamma parameters do not enlarge VF algebraic closure. Full Gamma-base versions of 3.3, VF exchange 3.6, and VF nonalgebraicity-transfer 3.7 (arbitrary additional RV and Gamma sets). Only ACVF; exchange retains its standing VF-field base convention. |
+| `GammaBaseCMinimal`, `GammaBaseFiniteImage`, `GammaBaseFiniteExceptions` | C-minimality, finite RV-to-VF tuple images 3.5, finite RV-fibre exceptions 3.12, additive-subgroup ball classification and finite exceptional additive cosets 3.18(1), with genuine Gamma names in the base. Every theorem retains its real counterpart's characteristic and saturation scope; 3.5 assumes genuine kappa-saturation, kappa at least countable, and a small real base. No cardinal bound on the set of Gamma names is needed for these finite-support consequences. |
 | `Parameters`, `ParameterBridge`, `ClosureBridge` | Definability, algebraicity and dcl over arbitrary base sets, finite character, and sorted/raw unary bridges on canonical models. `CanonicalParameters` proves invariance of sorted definability and closure under normalization. `SortedTuples` supplies the full finite mixed-tuple bridge and elimination of sorted definable parameters. Gamma closure remains open. |
 | `ModelContext` | ACVF(0,0), actual small substructure, nontrivial finite values, genuine cardinal saturation and strong homogeneity; ambient model of the named-base atomic-diagram theory. Finite parameter extensions remain small. See `ClosureConventions` for definable closure and VF/RV generation. Gamma generation remains open. |
 | `Compactness`, `DefinableCompactness`, `TupleCompactness` | Finite inconsistency and finite subcovers from genuine saturation, with arbitrary finite tuple arities and visible parameter cardinal bounds. |
@@ -73,8 +83,8 @@ Additional checked tools:
   arguments explicitly, distinguishing original and normalized interpretations.
 - `ValueQuotient`: the actual RV quotient by mutual value inequalities, its
   unique infinity class, nonzero representatives, and agreement with equality
-  of values under a compatible valuation. Ordered-group operations and the
-  full imaginary-parameter/generation interface remain open.
+  of values under a compatible valuation. Ordered-group operations and the imaginary-parameter interface are checked
+  above; the full closure and generation laws remain open.
 
 - `PolynomialSupport`, `PolynomialObstacles`, `RootFreeConstancy`:
   a finite list of occurring unary VF polynomials controls a quantifier-free
@@ -144,6 +154,12 @@ Additional checked tools:
   definable and supplies a representative of every class with the chosen
   value. Closedness of actual additive cosets is proved by translating a code
   of the subgroup; the whole-field and singleton flags are included.
+
+Further Gamma-base extensions remain open for the base-sensitive conclusions
+of 3.4, 3.9–3.11, 3.15 and the closed-ball alternative of 3.18(2). The versions
+already listed for real S do not settle these extensions. Descent 3.1 and the
+checked VF-to-RV half of 3.2 currently have real VF/RV tuple outputs and real
+ambient bases; Gamma outputs and full imaginary-base descent remain open.
 
 Results 3.13–3.14, 3.17, the (VF,Gamma)-generated alternative of 3.18(2), the RV half of 3.6, and the Gamma halves of 3.2 and 3.7 remain open in
 the new shared library. Legacy conditional reductions are not counted as proofs.
