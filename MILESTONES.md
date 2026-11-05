@@ -1209,3 +1209,26 @@ and merged (one WIP left behind):
     `_rootHullRealisation`, and `paper_theorem_2_3_of_parts` (the five-part endgame with `RelUnit`
     split). Residual named: `TranscendentalRealisation` (`f* : ⟨Ŝ,m⟩ → N`) + `RootData` + the
     closure VF-part rows. `relGate` is never consumed — the assembly is per-pair.
+
+## smw2qpqe7 m8 (2026-11-04, accepted): the consolidation — and the frontier compresses to TWO parts + the quote
+
+* `QE/FRONTIER.md` (new) and `QE/HANDOFF.md` (replaced; the stale seven-hypothesis text is gone):
+  the six-part endgame list with per-part status and exact residuals; the three routes
+  (`paper_theorem_rel_two`, `paper_theorem_rel_of_qffinsat`, `paper_theorem_2_3_of_five_rel`) with
+  machine-checked relations; the 13 false-as-written findings; the census; the newcomer plan.
+* `QE/Probe.lean` + `QE/Cites.lean` (machine-checked citations for every name the documents use —
+  all 0 errors, axioms clean). The load-bearing new theorems:
+  - **`Probe.relCases_of_rootHullRealisation : Case35Hull.RootHullRealisation → RouteLedger.RelCases`**
+    — the root-hull realisation property closes ALL four case slots (each slot's conclusion is an
+    embedding statement, per `RelUnit`'s §0 structural theorem);
+  - **`Probe.paper_theorem_2_3_of_relHull_rootHull : ShoenfieldTestRel → RelHull →
+    RootHullRealisation → HasQE`** — the endgame compressed to the quotation plus TWO parts;
+  - `Probe.paper_theorem_2_3_of_qffinsat_via_parts` and the per-part `rel*_of_qffinsat` rows (the u6
+    matrix, confirmed).
+* So the endgame now reads, in three machine-checked equivalent forms:
+  - six parts: `ShoenfieldTestRel → RelHull → RelSeparated → RelUnit → RelNonUnit → RelNewRV → HasQE`;
+  - two parts: `ShoenfieldTestRel → RelHull → RootHullRealisation → HasQE`;
+  - two hypotheses: `ShoenfieldTestRel → Input5R → HasQE` (with `Input5R ⟺` the five-part list).
+  Remaining named residuals: `RootData` (3.4's root data), `TranscendentalRealisation` (3.6's
+  map), the realisation row for 3.5 (`SlotTotalExt`/`SlotAtomic`), and the hull step for
+  `RelNewRV`/`RelHull` — all realisation statements at `relGate`.
