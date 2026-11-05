@@ -187,3 +187,21 @@ point set meet every nested ball in exactly one point. The companion center
 theorem is not used as an unproved input. The exact 94-module certificate
 and 172 actual headline types/axiom checks are recorded separately in
 verification/ and STATUS.md.
+
+Definable-point and uniform-support follow-up (November 5): reused pinned
+Mathlib's `Finset.exists_min_image`, `Valuation.map_sub_le`, `map_sub_lt`,
+`map_add_le`, `map_add_lt`, finite first-order quantification and the audited
+mean construction. The new nearest-root selection is definable from the
+original sets R and A, so the containing ball and its center are never named.
+The proof handles open and closed special radii and transfers the frozen
+ball predicates by correctly sorted normalization. It does not assume the
+companion paper's positive-component/positive-closure construction.
+
+For Corollary 3.12, adapted this repository's unary polynomial syntax/support
+proofs to one VF variable and any finite RV tuple in the same released Enc
+language. Correctly sorted VF terms cannot contain those RV variables. One
+root set is therefore uniform in all RV outputs; each exceptional RV fibre
+must contain a root. No auxiliary definable choice, saturation or extra
+characteristic assumption is used. Full compiler/type/axiom records now cover
+102 modules and 198 headlines. The remaining K-term normal form, RV exchange
+and Gamma-generation obligations are not supplied by these syntax lemmas.

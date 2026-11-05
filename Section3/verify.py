@@ -132,6 +132,20 @@ headlines += ['Barycentre.mean_sub_eq', 'Barycentre.natCast_value_one',
 explicit_types |= {'definableOver_iff_normalized_raw', 'ClosedBallCodes.rawBall_normalize',
     'ClosedBallCodes.coded_centers', 'lemma_3_10'}
 
+headlines += ['Balls.nearestRoots_nonempty', 'Balls.nearestRoots_mem_closedDisc',
+    'Balls.nearestRoots_mem_openDisc', 'NearestRootSyntax.distanceLe_realize',
+    'NearestRootSyntax.distanceLe_definable', 'NearestRootSyntax.distanceLe_iff',
+    'NearestRootSyntax.nearest_definable', 'NearestRootSyntax.nearest_eq_image',
+    'rv_difference_normalize', 'rv_le_normalize', 'closedBall_set_normalize',
+    'openBall_set_normalize', 'isBall_normalize', 'isBall_subset_vf', 'encodedBall_disc',
+    'qf_rootFree_constant_closed', 'finite_definable_obstacles_both',
+    'definable_point_of_proper_subset_canonical', 'lemma_3_11',
+    'MixedPolynomialSyntax.realizes', 'MixedPolynomialSupport.rv_term_eq_of_support',
+    'MixedPolynomialSupport.formula_iff_of_support', 'mixed_qf_rootFree_constant',
+    'mixed_qf_rootFree_constant_closed', 'mixed_finite_definable_obstacles', 'corollary_3_12']
+explicit_types |= {'rv_difference_normalize', 'isBall_normalize', 'lemma_3_11',
+    'mixed_finite_definable_obstacles', 'corollary_3_12'}
+
 def qualify(h):
     return h if h.startswith(('SpecialTransformations.', 'ValOneEC.')) else 'SpecialTransformations.Section3.' + h
 env = os.environ.copy()

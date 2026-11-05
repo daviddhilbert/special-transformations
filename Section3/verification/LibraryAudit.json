@@ -647,7 +647,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "SortedBoolean",
@@ -655,7 +655,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "PolynomialObstacles",
@@ -663,7 +663,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "BallTranslation",
@@ -671,7 +671,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "PolynomialRVConstant",
@@ -679,7 +679,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RootFreeConstancy",
@@ -687,7 +687,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClosedBallRoots",
@@ -695,7 +695,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "MinimalBallFamilies",
@@ -703,7 +703,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "MeanInBalls",
@@ -711,7 +711,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClosedBallCentres",
@@ -719,7 +719,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClosedBallCodes",
@@ -727,7 +727,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClosedBallChoice",
@@ -735,7 +735,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClosedBallQuotient",
@@ -743,11 +743,75 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "NearestRoots",
+      "source_sha256": "0c78dc7b1362428478400ac0bc4eb877ad1fb8c62a072264068cf490401f6d8a",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "NearestRootDefinability",
+      "source_sha256": "d80d44eb01d65f9bb92c4f2762fe142c2e73a5e6b4421169cb3f82137179799a",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "EncodedBallGeometry",
+      "source_sha256": "9d1f2f68892ac8cf051f8c2dd902f0b43fbe53fa8b068ab020f18dad9d95ba36",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "BallDefinablePoint",
+      "source_sha256": "f89a4bb49bc03cbeaaf313734365eb18fc1c570b66cdf93f1cdf46cfdfc61a04",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "MixedPolynomialSyntax",
+      "source_sha256": "6290df535d5aec05e2258813b082c7c0ca5260ed5ec52544d774aeb2f3dd9140",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "MixedPolynomialSupport",
+      "source_sha256": "cc7db4c2db0c5b7817b9f7ddc60ac61aaf621a00fc481aa91de6bb93d18cf35c",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "MixedRootFree",
+      "source_sha256": "9b7b244bc1e4bbd4203460513aa3cb8f5ea3f1df67e9ecbc2736c76ce11a06b0",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "RVFibreConstancy",
+      "source_sha256": "384e092061c5a8b7cb721b25d2c7d2cdcb049817d8bd76ca323d4af9f925248d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "0cde0aa8991687f5968d07b48c7dcc31030d53ace8d3d613eab41ba4bac4b722",
+      "source_sha256": "c1d5ef6e64e0b26b780bc677a75fe43542760b350c84e5acf79dad79d5380abc",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -755,7 +819,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "40f54c1450048e4fb9b009c057c0aabef13695b5a65fdf4b0e27d91671627681",
+      "source_sha256": "1645d24c77212855055e6c3d50e86c4e71c82c3b11013799310164ac4093e3fb",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -771,7 +835,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "94 integrated Section3 modules; matching compiler caches reused where indicated; fresh 172-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "102 integrated Section3 modules; matching compiler caches reused where indicated; fresh 198-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -1627,8 +1691,136 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.Balls.nearestRoots_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.nearestRoots_mem_closedDisc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.nearestRoots_mem_openDisc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.NearestRootSyntax.distanceLe_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.NearestRootSyntax.distanceLe_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.NearestRootSyntax.distanceLe_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.NearestRootSyntax.nearest_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.NearestRootSyntax.nearest_eq_image": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rv_difference_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rv_le_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.closedBall_set_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.openBall_set_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.isBall_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.isBall_subset_vf": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.encodedBall_disc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.qf_rootFree_constant_closed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.finite_definable_obstacles_both": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definable_point_of_proper_subset_canonical": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.lemma_3_11": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.MixedPolynomialSyntax.realizes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.MixedPolynomialSupport.rv_term_eq_of_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.MixedPolynomialSupport.formula_iff_of_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.mixed_qf_rootFree_constant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.mixed_qf_rootFree_constant_closed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.mixed_finite_definable_obstacles": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVFibreConstancy.corollary_3_12": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "b50941de7dd74a7f4a2ebc1167fcbaba67953a0dc2cb3bf640b8bf19b96a379b"
+  "verifier_sha256": "370aadae6b15d3394fd8c52cb84d01a4ce26e14de5e372c516a25bdeb21a5275"
 }

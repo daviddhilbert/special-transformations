@@ -31,6 +31,8 @@ import Section3.FiniteCoding
 import Section3.MixedRV
 import Section3.ValueQuotient
 import Section3.ClosedBallQuotient
+import Section3.BallDefinablePoint
+import Section3.RVFibreConstancy
 
 /-!
 # Checked Section 3 library
