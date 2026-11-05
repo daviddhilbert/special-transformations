@@ -4,9 +4,8 @@ Work is in progress. **All of Section 3 is not yet formalized.** The new
 `Library.lean` entry point deliberately excludes the legacy target files.
 QE is imported from the unchanged ACVF-QE pin.
 
-The current combined certificate covers **139 modules, 386 headline type/axiom
-checks and a fresh root import**. Every checked source and dependency fingerprint
-matches this checkpoint; only the three permitted standard axioms occur.
+The last published combined certificate covers **149 modules, 420 headline type/axiom
+checks and a fresh root import**. The certificate records source and dependency fingerprints at that checkpoint; only the three permitted standard axioms occur.
 The pinned compiler and dependencies are unchanged. QE uses the released
 language with named RV inversion.
 
@@ -21,6 +20,9 @@ those scopes; Gamma closure and generation laws remain separate obligations.
 | --- | --- |
 | `GammaPresentation`, `GammaOperations`, `GammaValueLaws`, `GammaDensity` | The actual Gamma quotient has a nontrivial divisible densely ordered commutative group structure; GammaTop has the one absorbing infinity class, maximal in the paper order. Operations and comparisons agree with the released RV multiplication and preorder. VF valuation is a multiplicative map into GammaTop and reverses the compatible Mathlib valuation order. All ACVF; no characteristic, saturation or extra representative parameters. No zero-minimal ordered-group-with-zero instance is introduced. |
 | `GammaCodes`, `GammaParameters`, `GammaParameterBridge`, `GammaSpecialization` | Genuine imaginary parameters via full, globally invariant first-order preimages on all nonzero RV representatives, over exactly the real base S. The semantic relation constructor and empty-Gamma equivalences for definability, acl and dcl have checked types. Specialization explicitly adjoins RV names; it is not their elimination. Arbitrary Gamma sets are handled through finite formula support. Gamma closure/generation predicates are definitions only; their closure laws are open. |
+| `GammaCodeDefinability`, `GammaFamilyIntersection`, `GammaDescent` | The full nonzero-RV code equivalence is first-order definable and normalization-compatible. Algebraicity of a real VF/RV output descends along any nonempty finite-arity Gamma-definable real family over a small real ambient S. This includes the RV-to-Gamma-fibre case of 3.2 for real outputs. The resulting finite witness has a full invariant preimage over exactly S and its given Gamma tuple; temporary representatives are removed from that conclusion. Genuine kappa-saturation, kappa at least countable, and a small real S. Gamma outputs and additional ambient Gamma names remain open. |
+| `FiniteAlgebraicCover`, `FiniteVFRealCover`, `GammaRealRestriction`, `GammaFiniteCoding` | A finite VF tuple set defined with additional RV or Gamma parameters is covered by a finite real-S-definable tuple set. Restricting the checked real-base code on that cover proves full 3.9 over genuine Gamma-named bases, with all VF tuple arities and its complete same-base graph. ACVF(0,0); no saturation or additional named elements. |
+| `ClosedCentersFromFiniteSet`, `ClosedBallCenterCover`, `GammaClosedBallCenters` | Full 3.10 over genuine Gamma-named bases on the actual closed-ball quotient, including singleton and whole-field cases. A finite real-S-definable hitting set is constructed by covering the algebraic center image; means define an invariant total function on real codes, whose graph is restricted to the original Gamma-base family. ACVF(0,0), finiteness and full family preimage; no saturation, chosen representative parameters or assumed center theorem. Open-ball families and 3.13 remain separate obligations. |
 | `GammaBaseVFAlgebraicity` | Named Gamma parameters do not enlarge VF algebraic closure. Full Gamma-base versions of 3.3, VF exchange 3.6, and VF nonalgebraicity-transfer 3.7 (arbitrary additional RV and Gamma sets). Only ACVF; exchange retains its standing VF-field base convention. |
 | `GammaBaseCMinimal`, `GammaBaseFiniteImage`, `GammaBaseFiniteExceptions` | C-minimality, finite RV-to-VF tuple images 3.5, finite RV-fibre exceptions 3.12, additive-subgroup ball classification and finite exceptional additive cosets 3.18(1), with genuine Gamma names in the base. Every theorem retains its real counterpart's characteristic and saturation scope; 3.5 assumes genuine kappa-saturation, kappa at least countable, and a small real base. No cardinal bound on the set of Gamma names is needed for these finite-support consequences. |
 | `Parameters`, `ParameterBridge`, `ClosureBridge` | Definability, algebraicity and dcl over arbitrary base sets, finite character, and sorted/raw unary bridges on canonical models. `CanonicalParameters` proves invariance of sorted definability and closure under normalization. `SortedTuples` supplies the full finite mixed-tuple bridge and elimination of sorted definable parameters. Gamma closure remains open. |
@@ -28,7 +30,7 @@ those scopes; Gamma closure and generation laws remain separate obligations.
 | `Compactness`, `DefinableCompactness`, `TupleCompactness` | Finite inconsistency and finite subcovers from genuine saturation, with arbitrary finite tuple arities and visible parameter cardinal bounds. |
 | `Counting`, `RawAlgebraicity`, `FiniteRelations`, `TuplePromotion`, `TupleRelations`, `TupleDescent` | First-order bounded-fibre counting, cardinality equivalence, promotion over all coordinates of a tuple, and the complete raw-language descent proof. |
 | `SortedDescent.lemma_3_1` | Descent for every finite mixed tuple arity and a nonempty definable family over the original arbitrary small base. Any ACVF model, genuine κ-saturation, κ at least countable, and base size below κ. Normalization and its saturation transfer are proved internally; no canonical-totalization premise. |
-| `FibreDescent.corollary_3_2_vf` | VF-to-RV half, with tuples, nonempty domain and original parameters. Any ACVF model, genuine small-parameter saturation, countable lower bound on κ and the stated base bound; canonical representation is internal. The RV-to-Gamma half is open. |
+| `FibreDescent.corollary_3_2_vf` | VF-to-RV half, with tuples, nonempty domain and original parameters. Any ACVF model, genuine small-parameter saturation, countable lower bound on κ and the stated base bound; canonical representation is internal. The RV-to-Gamma-fibre case for real outputs is checked in `GammaDescent`; Gamma outputs and full imaginary ambient bases remain open. |
 | `AlgebraicFinite` | A definable subset of the raw algebraic closure of a small base is finite, proved via genuine saturation. |
 | `RingSyntax`, `PolynomialRoots`, `RootDefinability`, `FieldBase` | Polynomial root sets are sorted-definable over their named coefficients and finite for a nonzero polynomial. Over a base whose VF part is a field, VF model-theoretic and field-theoretic algebraicity agree. The standing field convention is explicit; inverse closure constructs it from an LRV substructure. |
 | `SortedFiniteImage.corollary_3_5_sorted` | Full finite input/output arities and partial domains: every sorted-definable RV-to-VF function has finite image. Any ACVF model and any original small base, with genuine saturation. The full original-base graph is a premise. `FiniteImage` also proves finite-valued tuple-relation images on canonical models. No C-minimality or field-base premise. |
@@ -122,8 +124,7 @@ Additional checked tools:
   `FiniteValueDefinability`: positive integer multiples give infinitely many
   distinct angular classes at each nonzero value. A single finite RV set
   bounds every finite fibre; first-order counting defines the resulting
-  Gamma set through its invariant full RV preimage. This is not a proof of
-  the still-open Gamma group/generation and imaginary-closure interfaces.
+  Gamma set through its invariant full RV preimage. The actual Gamma group and parameter interface are checked above; Gamma generation and the imaginary-closure laws remain open.
 
 - `InitialSegments`, `BallInitial`, `AdditiveRadial` and `AdditiveClassification`:
   positive integer multiples and their translates avoid each finite off-zero
@@ -138,8 +139,7 @@ Additional checked tools:
   Mathlib's restricted valuation value group; infinity maps to zero, RV
   multiplication agrees, and comparisons have the reversed order. The genuine
   non-infinity Gamma carrier is equivalent to its units. No representative is
-  named in S. Global quotient group operations and imaginary-parameter/base
-  generation remain separate open work.
+  named in S. Global quotient operations and the imaginary-parameter interface are checked above; imaginary closure and base-generation laws remain open.
 
 - `DefinableCosets`, `ClosedClassCodes`, `ClassCenterRelation` and
   `ClosedClassGeometry`: the full original-base quotient kernel is definable.
@@ -156,12 +156,13 @@ Additional checked tools:
   of the subgroup; the whole-field and singleton flags are included.
 
 Further Gamma-base extensions remain open for the base-sensitive conclusions
-of 3.4, 3.9–3.11, 3.15 and the closed-ball alternative of 3.18(2). The versions
-already listed for real S do not settle these extensions. Descent 3.1 and the
-checked VF-to-RV half of 3.2 currently have real VF/RV tuple outputs and real
-ambient bases; Gamma outputs and full imaginary-base descent remain open.
+of 3.4, 3.11, 3.15 and the closed-ball alternative of 3.18(2). The versions
+already listed for real S do not settle these extensions. Descent 3.1 and both
+fibre cases of 3.2 have real VF/RV outputs over real ambient bases, with the
+specified Gamma fibre parameters handled by `GammaDescent`. Gamma outputs
+and full imaginary ambient-base descent remain open.
 
-Results 3.13–3.14, 3.17, the (VF,Gamma)-generated alternative of 3.18(2), the RV half of 3.6, and the Gamma halves of 3.2 and 3.7 remain open in
+Results 3.13–3.14, 3.17, the (VF,Gamma)-generated alternative of 3.18(2), the RV half of 3.6, and the Gamma half of 3.7 remain open in
 the new shared library. Legacy conditional reductions are not counted as proofs.
 Keep `TARGETS.md` as the full target checklist. Remark 3.19 is retracted; see
 [RETRACTIONS.md](RETRACTIONS.md).
@@ -172,7 +173,7 @@ Keep `TARGETS.md` as the full target checklist. Remark 3.19 is retracted; see
 types, allowed axioms and root import. Generated logs are in
 `.scratch/section3-verified/`. A verification run is complete only when its
 `status.txt` says `PASS`; partial results do not certify the current tree.
-The checked batch record is copied into `verification/` after it is stable.
+The checked batch record is copied into `verification/` after it is stable. The exact working-copy root source is embedded in the record. Its concurrent Section 4 import uses separately source/cache-matched consumer artifacts; this extra compiler check is not a Section 4 source or headline certificate.
 A subsequent source change requires a fresh matching verification record.
 
 The legacy audit compiled 24 top-level Section 3 snapshots plus nine local

@@ -47,7 +47,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "QuotientFamilies",
@@ -71,7 +71,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RVLiteralReduction",
@@ -1106,16 +1106,96 @@
       "reused": true
     },
     {
-      "module": "Library",
-      "source_sha256": "848319f76f42dd1afcc8a681541ac2fa26eb18cc5a7957213ccb97eadec91104",
+      "module": "GammaCodeDefinability",
+      "source_sha256": "5af58f7a898e3e8b289e5ecb21db45d44f6bb38aabf9b344a73be70312025a1e",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
       "reused": true
     },
     {
+      "module": "GammaFamilyIntersection",
+      "source_sha256": "8c607262abef7db6b3acebc3169ec18c87c308f9abce587e8b6f16fda5922c16",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaDescent",
+      "source_sha256": "27ec966d40fe9068995d690ab9b0083052921f555593eeeea38e40296d524bef",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "FiniteAlgebraicCover",
+      "source_sha256": "9e1c444d80a12860c0774cc4734a414b7dead8c747ff66f6fc4b48311ddb7ddf",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "FiniteVFRealCover",
+      "source_sha256": "4595204091e15947f3b8356e9837cd20e4473b243d3a7899a36181855876b8c0",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaRealRestriction",
+      "source_sha256": "d14a437caa37d6d264f575669a3c4620918adc913a79176f604363c15305353d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaFiniteCoding",
+      "source_sha256": "8b0307dd46ef425e6ccff8a1a8778ff1c7f4542d9ea2a2ca35bf39abfb58be31",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "ClosedBallCenterCover",
+      "source_sha256": "9d4ac19474acc8361b4663506d9f6d58476615d31e9decd4947865ccd25422a7",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "ClosedCentersFromFiniteSet",
+      "source_sha256": "54fc50e9ffdb840ac3520321880d14bb898acc80d87d3500a1e8ef53df811ee0",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaClosedBallCenters",
+      "source_sha256": "f9bfd9c98f1ef4ea994c8bc613798bfc14bfa212913906833a8cdf52f6fd09c2",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "Library",
+      "source_sha256": "628441c4568e3f684a23ae0b4ae55eba3b57e9f84c820f2c993e5a96a78eb485",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
       "module": "HeadlineAudit",
-      "source_sha256": "8cec3fb094013d77ccb1e754616889c58b59ef9a523f46832eb2c94540dc51a1",
+      "source_sha256": "59ccbbb9d5279142cf62af2c1a1c0550e50a72b7d299da39fb267a96b0554dfd",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1123,7 +1203,7 @@
     },
     {
       "module": "Root",
-      "source_sha256": "550f8d14b23ab49d41d9145d06bb937f48ed7494a8aa7847f37ab9185e53adfc",
+      "source_sha256": "981e82e7647890b0ca7f5b5b8aa2360e2b1d13422a5ce2fa8dc170e816eaec50",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1131,7 +1211,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "139 integrated Section3 modules; matching compiler caches reused where indicated; fresh 386-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "149 integrated Section3 modules; matching compiler caches reused where indicated; fresh 420-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -3025,8 +3105,354 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.GammaParameters.NonzeroRV": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.SameScalar": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Same": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.nonzero_rv_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.raw_le_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_scalar_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.nonzero_rv_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_scalar_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_normalized_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Same.proper_left": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Same.proper_right": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_refl": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_codes_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_with_codes_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.proper_normalized_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.familyIntersection": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.familyIntersection_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.intersectionRelation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.intersection_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.descent_with_gamma_parameters": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.corollary_3_2_rv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.finite_definable_cover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.finite_vf_tuple_cover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.finite_vf_tuple_cover_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.interRealPreimage": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableWith.inter_real_preimage": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.inter_real_preimage": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_9_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.centers_of_finite_hitting_set": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.finite_hitting_set_over_real_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.coded_centers_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_10_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "c3baefd92dbd54e75da2920bdee96b680b9a6828109168710e977c67650faa46"
+  "verifier_sha256": "d6783c9a5b33225380b5b122738cf5c4a323522fe4724d1147b0831fd8703244",
+  "integration_root": {
+    "path": "SpecialTransformations.lean",
+    "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n-/\n",
+    "note": "Fresh compiler check of the exact working-copy root embedded here. Concurrent imports from other sections are consumer checks only; this certificate audits Section3 sources and headlines, not those sections.",
+    "reused_external_consumer_artifacts": [
+      {
+        "module": "Section4.DefinableGeometry",
+        "source_sha256": "e7e15c08e2b350dfbbca9fadefd071210324ed4ee240ef7023abec2bfc416d88",
+        "olean_sha256": "46cd1e722a9c5f4799d478bb3303dd5bd993539ca76e194dc1be21a73b7ecc33"
+      },
+      {
+        "module": "Section4.Products",
+        "source_sha256": "7677760ac7ee09a33fbb4508d3430e32b508ced780e2208f89958f9ee241e9aa",
+        "olean_sha256": "5164016660b4dc1f7e6bb253d85d37c3c52594b869d574b5cfca3d27796d03d9"
+      },
+      {
+        "module": "Section4.CodeMaps",
+        "source_sha256": "a5e019ce62f27de8f5d304a9cbdd8ddaa7e1010a32a83aedd51a59acf3e7ed21",
+        "olean_sha256": "1e0338b0fb425a3a0af39dffc1588d181e91960e526f7982ef4505545cf812b6"
+      },
+      {
+        "module": "Section4.FiniteMaps",
+        "source_sha256": "89a08b967bfe0701bec8258361b8013c499f79a97d8b58b266e5ee5abefa8516",
+        "olean_sha256": "eb89022ddb734fa5dcf06a36670749e003ccb82c9255cfaf07c0b127dbe410cd"
+      },
+      {
+        "module": "Section4.DefinableCategory",
+        "source_sha256": "d6b722f285e992827680bf921efc73fce7b38d36e261315b3f655fbf3ed349a4",
+        "olean_sha256": "ebe2484bd162b31ab5b42654f5946113b1a19c42af361f13d8d11524ae7520e3"
+      },
+      {
+        "module": "Section4.Dimension",
+        "source_sha256": "161d60c16bf6142376f63c93d2f5b3c1cbb7ffbfa08ffa7bc53257ee4f6d7a38",
+        "olean_sha256": "8534ce301c89a7c8f6cac644e2c8b0d7acfe53c659d7dcc57290597a4b933515"
+      },
+      {
+        "module": "Section4.Spaces",
+        "source_sha256": "42f0700a627234ddb239b37b6a9b84400c4b4093668b0b6d4446ebd10db6b016",
+        "olean_sha256": "a4c47e441fcd0959cd22d31c20a9021077e316618f70d9feed233f1c3a1db1f5"
+      },
+      {
+        "module": "Section4.UniformFinite",
+        "source_sha256": "401145c63f82478ad5de430bb9a4f72dfabc7d2c39e838e5af44d75af77a5bf1",
+        "olean_sha256": "4bfa4bb6d0031876f91943c254eb132ba8d850db22f82deadb145de822ecd908"
+      },
+      {
+        "module": "Section4.FamilyCoding",
+        "source_sha256": "87a872031360316d7790b11a3cc2ce7d80c4c449937d2072c601a7428330212c",
+        "olean_sha256": "d826f1ce1a147209289328071c210cce07c2ab1d575b760335172e1a6715b51c"
+      },
+      {
+        "module": "Section4.TupleFamilies",
+        "source_sha256": "40ac2d1de16d67341b25eff681865bb0a036b1734a89215ca9ff9ece73bf9cb4",
+        "olean_sha256": "0bf8826bc7f83b6168169f9874d61df5de4dfb6fb35af95b80cde505362cacbc"
+      },
+      {
+        "module": "Section4.RealPresentations",
+        "source_sha256": "fe53c8f6595de8e06ff34aa5bf1655cc672eb3a2d9599d1a8ad492c3f23e2d0c",
+        "olean_sha256": "235c5c2f5867b2a1170edd5b6a06a8a484b6a880550008501645e08efe44c253"
+      },
+      {
+        "module": "Section4.FiniteRefinement",
+        "source_sha256": "73ead9c98e8cfd9771193a7ad42084b22b60af1c39699f38c760bd101821e7cd",
+        "olean_sha256": "bf7e25d6c99603757593df79dd1a3ae606673a8f7d2057fd5a96eb662bdad801"
+      },
+      {
+        "module": "Section4.InjectionRefinement",
+        "source_sha256": "086d829541266e29a635f9415a8b46437b0e5baf7a4c217c2f9bcc9622465206",
+        "olean_sha256": "c6a9f1d899ab9a5e933383c5d88806094a25ad3c3d8871d55d53b4af92db70f8"
+      },
+      {
+        "module": "Section4.VFPadding",
+        "source_sha256": "ca0f7610d9db3d713aff0d39627e94c088165eb7f54e90d9b41e6340d1c97472",
+        "olean_sha256": "4f4acb2087499bdf6417678ec80bbd40415ad06c3a7e4e82a982c4197640e140"
+      },
+      {
+        "module": "Section4.VFDimension",
+        "source_sha256": "ba396134b2b058d8735e44260aec9415529dcfc5dd3a375227044382862072c8",
+        "olean_sha256": "1227e938d28c2fae14ec7a753879f59c08e130f6a77cf62e6e4a001f751aaa28"
+      },
+      {
+        "module": "Section4.CanonicalDimension",
+        "source_sha256": "5a3851ad509dbd68152f0aa962f152e4a7d173010dc1225da9598fb8ce3ac2c3",
+        "olean_sha256": "50a368714dff46134788d19a4cdd090745e410544744072ea0d5a7f997bf6b61"
+      },
+      {
+        "module": "Section4.Congruences",
+        "source_sha256": "b0091b22b8ea3bb35ff036b41053e54adeb2126d224ab0706ebaede273209f9b",
+        "olean_sha256": "bd08c906a83ffc13d2c008661437561749f1e84c961bc2ee0e96a86446c53380"
+      },
+      {
+        "module": "Section4.AdditiveCongruences",
+        "source_sha256": "2539f6f4d63616175fb16ed9f4a34c45c9c38f89cb90bdf2498d338bcf6336be",
+        "olean_sha256": "a1bd77451d229a6d7de6bc36da67e3a43f014e261a9e9b00b63d17cce601e89b"
+      },
+      {
+        "module": "Section4.RVCategories",
+        "source_sha256": "293417b73853af524960bab457b55ff3ab6d8a980057503a66fa67dbb6ea6a83",
+        "olean_sha256": "1712305669b9aa77f5b2267f2a6afffab536b12fdfe4c13cbaed1a0e37e7dfc0"
+      },
+      {
+        "module": "Section4.RVPadding",
+        "source_sha256": "c725f07b9940574eecbeba3e3455af9826d4cb9025a073ed57775112fbe37fd0",
+        "olean_sha256": "3e478ea4b1ee326b5e9adb4a3b61a589a0894e1a72ccc4e9cd22afecf5079835"
+      },
+      {
+        "module": "Section4.RVFinitePadding",
+        "source_sha256": "520946a299429e9f9287b69d4670ae01f3d3bb3cd176e64d31b4d6bce783c190",
+        "olean_sha256": "0f0b508675417d26c6682038018a7c05de4999c4fcca5749baf707ab31aaa9ef"
+      },
+      {
+        "module": "Section4.VFCategories",
+        "source_sha256": "563db3896343ad39d48f0ba4d08696c478630ab91e8ad2847ac781bccb9cf34a",
+        "olean_sha256": "6c82f3b2603b1345c76758b3dac5061613d10a0e3e0db71a4f377cc4ea59efe6"
+      },
+      {
+        "module": "Section4.PositivePresentation",
+        "source_sha256": "0a07b659cd9838592a685bc288cc8c4a0aaa9aa42e48d40fb885fe46b0436548",
+        "olean_sha256": "33eab2dd1b8bea145ee7bacc0245cf2fc5db50490c8d2e4a9b54a1c4cb820835"
+      },
+      {
+        "module": "Section4.Imported.GrothendieckRing",
+        "source_sha256": "8eeccc5c125dd2d67c007fe6ec398837c94e1cee3a8db459383e554b980b889f",
+        "olean_sha256": "e0960c0e86f890dcc2b13453a239f2f017364cfaac10e0cec2f72b6f01329169"
+      },
+      {
+        "module": "Section4.PositiveCompletion",
+        "source_sha256": "5489b6531ab98747aa0d80e7ac97ed98437a05c8aaee44b386cec97daeb62823",
+        "olean_sha256": "a49a82456b54c3c521628748bd39c0599fe866c507273b96543b71d5464995c6"
+      },
+      {
+        "module": "Section4.CanonicalLift",
+        "source_sha256": "823048aa8dd0afeb14231410a9325a973105c80d02586ea29665f64cde722630",
+        "olean_sha256": "0fc3b4f49fbb6f1fa77a8492140c91c4f6ffc5420c6df77feded2c2da6c13ee7"
+      },
+      {
+        "module": "Section4.Fibres",
+        "source_sha256": "ff9ff8de8712c2ed3fb11a0f3487c3dfdf7fd48ef71f2c0d0398d61d2df899b4",
+        "olean_sha256": "bdd08fd5299891c0c03915f859d0d674efa38d3cfdd4f17e089d966c24dc3841"
+      },
+      {
+        "module": "Section4.Library",
+        "source_sha256": "809c3f49155d396531dfe6762df54abc2ada0efe9e8804c00829b3362f9c7312",
+        "olean_sha256": "b01f81fddc80c6e11d73aea81b5fc532310f6cc1d0b8f6f04b6b9ecc524eed32"
+      }
+    ]
+  },
+  "dependency_working_copy_notes": {
+    "note": "The pinned QE artifacts are reused. Concurrent source edits listed below were inspected and have unchanged Lean code, with language-erratum comment edits only.",
+    "inspected_files": [
+      {
+        "path": "Proofs/CanonicalQF.lean",
+        "code_unchanged": true
+      },
+      {
+        "path": "Proofs/CanonicalStructure.lean",
+        "code_unchanged": true
+      },
+      {
+        "path": "Proofs/CanonicalTheory.lean",
+        "code_unchanged": true
+      },
+      {
+        "path": "Proofs/Enc.lean",
+        "code_unchanged": true
+      },
+      {
+        "path": "Proofs/LocalAssembly.lean",
+        "code_unchanged": true
+      },
+      {
+        "path": "Proofs/MarkerBridge.lean",
+        "code_unchanged": true
+      },
+      {
+        "path": "Proofs/SubstructureRVGroup.lean",
+        "code_unchanged": true
+      },
+      {
+        "path": "Proofs/Theorem23.lean",
+        "code_unchanged": true
+      }
+    ]
+  }
 }

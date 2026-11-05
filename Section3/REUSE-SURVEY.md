@@ -351,3 +351,39 @@ the three allowed standard axioms. The pinned source commits and licenses
 are unchanged. The newly documented RV-inversion language erratum changes
 attribution, not these definitions or proofs. Scratch Gamma descent and finite
 coding extensions are not included in this certificate.
+
+
+## Gamma fibre descent, coding and closed-ball centers (November 5, 2026)
+
+Reused the checked tuple finite-cover proof, generic first-order finite
+quantification, Gamma quotient/full-preimage interface, and RV-parameter
+independence. `GammaFamilyIntersection` takes the intersection along the entire
+Gamma-definable real family. Compactness may temporarily name RV codes, but
+the covering relation and final invariant intersection remain over the
+original real S. This supplies the RV-to-Gamma-fibre part of 3.2 for real
+outputs, as well as arbitrary nonempty Gamma-definable indexing families.
+It does not establish Gamma-output or full imaginary ambient-base descent.
+
+For 3.9, a finite set of algebraic real elements is covered by a finite set
+definable over the original base. RV independence then covers any finite VF
+tuple set with temporary RV names by such a real-base tuple set. Reusing the
+checked real-base coding on that cover and restricting its graph proves the
+full genuine Gamma-base version. This avoids an unnecessary second port of
+the uniform barycentric-code construction. Every retained parameter is
+visible in the graph type; the chosen temporary coding graph is not claimed
+to descend by arbitrary choice.
+
+For 3.10, reused `ClosedBallCentres`' finite-hitting-set mean construction,
+extracted as `centers_of_finite_hitting_set`. The finite center image obtained
+with temporary RV names is algebraic over real S; its finite definable cover
+is an S-definable hitting set. The resulting total function on real ball
+codes has a real-S-definable graph and is invariant under equality of balls.
+Restricting it to the Gamma-base family and descending the actual closed-ball
+quotient gives the full same-base center graph. Whole-field and singleton
+cases are included. Neither representatives nor selected centers are named
+as S parameters. This does not prove 3.13 for open balls.
+
+The ten added modules have compiler exit 0. The combined record covers
+149 modules, 420 actual headline type/axiom checks and a fresh root import.
+All headline axioms are among the three permitted standard axioms. Sources,
+dependency pins and licenses of reused components remain unchanged.

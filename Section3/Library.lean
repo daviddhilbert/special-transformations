@@ -46,6 +46,10 @@ import Section3.GammaBaseCMinimal
 import Section3.GammaBaseFiniteImage
 import Section3.GammaBaseFiniteExceptions
 
+import Section3.GammaDescent
+import Section3.GammaFiniteCoding
+import Section3.GammaClosedBallCenters
+
 /-!
 # Checked Section 3 library
 
