@@ -38,10 +38,11 @@ full invariant-preimage parameter interface. The checked Gamma-base extensions
 include C-minimality, VF algebraicity and exchange, finite RV-to-VF tuple images,
 finite VF-tuple coding, closed-ball centers, RV-fibre exceptions, and additive-coset
 exceptions. Descent also handles nonempty Gamma-definable real families and
-real outputs over a small real ambient base. Other base-sensitive results
+VF, RV and Gamma outputs over a small real ambient base. Full ambient bases
+with Gamma names still require their descent extension. Other base-sensitive results
 still need their Gamma extensions; defining the closure predicates does not
 prove their closure or generation laws. The last published combined certificate covers
-149 modules and 420 actual headline type/axiom checks, plus a fresh root import.
+154 modules and 454 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated

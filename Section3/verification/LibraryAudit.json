@@ -1183,11 +1183,51 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaCounting",
+      "source_sha256": "4e163ad21fb6fa5d8e56e697f9448efb63b05504b255afcd0b443ea0db4cb07b",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaGoodRelations",
+      "source_sha256": "4f240c450de10fa407ff8d7e522cf9dfbc948a32d618e67b671e609b0f98ee27",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaUniformCover",
+      "source_sha256": "12dce8a5dc6af08684826dd4f6db91c5f63ecbf805a606fc4f73c5b14db62b78",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaSupport",
+      "source_sha256": "0c2babda39381b60347d9bf8ab67a0cf80061ebcc3ee663dfd9bf27d9a50b991",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaOutputDescent",
+      "source_sha256": "80e488e5d048bb31028448a4c8e4148dfa5cb8dd7ff08e056544dc66e183aaeb",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "628441c4568e3f684a23ae0b4ae55eba3b57e9f84c820f2c993e5a96a78eb485",
+      "source_sha256": "27899dcc785588397aae195bb7d6851f44a589e8559f00910f4087062189eaf0",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1195,7 +1235,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "59ccbbb9d5279142cf62af2c1a1c0550e50a72b7d299da39fb267a96b0554dfd",
+      "source_sha256": "4b7d89e503a81b3b298f12673c3f07150e393688f8b22331038320d9f965fa37",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1211,7 +1251,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "149 integrated Section3 modules; matching compiler caches reused where indicated; fresh 420-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "154 integrated Section3 modules; matching compiler caches reused where indicated; fresh 454-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -3267,10 +3307,176 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.GammaParameters.no_injection_iff_finite_ncard_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.HasMoreGamma": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.hasMoreGamma_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gammaRow": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.hasMoreGamma_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.no_moreGamma_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.mem_gammaPullback_code": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_scalar_with_codes_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.invariantHull": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.invariantHull_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.invariantHull_invariant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GoodGammaRelation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.good_gamma_relation_of_algebraic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.good_gamma_slice_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.uniform_good_gamma_relation_cover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.precomposeGamma": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableWith.reparam": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.inter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableWith.inter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.inter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.monoReal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableWith.mono_real": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.proper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableAtBase.proper": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableAtBase.mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GammaDefinableOverBase.mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gamma_output_descent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_1_gamma_output": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.corollary_3_2_vf_gamma_output": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.corollary_3_2_rv_gamma_output": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GoodGammaRelation.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "d6783c9a5b33225380b5b122738cf5c4a323522fe4724d1147b0831fd8703244",
+  "verifier_sha256": "ac2faaa5e48313d9500fc24ff4c24d1998415415454aec260fcbbbf7f9945915",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n-/\n",

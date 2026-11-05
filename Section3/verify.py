@@ -202,6 +202,11 @@ explicit_types |= {'GammaParameters.with_zero_iff', 'GammaParameters.Relation.fu
 headlines += ['GammaParameters.NonzeroRV', 'GammaParameters.SameScalar', 'GammaParameters.Same', 'GammaParameters.nonzero_rv_definable', 'GammaParameters.raw_le_definable', 'GammaParameters.same_scalar_definable', 'GammaParameters.same_definable', 'GammaParameters.nonzero_rv_normalize', 'GammaParameters.same_scalar_normalize', 'GammaParameters.same_normalize', 'GammaParameters.same_normalized_definable', 'GammaParameters.Same.proper_left', 'GammaParameters.Same.proper_right', 'GammaParameters.same_refl', 'GammaParameters.same_codes_iff', 'GammaParameters.same_with_codes_iff', 'GammaParameters.proper_normalized_definable', 'GammaParameters.familyIntersection', 'GammaParameters.familyIntersection_definable', 'GammaParameters.intersectionRelation', 'GammaParameters.intersection_finite', 'GammaParameters.descent_with_gamma_parameters', 'GammaParameters.corollary_3_2_rv', 'finite_definable_cover', 'finite_vf_tuple_cover', 'GammaParameters.finite_vf_tuple_cover_gamma_base', 'GammaParameters.Relation.interRealPreimage', 'GammaParameters.DefinableWith.inter_real_preimage', 'GammaParameters.DefinableOverBase.inter_real_preimage', 'GammaParameters.lemma_3_9_gamma_base', 'BallFamilies.centers_of_finite_hitting_set', 'ClosedBallCodes.finite_hitting_set_over_real_base', 'GammaParameters.coded_centers_gamma_base', 'GammaParameters.lemma_3_10_gamma_base']
 explicit_types |= {'finite_vf_tuple_cover', 'GammaParameters.corollary_3_2_rv', 'GammaParameters.descent_with_gamma_parameters', 'GammaParameters.lemma_3_9_gamma_base', 'ClosedBallCodes.finite_hitting_set_over_real_base', 'GammaParameters.Relation.interRealPreimage', 'GammaParameters.lemma_3_10_gamma_base'}
 
+# Gamma output descent and support calculus.
+headlines += ['GammaParameters.no_injection_iff_finite_ncard_le']
+headlines += ['GammaParameters.HasMoreGamma', 'GammaParameters.hasMoreGamma_definable', 'GammaParameters.gammaRow', 'GammaParameters.hasMoreGamma_iff', 'GammaParameters.no_moreGamma_iff', 'GammaParameters.mem_gammaPullback_code', 'GammaParameters.same_scalar_with_codes_iff', 'GammaParameters.invariantHull', 'GammaParameters.invariantHull_definable', 'GammaParameters.invariantHull_invariant', 'GammaParameters.GoodGammaRelation', 'GammaParameters.good_gamma_relation_of_algebraic', 'GammaParameters.good_gamma_slice_definable', 'GammaParameters.uniform_good_gamma_relation_cover', 'GammaParameters.Relation.precomposeGamma', 'GammaParameters.DefinableWith.reparam', 'GammaParameters.Relation.inter', 'GammaParameters.DefinableWith.inter', 'GammaParameters.DefinableOverBase.inter', 'GammaParameters.Relation.monoReal', 'GammaParameters.DefinableWith.mono_real', 'GammaParameters.DefinableOverBase.mono', 'GammaParameters.DefinableOverBase.proper', 'GammaParameters.DefinableAtBase.proper', 'GammaParameters.DefinableAtBase.mono', 'GammaParameters.AlgebraicAtBase.mono', 'GammaParameters.GammaDefinableOverBase.mono', 'GammaParameters.GammaAlgebraicAtBase.mono', 'GammaParameters.gamma_output_descent', 'GammaParameters.lemma_3_1_gamma_output', 'GammaParameters.corollary_3_2_vf_gamma_output', 'GammaParameters.corollary_3_2_rv_gamma_output', 'GammaParameters.GoodGammaRelation.mk']
+explicit_types |= {'GammaParameters.GoodGammaRelation.mk', 'GammaParameters.hasMoreGamma_iff', 'GammaParameters.lemma_3_1_gamma_output', 'GammaParameters.good_gamma_relation_of_algebraic', 'GammaParameters.uniform_good_gamma_relation_cover', 'GammaParameters.gamma_output_descent', 'GammaParameters.corollary_3_2_vf_gamma_output', 'GammaParameters.corollary_3_2_rv_gamma_output'}
+
 def qualify(h):
     return h if h.startswith(('SpecialTransformations.', 'ValOneEC.')) else 'SpecialTransformations.Section3.' + h
 env = os.environ.copy()
@@ -216,7 +221,7 @@ fingerprints = {}
 pin_key = sha(ROOT / 'lake-manifest.json') + sha(ROOT / 'lean-toolchain')
 def run(name, source, output=None, fingerprint=None):
     source_sha = hashlib.sha256(source.read_bytes()).hexdigest()
-    args = ['lean']
+    args = ['lean', '-j1']
     if output:
         args += ['-o', str(output)]
     args += [str(source)]

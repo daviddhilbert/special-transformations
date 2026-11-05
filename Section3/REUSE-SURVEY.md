@@ -387,3 +387,58 @@ The ten added modules have compiler exit 0. The combined record covers
 149 modules, 420 actual headline type/axiom checks and a fresh root import.
 All headline axioms are among the three permitted standard axioms. Sources,
 dependency pins and licenses of reused components remain unchanged.
+
+## Imaginary expansion: focused reference check (November 5, 2026)
+
+[Pillay's author-hosted Stability Theory notes](https://academicweb.nd.edu/~apillay/pdf/lecturenotes.stability.pdf)
+(September 29, 2003), Proposition 1.9 and Corollary 1.10 on printed pages 6–7,
+give formula pullback to real representatives and preservation of saturation
+and strong homogeneity under the imaginary expansion. Independently,
+[Chernikov's author-hosted notes](https://www.math.ucla.edu/~chernikov/teaching/StabilityTheory285D/StabilityNotes.pdf)
+(updated August 27, 2017), Lemma 1.19(2),(6),(7), printed pages 7–8, give
+the corresponding formula, saturation and automorphism statements.
+These are mathematical proof references; no source code has been imported.
+
+[Marker's official contents](https://homepages.math.uic.edu/~marker/mtcont.html)
+locates interpretability in Chapter 1 and saturation in Chapter 4. This search
+did not verify a precise Marker statement covering the full imaginary bridge.
+No additional hypothesis has been introduced on that basis. The remaining
+Lean work includes a genuine interpreted carrier/language, parameter-size
+bounds, and a proved equivalence with this library's invariant full-preimage
+Gamma definitions. Assuming those Gamma closure or descent conclusions as
+an interface would not complete their proofs. The current direct coded
+descent remains the implemented route; a generic quotient interpretation is
+a possible later reuse target, not a checked imported result.
+
+
+## Gamma-output descent and support calculus (November 5, 2026)
+
+Reused the checked real-tuple parameter-promotion theorem, genuine normalized
+small-parameter saturation, finite-subcover proof, and actual Gamma quotient.
+Raw RV preimages of finite Gamma sets are infinite: they cannot be passed to
+the real finite-fibre descent theorem. `GammaCounting` instead counts pairwise
+value-inequivalent nonzero RV codes. The finite-set cardinality argument is
+adapted from local `Counting.lean`, with its unused LRV-structure argument
+removed, so no language structure is assigned to the Gamma imaginary.
+
+`GammaGoodRelations` universally intersects a promoted predicate over all
+equivalent output codes, restoring global value-class invariance. At the
+designated real tuple it remains the entire preimage of the original finite
+Gamma witness. A first-order count/cut makes every Gamma row finite. The
+finite union supplied by genuine saturation stays over the original real S;
+intersecting it along the nonempty Gamma-definable family is definable via
+the checked `GammaFamilyIntersection`. Its actual Gamma witness is finite
+because it is contained in one chosen finite Gamma row. Temporary RV names
+from compactness are absent from the final defining relation.
+
+The resulting theorems cover Gamma outputs in 3.1 and both cases of 3.2 over
+real ambient S, with finite tuple inputs and the intended nonempty condition.
+This is not full ambient-imaginary-base descent. `GammaSupport` joins finite
+supports using finSumFinEquiv and proves properness, reparameterization,
+intersections and monotonicity without representative names in the base.
+Closure idempotence and generated-base laws are separate obligations.
+
+All five added modules compile with exit0. The combined certificate covers
+154 modules, 454 actual headline type/axiom checks and a fresh root import;
+all axiom sets are contained in the three allowed standard axioms. New checks
+use one Lean worker; matching earlier checked compiler artifacts are reused.
