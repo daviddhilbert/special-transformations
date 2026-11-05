@@ -1,67 +1,21 @@
 /-
-Section 3 of Yin, *Special transformations in algebraically closed valued fields*
-(arXiv:1006.2467), the two items this file is about:
+Legacy partial results for Corollary 3.5 and Lemma 3.9 of Yin,
+Special transformations in algebraically closed valued fields.
 
-* `function:rv:to:vf:finite:image` (`paper.tex:687`, cited as Yin, QE:ACVF:min Lemma 4.12,
-  `qe.tex:1101`): *"Let `A ⊆ RV^m` and `f : A → VF^n` a definable function. Then `f(A)` is finite."*
-* `finite:VF:project:RV` (`paper.tex:716`, cited as Yin, QE:ACVF:min Lemma 4.10,
-  `qe.tex:1070`): *"Let `A` be a definable finite subset of `VF^n`. Then there is a definable
-  injection `f : A → RV^m` for some `m`."*
+The proof declarations below give the two-point finite coding case and the
+finite-domain case of the finite-image statement. They do not establish the
+full paper statements. See FiniteImage.lean for the new full-arities proof
+of Corollary 3.5 over the original base, using genuine saturation.
 
-Both are stated in the tree (`QE/Sec3_frozen.lean:205` and `:215`), corrected once, and neither is
-proved.  This file does three things, and says exactly how far each reaches.
+The paper's compactness argument is valid: a definable set contained in acl(S)
+is finite in a sufficiently saturated ambient model. AlgebraicFinite.lean
+proves this fact. Infinitude of acl(S) does not refute it.
 
-## 1. What is proved here (no `sorry`, no `axiom`)
-
-* `SP.rvSubDefinableFun` — the function `x ↦ rv (x - a)` is definable in the encoding, over the
-  parameter pair consisting of `a`; this is the *only* definable function `VF → RV` the paper's
-  proof of `finite:VF:project:RV` uses at its base step (`qe.tex:1075`: the translation of `A` by
-  its average, then `c_i ↦ rv(c_i)`), built at the level of terms so that no compactness is needed.
-* `SP.definableFun_const` — every constant `RV`-valued function (value `rv 0`) is definable.
-* `SP.swl_finite_VF_project_RV_pair` — **`finite:VF:project:RV` for a two-element `A`**, proved:
-  `A = {a, b}` embeds definably into `RV` by `x ↦ rv (x - a)`, since `rv (a - a) = rv 0 = 0` and
-  `rv (b - a) ≠ 0` because `rv x = 0` forces `x = 0`.
-* `SP.swl_function_rv_to_vf_finite_image_of_finite` — `function:rv:to:vf:finite:image` for finite
-  `A` (`f '' A` is finite for *any* `f`).
-
-## 2. What is *not* proved here, and why (recorded, with the paper's own words)
-
-The full forms are theorems of `ACVF` (`qe.tex:1070` and `qe.tex:1101`), but neither proof is
-available from the frozen encoding without the minimality machinery of `qe.tex` §4:
-
-* `function:rv:to:vf:finite:image` is proved in `qe.tex:1101` by induction on `n` from
-  `C`-minimality (`qe.tex:909`, `thm:c:min:acvf`) and quantifier elimination: `f(A)` is a finite
-  union of balls and punctured balls, and a disjunct that is not a `VF`-sort equality is satisfied
-  on a whole ball around a point, contradicting functionality of `f`.  *The proof printed in
-  `paper.tex:688` ("by Lemma `dcl:to:ac`, `f(t̄) ∈ VF(S)^alg`; by compactness `f(A)` is finite") is
-  not sufficient*: `dcl:to:ac` gives `f(t̄) ∈ VF(S)^alg`, and `VF(S)^alg ⊇ VF(∅) = ` the
-  algebraic closure of the prime field, which is infinite in the paper's characteristic `0`
-  setting; moreover it is the *same* set for every `t̄`.  So no finiteness follows from it.
-* `finite:VF:project:RV` is proved in `qe.tex:1070` by double induction on `n` and `♯A`, and its
-  base step uses `average:0:rv:not:constant` (`qe.tex:1052`, `paper.tex:709`) plus **compactness**
-  to glue the finitely many `t`-definable injections `f_t : rv⁻¹(t) ∩ A → RV^m` into one definable
-  `f : A → RV^{m+1}`.  The gluing is what the encoding lacks (a composition/substitution lemma for
-  `DefinableFun`, `QE/SubstVar.lean`), and the induction is why the target must be `RV^m`.
-
-## 3. Two defects of the frozen statements, recorded
-
-* `QE/Sec3_frozen.lean:215` states `finite:VF:project:RV` with a **single** `RV` value
-  (`f : M → M`, `DefinableFun S f`).  Yin's lemma has `RV^m`, and his induction *needs* `m > 1`:
-  the base step produces `m+1` from `m`, and the outer step produces `2m`.  The frozen form is
-  therefore a strengthening of the paper, not a transcription of it.  (Its own docstring says so:
-  "If the paper's induction turns out to need `m > 1`, this statement is a strengthening and must be
-  weakened to match."  It does need `m > 1`.)  What is proved below is the one case where the
-  single-value form is sharp: `♯A = 2`.
-The companion files `M8ProjectRV.lean` (`n = 1`) and `M8ProjectRVN.lean` (`VF^n`) prove the
-corrected `finite:VF:project:RV` outright — a definable injection `A → RV^{n·k}` over the elements
-of `A`, for an arbitrary finite `A ⊆ VF^n`; this file supplies the term-level graph of
-`x ↦ rv (x - a)` and the injectivity lemma they use.
-
-* `QE/Sec3_frozen.lean:215` also asks the injection to be definable over `S`, the parameters of
-  `A`.  Yin's proof produces a function definable over `S` together with the elements of `A` (the
-  average `c` of `A` and the values `rv(c_i - c)`), so the honest hypothesis is definability over
-  `S` extended by a tuple listing `A`.  `swl_finite_VF_project_RV_pair` below is stated in that
-  honest form: the parameter pair is `singleVF a`, i.e. it *contains* the point `a` used by the map.
+The enumeration-based maps in M8ProjectRV and M8ProjectRVN are definable over
+the elements being enumerated. This is a limitation of those constructions,
+not the parameter discipline of Lemma 3.9. Conjugate VF points can have
+distinct conjugate RV images under a function definable over the original
+base. The paper's Lemma 3.9 is not disproved by conjugacy.
 -/
 import Enc
 import Sec3Frozen

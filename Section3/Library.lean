@@ -13,6 +13,7 @@ import Section3.ClosureBridge
 import Section3.FibreDescent
 import Section3.AlgebraicFinite
 import Section3.VFAlgebraicity
+import Section3.FiniteImage
 
 /-!
 # Checked Section 3 library

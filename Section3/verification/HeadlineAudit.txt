@@ -353,3 +353,82 @@
           SpecialTransformations.Milestone0.SortTag.vf ↑b →
         IsAlgebraic (↥(SpecialTransformations.Section3.vfParameterField (S ∪ Set.range fun i => ↑(a i)))) b
 'SpecialTransformations.Section3.lemma_3_3' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.RingSyntax.realizes : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {α : Type} (t : FirstOrder.Language.ring.Term α) (v : α → SpecialTransformations.Milestone0.Transfer.VFType),
+  FirstOrder.Language.Term.realize (fun a => ↑(v a)) (SpecialTransformations.Section3.RingSyntax.ofRingTerm t) =
+    ↑(FirstOrder.Language.Term.realize v t)
+'SpecialTransformations.Section3.RingSyntax.realizes' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.PolynomialRoots.term_realize : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (k : ℕ) (c : Fin k → SpecialTransformations.Milestone0.Transfer.VFType)
+  (x : SpecialTransformations.Milestone0.Transfer.VFType),
+  FirstOrder.Language.Term.realize (Sum.elim (fun i => ↑(c i)) ![↑x])
+      (SpecialTransformations.Section3.PolynomialRoots.term k) =
+    ↑(∑ i, c i * x ^ ↑i)
+'SpecialTransformations.Section3.PolynomialRoots.term_realize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.PolynomialRoots.rootSet_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType),
+  (∀ (x : ↥E), ↑↑x ∈ S) →
+    ∀ (p : Polynomial ↥E),
+      SpecialTransformations.Section3.DefinableAt S SpecialTransformations.Milestone0.SortTag.vf
+        (SpecialTransformations.Section3.PolynomialRoots.rootSet E p)
+'SpecialTransformations.Section3.PolynomialRoots.rootSet_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.PolynomialRoots.rootSet_finite : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType) (p : Polynomial ↥E),
+  p ≠ 0 → (SpecialTransformations.Section3.PolynomialRoots.rootSet E p).Finite
+'SpecialTransformations.Section3.PolynomialRoots.rootSet_finite' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.PolynomialRoots.algebraicAt_of_isAlgebraic_named : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType),
+  (∀ (x : ↥E), ↑↑x ∈ S) →
+    ∀ (b : SpecialTransformations.Milestone0.Transfer.VFType),
+      IsAlgebraic (↥E) b → SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑b
+'SpecialTransformations.Section3.PolynomialRoots.algebraicAt_of_isAlgebraic_named' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.VFFieldBase.algebraicAt_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (F : SpecialTransformations.Section3.VFFieldBase S)
+  (b : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑b ↔
+    IsAlgebraic (↥F.field) b
+'SpecialTransformations.Section3.VFFieldBase.algebraicAt_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.finite_rv_to_vf_tuple_relation_image : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      SpecialTransformations.Section3.Saturated M κ →
+        ∀ (S : Set M),
+          Cardinal.mk ↑S < κ →
+            ∀ (F : SpecialTransformations.Section3.VFFieldBase S) {m n : ℕ} (G : Set (Fin m ⊕ Fin n → M)),
+              S.Definable SpecialTransformations.Milestone0.LRV G →
+                (∀ (t : Fin m → M) (y : Fin n → M),
+                    Sum.elim t y ∈ G →
+                      (∀ (j : Fin m), SpecialTransformations.Milestone0.iRV (t j)) ∧
+                        ∀ (j : Fin n), SpecialTransformations.Milestone0.iVF (y j)) →
+                  (∀ (t : Fin m → M), {y | Sum.elim t y ∈ G}.Finite) → {y | ∃ t, Sum.elim t y ∈ G}.Finite
+'SpecialTransformations.Section3.finite_rv_to_vf_tuple_relation_image' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.corollary_3_5 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      SpecialTransformations.Section3.Saturated M κ →
+        ∀ (S : Set M),
+          Cardinal.mk ↑S < κ →
+            ∀ (F : SpecialTransformations.Section3.VFFieldBase S) {m n : ℕ} (A : Set (Fin m → M)) (f : ↑A → Fin n → M),
+              (∀ t ∈ A, ∀ (j : Fin m), SpecialTransformations.Milestone0.iRV (t j)) →
+                (∀ (t : ↑A) (j : Fin n), SpecialTransformations.Milestone0.iVF (f t j)) →
+                  S.Definable SpecialTransformations.Milestone0.LRV {z | ∃ t, ↑t = z ∘ Sum.inl ∧ f t = z ∘ Sum.inr} →
+                    (Set.range f).Finite
+'SpecialTransformations.Section3.corollary_3_5' depends on axioms: [propext, Classical.choice, Quot.sound]

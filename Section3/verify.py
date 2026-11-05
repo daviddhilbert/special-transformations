@@ -54,6 +54,10 @@ headlines += ['BaseContext.namedModel', 'small_insert',
 headlines += ['PolynomialSyntax.realizes', 'polynomial_rv_locally_constant',
     'infinite_valued_neighbourhood', 'rvTerm_local', 'qf_local',
     'algebraicAt_vf_isAlgebraic', 'vfParameterField_union_rv', 'lemma_3_3']
+headlines += ['RingSyntax.realizes', 'PolynomialRoots.term_realize',
+    'PolynomialRoots.rootSet_definable', 'PolynomialRoots.rootSet_finite',
+    'PolynomialRoots.algebraicAt_of_isAlgebraic_named', 'VFFieldBase.algebraicAt_iff',
+    'finite_rv_to_vf_tuple_relation_image', 'corollary_3_5']
 env = os.environ.copy()
 env['LEAN_PATH'] = str(LIB) + os.pathsep + env.get('LEAN_PATH', '')
 rows = []

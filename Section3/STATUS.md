@@ -14,7 +14,9 @@ QE is imported from the unchanged ACVF-QE pin.
 | `Counting`, `RawAlgebraicity`, `FiniteRelations`, `TuplePromotion`, `TupleRelations`, `TupleDescent` | First-order bounded-fibre counting, cardinality equivalence, promotion over all coordinates of a tuple, and the complete raw-language descent proof. |
 | `ClosureBridge.lemma_3_1` | Sorted algebraicity descent for every finite mixed tuple arity, a nonempty definable domain and the original arbitrary small base. Explicit assumptions: canonical tagged interpretation, ACVF, genuine κ-saturation, κ at least countable, and base size below κ. Canonical totalization fixes only off-sort symbols; extending the library to an arbitrary noncanonical raw totalization remains a separate interface task. |
 | `FibreDescent.corollary_3_2_vf` | VF-to-RV half of 3.2, with tuples and original parameters. Requires nonempty domain and the same canonical/small saturated setting as 3.1. The RV-to-Gamma half is open. |
-| `AlgebraicFinite` | A definable subset of the raw algebraic closure of a small base is finite, proved via saturation; useful for 3.5. Does not supply Lemma 3.3's VF algebraicity step. |
+| `AlgebraicFinite` | A definable subset of the raw algebraic closure of a small base is finite, proved via genuine saturation. |
+| `RingSyntax`, `PolynomialRoots`, `RootDefinability`, `FieldBase` | Polynomial root sets are sorted-definable over their named coefficients and finite for a nonzero polynomial. Over a base whose VF part is a field, VF model-theoretic and field-theoretic algebraicity agree. The standing field convention is explicit; inverse closure constructs it from an LRV substructure. |
+| `FiniteImage.corollary_3_5` | Full finite tuple arities and partial domains: every definable RV-to-VF function has finite image. More generally, a definable finite-valued RV-to-VF relation has finite image. Original base parameters, explicit VF(S)-field convention, canonical tagged interpretation, ACVF, and genuine saturation over a small base; no C-minimality premise. |
 | `QuantifierFree`, `RVLiteralReduction`, `RVNormalForm` | Completed QE used over the original arbitrary base. VF equalities are replaced by RV equalities and sort predicates discharged on sorted assignments. K-term/monomial normalization and the full specific RV-literal DNF of Definition 2.4 remain. |
 | `BallGeometry` | Extended radii with the reversed order, whole-field and singleton conventions, polydiscs, rv-fibres and degeneracy; the exact nonzero rv-fibre/open-ball bridge. Valuative-centre classification and tuple-valuation notation remain. |
 | `Coordinates` | Sorted mixed coordinates, restriction/projection, complementary-coordinate fibres, assembly and projection composition (Notation 2.10). |
@@ -23,7 +25,7 @@ QE is imported from the unchanged ACVF-QE pin.
 | `QuotientFamilies.notation_3_16` | Invariance and saturation characterize unique quotient-to-powerset descent. Definability remains over the same base; surjective projection is equivalent to nonempty values. No arbitrary representatives are named. |
 | `ValuedCMinimal` | C-minimality in the ordinary valued-field language, arbitrary parameters and all characteristics, from checked QE and Johnson geometry. This is **not yet Theorem 2.8 in L_RV**: the RV-to-valued-language definability bridge remains. |
 
-Results 3.4–3.7, 3.9–3.15 and 3.17–3.19 and the Gamma half of 3.2 remain open in
+Results 3.4, 3.6–3.7, 3.9–3.15 and 3.17–3.19 and the Gamma half of 3.2 remain open in
 the new shared library. Legacy conditional reductions are not counted as proofs.
 Keep `TARGETS.md` as the full target checklist.
 
@@ -33,8 +35,8 @@ Keep `TARGETS.md` as the full target checklist.
 types, allowed axioms and root import. Generated logs are in
 `.scratch/section3-verified/`. A verification run is complete only when its
 `status.txt` says `PASS`; partial results do not certify the current tree.
-The final verification record will be copied into `verification/` after the
-current batch is stable.
+The checked batch record is copied into `verification/` after it is stable.
+A subsequent source change requires a fresh matching verification record.
 
 The legacy audit compiled 24 top-level Section 3 snapshots plus nine local
 dependencies in isolation, all with exit 0. `Sec3_frozen` has four local

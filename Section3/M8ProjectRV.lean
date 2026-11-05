@@ -1,53 +1,15 @@
 /-
-Section 3 of Yin, *Special transformations in algebraically closed valued fields*
-(arXiv:1006.2467): **`finite:VF:project:RV`** (`paper.tex:716`, Yin QE:ACVF:min Lemma 4.10,
-`qe.tex:1070`) in its honest form.
+Legacy finite-set coding over named elements, for unary VF input.
 
-The paper:
+Given an enumeration c of a finite VF set, the declarations below prove
+that x maps to the tuple (rv(x-c_i))_i injectively on that set. The graph
+uses c as parameters. This is a useful special construction, but it does
+not prove Lemma 3.9 over the original parameters of the finite set.
 
-> Let `A` be a definable finite subset of `VF^n`.  Then there is a definable injection
-> `f : A → RV^m` for some `m`.
-
-Two corrections to the frozen form `QE/Sec3_frozen.lean:215` are made here, and they are exactly
-what Yin's proof produces (`qe.tex:1070`):
-
-* the target is `RV^k` for a `k` that grows with `A` — the frozen form has a single `RV` value,
-  and Yin's induction produces `m + 1` from `m` at the base step and `2m` at the outer step;
-* the parameters are the elements of `A` (the enumeration `c`), not only the parameters of `A`:
-  Yin's base step translates `A` by its average and then reads off the `rv`'s of the elements
-  themselves, and the glued function is definable over those.
-
-At `n = 1` this file proves the corrected statement outright, for an arbitrary finite `A`,
-enumerated by an injective `c : Fin k → M` with `iVF` values:
-
-`x ↦ (rv (x - c₀), …, rv (x - c_{k-1}))`
-
-is `(paramPair c)`-definable (its graph is the conjunction of the `k` term equations
-`yᵢ = rv (x - cᵢ)`) and injective on `{c₀, …, c_{k-1}}`: the `i`-th coordinate of `cᵢ` is
-`rv 0 = 0` while the `i`-th coordinate of `cⱼ` (`j ≠ i`) is `rv (cⱼ - cᵢ) ≠ 0`, since `rv x = 0`
-forces `x = 0` (`rvEqInfty`).
-
-## What is proved here (`#print axioms`: only `propext`, `Classical.choice`, `Quot.sound`)
-
-* `DefinableFunVFRV` — the multi-valued definability notion the paper's `f : A → RV^m` needs:
-  a well-sorted graph formula over `S` with one `VF` and `k` `RV` free variables.
-* `paramPair` — the parameter pair whose `VF`-parameters are the tuple `c` (and no `RV`-parameters).
-* `wellSorted_diffForm`, `realize_diffForm` — the graph formula
-  `⋀_{i<k} (yᵢ = rv (x - cᵢ))` is well-sorted and realizes as the tuple of `rv`'s of the
-  differences from the `cᵢ`.
-* `definableFunVFRV_diff` — `x ↦ (rv (x - cᵢ))ᵢ` is `paramPair c`-definable.
-* `swl_finite_VF_project_RV_range` — its values are `RV`-sorted and it is injective on `{cᵢ}`.
-* `exists_enumeration` — a finite set is the range of an injective `c : Fin k → M`.
-* `swl_finite_VF_project_RV_corrected` — **`finite:VF:project:RV` at `n = 1`, corrected and
-  proved**: every finite `A ⊆ VF` admits `k`, an enumeration `c` of `A`, and a function
-  `f : VF → RV^k` that is definable over `A`'s elements and injective on `A` with `RV`-sorted
-  values.
-
-Not proved here: `n > 1` (Yin's induction on `n` uses the projection to the last coordinate and
-his `n = 1` step; the `n > 1` step is pure bookkeeping over `Fin n × Fin k` coordinates), and of
-course the paper's own parameter discipline (definability over the parameters of `A` alone) —
-which is *not* what Yin's proof gives, and which fails in general (two points conjugate over `S`
-cannot be separated by an `S`-definable function).
+The stronger parameter discipline in the paper remains a target. It is
+not contradicted by conjugate points: their images in RV can themselves
+be conjugate. Naming all elements is a limitation of this legacy proof,
+not a correction to the paper's statement or proof.
 -/
 import M8FinImage
 import Sec3Frozen

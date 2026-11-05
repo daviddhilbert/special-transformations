@@ -1,20 +1,10 @@
 /-
-Section 3 of Yin, *Special transformations in algebraically closed valued fields*
-(arXiv:1006.2467): **`finite:VF:project:RV`** (`paper.tex:716`, Yin QE:ACVF:min Lemma 4.10,
-`qe.tex:1070`) for `A ⊆ VF^n` with `n` arbitrary, in the form Yin's proof produces.
+Legacy finite-set coding over named elements, for arbitrary VF tuple input.
 
-The companion file `M8ProjectRV.lean` proves the `n = 1` case.  This file does the paper's own
-induction step on `n` in the only way it is needed once `n = 1` is known: the injection of a finite
-`A ⊆ VF^n` into `RV^{n·k}` is the tuple of the `n = 1` injections of all the coordinate projections,
-`x ↦ (rv (xᵢ - cⱼᵢ))_{i<n, j<k}`, and it is definable by the conjunction of the `n·k` term
-equations of `M8ProjectRV.lean`'s `diffForm`.
-
-Proved here (`#print axioms`: only `propext`, `Classical.choice`, `Quot.sound`):
-`SP.DefinableFunTupRV` (the `VF^n → RV^k` definability notion), `paramTupleN`,
-`wellSorted_formN`, `realize_formN`, `definableFunTupRV_diff`, `diffTupleNFun_injOn`, and
-`swl_finite_VF_project_RV_n` — the corrected `finite:VF:project:RV` for `A ⊆ VF^n`.  Injectivity: if `cⱼ ≠ cₗ` then some coordinate `i`
-separates them, and at the pair `(i, j)` the two values are `rv (cⱼᵢ - cⱼᵢ) = 0` and
-`rv (cₗᵢ - cⱼᵢ) ≠ 0`.
+This file combines the unary construction of M8ProjectRV coordinatewise:
+x maps to (rv(x_i-c_ji))_(i,j). The resulting injection is definable over
+an enumeration c of the finite set. Its proof does not establish Lemma 3.9
+over the original parameters of that set. See STATUS.md for current scope.
 -/
 import M8ProjectRV
 

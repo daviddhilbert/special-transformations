@@ -86,3 +86,10 @@ Links: [paper](https://arxiv.org/pdf/1006.2467v1),
 [Tau Ceti](https://github.com/TauCetiProject/TauCeti),
 [Palomar](https://palomar-registry.org/),
 [TheoremSearch](https://www.theoremsearch.com/).
+
+Polynomial-root and finite-image follow-up: reused Mathlib's
+`FirstOrder.Ring.termOfFreeCommRing`, its realization theorem,
+`Polynomial.eval₂_eq_sum_range`, `Polynomial.finite_setOfPred_isRoot`,
+`Set.Definable.image_comp` and `Set.Finite.pi'`. New syntax bridges use the
+released LRV language. `FiniteImage` proves the compactness step from the
+genuine saturation API; it does not reuse the contrary legacy header claim.
