@@ -222,36 +222,33 @@
       SpecialTransformations.Section3.AlgebraicAt A σ x ↔
         SpecialTransformations.Section3.RawClosure.AlgebraicOver A x ∧ SpecialTransformations.Milestone0.sortEval σ x
 'SpecialTransformations.Section3.algebraicAt_iff_raw' depends on axioms: [propext, Classical.choice, Quot.sound]
-@SpecialTransformations.Section3.lemma_3_1 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
-  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
-  CanonicalStructure.IsCanonical →
-    ∀ {κ : Cardinal.{0}},
-      Cardinal.aleph0 ≤ κ →
-        SpecialTransformations.Section3.Saturated M κ →
-          ∀ (S : Set M),
-            Cardinal.mk ↑S < κ →
-              ∀ {n : ℕ} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)) (b : M)
-                (σ : SpecialTransformations.Milestone0.SortTag),
-                SpecialTransformations.Section3.DefinableOver S sn A →
-                  A.Nonempty →
-                    (∀ a ∈ A, SpecialTransformations.Section3.AlgebraicAt (S ∪ Set.range a) σ b) →
-                      SpecialTransformations.Section3.AlgebraicAt S σ b
+@SpecialTransformations.Section3.lemma_3_1 : ∀ {M : Type} [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      ∀ (S : Set M),
+        Cardinal.mk ↑S < κ →
+          ∀ {n : ℕ} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)) (b : M)
+            (σ : SpecialTransformations.Milestone0.SortTag),
+            SpecialTransformations.Section3.DefinableOver S sn A →
+              A.Nonempty →
+                (∀ a ∈ A, SpecialTransformations.Section3.AlgebraicAt (S ∪ Set.range a) σ b) →
+                  SpecialTransformations.Section3.AlgebraicAt S σ b
 'SpecialTransformations.Section3.lemma_3_1' depends on axioms: [propext, Classical.choice, Quot.sound]
 @SpecialTransformations.Section3.corollary_3_2_vf : ∀ {M : Type}
-  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
-  CanonicalStructure.IsCanonical →
-    ∀ {κ : Cardinal.{0}},
-      Cardinal.aleph0 ≤ κ →
-        SpecialTransformations.Section3.Saturated M κ →
-          ∀ (S : Set M) {n : ℕ} (t : Fin n → M),
-            Cardinal.mk ↑(S ∪ Set.range t) < κ →
-              ∀ (A : Set (Fin n → M)) (b : M) (σ : SpecialTransformations.Milestone0.SortTag),
-                SpecialTransformations.Section3.DefinableOver (S ∪ Set.range t)
-                    (fun x => SpecialTransformations.Milestone0.SortTag.vf) A →
-                  A.Nonempty →
-                    A ⊆ SpecialTransformations.Section3.tupleRVFibre t →
-                      (∀ a ∈ A, SpecialTransformations.Section3.AlgebraicAt (S ∪ Set.range a) σ b) →
-                        SpecialTransformations.Section3.AlgebraicAt (S ∪ Set.range t) σ b
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      ∀ (S : Set M) {n : ℕ} (t : Fin n → M),
+        Cardinal.mk ↑(S ∪ Set.range t) < κ →
+          ∀ (A : Set (Fin n → M)) (b : M) (σ : SpecialTransformations.Milestone0.SortTag),
+            SpecialTransformations.Section3.DefinableOver (S ∪ Set.range t)
+                (fun x => SpecialTransformations.Milestone0.SortTag.vf) A →
+              A.Nonempty →
+                A ⊆ SpecialTransformations.Section3.tupleRVFibre t →
+                  (∀ a ∈ A, SpecialTransformations.Section3.AlgebraicAt (S ∪ Set.range a) σ b) →
+                    SpecialTransformations.Section3.AlgebraicAt (S ∪ Set.range t) σ b
 'SpecialTransformations.Section3.corollary_3_2_vf' depends on axioms: [propext, Classical.choice, Quot.sound]
 @SpecialTransformations.Section3.RawClosure.finite_of_definable_subset_algebraic : ∀ {M : Type}
   [inst : SpecialTransformations.Milestone0.LRV.Structure M] {κ : Cardinal.{0}},
@@ -543,7 +540,7 @@
 'SpecialTransformations.Section3.theorem_2_8_c_minimal' depends on axioms: [propext, Classical.choice, Quot.sound]
 @SpecialTransformations.Section3.algebraicAt_vf_union_rv_iff : ∀ {M : Type}
   [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
-  (S : Set M) (F : SpecialTransformations.Section3.VFFieldBase S) (B : Set M),
+  (S B : Set M),
   (∀ t ∈ B, SpecialTransformations.Milestone0.iRV t) →
     ∀ (b : SpecialTransformations.Milestone0.Transfer.VFType),
       SpecialTransformations.Section3.AlgebraicAt (S ∪ B) SpecialTransformations.Milestone0.SortTag.vf ↑b ↔
@@ -551,7 +548,7 @@
 'SpecialTransformations.Section3.algebraicAt_vf_union_rv_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
 @SpecialTransformations.Section3.corollary_3_7_vf : ∀ {M : Type}
   [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
-  (S : Set M) (F : SpecialTransformations.Section3.VFFieldBase S) (B : Set M),
+  (S B : Set M),
   (∀ t ∈ B, SpecialTransformations.Milestone0.iRV t) →
     ∀ (b : SpecialTransformations.Milestone0.Transfer.VFType),
       ¬SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑b →
@@ -606,14 +603,13 @@
 @SpecialTransformations.Section3.vfDefinableClosureField : {M : Type} →
   [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
     [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
-      CanonicalStructure.IsCanonical → Set M → Subfield SpecialTransformations.Milestone0.Transfer.VFType
+      Set M → Subfield SpecialTransformations.Milestone0.Transfer.VFType
 'SpecialTransformations.Section3.vfDefinableClosureField' depends on axioms: [propext, Classical.choice, Quot.sound]
 @SpecialTransformations.Section3.algebraicAt_vf_iff_parameterField : ∀ {M : Type}
-  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
-  CanonicalStructure.IsCanonical →
-    ∀ (S : Set M) (b : SpecialTransformations.Milestone0.Transfer.VFType),
-      SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑b ↔
-        IsAlgebraic (↥(SpecialTransformations.Section3.vfParameterField S)) b
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (b : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑b ↔
+    IsAlgebraic (↥(SpecialTransformations.Section3.vfParameterField S)) b
 'SpecialTransformations.Section3.algebraicAt_vf_iff_parameterField' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -625,20 +621,19 @@
  Classical.choice,
  Quot.sound]
 @SpecialTransformations.Section3.mem_vfAlgebraicClosureField : ∀ {M : Type}
-  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
-  CanonicalStructure.IsCanonical →
-    ∀ (S : Set M) (x : SpecialTransformations.Milestone0.Transfer.VFType),
-      x ∈ SpecialTransformations.Section3.vfAlgebraicClosureField S ↔
-        SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑x
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (x : SpecialTransformations.Milestone0.Transfer.VFType),
+  x ∈ SpecialTransformations.Section3.vfAlgebraicClosureField S ↔
+    SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑x
 'SpecialTransformations.Section3.mem_vfAlgebraicClosureField' depends on axioms: [propext, Classical.choice, Quot.sound]
 @SpecialTransformations.Section3.corollary_3_4 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
-  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical) (S : Set M)
+  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (S : Set M)
   (F : SpecialTransformations.Section3.VFFieldBase S) {n : ℕ}
   (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType) (B : Set M)
   (hB : ∀ b ∈ B, SpecialTransformations.Milestone0.iRV b),
   let A := S ∪ Set.range fun i => ↑(a i);
   let E := SpecialTransformations.Section3.vfParameterField A;
-  let D := SpecialTransformations.Section3.vfDefinableClosureField hc (A ∪ B);
+  let D := SpecialTransformations.Section3.vfDefinableClosureField (A ∪ B);
   let C := SpecialTransformations.Section3.vfAlgebraicClosureField (A ∪ B);
   have hSE := ⋯;
   have hED := ⋯;
@@ -649,39 +644,32 @@
       SpecialTransformations.Section3.relativeTrdeg F.field C ⋯
 'SpecialTransformations.Section3.corollary_3_4' depends on axioms: [propext, Classical.choice, Quot.sound]
 @SpecialTransformations.Section3.algebraicAt_vf_iff_matroid_closure : ∀ {M : Type}
-  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
-  CanonicalStructure.IsCanonical →
-    ∀ (S : Set M) (F : SpecialTransformations.Section3.VFFieldBase S)
-      (X : Set SpecialTransformations.Milestone0.Transfer.VFType)
-      (x : SpecialTransformations.Milestone0.Transfer.VFType),
-      SpecialTransformations.Section3.AlgebraicAt (S ∪ Subtype.val '' X) SpecialTransformations.Milestone0.SortTag.vf
-          ↑x ↔
-        x ∈ (AlgebraicIndependent.matroid (↥F.field) SpecialTransformations.Milestone0.Transfer.VFType).closure X
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (F : SpecialTransformations.Section3.VFFieldBase S)
+  (X : Set SpecialTransformations.Milestone0.Transfer.VFType) (x : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section3.AlgebraicAt (S ∪ Subtype.val '' X) SpecialTransformations.Milestone0.SortTag.vf ↑x ↔
+    x ∈ (AlgebraicIndependent.matroid (↥F.field) SpecialTransformations.Milestone0.Transfer.VFType).closure X
 'SpecialTransformations.Section3.algebraicAt_vf_iff_matroid_closure' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 @SpecialTransformations.Section3.lemma_3_6_vf : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
-  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
-  CanonicalStructure.IsCanonical →
-    ∀ (S : Set M) (F : SpecialTransformations.Section3.VFFieldBase S)
-      (a b : SpecialTransformations.Milestone0.Transfer.VFType),
-      SpecialTransformations.Section3.AlgebraicAt (insert (↑b) S) SpecialTransformations.Milestone0.SortTag.vf ↑a →
-        ¬SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑a →
-          SpecialTransformations.Section3.AlgebraicAt (insert (↑a) S) SpecialTransformations.Milestone0.SortTag.vf ↑b
+  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (S : Set M)
+  (F : SpecialTransformations.Section3.VFFieldBase S) (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section3.AlgebraicAt (insert (↑b) S) SpecialTransformations.Milestone0.SortTag.vf ↑a →
+    ¬SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑a →
+      SpecialTransformations.Section3.AlgebraicAt (insert (↑a) S) SpecialTransformations.Milestone0.SortTag.vf ↑b
 'SpecialTransformations.Section3.lemma_3_6_vf' depends on axioms: [propext, Classical.choice, Quot.sound]
 @SpecialTransformations.Section3.definableClosure_idempotent : ∀ {M : Type}
-  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
-  CanonicalStructure.IsCanonical →
-    ∀ (S : Set M),
-      SpecialTransformations.Section3.definableClosure (SpecialTransformations.Section3.definableClosure S) =
-        SpecialTransformations.Section3.definableClosure S
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  SpecialTransformations.Section3.definableClosure (SpecialTransformations.Section3.definableClosure S) =
+    SpecialTransformations.Section3.definableClosure S
 'SpecialTransformations.Section3.definableClosure_idempotent' depends on axioms: [propext, Classical.choice, Quot.sound]
 @SpecialTransformations.Section3.algebraicAt_definableClosure_iff : ∀ {M : Type}
-  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
-  CanonicalStructure.IsCanonical →
-    ∀ (S : Set M) (σ : SpecialTransformations.Milestone0.SortTag) (x : M),
-      SpecialTransformations.Section3.AlgebraicAt (SpecialTransformations.Section3.definableClosure S) σ x ↔
-        SpecialTransformations.Section3.AlgebraicAt S σ x
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (σ : SpecialTransformations.Milestone0.SortTag) (x : M),
+  SpecialTransformations.Section3.AlgebraicAt (SpecialTransformations.Section3.definableClosure S) σ x ↔
+    SpecialTransformations.Section3.AlgebraicAt S σ x
 'SpecialTransformations.Section3.algebraicAt_definableClosure_iff' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -690,5 +678,223 @@
     [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
       CanonicalStructure.IsCanonical → Set M → SpecialTransformations.Milestone0.LRV.Substructure M
 'SpecialTransformations.Section3.definableClosureSubstructure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.definableOver_normalize_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) {n : ℕ} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (s : Set (Fin n → M)),
+  SpecialTransformations.Section3.DefinableOver S sn s ↔ SpecialTransformations.Section3.DefinableOver S sn s
+'SpecialTransformations.Section3.definableOver_normalize_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.algebraicAt_normalize_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (σ : SpecialTransformations.Milestone0.SortTag) (x : M),
+  SpecialTransformations.Section3.AlgebraicAt S σ x ↔ SpecialTransformations.Section3.AlgebraicAt S σ x
+'SpecialTransformations.Section3.algebraicAt_normalize_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.definableClosureAt_normalize_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (σ : SpecialTransformations.Milestone0.SortTag) (x : M),
+  SpecialTransformations.Section3.DefinableClosureAt S σ x ↔ SpecialTransformations.Section3.DefinableClosureAt S σ x
+'SpecialTransformations.Section3.definableClosureAt_normalize_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.ModelTheory.DefinableReduct.term : ∀ {M : Type} {L : FirstOrder.Language}
+  {sM tM : L.Structure M},
+  SpecialTransformations.ModelTheory.DefinableReduct sM tM →
+    ∀ (S : Set M) {α β : Type} (w : (β → M) → α → M),
+      (∀ (i : α), Set.DefinableFun L S fun z => w z i) →
+        ∀ (t : L.Term α), Set.DefinableFun L S fun z => FirstOrder.Language.Term.realize (w z) t
+'SpecialTransformations.ModelTheory.DefinableReduct.term' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.ModelTheory.DefinableReduct.formula : ∀ {M : Type} {L : FirstOrder.Language}
+  {sM tM : L.Structure M},
+  SpecialTransformations.ModelTheory.DefinableReduct sM tM →
+    ∀ (S : Set M) {α β : Type} [Finite β] {n : ℕ} (φ : L.BoundedFormula α n) (u : (β → M) → α → M)
+      (x : (β → M) → Fin n → M),
+      (∀ (i : α), Set.DefinableFun L S fun z => u z i) →
+        (∀ (i : Fin n), Set.DefinableFun L S fun z => x z i) → S.Definable L {z | φ.Realize (u z) (x z)}
+'SpecialTransformations.ModelTheory.DefinableReduct.formula' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.ModelTheory.DefinableReduct.definable : ∀ {M : Type} {L : FirstOrder.Language}
+  {sM tM : L.Structure M},
+  SpecialTransformations.ModelTheory.DefinableReduct sM tM →
+    ∀ (S : Set M) {n : ℕ} (s : Set (Fin n → M)), S.Definable L s → S.Definable L s
+'SpecialTransformations.ModelTheory.DefinableReduct.definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.normalization_definableReduct : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M],
+  SpecialTransformations.ModelTheory.DefinableReduct sM CanonicalStructure.normalize
+'SpecialTransformations.Section3.normalization_definableReduct' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Saturated.normalize : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] {κ : Cardinal.{0}},
+  SpecialTransformations.Section3.Saturated M κ → SpecialTransformations.Section3.Saturated M κ
+'SpecialTransformations.Section3.Saturated.normalize' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.DefinableAt.eliminate_sorted_definable_params : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S B s : Set M} {σ : SpecialTransformations.Milestone0.SortTag},
+  SpecialTransformations.Section3.DefinableAt B σ s →
+    (∀ b ∈ B, ∃ τ, SpecialTransformations.Section3.DefinableClosureAt S τ b) →
+      SpecialTransformations.Section3.DefinableAt S σ s
+'SpecialTransformations.Section3.DefinableAt.eliminate_sorted_definable_params' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.AlgebraicAt.eliminate_sorted_definable_params : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S B : Set M} {σ : SpecialTransformations.Milestone0.SortTag} {x : M},
+  SpecialTransformations.Section3.AlgebraicAt B σ x →
+    (∀ b ∈ B, ∃ τ, SpecialTransformations.Section3.DefinableClosureAt S τ b) →
+      SpecialTransformations.Section3.AlgebraicAt S σ x
+'SpecialTransformations.Section3.AlgebraicAt.eliminate_sorted_definable_params' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.definableClosureAt_function_symbol : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) {k : ℕ} (f : SpecialTransformations.Milestone0.Fn k) (xs : Fin k → M),
+  (∀ (i : Fin k),
+      SpecialTransformations.Milestone0.sortEval (SpecialTransformations.Milestone0.LRV.Fn.argSort f i) (xs i)) →
+    (∀ (i : Fin k),
+        SpecialTransformations.Section3.DefinableClosureAt S (SpecialTransformations.Milestone0.LRV.Fn.argSort f i)
+          (xs i)) →
+      SpecialTransformations.Section3.DefinableClosureAt S (SpecialTransformations.Milestone0.LRV.Fn.resSort f)
+        (FirstOrder.Language.Structure.funMap f xs)
+'SpecialTransformations.Section3.definableClosureAt_function_symbol' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.definableClosureAt_vf_inv : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (x : SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section3.DefinableClosureAt S SpecialTransformations.Milestone0.SortTag.vf ↑x →
+    SpecialTransformations.Section3.DefinableClosureAt S SpecialTransformations.Milestone0.SortTag.vf ↑x⁻¹
+'SpecialTransformations.Section3.definableClosureAt_vf_inv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.lemma_3_1_canonical : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ (S : Set M),
+            Cardinal.mk ↑S < κ →
+              ∀ {n : ℕ} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)) (b : M)
+                (σ : SpecialTransformations.Milestone0.SortTag),
+                SpecialTransformations.Section3.DefinableOver S sn A →
+                  A.Nonempty →
+                    (∀ a ∈ A, SpecialTransformations.Section3.AlgebraicAt (S ∪ Set.range a) σ b) →
+                      SpecialTransformations.Section3.AlgebraicAt S σ b
+'SpecialTransformations.Section3.lemma_3_1_canonical' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.corollary_3_5_sorted : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  SpecialTransformations.Section3.Saturated M κ →
+    ∀ (S : Set M),
+      Cardinal.mk ↑S < κ →
+        ∀ {m n : ℕ} (A : Set (Fin m → M)) (f : ↑A → Fin n → M),
+          (∀ t ∈ A, ∀ (j : Fin m), SpecialTransformations.Milestone0.iRV (t j)) →
+            (∀ (t : ↑A) (j : Fin n), SpecialTransformations.Milestone0.iVF (f t j)) →
+              SpecialTransformations.Section3.DefinableOver S SpecialTransformations.Section3.rvvfSort
+                  (SpecialTransformations.Section3.rvvfGraph A f) →
+                (Set.range f).Finite
+'SpecialTransformations.Section3.corollary_3_5_sorted' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.raw_definableOver_sorted : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  CanonicalStructure.IsCanonical →
+    ∀ (A : Set M) {n : ℕ} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (s : Set (Fin n → M)),
+      A.Definable SpecialTransformations.Milestone0.LRV s →
+        (∀ x ∈ s, ∀ (i : Fin n), SpecialTransformations.Milestone0.sortEval (sn i) (x i)) →
+          SpecialTransformations.Section3.DefinableOver A sn s
+'SpecialTransformations.Section3.raw_definableOver_sorted' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.DefinableOver.eliminate_sorted_definable_params : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S B : Set M} {n : ℕ} {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {s : Set (Fin n → M)},
+  SpecialTransformations.Section3.DefinableOver B sn s →
+    (∀ b ∈ B, ∃ τ, SpecialTransformations.Section3.DefinableClosureAt S τ b) →
+      SpecialTransformations.Section3.DefinableOver S sn s
+'SpecialTransformations.Section3.DefinableOver.eliminate_sorted_definable_params' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RawClosure.Tuple.promote_definable_fibre : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} (S : Set M) (a : Fin n → M) (t : Set M),
+  (S ∪ Set.range a).Definable₁ SpecialTransformations.Milestone0.LRV t →
+    ∃ R, SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S R ∧ {x | (a, x) ∈ R} = t
+'SpecialTransformations.Section3.RawClosure.Tuple.promote_definable_fibre' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RawClosure.Tuple.glue_finite : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} (S : Set M) (C : Set (Set ((Fin n → M) × M))),
+  C.Finite →
+    (∀ R ∈ C,
+        SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S R ∧
+          SpecialTransformations.Section3.RawClosure.Tuple.SingleValued R) →
+      ∃ U,
+        SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S U ∧
+          SpecialTransformations.Section3.RawClosure.Tuple.SingleValued U ∧
+            (∀ p ∈ U, ∃ R ∈ C, p ∈ R) ∧ ∀ (a : Fin n → M), (∃ b, (a, b) ∈ U) ↔ ∃ R ∈ C, ∃ b, (a, b) ∈ R
+'SpecialTransformations.Section3.RawClosure.Tuple.glue_finite' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RawClosure.Tuple.definable_choice_graph : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} {κ : Cardinal.{0}},
+  SpecialTransformations.Section3.Saturated M κ →
+    ∀ (S : Set M),
+      Cardinal.mk ↑S < κ →
+        ∀ (A : Set (Fin n → M)),
+          S.Definable SpecialTransformations.Milestone0.LRV A →
+            ∀ (P : Set ((Fin n → M) × M)),
+              SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S P →
+                (∀ a ∈ A, ∃ b, (a, b) ∈ P ∧ (S ∪ Set.range a).Definable₁ SpecialTransformations.Milestone0.LRV {b}) →
+                  ∃ U,
+                    SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S U ∧
+                      SpecialTransformations.Section3.RawClosure.Tuple.SingleValued U ∧ U ⊆ P ∧ ∀ a ∈ A, ∃ b, (a, b) ∈ U
+'SpecialTransformations.Section3.RawClosure.Tuple.definable_choice_graph' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RawClosure.Tuple.definable_choice : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} {κ : Cardinal.{0}},
+  SpecialTransformations.Section3.Saturated M κ →
+    ∀ (S : Set M),
+      Cardinal.mk ↑S < κ →
+        ∀ (A : Set (Fin n → M)),
+          S.Definable SpecialTransformations.Milestone0.LRV A →
+            ∀ (P : Set ((Fin n → M) × M)),
+              SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S P →
+                (∀ a ∈ A, ∃ b, (a, b) ∈ P ∧ (S ∪ Set.range a).Definable₁ SpecialTransformations.Milestone0.LRV {b}) →
+                  ∃ f,
+                    (∀ (a : ↑A), (↑a, f a) ∈ P) ∧
+                      S.Definable SpecialTransformations.Milestone0.LRV
+                        {z | ∃ a, ↑a = z ∘ Sum.inl ∧ f a = z (Sum.inr 0)}
+'SpecialTransformations.Section3.RawClosure.Tuple.definable_choice' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.valuativeCentre_closedDisc : ∀ {K : Type} [inst : Field K] {Γ : Type}
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (a : K)
+  (r : SpecialTransformations.Section3.Balls.Radius Γ),
+  SpecialTransformations.Section3.Balls.valuativeCentre v (SpecialTransformations.Section3.Balls.closedDisc v a r) =
+    if 0 ∈ SpecialTransformations.Section3.Balls.closedDisc v a r then OrderDual.toDual 0 else OrderDual.toDual (v a)
+'SpecialTransformations.Section3.Balls.valuativeCentre_closedDisc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.valuativeCentre_openDisc : ∀ {K : Type} [inst : Field K] {Γ : Type}
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (a : K)
+  (r : SpecialTransformations.Section3.Balls.Radius Γ),
+  SpecialTransformations.Section3.Balls.valuativeCentre v (SpecialTransformations.Section3.Balls.openDisc v a r) =
+    if 0 ∈ SpecialTransformations.Section3.Balls.openDisc v a r then OrderDual.toDual 0 else OrderDual.toDual (v a)
+'SpecialTransformations.Section3.Balls.valuativeCentre_openDisc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RawClosure.eliminate_algebraic_parameters : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] (S B : Set M),
+  (∀ b ∈ B, SpecialTransformations.Section3.RawClosure.AlgebraicOver S b) →
+    ∀ (x : M),
+      SpecialTransformations.Section3.RawClosure.AlgebraicOver B x →
+        SpecialTransformations.Section3.RawClosure.AlgebraicOver S x
+'SpecialTransformations.Section3.RawClosure.eliminate_algebraic_parameters' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.AlgebraicAt.eliminate_algebraic_params : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S B : Set M} {σ : SpecialTransformations.Milestone0.SortTag} {x : M},
+  SpecialTransformations.Section3.AlgebraicAt B σ x →
+    (∀ b ∈ B, ∃ τ, SpecialTransformations.Section3.AlgebraicAt S τ b) →
+      SpecialTransformations.Section3.AlgebraicAt S σ x
+'SpecialTransformations.Section3.AlgebraicAt.eliminate_algebraic_params' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]

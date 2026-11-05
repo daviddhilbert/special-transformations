@@ -1,4 +1,4 @@
-import Section3.ClosureBridge
+import Section3.SortedDescent
 
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
@@ -12,7 +12,7 @@ def tupleRVFibre {n : ℕ} (t : Fin n → M) : Set (Fin n → M) :=
 /-- VF-to-RV half of Corollary 3.2, with full tuple arities and explicit
 nonemptiness. The proof uses the stronger tuple-family descent theorem;
 the fibre inclusion itself is not needed for this implication. -/
-theorem corollary_3_2_vf (hc : CanonicalStructure.IsCanonical (M := M))
+theorem corollary_3_2_vf
     {κ : Cardinal} (hκ : Cardinal.aleph0 ≤ κ) (hs : Saturated M κ)
     (S : Set M) {n : ℕ} (t : Fin n → M)
     (hsmall : Cardinal.mk ↥(S ∪ Set.range t) < κ)
@@ -21,7 +21,7 @@ theorem corollary_3_2_vf (hc : CanonicalStructure.IsCanonical (M := M))
     (_hfibre : A ⊆ tupleRVFibre t)
     (hb : ∀ a ∈ A, AlgebraicAt (S ∪ Set.range a) σ b) :
     AlgebraicAt (S ∪ Set.range t) σ b := by
-  apply lemma_3_1 hc hκ hs (S ∪ Set.range t) hsmall (fun _ => .vf) A b σ hA hne
+  apply lemma_3_1 hκ hs (S ∪ Set.range t) hsmall (fun _ => .vf) A b σ hA hne
   intro a ha
   apply (hb a ha).mono
   intro x hx

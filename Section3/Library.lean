@@ -20,6 +20,11 @@ import Section3.RVIndependence
 import Section3.TranscendenceDegrees
 import Section3.VFExchange
 import Section3.ClosureConventions
+import Section3.SortedFiniteImage
+import Section3.SortedTuples
+import Section3.DefinableLocalChoice
+import Section3.ValuativeCentre
+import Section3.AlgebraicTransitivity
 
 /-!
 # Checked Section 3 library

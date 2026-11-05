@@ -11,8 +11,8 @@ Existing section-related Lean files have been moved here from `QE/`;
 `Balls.lean` came from `Milestone0/`. `LegacyScaffold/` contains earlier stubs.
 The initial relocation preserved their contents byte for byte. A subsequent
 audit compiled the 24 top-level legacy snapshots and their nine local
-dependencies under their historical staging names. Four misleading legacy
-headers have since been corrected without changing proof code.
+dependencies under their historical staging names. Eight misleading legacy
+comment blocks have since been corrected without changing proof code.
 
 The new checked library starts at [Library.lean](Library.lean), which imports
 only new audited modules and the pinned ACVF-QE definitions. It includes

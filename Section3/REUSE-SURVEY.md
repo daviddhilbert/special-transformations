@@ -115,3 +115,28 @@ in `IntermediateField.algebraAdjoinAdjoin`,
 `AlgebraicIndependent.matroid_closure_eq` and `Matroid.closure_exchange`.
 The new bridges identify the actual sorted closures and coefficient fields;
 the generic field/matroid facts are not substituted for those bridges.
+
+Normalization and closure follow-up (November 5, 2026): searched the pinned
+Mathlib ModelTheory sources and the QE package for definable reducts,
+interpretation of case-defined functions, definable choice/Skolem functions,
+and saturation transfer. The existing TermDefinable.trans handles term
+substitution, while canonical totalization uses cases on sort predicates.
+A focused primary-source web search of Mathlib's Definability documentation
+and FormalizedFormalLogic/Foundation found no directly importable theorem
+for this transfer in those searches. The new DefinableReduct bridge proves
+function/relation interpretation and induction on every bounded formula,
+including universal quantification. NormalizationReduct checks every symbol
+of the released encoding; NormalizationSaturation translates over the same
+small parameter set. No new theory or model-theoretic hypothesis is introduced.
+The sorted parameter bridge preserves the original arbitrary base.
+
+For finite gluing, searched the pinned ModelTheory library, local section
+files and the same primary-source documentation for definable choice,
+Skolem functions and definable graphs with unique fibres. Reused the checked
+finite-subcover proof and finite-fibre counting machinery; the new gluing
+proof resolves overlaps by the domains of the partial graphs. It does not
+replace definable choice by an arbitrary chosen function. Primary discovery
+sources: <https://leanprover-community.github.io/mathlib4_docs/Mathlib/ModelTheory/Definability.html>
+and <https://github.com/FormalizedFormalLogic/Foundation>. This was a focused
+follow-up, not a fresh exhaustive survey of every registry listed above.
+Compilation and headline audit status are recorded separately.

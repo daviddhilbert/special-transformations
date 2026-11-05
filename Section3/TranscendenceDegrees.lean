@@ -13,22 +13,22 @@ noncomputable def vfAlgebraicClosureField (S : Set M) : Subfield (VFType (M := M
   (algebraicClosure (vfParameterField S) (VFType (M := M))).toSubfield
 
 theorem mem_vfAlgebraicClosureField
-    (hc : CanonicalStructure.IsCanonical (M := M)) (S : Set M) (x : VFType (M := M)) :
+    (S : Set M) (x : VFType (M := M)) :
     x ∈ vfAlgebraicClosureField S ↔ AlgebraicAt S .vf x.val :=
-  (mem_algebraicClosure_iff).trans (algebraicAt_vf_iff_parameterField hc S x).symm
+  (mem_algebraicClosure_iff).trans (algebraicAt_vf_iff_parameterField S x).symm
 
 theorem vfDefinableClosureField_le_algebraicClosureField
-    (hc : CanonicalStructure.IsCanonical (M := M)) (S : Set M) :
-    vfDefinableClosureField hc S ≤ vfAlgebraicClosureField S := by
+    (S : Set M) :
+    vfDefinableClosureField S ≤ vfAlgebraicClosureField S := by
   intro x hx
-  exact (mem_vfAlgebraicClosureField hc S x).mpr hx.algebraic
+  exact (mem_vfAlgebraicClosureField S x).mpr hx.algebraic
 
 theorem vfParameterField_le_dcl_union_rv
-    (hc : CanonicalStructure.IsCanonical (M := M)) (A B : Set M)
+    (A B : Set M)
     (hB : ∀ b ∈ B, iRV b) :
-    vfParameterField A ≤ vfDefinableClosureField hc (A ∪ B) := by
+    vfParameterField A ≤ vfDefinableClosureField (A ∪ B) := by
   rw [← vfParameterField_union_rv A B hB]
-  exact vfParameterField_le_definableClosureField hc (A ∪ B)
+  exact vfParameterField_le_definableClosureField (A ∪ B)
 
 theorem vfAlgebraicClosureField_algebraic_union_rv (A B : Set M)
     (hB : ∀ b ∈ B, iRV b) (x : VFType (M := M))
@@ -45,25 +45,25 @@ theorem VFFieldBase.le_parameterField_tuple (S : Set M) (F : VFFieldBase S)
 /-- Corollary 3.4: the VF-generated field, the VF part of definable closure,
 and the VF part of model-theoretic algebraic closure have the same
 transcendence degree over VF(S). B is any RV parameter set. -/
-theorem corollary_3_4 (hc : CanonicalStructure.IsCanonical (M := M))
+theorem corollary_3_4
     (S : Set M) (F : VFFieldBase S) {n : ℕ} (a : Fin n → VFType (M := M))
     (B : Set M) (hB : ∀ b ∈ B, iRV b) :
     let A := S ∪ Set.range (fun i => (a i).val)
     let E := vfParameterField A
-    let D := vfDefinableClosureField hc (A ∪ B)
+    let D := vfDefinableClosureField (A ∪ B)
     let C := vfAlgebraicClosureField (A ∪ B)
     let hSE := VFFieldBase.le_parameterField_tuple S F a
-    let hED := vfParameterField_le_dcl_union_rv hc A B hB
-    let hDC := vfDefinableClosureField_le_algebraicClosureField hc (A ∪ B)
+    let hED := vfParameterField_le_dcl_union_rv A B hB
+    let hDC := vfDefinableClosureField_le_algebraicClosureField (A ∪ B)
     relativeTrdeg F.field E hSE = relativeTrdeg F.field D (hSE.trans hED) ∧
       relativeTrdeg F.field E hSE = relativeTrdeg F.field C (hSE.trans (hED.trans hDC)) := by
   let A := S ∪ Set.range (fun i => (a i).val)
   let E := vfParameterField A
-  let D := vfDefinableClosureField hc (A ∪ B)
+  let D := vfDefinableClosureField (A ∪ B)
   let C := vfAlgebraicClosureField (A ∪ B)
   have hSE := VFFieldBase.le_parameterField_tuple S F a
-  have hED := vfParameterField_le_dcl_union_rv hc A B hB
-  have hDC := vfDefinableClosureField_le_algebraicClosureField hc (A ∪ B)
+  have hED := vfParameterField_le_dcl_union_rv A B hB
+  have hDC := vfDefinableClosureField_le_algebraicClosureField (A ∪ B)
   change relativeTrdeg F.field E hSE = relativeTrdeg F.field D (hSE.trans hED) ∧
     relativeTrdeg F.field E hSE = relativeTrdeg F.field C (hSE.trans (hED.trans hDC))
   constructor

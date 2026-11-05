@@ -27,11 +27,11 @@ theorem VFFieldBase.parameterField_union_image (S : Set M) (F : VFFieldBase S)
     · exact Or.inr ⟨x, hx, rfl⟩
 
 theorem algebraicAt_vf_iff_matroid_closure
-    (hc : CanonicalStructure.IsCanonical (M := M)) (S : Set M) (F : VFFieldBase S)
+    (S : Set M) (F : VFFieldBase S)
     (X : Set (VFType (M := M))) (x : VFType (M := M)) :
     AlgebraicAt (S ∪ Subtype.val '' X) .vf x.val ↔
       x ∈ (AlgebraicIndependent.matroid F.field (VFType (M := M))).closure X := by
-  rw [algebraicAt_vf_iff_parameterField hc, VFFieldBase.parameterField_union_image S F X,
+  rw [algebraicAt_vf_iff_parameterField, VFFieldBase.parameterField_union_image S F X,
     AlgebraicIndependent.matroid_closure_eq]
   change IsAlgebraic (IntermediateField.adjoin F.field X) x ↔
     IsAlgebraic (Algebra.adjoin F.field X) x
@@ -41,19 +41,19 @@ theorem algebraicAt_vf_iff_matroid_closure
       (Algebra.adjoin F.field X) (IntermediateField.adjoin F.field X))
 
 /-- The VF exchange assertion in Lemma 3.6, over the original field base. -/
-theorem lemma_3_6_vf (hc : CanonicalStructure.IsCanonical (M := M))
+theorem lemma_3_6_vf
     (S : Set M) (F : VFFieldBase S) (a b : VFType (M := M))
     (hab : AlgebraicAt (insert b.val S) .vf a.val)
     (ha : ¬ AlgebraicAt S .vf a.val) : AlgebraicAt (insert a.val S) .vf b.val := by
   let N := AlgebraicIndependent.matroid F.field (VFType (M := M))
   have hab' : a ∈ N.closure {b} :=
-    (algebraicAt_vf_iff_matroid_closure hc S F {b} a).mp (by simpa using hab)
+    (algebraicAt_vf_iff_matroid_closure S F {b} a).mp (by simpa using hab)
   have ha' : a ∉ N.closure ∅ := by
     intro h
-    have h' := (algebraicAt_vf_iff_matroid_closure hc S F ∅ a).mpr h
+    have h' := (algebraicAt_vf_iff_matroid_closure S F ∅ a).mpr h
     exact ha (by simpa using h')
   have hb' := (N.closure_exchange (X := ∅) ⟨by simpa using hab', ha'⟩).1
-  have h := (algebraicAt_vf_iff_matroid_closure hc S F {a} b).mpr (by simpa using hb')
+  have h := (algebraicAt_vf_iff_matroid_closure S F {a} b).mpr (by simpa using hb')
   simpa using h
 
 end SpecialTransformations.Section3

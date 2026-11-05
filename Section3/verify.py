@@ -71,6 +71,22 @@ headlines += ['SpecialTransformations.DefinableConstants.eliminate_parameters',
     'algebraicAt_vf_iff_matroid_closure', 'lemma_3_6_vf',
     'definableClosure_idempotent', 'algebraicAt_definableClosure_iff',
     'definableClosureSubstructure']
+headlines += ['definableOver_normalize_iff', 'algebraicAt_normalize_iff',
+    'definableClosureAt_normalize_iff',
+    'SpecialTransformations.ModelTheory.DefinableReduct.term',
+    'SpecialTransformations.ModelTheory.DefinableReduct.formula',
+    'SpecialTransformations.ModelTheory.DefinableReduct.definable',
+    'normalization_definableReduct', 'Saturated.normalize',
+    'DefinableAt.eliminate_sorted_definable_params',
+    'AlgebraicAt.eliminate_sorted_definable_params',
+    'definableClosureAt_function_symbol', 'definableClosureAt_vf_inv',
+    'lemma_3_1_canonical', 'corollary_3_5_sorted',
+    'raw_definableOver_sorted', 'DefinableOver.eliminate_sorted_definable_params',
+    'RawClosure.Tuple.promote_definable_fibre', 'RawClosure.Tuple.glue_finite',
+    'RawClosure.Tuple.definable_choice_graph', 'RawClosure.Tuple.definable_choice',
+    'Balls.valuativeCentre_closedDisc', 'Balls.valuativeCentre_openDisc',
+    'RawClosure.eliminate_algebraic_parameters', 'AlgebraicAt.eliminate_algebraic_params']
+
 def qualify(h):
     return h if h.startswith('SpecialTransformations.') else 'SpecialTransformations.Section3.' + h
 env = os.environ.copy()

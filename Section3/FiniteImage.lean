@@ -51,7 +51,7 @@ theorem finite_rv_to_vf_relation_image (hc : CanonicalStructure.IsCanonical (M :
     · have hh := CanonicalStructure.sort_unique hM (s := .vf) (t := .rv)
         x.property (hj ▸ ht j)
       cases hh
-  exact ((algebraicAt_vf_iff_parameterField hc S ⟨b, hb⟩).mpr he').raw_finite_witness
+  exact ((algebraicAt_vf_iff_parameterField S ⟨b, hb⟩).mpr he').raw_finite_witness
 
 
 /-- Finite-valued RV-to-VF relations have finite image in every output arity.

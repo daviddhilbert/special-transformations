@@ -4,36 +4,52 @@ Work is in progress. **All of Section 3 is not yet formalized.** The new
 `Library.lean` entry point deliberately excludes the legacy target files.
 QE is imported from the unchanged ACVF-QE pin.
 
-The current combined certificate covers 53 modules, 71 headline type/axiom
-checks and a fresh root import. The exact compiler and pinned dependencies
-were restored before this audit; see the verification section below.
+The current combined certificate covers 68 modules, 95 headline type/axiom
+checks and a fresh root import. Source and dependency fingerprints match
+the checked tree; only the three permitted standard axioms occur.
+The pinned compiler and dependencies are unchanged.
 
 ## Checked components
 
 | Component | Exact scope and remaining work |
 | --- | --- |
-| `Parameters`, `ParameterBridge`, `ClosureBridge` | Definability, algebraicity and dcl over arbitrary base sets; finite character; bridges both ways between sorted and raw unary definability/closure on canonical tagged models, using completed QE. The legacy SP bridge remains. Gamma closure is not yet integrated. |
+| `Parameters`, `ParameterBridge`, `ClosureBridge` | Definability, algebraicity and dcl over arbitrary base sets, finite character, and sorted/raw unary bridges on canonical models. `CanonicalParameters` proves invariance of sorted definability and closure under normalization. `SortedTuples` supplies the full finite mixed-tuple bridge and elimination of sorted definable parameters. Gamma closure remains open. |
 | `ModelContext` | ACVF(0,0), actual small substructure, nontrivial finite values, genuine cardinal saturation and strong homogeneity; ambient model of the named-base atomic-diagram theory. Finite parameter extensions remain small. See `ClosureConventions` for definable closure and VF/RV generation. Gamma generation remains open. |
 | `Compactness`, `DefinableCompactness`, `TupleCompactness` | Finite inconsistency and finite subcovers from genuine saturation, with arbitrary finite tuple arities and visible parameter cardinal bounds. |
 | `Counting`, `RawAlgebraicity`, `FiniteRelations`, `TuplePromotion`, `TupleRelations`, `TupleDescent` | First-order bounded-fibre counting, cardinality equivalence, promotion over all coordinates of a tuple, and the complete raw-language descent proof. |
-| `ClosureBridge.lemma_3_1` | Sorted algebraicity descent for every finite mixed tuple arity, a nonempty definable domain and the original arbitrary small base. Explicit assumptions: canonical tagged interpretation, ACVF, genuine κ-saturation, κ at least countable, and base size below κ. Canonical totalization fixes only off-sort symbols; extending the library to an arbitrary noncanonical raw totalization remains a separate interface task. |
-| `FibreDescent.corollary_3_2_vf` | VF-to-RV half of 3.2, with tuples and original parameters. Requires nonempty domain and the same canonical/small saturated setting as 3.1. The RV-to-Gamma half is open. |
+| `SortedDescent.lemma_3_1` | Descent for every finite mixed tuple arity and a nonempty definable family over the original arbitrary small base. Any ACVF model, genuine κ-saturation, κ at least countable, and base size below κ. Normalization and its saturation transfer are proved internally; no canonical-totalization premise. |
+| `FibreDescent.corollary_3_2_vf` | VF-to-RV half, with tuples, nonempty domain and original parameters. Any ACVF model, genuine small-parameter saturation, countable lower bound on κ and the stated base bound; canonical representation is internal. The RV-to-Gamma half is open. |
 | `AlgebraicFinite` | A definable subset of the raw algebraic closure of a small base is finite, proved via genuine saturation. |
 | `RingSyntax`, `PolynomialRoots`, `RootDefinability`, `FieldBase` | Polynomial root sets are sorted-definable over their named coefficients and finite for a nonzero polynomial. Over a base whose VF part is a field, VF model-theoretic and field-theoretic algebraicity agree. The standing field convention is explicit; inverse closure constructs it from an LRV substructure. |
-| `FiniteImage.corollary_3_5` | Full finite tuple arities and partial domains: every definable RV-to-VF function has finite image. More generally, a definable finite-valued RV-to-VF relation has finite image. Any original small base, canonical tagged interpretation, ACVF, and genuine saturation; no C-minimality premise. |
+| `SortedFiniteImage.corollary_3_5_sorted` | Full finite input/output arities and partial domains: every sorted-definable RV-to-VF function has finite image. Any ACVF model and any original small base, with genuine saturation. The full original-base graph is a premise. `FiniteImage` also proves finite-valued tuple-relation images on canonical models. No C-minimality or field-base premise. |
 | `QuantifierFree`, `RVLiteralReduction`, `RVNormalForm` | Completed QE used over the original arbitrary base. VF equalities are replaced by RV equalities and sort predicates discharged on sorted assignments. K-term/monomial normalization and the full specific RV-literal DNF of Definition 2.4 remain. |
-| `BallGeometry` | Extended radii with the reversed order, whole-field and singleton conventions, polydiscs, rv-fibres and degeneracy; the exact nonzero rv-fibre/open-ball bridge. See `DiscCentres` for the RV-fibre classification. Explicit valuative-centre and tuple-valuation notation remain. |
+| `BallGeometry` | Extended radii with the reversed order, whole-field and singleton conventions, polydiscs, rv-fibres and degeneracy; the exact nonzero rv-fibre/open-ball bridge. See `DiscCentres` for the RV-fibre classification. Valuative centers are supplied by `ValuativeCentre`; explicit tuple valuation remains. |
 | `Coordinates` | Sorted mixed coordinates, restriction/projection, complementary-coordinate fibres, assembly and projection composition (Notation 2.10). |
 | `Average.lemma_3_8` | Both valuation and RV-nonconstancy conclusions. Explicit hypotheses: ACVF(0,0), distinct family, size at least two, common valuation and zero sum. The natural-number unit premise is proved from residue-characteristic-zero axioms. No extra mathematical hypothesis. |
 | `VFAlgebraicity.lemma_3_3` | All VF and RV parameter tuple arities and the original arbitrary base. Model-theoretic VF algebraicity implies algebraicity over the field generated by the base's VF elements and the VF tuple. RV parameters do not enlarge it. Assumes only ACVF; no added saturation, characteristic, C-minimality or local-stability premise. Proved through `PolynomialSyntax`, `PolynomialLocal`, `RVTermLocal`, `QFLocal`, `ValuedNeighbourhood` and `VFAclField`. |
 | `QuotientFamilies.notation_3_16` | Invariance and saturation characterize unique quotient-to-powerset descent. Definability remains over the same base; surjective projection is equivalent to nonempty values. No arbitrary representatives are named. |
 | `CMinimal.theorem_2_8_c_minimal` | The exact frozen `IsCMinimalWS` target of Theorem 2.8, for every ACVF model, every parameter type and every sorted assignment. Only ACVF is assumed; no characteristic, saturation, canonical-totalization or interpretability premise is added. `ValuedDefinability`, `RVRepresentatives`, `LiftTerms`, `RepresentativeDefinability`, `QFInterpretation`, `BooleanCombinations` and `GeometryBridge` prove the full translation and ball conversion, using the checked ordinary valued-language result in `ValuedCMinimal`. The inherited placeholder is not used. |
-| `DefinableConstants`, `VFDefinableClosure` | Generic elimination of already definable parameters; VF definable closure is a field; model-theoretic VF algebraicity is equivalent to algebraicity over the field generated by the original VF parameters. The reverse and field-closure constructions use the explicit canonical tagged interpretation. No equality between the generated field and definable closure is assumed. |
-| `TranscendenceDegrees.corollary_3_4` | All three actual VF fields have the same transcendence degree over VF(S), for every finite VF tuple and arbitrary RV parameter set B. Explicit canonical tagged model and standing field base; no saturation, characteristic or cardinal bound on B. The model-theoretic acl field is identified with the relative algebraic closure, and dcl is an intermediate field. |
-| `VFExchange.lemma_3_6_vf` | VF half of exchange over the original standing field base in a canonical tagged ACVF model. Derived from the proved closure identification and Mathlib's algebraic matroid exchange; no exchange premise is assumed. The RV assertion remains open. |
-| `ClosureConventions` | Definable closure is monotone, idempotent and a genuine LRV substructure; adjoining it preserves acl. VF-generated and (VF,RV)-generated bases use definable closure. Canonical tagged interpretation where required; Gamma imaginary/generation conventions remain open. |
-| `RVIndependence.corollary_3_7_vf` | VF half of 3.7, strengthened to arbitrary RV parameter sets. Over the explicit standing VF(S)-field convention, adjoining RV elements does not change VF algebraicity. Only ACVF is needed. The Gamma assertion remains open. |
-| `DiscCentres` | Every open or closed disc avoiding zero lies in one RV fibre, including the singleton-radius convention. This supplies the geometric classification behind valuative centers; explicit vcr and tuple-valuation notation remain. |
+| `DefinableConstants`, `VFDefinableClosure` | VF definable closure is a field and VF model-theoretic algebraicity is equivalent to algebraicity over the field generated by the original VF parameters, in every ACVF model and over every base. `SortedFunctionClosure`, `SortedInverseClosure` and `SortedParameterElimination` remove the canonical-model restriction. Generated fields are not identified with definable closure. |
+| `TranscendenceDegrees.corollary_3_4` | All three actual VF fields have the same transcendence degree over VF(S), for every finite VF tuple and arbitrary RV parameter set B. Only ACVF and the standing VF-field base convention are required; no canonical-model, saturation, characteristic or cardinal bound on B. |
+| `VFExchange.lemma_3_6_vf` | VF exchange over the original standing VF-field base, in every ACVF model. Derived from the proved closure identification and Mathlib algebraic matroid exchange. The RV assertion remains open. |
+| `ClosureConventions` | Definable closure is monotone and idempotent, and adjoining it preserves sorted acl, in every ACVF model. A genuine raw LRV substructure is constructed on canonical models. VF-generated and (VF,RV)-generated bases use definable closure. Gamma generation remains open. |
+| `RVIndependence.corollary_3_7_vf` | VF half, strengthened to arbitrary original bases S and arbitrary RV parameter sets. Adjoining RV parameters does not change VF algebraicity. Only ACVF is needed; no field-base convention, canonical representation or saturation is assumed. The Gamma assertion remains open. |
+| `DiscCentres` | Every open or closed disc avoiding zero lies in one RV fibre, including the singleton-radius convention. This supplies the geometric classification behind valuative centers; explicit tuple-valuation notation remains. |
+
+Additional checked tools:
+
+- `DefinableReduct`, `NormalizationReduct`, `NormalizationSaturation`: actual
+  first-order interpretation of every normalized symbol and formula, including
+  universal quantifiers, and genuine saturation transfer over the same small base.
+- `FibrePromotion`, `FiniteGluing`, `DefinableLocalChoice`: exact fibre
+  promotion and parameter-preserving finite gluing; pointwise choices in dcl
+  give a partial function with its complete graph definable over the original
+  small base. These are tools, not a proof of the paper's center theorems.
+- `ValuativeCentre`: Definition 2.6, with infinity represented by multiplicative
+  valuation zero in the reversed order; explicit open/closed ball formulas.
+- `AlgebraicTransitivity`: transitivity of sorted algebraic closure over
+  arbitrary sets, with no saturation or canonical-model premise, using finite
+  parameter witnesses and finite products of finite algebraic sets.
 
 Results 3.9–3.15 and 3.17–3.19, the RV half of 3.6, and the Gamma halves of 3.2 and 3.7 remain open in
 the new shared library. Legacy conditional reductions are not counted as proofs.

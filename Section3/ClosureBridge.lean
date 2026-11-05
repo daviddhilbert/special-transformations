@@ -94,7 +94,7 @@ theorem lemma_3_1_unary (hc : CanonicalStructure.IsCanonical (M := M))
 /-- Lemma 3.1 for a nonempty definable family of any finite mixed tuple arity.
 Parameters of a point are all its coordinates. The base remains the original
 arbitrary small set S; the size bound after adjoining b is proved, not assumed. -/
-theorem lemma_3_1 (hc : CanonicalStructure.IsCanonical (M := M))
+theorem lemma_3_1_canonical (hc : CanonicalStructure.IsCanonical (M := M))
     {κ : Cardinal} (hκ : Cardinal.aleph0 ≤ κ) (hs : Saturated M κ)
     (S : Set M) (hsmall : Cardinal.mk S < κ) {n : ℕ} (sn : Fin n → SortTag)
     (A : Set (Fin n → M)) (b : M) (σ : SortTag)

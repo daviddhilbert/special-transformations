@@ -30,22 +30,17 @@ theorem definableClosure_mono {S T : Set M} (h : S ⊆ T) :
   rintro x ⟨σ, hx⟩
   exact ⟨σ, hx.mono h⟩
 
-theorem definableClosure_idempotent (hc : CanonicalStructure.IsCanonical (M := M))
-    (S : Set M) : definableClosure (definableClosure S) = definableClosure S := by
+theorem definableClosure_idempotent (S : Set M) :
+    definableClosure (definableClosure S) = definableClosure S := by
   apply Set.Subset.antisymm
-  · intro x hx
-    apply (mem_definableClosure_iff_raw hc S x).mpr
-    have hraw := (mem_definableClosure_iff_raw hc (definableClosure S) x).mp hx
-    exact DefinableConstants.eliminate_parameters {z : Fin 1 → M | z 0 ∈ ({x} : Set M)}
-      (fun b hb => (mem_definableClosure_iff_raw hc S b).mp hb) hraw
+  · rintro x ⟨σ, hx⟩
+    exact ⟨σ, hx.eliminate_sorted_definable_params (fun b hb => hb)⟩
   · exact subset_definableClosure (definableClosure S)
 
-theorem algebraicAt_definableClosure_iff
-    (hc : CanonicalStructure.IsCanonical (M := M)) (S : Set M) (σ : SortTag) (x : M) :
+theorem algebraicAt_definableClosure_iff (S : Set M) (σ : SortTag) (x : M) :
     AlgebraicAt (definableClosure S) σ x ↔ AlgebraicAt S σ x := by
   constructor
-  · exact fun hx => hx.eliminate_definable_params hc
-      (fun b hb => (mem_definableClosure_iff_raw hc S b).mp hb)
+  · exact fun hx => hx.eliminate_sorted_definable_params (fun b hb => hb)
   · exact AlgebraicAt.mono (subset_definableClosure S)
 
 noncomputable def definableClosureSubstructure
