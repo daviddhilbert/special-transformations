@@ -25,6 +25,11 @@ import Section3.SortedTuples
 import Section3.DefinableLocalChoice
 import Section3.ValuativeCentre
 import Section3.AlgebraicTransitivity
+import Section3.AlgebraicClosure
+import Section3.TupleValuation
+import Section3.FiniteCoding
+import Section3.MixedRV
+import Section3.ValueQuotient
 
 /-!
 # Checked Section 3 library

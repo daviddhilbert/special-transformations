@@ -175,7 +175,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "DefinableReduct",
@@ -183,7 +183,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "DefinableConstants",
@@ -199,7 +199,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "NormalizationSaturation",
@@ -207,7 +207,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "CanonicalParameters",
@@ -215,7 +215,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "SortedDescent",
@@ -223,7 +223,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FibreDescent",
@@ -231,7 +231,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "AlgebraicFinite",
@@ -303,7 +303,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "SortedFunctionClosure",
@@ -311,7 +311,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "SortedInverseClosure",
@@ -319,7 +319,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RingSyntax",
@@ -351,7 +351,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FiniteImage",
@@ -359,7 +359,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RVRepresentatives",
@@ -439,7 +439,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FieldBase",
@@ -463,7 +463,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "VFExchange",
@@ -471,7 +471,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ClosureConventions",
@@ -479,7 +479,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "SortedFiniteImage",
@@ -487,7 +487,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "SortedTuples",
@@ -495,7 +495,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FiniteGluing",
@@ -503,7 +503,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FibrePromotion",
@@ -511,7 +511,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "DefinableLocalChoice",
@@ -519,7 +519,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ValuativeCentre",
@@ -527,7 +527,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "AlgebraicTransitivity",
@@ -535,11 +535,115 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "AlgebraicClosure",
+      "source_sha256": "137c1db782a0f6aff97d5dc027775613486d773a7ae6196190c54ea8aeb2606d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "TupleValuation",
+      "source_sha256": "ce4087708899f664527ac67455823f8927b23552323eb723d08e58838a6898dc",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "FibreEnumerations",
+      "source_sha256": "45f7b466c69e80894a4981e059c69079ae0080b0f1caba4385431a8577916926",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "BarycentreSyntax",
+      "source_sha256": "5a97aefaa305c289569af9abbf112dd6039d7747c4115057496e5d1b8a807475",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "Barycentre",
+      "source_sha256": "ca9bee6d5d22646ed579cd73da4042010ea7ccfddc088a9ba803f4e03db152e3",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "FiniteFibreMeans",
+      "source_sha256": "f24eecd19aa258b8e5774cd2fcda05896678c8b96a35d5131eb11d0bea59b180",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "DefinableMeans",
+      "source_sha256": "ed0f8b1b2201fab7801f2831a351145412a14083da69b83c300858d1c82476b4",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "FiniteBarycentricCode",
+      "source_sha256": "4a5760d5804faa5846d83c83cad627a22db4ee190b18c67351e6634122d4c8b6",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "RawBarycentricCode",
+      "source_sha256": "57addc96a19bb3a7763fbcd160940ed39fb5f1cfef2d059edfbbbd315c617ee2",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "CanonicalContext",
+      "source_sha256": "3e73a62692e08f359aea1d1fd1127b71c744f4517cc5e22d946c8da3a83fa436",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "FiniteCoding",
+      "source_sha256": "8eaeee22c83625f0fd093090c87868411ce4638dd61bd2afd5796151e581d5f8",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "MixedRV",
+      "source_sha256": "520145c1dedb5aefc5544b295f0b002c7cf36c15a6e899944a813b1042d489c2",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "ValueQuotient",
+      "source_sha256": "654afd2914ef615e29ea5717e9debb87cdbec182e4f1ade2fed68f749d946e07",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "3234da70f5072a1c08a1fefc40806a9cc30ac8a1fbc8f1e52f46512c3e57722b",
+      "source_sha256": "f3703eccd52353a65f54b0333fc9e108394d33dd3ef49fd4c2ad5639899df954",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -547,7 +651,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "8387e451287314c1759dab0327fb1192593a63ba5c847e80961ec0466ec1803a",
+      "source_sha256": "360b2276f1baedca345ec42881ff5ddc4076b2e57e4f08055be68a61b1c68cbf",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -563,7 +667,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "68 integrated Section3 modules; matching compiler caches reused where indicated; fresh 95-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "81 integrated Section3 modules; matching compiler caches reused where indicated; fresh 131-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -1038,8 +1142,188 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.algebraicAt_algebraicClosureSet_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicClosureSet_idempotent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definableClosure_algebraicClosureSet": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicClosureSubstructure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.tupleValuation_le_coordinate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.le_tupleValuation_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.tupleValuation_empty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.closedPolydisc_uniform_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.openPolydisc_uniform_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.natCast_ne_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.sum_sub_mean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.mean_equation_of_equiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.rv_nonconstant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.fibre_card_lt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.code_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.code_injective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawClosure.Tuple.enumeration_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.linearTerm_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.linearTerm_zero_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.normalizeSubstructure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.normalized_model00": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.finiteFibre_enumeration_exists": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.enumerated_mean_equation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.mean_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.rawCode_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.rawCode_eq_code": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.rawCode_injective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.mixedRVFibre_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.mixedRVFibre_zero_coordinate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteCoding.projection_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteCoding.finite_coding_canonical": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.lemma_3_9": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vrv_eq_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vrv_eq_infinity_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.gamma_has_nonzero_representative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Values.vf_value_eq_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "66e5fe0dc6fbfd47261ca3c9e8b44c839686aab24f340817ce184a758488351f"
+  "verifier_sha256": "4f8e9fb67b88c50d0562b618c622e9c673b2753c05f087b243252c7798a5e864"
 }

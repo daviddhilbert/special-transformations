@@ -140,3 +140,27 @@ sources: <https://leanprover-community.github.io/mathlib4_docs/Mathlib/ModelTheo
 and <https://github.com/FormalizedFormalLogic/Foundation>. This was a focused
 follow-up, not a fresh exhaustive survey of every registry listed above.
 Compilation and headline audit status are recorded separately.
+
+Finite-coding follow-up (November 5): inspected Mathlib's finite-set cardinality,
+finite sums, `Equiv.sum_comp`, term-definable function composition, definable
+images and finite quantification. The construction uses the audited Lemma 3.8
+and iterated centering at the mean of each RV fibre. Every child fibre is
+strictly smaller when the parent has at least two points. A fixed bound on
+finite-family size gives a uniformly definable mean via complete injective
+enumerations and the term k*z-sum(c_i). The empty case is handled separately.
+This permits an explicit recursive code in all VF tuple arities without
+naming an enumeration of A as extra base parameters. The canonical model is
+internal; `CanonicalContext` transfers ACVF(0,0) using the package's checked
+well-sortedness audits of both characteristic-zero axiom schemes.
+
+For the next center proofs, inspected the actual type of
+`ValOneEC.ne_finite_union_of_proper_subballs` in pinned
+`Proofs/JohnsonGeometry.lean` (around line 2747): an algebraically closed field,
+a nontrivial valuation, a nonempty ball, and finitely many proper subballs
+cannot give a cover. This is a checked package dependency, not a hypothesis
+assuming Yin's center theorem. Its reuse in Section 3 still needs a proved
+bridge. Also inspected Mathlib's Antisymmetrization before defining the direct
+RV same-value quotient; its equality and infinity class are proved from the
+released RV preorder. Ordered-group operations and imaginary base-generation
+interfaces are separate remaining tasks. Compilation and complete headline
+audits are recorded in STATUS.md and verification/, not inferred from this survey.

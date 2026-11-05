@@ -86,6 +86,27 @@ headlines += ['definableOver_normalize_iff', 'algebraicAt_normalize_iff',
     'RawClosure.Tuple.definable_choice_graph', 'RawClosure.Tuple.definable_choice',
     'Balls.valuativeCentre_closedDisc', 'Balls.valuativeCentre_openDisc',
     'RawClosure.eliminate_algebraic_parameters', 'AlgebraicAt.eliminate_algebraic_params']
+headlines += ['algebraicAt_algebraicClosureSet_iff', 'algebraicClosureSet_idempotent',
+    'definableClosure_algebraicClosureSet', 'algebraicClosureSubstructure',
+    'Balls.tupleValuation_le_coordinate', 'Balls.le_tupleValuation_iff',
+    'Balls.tupleValuation_empty', 'Balls.closedPolydisc_uniform_iff',
+    'Balls.openPolydisc_uniform_iff']
+explicit_types = {'SpecialTransformations.ModelTheory.DefinableReduct.formula',
+    'SpecialTransformations.ModelTheory.DefinableReduct.definable',
+    'normalization_definableReduct', 'Saturated.normalize',
+    'definableOver_normalize_iff', 'algebraicAt_normalize_iff', 'normalized_model00',
+    'normalizeSubstructure'}
+headlines += ['Barycentre.natCast_ne_zero', 'Barycentre.sum_sub_mean',
+    'Barycentre.mean_equation_of_equiv', 'Barycentre.rv_nonconstant', 'Barycentre.fibre_card_lt',
+    'Barycentre.code_sorted', 'Barycentre.code_injective',
+    'RawClosure.Tuple.enumeration_definable', 'Barycentre.linearTerm_realize',
+    'Barycentre.linearTerm_zero_definable', 'normalizeSubstructure', 'normalized_model00',
+    'Barycentre.finiteFibre_enumeration_exists', 'Barycentre.enumerated_mean_equation',
+    'Barycentre.mean_definable', 'Barycentre.rawCode_definable', 'Barycentre.rawCode_eq_code',
+    'Barycentre.rawCode_injective', 'Balls.mixedRVFibre_nonempty', 'Balls.mixedRVFibre_zero_coordinate',
+    'FiniteCoding.projection_definable', 'FiniteCoding.finite_coding_canonical', 'lemma_3_9',
+    'Values.vrv_eq_iff', 'Values.vrv_eq_infinity_iff', 'Values.gamma_has_nonzero_representative',
+    'Values.vf_value_eq_iff']
 
 def qualify(h):
     return h if h.startswith('SpecialTransformations.') else 'SpecialTransformations.Section3.' + h
@@ -143,6 +164,7 @@ for module in modules:
     run(module, source, LIB / 'Section3' / (module + '.olean'), fingerprints[module])
 source = BUILD / 'HeadlineAudit.lean'
 source.write_text('import Section3.Library\n' + '\n'.join(
+    ('set_option pp.explicit true in\n' if h in explicit_types else '') +
     '#check @' + qualify(h) + '\n#print axioms ' + qualify(h)
     for h in headlines) + '\n', encoding='utf-8')
 output = run('HeadlineAudit', source)
