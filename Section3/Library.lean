@@ -37,6 +37,7 @@ import Section3.FiniteValueDefinability
 import Section3.Remark319Audit
 import Section3.AdditiveCosets
 import Section3.GammaValueEquiv
+import Section3.ClosedCosetChoice
 
 /-!
 # Checked Section 3 library

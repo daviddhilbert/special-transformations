@@ -17,7 +17,7 @@ comment blocks have since been corrected without changing proof code.
 The new checked library starts at [Library.lean](Library.lean), which imports
 only new audited modules and the pinned ACVF-QE definitions. It includes
 base-relative closure and compactness infrastructure, exact C-minimality,
-sorted tuple descent, ball and coordinate interfaces, results 3.8–3.12, 3.15, 3.18(1) and
+sorted tuple descent, ball and coordinate interfaces, results 3.8–3.12, 3.15, 3.18(1), the closed-ball alternative of 3.18(2), and
 quotient-family notation. Finite coding preserves the original parameter base
 and includes its complete graph in all VF tuple arities. Closed-ball centers
 are defined on the actual ball quotient over the same original base. Definable
@@ -27,7 +27,8 @@ uses the actual Gamma quotient and preserves the original base. A separate audit
 records the {1,-1} obstruction to the unrestricted classification in Remark 3.19;
 that remark is not marked complete. Additive subgroups are proved to be balls,
 and the uniform root set gives the finite exceptional additive cosets in 3.18(1).
-The entry point
+The closed-ball alternative of 3.18(2) includes the complete original-base
+quotient graph and a realizing representative in every class. The entry point
 does not certify every item in the section. See [STATUS.md](STATUS.md) for the
 exact hypotheses and the remaining work.
 

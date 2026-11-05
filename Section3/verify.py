@@ -176,6 +176,24 @@ headlines += ['InitialSegments.nested', 'InitialSegments.eq_basis',
 explicit_types |= {'definable_additive_subgroup_isBall', 'lemma_3_18_1',
     'Values.valueEquiv', 'Values.gammaUnitsEquiv', 'Values.valueEquiv_rv_le'}
 
+headlines += ['DefinableCosets.relation_raw_definable', 'DefinableCosets.difference_normalize',
+    'DefinableCosets.relation_normalize', 'DefinableCosets.relation_definable', 'DefinableCosets.mem_relation',
+    'ProfileComposition.domain_raw_definable', 'ProfileComposition.compose_raw_definable',
+    'ProfileComposition.graph_profile', 'ProfileComposition.at_none', 'ProfileComposition.at_some',
+    'ProfileComposition.compose_definable', 'ClosedClassCodes.rawBall_definable',
+    'ClosedClassCodes.eq_class_definable', 'ClosedClassCodes.codes_raw_definable',
+    'ClosedClassCodes.codes_normalize', 'ClosedClassCodes.codes_definable',
+    'ClosedClassCodes.codes_finite_values', 'ClosedClassCodes.codes_cover', 'ClosedClassCodes.centers',
+    'ClassCenterRelation.relation_raw_definable', 'ClassCenterRelation.relation_normalize',
+    'ClassCenterRelation.relation_definable', 'ClassCenterRelation.functional',
+    'ClosedClassGeometry.code_class', 'ClosedClassGeometry.same_ball',
+    'ClosedClassGeometry.mem_of_same_class', 'ClosedClassGeometry.disjoint_or_eq',
+    'ClosedClassGeometry.center_invariant', 'ClosedClassGeometry.center_same_class',
+    'ClosedClassGeometry.center_exists', 'ClosedQuotientChoice.choose_profile',
+    'ClosedCosetChoice.closed_cosets_of_code', 'lemma_3_18_2_closed']
+explicit_types |= {'DefinableCosets.relation_normalize', 'ClosedClassCodes.codes_normalize',
+    'ClassCenterRelation.relation_normalize', 'ProfileComposition.compose_definable'}
+
 def qualify(h):
     return h if h.startswith(('SpecialTransformations.', 'ValOneEC.')) else 'SpecialTransformations.Section3.' + h
 env = os.environ.copy()

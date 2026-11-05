@@ -265,3 +265,34 @@ proved. The comparison is not used as a substitute for the still-open
 imaginary-parameter and Gamma-generation interfaces. All seven new modules
 have fresh compiler checks; the combined certificate covers 118 modules,
 251 actual headline type/axiom checks and a fresh root import.
+
+Closed quotient representatives follow-up (November 5): reused the checked
+full-code center theorem and uniform polynomial root support, plus pinned
+Mathlib definable preimages, finite-coordinate existential/universal
+quantification and finite images. The quotient relation is the full real
+kernel over S. Classes meeting the finite original-base root set have a
+family of ALL proper real closed-ball codes; only distinct ball values are
+finite. Its definability is proved by equality of complete membership sets,
+not by naming an enumeration or choosing representative parameters.
+The center relation inherits ball invariance and is functional on a class
+partition. Explicit finite-coordinate profile composition preserves the
+complete sorted graph. Outside its domain, closed-ball root-free constancy
+supplies class invariance. Arbitrary quotient representatives are used only
+inside the proof; the invariant graph is proved equal to the original-S
+constructed relation, and a realizing representative is proved for each class.
+The final additive-quotient wrapper derives the closed-partition premises by
+translating a code of an actual closed-ball imaginary, including zero-radius
+and whole-field flags. No companion center theorem or quotient choice result
+is assumed. The fresh record covers 125 modules, 284 headline type/axiom checks
+and the root import. The VF,Gamma-generated alternative of 3.18(2) remains open.
+
+For the next Gamma operations bridge, inspected Mathlib's Apache-2.0
+`Algebra/Group/TransferInstance.lean`, `Algebra/GroupWithZero/InjSurj.lean`,
+`Algebra/GroupWithZero/TransferInstance.lean`, `Order/Lattice.lean` and
+`Algebra/Order/Monoid/Basic.lean`. Equiv transfers commutative groups and
+linear orders; a group-with-zero transfer can use the checked injective
+pullback API. This is a small extension of the already checked actual-quotient
+comparison. Drafts remain in scratch and have not been compiler-certified.
+In particular the reversed top order must not acquire an incorrect
+zero-minimal ordered-group-with-zero instance. The imaginary-parameter and
+Gamma-generation interfaces are separate outstanding obligations.
