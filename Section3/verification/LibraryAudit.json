@@ -543,7 +543,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "TupleValuation",
@@ -551,7 +551,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FibreEnumerations",
@@ -559,7 +559,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "BarycentreSyntax",
@@ -567,7 +567,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "Barycentre",
@@ -575,7 +575,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FiniteFibreMeans",
@@ -583,7 +583,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "DefinableMeans",
@@ -591,7 +591,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FiniteBarycentricCode",
@@ -599,7 +599,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RawBarycentricCode",
@@ -607,7 +607,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "CanonicalContext",
@@ -615,7 +615,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "FiniteCoding",
@@ -623,7 +623,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "MixedRV",
@@ -631,7 +631,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "ValueQuotient",
@@ -639,11 +639,115 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "PolynomialSupport",
+      "source_sha256": "e761382391da686cf64e2aa4031db4e59880ce5c02e3c7a9de4f2af643c1d18c",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "SortedBoolean",
+      "source_sha256": "c3f7614ff4b4289427b722a6b005b1aba190a4c5044e64201b8edc0c43593c8d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "PolynomialObstacles",
+      "source_sha256": "9023533a7223c10b0bcb299b775022033bf17cce97a6b533612d93c44d74b944",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "BallTranslation",
+      "source_sha256": "9fefcc508378724baa702f0b737909c2ed5a4185a172a227c18576370ab53980",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "PolynomialRVConstant",
+      "source_sha256": "9ba5ed68b7c047d0cc27bc808a5409d06c4034671d6d95aca674d346f9114e4b",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "RootFreeConstancy",
+      "source_sha256": "96adb5cbd41f12f3d08910e0285adb55535a29807c258fa1dcd7301ff793c8ca",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "ClosedBallRoots",
+      "source_sha256": "942d9673b3d53949550200cebbc0a22d6e127f58b78ea4aae5d6ed9a62762b7d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "MinimalBallFamilies",
+      "source_sha256": "1271f9bb68492adf3937ff5754ef456febc3d060c8593e9e6967cb429dbb28f6",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "MeanInBalls",
+      "source_sha256": "7883e82c4a67852db1344bf08ed6e369f31479aacf8e20aee031969369657187",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "ClosedBallCentres",
+      "source_sha256": "53a1e0c4b3dbe10c285567f251f9f0592eec1dc290d38bfda3769154a7e1ee95",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "ClosedBallCodes",
+      "source_sha256": "8067b45f86c33b39f199a3091cf083953d29d10f6234e9a4d4c67cc8078f8fae",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "ClosedBallChoice",
+      "source_sha256": "eea6a591ef983764b43b5b4b7b39348efc0c72c813e3c6f6b6ea184eb962667a",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "ClosedBallQuotient",
+      "source_sha256": "28a2a1e0a67162810699bd4b0908af6c35853d34f7bf54a7847eb4cc79b3aecd",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "f3703eccd52353a65f54b0333fc9e108394d33dd3ef49fd4c2ad5639899df954",
+      "source_sha256": "0cde0aa8991687f5968d07b48c7dcc31030d53ace8d3d613eab41ba4bac4b722",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -651,7 +755,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "360b2276f1baedca345ec42881ff5ddc4076b2e57e4f08055be68a61b1c68cbf",
+      "source_sha256": "40f54c1450048e4fb9b009c057c0aabef13695b5a65fdf4b0e27d91671627681",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -667,7 +771,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "81 integrated Section3 modules; matching compiler caches reused where indicated; fresh 131-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "94 integrated Section3 modules; matching compiler caches reused where indicated; fresh 172-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -1322,8 +1426,209 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.Barycentre.mean_sub_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.natCast_value_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.mean_mem_closedDisc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Barycentre.mean_mem_openDisc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.sub_mem_closedDisc_iff": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.sub_mem_openDisc_iff": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.rv_sub_constant_openDisc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.rv_sub_constant_closedDisc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.polynomial_rv_eq_of_linear_factors": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.polynomial_rv_constant_openDisc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.polynomial_rv_constant_closedDisc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolynomialSupport.rv_term_eq_of_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolynomialSupport.formula_iff_of_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definableOver_iff_normalized_raw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definableAt_iff_normalized_raw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.DefinableAt.finite_iUnion": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolynomialObstacles.rawRoots_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolynomialObstacles.obstacles_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.qf_rootFree_constant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.finite_definable_obstacles": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallRoots.enlarge": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallRoots.meets_each": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.subset_codes_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.minimalDomain_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.minimal_union_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.exists_minimal_below": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.finite_definable_hitting_set": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.closed_family_centres": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.body_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.body_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.ball_eq_closed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.ball_eq_univ": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.exists_code_of_closed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.relation_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.rawBall_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.coded_centers": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.underlying_injective": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.pullback_image": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.lemma_3_10": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "ValOneEC.Johnson.ne_finite_union_of_proper_subballs": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "ValOneEC.Johnson.isValBall_subset_or_subset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "4f8e9fb67b88c50d0562b618c622e9c673b2753c05f087b243252c7798a5e864"
+  "verifier_sha256": "b50941de7dd74a7f4a2ebc1167fcbaba67953a0dc2cb3bf640b8bf19b96a379b"
 }

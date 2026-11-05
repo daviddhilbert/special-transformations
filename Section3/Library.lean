@@ -30,6 +30,7 @@ import Section3.TupleValuation
 import Section3.FiniteCoding
 import Section3.MixedRV
 import Section3.ValueQuotient
+import Section3.ClosedBallQuotient
 
 /-!
 # Checked Section 3 library

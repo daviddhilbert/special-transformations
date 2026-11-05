@@ -154,7 +154,7 @@ internal; `CanonicalContext` transfers ACVF(0,0) using the package's checked
 well-sortedness audits of both characteristic-zero axiom schemes.
 
 For the next center proofs, inspected the actual type of
-`ValOneEC.ne_finite_union_of_proper_subballs` in pinned
+`ValOneEC.Johnson.ne_finite_union_of_proper_subballs` in pinned
 `Proofs/JohnsonGeometry.lean` (around line 2747): an algebraically closed field,
 a nontrivial valuation, a nonempty ball, and finitely many proper subballs
 cannot give a cover. This is a checked package dependency, not a hypothesis
@@ -164,3 +164,26 @@ RV same-value quotient; its equality and infinity class are proved from the
 released RV preorder. Ordered-group operations and imaginary base-generation
 interfaces are separate remaining tasks. Compilation and complete headline
 audits are recorded in STATUS.md and verification/, not inferred from this survey.
+
+Closed-ball centers follow-up (November 5): reused the pinned Mathlib
+`Polynomial.Splits.eval_eq_prod_roots`, finite minima and minimal elements,
+valuation sums, and the previously audited definable-mean construction.
+The actual package declarations are
+`ValOneEC.Johnson.ne_finite_union_of_proper_subballs`,
+`ValOneEC.Johnson.isValBall_subset_or_subset` and
+`ValOneEC.Johnson.exists_val_between'`; the earlier missing `Johnson`
+namespace in this survey is corrected. The first two are included directly
+in the fresh headline axiom audit. No copy of the finite-cover proof is made.
+
+The new bridge extracts an actual finite unary polynomial support, proves
+root-free RV constancy by factorization, and defines its finite root set over
+the original base. Minimal ball values are finite even when their real-code
+preimage is infinite. The same-base definable mean is invariant under equality
+of balls, so it descends to the actual closed-ball quotient. The code coverage
+theorem includes singleton and whole-field radii. The center convention is
+the function/graph definition in Yin's companion paper, Definition 4.14
+(<https://arxiv.org/pdf/1006.1393>), rather than a stronger requirement that one
+point set meet every nested ball in exactly one point. The companion center
+theorem is not used as an unproved input. The exact 94-module certificate
+and 172 actual headline types/axiom checks are recorded separately in
+verification/ and STATUS.md.

@@ -108,8 +108,32 @@ headlines += ['Barycentre.natCast_ne_zero', 'Barycentre.sum_sub_mean',
     'Values.vrv_eq_iff', 'Values.vrv_eq_infinity_iff', 'Values.gamma_has_nonzero_representative',
     'Values.vf_value_eq_iff']
 
+headlines += ['Barycentre.mean_sub_eq', 'Barycentre.natCast_value_one',
+    'Barycentre.mean_mem_closedDisc', 'Barycentre.mean_mem_openDisc',
+    'Balls.sub_mem_closedDisc_iff', 'Balls.sub_mem_openDisc_iff',
+    'Balls.rv_sub_constant_openDisc', 'Balls.rv_sub_constant_closedDisc',
+    'polynomial_rv_eq_of_linear_factors', 'polynomial_rv_constant_openDisc',
+    'polynomial_rv_constant_closedDisc', 'PolynomialSupport.rv_term_eq_of_support',
+    'PolynomialSupport.formula_iff_of_support', 'definableOver_iff_normalized_raw',
+    'definableAt_iff_normalized_raw', 'DefinableAt.finite_iUnion',
+    'PolynomialObstacles.rawRoots_definable', 'PolynomialObstacles.obstacles_definable',
+    'qf_rootFree_constant', 'finite_definable_obstacles', 'ClosedBallRoots.enlarge',
+    'ClosedBallRoots.meets_each', 'BallFamilies.subset_codes_definable',
+    'BallFamilies.minimalDomain_definable', 'BallFamilies.minimal_union_definable',
+    'BallFamilies.exists_minimal_below', 'BallFamilies.finite_definable_hitting_set',
+    'BallFamilies.closed_family_centres', 'ClosedBallCodes.body_sorted',
+    'ClosedBallCodes.body_realize', 'ClosedBallCodes.ball_eq_closed',
+    'ClosedBallCodes.ball_eq_univ', 'ClosedBallCodes.exists_code_of_closed',
+    'ClosedBallCodes.relation_definable', 'ClosedBallCodes.rawBall_normalize',
+    'ClosedBallCodes.coded_centers', 'ClosedBallCodes.underlying_injective',
+    'ClosedBallCodes.pullback_image', 'lemma_3_10',
+    'ValOneEC.Johnson.ne_finite_union_of_proper_subballs',
+    'ValOneEC.Johnson.isValBall_subset_or_subset']
+explicit_types |= {'definableOver_iff_normalized_raw', 'ClosedBallCodes.rawBall_normalize',
+    'ClosedBallCodes.coded_centers', 'lemma_3_10'}
+
 def qualify(h):
-    return h if h.startswith('SpecialTransformations.') else 'SpecialTransformations.Section3.' + h
+    return h if h.startswith(('SpecialTransformations.', 'ValOneEC.')) else 'SpecialTransformations.Section3.' + h
 env = os.environ.copy()
 env['LEAN_PATH'] = str(LIB) + os.pathsep + env.get('LEAN_PATH', '')
 rows = []

@@ -17,9 +17,10 @@ comment blocks have since been corrected without changing proof code.
 The new checked library starts at [Library.lean](Library.lean), which imports
 only new audited modules and the pinned ACVF-QE definitions. It includes
 base-relative closure and compactness infrastructure, exact C-minimality,
-sorted tuple descent, ball and coordinate interfaces, Lemmas 3.8–3.9 and
+sorted tuple descent, ball and coordinate interfaces, Lemmas 3.8–3.10 and
 quotient-family notation. Finite coding preserves the original parameter base
-and includes its complete graph in all VF tuple arities. The entry point
+and includes its complete graph in all VF tuple arities. Closed-ball centers
+are defined on the actual ball quotient over the same original base. The entry point
 does not certify every item in the section. See [STATUS.md](STATUS.md) for the
 exact hypotheses and the remaining work.
 

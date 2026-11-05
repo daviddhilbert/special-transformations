@@ -48,7 +48,7 @@ python3 Archive/inspect_legacy.py --plan Section3/Sec3Fibre.lean
 [Archive/MOVE-INDEX.json](Archive/MOVE-INDEX.json) records original paths,
 new paths, SHA-256 hashes, and retention/removal status. After the initial
 reorganization, the author requested deletion of the obsolete QE campaign.
-Of the 93 retained entries, 89 still match their original bytes and four have
+Of the 93 retained entries, 85 still match their original bytes and eight have
 documented comment-only corrections in `Archive/LEGACY-REVISIONS.json`; 243 obsolete entries
 were removed, including the duplicate encoding and old QE planning material.
 Seven required legacy helpers are retained in `Shared/`. Completed QE code is supplied

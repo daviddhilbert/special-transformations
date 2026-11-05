@@ -1215,3 +1215,539 @@
           SpecialTransformations.Section3.Values.vrv (CanonicalRV.encodedRv y) ↔
         v x = v y
 'SpecialTransformations.Section3.Values.vf_value_eq_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Barycentre.mean_sub_eq : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (A : Finset SpecialTransformations.Milestone0.Transfer.VFType),
+      A.Nonempty →
+        ∀ (a : SpecialTransformations.Milestone0.Transfer.VFType),
+          SpecialTransformations.Section3.Barycentre.mean A - a = (∑ x ∈ A, (x - a)) / ↑A.card
+'SpecialTransformations.Section3.Barycentre.mean_sub_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.Barycentre.natCast_value_one : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 → ∀ (k : ℕ), k ≠ 0 → v ↑k = 1
+'SpecialTransformations.Section3.Barycentre.natCast_value_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Barycentre.mean_mem_closedDisc : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+      ∀ (A : Finset SpecialTransformations.Milestone0.Transfer.VFType),
+        A.Nonempty →
+          ∀ (a : SpecialTransformations.Milestone0.Transfer.VFType)
+            (r : SpecialTransformations.Section3.Balls.Radius Γ),
+            (∀ x ∈ A, x ∈ SpecialTransformations.Section3.Balls.closedDisc v a r) →
+              SpecialTransformations.Section3.Barycentre.mean A ∈ SpecialTransformations.Section3.Balls.closedDisc v a r
+'SpecialTransformations.Section3.Barycentre.mean_mem_closedDisc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Barycentre.mean_mem_openDisc : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+      ∀ (A : Finset SpecialTransformations.Milestone0.Transfer.VFType),
+        A.Nonempty →
+          ∀ (a : SpecialTransformations.Milestone0.Transfer.VFType)
+            (r : SpecialTransformations.Section3.Balls.Radius Γ),
+            (∀ x ∈ A, x ∈ SpecialTransformations.Section3.Balls.openDisc v a r) →
+              SpecialTransformations.Section3.Barycentre.mean A ∈ SpecialTransformations.Section3.Balls.openDisc v a r
+'SpecialTransformations.Section3.Barycentre.mean_mem_openDisc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.sub_mem_closedDisc_iff : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (a c x : K)
+  (r : SpecialTransformations.Section3.Balls.Radius Γ),
+  x - c ∈ SpecialTransformations.Section3.Balls.closedDisc v (a - c) r ↔
+    x ∈ SpecialTransformations.Section3.Balls.closedDisc v a r
+'SpecialTransformations.Section3.Balls.sub_mem_closedDisc_iff' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.Balls.sub_mem_openDisc_iff : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (a c x : K)
+  (r : SpecialTransformations.Section3.Balls.Radius Γ),
+  x - c ∈ SpecialTransformations.Section3.Balls.openDisc v (a - c) r ↔
+    x ∈ SpecialTransformations.Section3.Balls.openDisc v a r
+'SpecialTransformations.Section3.Balls.sub_mem_openDisc_iff' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.Balls.rv_sub_constant_openDisc : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (a c : SpecialTransformations.Milestone0.Transfer.VFType) (r : SpecialTransformations.Section3.Balls.Radius Γ),
+      c ∉ SpecialTransformations.Section3.Balls.openDisc v a r →
+        ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+          x ∈ SpecialTransformations.Section3.Balls.openDisc v a r →
+            y ∈ SpecialTransformations.Section3.Balls.openDisc v a r →
+              SpecialTransformations.Milestone0.iRv ↑(x - c) = SpecialTransformations.Milestone0.iRv ↑(y - c)
+'SpecialTransformations.Section3.Balls.rv_sub_constant_openDisc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.rv_sub_constant_closedDisc : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (a c : SpecialTransformations.Milestone0.Transfer.VFType) (r : SpecialTransformations.Section3.Balls.Radius Γ),
+      c ∉ SpecialTransformations.Section3.Balls.closedDisc v a r →
+        ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+          x ∈ SpecialTransformations.Section3.Balls.closedDisc v a r →
+            y ∈ SpecialTransformations.Section3.Balls.closedDisc v a r →
+              SpecialTransformations.Milestone0.iRv ↑(x - c) = SpecialTransformations.Milestone0.iRv ↑(y - c)
+'SpecialTransformations.Section3.Balls.rv_sub_constant_closedDisc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.polynomial_rv_eq_of_linear_factors : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (p : Polynomial SpecialTransformations.Milestone0.Transfer.VFType)
+  (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+  (∀ c ∈ p.roots, SpecialTransformations.Milestone0.iRv ↑(x - c) = SpecialTransformations.Milestone0.iRv ↑(y - c)) →
+    SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval x p) =
+      SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval y p)
+'SpecialTransformations.Section3.polynomial_rv_eq_of_linear_factors' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.polynomial_rv_constant_openDisc : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (p : Polynomial SpecialTransformations.Milestone0.Transfer.VFType)
+      (a : SpecialTransformations.Milestone0.Transfer.VFType) (r : SpecialTransformations.Section3.Balls.Radius Γ),
+      (∀ c ∈ p.roots, c ∉ SpecialTransformations.Section3.Balls.openDisc v a r) →
+        ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+          x ∈ SpecialTransformations.Section3.Balls.openDisc v a r →
+            y ∈ SpecialTransformations.Section3.Balls.openDisc v a r →
+              SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval x p) =
+                SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval y p)
+'SpecialTransformations.Section3.polynomial_rv_constant_openDisc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.polynomial_rv_constant_closedDisc : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (p : Polynomial SpecialTransformations.Milestone0.Transfer.VFType)
+      (a : SpecialTransformations.Milestone0.Transfer.VFType) (r : SpecialTransformations.Section3.Balls.Radius Γ),
+      (∀ c ∈ p.roots, c ∉ SpecialTransformations.Section3.Balls.closedDisc v a r) →
+        ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+          x ∈ SpecialTransformations.Section3.Balls.closedDisc v a r →
+            y ∈ SpecialTransformations.Section3.Balls.closedDisc v a r →
+              SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval x p) =
+                SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval y p)
+'SpecialTransformations.Section3.polynomial_rv_constant_closedDisc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.PolynomialSupport.rv_term_eq_of_support : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (p : SpecialTransformations.Section3.Parameters S)
+  (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType)
+  (hp : ∀ (i : Fin p.length) (h : SpecialTransformations.Milestone0.iVF (p.values i)), ⟨p.values i, h⟩ ∈ E)
+  (t : SpecialTransformations.Milestone0.LRV.Term (Fin p.length ⊕ Fin 1)),
+  SpecialTransformations.Milestone0.LRV.TmSort p.sorts (fun x => SpecialTransformations.Milestone0.SortTag.vf) t =
+      some SpecialTransformations.Milestone0.SortTag.rv →
+    ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      (∀ q ∈ SpecialTransformations.Section3.PolynomialSupport.term p E hp t,
+          SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval₂ E.subtype x q) =
+            SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval₂ E.subtype y q)) →
+        FirstOrder.Language.Term.realize (Sum.elim p.values ![↑x]) t =
+          FirstOrder.Language.Term.realize (Sum.elim p.values ![↑y]) t
+'SpecialTransformations.Section3.PolynomialSupport.rv_term_eq_of_support' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.PolynomialSupport.formula_iff_of_support : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (p : SpecialTransformations.Section3.Parameters S)
+  (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType)
+  (hp : ∀ (i : Fin p.length) (h : SpecialTransformations.Milestone0.iVF (p.values i)), ⟨p.values i, h⟩ ∈ E)
+  (φ : SpecialTransformations.Milestone0.LRV.BoundedFormula (Fin p.length) 1),
+  φ.IsQF →
+    SpecialTransformations.Milestone0.LRV.WellSorted p.sorts (fun x => SpecialTransformations.Milestone0.SortTag.vf) φ →
+      ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+        (∀ q ∈ SpecialTransformations.Section3.PolynomialSupport.formula p E hp φ,
+            SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval₂ E.subtype x q) =
+              SpecialTransformations.Milestone0.iRv ↑(Polynomial.eval₂ E.subtype y q)) →
+          (φ.Realize p.values ![↑x] ↔ φ.Realize p.values ![↑y])
+'SpecialTransformations.Section3.PolynomialSupport.formula_iff_of_support' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.definableOver_iff_normalized_raw : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) {n : Nat} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (s : Set (Fin n → M)),
+  Iff (@SpecialTransformations.Section3.DefinableOver M sM S n sn s)
+    (And (@Set.Definable M S SpecialTransformations.Milestone0.LRV (@CanonicalStructure.normalize M sM) (Fin n) s)
+      (∀ (x : Fin n → M),
+        @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) s x →
+          ∀ (i : Fin n), @SpecialTransformations.Milestone0.sortEval M sM (sn i) (x i)))
+'SpecialTransformations.Section3.definableOver_iff_normalized_raw' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.definableAt_iff_normalized_raw : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (σ : SpecialTransformations.Milestone0.SortTag) (s : Set M),
+  SpecialTransformations.Section3.DefinableAt S σ s ↔
+    S.Definable₁ SpecialTransformations.Milestone0.LRV s ∧ s ⊆ {x | SpecialTransformations.Milestone0.sortEval σ x}
+'SpecialTransformations.Section3.definableAt_iff_normalized_raw' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.DefinableAt.finite_iUnion : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {σ : SpecialTransformations.Milestone0.SortTag} {ι : Type} (s : Finset ι) (F : ι → Set M),
+  (∀ i ∈ s, SpecialTransformations.Section3.DefinableAt S σ (F i)) →
+    SpecialTransformations.Section3.DefinableAt S σ (⋃ i ∈ s, F i)
+'SpecialTransformations.Section3.DefinableAt.finite_iUnion' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.PolynomialObstacles.rawRoots_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  ∀ E ≤ SpecialTransformations.Section3.vfDefinableClosureField S,
+    ∀ (q : Polynomial ↥E),
+      SpecialTransformations.Section3.DefinableAt S SpecialTransformations.Milestone0.SortTag.vf
+        (SpecialTransformations.Section3.PolynomialObstacles.rawRoots E q)
+'SpecialTransformations.Section3.PolynomialObstacles.rawRoots_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.PolynomialObstacles.obstacles_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  ∀ E ≤ SpecialTransformations.Section3.vfDefinableClosureField S,
+    ∀ (l : List (Polynomial ↥E)),
+      SpecialTransformations.Section3.DefinableAt S SpecialTransformations.Milestone0.SortTag.vf
+        (Subtype.val '' ↑(SpecialTransformations.Section3.PolynomialObstacles.obstacles E l))
+'SpecialTransformations.Section3.PolynomialObstacles.obstacles_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.qf_rootFree_constant : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (S : Set M) (p : SpecialTransformations.Section3.Parameters S)
+      (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType)
+      (hp : ∀ (i : Fin p.length) (h : SpecialTransformations.Milestone0.iVF (p.values i)), ⟨p.values i, h⟩ ∈ E)
+      (φ : SpecialTransformations.Milestone0.LRV.BoundedFormula (Fin p.length) 1),
+      φ.IsQF →
+        SpecialTransformations.Milestone0.LRV.WellSorted p.sorts (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+            φ →
+          ∀ (a : SpecialTransformations.Milestone0.Transfer.VFType)
+            (r : SpecialTransformations.Section3.Balls.Radius Γ),
+            (∀
+                c ∈
+                  SpecialTransformations.Section3.PolynomialObstacles.obstacles E
+                    (SpecialTransformations.Section3.PolynomialSupport.formula p E hp φ),
+                c ∉ SpecialTransformations.Section3.Balls.openDisc v a r) →
+              ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                x ∈ SpecialTransformations.Section3.Balls.openDisc v a r →
+                  y ∈ SpecialTransformations.Section3.Balls.openDisc v a r →
+                    (φ.Realize p.values ![↑x] ↔ φ.Realize p.values ![↑y])
+'SpecialTransformations.Section3.qf_rootFree_constant' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.finite_definable_obstacles : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (S U : Set M),
+      SpecialTransformations.Section3.DefinableAt S SpecialTransformations.Milestone0.SortTag.vf U →
+        ∃ R,
+          R.Nonempty ∧
+            SpecialTransformations.Section3.DefinableAt S SpecialTransformations.Milestone0.SortTag.vf
+                (Subtype.val '' ↑R) ∧
+              ∀ (a : SpecialTransformations.Milestone0.Transfer.VFType)
+                (r : SpecialTransformations.Section3.Balls.Radius Γ),
+                (∀ c ∈ R, c ∉ SpecialTransformations.Section3.Balls.openDisc v a r) →
+                  ∀ x ∈ SpecialTransformations.Section3.Balls.openDisc v a r,
+                    ∀ y ∈ SpecialTransformations.Section3.Balls.openDisc v a r, ↑x ∈ U ↔ ↑y ∈ U
+'SpecialTransformations.Section3.finite_definable_obstacles' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ClosedBallRoots.enlarge : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] [IsAlgClosed K] (v : Valuation K Γ),
+  (∃ x, x ≠ 0 ∧ v x < 1) →
+    ∀ (R : Finset K),
+      R.Nonempty →
+        ∀ (a b : K),
+          (∀ c ∈ R, c ∉ ValOneEC.closedBall v a (v b)) →
+            ∃ d, ValOneEC.closedBall v a (v b) ⊂ ValOneEC.openBall v a (v d) ∧ ∀ c ∈ R, c ∉ ValOneEC.openBall v a (v d)
+'SpecialTransformations.Section3.ClosedBallRoots.enlarge' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ClosedBallRoots.meets_each : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] [IsAlgClosed K] (v : Valuation K Γ),
+  (∃ x, x ≠ 0 ∧ v x < 1) →
+    ∀ {ι : Type} (s : Finset ι) (D : ι → Set K),
+      (∀ i ∈ s, SpecialTransformations.Section3.ClosedBallRoots.IsClosedBall v (D i)) →
+        (∀ i ∈ s, ∀ j ∈ s, i ≠ j → Disjoint (D i) (D j)) →
+          ∀ (R : Finset K),
+            R.Nonempty →
+              (∀ (a b : K),
+                  (∀ c ∈ R, c ∉ ValOneEC.openBall v a (v b)) →
+                    ∀ x ∈ ValOneEC.openBall v a (v b),
+                      ∀ y ∈ ValOneEC.openBall v a (v b), x ∈ ⋃ i ∈ s, D i ↔ y ∈ ⋃ i ∈ s, D i) →
+                ∀ i ∈ s, ∃ c ∈ R, c ∈ D i
+'SpecialTransformations.Section3.ClosedBallRoots.meets_each' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.BallFamilies.subset_codes_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} (S : Set M)
+  (D : (Fin n → M) → Set SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S
+      (SpecialTransformations.Section3.BallFamilies.relation D) →
+    S.Definable SpecialTransformations.Milestone0.LRV {z | D (z ∘ Sum.inr) ⊆ D (z ∘ Sum.inl)}
+'SpecialTransformations.Section3.BallFamilies.subset_codes_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.BallFamilies.minimalDomain_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} (S : Set M) (C : Set (Fin n → M)),
+  S.Definable SpecialTransformations.Milestone0.LRV C →
+    ∀ (D : (Fin n → M) → Set SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S
+          (SpecialTransformations.Section3.BallFamilies.relation D) →
+        S.Definable SpecialTransformations.Milestone0.LRV
+          (SpecialTransformations.Section3.BallFamilies.minimalDomain C D)
+'SpecialTransformations.Section3.BallFamilies.minimalDomain_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.BallFamilies.minimal_union_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} (S : Set M) (C : Set (Fin n → M)),
+  S.Definable SpecialTransformations.Milestone0.LRV C →
+    ∀ (D : (Fin n → M) → Set SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S
+          (SpecialTransformations.Section3.BallFamilies.relation D) →
+        S.Definable₁ SpecialTransformations.Milestone0.LRV
+          (Subtype.val '' ⋃ t ∈ SpecialTransformations.Section3.BallFamilies.minimalDomain C D, D t)
+'SpecialTransformations.Section3.BallFamilies.minimal_union_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.BallFamilies.exists_minimal_below : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} (C : Set (Fin n → M))
+  (D : (Fin n → M) → Set SpecialTransformations.Milestone0.Transfer.VFType),
+  (D '' C).Finite → ∀ t ∈ C, ∃ u ∈ SpecialTransformations.Section3.BallFamilies.minimalDomain C D, D u ⊆ D t
+'SpecialTransformations.Section3.BallFamilies.exists_minimal_below' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.BallFamilies.finite_definable_hitting_set : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    CanonicalStructure.IsCanonical →
+      (∃ x, x ≠ 0 ∧ v x < 1) →
+        ∀ (S : Set M) (C : Set (Fin n → M)),
+          S.Definable SpecialTransformations.Milestone0.LRV C →
+            ∀ (D : (Fin n → M) → Set SpecialTransformations.Milestone0.Transfer.VFType),
+              SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S
+                  (SpecialTransformations.Section3.BallFamilies.relation D) →
+                (D '' C).Finite →
+                  (∀ t ∈ C, SpecialTransformations.Section3.ClosedBallRoots.IsClosedBall v (D t)) →
+                    ∃ R,
+                      SpecialTransformations.Section3.DefinableAt S SpecialTransformations.Milestone0.SortTag.vf
+                          (Subtype.val '' ↑R) ∧
+                        ∀ t ∈ C, ∃ x ∈ R, x ∈ D t
+'SpecialTransformations.Section3.BallFamilies.finite_definable_hitting_set' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.BallFamilies.closed_family_centres : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    CanonicalStructure.IsCanonical →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        (∃ x, x ≠ 0 ∧ v x < 1) →
+          ∀ (S : Set M) (C : Set (Fin n → M)),
+            S.Definable SpecialTransformations.Milestone0.LRV C →
+              ∀ (D : (Fin n → M) → Set SpecialTransformations.Milestone0.Transfer.VFType),
+                SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S
+                    (SpecialTransformations.Section3.BallFamilies.relation D) →
+                  (D '' C).Finite →
+                    (∀ t ∈ C, SpecialTransformations.Section3.ClosedBallRoots.IsClosedBall v (D t)) →
+                      ∃ f,
+                        (Set.DefinableFun SpecialTransformations.Milestone0.LRV S fun t => ↑(f t)) ∧
+                          (∀ t ∈ C, f t ∈ D t) ∧ ∀ (t u : Fin n → M), D t = D u → f t = f u
+'SpecialTransformations.Section3.BallFamilies.closed_family_centres' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+SpecialTransformations.Section3.ClosedBallCodes.body_sorted : SpecialTransformations.Milestone0.LRV.WellSorted
+  (fun x => SpecialTransformations.Milestone0.SortTag.vf) (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+  SpecialTransformations.Section3.ClosedBallCodes.body
+'SpecialTransformations.Section3.ClosedBallCodes.body_sorted' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ClosedBallCodes.body_realize : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] (t : Fin 3 → M) (x : M),
+  SpecialTransformations.Section3.ClosedBallCodes.body.Realize Fin.elim0
+      (SpecialTransformations.Section3.ClosedBallCodes.tuple t x) ↔
+    t 2 = SpecialTransformations.Milestone0.Transfer.iVFZero ∨
+      SpecialTransformations.Milestone0.iLe (SpecialTransformations.Milestone0.iRv (t 1))
+        (SpecialTransformations.Milestone0.iRv
+          (SpecialTransformations.Milestone0.iVFAdd x (SpecialTransformations.Milestone0.iVFNeg (t 0))))
+'SpecialTransformations.Section3.ClosedBallCodes.body_realize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.ClosedBallCodes.ball_eq_closed : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (t : Fin 3 → M) (ht : ∀ (i : Fin 3), SpecialTransformations.Milestone0.iVF (t i)),
+      t 2 ≠ SpecialTransformations.Milestone0.Transfer.iVFZero →
+        SpecialTransformations.Section3.ClosedBallCodes.ball t = ValOneEC.closedBall v ⟨t 0, ⋯⟩ (v ⟨t 1, ⋯⟩)
+'SpecialTransformations.Section3.ClosedBallCodes.ball_eq_closed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.ClosedBallCodes.ball_eq_univ : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (t : Fin 3 → M),
+  (∀ (i : Fin 3), SpecialTransformations.Milestone0.iVF (t i)) →
+    t 2 = SpecialTransformations.Milestone0.Transfer.iVFZero →
+      SpecialTransformations.Section3.ClosedBallCodes.ball t = Set.univ
+'SpecialTransformations.Section3.ClosedBallCodes.ball_eq_univ' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.ClosedBallCodes.exists_code_of_closed : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (B : Set SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Section3.ClosedBallRoots.IsClosedBall v B →
+        ∃ t,
+          (∀ (i : Fin 3), SpecialTransformations.Milestone0.iVF (t i)) ∧
+            B = SpecialTransformations.Section3.ClosedBallCodes.ball t
+'SpecialTransformations.Section3.ClosedBallCodes.exists_code_of_closed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.ClosedBallCodes.relation_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] (S : Set M),
+  SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S
+    (SpecialTransformations.Section3.BallFamilies.relation SpecialTransformations.Section3.ClosedBallCodes.ball)
+'SpecialTransformations.Section3.ClosedBallCodes.relation_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.ClosedBallCodes.rawBall_normalize : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M inst
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (t : Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M),
+  @Eq (Set M) (@SpecialTransformations.Section3.ClosedBallCodes.rawBall M (@CanonicalStructure.normalize M inst) t)
+    (@SpecialTransformations.Section3.ClosedBallCodes.rawBall M inst t)
+'SpecialTransformations.Section3.ClosedBallCodes.rawBall_normalize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.ClosedBallCodes.coded_centers : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M) (C : Set (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M)),
+      @SpecialTransformations.Section3.DefinableOver M sM S (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3)))
+          (fun x => SpecialTransformations.Milestone0.SortTag.vf) C →
+        @Set.Finite (Set M)
+            (@Set.image (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M) (Set M)
+              (@SpecialTransformations.Section3.ClosedBallCodes.rawBall M sM) C) →
+          ∃ f,
+            And
+              (∀ (t : @Set.Elem (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M) C),
+                @Membership.mem M (Set M) (@Set.instMembership M)
+                  (@SpecialTransformations.Section3.ClosedBallCodes.rawBall M sM
+                    (@Subtype.val (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M)
+                      (fun x =>
+                        @Membership.mem (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M)
+                          (Set (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M))
+                          (@Set.instMembership (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M)) C x)
+                      t))
+                  (f t))
+              (And
+                (@SpecialTransformations.Section3.DefinableOver M sM S
+                  (@OfNat.ofNat Nat (nat_lit 4) (instOfNatNat (nat_lit 4)))
+                  (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                  (@SpecialTransformations.Section3.ClosedBallCodes.centerGraph M C f))
+                (∀ (t u : @Set.Elem (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M) C),
+                  @Eq (Set M)
+                      (@SpecialTransformations.Section3.ClosedBallCodes.rawBall M sM
+                        (@Subtype.val (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M)
+                          (fun x =>
+                            @Membership.mem (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M)
+                              (Set (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M))
+                              (@Set.instMembership (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M))
+                              C x)
+                          t))
+                      (@SpecialTransformations.Section3.ClosedBallCodes.rawBall M sM
+                        (@Subtype.val (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M)
+                          (fun x =>
+                            @Membership.mem (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M)
+                              (Set (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M))
+                              (@Set.instMembership (Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M))
+                              C x)
+                          u)) →
+                    @Eq M (f t) (f u)))
+'SpecialTransformations.Section3.ClosedBallCodes.coded_centers' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.ClosedBallCodes.underlying_injective : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M],
+  Function.Injective SpecialTransformations.Section3.ClosedBallCodes.underlying
+'SpecialTransformations.Section3.ClosedBallCodes.underlying_injective' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.ClosedBallCodes.pullback_image : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  (A : Set (SpecialTransformations.Section3.ClosedBallCodes.ClosedBall M)),
+  SpecialTransformations.Section3.ClosedBallCodes.rawBall ''
+      SpecialTransformations.Section3.ClosedBallCodes.pullback A =
+    SpecialTransformations.Section3.ClosedBallCodes.underlying '' A
+'SpecialTransformations.Section3.ClosedBallCodes.pullback_image' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.lemma_3_10 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M inst
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M inst
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M) (A : Set (@SpecialTransformations.Section3.ClosedBallCodes.ClosedBall M inst)),
+      @Set.Finite (@SpecialTransformations.Section3.ClosedBallCodes.ClosedBall M inst) A →
+        @SpecialTransformations.Section3.ClosedBallCodes.FamilyDefinable M inst S A →
+          ∃ f,
+            And
+              (∀ (B : @Set.Elem (@SpecialTransformations.Section3.ClosedBallCodes.ClosedBall M inst) A),
+                @Membership.mem M (Set M) (@Set.instMembership M)
+                  (@SpecialTransformations.Section3.ClosedBallCodes.underlying M inst
+                    (@Subtype.val (@SpecialTransformations.Section3.ClosedBallCodes.ClosedBall M inst)
+                      (fun x =>
+                        @Membership.mem (@SpecialTransformations.Section3.ClosedBallCodes.ClosedBall M inst)
+                          (Set (@SpecialTransformations.Section3.ClosedBallCodes.ClosedBall M inst))
+                          (@Set.instMembership (@SpecialTransformations.Section3.ClosedBallCodes.ClosedBall M inst)) A
+                          x)
+                      B))
+                  (f B))
+              (@SpecialTransformations.Section3.DefinableOver M inst S
+                (@OfNat.ofNat Nat (nat_lit 4) (instOfNatNat (nat_lit 4)))
+                (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                (@SpecialTransformations.Section3.ClosedBallCodes.quotientCenterGraph M inst A f))
+'SpecialTransformations.Section3.ClosedBallCodes.lemma_3_10' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ValOneEC.Johnson.ne_finite_union_of_proper_subballs : ∀ {K : Type u_1} [inst : Field K] {Γ₀ : Type u_2}
+  [inst_1 : LinearOrderedCommGroupWithZero Γ₀] [IsAlgClosed K] (v : Valuation K Γ₀),
+  (∃ x, 1 < v x) →
+    ∀ {B : Set K},
+      ValOneEC.Johnson.IsValBall v B →
+        B.Nonempty →
+          ∀ {ι : Type u_3} (s : Finset ι) (D : ι → Set K),
+            (∀ i ∈ s, ValOneEC.Johnson.IsValBall v (D i)) → (∀ i ∈ s, D i ⊆ B) → (∀ i ∈ s, D i ≠ B) → B ≠ ⋃ i ∈ s, D i
+'ValOneEC.Johnson.ne_finite_union_of_proper_subballs' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ValOneEC.Johnson.isValBall_subset_or_subset : ∀ {K : Type u_1} [inst : Field K] {Γ₀ : Type u_2}
+  [inst_1 : LinearOrderedCommGroupWithZero Γ₀] (v : Valuation K Γ₀) {B₁ B₂ : Set K},
+  ValOneEC.Johnson.IsValBall v B₁ → ValOneEC.Johnson.IsValBall v B₂ → (B₁ ∩ B₂).Nonempty → B₁ ⊆ B₂ ∨ B₂ ⊆ B₁
+'ValOneEC.Johnson.isValBall_subset_or_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
