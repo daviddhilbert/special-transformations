@@ -11,7 +11,7 @@ Current item-level progress and verification scope are in [STATUS.md](STATUS.md)
 | Item | Deliverable |
 | --- | --- |
 | Paragraph after 2.3 | Eliminate VF literals in favor of RV literals; define occurring VF polynomials. |
-| Definition 2.4 and following paragraph | K-terms, RV-literals, domain/sort conditions, and a proved disjunction-of-conjunctions normal form using completed QE. |
+| Definition 2.4 and following paragraph | K-terms, RV-literals, domain/sort conditions, and a proved disjunction-of-conjunctions normal form using completed QE. The author approved rational VF factors with explicit pole and residue-domain guards on November 5, 2026; see [NORMAL-FORM-NOTE.md](NORMAL-FORM-NOTE.md). |
 | Standing setup after 2.4 | ACVF(0,0), saturated ambient model, small base S, nontrivial Gamma(S), and ACVF_S via the atomic diagram. |
 | Convention 2.5 | Base-relative definability, generated/definable and algebraic closure, and VF/RV/Gamma-generated bases. |
 | Definition 2.6 | Open, closed and rv-balls; radii including special values; valuative centers; polydiscs and degenerate rv-polydiscs. |
