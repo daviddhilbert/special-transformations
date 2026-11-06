@@ -782,3 +782,52 @@ Only `propext`, `Classical.choice` and `Quot.sound` occur. Matching earlier
 compiler artifacts and69 recorded external root-consumer interfaces are
 reused; this is not a source/headline audit of Sections4 or5. No dependency
 revision or authorized reference input was added.
+
+
+## Proper-open-ball centers over generated Gamma bases (November 5, 2026)
+
+Reused `GammaClosedBallCenters`, `OpenBallFamilyHulls`, `GeneratedBaseLifting`,
+`AclFieldImages`, `FiniteAlgebraicCover`, `MeanInBalls` and the complete graph
+schemes in `ClosedCentersFromFiniteSet`. The raw-map pullback in
+`GammaRealMap` retains all Gamma support invariance; its hypothesis concerns
+globally definable maps in the normalized real structure. The hull-code map
+uses only projections and the VF-one constant, with normalization proved.
+Original off-sort field-operation totalizations are not silently transferred.
+
+The original closed-hull center need not lie in the open ball. For a center
+outside its ball but inside the same-radius closed hull, the distance to any
+ball point equals its actual VF radius. This makes the translated RV fibre
+exactly that ball. Finite actual ball families have finite RV offset images,
+whose full graphs remain definable over the original B. The checked generated
+base lifting theorem places these RV offsets in the relative VF algebraic
+closure of the pure VF generators; trivial coefficient valuations are allowed.
+Adjoining the algebraic hull center gives a VF-algebraic point in the ball.
+
+The checked VF/Gamma algebraicity equivalence then removes Gamma names from
+these finitely many VF points. `finite_definable_cover` constructs a finite
+cover over B.real. The original raw finite-family mean graph and the checked
+open-disc mean containment give an invariant function on every proper code,
+then on actual open balls. This avoids assuming an algebraic hitting set or
+a definable choice theorem. Namespace isolation in the standalone check
+caught a missing Transfer open in an initially split membership component;
+the coherent construction is consolidated in `OpenBallCenters` and checked
+as its own module. No mathematical statement was weakened.
+
+The two new modules passed standalone pinned Lean compilation. The combined
+certificate covers 189 modules, 898 actual headline type/axiom checks and a
+fresh root import. All34 new full types were reviewed, including actual
+imaginary bases, true saturation, exact generator cardinality scope, proper
+open-ball radii, algebraic-point witnesses and full quotient graphs. Only
+`propext`, `Classical.choice` and `Quot.sound` occur. The mixed-family form of
+3.13 and the generated 3.18(2) consequence are still separate obligations.
+
+The shared QE scratch directory disappeared during verification. A private
+clone at the unchanged release pin was restored; all81 shipped proof sources
+match the retained release snapshot byte for byte. The earlier86-module
+cache's exact source/recursive-dependency/compiler fingerprints were checked,
+and80 relevant artifacts have identical Lean code to the pinned sources.
+The QE root and its three exact headline audits were checked afresh with
+exit zero and standard axioms. The published record embeds all recovery
+identities and distinguishes reused proofs from fresh imports. This is build
+dependency recovery, not a restart of QE or a new accepted input. The69
+source/cache-matched external root consumers remain import checks only.

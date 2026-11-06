@@ -16780,3 +16780,389 @@ SpecialTransformations.Section3.OpenBallCodes.hullIndex : Fin 2 ⊕ Fin 3 ≃ Fi
 'SpecialTransformations.Section3.OpenBallCodes.hull_family_definable_base' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation.preimageRealMap : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {S : Set M} →
+        {k n m : ℕ} →
+          {sn : Fin n → SpecialTransformations.Milestone0.SortTag} →
+            SpecialTransformations.Section3.GammaParameters.Relation S k n sn →
+              (sm : Fin m → SpecialTransformations.Milestone0.SortTag) →
+                (F : (Fin m → M) → Fin n → M) →
+                  Set.DefinableMap SpecialTransformations.Milestone0.LRV S F →
+                    SpecialTransformations.Section3.GammaParameters.Relation S k m sm
+'SpecialTransformations.Section3.GammaParameters.Relation.preimageRealMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableWith.preimage_real_map : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n m : ℕ} {γ : Fin k → SpecialTransformations.Section3.Values.Gamma}
+  {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {A : Set (Fin n → M)},
+  SpecialTransformations.Section3.GammaParameters.DefinableWith S γ sn A →
+    ∀ (sm : Fin m → SpecialTransformations.Milestone0.SortTag) (F : (Fin m → M) → Fin n → M),
+      Set.DefinableMap SpecialTransformations.Milestone0.LRV S F →
+        SpecialTransformations.Section3.GammaParameters.DefinableWith S γ sm
+          {z | F z ∈ A ∧ z ∈ SpecialTransformations.Section3.GammaParameters.sortedUniverse sm}
+'SpecialTransformations.Section3.GammaParameters.DefinableWith.preimage_real_map' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableOverBase.preimage_real_map : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : SpecialTransformations.Section3.GammaParameters.Base} {n m : ℕ}
+  {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {A : Set (Fin n → M)},
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B sn A →
+    ∀ (sm : Fin m → SpecialTransformations.Milestone0.SortTag) (F : (Fin m → M) → Fin n → M),
+      Set.DefinableMap SpecialTransformations.Milestone0.LRV B.real F →
+        SpecialTransformations.Section3.GammaParameters.DefinableOverBase B sm
+          {z | F z ∈ A ∧ z ∈ SpecialTransformations.Section3.GammaParameters.sortedUniverse sm}
+'SpecialTransformations.Section3.GammaParameters.DefinableOverBase.preimage_real_map' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.hullCenterCode : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] → (Fin 3 → M) → Fin 4 → M
+'SpecialTransformations.Section3.OpenBallCodes.hullCenterCode' depends on axioms: [propext]
+@SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_raw_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] (S : Set M),
+  Set.DefinableMap SpecialTransformations.Milestone0.LRV S SpecialTransformations.Section3.OpenBallCodes.hullCenterCode
+'SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_raw_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_normalize : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @Eq
+    ((Fin (@OfNat.ofNat Nat (nat_lit 3) (instOfNatNat (nat_lit 3))) → M) →
+      Fin (@OfNat.ofNat Nat (nat_lit 4) (instOfNatNat (nat_lit 4))) → M)
+    (@SpecialTransformations.Section3.OpenBallCodes.hullCenterCode M (@CanonicalStructure.normalize M sM))
+    (@SpecialTransformations.Section3.OpenBallCodes.hullCenterCode M sM)
+'SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_normalize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.quotientCenterGraph : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)) → (↑A → M) → Set (Fin 3 → M)
+'SpecialTransformations.Section3.OpenBallCodes.quotientCenterGraph' depends on axioms: [propext]
+@SpecialTransformations.Section3.OpenBallCodes.finite_hull_centers : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (B : SpecialTransformations.Section3.GammaParameters.Base)
+      (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)),
+      A.Finite →
+        SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+            (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+            (SpecialTransformations.Section3.OpenBallCodes.pullback A) →
+          ∃ c,
+            (∀ (D : ↑A),
+                c D ∈
+                  SpecialTransformations.Section3.ClosedBallCodes.underlying
+                    (SpecialTransformations.Section3.OpenBallCodes.hull ↑D)) ∧
+              SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                (SpecialTransformations.Section3.OpenBallCodes.quotientCenterGraph A c)
+'SpecialTransformations.Section3.OpenBallCodes.finite_hull_centers' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.finite_hull_center_image : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base)
+  (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)),
+  A.Finite →
+    ∀ (c : ↑A → M),
+      SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+          (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+          (SpecialTransformations.Section3.OpenBallCodes.quotientCenterGraph A c) →
+        SpecialTransformations.Section3.GammaParameters.DefinableAtBase B SpecialTransformations.Milestone0.SortTag.vf
+            (Set.range c) ∧
+          (Set.range c).Finite
+'SpecialTransformations.Section3.OpenBallCodes.finite_hull_center_image' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.strictDisc_recenter_iff : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (a x y r : K),
+  v (x - a) < v r → (v (y - x) < v r ↔ v (y - a) < v r)
+'SpecialTransformations.Section3.Balls.strictDisc_recenter_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.hull_boundary_distance : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (a c x r : K),
+  v (c - a) ≤ v r → ¬v (c - a) < v r → v (x - a) < v r → v (x - c) = v r
+'SpecialTransformations.Section3.Balls.hull_boundary_distance' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.hull_boundary_rv_fibre_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (a c x r y : SpecialTransformations.Milestone0.Transfer.VFType),
+      r ≠ 0 →
+        v (c - a) ≤ v r →
+          ¬v (c - a) < v r →
+            v (x - a) < v r →
+              (SpecialTransformations.Milestone0.iRv ↑(y - c) = SpecialTransformations.Milestone0.iRv ↑(x - c) ↔
+                v (y - a) < v r)
+'SpecialTransformations.Section3.Balls.hull_boundary_rv_fibre_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.BallFamilies.open_centers_of_finite_hitting_set : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+      ∀ (S : Set M) (C : Set (Fin n → M)) (D : (Fin n → M) → Set SpecialTransformations.Milestone0.Transfer.VFType),
+        SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S
+            (SpecialTransformations.Section3.BallFamilies.relation D) →
+          ∀ (R : Finset SpecialTransformations.Milestone0.Transfer.VFType),
+            SpecialTransformations.Section3.DefinableAt S SpecialTransformations.Milestone0.SortTag.vf
+                (Subtype.val '' ↑R) →
+              (∀ t ∈ C, ∃ x ∈ R, x ∈ D t) →
+                (∀ t ∈ C, ∃ a r, r ≠ 0 ∧ D t = ValOneEC.openBall v a (v r)) →
+                  ∃ f,
+                    (Set.DefinableFun SpecialTransformations.Milestone0.LRV S fun t => ↑(f t)) ∧
+                      (∀ t ∈ C, f t ∈ D t) ∧ ∀ (t u : Fin n → M), D t = D u → f t = f u
+'SpecialTransformations.Section3.BallFamilies.open_centers_of_finite_hitting_set' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.membership_raw_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] (S : Set M),
+  S.Definable SpecialTransformations.Milestone0.LRV
+    {z | z (Fin.last 2) ∈ SpecialTransformations.Section3.OpenBallCodes.rawBall (Fin.init z)}
+'SpecialTransformations.Section3.OpenBallCodes.membership_raw_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.relation_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] (S : Set M),
+  SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S
+    (SpecialTransformations.Section3.BallFamilies.relation SpecialTransformations.Section3.OpenBallCodes.ball)
+'SpecialTransformations.Section3.OpenBallCodes.relation_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.rawBall_normalize : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (q : Fin (@OfNat.ofNat Nat (nat_lit 2) (instOfNatNat (nat_lit 2))) → M),
+  @Eq (Set M) (@SpecialTransformations.Section3.OpenBallCodes.rawBall M (@CanonicalStructure.normalize M sM) q)
+    (@SpecialTransformations.Section3.OpenBallCodes.rawBall M sM q)
+'SpecialTransformations.Section3.OpenBallCodes.rawBall_normalize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.membership_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  SpecialTransformations.Section3.DefinableOver S (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+    {z | z (Fin.last 2) ∈ SpecialTransformations.Section3.OpenBallCodes.rawBall (Fin.init z)}
+'SpecialTransformations.Section3.OpenBallCodes.membership_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+SpecialTransformations.Section3.OpenBallCodes.differenceSort : Fin 3 → SpecialTransformations.Milestone0.SortTag
+'SpecialTransformations.Section3.OpenBallCodes.differenceSort' depends on axioms: [propext]
+@SpecialTransformations.Section3.OpenBallCodes.differenceGraph : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] → Set (Fin 3 → M)
+'SpecialTransformations.Section3.OpenBallCodes.differenceGraph' depends on axioms: [propext]
+@SpecialTransformations.Section3.OpenBallCodes.differenceGraph_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  SpecialTransformations.Section3.DefinableOver S SpecialTransformations.Section3.OpenBallCodes.differenceSort
+    SpecialTransformations.Section3.OpenBallCodes.differenceGraph
+'SpecialTransformations.Section3.OpenBallCodes.differenceGraph_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.offsets : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)) → (↑A → M) → Set M
+'SpecialTransformations.Section3.OpenBallCodes.offsets' depends on axioms: [propext]
+@SpecialTransformations.Section3.OpenBallCodes.center_sort_of_graph : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base)
+  (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)) (c : ↑A → M),
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+      (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+      (SpecialTransformations.Section3.OpenBallCodes.quotientCenterGraph A c) →
+    ∀ (D : ↑A), SpecialTransformations.Milestone0.iVF (c D)
+'SpecialTransformations.Section3.OpenBallCodes.center_sort_of_graph' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.offsets_definable_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base)
+  (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)) (c : ↑A → M),
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+      (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+      (SpecialTransformations.Section3.OpenBallCodes.quotientCenterGraph A c) →
+    SpecialTransformations.Section3.GammaParameters.DefinableAtBase B SpecialTransformations.Milestone0.SortTag.rv
+      (SpecialTransformations.Section3.OpenBallCodes.offsets A c)
+'SpecialTransformations.Section3.OpenBallCodes.offsets_definable_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.raw_center_mem : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (q : Fin 2 → M),
+  SpecialTransformations.Section3.OpenBallCodes.Proper q → q 0 ∈ SpecialTransformations.Section3.OpenBallCodes.rawBall q
+'SpecialTransformations.Section3.OpenBallCodes.raw_center_mem' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.underlying_nonempty : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (D : SpecialTransformations.Section3.OpenBallCodes.OpenBall M),
+  (SpecialTransformations.Section3.OpenBallCodes.underlying D).Nonempty
+'SpecialTransformations.Section3.OpenBallCodes.underlying_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.underlying_subset_vf : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (D : SpecialTransformations.Section3.OpenBallCodes.OpenBall M),
+  SpecialTransformations.Section3.OpenBallCodes.underlying D ⊆ {x | SpecialTransformations.Milestone0.iVF x}
+'SpecialTransformations.Section3.OpenBallCodes.underlying_subset_vf' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.offsets_finite : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)),
+  A.Finite →
+    ∀ (c : ↑A → M),
+      (∀ (D : ↑A), SpecialTransformations.Milestone0.iVF (c D)) →
+        (SpecialTransformations.Section3.OpenBallCodes.offsets A c).Finite
+'SpecialTransformations.Section3.OpenBallCodes.offsets_finite' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.finite_hitting_set_of_algebraic_points : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) {ι : Type} [Finite ι] (D : ι → Set M),
+  (∀ (i : ι),
+      ∃ x,
+        SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B SpecialTransformations.Milestone0.SortTag.vf
+            ↑x ∧
+          ↑x ∈ D i) →
+    ∃ R,
+      SpecialTransformations.Section3.DefinableAt B.real SpecialTransformations.Milestone0.SortTag.vf
+          (Subtype.val '' ↑R) ∧
+        ∀ (i : ι), ∃ x ∈ R, ↑x ∈ D i
+'SpecialTransformations.Section3.GammaParameters.finite_hitting_set_of_algebraic_points' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.algebraic_point_of_boundary_offset : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+          Cardinal.mk ↑B.real < κ →
+            SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+              ∀ (q : Fin 2 → M),
+                SpecialTransformations.Section3.OpenBallCodes.Proper q →
+                  ∀ (c x : SpecialTransformations.Milestone0.Transfer.VFType),
+                    SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B
+                        SpecialTransformations.Milestone0.SortTag.vf ↑c →
+                      ↑c ∈
+                          SpecialTransformations.Section3.ClosedBallCodes.rawBall
+                            (SpecialTransformations.Section3.OpenBallCodes.hullCode q) →
+                        ↑c ∉ SpecialTransformations.Section3.OpenBallCodes.rawBall q →
+                          ↑x ∈ SpecialTransformations.Section3.OpenBallCodes.rawBall q →
+                            SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B
+                                SpecialTransformations.Milestone0.SortTag.rv ↑(CanonicalRV.encodedRv (x - c)) →
+                              ∃ y,
+                                SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B
+                                    SpecialTransformations.Milestone0.SortTag.vf ↑y ∧
+                                  ↑y ∈ SpecialTransformations.Section3.OpenBallCodes.rawBall q
+'SpecialTransformations.Section3.OpenBallCodes.algebraic_point_of_boundary_offset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.finite_family_algebraic_points : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+          Cardinal.mk ↑B.real < κ →
+            SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+              ∀ (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)),
+                A.Finite →
+                  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                      (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                      (SpecialTransformations.Section3.OpenBallCodes.pullback A) →
+                    ∀ (D : ↑A),
+                      ∃ y,
+                        SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B
+                            SpecialTransformations.Milestone0.SortTag.vf ↑y ∧
+                          ↑y ∈ SpecialTransformations.Section3.OpenBallCodes.underlying ↑D
+'SpecialTransformations.Section3.OpenBallCodes.finite_family_algebraic_points' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.codedCenterGraph : {M : Type} →
+  (C : Set (Fin 2 → M)) → (↑C → M) → Set (Fin 3 → M)
+'SpecialTransformations.Section3.OpenBallCodes.codedCenterGraph' does not depend on any axioms
+@SpecialTransformations.Section3.OpenBallCodes.coded_open_centers_from_hitting_set : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (B : SpecialTransformations.Section3.GammaParameters.Base)
+      (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)),
+      SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+          (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+          (SpecialTransformations.Section3.OpenBallCodes.pullback A) →
+        ∀ (R : Finset SpecialTransformations.Milestone0.Transfer.VFType),
+          SpecialTransformations.Section3.DefinableAt B.real SpecialTransformations.Milestone0.SortTag.vf
+              (Subtype.val '' ↑R) →
+            (∀ (D : ↑A), ∃ x ∈ R, ↑x ∈ SpecialTransformations.Section3.OpenBallCodes.underlying ↑D) →
+              ∃ f,
+                (∀ (t : ↑(SpecialTransformations.Section3.OpenBallCodes.pullback A)),
+                    f t ∈ SpecialTransformations.Section3.OpenBallCodes.rawBall ↑t) ∧
+                  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                      (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                      (SpecialTransformations.Section3.OpenBallCodes.codedCenterGraph
+                        (SpecialTransformations.Section3.OpenBallCodes.pullback A) f) ∧
+                    ∀ (t u : ↑(SpecialTransformations.Section3.OpenBallCodes.pullback A)),
+                      SpecialTransformations.Section3.OpenBallCodes.rawBall ↑t =
+                          SpecialTransformations.Section3.OpenBallCodes.rawBall ↑u →
+                        f t = f u
+'SpecialTransformations.Section3.OpenBallCodes.coded_open_centers_from_hitting_set' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.open_centers_from_real_hitting_set : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (B : SpecialTransformations.Section3.GammaParameters.Base)
+      (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)),
+      SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+          (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+          (SpecialTransformations.Section3.OpenBallCodes.pullback A) →
+        ∀ (R : Finset SpecialTransformations.Milestone0.Transfer.VFType),
+          SpecialTransformations.Section3.DefinableAt B.real SpecialTransformations.Milestone0.SortTag.vf
+              (Subtype.val '' ↑R) →
+            (∀ (D : ↑A), ∃ x ∈ R, ↑x ∈ SpecialTransformations.Section3.OpenBallCodes.underlying ↑D) →
+              ∃ f,
+                (∀ (D : ↑A), f D ∈ SpecialTransformations.Section3.OpenBallCodes.underlying ↑D) ∧
+                  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                    (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                    (SpecialTransformations.Section3.OpenBallCodes.quotientCenterGraph A f)
+'SpecialTransformations.Section3.OpenBallCodes.open_centers_from_real_hitting_set' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.OpenBallCodes.lemma_3_13_proper_open : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+          Cardinal.mk ↑B.real < κ →
+            SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+              ∀ (A : Set (SpecialTransformations.Section3.OpenBallCodes.OpenBall M)),
+                A.Finite →
+                  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                      (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                      (SpecialTransformations.Section3.OpenBallCodes.pullback A) →
+                    ∃ f,
+                      (∀ (D : ↑A), f D ∈ SpecialTransformations.Section3.OpenBallCodes.underlying ↑D) ∧
+                        SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                          (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                          (SpecialTransformations.Section3.OpenBallCodes.quotientCenterGraph A f)
+'SpecialTransformations.Section3.OpenBallCodes.lemma_3_13_proper_open' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

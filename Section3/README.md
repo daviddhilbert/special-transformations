@@ -46,7 +46,7 @@ extensions remain open. Other base-sensitive results
 still need their Gamma extensions. General same-base dcl transitivity,
 monotonicity and idempotence are now proved, including the basic generated-base
 laws. Full Gamma acl transitivity remains separate. The last published combined certificate covers
-187 modules and 864 actual headline type/axiom checks, plus a fresh root import.
+189 modules and 898 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -98,3 +98,12 @@ the original real/Gamma base, so acl and dcl agree in Gamma. The proof retains
 entire value fibres. The intrinsic open-to-closed hull map also preserves full
 family definability over that same base, for arbitrary families. These results
 need only ACVF; the general ball-center theorem is still open.
+
+
+The proper-open-ball case of 3.13 is now compiler checked in
+`OpenBallCenters.lean`, including the complete same-base code graph. Its proof
+constructs finite algebraic center and RV-offset sets, lifts the offsets over
+the original VF generators, and uses a finite real-base cover and means.
+Genuine saturation and small real generators are explicit. The actual mixed
+ball-family wrapper, generated case of 3.18(2), remaining Gamma-base extensions
+and guarded rational normal form remain open.

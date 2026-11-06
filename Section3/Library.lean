@@ -88,6 +88,9 @@ import Section3.OpenBallCodes
 import Section3.GammaFiniteOrder
 import Section3.OpenBallFamilyHulls
 
+import Section3.GammaRealMap
+import Section3.OpenBallCenters
+
 /-!
 # Checked Section 3 library
 
