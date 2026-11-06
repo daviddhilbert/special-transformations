@@ -1,11 +1,12 @@
 # Current proof status
 
-The active Section 3 targets are proved, with Remark 3.19 retracted by the
-author and excluded. **The remaining Section 2 normal form in Definition 2.4 is still open.**
+All active targets in Section 3 and Section 2 after Theorem 2.3 are proved,
+including the author-approved guarded rational Definition 2.4.
+Remark 3.19 is retracted by the author and excluded.
 `Library.lean` deliberately excludes the legacy target files.
 QE is imported from the unchanged ACVF-QE pin.
 
-The last published combined certificate covers **193 modules, 1040 headline type/axiom
+The last published combined certificate covers **197 modules, 1393 headline type/axiom
 checks and a fresh root import**. The certificate records source and dependency fingerprints at that checkpoint; only the three permitted standard axioms occur.
 The pinned compiler and dependencies are unchanged. QE uses the released
 language with named RV inversion.
@@ -17,14 +18,14 @@ those scopes. General Gamma-base dcl transitivity, monotonicity, idempotence and
 
 ## Checked components
 
-| Component | Exact scope and remaining work |
+| Component | Exact scope and hypotheses |
 | --- | --- |
 | `GammaPresentation`, `GammaOperations`, `GammaValueLaws`, `GammaDensity` | The actual Gamma quotient has a nontrivial divisible densely ordered commutative group structure; GammaTop has the one absorbing infinity class, maximal in the paper order. Operations and comparisons agree with the released RV multiplication and preorder. VF valuation is a multiplicative map into GammaTop and reverses the compatible Mathlib valuation order. All ACVF; no characteristic, saturation or extra representative parameters. No zero-minimal ordered-group-with-zero instance is introduced. |
 | `GammaCodes`, `GammaParameters`, `GammaParameterBridge`, `GammaSpecialization` | Genuine imaginary parameters via full, globally invariant first-order preimages on all nonzero RV representatives, over exactly the real base S. The semantic relation constructor and empty-Gamma equivalences for definability, acl and dcl have checked types. Specialization explicitly adjoins RV names; it is not their elimination. Arbitrary Gamma sets are handled through finite formula support. Their general dcl and basic generation laws are now proved in `GammaClosureLaws` and `GeneratedBaseLifting`; full Gamma acl closure laws are now checked in GammaAlgebraicClosure. |
 | `GammaCodeDefinability`, `GammaFamilyIntersection`, `GammaDescent` | The full nonzero-RV code equivalence is first-order definable and normalization-compatible. Algebraicity of a real VF/RV output descends along any nonempty finite-arity Gamma-definable real family over a small real ambient S. This includes the RV-to-Gamma-fibre case of 3.2 for real outputs. The resulting finite witness has a full invariant preimage over exactly S and its given Gamma tuple; temporary representatives are removed from that conclusion. Genuine kappa-saturation, kappa at least countable, and a small real S. GammaFullDescent now extends this to arbitrary small real/Gamma ambient bases, all output sorts and mixed Gamma indexing tuples. |
 | `GammaProjection`, `GammaFiniteMeans`, `NearestPairs`, `GammaNearestRoots`, `GammaBallDefinablePoint` | Full 3.11 over genuine Gamma-named bases: a nonempty proper definable subset of a ball gives a point in the same-base definable closure. The containing ball is not named. Finite real-base covers and nearest-root means preserve full code invariance. ACVF(0,0), with no saturation or extra named point. Original and normalized interpretations are distinguished explicitly. |
 | `GammaValueFibreCounting`, `GammaFiniteValues` | Full 3.15 over genuine Gamma-named bases. The actual Gamma values with nonempty finite RV fibre form a finite set whose entire RV preimage is definable over that same base. First-order counting preserves the original support; the uniform natural-number bound is proved after specialization and adds no parameter or premise. ACVF(0,0), no saturation. |
-| `RVOperations`, `PolynomialRVMonomial`, `RVSmallPowers`, `SmallFamilyConstancy` | Full 3.17 over real or genuine Gamma-named bases, for all finite RV output arities and the complete graph on the punctured VF domain. Actual Gamma bounds give a Gamma threshold, and every larger threshold gives constancy. The proof handles absorbing-zero coordinates by bounding only nonzero coordinates. It works in every ACVF model, with no saturation, characteristic-zero, field-base or syntactic-normal-form premise. Semantic term homogeneity treats residue zero/junk branches explicitly. RV receives a group-with-zero structure, without a linear order; estimates use the reversed actual value group. Definition 2.4 remains separate. |
+| `RVOperations`, `PolynomialRVMonomial`, `RVSmallPowers`, `SmallFamilyConstancy` | Full 3.17 over real or genuine Gamma-named bases, for all finite RV output arities and the complete graph on the punctured VF domain. Actual Gamma bounds give a Gamma threshold, and every larger threshold gives constancy. The proof handles absorbing-zero coordinates by bounding only nonzero coordinates. It works in every ACVF model, with no saturation, characteristic-zero, field-base or syntactic-normal-form premise. Semantic term homogeneity treats residue zero/junk branches explicitly. RV receives a group-with-zero structure, without a linear order; estimates use the reversed actual value group. Definition 2.4 is proved separately in `GuardedRationalNormalForm`. |
 | `GammaBaseTools` | Same-base finite Boolean operations, sorted complements, real-coordinate preimages, arbitrary tuple-output parameter promotion, and universal restoration of Gamma-support invariance. Common real representative names are used only for compactness preparation, with their actual cardinal bounds. These tools alone do not prove ambient-Gamma-base descent; the real-output extension is now checked in `GammaBaseDescent`. General dcl idempotence and basic generation laws are now checked in `GammaClosureLaws` and `GeneratedBaseLifting`. |
 | `AlgebraicBaseGeometry` | Valued QE preserves an algebraically closed coefficient field: the resulting finite Boolean combination has both centers and radii in that field's image. Only the ambient valuation must be nontrivial. The RV-lifting bridge is checked in `AlgebraicRVLifting`; full VF/RV modelhood in 3.14 is now checked in `AclModel` and `GammaAclModel`. |
 | `RVFibreGeometry` | Definable subsets of each actual RV value fibre are finite or cofinite, with real or Gamma-named bases. Genuine saturation gives a uniform bound on finite sides of definable row pairs. Pure order lemmas give finite image from uniform cut bounds and a canonical endpoint for nonempty proper sets determined by finitely many thresholds. These prerequisites now feed the checked Gamma separation and RV exchange proofs below. |
@@ -64,7 +65,8 @@ those scopes. General Gamma-base dcl transitivity, monotonicity, idempotence and
 | `AlgebraicFinite` | A definable subset of the raw algebraic closure of a small base is finite, proved via genuine saturation. |
 | `RingSyntax`, `PolynomialRoots`, `RootDefinability`, `FieldBase` | Polynomial root sets are sorted-definable over their named coefficients and finite for a nonzero polynomial. Over a base whose VF part is a field, VF model-theoretic and field-theoretic algebraicity agree. The standing field convention is explicit; inverse closure constructs it from an LRV substructure. |
 | `SortedFiniteImage.corollary_3_5_sorted` | Full finite input/output arities and partial domains: every sorted-definable RV-to-VF function has finite image. Any ACVF model and any original small base, with genuine saturation. The full original-base graph is a premise. `FiniteImage` also proves finite-valued tuple-relation images on canonical models. No C-minimality or field-base premise. |
-| `QuantifierFree`, `RVLiteralReduction`, `RVNormalForm` | Completed QE used over the original arbitrary base. VF equalities are replaced by RV equalities and sort predicates discharged on sorted assignments. K-term/monomial normalization and the RV-literal DNF remain. The author approved rational VF factors with explicit pole and residue-domain guards on November 5, 2026; see [NORMAL-FORM-NOTE.md](NORMAL-FORM-NOTE.md). This is an agreed target, not a checked normal-form theorem. |
+| `GuardedRVArithmetic`, `GuardedRVTerms`, `GuardedRVLiterals`, `GuardedRationalNormalForm` | Definition 2.4 in the author-approved rational VF scope: actual original-language QF DNF over exactly the original slots, chosen before the model quantifier. Equality literals have coefficient one on the left and two genuine flat K factors of arity at least two; order literals have no K factors. Every raw-true clause proves every rational pole and residue-summand domain. Zero RV coordinates are retained. The same-base DefinableOver wrapper adds no parameters. Scope: all ACVF, with no characteristic, saturation or normalization premise. |
+| `QuantifierFree`, `RVLiteralReduction`, `RVNormalForm` | Completed QE used over the original arbitrary base. VF equalities are replaced by RV equalities and sort predicates discharged on sorted assignments. The full guarded rational K-term and RV-literal DNF is now proved in `GuardedRationalNormalForm`; see [NORMAL-FORM-NOTE.md](NORMAL-FORM-NOTE.md). |
 | `BallGeometry` | Extended radii with the reversed order, whole-field and singleton conventions, polydiscs, rv-fibres and degeneracy; the exact nonzero rv-fibre/open-ball bridge. See `DiscCentres` for the RV-fibre classification. `ValuativeCentre`, `TupleValuation` and `MixedRV` supply valuative centers, coordinate minima in the reversed order, and mixed-tuple rv/fibre notation, including empty and degenerate cases. |
 | `Coordinates` | Sorted mixed coordinates, restriction/projection, complementary-coordinate fibres, assembly and projection composition (Notation 2.10). |
 | `Average.lemma_3_8` | Both valuation and RV-nonconstancy conclusions. Explicit hypotheses: ACVF(0,0), distinct family, size at least two, common valuation and zero sum. The natural-number unit premise is proved from residue-characteristic-zero axioms. No extra mathematical hypothesis. |
@@ -188,8 +190,8 @@ Additional checked tools:
 The Gamma-base extension of 3.4 is now checked in `GammaDefinableClosureField`.
 Both alternatives of 3.18(2) are now proved in `GeneralCosetChoice`, including
 the closed case over genuine Gamma-named bases and the (VF,Gamma)-generated
-case using full Lemma 3.13. The only remaining proof target is the author-approved guarded rational
-normal form of Definition 2.4. Legacy conditional reductions are not counted as proofs.
+case using full Lemma 3.13. The author-approved guarded rational normal form of Definition 2.4 is now
+proved in `GuardedRationalNormalForm`. No active target in this section remains open. Legacy conditional reductions are not counted as proofs.
 Keep `TARGETS.md` as the full target checklist. Remark 3.19 is retracted; see
 [RETRACTIONS.md](RETRACTIONS.md).
 
@@ -225,3 +227,7 @@ fingerprints and identical Lean code against the pinned sources; the QE root
 and all three headline type/axiom checks were run afresh and exited zero.
 The new record includes those source and artifact identities. This restores
 the completed dependency and adds no QE theorem, assumption or revision change.
+
+The verifier handles temporary WSL ENOMEM file-read failures with bounded
+retries from byte zero. Every cache fingerprint still checks the entire
+source, object and compiler log; no integrity check is skipped.

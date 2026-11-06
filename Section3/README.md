@@ -27,13 +27,13 @@ Uniform polynomial support also proves finite RV-fibre exceptions. Lemma 3.15
 uses the actual Gamma quotient and preserves the original base. A separate audit
 records the {1,-1} obstruction to the unrestricted classification in Remark 3.19;
 the author has [retracted the whole remark](RETRACTIONS.md), which is excluded
-from the remaining proof obligations. Additive subgroups are proved to be balls,
+from the proof obligations. Additive subgroups are proved to be balls,
 and the uniform root set gives the finite exceptional additive cosets in 3.18(1).
 Both alternatives of 3.18(2) include the complete original-base quotient
 graph and a realizing representative in every class, including genuine
-Gamma-named bases. The entry point
-does not certify every item in the section. See [STATUS.md](STATUS.md) for the
-exact hypotheses and the remaining work.
+Gamma-named bases. The entry point covers all active Section 3 targets and
+Section 2 after QE, with the recorded correction and retraction. See
+[STATUS.md](STATUS.md) for the exact theorem scopes and hypotheses.
 
 The actual Gamma quotient now has its ordered divisible group operations and
 full invariant-preimage parameter interface. The checked Gamma-base extensions
@@ -48,7 +48,7 @@ Gamma parts of the ambient base have explicit cardinal bounds.
 General same-base dcl transitivity,
 monotonicity and idempotence are now proved, including the basic generated-base
 laws. Full Gamma acl transitivity and the actual closure-base laws are now proved. The last published combined certificate covers
-193 modules and 1040 actual headline type/axiom checks, plus a fresh root import.
+197 modules and 1393 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -57,9 +57,9 @@ legacy compiler audit. Neither script pushes anything.
 See [LEGACY.md](LEGACY.md) for reuse candidates and pitfalls, and
 `../Archive/MOVE-INDEX.json` for the complete old-to-new path map.
 
-Definition 2.4 is being formalized with the author's approved rational VF
-factors and explicit domain guards; see [NORMAL-FORM-NOTE.md](NORMAL-FORM-NOTE.md).
-The semantic proof of 3.17 is independent of that still-open syntactic theorem.
+Definition 2.4 is proved with the author's approved rational VF factors and
+explicit domain guards; see [NORMAL-FORM-NOTE.md](NORMAL-FORM-NOTE.md).
+The semantic proof of 3.17 is independent of that syntactic theorem.
 
 The coefficient-preserving geometry now lifts RV points algebraic over a VF
 parameter set into any algebraically closed VF subfield containing that set,
@@ -83,7 +83,7 @@ algebraic elements beyond the real generators: for VF this holds in all
 ACVF, and for RV it uses the standing ACVF(0,0)/saturation/small-real-generator
 hypotheses. RV elements in that acl lift into the relative VF algebraic
 closure of the pure VF generators. These are checked prerequisites for the
-remaining general ball-center theorem. The same-radius closed hull of an
+general ball-center theorem proved in `GeneralBallCenters`. The same-radius closed hull of an
 open disc is also proved intrinsic, using actual VF boundary points.
 
 
@@ -107,9 +107,9 @@ families of closed and proper-open balls, including singletons and the whole
 field. One function has both complete code graphs over the original Gamma
 base. The proof uses `OpenBallCenters` to obtain algebraic points, a finite
 real-base cover and a common mean. Genuine saturation, small B.real and
-(VF,Gamma)-generation are explicit. Both remaining branches of 3.18(2) are checked in GeneralCosetChoice.
-Gamma acl transitivity is now checked in GammaAlgebraicClosure. The guarded
-rational normal form in Definition 2.4 is the only remaining proof target.
+(VF,Gamma)-generation are explicit. Both branches of 3.18(2) are checked in
+`GeneralCosetChoice`. Gamma acl transitivity is checked in
+`GammaAlgebraicClosure`. The guarded rational Definition 2.4 is also proved.
 
 
 `GeneralCosetChoice.lean` completes Lemma 3.18(2). The exceptional cosets are
@@ -121,7 +121,7 @@ realization property. The closed case needs no saturation; the generated
 case retains 3.13's precise saturation and real-base size hypotheses.
 
 
-`GammaFullDescent.lean` completes the remaining parameter and sort scopes of
+`GammaFullDescent.lean` completes the parameter and sort scopes of
 3.1/3.2. Ordered Gamma acl=dcl, full output-class closure and a partial
 least-value relation provide finite actual-Gamma rows. The compactness cover
 and universal intersection retain the original base. Mixed Gamma indexing
@@ -137,5 +137,15 @@ real support and a same-base finite algebraic tuple cover feed the checked
 finite-row image construction. It proves extensivity, monotonicity,
 idempotence and dcl(acl(B))=acl(B), with no saturation, cardinality or
 characteristic assumptions. The active Section 3 targets are now closed;
-Remark 3.19 is retracted. The remaining Section 2 target is the agreed guarded
-rational normal form of Definition 2.4.
+Remark 3.19 is retracted. The agreed guarded rational normal form of
+Definition 2.4 is proved, completing the active Section 2 and Section 3
+targets in this library.
+
+
+`GuardedRationalNormalForm.lean` proves the actual original-language normal
+form over exactly the original parameter slots. Its finite DNF is chosen
+uniformly before quantifying over models. Every true raw clause certifies
+all rational poles and residue-summand domains. The supporting modules
+prove finite guarded term normalization, flat residue arithmetic,
+coefficient normalization and the original-language compiler. No
+normalization theorem is assumed, and no new parameter is introduced.

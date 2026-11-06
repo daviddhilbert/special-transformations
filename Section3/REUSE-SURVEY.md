@@ -966,3 +966,96 @@ absence of saturation, size and characteristic premises. Only `propext`,
 `Classical.choice` and `Quot.sound` occur. No new accepted reference input
 was used. The active Section 3 proof obligations are closed; the retracted
 Remark 3.19 is excluded. Guarded rational normal form in Definition 2.4 remains open.
+
+
+## Guarded rational normal form: focused reuse update (November 6, 2026)
+
+The target is the author-approved rational VF version of Definition 2.4,
+with explicit poles and residue-summand domains. The language and pins remain
+Lean 4.33.1, Mathlib `0df444a360eaa60ab8c11dca51a86af692955474`, and
+ACVF-QE `f3ef4ee679f921079aa8f742a2807a9cc724d2d6`.
+
+Re-read `Shared/MulNormalForm.lean`, `RVLiteralReduction`, `RVNormalForm`,
+`RingSyntax`, and the released `CanonicalResidueOperations`. The older
+multiplication-word file uses the released language but its displayed word
+API has natural powers and an Empty parameter context. It supplies neither
+the full signed Laurent-word/source-parameter bridge nor the finite guarded
+residue/inverse induction required here. This is source comparison, not a
+new compiler certificate for its historical header. The current checked
+`RVOperations` group-with-zero API and Mathlib cancellation lemmas provide
+the needed multiplication laws without duplicating those raw-symbol proofs.
+`RVLiteralReduction.realize_rvEquality` remains the checked VF-equality bridge.
+
+The actual residue embedding is reused from the pinned QE release:
+`CanonicalResidue.toRV_injective`, `toRV_add`, `toRV_mul`, `toRV_neg` and its
+residue equivalence. A multiplicative hom package transports finite sums,
+Cauchy products, scalar products and division through the actual residue
+field. Mathlib's `Finsupp.prod_add_index'`, integer-power laws,
+`Equiv.sum_comp`, finite sum reindexing and `Finset.prod_map_toList` supply
+the generic algebra and syntax compilation. The source of
+`Mathlib/Algebra/Polynomial/Laurent.lean` (Damiano Testa, Apache-2.0) was
+compared at the pin and at
+[upstream master](https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Algebra/Polynomial/Laurent.lean).
+Its semiring-coefficient Laurent polynomials are not an interpretation of
+partial residue addition on all of RV, so importing that representation
+would still require the same domain and zero-coordinate bridges. No source
+was copied from it and no dependency was upgraded. Searches of the pinned
+ModelTheory sources found prenex normalization, but no directly matching
+DNF/guarded-RV normalizer in those searches.
+
+Focused external queries used “Lean algebraically closed valued fields RV
+quantifier elimination normal form”, “MvLaurentPolynomial Finsupp
+normalization valued fields”, and site-restricted variants for Mathlib,
+Lean Pool, Tau Ceti and Palomar. No directly reusable full target was found
+in those searches. The
+[Lean community project list](https://leanprover-community.github.io/lean_projects.html)
+contained no “valued” or “model theory” match in the fetched page.
+[Reservoir](https://reservoir.lean-lang.org/),
+[Lean Pool](https://github.com/LeanPool/lean-pool),
+[Tau Ceti](https://github.com/TauCetiProject/TauCeti),
+[Palomar](https://palomar-registry.org/) and
+[TheoremSearch](https://www.theoremsearch.com/) were reachable, but their
+landing pages and indexed searches do not amount to an exhaustive code or
+registry search. Palomar's runtime database was not retrieved; the
+[Formalpedia](https://prove2.me/formalpedia) request timed out. Direct GitHub
+code search and the Mathlib pull-request queries for ACVF and Laurent normal
+forms were unavailable through the fetch service. These access limits are
+recorded rather than interpreted as absence of work.
+
+Decision: reuse the pinned QE, actual residue bridge, shared source syntax,
+and Mathlib algebra; implement the language-specific finite branch and guard
+compiler locally. A private arithmetic foundation has compiled with exit zero
+and zero error occurrences; all 170 selected declaration types and axiom
+audits completed, with only `propext`, `Classical.choice`, `Quot.sound`.
+This is a private component certificate, not a new integrated library count
+and not a completed normal-form theorem. The branch/literal/source compiler
+is still under development; Definition 2.4 remains open.
+
+
+The private term-normalization continuation subsequently passed an actual
+compiler run with exit zero, zero error occurrences and no `sorry` dependency.
+Its 39 declaration type/axiom checks also contain only the three standard
+axioms. The reviewed `normalize` type is pure syntax, independent of a model;
+`normalize_sound` and `normalize_complete` prove every selected branch valid
+and the branch cover exhaustive in every ACVF model. Inverse and residue-junk
+cases, coefficient removal and ordinary raw expression compilation are included.
+The proof uses an explicitly compatible valuation in intermediate lemmas;
+canonical presentation removes that premise in the planned final bridge.
+The literal/guard and original-formula layers are still unverified, so this
+private checkpoint does not close Definition 2.4 or change the published
+library certificate.
+
+
+## Completed guarded rational normal form (November 6, 2026)
+
+The earlier private arithmetic and term checkpoints are now integrated
+with proved literal-domain certificates and the actual original-language
+formula compiler in four coherent public modules. The final theorem
+uses completed QE, is uniform outside the model quantifier, and preserves
+the original parameter package. Flat residue arithmetic uses the checked
+canonical residue-field interpretation; no unrestricted RV distributivity
+or normalization oracle is assumed. All public sources were freshly
+compiled, and the full 197-module/1393-headline/root certificate
+passed. Full intended theorem types and all new standard-three-axiom
+audits were reviewed. Definition 2.4 and all active Section 3 targets are
+closed; the author-retracted Remark 3.19 is excluded.

@@ -98,6 +98,11 @@ import Section3.GammaFullDescent
 
 import Section3.GammaAlgebraicClosure
 
+import Section3.GuardedRVArithmetic
+import Section3.GuardedRVTerms
+import Section3.GuardedRVLiterals
+import Section3.GuardedRationalNormalForm
+
 /-!
 # Checked Section 3 library
 

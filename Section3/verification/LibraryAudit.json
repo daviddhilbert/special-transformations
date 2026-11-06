@@ -1535,11 +1535,43 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GuardedRVArithmetic",
+      "source_sha256": "840ae6a79ac2a1482daae77b19760971cdbf1777e7125b9b6a00aff36780f954",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GuardedRVTerms",
+      "source_sha256": "92fe042adc73469da9ef5651763abf25ed7341f8824a37da5b1baa6896a69794",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GuardedRVLiterals",
+      "source_sha256": "63219f049850c0f8db4ab9d8af69800127deea521b66fa4b24112340ccb71c45",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GuardedRationalNormalForm",
+      "source_sha256": "ebcfa18c274f76977fdbb3070d042870a481062440f64267d1e472ecef84a101",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "dd314fc2cc55e56154d726a15b5e1cab93b1b83858c78f83549f39136254bf68",
+      "source_sha256": "dca94bf57b30e1b0770408bfc23b43083c78c8ffdff6b38eefd3ebbc2d92dd0e",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1547,7 +1579,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "4f5378b3540730f8fdce843222fa7411268d69e2c2e72307a3263ec6892c392f",
+      "source_sha256": "56395f3a24b751e3af8470019d82920035394c18591d90267e6d33e617a3b89e",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1563,7 +1595,7 @@
     }
   ],
   "date": "2026-11-06 America/Los_Angeles",
-  "scope": "193 integrated Section3 modules; matching compiler caches reused where indicated; fresh 1040-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "197 integrated Section3 modules; matching compiler caches reused where indicated; fresh 1393-headline type/axiom audit and root import. See STATUS.md for active Section2/3 targets, author-approved corrections, retraction and hypotheses. Other paper sections are not audited here.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -6567,13 +6599,1586 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.LaurentWords.clip": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.LaurentWords.clip_ne_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.LaurentWords.clip_eq_of_ne_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.LaurentWords.eval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.LaurentWords.eval_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.LaurentWords.eval_add": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.LaurentWords.eval_ne_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.LaurentWords.eval_neg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.LaurentWords.eval_single": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.LaurentWords.eval_eq_raw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.residueRVHom": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.residueRVHom_injective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.residueRVHom_inK": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.residueRVHom_add": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.residueRVHom_neg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.residueRVHom_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.residueRVHom_div": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.inK_iff_exists_residue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.inK_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.inK_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.inK_div": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.inK_mul_iff_left": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.fraction_add": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.neg_one_image": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ResidueRVAlgebra.fraction_neg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.mul": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.add": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.neg": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.realize_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.realize_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.realize_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.realize_add": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.realize_neg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.vf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.parameter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.ofVariable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.rawEval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.PoleFree": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.ProperSlots": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_vf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_parameter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_variable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_eq_raw": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_eq_rawEval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.poleFree_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.poleFree_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.properSlots_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.properSlots_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.holds_false": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.holds_true": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.holds_disj": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.holds_conj": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.translate_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.add": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.scalar": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.rvSum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.eval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.Prepared": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.rawEval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.Domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.prepared_domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.prepared_eval_eq_rawEval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.rvSum_image": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.eval_eq_residue_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.eval_inK": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.toTerm": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.eval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.toTerm_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVRepresentation": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.source_term_representations": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.lift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.image_lift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.rvSum_eq_lift_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.rvSum_append": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.rvSum_cauchy": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.rvSum_scalar": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.inK_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.inK_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.addK_zero_right": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.eval_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.eval_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.prepared_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.prepared_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.eval_add": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.eval_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.eval_scalar": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.prepared_add": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.prepared_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.prepared_scalar": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.ofMonomial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.absorb": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.residueAdd": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.residueNeg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.Prepared": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval_ofMonomial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.prepared_ofMonomial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.prepared_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.prepared_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.prepared_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.numerator_ne_zero_of_outer_ne_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.prepared_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval_absorb": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.prepared_absorb": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval_inK_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.prepared_residueAdd": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval_residueAdd": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.prepared_residueNeg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.eval_residueNeg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.satisfied_append": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.run_pure": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.run_emit": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.run_append": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.run_bind": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.NFTest": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.NFTest.Safe": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.NFTest.predicate": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.NFTest.holds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.NFTest.raw_monomial_test": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.NFTest.raw_polynomial_test": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Program": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.inverseCases": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.residueCases": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.inverseCases_sound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.inverseCases_complete": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.residueCases_sound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.residueCases_complete": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.addOutput": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.negOutput": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.addOutput_sound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.negOutput_sound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.normalize_sound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.normalize_complete": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eraseCoefficient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.divideCoefficient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.rawEval_parameter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.rawEval_variable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_eraseCoefficient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.eval_divideCoefficient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.properSlots_eraseCoefficient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.properSlots_divideCoefficient": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.coefficient_normalize_equality": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.coefficientWord": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.variableWord": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.sumFin": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.eval_npow": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.eval_zpow": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.eval_productList": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.eval_coefficientWord": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.eval_variableWord": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.eval_sumFin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.expression": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.expression_eval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.expression": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.expression_eval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.rawEval_rational": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.EqualityPayload": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.OrderPayload": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.Domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.comparison": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.holds": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.equalityLiteral": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.equalityLiteral_domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.equalityLiteral_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.rvLe_iff_absolute": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.coefficient_normalize_order": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.valueCases": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.absolute_eq_outer": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.valueCases_sound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVFraction.valueCases_complete": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.monomialOrderLiteral": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.equalityProgram": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.orderProgram": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.monomialOrderLiteral_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.equalityProgram_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.orderProgram_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.rawEval_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.rawEval_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.Monomial.rawEval_vf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.rawEval_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.KPolynomial.domain_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.monomialZero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.polynomialZero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.poleGuard": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.monomialZero_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.polynomialZero_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.poleGuard_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.parameterGuards": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.variableGuards": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.slotGuards": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.parameterGuards_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.variableGuards_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.slotGuards_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.single": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.safe": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.monomialZero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.residueBranch": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.monomialResidue": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.all": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.prepared": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.polynomialZero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.test": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.single_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.safe_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.all_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.monomialZero_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.inK_iff_zero_or_orders": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.residueBranch_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.monomialResidue_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.prepared_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.polynomialZero_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.test_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.any": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.program": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.any_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.program_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVAtom.normalForm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVAtom.eval": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVAtom.normalForm_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.booleanNormalForm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.booleanNormalForm_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.certified_true": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.certified_single": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.Certified.disj": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.Certified.conj_of_prefix": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.Certified.conj": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.translate_certified": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.monomialZero_domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.polynomialZero_domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.poleGuard_domain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.slotGuards_domains": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.Certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.single_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.safe_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.monomialZero_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.residueBranch_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.monomialResidue_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.all_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.prepared_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.polynomialZero_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.test_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.any_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.program_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.equalityProgram_domains": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.orderProgram_domains": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVAtom.normalForm_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.booleanNormalForm_certified": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.booleanNormalForm_raw_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.vfValues": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.rvParameters": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.rvVariables": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.expression_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.represented_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.PolarityDNF.Expr.eval_conjunction": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.units_iff_nonzero_orders": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.unitsExpression_correct": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.equality_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.rel1_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.rel2_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.order_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceAssignment.units_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceEquivalent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.qf_source_boolean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.model_uniform_normal_form": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.relabeled_sorted": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.toTerm_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.rawFormula": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.rawFormula_qf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.rawFormula_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVLiteral.rawFormula_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.clauseFormula": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.rawFormula": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.clauseFormula_qf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.rawFormula_qf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.clauseFormula_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.rawFormula_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.clauseFormula_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.LiteralDNF.rawFormula_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.polynomial": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.polynomial_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceDNF": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.sourceFormula": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.sourceFormula_qf": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.sourceFormula_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.sourceFormula_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.model_uniform_raw_normal_form": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.definition_2_4_guarded_rational_normal_form": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.DefinableOver.guarded_rational_normal_form": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
     "SpecialTransformations.ModelTheory.HasMore": [],
     "SpecialTransformations.Section3.OpenBallCodes.codedCenterGraph": [],
-    "SpecialTransformations.Section3.GammaParameters.baseRelationImage": []
+    "SpecialTransformations.Section3.GammaParameters.baseRelationImage": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.zero": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFPolynomial.one": [],
+    "SpecialTransformations.Section3.PolarityDNF.Expr": [],
+    "SpecialTransformations.Section3.PolarityDNF.Expr.eval": [],
+    "SpecialTransformations.Section3.PolarityDNF.DNF": [],
+    "SpecialTransformations.Section3.PolarityDNF.holds": [],
+    "SpecialTransformations.Section3.PolarityDNF.disj": [],
+    "SpecialTransformations.Section3.PolarityDNF.conj": [],
+    "SpecialTransformations.Section3.PolarityDNF.translate": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFSlot": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVParameterSlot": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVVariableSlot": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.vfSlotMap": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.rvParameterMap": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.rvVariableMap": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.VFRepresentation": [],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.Branch": [],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.satisfied": [],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.run": [],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.pure": [],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.emit": [],
+    "SpecialTransformations.Section3.FiniteGuardedBranches.bind": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.NFTest.signed": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.NFTest.signed_true": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.NFTest.signed_false": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.npow": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.zpow": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.productList": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVAtom": [],
+    "SpecialTransformations.Section3.PolarityDNF.Certified": [],
+    "SpecialTransformations.Section3.PolarityDNF.Certified.holds_iff": [],
+    "SpecialTransformations.Section3.PolarityDNF.certified_false": [],
+    "SpecialTransformations.Section3.PolarityDNF.Expr.negation": [],
+    "SpecialTransformations.Section3.PolarityDNF.Expr.conjunction": [],
+    "SpecialTransformations.Section3.PolarityDNF.Expr.eval_negation": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.RVExpr.unitsExpression": [],
+    "SpecialTransformations.Section3.GuardedRVNormalForm.SourceBoolean": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "d57dc5a42bf2fad1c47d0ecb53e55b727124f47ca26d3ffacec0961374256cf3",
+  "verifier_sha256": "1bed95c89bbb6f2fe38870aacdd6fd43cfb15a72a8244deacff5e1ec57319f4b",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",
