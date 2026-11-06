@@ -14081,3 +14081,1599 @@ SpecialTransformations.Section3.RVMonomial.AbsoluteValueGroup : (M : Type) →
 'SpecialTransformations.Section3.GammaParameters.lemma_3_6_rv_gamma_base' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+@SpecialTransformations.Section3.vfAlgebraicClosureField_isAlgClosed : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  @IsAlgClosed (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S))
+    (@Subfield.toField (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+      (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)
+      (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S))
+'SpecialTransformations.Section3.vfAlgebraicClosureField_isAlgClosed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.vf_parameters_in_algebraicClosureField : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  (∀ (a : M), @Membership.mem M (Set M) (@Set.instMembership M) S a → @SpecialTransformations.Milestone0.iVF M sM a) →
+    @LE.le (Set M) (@Set.instLE M) S
+      (@Set.image (@Subtype M fun x => @SpecialTransformations.Milestone0.iVF M sM x) M
+        (@Subtype.val M fun x => @SpecialTransformations.Milestone0.iVF M sM x)
+        (@SetLike.coe
+          (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+          (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+          (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)))
+'SpecialTransformations.Section3.vf_parameters_in_algebraicClosureField' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.rv_algebraic_of_algebraic_lift : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (x : @SpecialTransformations.Milestone0.Transfer.VFType M sM),
+  @SpecialTransformations.Section3.AlgebraicAt M sM S SpecialTransformations.Milestone0.SortTag.vf
+      (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iVF M sM x) x) →
+    @SpecialTransformations.Section3.AlgebraicAt M sM S SpecialTransformations.Milestone0.SortTag.rv
+      (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iRV M sM x) (@CanonicalRV.encodedRv M sM hM x))
+'SpecialTransformations.Section3.rv_algebraic_of_algebraic_lift' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.rv_algebraicClosure_iff_lift : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M),
+      (∀ (a : M),
+          @Membership.mem M (Set M) (@Set.instMembership M) S a → @SpecialTransformations.Milestone0.iVF M sM a) →
+        ∀ (t : @CanonicalRV.RVSort M sM),
+          Iff
+            (@SpecialTransformations.Section3.AlgebraicAt M sM S SpecialTransformations.Milestone0.SortTag.rv
+              (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iRV M sM x) t))
+            (∃ x,
+              @Eq (@CanonicalRV.RVSort M sM)
+                (@CanonicalRV.encodedRv M sM hM
+                  (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (fun x =>
+                      @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@SetLike.instMembership
+                          (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                        (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S) x)
+                    x))
+                t)
+'SpecialTransformations.Section3.rv_algebraicClosure_iff_lift' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.valuedSubfieldSubstructure : {N Γ : Type} →
+  [inst : Field N] →
+    [inst_1 : LinearOrderedCommGroupWithZero Γ] →
+      (v :
+          @Valuation N Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+            (@DivisionRing.toRing N (@Field.toDivisionRing N inst))) →
+        @Subfield N (@Field.toDivisionRing N inst) →
+          @FirstOrder.Language.Substructure FirstOrder.Language.val N (@FirstOrder.valStructure N inst Γ inst_1 v)
+'SpecialTransformations.Section3.valuedSubfieldSubstructure' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.valuedSubfieldElementarySubstructure : {N Γ : Type} →
+  [inst : Field N] →
+    [@IsAlgClosed N inst] →
+      [inst_2 : LinearOrderedCommGroupWithZero Γ] →
+        (v :
+            @Valuation N Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2)
+              (@DivisionRing.toRing N (@Field.toDivisionRing N inst))) →
+          (F : @Subfield N (@Field.toDivisionRing N inst)) →
+            [@IsAlgClosed (↥F) (@Subfield.toField N inst F)] →
+              (∃ x,
+                  And
+                    (@Ne (↥F) x
+                      (@OfNat.ofNat (↥F) (nat_lit 0)
+                        (@Zero.toOfNat0 (↥F)
+                          (@ZeroMemClass.zero (@Subfield N (@Field.toDivisionRing N inst)) N
+                            (@Subfield.instSetLike N (@Field.toDivisionRing N inst))
+                            (@MulZeroClass.toZero N
+                              (@instMulZeroClassOfSemiring N
+                                (@DivisionSemiring.toSemiring N
+                                  (@Semifield.toDivisionSemiring N (@Field.toSemifield N inst)))))
+                            ⋯ F))))
+                    (@Ne Γ
+                      (@DFunLike.coe
+                        (@Valuation N Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2)
+                          (@DivisionRing.toRing N (@Field.toDivisionRing N inst)))
+                        N (fun x => Γ)
+                        (@Valuation.instFunLike N Γ (@DivisionRing.toRing N (@Field.toDivisionRing N inst))
+                          (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2))
+                        v
+                        (@Subtype.val N
+                          (fun x =>
+                            @Membership.mem N (@Subfield N (@Field.toDivisionRing N inst))
+                              (@SetLike.instMembership (@Subfield N (@Field.toDivisionRing N inst)) N
+                                (@Subfield.instSetLike N (@Field.toDivisionRing N inst)))
+                              F x)
+                          x))
+                      (@OfNat.ofNat Γ (nat_lit 1)
+                        (@One.toOfNat1 Γ
+                          (@InvOneClass.toOne Γ
+                            (@DivInvOneMonoid.toInvOneClass Γ
+                              (@DivisionMonoid.toDivInvOneMonoid Γ
+                                (@DivisionCommMonoid.toDivisionMonoid Γ
+                                  (@CommGroupWithZero.toDivisionCommMonoid Γ
+                                    (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst_2)))))))))) →
+                @FirstOrder.Language.ElementarySubstructure FirstOrder.Language.val N
+                  (@FirstOrder.valStructure N inst Γ inst_2 v)
+'SpecialTransformations.Section3.valuedSubfieldElementarySubstructure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.valued_definable_nonempty_meets_subfield : ∀ {N Γ : Type} [inst : Field N]
+  [@IsAlgClosed N inst] [inst_2 : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation N Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2)
+      (@DivisionRing.toRing N (@Field.toDivisionRing N inst)))
+  (F : @Subfield N (@Field.toDivisionRing N inst)) [@IsAlgClosed (↥F) (@Subfield.toField N inst F)],
+  (∃ x,
+      And
+        (@Ne (↥F) x
+          (@OfNat.ofNat (↥F) (nat_lit 0)
+            (@Zero.toOfNat0 (↥F)
+              (@ZeroMemClass.zero (@Subfield N (@Field.toDivisionRing N inst)) N
+                (@Subfield.instSetLike N (@Field.toDivisionRing N inst))
+                (@MulZeroClass.toZero N
+                  (@instMulZeroClassOfSemiring N
+                    (@DivisionSemiring.toSemiring N (@Semifield.toDivisionSemiring N (@Field.toSemifield N inst)))))
+                ⋯ F))))
+        (@Ne Γ
+          (@DFunLike.coe
+            (@Valuation N Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2)
+              (@DivisionRing.toRing N (@Field.toDivisionRing N inst)))
+            N (fun x => Γ)
+            (@Valuation.instFunLike N Γ (@DivisionRing.toRing N (@Field.toDivisionRing N inst))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2))
+            v
+            (@Subtype.val N
+              (fun x =>
+                @Membership.mem N (@Subfield N (@Field.toDivisionRing N inst))
+                  (@SetLike.instMembership (@Subfield N (@Field.toDivisionRing N inst)) N
+                    (@Subfield.instSetLike N (@Field.toDivisionRing N inst)))
+                  F x)
+              x))
+          (@OfNat.ofNat Γ (nat_lit 1)
+            (@One.toOfNat1 Γ
+              (@InvOneClass.toOne Γ
+                (@DivInvOneMonoid.toInvOneClass Γ
+                  (@DivisionMonoid.toDivInvOneMonoid Γ
+                    (@DivisionCommMonoid.toDivisionMonoid Γ
+                      (@CommGroupWithZero.toDivisionCommMonoid Γ
+                        (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst_2)))))))))) →
+    ∀ (U : Set N),
+      @Set.Definable₁ N
+          (@SetLike.coe (@Subfield N (@Field.toDivisionRing N inst)) N
+            (@Subfield.instSetLike N (@Field.toDivisionRing N inst)) F)
+          FirstOrder.Language.val (@FirstOrder.valStructure N inst Γ inst_2 v) U →
+        @Set.Nonempty N U →
+          ∃ x,
+            @Membership.mem N (Set N) (@Set.instMembership N) U
+              (@Subtype.val N
+                (fun x =>
+                  @Membership.mem N (@Subfield N (@Field.toDivisionRing N inst))
+                    (@SetLike.instMembership (@Subfield N (@Field.toDivisionRing N inst)) N
+                      (@Subfield.instSetLike N (@Field.toDivisionRing N inst)))
+                    F x)
+                x)
+'SpecialTransformations.Section3.valued_definable_nonempty_meets_subfield' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.decode_preimage_definable_over_subfield : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))),
+  (∀ (x y : @SpecialTransformations.Milestone0.Transfer.VFType M sM),
+      Iff (@SpecialTransformations.Milestone0.VFValued.predV M sM x y)
+        (@LE.le Γ
+          (@Preorder.toLE Γ
+            (@PartialOrder.toPreorder Γ
+              (@SemilatticeInf.toPartialOrder Γ
+                (@Lattice.toSemilatticeInf Γ
+                  (@DistribLattice.toLattice Γ
+                    (@instDistribLatticeOfLinearOrder Γ
+                      (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))))))))
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v x)
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v y))) →
+    ∀
+      (F :
+        @Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+      (S A : Set M),
+      @LE.le (Set M) (@Set.instLE M) S
+          (@Set.image (@Subtype M fun x => @SpecialTransformations.Milestone0.iVF M sM x) M
+            (@Subtype.val M fun x => @SpecialTransformations.Milestone0.iVF M sM x)
+            (@SetLike.coe
+              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+              (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              F)) →
+        ∀ (σ : SpecialTransformations.Milestone0.SortTag),
+          @SpecialTransformations.Section3.DefinableAt M sM S σ A →
+            @Set.Definable₁ (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+              (@SetLike.coe
+                (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                F)
+              FirstOrder.Language.val
+              (@FirstOrder.valStructure (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM) Γ inst v)
+              (@Set.ofPred (@SpecialTransformations.Milestone0.Transfer.VFType M sM) fun x =>
+                @Membership.mem M (Set M) (@Set.instMembership M) A
+                  (@SpecialTransformations.Section3.RVRepresentatives.decode M sM σ x))
+'SpecialTransformations.Section3.decode_preimage_definable_over_subfield' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.sorted_definable_nonempty_meets_subfield : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))),
+  (∀ (x y : @SpecialTransformations.Milestone0.Transfer.VFType M sM),
+      Iff (@SpecialTransformations.Milestone0.VFValued.predV M sM x y)
+        (@LE.le Γ
+          (@Preorder.toLE Γ
+            (@PartialOrder.toPreorder Γ
+              (@SemilatticeInf.toPartialOrder Γ
+                (@Lattice.toSemilatticeInf Γ
+                  (@DistribLattice.toLattice Γ
+                    (@instDistribLatticeOfLinearOrder Γ
+                      (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))))))))
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v x)
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v y))) →
+    ∀
+      (F :
+        @Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+      [@IsAlgClosed (↥F)
+          (@Subfield.toField (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM) F)],
+      (∃ x,
+          And
+            (@Ne (↥F) x
+              (@OfNat.ofNat (↥F) (nat_lit 0)
+                (@Zero.toOfNat0 (↥F)
+                  (@ZeroMemClass.zero
+                    (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                      (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                    (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                      (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                    (@SpecialTransformations.Milestone0.Transfer.vfInstZero M sM hM) ⋯ F))))
+            (@Ne Γ
+              (@DFunLike.coe
+                (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+                  (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                      (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+                (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                  (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                      (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+                v
+                (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (fun x =>
+                    @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                      (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                      (@SetLike.instMembership
+                        (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                      F x)
+                  x))
+              (@OfNat.ofNat Γ (nat_lit 1)
+                (@One.toOfNat1 Γ
+                  (@InvOneClass.toOne Γ
+                    (@DivInvOneMonoid.toInvOneClass Γ
+                      (@DivisionMonoid.toDivInvOneMonoid Γ
+                        (@DivisionCommMonoid.toDivisionMonoid Γ
+                          (@CommGroupWithZero.toDivisionCommMonoid Γ
+                            (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst)))))))))) →
+        ∀ (S A : Set M),
+          @LE.le (Set M) (@Set.instLE M) S
+              (@Set.image (@Subtype M fun x => @SpecialTransformations.Milestone0.iVF M sM x) M
+                (@Subtype.val M fun x => @SpecialTransformations.Milestone0.iVF M sM x)
+                (@SetLike.coe
+                  (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                      (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                  (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                      (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                  F)) →
+            ∀ (σ : SpecialTransformations.Milestone0.SortTag),
+              @SpecialTransformations.Section3.DefinableAt M sM S σ A →
+                @Set.Nonempty M A →
+                  ∃ x,
+                    @Membership.mem M (Set M) (@Set.instMembership M) A
+                      (@SpecialTransformations.Section3.RVRepresentatives.decode M sM σ
+                        (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (fun x =>
+                            @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                              (@SetLike.instMembership
+                                (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                    (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                                (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                    (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                              F x)
+                          x))
+'SpecialTransformations.Section3.sorted_definable_nonempty_meets_subfield' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.vfFieldNames : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM :
+        @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+          SpecialTransformations.Milestone0.Axioms.ACVF] →
+      @Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)) →
+        Set M
+'SpecialTransformations.Section3.vfFieldNames' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.rv_definable_over_field_names : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (F :
+    @Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+      (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+        (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+  (x : ↥F),
+  @SpecialTransformations.Section3.DefinableClosureAt M sM (@SpecialTransformations.Section3.vfFieldNames M sM hM F)
+    SpecialTransformations.Milestone0.SortTag.rv
+    (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iRV M sM x)
+      (@CanonicalRV.encodedRv M sM hM
+        (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (fun x =>
+            @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@SetLike.instMembership
+                (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+              F x)
+          x)))
+'SpecialTransformations.Section3.rv_definable_over_field_names' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.acl_definable_over_field_names : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M),
+      (∀ (a : M),
+          @Membership.mem M (Set M) (@Set.instMembership M) S a → @SpecialTransformations.Milestone0.iVF M sM a) →
+        ∀ (b : M),
+          @Membership.mem M (Set M) (@Set.instMembership M)
+              (@SpecialTransformations.Section3.algebraicClosureSet M sM S) b →
+            ∃ σ,
+              @SpecialTransformations.Section3.DefinableClosureAt M sM
+                (@SpecialTransformations.Section3.vfFieldNames M sM hM
+                  (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S))
+                σ b
+'SpecialTransformations.Section3.acl_definable_over_field_names' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.acl_meets_sorted_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))),
+  (∀ (x y : @SpecialTransformations.Milestone0.Transfer.VFType M sM),
+      Iff (@SpecialTransformations.Milestone0.VFValued.predV M sM x y)
+        (@LE.le Γ
+          (@Preorder.toLE Γ
+            (@PartialOrder.toPreorder Γ
+              (@SemilatticeInf.toPartialOrder Γ
+                (@Lattice.toSemilatticeInf Γ
+                  (@DistribLattice.toLattice Γ
+                    (@instDistribLatticeOfLinearOrder Γ
+                      (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))))))))
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v x)
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v y))) →
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+        SpecialTransformations.Milestone0.Axioms.ACVF00 →
+      ∀ (S : Set M),
+        (∀ (a : M),
+            @Membership.mem M (Set M) (@Set.instMembership M) S a → @SpecialTransformations.Milestone0.iVF M sM a) →
+          (∃ x,
+              And
+                (@Ne (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) x
+                  (@OfNat.ofNat (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) (nat_lit 0)
+                    (@Zero.toOfNat0 (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S))
+                      (@ZeroMemClass.zero
+                        (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@SpecialTransformations.Milestone0.Transfer.vfInstZero M sM hM) ⋯
+                        (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)))))
+                (@Ne Γ
+                  (@DFunLike.coe
+                    (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+                      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                    (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+                    (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+                    v
+                    (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                      (fun x =>
+                        @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SetLike.instMembership
+                            (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                            (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                          (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S) x)
+                      x))
+                  (@OfNat.ofNat Γ (nat_lit 1)
+                    (@One.toOfNat1 Γ
+                      (@InvOneClass.toOne Γ
+                        (@DivInvOneMonoid.toInvOneClass Γ
+                          (@DivisionMonoid.toDivInvOneMonoid Γ
+                            (@DivisionCommMonoid.toDivisionMonoid Γ
+                              (@CommGroupWithZero.toDivisionCommMonoid Γ
+                                (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst)))))))))) →
+            ∀ (σ : SpecialTransformations.Milestone0.SortTag) (A : Set M),
+              @SpecialTransformations.Section3.DefinableAt M sM
+                  (@SpecialTransformations.Section3.algebraicClosureSet M sM S) σ A →
+                @Set.Nonempty M A →
+                  @Set.Nonempty M
+                    (@Inter.inter (Set M) (@Set.instInter M) A
+                      (@SpecialTransformations.Section3.algebraicClosureSet M sM S))
+'SpecialTransformations.Section3.acl_meets_sorted_definable' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.canonical_acl_meetsDefinable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))),
+  (∀ (x y : @SpecialTransformations.Milestone0.Transfer.VFType M sM),
+      Iff (@SpecialTransformations.Milestone0.VFValued.predV M sM x y)
+        (@LE.le Γ
+          (@Preorder.toLE Γ
+            (@PartialOrder.toPreorder Γ
+              (@SemilatticeInf.toPartialOrder Γ
+                (@Lattice.toSemilatticeInf Γ
+                  (@DistribLattice.toLattice Γ
+                    (@instDistribLatticeOfLinearOrder Γ
+                      (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))))))))
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v x)
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v y))) →
+    @CanonicalStructure.IsCanonical M sM →
+      @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+          SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (S : Set M),
+          (∀ (a : M),
+              @Membership.mem M (Set M) (@Set.instMembership M) S a → @SpecialTransformations.Milestone0.iVF M sM a) →
+            (∃ x,
+                And
+                  (@Ne (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) x
+                    (@OfNat.ofNat (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) (nat_lit 0)
+                      (@Zero.toOfNat0 (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S))
+                        (@ZeroMemClass.zero
+                          (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.vfInstZero M sM hM) ⋯
+                          (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)))))
+                  (@Ne Γ
+                    (@DFunLike.coe
+                      (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                      (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+                      (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+                      v
+                      (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (fun x =>
+                          @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                            (@SetLike.instMembership
+                              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                              (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                            (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S) x)
+                        x))
+                    (@OfNat.ofNat Γ (nat_lit 1)
+                      (@One.toOfNat1 Γ
+                        (@InvOneClass.toOne Γ
+                          (@DivInvOneMonoid.toInvOneClass Γ
+                            (@DivisionMonoid.toDivInvOneMonoid Γ
+                              (@DivisionCommMonoid.toDivisionMonoid Γ
+                                (@CommGroupWithZero.toDivisionCommMonoid Γ
+                                  (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst)))))))))) →
+              @FirstOrder.Language.MeetsDefinable SpecialTransformations.Milestone0.LRV M sM
+                (@SpecialTransformations.Section3.algebraicClosureSet M sM S)
+'SpecialTransformations.Section3.canonical_acl_meetsDefinable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.canonical_algebraicClosureSubstructure_elementary : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))),
+  (∀ (x y : @SpecialTransformations.Milestone0.Transfer.VFType M sM),
+      Iff (@SpecialTransformations.Milestone0.VFValued.predV M sM x y)
+        (@LE.le Γ
+          (@Preorder.toLE Γ
+            (@PartialOrder.toPreorder Γ
+              (@SemilatticeInf.toPartialOrder Γ
+                (@Lattice.toSemilatticeInf Γ
+                  (@DistribLattice.toLattice Γ
+                    (@instDistribLatticeOfLinearOrder Γ
+                      (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))))))))
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v x)
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v y))) →
+    ∀ (hc : @CanonicalStructure.IsCanonical M sM),
+      @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+          SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (S : Set M),
+          (∀ (a : M),
+              @Membership.mem M (Set M) (@Set.instMembership M) S a → @SpecialTransformations.Milestone0.iVF M sM a) →
+            (∃ x,
+                And
+                  (@Ne (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) x
+                    (@OfNat.ofNat (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) (nat_lit 0)
+                      (@Zero.toOfNat0 (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S))
+                        (@ZeroMemClass.zero
+                          (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.vfInstZero M sM hM) ⋯
+                          (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)))))
+                  (@Ne Γ
+                    (@DFunLike.coe
+                      (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                      (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+                      (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+                      v
+                      (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (fun x =>
+                          @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                            (@SetLike.instMembership
+                              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                              (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                            (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S) x)
+                        x))
+                    (@OfNat.ofNat Γ (nat_lit 1)
+                      (@One.toOfNat1 Γ
+                        (@InvOneClass.toOne Γ
+                          (@DivInvOneMonoid.toInvOneClass Γ
+                            (@DivisionMonoid.toDivInvOneMonoid Γ
+                              (@DivisionCommMonoid.toDivisionMonoid Γ
+                                (@CommGroupWithZero.toDivisionCommMonoid Γ
+                                  (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst)))))))))) →
+              @FirstOrder.Language.Substructure.IsElementary SpecialTransformations.Milestone0.LRV M sM
+                (@SpecialTransformations.Section3.algebraicClosureSubstructure M sM hM hc S)
+'SpecialTransformations.Section3.canonical_algebraicClosureSubstructure_elementary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.canonical_algebraicClosureSubstructure_model : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))),
+  (∀ (x y : @SpecialTransformations.Milestone0.Transfer.VFType M sM),
+      Iff (@SpecialTransformations.Milestone0.VFValued.predV M sM x y)
+        (@LE.le Γ
+          (@Preorder.toLE Γ
+            (@PartialOrder.toPreorder Γ
+              (@SemilatticeInf.toPartialOrder Γ
+                (@Lattice.toSemilatticeInf Γ
+                  (@DistribLattice.toLattice Γ
+                    (@instDistribLatticeOfLinearOrder Γ
+                      (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))))))))
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v x)
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+            v y))) →
+    ∀ (hc : @CanonicalStructure.IsCanonical M sM),
+      @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+          SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (S : Set M),
+          (∀ (a : M),
+              @Membership.mem M (Set M) (@Set.instMembership M) S a → @SpecialTransformations.Milestone0.iVF M sM a) →
+            (∃ x,
+                And
+                  (@Ne (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) x
+                    (@OfNat.ofNat (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) (nat_lit 0)
+                      (@Zero.toOfNat0 (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S))
+                        (@ZeroMemClass.zero
+                          (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.vfInstZero M sM hM) ⋯
+                          (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)))))
+                  (@Ne Γ
+                    (@DFunLike.coe
+                      (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                      (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+                      (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+                      v
+                      (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (fun x =>
+                          @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                            (@SetLike.instMembership
+                              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                              (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                            (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S) x)
+                        x))
+                    (@OfNat.ofNat Γ (nat_lit 1)
+                      (@One.toOfNat1 Γ
+                        (@InvOneClass.toOne Γ
+                          (@DivInvOneMonoid.toInvOneClass Γ
+                            (@DivisionMonoid.toDivInvOneMonoid Γ
+                              (@DivisionCommMonoid.toDivisionMonoid Γ
+                                (@CommGroupWithZero.toDivisionCommMonoid Γ
+                                  (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst)))))))))) →
+              @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV
+                (↥(@SpecialTransformations.Section3.algebraicClosureSubstructure M sM hM hc S))
+                (@FirstOrder.Language.Substructure.inducedStructure SpecialTransformations.Milestone0.LRV M sM
+                  (@SpecialTransformations.Section3.algebraicClosureSubstructure M sM hM hc S))
+                SpecialTransformations.Milestone0.Axioms.ACVF00
+'SpecialTransformations.Section3.canonical_algebraicClosureSubstructure_model' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.NontrivialFiniteValues : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] → Set M → Prop
+'SpecialTransformations.Section3.NontrivialFiniteValues' depends on axioms: [propext]
+@SpecialTransformations.Section3.nontrivialFiniteValues_normalize_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (A : Set M),
+  Iff (@SpecialTransformations.Section3.NontrivialFiniteValues M (@CanonicalStructure.normalize M sM) A)
+    (@SpecialTransformations.Section3.NontrivialFiniteValues M sM A)
+'SpecialTransformations.Section3.nontrivialFiniteValues_normalize_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.algebraicAt_rv_of_mem_acl : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (t : @CanonicalRV.RVSort M sM),
+  @Membership.mem M (Set M) (@Set.instMembership M) (@SpecialTransformations.Section3.algebraicClosureSet M sM S)
+      (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iRV M sM x) t) →
+    @SpecialTransformations.Section3.AlgebraicAt M sM S SpecialTransformations.Milestone0.SortTag.rv
+      (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iRV M sM x) t)
+'SpecialTransformations.Section3.algebraicAt_rv_of_mem_acl' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.acl_field_nontrivial_valuation : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M),
+      (∀ (a : M),
+          @Membership.mem M (Set M) (@Set.instMembership M) S a → @SpecialTransformations.Milestone0.iVF M sM a) →
+        @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+            (@SpecialTransformations.Section3.algebraicClosureSet M sM S) →
+          ∀ {Γ : Type} [inst : LinearOrderedCommGroupWithZero Γ]
+            (v :
+              @Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+                (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                  (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                    (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))),
+            (∀ (x y : @SpecialTransformations.Milestone0.Transfer.VFType M sM),
+                Iff (@SpecialTransformations.Milestone0.VFValued.predV M sM x y)
+                  (@LE.le Γ
+                    (@Preorder.toLE Γ
+                      (@PartialOrder.toPreorder Γ
+                        (@SemilatticeInf.toPartialOrder Γ
+                          (@Lattice.toSemilatticeInf Γ
+                            (@DistribLattice.toLattice Γ
+                              (@instDistribLatticeOfLinearOrder Γ
+                                (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))))))))
+                    (@DFunLike.coe
+                      (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                      (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+                      (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+                      v x)
+                    (@DFunLike.coe
+                      (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                      (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+                      (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+                      v y))) →
+              ∃ x,
+                And
+                  (@Ne (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) x
+                    (@OfNat.ofNat (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)) (nat_lit 0)
+                      (@Zero.toOfNat0 (↥(@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S))
+                        (@ZeroMemClass.zero
+                          (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.vfInstZero M sM hM) ⋯
+                          (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S)))))
+                  (@Ne Γ
+                    (@DFunLike.coe
+                      (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst)
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                      (@SpecialTransformations.Milestone0.Transfer.VFType M sM) (fun x => Γ)
+                      (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM) Γ
+                        (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst))
+                      v
+                      (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                        (fun x =>
+                          @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                            (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                            (@SetLike.instMembership
+                              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                              (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                            (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM S) x)
+                        x))
+                    (@OfNat.ofNat Γ (nat_lit 1)
+                      (@One.toOfNat1 Γ
+                        (@InvOneClass.toOne Γ
+                          (@DivInvOneMonoid.toInvOneClass Γ
+                            (@DivisionMonoid.toDivInvOneMonoid Γ
+                              (@DivisionCommMonoid.toDivisionMonoid Γ
+                                (@CommGroupWithZero.toDivisionCommMonoid Γ
+                                  (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst)))))))))
+'SpecialTransformations.Section3.acl_field_nontrivial_valuation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.algebraicClosureSet_definableClosure : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  @Eq (Set M)
+    (@SpecialTransformations.Section3.algebraicClosureSet M sM
+      (@SpecialTransformations.Section3.definableClosure M sM S))
+    (@SpecialTransformations.Section3.algebraicClosureSet M sM S)
+'SpecialTransformations.Section3.algebraicClosureSet_definableClosure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.canonical_vfGenerated_acl_meetsDefinable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @CanonicalStructure.IsCanonical M sM →
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+        SpecialTransformations.Milestone0.Axioms.ACVF00 →
+      ∀ (S : Set M),
+        @SpecialTransformations.Section3.VFGenerated M sM S →
+          @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+              (@SpecialTransformations.Section3.algebraicClosureSet M sM S) →
+            @FirstOrder.Language.MeetsDefinable SpecialTransformations.Milestone0.LRV M sM
+              (@SpecialTransformations.Section3.algebraicClosureSet M sM S)
+'SpecialTransformations.Section3.canonical_vfGenerated_acl_meetsDefinable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.canonical_vfGenerated_acl_elementary : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (hc : @CanonicalStructure.IsCanonical M sM),
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M),
+      @SpecialTransformations.Section3.VFGenerated M sM S →
+        @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+            (@SpecialTransformations.Section3.algebraicClosureSet M sM S) →
+          @FirstOrder.Language.Substructure.IsElementary SpecialTransformations.Milestone0.LRV M sM
+            (@SpecialTransformations.Section3.algebraicClosureSubstructure M sM hM hc S)
+'SpecialTransformations.Section3.canonical_vfGenerated_acl_elementary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.canonical_corollary_3_14_model : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (hc : @CanonicalStructure.IsCanonical M sM),
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M),
+      @SpecialTransformations.Section3.VFGenerated M sM S →
+        @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+            (@SpecialTransformations.Section3.algebraicClosureSet M sM S) →
+          @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV
+            (↥(@SpecialTransformations.Section3.algebraicClosureSubstructure M sM hM hc S))
+            (@FirstOrder.Language.Substructure.inducedStructure SpecialTransformations.Milestone0.LRV M sM
+              (@SpecialTransformations.Section3.algebraicClosureSubstructure M sM hM hc S))
+            SpecialTransformations.Milestone0.Axioms.ACVF00
+'SpecialTransformations.Section3.canonical_corollary_3_14_model' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.ModelTheory.elementaryEmbeddingWithNames : {L : FirstOrder.Language} →
+  {M N α : Type} →
+    [inst : L.Structure M] →
+      [inst_1 : L.Structure N] →
+        (f : @FirstOrder.Language.ElementaryEmbedding L M N inst inst_1) →
+          (u : α → M) →
+            @FirstOrder.Language.ElementaryEmbedding (L.withConstants α) M N
+              (@FirstOrder.Language.withConstantsStructure L M inst α
+                (@FirstOrder.Language.constantsOn.structure M α u))
+              (@FirstOrder.Language.withConstantsStructure L N inst_1 α
+                (@FirstOrder.Language.constantsOn.structure N α
+                  (@Function.comp α M N
+                    (@DFunLike.coe (@FirstOrder.Language.ElementaryEmbedding L M N inst inst_1) M (fun x => N)
+                      (@FirstOrder.Language.ElementaryEmbedding.instFunLike L M N inst inst_1) f)
+                    u)))
+'SpecialTransformations.ModelTheory.elementaryEmbeddingWithNames' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.ambient_named_model00 : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : @FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM),
+      @FirstOrder.Language.Theory.Model
+        (SpecialTransformations.Milestone0.LRV.withConstants
+          (@Set.Elem M
+            (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+              (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S)))
+        M
+        (@FirstOrder.Language.withConstantsStructure SpecialTransformations.Milestone0.LRV M sM
+          (@Set.Elem M
+            (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+              (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S))
+          (FirstOrder.Language.paramsStructure M
+            (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+              (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S)))
+        (@SpecialTransformations.Milestone0.SubstructureTheory.ACVF_S M sM S)
+'SpecialTransformations.Section3.ambient_named_model00' depends on axioms: [propext, Quot.sound]
+@SpecialTransformations.Section3.canonical_corollary_3_14_named : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (hc : @CanonicalStructure.IsCanonical M sM),
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : @FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM),
+      @SpecialTransformations.Section3.VFGenerated M sM
+          (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+            (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S) →
+        @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+            (@SpecialTransformations.Section3.algebraicClosureSet M sM
+              (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+                (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S)) →
+          let T :=
+            @SpecialTransformations.Section3.algebraicClosureSubstructure M sM hM hc
+              (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+                (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S);
+          @FirstOrder.Language.Theory.Model
+            (SpecialTransformations.Milestone0.LRV.withConstants
+              (@Set.Elem M
+                (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+                  (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S)))
+            (↥T)
+            (@FirstOrder.Language.withConstantsStructure SpecialTransformations.Milestone0.LRV (↥T)
+              (@FirstOrder.Language.Substructure.inducedStructure SpecialTransformations.Milestone0.LRV M sM T)
+              (@Set.Elem M
+                (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+                  (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S))
+              (@FirstOrder.Language.constantsOn.structure ↥T ↥S fun a =>
+                @Subtype.mk M
+                  (fun x =>
+                    @Membership.mem M (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM)
+                      (@SetLike.instMembership
+                        (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+                        (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM))
+                      T x)
+                  (@Subtype.val M
+                    (fun x =>
+                      @Membership.mem M (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM)
+                        (@SetLike.instMembership
+                          (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+                          (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM))
+                        S x)
+                    a)
+                  ⋯))
+            (@SpecialTransformations.Milestone0.SubstructureTheory.ACVF_S M sM S)
+'SpecialTransformations.Section3.canonical_corollary_3_14_named' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.definableClosure_normalize_eq : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  @Eq (Set M) (@SpecialTransformations.Section3.definableClosure M (@CanonicalStructure.normalize M sM) S)
+    (@SpecialTransformations.Section3.definableClosure M sM S)
+'SpecialTransformations.Section3.definableClosure_normalize_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.algebraicClosureSet_normalize_eq : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  @Eq (Set M) (@SpecialTransformations.Section3.algebraicClosureSet M (@CanonicalStructure.normalize M sM) S)
+    (@SpecialTransformations.Section3.algebraicClosureSet M sM S)
+'SpecialTransformations.Section3.algebraicClosureSet_normalize_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.vfGenerated_normalize_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M),
+  Iff (@SpecialTransformations.Section3.VFGenerated M (@CanonicalStructure.normalize M sM) S)
+    (@SpecialTransformations.Section3.VFGenerated M sM S)
+'SpecialTransformations.Section3.vfGenerated_normalize_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.normalizedAlgebraicClosureSubstructure : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM :
+        @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+          SpecialTransformations.Milestone0.Axioms.ACVF] →
+      Set M →
+        @FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M (@CanonicalStructure.normalize M sM)
+'SpecialTransformations.Section3.normalizedAlgebraicClosureSubstructure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.mem_normalizedAlgebraicClosureSubstructure : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S : Set M) (x : M),
+  Iff
+    (@Membership.mem M
+      (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M (@CanonicalStructure.normalize M sM))
+      (@SetLike.instMembership
+        (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M (@CanonicalStructure.normalize M sM))
+        M
+        (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M
+          (@CanonicalStructure.normalize M sM)))
+      (@SpecialTransformations.Section3.normalizedAlgebraicClosureSubstructure M sM hM S) x)
+    (@Membership.mem M (Set M) (@Set.instMembership M) (@SpecialTransformations.Section3.algebraicClosureSet M sM S) x)
+'SpecialTransformations.Section3.mem_normalizedAlgebraicClosureSubstructure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.normalized_acl_elementary : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M),
+      @SpecialTransformations.Section3.VFGenerated M sM S →
+        @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+            (@SpecialTransformations.Section3.algebraicClosureSet M sM S) →
+          @FirstOrder.Language.Substructure.IsElementary SpecialTransformations.Milestone0.LRV M
+            (@CanonicalStructure.normalize M sM)
+            (@SpecialTransformations.Section3.normalizedAlgebraicClosureSubstructure M sM hM S)
+'SpecialTransformations.Section3.normalized_acl_elementary' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.normalized_acl_model : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M),
+      @SpecialTransformations.Section3.VFGenerated M sM S →
+        @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+            (@SpecialTransformations.Section3.algebraicClosureSet M sM S) →
+          @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV
+            (↥(@SpecialTransformations.Section3.normalizedAlgebraicClosureSubstructure M sM hM S))
+            (@FirstOrder.Language.Substructure.inducedStructure SpecialTransformations.Milestone0.LRV M
+              (@CanonicalStructure.normalize M sM)
+              (@SpecialTransformations.Section3.normalizedAlgebraicClosureSubstructure M sM hM S))
+            SpecialTransformations.Milestone0.Axioms.ACVF00
+'SpecialTransformations.Section3.normalized_acl_model' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.corollary_3_14 : ∀ {M : Type} [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : @FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM),
+      @SpecialTransformations.Section3.VFGenerated M sM
+          (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+            (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S) →
+        @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+            (@SpecialTransformations.Section3.algebraicClosureSet M sM
+              (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+                (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S)) →
+          let T :=
+            @SpecialTransformations.Section3.normalizedAlgebraicClosureSubstructure M sM hM
+              (@SetLike.coe (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M sM) M
+                (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M sM) S);
+          @FirstOrder.Language.Theory.Model
+            (SpecialTransformations.Milestone0.LRV.withConstants
+              (@Set.Elem M
+                (@SetLike.coe
+                  (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                    (@CanonicalStructure.normalize M sM))
+                  M
+                  (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M
+                    (@CanonicalStructure.normalize M sM))
+                  (@SpecialTransformations.Section3.normalizeSubstructure M sM S))))
+            (↥T)
+            (@FirstOrder.Language.withConstantsStructure SpecialTransformations.Milestone0.LRV (↥T)
+              (@FirstOrder.Language.Substructure.inducedStructure SpecialTransformations.Milestone0.LRV M
+                (@CanonicalStructure.normalize M sM) T)
+              (@Set.Elem M
+                (@SetLike.coe
+                  (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                    (@CanonicalStructure.normalize M sM))
+                  M
+                  (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M
+                    (@CanonicalStructure.normalize M sM))
+                  (@SpecialTransformations.Section3.normalizeSubstructure M sM S)))
+              (@FirstOrder.Language.constantsOn.structure ↥T
+                ↥(@SpecialTransformations.Section3.normalizeSubstructure M sM S) fun a =>
+                @Subtype.mk M
+                  (fun x =>
+                    @Membership.mem M
+                      (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                        (@CanonicalStructure.normalize M sM))
+                      (@SetLike.instMembership
+                        (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                          (@CanonicalStructure.normalize M sM))
+                        M
+                        (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M
+                          (@CanonicalStructure.normalize M sM)))
+                      T x)
+                  (@Subtype.val M
+                    (fun x =>
+                      @Membership.mem M
+                        (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                          (@CanonicalStructure.normalize M sM))
+                        (@SetLike.instMembership
+                          (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                            (@CanonicalStructure.normalize M sM))
+                          M
+                          (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M
+                            (@CanonicalStructure.normalize M sM)))
+                        (@SpecialTransformations.Section3.normalizeSubstructure M sM S) x)
+                    a)
+                  ⋯))
+            (@SpecialTransformations.Milestone0.SubstructureTheory.ACVF_S M (@CanonicalStructure.normalize M sM)
+              (@SpecialTransformations.Section3.normalizeSubstructure M sM S))
+'SpecialTransformations.Section3.corollary_3_14' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableOverBase.eliminate_to_real_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM} {S : Set M} {n : Nat}
+  {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {A : Set (Fin n → M)},
+  @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn A →
+    (∀ (b : M),
+        @Membership.mem M (Set M) (@Set.instMembership M)
+            (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B) b →
+          ∃ σ, @SpecialTransformations.Section3.DefinableClosureAt M sM S σ b) →
+      (∀ (γ : @SpecialTransformations.Section3.Values.Gamma M sM hM),
+          @Membership.mem (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+              (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+              (@Set.instMembership (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+              (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B) γ →
+            @SpecialTransformations.Section3.DefinableAt M sM S SpecialTransformations.Milestone0.SortTag.rv
+              (@SpecialTransformations.Section3.Values.gammaPullback M sM hM
+                (@singleton (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+                  (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+                  (@Set.instSingletonSet (@SpecialTransformations.Section3.Values.Gamma M sM hM)) γ))) →
+        @SpecialTransformations.Section3.DefinableOver M sM S n sn A
+'SpecialTransformations.Section3.GammaParameters.DefinableOverBase.eliminate_to_real_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.real_vfGenerated : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+  @SpecialTransformations.Section3.GammaParameters.VFGeneratedBase M sM hM B →
+    @SpecialTransformations.Section3.VFGenerated M sM
+      (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B)
+'SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.real_vfGenerated' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.definableOver_iff_real : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+  @SpecialTransformations.Section3.GammaParameters.VFGeneratedBase M sM hM B →
+    ∀ {n : Nat} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (U : Set (Fin n → M)),
+      Iff (@SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn U)
+        (@SpecialTransformations.Section3.DefinableOver M sM
+          (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B) n sn U)
+'SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.definableOver_iff_real' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.definableAt_iff_real : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+  @SpecialTransformations.Section3.GammaParameters.VFGeneratedBase M sM hM B →
+    ∀ (σ : SpecialTransformations.Milestone0.SortTag) (U : Set M),
+      Iff (@SpecialTransformations.Section3.GammaParameters.DefinableAtBase M sM hM B σ U)
+        (@SpecialTransformations.Section3.DefinableAt M sM
+          (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B) σ U)
+'SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.definableAt_iff_real' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.algebraic_iff_real : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+  @SpecialTransformations.Section3.GammaParameters.VFGeneratedBase M sM hM B →
+    ∀ (σ : SpecialTransformations.Milestone0.SortTag) (b : M),
+      Iff (@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM B σ b)
+        (@SpecialTransformations.Section3.AlgebraicAt M sM
+          (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B) σ b)
+'SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.algebraic_iff_real' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.real_acl_eq : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+  @SpecialTransformations.Section3.GammaParameters.VFGeneratedBase M sM hM B →
+    @Eq (Set M)
+      (@Set.ofPred M fun b => ∃ σ, @SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM B σ b)
+      (@SpecialTransformations.Section3.algebraicClosureSet M sM
+        (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B))
+'SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.real_acl_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.gamma_names_lift_into_acl : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+      @SpecialTransformations.Section3.GammaParameters.VFGeneratedBase M sM hM B →
+        @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+            (@SpecialTransformations.Section3.algebraicClosureSet M sM
+              (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B)) →
+          ∀ (γ : @SpecialTransformations.Section3.Values.Gamma M sM hM),
+            @Membership.mem (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+                (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+                (@Set.instMembership (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+                (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B) γ →
+              ∃ t,
+                And
+                  (@Membership.mem M (Set M) (@Set.instMembership M)
+                    (@SpecialTransformations.Section3.algebraicClosureSet M sM
+                      (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B))
+                    (@SpecialTransformations.Section3.GammaParameters.raw M sM t))
+                  (@Eq (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+                    (@SpecialTransformations.Section3.GammaParameters.value M sM hM t) γ)
+'SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.gamma_names_lift_into_acl' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.corollary_3_14_gamma_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM),
+      @SpecialTransformations.Section3.GammaParameters.VFGeneratedBase M sM hM B →
+        @SpecialTransformations.Section3.NontrivialFiniteValues M sM
+            (@Set.ofPred M fun b =>
+              ∃ σ, @SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM B σ b) →
+          have T :=
+            @SpecialTransformations.Section3.normalizedAlgebraicClosureSubstructure M sM hM
+              (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B);
+          And
+            (@FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV (↥T)
+              (@FirstOrder.Language.Substructure.inducedStructure SpecialTransformations.Milestone0.LRV M
+                (@CanonicalStructure.normalize M sM) T)
+              SpecialTransformations.Milestone0.Axioms.ACVF00)
+            (And
+              (∀ (b : M),
+                Iff
+                  (@Membership.mem M
+                    (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                      (@CanonicalStructure.normalize M sM))
+                    (@SetLike.instMembership
+                      (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                        (@CanonicalStructure.normalize M sM))
+                      M
+                      (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M
+                        (@CanonicalStructure.normalize M sM)))
+                    T b)
+                  (∃ σ, @SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM B σ b))
+              (∀ (γ : @SpecialTransformations.Section3.Values.Gamma M sM hM),
+                @Membership.mem (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+                    (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+                    (@Set.instMembership (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+                    (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B) γ →
+                  ∃ t,
+                    And
+                      (@Membership.mem M
+                        (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                          (@CanonicalStructure.normalize M sM))
+                        (@SetLike.instMembership
+                          (@FirstOrder.Language.Substructure SpecialTransformations.Milestone0.LRV M
+                            (@CanonicalStructure.normalize M sM))
+                          M
+                          (@FirstOrder.Language.Substructure.instSetLike SpecialTransformations.Milestone0.LRV M
+                            (@CanonicalStructure.normalize M sM)))
+                        T (@SpecialTransformations.Section3.GammaParameters.raw M sM t))
+                      (@Eq (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+                        (@SpecialTransformations.Section3.GammaParameters.value M sM hM t) γ)))
+'SpecialTransformations.Section3.GammaParameters.corollary_3_14_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

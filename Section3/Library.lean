@@ -71,6 +71,13 @@ import Section3.GammaRVSeparation
 import Section3.RVGammaAlgebraicity
 import Section3.RVExchange
 
+import Section3.AclFieldImages
+import Section3.AlgebraicSubfieldModel
+import Section3.AclModelGeometry
+import Section3.AclModel
+import Section3.GammaClosureElimination
+import Section3.GammaAclModel
+
 /-!
 # Checked Section 3 library
 

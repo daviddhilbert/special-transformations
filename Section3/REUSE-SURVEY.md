@@ -615,3 +615,54 @@ bad-output relation, the actual uniform finite-side bound and the reverse
 finiteness theorem. ACVF(0,0), genuine saturation, the countable lower bound
 and real-base smallness are explicit; there is no VF-field-base or homogeneity
 premise. Other sections' root-consumer artifacts remain separately recorded.
+
+
+## Full acl modelhood and Corollary 3.14 (November 5, 2026)
+
+Reused the checked coefficient-preserving RV lifting and valued-subfield
+elementary embedding from `AlgebraicRVLifting`, together with sorted parameter
+elimination, relative field algebraic closure and canonical normalization.
+The legacy `M3AclField.lean` proves only field closure and was not treated as
+full LRV modelhood. No result from the cited companion paper is assumed.
+
+Focused source inspection in the unchanged Mathlib pin
+`0df444a360eaa60ab8c11dca51a86af692955474` found the needed generic bridges:
+`Mathlib/ModelTheory/ElementarySubstructures.lean`,
+`ElementarySubstructure.meetsDefinable`, `MeetsDefinable.closure_eq_self`, and
+`MeetsDefinable.isElementary_closure`; and
+`Mathlib/ModelTheory/ElementaryMaps.lean`,
+`ElementaryEmbedding.liftWithConstants` (Apache-2.0, Aaron Anderson).
+The former are directly imported. `ModelTheory.elementaryEmbeddingWithNames`
+is an attributed adaptation of the latter to an arbitrary original name
+type, rather than only a subset of the embedding's source. Relative algebraic
+closedness uses the pinned `IsAlgClosure.isAlgClosed` projection; that
+projection is not itself registered as a typeclass instance. No dependency
+upgrade or new standard-reference hypothesis is introduced.
+
+Over VF generators, actual RV acl is the rv-image of the relative algebraic
+closure F of the generated VF field. Thus every real acl parameter is
+definable over VF names in F. The complete decode-preimage of any sorted
+definable set is valued-language definable over F. The checked valued QE
+embedding makes F elementary when its restricted valuation is nontrivial.
+Mathlib's definable-set Tarski-Vaught criterion then gives the full LRV
+elementary submodel on the actual acl carrier, including RV surjectivity and
+all theory axioms. Naming is by the literal inclusion of the original base.
+For arbitrary original models, canonical normalization is internal and
+explicit; its correctly sorted operations and original acl carrier agree.
+
+Full invariant Gamma fibres also prove name elimination: quantified codes
+are restricted to their entire original-base definable value fibres, and
+then projected. For a VF-generated imaginary base this preserves precisely
+its real part's definable sets and acl. Elementarity meets each named Gamma
+value fibre inside the acl model, with no externally chosen representative
+named in the conclusion. General Gamma closure laws remain separate.
+
+The six new modules passed standalone pinned Lean compilation. The combined
+certificate covers 180 modules, 786 actual headline type/axiom checks and a
+fresh root import; only `propext`, `Classical.choice` and `Quot.sound` occur.
+Every new full headline was reviewed, including original versus normalized
+structure arguments, genuine Gamma bases, named atomic diagrams and the
+nontrivial actual-value hypothesis. There is no saturation or cardinality
+premise. Matching earlier compiler artifacts and the 69 separately recorded
+external root-consumer interfaces are reused; this does not audit Sections 4
+or 5. The compiler and ACVF-QE revisions remain unchanged.

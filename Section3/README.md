@@ -18,7 +18,7 @@ The new checked library starts at [Library.lean](Library.lean), which imports
 only new audited modules and the pinned ACVF-QE definitions. It includes
 base-relative closure and compactness infrastructure, exact C-minimality,
 sorted tuple descent, ball and coordinate interfaces, both assertions of
-3.6 and 3.7, results 3.8–3.12, 3.15, 3.17, 3.18(1), the closed-ball alternative of 3.18(2), and
+3.6 and 3.7, results 3.8–3.12, 3.14–3.15, 3.17, 3.18(1), the closed-ball alternative of 3.18(2), and
 quotient-family notation. Finite coding preserves the original parameter base
 and includes its complete graph in all VF tuple arities. Closed-ball centers
 are defined on the actual ball quotient over the same original base. Definable
@@ -45,7 +45,7 @@ outputs over nonempty real-tuple families. Gamma-output and Gamma-domain
 extensions remain open. Other base-sensitive results
 still need their Gamma extensions; defining the closure predicates does not
 prove their closure or generation laws. The last published combined certificate covers
-174 modules and 743 actual headline type/axiom checks, plus a fresh root import.
+180 modules and 786 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -60,8 +60,13 @@ The semantic proof of 3.17 is independent of that still-open syntactic theorem.
 
 The coefficient-preserving geometry now lifts RV points algebraic over a VF
 parameter set into any algebraically closed VF subfield containing that set,
-even when that subfield's valuation is trivial. The full modelhood assertion
-of 3.14 remains open. Finite/cofinite RV fibres, uniform finite-side bounds
+even when that subfield's valuation is trivial. Full VF/RV modelhood in
+3.14 is now proved: the actual acl carrier is an elementary submodel with
+normalized sorted operations and the named base's atomic diagram. Genuine
+VF-generated Gamma bases have the same real acl as their real part, and
+every Gamma name is represented inside that model. The only additional
+hypothesis is nontriviality of the actual value group of acl; no saturation
+is needed. Finite/cofinite RV fibres, uniform finite-side bounds
 and pure finite-threshold endpoint lemmas supply the exchange proof;
 the full reverse-fibre argument in `RVExchange` now proves RV exchange
 3.6, including genuine Gamma-named bases. The Gamma assertion

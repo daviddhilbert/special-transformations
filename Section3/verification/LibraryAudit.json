@@ -1383,11 +1383,59 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "AclFieldImages",
+      "source_sha256": "1876c03c5db3f6a1353a95a0a4d77a9defcca1057c07bbb271b7fbdbcd602c47",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "AlgebraicSubfieldModel",
+      "source_sha256": "4a2857808b44089fd1a19e56661069d80a0bf9110aac2cf4f061e34ffa5a9cdd",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "AclModelGeometry",
+      "source_sha256": "ce24b13f801d073d2dbacc3b67bc9758fa7a2dd6f9c688ff0116de5d174d0caf",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "AclModel",
+      "source_sha256": "363bccbb11efedff576e5ecc5decd9703ab63f1529700ce0df8f968b52862137",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "GammaClosureElimination",
+      "source_sha256": "8ec43746f99f7e0425e683339ff6c18fc135f1824751783cb092f8830c45d7cb",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "GammaAclModel",
+      "source_sha256": "fc1e23bf3137aac587515ad4fc7b51f36ba458c6f969993b0470be9a2562b585",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "1908a841777c808b5a304640886dedd3a515c2ddbeaa6e3221f43d98142dc0ea",
+      "source_sha256": "464b00bec2bb7d83ce18c11acc90ca922500c657217281b86e1537603ffcabfa",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1395,7 +1443,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "9b55398fb848b9a3a46686fc42ccd78e91b0f627d38f6acd3c6022c35c26e033",
+      "source_sha256": "fdfe84d6041c2096438fc5786667f2cae37e536ed5b1a04502b90607b55017fd",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1411,7 +1459,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "174 integrated Section3 modules; matching compiler caches reused where indicated; fresh 743-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "180 integrated Section3 modules; matching compiler caches reused where indicated; fresh 786-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -5042,11 +5090,223 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.vfAlgebraicClosureField_isAlgClosed": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.vf_parameters_in_algebraicClosureField": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rv_algebraic_of_algebraic_lift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rv_algebraicClosure_iff_lift": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.valuedSubfieldSubstructure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.valuedSubfieldElementarySubstructure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.valued_definable_nonempty_meets_subfield": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.decode_preimage_definable_over_subfield": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.sorted_definable_nonempty_meets_subfield": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.vfFieldNames": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rv_definable_over_field_names": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.acl_definable_over_field_names": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.acl_meets_sorted_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.canonical_acl_meetsDefinable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.canonical_algebraicClosureSubstructure_elementary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.canonical_algebraicClosureSubstructure_model": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.NontrivialFiniteValues": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.nontrivialFiniteValues_normalize_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicAt_rv_of_mem_acl": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.acl_field_nontrivial_valuation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicClosureSet_definableClosure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.canonical_vfGenerated_acl_meetsDefinable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.canonical_vfGenerated_acl_elementary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.canonical_corollary_3_14_model": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.ModelTheory.elementaryEmbeddingWithNames": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ambient_named_model00": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.canonical_corollary_3_14_named": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.definableClosure_normalize_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraicClosureSet_normalize_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.vfGenerated_normalize_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.normalizedAlgebraicClosureSubstructure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.mem_normalizedAlgebraicClosureSubstructure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.normalized_acl_elementary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.normalized_acl_model": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.corollary_3_14": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.eliminate_to_real_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.real_vfGenerated": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.definableOver_iff_real": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.definableAt_iff_real": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.algebraic_iff_real": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.real_acl_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.gamma_names_lift_into_acl": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.corollary_3_14_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
     "SpecialTransformations.ModelTheory.HasMore": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "dd39ac85f97c890c779b50782e590a918d68c6c4b76677d4d27ac857bcda9ee6",
+  "verifier_sha256": "5d6944478064c53818ca76ea4fc6ba3316490a7e9cf7b76afd75f5d7f758370b",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",
