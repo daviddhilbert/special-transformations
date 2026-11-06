@@ -9,13 +9,14 @@ live in [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE), pinned here at
 
 ## Continue here
 
-Read [Section3/HANDOFF.md](Section3/HANDOFF.md) in the next session. Its scope
-is **all of Section 3 and the material in Section 2 after Theorem 2.3**.
+Sections 2--3 are complete in the approved scope recorded in
+[Section3/HANDOFF.md](Section3/HANDOFF.md). Section 4 has a checked
+[entry point](Section4/Library.lean) and [verification record](Section4/STATUS.md).
 QE is finished and is a dependency of this work.
 
 | Folder | Scope |
 | --- | --- |
-| [Section3/](Section3/README.md) | Next task; structural properties and remaining Section 2 preliminaries |
+| [Section3/](Section3/README.md) | Completed structural properties and remaining Section 2 preliminaries |
 | [Section4/](Section4/README.md) | Dimensions, definable categories, and Grothendieck constructions |
 | Section5/ | RV-pullbacks and special bijections |
 | Section6/ | Henselian-field QE and descent |
@@ -29,13 +30,16 @@ QE is finished and is a dependency of this work.
 The relocated section files are **legacy candidates**. The new Section 3
 library has a separate [entry point](Section3/Library.lean) and
 [precise status](Section3/STATUS.md). The legacy snapshots are excluded from
-that entry point. Completion of all Section 3 or Section 4 is not claimed.
+that entry point. Sections 2--3 are complete in the approved scope recorded
+in [their handoff](Section3/HANDOFF.md). The new
+[Section 4 library](Section4/Library.lean) and [status](Section4/STATUS.md)
+cover dimensions, categories and the Grothendieck constructions.
 
 ## Build and inspect
 
 Lean 4.33.1 and the matching Mathlib revision are pinned. `lake build` builds
 the coordination root, which imports the completed `ACVFQE` library and the
-new Section 3 entry point. Legacy
+Section 3 and Section 4 entry points. Legacy
 section snapshots are deliberately not imported into that root automatically.
 
 ```sh
