@@ -41,11 +41,12 @@ jobs:
           lint: "false"
           use-mathlib-cache: "true"
 
-      - name: Check compiled-provider cache safeguards
-        run: python3 -m unittest discover -s scripts -p test_lean_provenance.py -v
-
       - name: Register the pinned QE package's sibling modules
         run: python3 scripts/prepare_ci.py
+
+      - name: Check compiled import cache provenance
+        id: provenance
+        run: python3 scripts/test_lean_provenance.py
 
       - name: Build the pinned project from source
         id: build
@@ -68,6 +69,11 @@ jobs:
         if: ${{ success() && hashFiles('Section4/verify.py') != '' }}
         run: lake env python3 Section4/verify.py
 
+      - name: Audit Section 5 when its verifier is present
+        id: section5
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && hashFiles('Section5/verify.py') != '' }}
+        run: lake env python3 Section5/verify.py
+
       - name: Publish verification summary
         if: ${{ always() }}
         shell: bash
@@ -78,9 +84,11 @@ jobs:
           | Check | Outcome |
           | --- | --- |
           | Pinned project build | ${{ steps.build.outcome }} |
+          | Compiled import cache regression checks | ${{ steps.provenance.outcome }} |
           | Published QE headline types and axioms | ${{ steps.foundation.outcome }} |
           | Section 3 verifier, if present | ${{ steps.section3.outcome }} |
           | Section 4 verifier, if present | ${{ steps.section4.outcome }} |
+          | Section 5 verifier, if present | ${{ steps.section5.outcome }} |
 
           Download the verification artifact for compiler logs and headline audits.
           A skipped step is not a passed check. This run covers the current library
@@ -109,3 +117,7 @@ jobs:
             .scratch/section4-verified/*.txt
             .scratch/section4-verified/HeadlineAudit.lean
             .scratch/section4-verified/CombinedImport.lean
+            .scratch/section5-verified/*.log
+            .scratch/section5-verified/*.json
+            .scratch/section5-verified/*.txt
+            .scratch/section5-verified/*.lean

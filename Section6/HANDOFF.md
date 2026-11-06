@@ -68,9 +68,10 @@ An earlier symlinked-QE dependency incident was fully restored and isolated;
 `.scratch/section6-dependency-restore.json` records that recovery. No new QE
 recovery or proof is needed.
 
-The Section 5 interfaces used in that local certificate are accepted inputs
-and are not bundled into this Section 6 commit. Supply their compiled
-interfaces or separately published sources when reproducing the check.
+The Section 6 checkpoint was published as commit 4f93a69. The author's
+subsequent Section 5 publication supplies its source dependency in this
+repository. Those interfaces remain accepted earlier inputs. This
+dependency publication changes no Section 6 proof source or theorem scope.
 
 There is no remaining Section6-specific obligation for the three requested
 targets within the displayed accepted-input scope. Preserve the author's

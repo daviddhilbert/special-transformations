@@ -90,6 +90,7 @@ draft are outside this certificate.
 
 ## Publication boundary
 
-This Section 6 commit does not include the separately maintained Section 5
-work. Reproducing the recorded verification requires its accepted compiled
-interfaces on the import path, or its separately published sources.
+The Section 6 checkpoint was published separately as commit 4f93a69. The
+author subsequently authorized publishing Section 5 in the same repository,
+supplying the source dependency for this library. Its mathematics remains
+an accepted earlier input; the Section 6 proof sources are unchanged.

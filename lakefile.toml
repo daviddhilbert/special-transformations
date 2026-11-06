@@ -265,6 +265,21 @@ globs = [
 ]
 
 [[lean_lib]]
+name = "Section5"
+roots = ["Section5.Library"]
+globs = [
+  "Section5.Geometry", "Section5.Core", "Section5.TransformGeometry",
+  "Section5.RootConstruction", "Section5.UnarySets", "Section5.UnaryUniform",
+  "Section5.CoordinateLift", "Section5.UnaryRelations", "Section5.VerticalConstruction",
+  "Section5.UnaryMaps", "Section5.Assembly", "Section5.Centering",
+  "Section5.GeneralAssembly", "Section5.GeneralExistence", "Section5.PolynomialExpression",
+  "Section5.PolynomialPreparation", "Section5.PullbackLift", "Section5.CategoryLift",
+  "Section5.TaggedAmbient", "Section5.ParameterExtension", "Section5.GammaGraphs",
+  "Section5.GammaLogic", "Section5.GammaRestriction", "Section5.GammaExistence",
+  "Section5.GammaLift", "Section5.GammaContraction", "Section5.ZeroNormalization", "Section5.Library",
+]
+
+[[lean_lib]]
 name = "Section6"
 roots = ["Section6.Library"]
 

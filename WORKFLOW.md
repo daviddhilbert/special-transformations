@@ -116,13 +116,28 @@ source hashes and the configuration change in the verification artifact.
 Review this workaround when updating the dependency pin.
 
 The workflow builds the pinned project root and audits the published QE
-headline types and axioms. It runs the Section 3 and Section 4 verifiers when
+headline types and axioms. It runs the Section 3, Section 4 and Section 5 verifiers when
 they are present in the checked-out revision. It retains logs, audits and status
 records as downloadable artifacts, including available diagnostics on failure.
 The run summary records these separate step outcomes.
 
+The Section 5 verifier resolves the accepted earlier compiled import closure
+with Lean, records provider paths and artifact hashes, and binds cache reuse
+to that manifest and to compiled Section 5 dependencies. It rejects the old
+source-only cache format and checks provider stability across the run. The
+workflow also runs the cache provenance regression checks. Earlier mathematics
+remains an explicitly given input to this verifier.
+
+An old source-only cache entry is not sufficient to establish compiled-input
+provenance. A separate kernel replay may re-certify unchanged, previously
+source-compiled Section 5 artifacts against the current given boundary. Retain
+the original compiler receipts, exact source/artifact identities, current import
+manifest, replay source, log and exit status, and bind that evidence into the
+renewed cache certificate. Distinguish this route from fresh source compilation;
+the combined headline audit must still compile freshly.
+
 This checks the current integrated libraries and selected headlines. It does
-not certify all of Sections 2–10, legacy snapshots, unimported Section 5 work,
+not certify all of Sections 2–10, legacy snapshots, unimported work,
 or the semantic fidelity of every statement to the paper. Later integrated
 sections need explicit verifier steps and headline audits. The manual source
 and hypothesis review above remains required even when CI is green.

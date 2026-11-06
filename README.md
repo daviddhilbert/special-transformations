@@ -18,7 +18,7 @@ QE is finished and is a dependency of this work.
 | --- | --- |
 | [Section3/](Section3/README.md) | Completed structural properties and remaining Section 2 preliminaries |
 | [Section4/](Section4/README.md) | Dimensions, definable categories, and Grothendieck constructions |
-| Section5/ | RV-pullbacks and special bijections |
+| [Section5/](Section5/README.md) | RV-pullbacks and special bijections |
 | [Section6/](Section6/README.md) | Henselian-field QE and descent |
 | Section7/ | Lifting functions |
 | Section8/ | Further structural properties |
@@ -35,19 +35,24 @@ in [their handoff](Section3/HANDOFF.md). The new
 [Section 4 library](Section4/Library.lean) and [status](Section4/STATUS.md)
 cover dimensions, categories and the Grothendieck constructions.
 
+Section 5 has a checked [entry point](Section5/Library.lean),
+[status](Section5/STATUS.md) and [handoff](Section5/HANDOFF.md). Its 28-module
+checkpoint passed 282 headline audits, with an additional 39 consumer audits.
+It treats the explicit Sections 2–4 interfaces as given and supplies the
+source dependency used by Section 6.
+
 Section 6 has a separate [entry point](Section6/Library.lean),
 [status](Section6/STATUS.md) and [handoff](Section6/HANDOFF.md). It proves
 syntactic Lemma 6.3, named-base Proposition 6.4 and Denef–Pas Corollary 6.5
 with the explicit accepted earlier/standard inputs. Its pinned local check
-passed 78 modules, 444 headline audits and the combined import. Reproducing
-that check requires the accepted Section 5 interfaces, maintained separately
-from this Section 6 publication.
+passed 78 modules, 444 headline audits and the combined import. The Section 5
+source dependency for that check is now included in this repository.
 
 ## Build and inspect
 
 Lean 4.33.1 and the matching Mathlib revision are pinned. `lake build` builds
 the coordination root, which imports the completed `ACVFQE` library and the
-Section 3 and Section 4 entry points. Legacy
+Section 3, Section 4 and Section 5 entry points. Legacy
 section snapshots are deliberately not imported into that root automatically.
 
 ```sh

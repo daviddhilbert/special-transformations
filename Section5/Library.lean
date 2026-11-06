@@ -1,0 +1,644 @@
+import Section5.Geometry
+import Section5.Core
+import Section5.TransformGeometry
+import Section5.RootConstruction
+import Section5.UnarySets
+import Section5.UnaryUniform
+import Section5.CoordinateLift
+import Section5.UnaryRelations
+import Section5.VerticalConstruction
+import Section5.UnaryMaps
+import Section5.Assembly
+import Section5.Centering
+import Section5.GeneralAssembly
+import Section5.GeneralExistence
+import Section5.PolynomialPreparation
+import Section5.CategoryLift
+import Section5.TaggedAmbient
+import Section5.GammaLift
+import Section5.GammaContraction
+import Section5.ZeroNormalization
+
+/-!
+# Section 5 library
+
+Only the new shared-language modules are imported. The legacy standalone
+snapshot and scaffold remain outside this library. STATUS.md records paper
+coverage and the explicit accepted earlier-section inputs.
+-/
+
+set_option pp.explicit true
+set_option pp.fullNames true
+
+#check @SpecialTransformations.Section5.hull_idem
+#print axioms SpecialTransformations.Section5.hull_idem
+#check @SpecialTransformations.Section5.isRVPullback_iff
+#print axioms SpecialTransformations.Section5.isRVPullback_iff
+#check @SpecialTransformations.Section5.canonical_injective
+#print axioms SpecialTransformations.Section5.canonical_injective
+#check @SpecialTransformations.Section5.canonical_image_pullback
+#print axioms SpecialTransformations.Section5.canonical_image_pullback
+#check @SpecialTransformations.Section5.tagged_hull
+#print axioms SpecialTransformations.Section5.tagged_hull
+#check @SpecialTransformations.Section5.FocusGeometry.center_sameRV
+#print axioms SpecialTransformations.Section5.FocusGeometry.center_sameRV
+#check @SpecialTransformations.Section5.FocusGeometry.eta_injOn
+#print axioms SpecialTransformations.Section5.FocusGeometry.eta_injOn
+#check @SpecialTransformations.Section5.rvCode_eq
+#print axioms SpecialTransformations.Section5.rvCode_eq
+#check @SpecialTransformations.Section5.subCode_eq
+#print axioms SpecialTransformations.Section5.subCode_eq
+#check @SpecialTransformations.Section5.canonicalMap
+#print axioms SpecialTransformations.Section5.canonicalMap
+#check @SpecialTransformations.Section5.canonicalImage_carrier
+#print axioms SpecialTransformations.Section5.canonicalImage_carrier
+#check @SpecialTransformations.Section5.keyMap
+#print axioms SpecialTransformations.Section5.keyMap
+#check @SpecialTransformations.Section5.hull_definable
+#print axioms SpecialTransformations.Section5.hull_definable
+#check @SpecialTransformations.Section5.subtractMap
+#print axioms SpecialTransformations.Section5.subtractMap
+#check @SpecialTransformations.Section5.Focus.centerMap
+#print axioms SpecialTransformations.Section5.Focus.centerMap
+#check @SpecialTransformations.Section5.Focus.etaMap
+#print axioms SpecialTransformations.Section5.Focus.etaMap
+#check @SpecialTransformations.Section5.Focus.etaMap_injective
+#print axioms SpecialTransformations.Section5.Focus.etaMap_injective
+#check @SpecialTransformations.Section5.Primitive.bijective
+#print axioms SpecialTransformations.Section5.Primitive.bijective
+#check @SpecialTransformations.Section5.Chain.bijective
+#print axioms SpecialTransformations.Section5.Chain.bijective
+#check @SpecialTransformations.Section5.SpecialBijection.bijective
+#print axioms SpecialTransformations.Section5.SpecialBijection.bijective
+#check @SpecialTransformations.Section5.SpecialBijection.equiv
+#print axioms SpecialTransformations.Section5.SpecialBijection.equiv
+#check @SpecialTransformations.Section5.SpecialBijection.inverseMap
+#print axioms SpecialTransformations.Section5.SpecialBijection.inverseMap
+#check @SpecialTransformations.Section5.SpecialBijection.inverse_apply
+#print axioms SpecialTransformations.Section5.SpecialBijection.inverse_apply
+#check @SpecialTransformations.Section5.SpecialBijection.apply_inverse
+#print axioms SpecialTransformations.Section5.SpecialBijection.apply_inverse
+#check @SpecialTransformations.Section5.SpecialBijection.length_comp
+#print axioms SpecialTransformations.Section5.SpecialBijection.length_comp
+#check @SpecialTransformations.Section5.contractionMap
+#print axioms SpecialTransformations.Section5.contractionMap
+#check @SpecialTransformations.Section5.contractionMap_spec
+#print axioms SpecialTransformations.Section5.contractionMap_spec
+#check @SpecialTransformations.Section5.exists_unique_definable_contraction
+#print axioms SpecialTransformations.Section5.exists_unique_definable_contraction
+#check @SpecialTransformations.Section5.root_factor_rv_eq
+#print axioms SpecialTransformations.Section5.root_factor_rv_eq
+#check @SpecialTransformations.Section5.barycentric_code_controls_factors
+#print axioms SpecialTransformations.Section5.barycentric_code_controls_factors
+#check @SpecialTransformations.Section5.unary_polynomial_rv_of_barycentric_code
+#print axioms SpecialTransformations.Section5.unary_polynomial_rv_of_barycentric_code
+#check @SpecialTransformations.Section5.rv_add_back
+#print axioms SpecialTransformations.Section5.rv_add_back
+#check @SpecialTransformations.Section5.FocusGeometry.eta_target_strict
+#print axioms SpecialTransformations.Section5.FocusGeometry.eta_target_strict
+#check @SpecialTransformations.Section5.FocusGeometry.image_pullback
+#print axioms SpecialTransformations.Section5.FocusGeometry.image_pullback
+#check @SpecialTransformations.Section5.SpecialBijection.preserves_pullback
+#print axioms SpecialTransformations.Section5.SpecialBijection.preserves_pullback
+#check @SpecialTransformations.Section5.FocusGeometry.unary_sub
+#print axioms SpecialTransformations.Section5.FocusGeometry.unary_sub
+#check @SpecialTransformations.Section5.Chain.labels_eq_of
+#print axioms SpecialTransformations.Section5.Chain.labels_eq_of
+#check @SpecialTransformations.Section5.Chain.sameRV_of
+#print axioms SpecialTransformations.Section5.Chain.sameRV_of
+#check @SpecialTransformations.Section5.Chain.unary_sub
+#print axioms SpecialTransformations.Section5.Chain.unary_sub
+#check @SpecialTransformations.Section5.SpecialBijection.inverse_contractible
+#print axioms SpecialTransformations.Section5.SpecialBijection.inverse_contractible
+#check @SpecialTransformations.Section5.SpecialBijection.unary_inverse_fibre
+#print axioms SpecialTransformations.Section5.SpecialBijection.unary_inverse_fibre
+#check @SpecialTransformations.Section5.SpecialBijection.remark_5_3
+#print axioms SpecialTransformations.Section5.SpecialBijection.remark_5_3
+#check @SpecialTransformations.Section5.normalizeVFEquiv
+#print axioms SpecialTransformations.Section5.normalizeVFEquiv
+#check @SpecialTransformations.Section5.mean_normalize
+#print axioms SpecialTransformations.Section5.mean_normalize
+#check @SpecialTransformations.Section5.mean_definable_normalized
+#print axioms SpecialTransformations.Section5.mean_definable_normalized
+#check @SpecialTransformations.Section5.mean_sameRV
+#print axioms SpecialTransformations.Section5.mean_sameRV
+#check @SpecialTransformations.Section5.rootFocusGeometry
+#print axioms SpecialTransformations.Section5.rootFocusGeometry
+#check @SpecialTransformations.Section5.rootBound_step
+#print axioms SpecialTransformations.Section5.rootBound_step
+#check @SpecialTransformations.Section5.FiniteRootSet.focus
+#print axioms SpecialTransformations.Section5.FiniteRootSet.focus
+#check @SpecialTransformations.Section5.FiniteRootSet.iterate
+#print axioms SpecialTransformations.Section5.FiniteRootSet.iterate
+#check @SpecialTransformations.Section5.FiniteRootSet.centralize_tagged
+#print axioms SpecialTransformations.Section5.FiniteRootSet.centralize_tagged
+#check @SpecialTransformations.Section5.FiniteRootSet.centralize_after
+#print axioms SpecialTransformations.Section5.FiniteRootSet.centralize_after
+#check @SpecialTransformations.Section5.polynomial_contractible_of_zero_roots
+#print axioms SpecialTransformations.Section5.polynomial_contractible_of_zero_roots
+#check @SpecialTransformations.Section5.polynomialCode_definable
+#print axioms SpecialTransformations.Section5.polynomialCode_definable
+#check @SpecialTransformations.Section5.polynomialZeroSet_finite
+#print axioms SpecialTransformations.Section5.polynomialZeroSet_finite
+#check @SpecialTransformations.Section5.scalarContractible_iff
+#print axioms SpecialTransformations.Section5.scalarContractible_iff
+#check @SpecialTransformations.Section5.theorem_5_4_unary
+#print axioms SpecialTransformations.Section5.theorem_5_4_unary
+#check @SpecialTransformations.Section5.Focus.restrict
+#print axioms SpecialTransformations.Section5.Focus.restrict
+#check @SpecialTransformations.Section5.SpecialBijection.restrict_at
+#print axioms SpecialTransformations.Section5.SpecialBijection.restrict_at
+#check @SpecialTransformations.Section5.RootFamily.focus
+#print axioms SpecialTransformations.Section5.RootFamily.focus
+#check @SpecialTransformations.Section5.RootFamily.step_bound
+#print axioms SpecialTransformations.Section5.RootFamily.step_bound
+#check @SpecialTransformations.Section5.RootFamily.iterate
+#print axioms SpecialTransformations.Section5.RootFamily.iterate
+#check @SpecialTransformations.Section5.RootFamily.centralize_after
+#print axioms SpecialTransformations.Section5.RootFamily.centralize_after
+#check @SpecialTransformations.Section5.RootFamily.centralize_boundary
+#print axioms SpecialTransformations.Section5.RootFamily.centralize_boundary
+#check @SpecialTransformations.Section5.rawUnarySet_definable
+#print axioms SpecialTransformations.Section5.rawUnarySet_definable
+#check @SpecialTransformations.Section5.lemma_5_2_at_boundary
+#print axioms SpecialTransformations.Section5.lemma_5_2_at_boundary
+#check @SpecialTransformations.Section5.lemma_5_2
+#print axioms SpecialTransformations.Section5.lemma_5_2
+#check @SpecialTransformations.Section5.lemma_5_2_after
+#print axioms SpecialTransformations.Section5.lemma_5_2_after
+#check @SpecialTransformations.Section5.Chain.append_assoc
+#print axioms SpecialTransformations.Section5.Chain.append_assoc
+#check @SpecialTransformations.Section5.Chain.append_suffix_alternating
+#print axioms SpecialTransformations.Section5.Chain.append_suffix_alternating
+#check @SpecialTransformations.Section5.theorem_5_5_unary
+#print axioms SpecialTransformations.Section5.theorem_5_5_unary
+#check @SpecialTransformations.Section5.SpecialBijection.comp_toMap
+#print axioms SpecialTransformations.Section5.SpecialBijection.comp_toMap
+#check @SpecialTransformations.Section5.SpecialBijection.comp_inverseMap
+#print axioms SpecialTransformations.Section5.SpecialBijection.comp_inverseMap
+#check @SpecialTransformations.Section5.ScalarContractible.refine
+#print axioms SpecialTransformations.Section5.ScalarContractible.refine
+#check @SpecialTransformations.Section5.theorem_5_5_unary_finite
+#print axioms SpecialTransformations.Section5.theorem_5_5_unary_finite
+#check @SpecialTransformations.Section5.dropHeadMap
+#print axioms SpecialTransformations.Section5.dropHeadMap
+#check @SpecialTransformations.Section5.dropHead_preimage_definable
+#print axioms SpecialTransformations.Section5.dropHead_preimage_definable
+#check @SpecialTransformations.Section5.Focus.lift
+#print axioms SpecialTransformations.Section5.Focus.lift
+#check @SpecialTransformations.Section5.Focus.lift_eta
+#print axioms SpecialTransformations.Section5.Focus.lift_eta
+#check @SpecialTransformations.Section5.Focus.lift_eta_replace_head
+#print axioms SpecialTransformations.Section5.Focus.lift_eta_replace_head
+#check @SpecialTransformations.Section5.Chain.lift_dropHead
+#print axioms SpecialTransformations.Section5.Chain.lift_dropHead
+#check @SpecialTransformations.Section5.pullback_of_headKey_image
+#print axioms SpecialTransformations.Section5.pullback_of_headKey_image
+#check @SpecialTransformations.Section5.RootFamily.image_fibre_cover
+#print axioms SpecialTransformations.Section5.RootFamily.image_fibre_cover
+#check @SpecialTransformations.Section5.RootFamily.push
+#print axioms SpecialTransformations.Section5.RootFamily.push
+#check @SpecialTransformations.Section5.RootFamily.push_bound
+#print axioms SpecialTransformations.Section5.RootFamily.push_bound
+#check @SpecialTransformations.Section5.relation_contractible_of_zero_obstacles
+#print axioms SpecialTransformations.Section5.relation_contractible_of_zero_obstacles
+#check @SpecialTransformations.Section5.unary_relation_preparation
+#print axioms SpecialTransformations.Section5.unary_relation_preparation
+#check @SpecialTransformations.Section5.point_code_iff
+#print axioms SpecialTransformations.Section5.point_code_iff
+#check @SpecialTransformations.Section5.mean_definable_index
+#print axioms SpecialTransformations.Section5.mean_definable_index
+#check @SpecialTransformations.Section5.headKeyMap
+#print axioms SpecialTransformations.Section5.headKeyMap
+#check @SpecialTransformations.Section5.VerticalRootFamily.verticalHull_definable
+#print axioms SpecialTransformations.Section5.VerticalRootFamily.verticalHull_definable
+#check @SpecialTransformations.Section5.VerticalRootFamily.geometry
+#print axioms SpecialTransformations.Section5.VerticalRootFamily.geometry
+#check @SpecialTransformations.Section5.VerticalRootFamily.rawFamily_definable
+#print axioms SpecialTransformations.Section5.VerticalRootFamily.rawFamily_definable
+#check @SpecialTransformations.Section5.VerticalRootFamily.meanMap
+#print axioms SpecialTransformations.Section5.VerticalRootFamily.meanMap
+#check @SpecialTransformations.Section5.VerticalRootFamily.focus
+#print axioms SpecialTransformations.Section5.VerticalRootFamily.focus
+#check @SpecialTransformations.Section5.VerticalRootFamily.step
+#print axioms SpecialTransformations.Section5.VerticalRootFamily.step
+#check @SpecialTransformations.Section5.VerticalRootFamily.step_bound
+#print axioms SpecialTransformations.Section5.VerticalRootFamily.step_bound
+#check @SpecialTransformations.Section5.VerticalRootFamily.step_tagged
+#print axioms SpecialTransformations.Section5.VerticalRootFamily.step_tagged
+#check @SpecialTransformations.Section5.FocusGeometry.headBlind_sub
+#print axioms SpecialTransformations.Section5.FocusGeometry.headBlind_sub
+#check @SpecialTransformations.Section5.Focus.lift_headBlind
+#print axioms SpecialTransformations.Section5.Focus.lift_headBlind
+#check @SpecialTransformations.Section5.Primitive.tail_forward
+#print axioms SpecialTransformations.Section5.Primitive.tail_forward
+#check @SpecialTransformations.Section5.Chain.TailProgram.forward
+#print axioms SpecialTransformations.Section5.Chain.TailProgram.forward
+#check @SpecialTransformations.Section5.Chain.TailProgram.replace_head
+#print axioms SpecialTransformations.Section5.Chain.TailProgram.replace_head
+#check @SpecialTransformations.Section5.Chain.headCompatible_sub
+#print axioms SpecialTransformations.Section5.Chain.headCompatible_sub
+#check @SpecialTransformations.Section5.Chain.lift_dropHead_compatible
+#print axioms SpecialTransformations.Section5.Chain.lift_dropHead_compatible
+#check @SpecialTransformations.Section5.SpecialBijection.compatible_inverse_slice
+#print axioms SpecialTransformations.Section5.SpecialBijection.compatible_inverse_slice
+#check @SpecialTransformations.Section5.VerticalRootFamily.pushTail_bound
+#print axioms SpecialTransformations.Section5.VerticalRootFamily.pushTail_bound
+#check @SpecialTransformations.Section5.Chain.lastKind_tagged_at
+#print axioms SpecialTransformations.Section5.Chain.lastKind_tagged_at
+#check @SpecialTransformations.Section5.Chain.labelIndex_apply
+#print axioms SpecialTransformations.Section5.Chain.labelIndex_apply
+#check @SpecialTransformations.Section5.Chain.TailProgram.tagged
+#print axioms SpecialTransformations.Section5.Chain.TailProgram.tagged
+#check @SpecialTransformations.Section5.finite_mean_child_bound
+#print axioms SpecialTransformations.Section5.finite_mean_child_bound
+#check @SpecialTransformations.Section5.isRVPullback_zeroVF
+#print axioms SpecialTransformations.Section5.isRVPullback_zeroVF
+#check @SpecialTransformations.Section5.corollary_5_6_zeroVF
+#print axioms SpecialTransformations.Section5.corollary_5_6_zeroVF
+#check @SpecialTransformations.Section5.unary_relation_preparation_at_boundary
+#print axioms SpecialTransformations.Section5.unary_relation_preparation_at_boundary
+#check @SpecialTransformations.Section5.attachRVMap
+#print axioms SpecialTransformations.Section5.attachRVMap
+#check @SpecialTransformations.Section5.rvGraph
+#print axioms SpecialTransformations.Section5.rvGraph
+#check @SpecialTransformations.Section5.mem_rvGraph
+#print axioms SpecialTransformations.Section5.mem_rvGraph
+#check @SpecialTransformations.Section5.unaryPoint_eq_of
+#print axioms SpecialTransformations.Section5.unaryPoint_eq_of
+#check @SpecialTransformations.Section5.rvGraph_transfer
+#print axioms SpecialTransformations.Section5.rvGraph_transfer
+#check @SpecialTransformations.Section5.unary_rvMap_preparation
+#print axioms SpecialTransformations.Section5.unary_rvMap_preparation
+#check @SpecialTransformations.Section5.flattenKeyMap
+#print axioms SpecialTransformations.Section5.flattenKeyMap
+#check @SpecialTransformations.Section5.unary_map_preparation
+#print axioms SpecialTransformations.Section5.unary_map_preparation
+#print SpecialTransformations.Section5.FocusGeometry
+#print SpecialTransformations.Section5.PresentedSpace
+#print SpecialTransformations.Section5.pointSpace
+#print SpecialTransformations.Section5.Map
+#print SpecialTransformations.Section5.Focus
+#print SpecialTransformations.Section5.SpecialBijection
+#print SpecialTransformations.Section5.Chain.Alternating
+#print SpecialTransformations.Section5.Contractible
+#print SpecialTransformations.Section5.IsUnaryOpenPolydisc
+#print SpecialTransformations.Section5.SpecialBijection.inverseFibre
+#print SpecialTransformations.Section5.FiniteRootSet
+#print SpecialTransformations.Section5.ScalarContractible
+#print SpecialTransformations.Section5.RootFamily
+#print SpecialTransformations.Section5.RelationContractible
+#print SpecialTransformations.Section5.VerticalRootFamily
+#print SpecialTransformations.Section5.FocusGeometry.HeadBlind
+#print SpecialTransformations.Section5.Chain.HeadCompatible
+#print SpecialTransformations.Section5.Chain.TailProgram
+
+#check @SpecialTransformations.Section5.unary_rvMap_preparation_at_boundary
+#print axioms SpecialTransformations.Section5.unary_rvMap_preparation_at_boundary
+#check @SpecialTransformations.Section5.unary_map_preparation_at_boundary
+#print axioms SpecialTransformations.Section5.unary_map_preparation_at_boundary
+#check @SpecialTransformations.Section5.zero_map_preparation_at_boundary
+#print axioms SpecialTransformations.Section5.zero_map_preparation_at_boundary
+#check @SpecialTransformations.Section5.membershipMap
+#print axioms SpecialTransformations.Section5.membershipMap
+#check @SpecialTransformations.Section5.membershipMap_eq_iff
+#print axioms SpecialTransformations.Section5.membershipMap_eq_iff
+#check @SpecialTransformations.Section5.Map.extend
+#print axioms SpecialTransformations.Section5.Map.extend
+#check @SpecialTransformations.Section5.Map.descend
+#print axioms SpecialTransformations.Section5.Map.descend
+#check @SpecialTransformations.Section5.headDescend
+#print axioms SpecialTransformations.Section5.headDescend
+#check @SpecialTransformations.Section5.headDescend_apply
+#print axioms SpecialTransformations.Section5.headDescend_apply
+#check @SpecialTransformations.Section5.headKey_eq_iff
+#print axioms SpecialTransformations.Section5.headKey_eq_iff
+#check @SpecialTransformations.Section5.headImage_pullback
+#print axioms SpecialTransformations.Section5.headImage_pullback
+#check @SpecialTransformations.Section5.Chain.lastKind_allTagged
+#print axioms SpecialTransformations.Section5.Chain.lastKind_allTagged
+#check @SpecialTransformations.Section5.SpecialBijection.restrict_prepared_at
+#print axioms SpecialTransformations.Section5.SpecialBijection.restrict_prepared_at
+#check @SpecialTransformations.Section5.vertical_relation_of_zero_obstacles
+#print axioms SpecialTransformations.Section5.vertical_relation_of_zero_obstacles
+#check @SpecialTransformations.Section5.finish_tail_lift
+#print axioms SpecialTransformations.Section5.finish_tail_lift
+#check @SpecialTransformations.Section5.prepared_verticalHull
+#print axioms SpecialTransformations.Section5.prepared_verticalHull
+#check @SpecialTransformations.Section5.prepare_vertical_locus
+#print axioms SpecialTransformations.Section5.prepare_vertical_locus
+#check @SpecialTransformations.Section5.vertical_centralize
+#print axioms SpecialTransformations.Section5.vertical_centralize
+#check @SpecialTransformations.Section5.headKey_mem_iff
+#print axioms SpecialTransformations.Section5.headKey_mem_iff
+#check @SpecialTransformations.Section5.dropHead_headTag
+#print axioms SpecialTransformations.Section5.dropHead_headTag
+#check @SpecialTransformations.Section5.vertical_rvGraph_transfer
+#print axioms SpecialTransformations.Section5.vertical_rvGraph_transfer
+#check @SpecialTransformations.Section5.Map.transportImage
+#print axioms SpecialTransformations.Section5.Map.transportImage
+#check @SpecialTransformations.Section5.restricted_image_mem_iff
+#print axioms SpecialTransformations.Section5.restricted_image_mem_iff
+#check @SpecialTransformations.Section5.vertical_graph_image
+#print axioms SpecialTransformations.Section5.vertical_graph_image
+#check @SpecialTransformations.Section5.complete_head_preparation
+#print axioms SpecialTransformations.Section5.complete_head_preparation
+#check @SpecialTransformations.Section5.restrict_prepared_map
+#print axioms SpecialTransformations.Section5.restrict_prepared_map
+#check @SpecialTransformations.Section5.tagged_rvMap_preparation
+#print axioms SpecialTransformations.Section5.tagged_rvMap_preparation
+#check @SpecialTransformations.Section5.rvPreparation_zero
+#print axioms SpecialTransformations.Section5.rvPreparation_zero
+#check @SpecialTransformations.Section5.rvPreparation_succ
+#print axioms SpecialTransformations.Section5.rvPreparation_succ
+#check @SpecialTransformations.Section5.rvPreparation_all
+#print axioms SpecialTransformations.Section5.rvPreparation_all
+#check @SpecialTransformations.Section5.map_preparation_at_boundary
+#print axioms SpecialTransformations.Section5.map_preparation_at_boundary
+#check @SpecialTransformations.Section5.map_preparation
+#print axioms SpecialTransformations.Section5.map_preparation
+#check @SpecialTransformations.Section5.corollary_5_6
+#print axioms SpecialTransformations.Section5.corollary_5_6
+#print SpecialTransformations.Section5.RVPreparation
+#print SpecialTransformations.Section5.UniformVerticalObstacles
+#check @SpecialTransformations.Section5.PolynomialExpression.expression_eval
+#print axioms SpecialTransformations.Section5.PolynomialExpression.expression_eval
+#check @SpecialTransformations.Section5.mvPolynomialCode_eq
+#print axioms SpecialTransformations.Section5.mvPolynomialCode_eq
+#check @SpecialTransformations.Section5.mvPolynomialCode_definable
+#print axioms SpecialTransformations.Section5.mvPolynomialCode_definable
+#check @SpecialTransformations.Section5.mvPolynomialTupleMap
+#print axioms SpecialTransformations.Section5.mvPolynomialTupleMap
+#check @SpecialTransformations.Section5.theorem_5_5_finite
+#print axioms SpecialTransformations.Section5.theorem_5_5_finite
+#check @SpecialTransformations.Section5.theorem_5_5
+#print axioms SpecialTransformations.Section5.theorem_5_5
+#check @SpecialTransformations.Section5.theorem_5_4
+#print axioms SpecialTransformations.Section5.theorem_5_4
+#check @SpecialTransformations.Section5.rawPointMap
+#print axioms SpecialTransformations.Section5.rawPointMap
+#check @SpecialTransformations.Section5.rawKeyFlattenMap
+#print axioms SpecialTransformations.Section5.rawKeyFlattenMap
+#check @SpecialTransformations.Section5.rawKeyMap
+#print axioms SpecialTransformations.Section5.rawKeyMap
+#check @SpecialTransformations.Section5.rawRVProjectionMap
+#print axioms SpecialTransformations.Section5.rawRVProjectionMap
+#check @SpecialTransformations.Section5.pullbackObject
+#print axioms SpecialTransformations.Section5.pullbackObject
+#check @SpecialTransformations.Section5.normalized_tupleRV
+#print axioms SpecialTransformations.Section5.normalized_tupleRV
+#check @SpecialTransformations.Section5.canonicalRawMap_mem_lift
+#print axioms SpecialTransformations.Section5.canonicalRawMap_mem_lift
+#check @SpecialTransformations.Section5.pullbackLiftMap_bijective
+#print axioms SpecialTransformations.Section5.pullbackLiftMap_bijective
+#check @SpecialTransformations.Section5.pullbackObject_finiteVolume
+#print axioms SpecialTransformations.Section5.pullbackObject_finiteVolume
+#check @SpecialTransformations.Section5.deformed_pullback_is_lift
+#print axioms SpecialTransformations.Section5.deformed_pullback_is_lift
+#check @SpecialTransformations.Section5.lift_representation_of_reduction
+#print axioms SpecialTransformations.Section5.lift_representation_of_reduction
+#check @SpecialTransformations.Section5.finite_lift_representation_of_reduction
+#print axioms SpecialTransformations.Section5.finite_lift_representation_of_reduction
+#check @SpecialTransformations.Section5.corollary_5_7
+#print axioms SpecialTransformations.Section5.corollary_5_7
+#check @SpecialTransformations.Section5.corollary_5_7_finite
+#print axioms SpecialTransformations.Section5.corollary_5_7_finite
+#check @SpecialTransformations.Section5.keyTags_definable
+#print axioms SpecialTransformations.Section5.keyTags_definable
+#check @SpecialTransformations.Section5.taggedAmbient_pullback
+#print axioms SpecialTransformations.Section5.taggedAmbient_pullback
+#check @SpecialTransformations.Section5.exists_taggedAmbient
+#print axioms SpecialTransformations.Section5.exists_taggedAmbient
+
+#check @SpecialTransformations.Section5.Focus.extendBase
+#print axioms SpecialTransformations.Section5.Focus.extendBase
+#check @SpecialTransformations.Section5.Primitive.extendBase
+#print axioms SpecialTransformations.Section5.Primitive.extendBase
+#check @SpecialTransformations.Section5.Primitive.extendBase_apply
+#print axioms SpecialTransformations.Section5.Primitive.extendBase_apply
+#check @SpecialTransformations.Section5.Primitive.extendBase_kind
+#print axioms SpecialTransformations.Section5.Primitive.extendBase_kind
+#check @SpecialTransformations.Section5.Chain.extendBase
+#print axioms SpecialTransformations.Section5.Chain.extendBase
+#check @SpecialTransformations.Section5.Chain.extendBase_alternating
+#print axioms SpecialTransformations.Section5.Chain.extendBase_alternating
+#check @SpecialTransformations.Section5.Chain.extendBase_apply
+#print axioms SpecialTransformations.Section5.Chain.extendBase_apply
+#check @SpecialTransformations.Section5.Chain.extendBase_lastKind
+#print axioms SpecialTransformations.Section5.Chain.extendBase_lastKind
+#check @SpecialTransformations.Section5.SpecialBijection.extendBase
+#print axioms SpecialTransformations.Section5.SpecialBijection.extendBase
+#check @SpecialTransformations.Section5.SpecialBijection.extendBase_inverse
+#print axioms SpecialTransformations.Section5.SpecialBijection.extendBase_inverse
+#check @SpecialTransformations.Section5.GammaChainDefinable.source
+#print axioms SpecialTransformations.Section5.GammaChainDefinable.source
+#check @SpecialTransformations.Section5.GammaChainDefinable.target
+#print axioms SpecialTransformations.Section5.GammaChainDefinable.target
+#check @SpecialTransformations.Section5.GammaPrimitiveDefinable.extendBase
+#print axioms SpecialTransformations.Section5.GammaPrimitiveDefinable.extendBase
+#check @SpecialTransformations.Section5.GammaChainDefinable.extendBase
+#print axioms SpecialTransformations.Section5.GammaChainDefinable.extendBase
+#check @SpecialTransformations.Section5.GammaSpecialBijection.source_definable
+#print axioms SpecialTransformations.Section5.GammaSpecialBijection.source_definable
+#check @SpecialTransformations.Section5.GammaSpecialBijection.target_definable
+#print axioms SpecialTransformations.Section5.GammaSpecialBijection.target_definable
+#check @SpecialTransformations.Section5.GammaGraphDefinable.congr
+#print axioms SpecialTransformations.Section5.GammaGraphDefinable.congr
+#check @SpecialTransformations.Section5.GammaScalarGraphDefinable.congr
+#print axioms SpecialTransformations.Section5.GammaScalarGraphDefinable.congr
+#check @SpecialTransformations.Section5.GammaLogicInput.image_real
+#print axioms SpecialTransformations.Section5.GammaLogicInput.image_real
+#check @SpecialTransformations.Section5.GammaLogicInput.preimage_real
+#print axioms SpecialTransformations.Section5.GammaLogicInput.preimage_real
+#check @SpecialTransformations.Section5.GammaLogicInput.hull
+#print axioms SpecialTransformations.Section5.GammaLogicInput.hull
+#check @SpecialTransformations.Section5.GammaFocusDefinable.of_real
+#print axioms SpecialTransformations.Section5.GammaFocusDefinable.of_real
+#check @SpecialTransformations.Section5.GammaFocusDefinable.restrict
+#print axioms SpecialTransformations.Section5.GammaFocusDefinable.restrict
+#check @SpecialTransformations.Section5.affineGraphMap
+#print axioms SpecialTransformations.Section5.affineGraphMap
+#check @SpecialTransformations.Section5.gamma_eta_graph
+#print axioms SpecialTransformations.Section5.gamma_eta_graph
+#check @SpecialTransformations.Section5.GammaPrimitiveDefinable.source
+#print axioms SpecialTransformations.Section5.GammaPrimitiveDefinable.source
+#check @SpecialTransformations.Section5.GammaPrimitiveDefinable.graph
+#print axioms SpecialTransformations.Section5.GammaPrimitiveDefinable.graph
+#check @SpecialTransformations.Section5.GammaPrimitiveDefinable.target
+#print axioms SpecialTransformations.Section5.GammaPrimitiveDefinable.target
+#check @SpecialTransformations.Section5.GammaPrimitiveDefinable.of_real
+#print axioms SpecialTransformations.Section5.GammaPrimitiveDefinable.of_real
+#check @SpecialTransformations.Section5.GammaChainDefinable.of_real
+#print axioms SpecialTransformations.Section5.GammaChainDefinable.of_real
+#check @SpecialTransformations.Section5.gamma_restrict_primitive
+#print axioms SpecialTransformations.Section5.gamma_restrict_primitive
+#check @SpecialTransformations.Section5.gamma_restrict_chain
+#print axioms SpecialTransformations.Section5.gamma_restrict_chain
+#check @SpecialTransformations.Section5.SpecialBijection.restrict_gamma_at
+#print axioms SpecialTransformations.Section5.SpecialBijection.restrict_gamma_at
+#check @SpecialTransformations.Section5.GammaChainDefinable.graph
+#print axioms SpecialTransformations.Section5.GammaChainDefinable.graph
+#check @SpecialTransformations.Section5.gamma_inverse_graph
+#print axioms SpecialTransformations.Section5.gamma_inverse_graph
+#check @SpecialTransformations.Section5.gamma_restrict_prepared_map
+#print axioms SpecialTransformations.Section5.gamma_restrict_prepared_map
+#check @SpecialTransformations.Section5.gamma_rvMap_preparation_at_boundary
+#print axioms SpecialTransformations.Section5.gamma_rvMap_preparation_at_boundary
+#check @SpecialTransformations.Section5.postcomposeRealMap
+#print axioms SpecialTransformations.Section5.postcomposeRealMap
+#check @SpecialTransformations.Section5.postcomposeRealMap_apply
+#print axioms SpecialTransformations.Section5.postcomposeRealMap_apply
+#check @SpecialTransformations.Section5.gamma_postcompose_real
+#print axioms SpecialTransformations.Section5.gamma_postcompose_real
+#check @SpecialTransformations.Section5.gamma_map_preparation_at_boundary
+#print axioms SpecialTransformations.Section5.gamma_map_preparation_at_boundary
+#check @SpecialTransformations.Section5.gamma_map_preparation
+#print axioms SpecialTransformations.Section5.gamma_map_preparation
+#check @SpecialTransformations.Section5.corollary_5_6_gamma
+#print axioms SpecialTransformations.Section5.corollary_5_6_gamma
+#check @SpecialTransformations.Section5.theorem_5_5_finite_gamma
+#print axioms SpecialTransformations.Section5.theorem_5_5_finite_gamma
+#check @SpecialTransformations.Section5.theorem_5_5_gamma
+#print axioms SpecialTransformations.Section5.theorem_5_5_gamma
+#check @SpecialTransformations.Section5.theorem_5_4_gamma
+#print axioms SpecialTransformations.Section5.theorem_5_4_gamma
+#check @SpecialTransformations.Section5.GammaIso.congr
+#print axioms SpecialTransformations.Section5.GammaIso.congr
+#check @SpecialTransformations.Section5.GammaIso.trans
+#print axioms SpecialTransformations.Section5.GammaIso.trans
+#check @SpecialTransformations.Section5.GammaIso.symm
+#print axioms SpecialTransformations.Section5.GammaIso.symm
+#check @SpecialTransformations.Section5.GammaSpecialBijection.iso
+#print axioms SpecialTransformations.Section5.GammaSpecialBijection.iso
+#check @SpecialTransformations.Section5.rvCoordinatePointMap
+#print axioms SpecialTransformations.Section5.rvCoordinatePointMap
+#check @SpecialTransformations.Section5.gamma_pullback_domain
+#print axioms SpecialTransformations.Section5.gamma_pullback_domain
+#check @SpecialTransformations.Section5.gammaPullbackObject
+#print axioms SpecialTransformations.Section5.gammaPullbackObject
+#check @SpecialTransformations.Section5.GammaIso.target_definable
+#print axioms SpecialTransformations.Section5.GammaIso.target_definable
+#check @SpecialTransformations.Section5.gamma_pullback_iso
+#print axioms SpecialTransformations.Section5.gamma_pullback_iso
+#check @SpecialTransformations.Section5.gamma_deformed_pullback_is_lift
+#print axioms SpecialTransformations.Section5.gamma_deformed_pullback_is_lift
+#check @SpecialTransformations.Section5.corollary_5_7_gamma
+#print axioms SpecialTransformations.Section5.corollary_5_7_gamma
+#check @SpecialTransformations.Section5.corollary_5_7_finite_gamma
+#print axioms SpecialTransformations.Section5.corollary_5_7_finite_gamma
+#check @SpecialTransformations.Section5.flatKey_eq_iff
+#print axioms SpecialTransformations.Section5.flatKey_eq_iff
+#check @SpecialTransformations.Section5.gamma_contraction_graph
+#print axioms SpecialTransformations.Section5.gamma_contraction_graph
+#check @SpecialTransformations.Section5.contractionRelation_unique
+#print axioms SpecialTransformations.Section5.contractionRelation_unique
+#check @SpecialTransformations.Section5.keyContraction
+#print axioms SpecialTransformations.Section5.keyContraction
+#check @SpecialTransformations.Section5.keyContraction_graph
+#print axioms SpecialTransformations.Section5.keyContraction_graph
+#check @SpecialTransformations.Section5.gamma_keyContraction_graph
+#print axioms SpecialTransformations.Section5.gamma_keyContraction_graph
+#check @SpecialTransformations.Section5.keyContraction_spec
+#print axioms SpecialTransformations.Section5.keyContraction_spec
+#check @SpecialTransformations.Section5.exists_unique_gamma_contraction
+#print axioms SpecialTransformations.Section5.exists_unique_gamma_contraction
+#print SpecialTransformations.Section5.gammaPointCode
+#print SpecialTransformations.Section5.gammaPointSort
+#print SpecialTransformations.Section5.GammaSetDefinable
+#print SpecialTransformations.Section5.GammaGraphDefinable
+#print SpecialTransformations.Section5.GammaFocusDefinable
+#print SpecialTransformations.Section5.GammaPrimitiveDefinable
+#print SpecialTransformations.Section5.GammaChainDefinable
+#print SpecialTransformations.Section5.GammaSpecialBijection
+#print SpecialTransformations.Section5.GammaLogicInput
+#print SpecialTransformations.Section5.GammaPolynomialSupportInput
+#print SpecialTransformations.Section5.GammaPresentationInput
+#print SpecialTransformations.Section5.GammaIsDeformedRVPullback
+#print SpecialTransformations.Section5.GammaIso
+#print SpecialTransformations.Section5.GammaRVObject
+#print SpecialTransformations.Section5.GammaRVObject.lift
+#print SpecialTransformations.Section5.GammaRVFiniteObject
+#print SpecialTransformations.Section5.flatKey
+#print SpecialTransformations.Section5.contractionRelation
+
+
+/-! Definition 5.1: nonzero-locus representatives of every constructed chain. -/
+#check @SpecialTransformations.Section5.nonzeroTag
+#print axioms SpecialTransformations.Section5.nonzeroTag
+#check @SpecialTransformations.Section5.nonzeroTag_pullback
+#print axioms SpecialTransformations.Section5.nonzeroTag_pullback
+#check @SpecialTransformations.Section5.nonzeroTag_definable
+#print axioms SpecialTransformations.Section5.nonzeroTag_definable
+#check @SpecialTransformations.Section5.printedSharp
+#print axioms SpecialTransformations.Section5.printedSharp
+#check @SpecialTransformations.Section5.printedTarget
+#print axioms SpecialTransformations.Section5.printedTarget
+#check @SpecialTransformations.Section5.Focus.withoutZero
+#print axioms SpecialTransformations.Section5.Focus.withoutZero
+#check @SpecialTransformations.Section5.Focus.withoutZero_nonzero
+#print axioms SpecialTransformations.Section5.Focus.withoutZero_nonzero
+#check @SpecialTransformations.Section5.Focus.withoutZero_eta
+#print axioms SpecialTransformations.Section5.Focus.withoutZero_eta
+#check @SpecialTransformations.Section5.Focus.withoutZero_image
+#print axioms SpecialTransformations.Section5.Focus.withoutZero_image
+#check @SpecialTransformations.Section5.Focus.eta_printedTarget
+#print axioms SpecialTransformations.Section5.Focus.eta_printedTarget
+#check @SpecialTransformations.Section5.Focus.withoutZero_printedTarget
+#print axioms SpecialTransformations.Section5.Focus.withoutZero_printedTarget
+#check @SpecialTransformations.Section5.GammaFocusDefinable.withoutZero
+#print axioms SpecialTransformations.Section5.GammaFocusDefinable.withoutZero
+#check @SpecialTransformations.Section5.Primitive.NonzeroLoci
+#print axioms SpecialTransformations.Section5.Primitive.NonzeroLoci
+#check @SpecialTransformations.Section5.Primitive.withoutZero
+#print axioms SpecialTransformations.Section5.Primitive.withoutZero
+#check @SpecialTransformations.Section5.Primitive.withoutZero_nonzero
+#print axioms SpecialTransformations.Section5.Primitive.withoutZero_nonzero
+#check @SpecialTransformations.Section5.Primitive.withoutZero_kind
+#print axioms SpecialTransformations.Section5.Primitive.withoutZero_kind
+#check @SpecialTransformations.Section5.Primitive.withoutZero_length
+#print axioms SpecialTransformations.Section5.Primitive.withoutZero_length
+#check @SpecialTransformations.Section5.Primitive.withoutZero_toMap
+#print axioms SpecialTransformations.Section5.Primitive.withoutZero_toMap
+#check @SpecialTransformations.Section5.Primitive.withoutZero_gamma
+#print axioms SpecialTransformations.Section5.Primitive.withoutZero_gamma
+#check @SpecialTransformations.Section5.Chain.NonzeroLoci
+#print axioms SpecialTransformations.Section5.Chain.NonzeroLoci
+#check @SpecialTransformations.Section5.Chain.withoutZero
+#print axioms SpecialTransformations.Section5.Chain.withoutZero
+#check @SpecialTransformations.Section5.Chain.withoutZero_nonzero
+#print axioms SpecialTransformations.Section5.Chain.withoutZero_nonzero
+#check @SpecialTransformations.Section5.Chain.withoutZero_toMap
+#print axioms SpecialTransformations.Section5.Chain.withoutZero_toMap
+#check @SpecialTransformations.Section5.Chain.withoutZero_length
+#print axioms SpecialTransformations.Section5.Chain.withoutZero_length
+#check @SpecialTransformations.Section5.Chain.withoutZero_alternating
+#print axioms SpecialTransformations.Section5.Chain.withoutZero_alternating
+#check @SpecialTransformations.Section5.Chain.withoutZero_gamma
+#print axioms SpecialTransformations.Section5.Chain.withoutZero_gamma
+#check @SpecialTransformations.Section5.SpecialBijection.withoutZero
+#print axioms SpecialTransformations.Section5.SpecialBijection.withoutZero
+#check @SpecialTransformations.Section5.SpecialBijection.withoutZero_nonzero
+#print axioms SpecialTransformations.Section5.SpecialBijection.withoutZero_nonzero
+#check @SpecialTransformations.Section5.SpecialBijection.withoutZero_toMap
+#print axioms SpecialTransformations.Section5.SpecialBijection.withoutZero_toMap
+#check @SpecialTransformations.Section5.SpecialBijection.withoutZero_inverseMap
+#print axioms SpecialTransformations.Section5.SpecialBijection.withoutZero_inverseMap
+#check @SpecialTransformations.Section5.SpecialBijection.withoutZero_length
+#print axioms SpecialTransformations.Section5.SpecialBijection.withoutZero_length
+#check @SpecialTransformations.Section5.SpecialBijection.paper_representative
+#print axioms SpecialTransformations.Section5.SpecialBijection.paper_representative
+#check @SpecialTransformations.Section5.SpecialBijection.paper_representative_gamma
+#print axioms SpecialTransformations.Section5.SpecialBijection.paper_representative_gamma
+#check @SpecialTransformations.Section5.GammaSpecialBijection.withoutZero
+#print axioms SpecialTransformations.Section5.GammaSpecialBijection.withoutZero
+#check @SpecialTransformations.Section5.GammaSpecialBijection.withoutZero_spec
+#print axioms SpecialTransformations.Section5.GammaSpecialBijection.withoutZero_spec
+#print SpecialTransformations.Section5.printedSharp
+#print SpecialTransformations.Section5.printedTarget
+#print SpecialTransformations.Section5.Focus.withoutZero
+#print SpecialTransformations.Section5.Primitive.NonzeroLoci
+#print SpecialTransformations.Section5.Chain.NonzeroLoci
+#check @SpecialTransformations.Section5.Focus.printedSharp_disjoint_hull
+#print axioms SpecialTransformations.Section5.Focus.printedSharp_disjoint_hull
+#check @SpecialTransformations.Section5.Focus.printedTarget_disjoint
+#print axioms SpecialTransformations.Section5.Focus.printedTarget_disjoint
