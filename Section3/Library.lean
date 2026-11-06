@@ -92,6 +92,8 @@ import Section3.GammaRealMap
 import Section3.OpenBallCenters
 import Section3.GeneralBallCenters
 
+import Section3.GeneralCosetChoice
+
 /-!
 # Checked Section 3 library
 

@@ -1511,11 +1511,19 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GeneralCosetChoice",
+      "source_sha256": "670a757f84b634e787793af7c27a1b9a1340aa6da64d29806c4d034422a21fc6",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "6c69feebaefd54858598772821f33ae36d2029f0bd54be3f4d94909f15dcd28a",
+      "source_sha256": "cba80b3271f28f961295538439d6f48b43917aa1232de867e6754825dad28360",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1523,7 +1531,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "1765237c7d575a015084f4fabc3c8d9046f3673923c7d5024c6b49a016995ebc",
+      "source_sha256": "a679dc331cb9452fc998e23e4f90bc3e2fab0d9e398ce3f4ba6e4a313eb43399",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1539,7 +1547,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "190 integrated Section3 modules; matching compiler caches reused where indicated; fresh 940-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "191 integrated Section3 modules; matching compiler caches reused where indicated; fresh 983-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -6081,12 +6089,201 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.DefinableCosets.differenceTuple": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.DefinableCosets.differenceTuple_raw_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.DefinableCosets.relation_definable_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.sdiff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.forall_last": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ProfileVariation.pairSort": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ProfileVariation.leftIndex": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ProfileVariation.rightIndex": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ProfileVariation.pairs": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ProfileVariation.left_tuple": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ProfileVariation.right_tuple": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ProfileVariation.pair_tuple_sorted": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ProfileVariation.pairs_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallClassCodes.classBody": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallClassCodes.classEquality": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallClassCodes.classEquality_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallClassCodes.classCodes": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallClassCodes.classCodes_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallClassCodes.variationCodes": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallClassCodes.variationCodes_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ProfileComposition.compose_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallClassCodes.centerKernel": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallClassCodes.centerKernel_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.underlying_subset_vf": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.isBall_coded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.translate_coded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.additive_coset_coded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.closed_additive_coset_coded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetBallFamilies.cosetBody": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetBallFamilies.badClasses": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetBallFamilies.exceptionalBalls": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetBallFamilies.mem_cosetBody": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetBallFamilies.classBody_eq_cosetBody": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetBallFamilies.exceptionalBalls_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetBallFamilies.exceptional_class_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetBallFamilies.closed_membership_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetBallFamilies.exceptionalBalls_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.centerRelation": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.centerRelation_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.centers_of_closed_family": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetProfileChoice.choose_profile_of_centers": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetProfileChoice.lemma_3_18_2_closed_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CosetProfileChoice.lemma_3_18_2_generated": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
     "SpecialTransformations.ModelTheory.HasMore": [],
     "SpecialTransformations.Section3.OpenBallCodes.codedCenterGraph": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "85356624348512d666a6cc2220d9a3d3d6e91fa8a9cf273955ab0d8e6dd17bea",
+  "verifier_sha256": "6a1fb62bd946a4eed0c26c87f9d2a3e0412ee632610d2efb7da812e8df055098",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",

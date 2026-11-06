@@ -866,3 +866,39 @@ input, center/choice hypothesis or Gamma-generator size bound. The pinned
 QE recovery and69 external consumer identities remain recorded separately.
 The generated3.18(2) application and other remaining targets are not counted
 as proved by this center theorem.
+
+
+## Full quotient selection, Lemma 3.18(2) (November 5, 2026)
+
+Reused checked `DefinableCosets` subtraction and its normalization bridge,
+`GammaRealMap` full-preimage pullbacks, the genuine Gamma-base Boolean and
+projection calculus, and `GammaBaseFiniteExceptions.lemma_3_18_1_gamma_base`.
+The real-base `ClosedClassCodes` and `ProfileComposition` constructions were
+inspected and adapted over the same imaginary base. The profile variation
+relation is the projection of the symmetric difference of the two full
+profile graphs, retaining every finite RV arity. Universal membership
+comparison defines equality of a real-coded ball with an entire coset.
+Intersecting with variation defines both full exceptional chart preimages;
+finiteness counts actual cosets and ball point sets rather than real codes.
+
+`EncodedBallGeometry` supplies the actual-radius conversion proof, now with
+explicit coverage in the all-ball quotient. Translation preserves these
+actual discs; closed cosets reuse `ClosedCosetChoice.closed_cosets_of_code`,
+including singleton and whole-field cases. Closed-family centers come from
+checked Gamma-base3.10, a real-base finite hitting cover and a common mean;
+they require no saturation. Generated-base centers use the proved full3.13.
+Both chart graphs give one point/center relation. Its functionality and
+constancy on cosets follow from the actual quotient kernel. Composing with
+the original powerset-valued graph, and using the definition of exceptional
+cosets on the complement, gives both quotient definability and a realizing
+representative for every selected profile. Final paper headlines discharge
+all intermediate center and code-coverage data.
+
+The coherent new module passed standalone pinned Lean compilation. The
+combined certificate covers191 modules,983 actual headline type/axiom checks
+and a fresh project root import. All43 new full types were reviewed for
+sorts, tuple arities, full parameter scope, genuine saturation and cardinal
+bounds. Only `propext`, `Classical.choice` and `Quot.sound` occur. No new
+standard-reference input or extra mathematical hypothesis was introduced.
+The two remaining work blocks are Gamma closure/descent extensions and the
+author-approved rational guarded normal form2.4.

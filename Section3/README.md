@@ -18,7 +18,7 @@ The new checked library starts at [Library.lean](Library.lean), which imports
 only new audited modules and the pinned ACVF-QE definitions. It includes
 base-relative closure and compactness infrastructure, exact C-minimality,
 sorted tuple descent, ball and coordinate interfaces, both assertions of
-3.6 and 3.7, results 3.8–3.15, 3.17, 3.18(1), the closed-ball alternative of 3.18(2), and
+3.6 and 3.7, results 3.8–3.15, 3.17, both parts of 3.18, and
 quotient-family notation. Finite coding preserves the original parameter base
 and includes its complete graph in all VF tuple arities. Closed-ball centers
 are defined on the actual ball quotient over the same original base. Definable
@@ -29,8 +29,9 @@ records the {1,-1} obstruction to the unrestricted classification in Remark 3.19
 the author has [retracted the whole remark](RETRACTIONS.md), which is excluded
 from the remaining proof obligations. Additive subgroups are proved to be balls,
 and the uniform root set gives the finite exceptional additive cosets in 3.18(1).
-The closed-ball alternative of 3.18(2) includes the complete original-base
-quotient graph and a realizing representative in every class. The entry point
+Both alternatives of 3.18(2) include the complete original-base quotient
+graph and a realizing representative in every class, including genuine
+Gamma-named bases. The entry point
 does not certify every item in the section. See [STATUS.md](STATUS.md) for the
 exact hypotheses and the remaining work.
 
@@ -46,7 +47,7 @@ extensions remain open. Other base-sensitive results
 still need their Gamma extensions. General same-base dcl transitivity,
 monotonicity and idempotence are now proved, including the basic generated-base
 laws. Full Gamma acl transitivity remains separate. The last published combined certificate covers
-190 modules and 940 actual headline type/axiom checks, plus a fresh root import.
+191 modules and 983 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -97,7 +98,7 @@ Finite Gamma algebraic sets now have each element individually definable over
 the original real/Gamma base, so acl and dcl agree in Gamma. The proof retains
 entire value fibres. The intrinsic open-to-closed hull map also preserves full
 family definability over that same base, for arbitrary families. These results
-need only ACVF; the general ball-center theorem is still open.
+need only ACVF; the full ball-center theorem is checked in GeneralBallCenters.
 
 
 Lemma 3.13 is now checked in `GeneralBallCenters.lean` for actual mixed
@@ -105,5 +106,15 @@ families of closed and proper-open balls, including singletons and the whole
 field. One function has both complete code graphs over the original Gamma
 base. The proof uses `OpenBallCenters` to obtain algebraic points, a finite
 real-base cover and a common mean. Genuine saturation, small B.real and
-(VF,Gamma)-generation are explicit. The generated case of 3.18(2), remaining
-Gamma-base extensions and guarded rational normal form remain open.
+(VF,Gamma)-generation are explicit. Both remaining branches of 3.18(2) are checked in GeneralCosetChoice.
+The remaining Gamma-base closure/descent extensions and guarded rational
+normal form remain open.
+
+
+`GeneralCosetChoice.lean` completes Lemma 3.18(2). The exceptional cosets are
+represented by a finite family of actual balls, with both full code preimages
+defined over the original base. Closed centers come from 3.10; generated-base
+centers come from full 3.13. Substituting each exceptional center's profile
+and using constancy on the other cosets gives the full quotient graph and
+realization property. The closed case needs no saturation; the generated
+case retains 3.13's precise saturation and real-base size hypotheses.
