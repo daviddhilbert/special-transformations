@@ -96,6 +96,8 @@ import Section3.GeneralCosetChoice
 
 import Section3.GammaFullDescent
 
+import Section3.GammaAlgebraicClosure
+
 /-!
 # Checked Section 3 library
 

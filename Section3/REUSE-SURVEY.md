@@ -901,7 +901,7 @@ sorts, tuple arities, full parameter scope, genuine saturation and cardinal
 bounds. Only `propext`, `Classical.choice` and `Quot.sound` occur. No new
 standard-reference input or extra mathematical hypothesis was introduced.
 The two remaining work blocks are Gamma closure/descent extensions and the
-author-approved rational guarded normal form2.4.
+author-approved rational guarded normal form in Definition 2.4.
 
 
 ## Full ambient-Gamma and mixed-input descent (November 6, 2026)
@@ -937,3 +937,32 @@ scope, true saturation and both cardinal bounds. Only `propext`,
 `Classical.choice` and `Quot.sound` occur. There is no new accepted reference
 input or mathematical hypothesis. Gamma acl transitivity and the approved
 guarded rational normal form remain separate obligations.
+
+
+## Full real/Gamma algebraic closure laws (November 6, 2026)
+
+Inspected and adapted the finite-support and finite-product proof in
+`AlgebraicTransitivity`. `GammaClosureLaws.Relation.finite_real_support`
+retains the exact finite original real names. Checked full imaginary-base
+definable-parameter elimination removes Gamma-algebraic names using the
+proved Gamma acl=dcl theorem. Every promoted real parameter is algebraic
+over the original B, so a finite product of its finite witnesses is a finite
+B-definable tuple cover containing the designated parameter tuple.
+
+For real outputs, the checked `GoodBaseRelation` finite-row cut is projected
+over that finite tuple cover. For Gamma outputs, `GammaFullDescent` supplies
+a full invariant relation with finite actual-Gamma rows; its finite image
+has exactly the complete proper RV preimage over B. No chosen code or
+representative becomes an original-base parameter. These constructions
+prove both full algebraic-parameter elimination statements. The actual
+algebraicClosureBase then has extensivity, monotonicity and idempotence;
+real and Gamma dcl of that base agree with its algebraic carrier.
+
+The coherent new module passed standalone pinned Lean compilation. The
+combined certificate covers 193 modules, 1040 actual headline type/axiom checks
+and a fresh root import. All 19 new full types were reviewed, including
+arbitrary base sets, full Gamma witnesses, finite image definitions and
+absence of saturation, size and characteristic premises. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. No new accepted reference input
+was used. The active Section 3 proof obligations are closed; the retracted
+Remark 3.19 is excluded. Guarded rational normal form in Definition 2.4 remains open.

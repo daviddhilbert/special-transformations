@@ -18431,3 +18431,183 @@ SpecialTransformations.Section3.BallImaginaries.Ball : (M : Type) →
 'SpecialTransformations.Section3.GammaParameters.lemma_3_1_mixed_gamma_input_gamma_output' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableOverBase.finite_real_support : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : SpecialTransformations.Section3.GammaParameters.Base} {n : ℕ}
+  {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {U : Set (Fin n → M)},
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B sn U →
+    ∃ F,
+      ↑F ⊆ B.real ∧
+        SpecialTransformations.Section3.GammaParameters.DefinableOverBase { real := ↑F, gamma := B.gamma } sn U
+'SpecialTransformations.Section3.GammaParameters.DefinableOverBase.finite_real_support' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.sorted : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : SpecialTransformations.Section3.GammaParameters.Base} {σ : SpecialTransformations.Milestone0.SortTag} {b : M},
+  SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B σ b → SpecialTransformations.Milestone0.sortEval σ b
+'SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.sorted' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraic_tuple_finite_cover : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) {n : ℕ}
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (a : Fin n → M),
+  (∀ (i : Fin n), SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B (sn i) (a i)) →
+    ∃ A, SpecialTransformations.Section3.GammaParameters.DefinableOverBase B sn A ∧ A.Finite ∧ a ∈ A
+'SpecialTransformations.Section3.GammaParameters.algebraic_tuple_finite_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableOverBase.promote_algebraic_parameters : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B C : SpecialTransformations.Section3.GammaParameters.Base} {m : ℕ}
+  {sm : Fin m → SpecialTransformations.Milestone0.SortTag} {U : Set (Fin m → M)},
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase C sm U →
+    (∀ c ∈ C.real, ∃ σ, SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B σ c) →
+      (∀ γ ∈ C.gamma, SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase B γ) →
+        ∃ n sn a,
+          (∀ (i : Fin n), SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B (sn i) (a i)) ∧
+            SpecialTransformations.Section3.GammaParameters.DefinableOverBase
+              { real := B.real ∪ Set.range a, gamma := B.gamma } sm U
+'SpecialTransformations.Section3.GammaParameters.DefinableOverBase.promote_algebraic_parameters' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.baseRelationImage : {M : Type} →
+  {n : ℕ} → Set (Fin n → M) → Set ((Fin n → M) × M) → Set M
+'SpecialTransformations.Section3.GammaParameters.baseRelationImage' does not depend on any axioms
+@SpecialTransformations.Section3.GammaParameters.baseRelationImage_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (B : SpecialTransformations.Section3.GammaParameters.Base)
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)),
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B sn A →
+    ∀ (σ : SpecialTransformations.Milestone0.SortTag) (R : Set ((Fin n → M) × M)),
+      SpecialTransformations.Section3.GammaParameters.DefinableOverBase B (fun i => Fin.lastCases σ sn i)
+          {z | (Fin.init z, z (Fin.last n)) ∈ R} →
+        SpecialTransformations.Section3.GammaParameters.DefinableAtBase B σ
+          (SpecialTransformations.Section3.GammaParameters.baseRelationImage A R)
+'SpecialTransformations.Section3.GammaParameters.baseRelationImage_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.baseRelationImage_finite : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (A : Set (Fin n → M)),
+  A.Finite →
+    ∀ (R : Set ((Fin n → M) × M)),
+      (∀ (a : Fin n → M), {t | (a, t) ∈ R}.Finite) →
+        (SpecialTransformations.Section3.GammaParameters.baseRelationImage A R).Finite
+'SpecialTransformations.Section3.GammaParameters.baseRelationImage_finite' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GoodBaseGammaRelation.finite_image : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (B : SpecialTransformations.Section3.GammaParameters.Base)
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag)
+  (R : SpecialTransformations.Section3.GammaParameters.GoodBaseGammaRelation B n sn) (A : Set (Fin n → M)),
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B sn A →
+    A.Finite →
+      have W := {γ | ∃ a ∈ A, γ ∈ SpecialTransformations.Section3.GammaParameters.gammaRow R.carrier a};
+      SpecialTransformations.Section3.GammaParameters.GammaDefinableOverBase B W ∧ W.Finite
+'SpecialTransformations.Section3.GammaParameters.GoodBaseGammaRelation.finite_image' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.eliminate_algebraic_params : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B C : SpecialTransformations.Section3.GammaParameters.Base} {σ : SpecialTransformations.Milestone0.SortTag} {b : M},
+  SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase C σ b →
+    (∀ c ∈ C.real, ∃ τ, SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B τ c) →
+      (∀ γ ∈ C.gamma, SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase B γ) →
+        SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B σ b
+'SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.eliminate_algebraic_params' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.eliminate_algebraic_params : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B C : SpecialTransformations.Section3.GammaParameters.Base} {δ : SpecialTransformations.Section3.Values.Gamma},
+  SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase C δ →
+    (∀ c ∈ C.real, ∃ τ, SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B τ c) →
+      (∀ γ ∈ C.gamma, SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase B γ) →
+        SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase B δ
+'SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.eliminate_algebraic_params' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraicClosureBase : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base → SpecialTransformations.Section3.GammaParameters.Base
+'SpecialTransformations.Section3.GammaParameters.algebraicClosureBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.subset_algebraicClosureBase : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base),
+  B.real ⊆ (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B).real ∧
+    B.gamma ⊆ (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B).gamma
+'SpecialTransformations.Section3.GammaParameters.subset_algebraicClosureBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraicClosureBase_mono : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B C : SpecialTransformations.Section3.GammaParameters.Base},
+  B.real ⊆ C.real →
+    B.gamma ⊆ C.gamma →
+      (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B).real ⊆
+          (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase C).real ∧
+        (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B).gamma ⊆
+          (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase C).gamma
+'SpecialTransformations.Section3.GammaParameters.algebraicClosureBase_mono' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.algebraicClosureBase_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (σ : SpecialTransformations.Milestone0.SortTag) (b : M),
+  SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase
+      (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B) σ b ↔
+    SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B σ b
+'SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.algebraicClosureBase_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.algebraicClosureBase_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (γ : SpecialTransformations.Section3.Values.Gamma),
+  SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase
+      (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B) γ ↔
+    SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase B γ
+'SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.algebraicClosureBase_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraicClosureBase_idempotent : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base),
+  SpecialTransformations.Section3.GammaParameters.algebraicClosureBase
+      (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B) =
+    SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B
+'SpecialTransformations.Section3.GammaParameters.algebraicClosureBase_idempotent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.definableClosureAt_algebraicClosureBase_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (σ : SpecialTransformations.Milestone0.SortTag) (b : M),
+  SpecialTransformations.Section3.GammaParameters.DefinableClosureAtBase
+      (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B) σ b ↔
+    SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase B σ b
+'SpecialTransformations.Section3.GammaParameters.definableClosureAt_algebraicClosureBase_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.gamma_definableClosureAt_algebraicClosureBase_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (γ : SpecialTransformations.Section3.Values.Gamma),
+  SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase
+      (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B) γ ↔
+    SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase B γ
+'SpecialTransformations.Section3.GammaParameters.gamma_definableClosureAt_algebraicClosureBase_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.closureBase_algebraicClosureBase : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base),
+  SpecialTransformations.Section3.GammaParameters.closureBase
+      (SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B) =
+    SpecialTransformations.Section3.GammaParameters.algebraicClosureBase B
+'SpecialTransformations.Section3.GammaParameters.closureBase_algebraicClosureBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

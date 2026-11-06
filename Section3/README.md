@@ -47,8 +47,8 @@ proper code preimages retain exactly the original parameters; both real and
 Gamma parts of the ambient base have explicit cardinal bounds.
 General same-base dcl transitivity,
 monotonicity and idempotence are now proved, including the basic generated-base
-laws. Full Gamma acl transitivity remains separate. The last published combined certificate covers
-192 modules and 1021 actual headline type/axiom checks, plus a fresh root import.
+laws. Full Gamma acl transitivity and the actual closure-base laws are now proved. The last published combined certificate covers
+193 modules and 1040 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -108,7 +108,8 @@ field. One function has both complete code graphs over the original Gamma
 base. The proof uses `OpenBallCenters` to obtain algebraic points, a finite
 real-base cover and a common mean. Genuine saturation, small B.real and
 (VF,Gamma)-generation are explicit. Both remaining branches of 3.18(2) are checked in GeneralCosetChoice.
-Gamma acl transitivity and guarded rational normal form remain open.
+Gamma acl transitivity is now checked in GammaAlgebraicClosure. The guarded
+rational normal form in Definition 2.4 is the only remaining proof target.
 
 
 `GeneralCosetChoice.lean` completes Lemma 3.18(2). The exceptional cosets are
@@ -128,3 +129,13 @@ uses the entire nonzero RV preimage and eliminates each decoded name from
 all of its representatives. These results need no characteristic assumption;
 genuine saturation, a countable lower bound, both base size bounds and
 nonemptiness are explicit.
+
+
+`GammaAlgebraicClosure.lean` proves transitivity in both real and Gamma
+outputs over arbitrary real/Gamma algebraic parameter sets. Finite original
+real support and a same-base finite algebraic tuple cover feed the checked
+finite-row image construction. It proves extensivity, monotonicity,
+idempotence and dcl(acl(B))=acl(B), with no saturation, cardinality or
+characteristic assumptions. The active Section 3 targets are now closed;
+Remark 3.19 is retracted. The remaining Section 2 target is the agreed guarded
+rational normal form of Definition 2.4.

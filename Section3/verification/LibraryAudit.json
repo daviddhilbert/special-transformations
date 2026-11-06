@@ -1527,11 +1527,19 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaAlgebraicClosure",
+      "source_sha256": "0063be0c994e153d3afad97a88c6272a33b84bc4cab86e53d841b5426984495e",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "4dd2bc5f9e1a9a2f939d2eceb04c7140932eecaf6c5bee4b95bf297284bbbb12",
+      "source_sha256": "dd314fc2cc55e56154d726a15b5e1cab93b1b83858c78f83549f39136254bf68",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1539,7 +1547,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "c3f4d60b55326d08f9d4b28c61e0cdcb68159d4fad95bf5a4a1ff9c7763ab759",
+      "source_sha256": "4f5378b3540730f8fdce843222fa7411268d69e2c2e72307a3263ec6892c392f",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1555,7 +1563,7 @@
     }
   ],
   "date": "2026-11-06 America/Los_Angeles",
-  "scope": "192 integrated Section3 modules; matching compiler caches reused where indicated; fresh 1021-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "193 integrated Section3 modules; matching compiler caches reused where indicated; fresh 1040-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -6469,12 +6477,103 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.finite_real_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraic_tuple_finite_cover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.promote_algebraic_parameters": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.baseRelationImage_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.baseRelationImage_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GoodBaseGammaRelation.finite_image": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.eliminate_algebraic_params": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.eliminate_algebraic_params": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraicClosureBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.subset_algebraicClosureBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraicClosureBase_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.algebraicClosureBase_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.algebraicClosureBase_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraicClosureBase_idempotent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.definableClosureAt_algebraicClosureBase_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gamma_definableClosureAt_algebraicClosureBase_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.closureBase_algebraicClosureBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
     "SpecialTransformations.ModelTheory.HasMore": [],
-    "SpecialTransformations.Section3.OpenBallCodes.codedCenterGraph": []
+    "SpecialTransformations.Section3.OpenBallCodes.codedCenterGraph": [],
+    "SpecialTransformations.Section3.GammaParameters.baseRelationImage": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "abf86b5815b031c8df535b2c5096529224b8818630fc87d22b3759ac8ce72318",
+  "verifier_sha256": "d57dc5a42bf2fad1c47d0ecb53e55b727124f47ca26d3ffacec0961374256cf3",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",
