@@ -1,174 +1,129 @@
-# Handoff: finish Section 2 after QE, then all of Section 3
+# Handoff: Section 3 and post-QE Section 2 complete
 
-Prepared November 4, 2026 (America/Los_Angeles), at the author's request.
-The user explicitly wants the actual formalization continued in a new session.
-This session organized files and prepared the handoff; it did not start new proofs.
+Updated November 6, 2026 (America/Los_Angeles). This replaces the November 4
+startup handoff. The requested formalization is complete in the author's
+approved scope; there is no remaining Section 3 proof campaign to restart.
 
-## Objective and completed dependency
+## Completed scope and entry points
 
-Formalize all of Section 3 of Yimu Yin, *Special transformations in algebraically
-closed valued fields*, and all material in Section 2 after the statement of
-Theorem 2.3. The source checked for numbering is
-[arXiv:1006.2467v1](https://arxiv.org/pdf/1006.2467v1), printed pages 4--7
-(Section 3 starts on printed page 5). Check the author's intended paper version
-before freezing any statement whose wording differs.
+All active targets in Section 3 and all Section 2 material after Theorem 2.3
+are proved, with the rational correction to Definition 2.4 and the retraction
+of Remark 3.19 described below. The numbering follows
+[arXiv:1006.2467v1](https://arxiv.org/pdf/1006.2467v1).
 
-**QE is done.** The independent [ACVF-QE repository](https://github.com/daviddhilbert/ACVF-QE)
-is pinned at `f3ef4ee679f921079aa8f742a2807a9cc724d2d6`. Its root import is
-`ACVFQE`; its Lake package name is `acvf_qe`. It exports:
+Use [Library.lean](Library.lean) as the checked entry point,
+[STATUS.md](STATUS.md) for exact theorem scopes and hypotheses, and
+[TARGETS.md](TARGETS.md) for the numbered checklist. The library excludes
+legacy snapshots and placeholders; [LEGACY.md](LEGACY.md) records their audit
+and reuse history. Genuine real/Gamma parameter bases, finite tuple arities,
+and original-base definability are retained where required.
 
-- `JohnsonACF.hasQEb`: pure ACF QE, all characteristics.
-- `hasQE_ACVF_val`, `hasQEb_ACVF_val`: ordinary nontrivially valued ACVF QE.
-- `SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination`:
-  exactly `HasQE Axioms.ACVF`, with no additional mathematical hypotheses.
+The final proof commit is
+[`d466a69`](https://github.com/daviddhilbert/special-transformations/commit/d466a692305bae435cc26954fbae33b435bfbd77).
+It was published with the existing remote workflow commits in
+[`e032b9a`](https://github.com/daviddhilbert/special-transformations/commit/e032b9a7c96cd8f5ea76d4806be9e8556e1e428e).
+These identify the completed proof checkpoint, before this handoff-only update.
 
-The initial standalone export checked 81 modules and a fresh combined import.
-The final QE axiom audit contains only `propext`, `Classical.choice`, `Quot.sound`.
-The subsequent inversion-attribution correction changed documentation/comments
-only. Its public verification records are under `verification/` in ACVF-QE.
-The inherited C-minimality placeholder in its `Enc` module is **not a proof**
-of Theorem 2.8 and is not a QE dependency. Do not use that placeholder.
+## Definition 2.4: approved correction and proved normal form
 
-## What changed in this working copy
+On November 5, 2026, the author approved **rational VF functions with explicit
+domain guards** instead of the strict polynomial-only VF factors. See
+[NORMAL-FORM-NOTE.md](NORMAL-FORM-NOTE.md). This is the adopted statement;
+no Lean-proved counterexample to the printed polynomial-only form is claimed.
 
-The root is now an index and portable build configuration. Existing work is
-organized in `Section3/` through `Section10/`. The author then requested removal
-of the obsolete QE campaign, since completed QE work belongs in ACVF-QE.
-Seven required helpers were retained in `Shared/`; old model snapshots remain
-in `Archive/Milestone0/`, but the duplicate `Encoding.lean` was removed.
-`Archive/MOVE-INDEX.json` records the initial 336 relocations and their current
-retention/removal status: 93 entries retained, 243 intentionally removed.
+[GuardedRationalNormalForm.lean](GuardedRationalNormalForm.lean) proves
+`GuardedRVNormalForm.definition_2_4_guarded_rational_normal_form` and
+`DefinableOver.guarded_rational_normal_form`. The supporting modules are
+[GuardedRVArithmetic.lean](GuardedRVArithmetic.lean),
+[GuardedRVTerms.lean](GuardedRVTerms.lean), and
+[GuardedRVLiterals.lean](GuardedRVLiterals.lean).
 
-`Section3/` contains 27 relocated files, including three earlier scaffolds;
-`Section4/` contains 15. These counts describe files, not proved paper results.
-No legacy Section 3/4 compiler check was performed during relocation. Static
-source inventory and dependency planning do not establish Lean correctness.
-Use `LEGACY.md` and `TARGETS.md`, not old "green" headers, as the starting map.
+The finite DNF is chosen before quantifying over models and uses exactly the
+original VF and RV slots. It compiles to an actual well-sorted quantifier-free
+formula in the released language. Equality literals have coefficient one on
+the left and genuine flat K factors with at least two summands. Order
+comparisons have no K factors. Every true raw clause establishes all VF pole
+guards and residue-summand domains, including residue zero. Zero RV branches
+are retained. The definable-set wrapper reuses the original parameter package.
+The normal-form theorem holds in every ACVF model, with no saturation,
+cardinality, characteristic-zero, or assumed-normalization premise.
 
-Cleanup checks passed: every retained relocation matches its original hash,
-the 243 removed obsolete entries are absent, and static dependency plans
-resolve for all 42 Section 3/4 source files against retained helpers and
-published ACVF-QE modules.
-The new top-level root source, with fresh QE headline checks appended, also
-compiled successfully under the pinned Lake environment; all three QE audits
-list only the standard Lean axioms. That check reused the matching installed
-Mathlib and previously checked ACVF-QE oleans. It was not a clean rebuild of
-all dependencies or a compiler check of the legacy section snapshots.
-Records: `Archive/REORGANIZATION-CHECK.json` and `Archive/ROOT-IMPORT-AUDIT.txt`.
+VF inversion remains unnamed: rational VF factors compile as
+`rv(numerator) / rv(denominator)` using named RV inversion, with nonzero VF
+denominators explicitly guarded. Nonunit RV scalars are not distributed
+through residue addition without its proved domain conditions.
 
-The cleanup included substantial pre-existing local work, all preserved in the
-relocation. The author subsequently authorized publishing this layout while
-ignoring the newer OpenMathOS content and deleting the obsolete QE campaign.
-Earlier commits remain in Git history, without keeping their obsolete QE files
-in the current tree. Inspect current `git status` before editing and preserve
-any new working-copy changes.
-The user chose section **subdirectories**, so do not create nested `.git`
-directories, GitHub section repositories, or submodules.
+## Remark 3.19: retracted, not counted as proved
 
-## First concrete steps in the new session
+The author retracted the whole remark on November 5, 2026, including its
+proposed multiplicative extension of Lemma 3.18. It is excluded from the active
+targets. No replacement classification, including one restricted to infinite
+definable groups, was adopted. See [RETRACTIONS.md](RETRACTIONS.md).
 
-1. Read this note, `../AGENTS.md`, `TARGETS.md`, and `LEGACY.md`.
-2. Check `git status` and the move index before editing. Keep the exact QE pin.
-3. Make the pinned dependency available through Lake; use `import ACVFQE`.
-   The root config now uses public Git revisions instead of `/opt/mathlib`.
-   Do not upgrade Lean or Mathlib to accommodate a candidate proof.
-4. Add a small, separately checked Section 3 library entry point and explicit
-   model/base-parameter context. Do not bulk-import the old snapshot collection.
-   Reuse the published `Enc` definitions as the one shared language.
-5. Audit the raw-parameter/sorted-parameter interfaces, `acl` and `dcl` in VF,
-   RV, and the imaginary Gamma sort. The old `SP` API represents finite tuples,
-   whereas the paper's ambient base S is a small substructure; provide a proved
-   bridge rather than silently replacing the base by a finite tuple.
-6. Close the post-QE normal-form/ball/C-minimality layer before relying on it
-   in Section 3. Then proceed through the checklist, reusing local candidates.
+[Remark319Audit.lean](Remark319Audit.lean) retains the checked obstruction
+`{1,-1}` to the printed unrestricted classification. The citation and import
+audit found no later citation or identified reliance on the remark; the
+retraction note records the precise checks and their limits. Lemma 3.18's
+additive conclusions are proved and remain active results.
 
-The source files are ready for inspection; module imports still reflect the
-historical staging scheme. `python3 Archive/inspect_legacy.py --plan
-Section3/Sec3Count.lean` gives a static dependency order and alias map. It is
-not a substitute for a clean compiler run after porting.
+## Verification and passing GitHub Actions run
 
-## Fixed mathematical and language choices
+The combined local certificate covers **197 integrated modules, 1,393 actual
+headline type/axiom checks, and a fresh project-root import**. All compiler
+exits are zero; no proof placeholders remain in the checked library. Headline
+axioms are contained in `{propext, Classical.choice, Quot.sound}`. Complete
+intended theorem types, including parameter scope and explicit hypotheses,
+were reviewed. Matching checked caches are identified separately in
+[verification/LibraryAudit.json](verification/LibraryAudit.json); the full
+headline output is [verification/HeadlineAudit.txt](verification/HeadlineAudit.txt).
 
-- RV inversion was omitted from the original **Lean transcription**, not the
-  paper. The released function symbol captures the author's group convention;
-  generated RV substructures contain inverses. Keep this interpretation.
-- The encoding has one absorbing RV element `rv(0)`, identified with the
-  zero/infinity notation as already settled by the author. `pK` is the nonzero
-  multiplicative group, while `pInK` includes residue zero.
-- Track the reversal between Mathlib's absolute-value valuation order and
-  the paper's ordered value-group convention. Do not equate the RV preorder
-  with antisymmetric Gamma order or an rv-fibre with a closed ball.
-- Section 3 uses the standing pure characteristic-zero setting from Section 2,
-  a sufficiently saturated model, a small base S with nontrivial Gamma(S), and
-  its atomic diagram. Definability is over that named base unless additional
-  parameters are explicitly introduced. Preserve the extra VF-generated or
-  (VF,Gamma)-generated assumptions exactly where the paper requires them.
-- Saturation/homogeneity must have their actual model-theoretic meanings.
-  `Archive/Milestone0/Saturation.lean` is a candidate generic interface; audit
-  how it instantiates the characteristic-zero theory and parameter sizes.
-  ACVF-QE's ultrapower supplies countable-parameter saturation for its QE
-  criterion; it does not automatically provide every monster/homogeneity
-  hypothesis needed in this section.
-- Standard results from Marker's *Model Theory: An Introduction* and
-  Engler--Prestel's *Valued Fields* are authorized as explicit hypotheses.
-  State their full types and citations. This is not blanket authorization to
-  assume the paper's own unproved Section 3 conclusions. For citations to Yin's
-  companion paper, identify and formalize the needed result or mark the target
-  as still conditional; never call it finished merely because the audit is clean.
+The [Lean verification run 42242271465](https://github.com/daviddhilbert/special-transformations/actions/runs/42242271465)
+for published commit `e032b9a7c96cd8f5ea76d4806be9e8556e1e428e` completed
+**successfully on November 6, 2026**. The pinned project source build,
+published QE headline audit, and Section 3 verifier all passed. The Section 4
+verifier was skipped because it was absent from that published tree; this
+run does not certify the later sections. This is the passing proof-publication
+run, not a claim about a future run triggered by this documentation update.
 
-## Known transcription and specification traps
+## Fixed dependencies and mathematical conventions
 
-Read the actual paper before attributing any defect to it. Several legacy
-comments conflate an error in a Lean statement with an error in the paper.
+- Lean is pinned to `leanprover/lean4:v4.33.1`; Mathlib is pinned to
+  `0df444a360eaa60ab8c11dca51a86af692955474`.
+- QE is the completed [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE)
+  dependency at `f3ef4ee679f921079aa8f742a2807a9cc724d2d6`, imported as
+  `ACVFQE`. Use its `theorem_2_3_quantifier_elimination`; do not reprove QE or
+  introduce a competing copy of its language. Its inherited C-minimality
+  placeholder is not used as a proof of Theorem 2.8; the actual theorem is
+  proved in this library.
+- The author clarified that naming RV inversion corrects the paper's printed
+  inverse-free language specification, not merely a Lean transcription.
+  The released implementation already names it. VF inversion stays unnamed.
+  Naming a definable inverse changes neither definable sets nor same-base
+  acl/dcl; it creates no new downstream language requirement.
+- RV has one absorbing element, `rv(0)`, also written infinity. `pK` is the
+  nonzero RV group; `pInK` is the residue subset including zero.
+- Mathlib's absolute-value valuation order is reversed from the paper's
+  value-group order. Equal valuation is not equal RV class.
+- Preserve theorem-specific characteristic, genuine saturation, smallness,
+  nonemptiness, and VF- or (VF,Gamma)-generation assumptions from `STATUS.md`.
+  A real parameter set does not silently include Gamma imaginaries; use the
+  explicit `GammaParameters.Base` interfaces for those statements.
 
-- **Lemma 3.8:** the paper assumes the c_i have the same **valuation**, not the
-  same RV class. Retain the residue-characteristic-zero standing context, the
-  nondegenerate finite-family conditions, and the zero-average hypothesis.
-  `Sec3Average.average_zero_rv_not_constant` is a useful candidate for the
-  valuation conclusion; derive the advertised RV nonconstancy as well.
-  Do not inherit the `Sec3_sat` header's assertion that the paper's conclusion
-  is inconsistent: its earlier transcription used a stronger wrong premise.
-- **Lemma 3.1:** inspect the nonempty-domain issue. A universally quantified
-  condition over an empty A is vacuous. `AclFibres`, `UniformCover`, and
-  `Sec3Corrected` isolate it; verify the paper's intended nonempty application
-  and record the exact hypothesis instead of claiming the unrestricted target.
-- **Centers:** a definable center function on a family of balls is not the
-  stronger requirement that one common set meet every ball in exactly one
-  point. `M7Centres`/`BallSec3` diagnose that transcription. Set-theoretic choice
-  of arbitrary centers does not prove definable choice.
-- **Lemma 3.9:** target some `RV^m`, not necessarily a single RV coordinate.
-  Older finite-set constructions name the elements as extra parameters;
-  this does not prove a map definable over the original base S.
-- **Corollary 3.5:** every function must be definable, with the complete finite
-  tuple arities. An arbitrary set-theoretic function cannot replace it.
-- **Lemma 3.11:** audit the meaning of a proper definable subset, including
-  nonemptiness and the exact parameter set. Avoid a vacuous empty-subset claim.
-- **Lemma 3.15:** `InfRVDefGam` still exposes uniform boundedness and a
-  C-minimality consequence as hypotheses. They must be proved from the actual
-  theory before the paper lemma is reported closed.
+## Reproduction and future work
 
-## Suggested proof order and completion criteria
+After setting up the pinned dependencies, follow
+[the CI workflow](../.github/workflows/lean.yml). On a fresh checkout,
+`python3 scripts/prepare_ci.py` registers the pinned QE package's sibling
+modules without changing its Lean sources. Then run `lake -R build`,
+`lake env python3 scripts/verify_ci.py`, and
+`lake env python3 Section3/verify.py` from the repository root. Scratch logs
+and verification artifacts belong under `.scratch/`.
 
-First finish the post-QE Section 2 items in `TARGETS.md`; C-minimality is a
-central missing dependency. Develop sorted closure and compactness tools,
-then 3.1--3.5, exchange and 3.7, the average/coding and center results,
-3.12--3.15, and the quotient/set-valued language and 3.17--3.19.
-Adjust the order when actual dependencies require it; keep each paper number
-and each remaining premise visible in the status table.
-
-For every item, record its precise paper statement, imported definitions,
-parameter and characteristic assumptions, remaining standard hypotheses,
-compiler exit code, and `#print axioms` on the exported theorem. A wrapper
-around an unproved Prop is still conditional. A test of one intended valued
-field does not establish the assertion over all models. Do not silently weaken
-definability, replace a definable function by arbitrary choice, or narrow tuple
-arity to make a target easy. Finish and check one coherent module at a time.
-
-## Prompt for the new session
-
-> Read AGENTS.md and Section3/HANDOFF.md. QE is complete in the pinned ACVF-QE
-> dependency. Formalize all of Section 3 and all material in Section 2 after
-> Theorem 2.3, following Section3/TARGETS.md. Audit and reuse the relocated
-> candidates; old headers are not current proof status. Preserve the author's
-> language and parameter conventions, use the completed QE proof directly,
-> and keep working locally without pushing the paper repository.
+No Section 2/3 proof obligation remains in the agreed scope. Further work
+should follow a new request, rather than the obsolete instruction to start
+formalizing this section. Read the current root instructions and inspect Git
+status, remote state, and worktrees before editing. Publication used an
+isolated worktree to preserve unrelated local work, including later sections;
+do not reset or overwrite that work to synchronize a checkout. Future changes
+still require pinned compilation, full headline type/axiom review, and the
+affected integration check. Push only within the user's current authorization.
