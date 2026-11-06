@@ -520,9 +520,8 @@ its nontrivial restricted-valuation hypothesis is explicit.
 For the exchange route, the checked local RV-fibre exception theorem yields
 finite/cofinite traces. Genuine saturation supplies uniform finite-side bounds,
 and elementary order arguments supply finite images under bounded cuts and
-canonical endpoints for finite-threshold sets. The bridge from definable
-actual Gamma sets to finite thresholds and the eventual RV exchange theorem
-are still open. No conditional stability or exchange premise is imported.
+canonical endpoints for finite-threshold sets. The bridge from actual Gamma definability to finite thresholds and the
+Gamma-independence consequence are now checked below; RV exchange remains open. No conditional stability or exchange premise is imported.
 
 For real-output descent over Gamma-named ambient bases, reused the checked
 proper-code counting, support hull, tuple promotion and common-name cardinal
@@ -540,3 +539,49 @@ artifacts, including individual Section 4 compiler records. They do not certify
 those sections. Full types were reviewed for the coefficient
 lifting, valued elementary embedding, finite-side and endpoint tools, and
 ambient-Gamma-base real-output descent.
+
+
+## Actual Gamma/RV separation and 3.7 (November 5, 2026)
+
+A focused external follow-up searched for Lean ACVF RV/value-group exchange,
+strong minimality and orthogonality, including the upstream Mathlib GitHub
+repository. No additional importable Lean proof was found in those searches.
+They returned mathematical expositions, including
+[Kamensky's ACVF notes](https://mkamensky.github.io/teaching/2015s/acvf/notes.pdf)
+and [Rideau's valued-field notes](https://www.math.ens.psl.eu/~rideau/teaching/val/vf.pdf).
+These are reference hits, not imported theorem dependencies. The earlier
+catalog/registry survey and exact pinned local source inspection remain the
+reuse basis; no dependency upgrade or new mathematical hypothesis was added.
+
+Reused the checked C-minimality theorem, arbitrary-coefficient ball geometry,
+angular infinitude, actual Gamma order, finite/cofinite RV fibres, genuine
+saturation and 3.15. A radial Boolean combination of VF balls has a finite
+actual threshold basis: angular representatives avoid its finite set of
+centers, so ball tests depend only on the finite collection of radii. The
+intrinsic endpoint is the set's infimum when bounded below and otherwise the
+complement's infimum. Finite thresholds prove that this endpoint exists in
+the actual Gamma group, without order completeness.
+
+The endpoint's full graph is first-order on all proper RV codes, using lower
+bounds and greatest lower bounds. Thus its order cuts retain exactly the
+original real parameters. Uniform finite-side bounds on each angular fibre
+force finite endpoint image; uniformly finite original rows force finite
+endpoint inverse fibres. Checked 3.15 then gives finite total RV projection.
+No desired finite-image or orthogonality conclusion is supplied as a premise.
+
+Existential Gamma-coordinate projection preserves full code invariance. After
+temporarily specializing the other coordinates, the one-Gamma result applies
+at each induction step. A checked globally finite scalar-row cut then removes
+all finite Gamma support from an RV algebraic witness. The final finite set is
+definable over exactly the original real base. This proves the Gamma assertion
+of 3.7 even with arbitrary existing Gamma names, requiring no bound on that
+entire Gamma set. RV exchange remains a separate unfinished step.
+
+The combined checkpoint certifies 173 Section 3 modules, 722 actual headline
+type/axiom checks and a fresh root import. The three new modules passed actual
+standalone Lean compilation. Only `propext`, `Classical.choice` and `Quot.sound`
+occur. Full types were reviewed for finite thresholds, endpoint-cut
+definability, the genuine family constructor, Gamma/RV separation, Gamma tuple
+projection, algebraic closure equivalence and 3.7. Earlier matching compiler
+artifacts and the recorded external root-consumer interfaces are reused;
+this is not an audit of Sections 4 or 5.

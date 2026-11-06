@@ -66,6 +66,10 @@ import Section3.RVFibreGeometry
 import Section3.AlgebraicRVLifting
 import Section3.GammaBaseDescent
 
+import Section3.GammaThresholdGeometry
+import Section3.GammaRVSeparation
+import Section3.RVGammaAlgebraicity
+
 /-!
 # Checked Section 3 library
 

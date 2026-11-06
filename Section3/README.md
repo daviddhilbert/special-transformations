@@ -44,7 +44,7 @@ outputs over nonempty real-tuple families. Gamma-output and Gamma-domain
 extensions remain open. Other base-sensitive results
 still need their Gamma extensions; defining the closure predicates does not
 prove their closure or generation laws. The last published combined certificate covers
-170 modules and 640 actual headline type/axiom checks, plus a fresh root import.
+173 modules and 722 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -62,4 +62,7 @@ parameter set into any algebraically closed VF subfield containing that set,
 even when that subfield's valuation is trivial. The full modelhood assertion
 of 3.14 remains open. Finite/cofinite RV fibres, uniform finite-side bounds
 and pure finite-threshold endpoint lemmas support the ongoing exchange proof;
-they do not by themselves establish 3.6 for RV or 3.7 for Gamma.
+they do not by themselves establish RV exchange 3.6. The Gamma assertion
+of 3.7 is now checked by the complete separation and finite-support argument
+in `RVGammaAlgebraicity`. It permits arbitrary existing Gamma names and needs
+only the real base to be small, under ACVF(0,0) and genuine saturation.
