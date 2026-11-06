@@ -1463,7 +1463,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "OpenBallCodes",
@@ -1471,11 +1471,27 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaFiniteOrder",
+      "source_sha256": "a9ae76e690e431ac41a8ed258af9782bb5b01db12e405fe487058eaf615e49c7",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "OpenBallFamilyHulls",
+      "source_sha256": "0996551501fb2aa01ecf92796ae8d42cd1ff4a413eeee145db4dab14916dac96",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "0f1ce887faee3847f33f6cf0ce2f57f4f9c9f8633421b3a98a42295fe6d1f5ce",
+      "source_sha256": "93ab02dc8495608b805cb59f824fb2d3444e87067386057ab03c20a61d4d4de7",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1483,7 +1499,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "26cc7929959ee49b734d433793946db5d33ec94e10cededcfb6baa7bbf8ad73b",
+      "source_sha256": "45f70148d6201c0a096616699cfd29ff6ef8078c450d8acb71b3f7271296b7bc",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1499,7 +1515,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "185 integrated Section3 modules; matching compiler caches reused where indicated; fresh 843-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "187 integrated Section3 modules; matching compiler caches reused where indicated; fresh 864-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -5604,11 +5620,110 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.GammaParameters.not_le_pair_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.badLower": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.badLower_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.leastCodes": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.leastCodes_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gammaPullback_mem_codeValue_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.original_le_codeValue_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.leastCodes_gammaPullback_min": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gamma_finset_min_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gammaPullback_sdiff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GammaDefinableOverBase.sdiff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gamma_finset_element_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gamma_algebraic_iff_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.closed_kernel_raw_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullIndex": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullGraph": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullGraph_raw_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullCode_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullGraph_normalize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullGraph_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hull_family_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
     "SpecialTransformations.ModelTheory.HasMore": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "ea25d0306f07fba75b400d66d840ab041798fcdedc88d348ce779f4601c74b08",
+  "verifier_sha256": "08276e69fab34e639483ff4aae8b08e1fbd60cc33572bcfc70451d02d5b14d21",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",

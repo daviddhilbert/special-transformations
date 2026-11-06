@@ -85,6 +85,9 @@ import Section3.OpenBallHullGeometry
 import Section3.GammaDefinableClosureField
 import Section3.OpenBallCodes
 
+import Section3.GammaFiniteOrder
+import Section3.OpenBallFamilyHulls
+
 /-!
 # Checked Section 3 library
 

@@ -46,7 +46,7 @@ extensions remain open. Other base-sensitive results
 still need their Gamma extensions. General same-base dcl transitivity,
 monotonicity and idempotence are now proved, including the basic generated-base
 laws. Full Gamma acl transitivity remains separate. The last published combined certificate covers
-185 modules and 843 actual headline type/axiom checks, plus a fresh root import.
+187 modules and 864 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -90,4 +90,11 @@ fields are characterized by their actual same-base predicates and have the
 same transcendence degree as the generated VF field. The standing VF-field
 base convention is retained; no saturation or cardinal bound is needed.
 Proper open balls now have their actual quotient and intrinsic closed-hull
-map. The full definable-family hull bridge and general centers remain open.
+map. Its full definable-family hull bridge is now checked; general centers remain open.
+
+
+Finite Gamma algebraic sets now have each element individually definable over
+the original real/Gamma base, so acl and dcl agree in Gamma. The proof retains
+entire value fibres. The intrinsic open-to-closed hull map also preserves full
+family definability over that same base, for arbitrary families. These results
+need only ACVF; the general ball-center theorem is still open.

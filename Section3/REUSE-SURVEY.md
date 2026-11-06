@@ -747,3 +747,38 @@ RV names, standing VF-field base convention, nonzero radii and actual ball
 quotients. Matching prior compiler artifacts and 69 recorded external
 root-consumer interfaces are reused; this is not a source/headline audit of
 Sections 4 or 5. No dependency revision or accepted input was added.
+
+
+## Finite Gamma order and complete hull-family graphs (November 5, 2026)
+
+Reused `GammaClosureLaws`, `GammaBaseTools`, `GammaProjection` and the actual
+Gamma order bridge from `GammaRVSeparation`. Minimum selection uses the
+negated RV-order predicate with the paper's order convention. Erasing the
+definable minimum then isolates each member of a finite actual Gamma set.
+The induction scheme was inspected in the concurrent local
+`Section4/GammaFiniteDefinablePoints.lean`; the new module credits that source
+and implements the arbitrary genuine Gamma-base version on checked Section3
+interfaces, without importing Section4. Pinned Mathlib's
+`Data/Finset/Max.lean` supplies finite minima and strong induction. Its
+Apache-2.0 dependency pin is unchanged. This proves Gamma acl equals dcl;
+it does not claim full mixed acl transitivity.
+
+For hull families, reused the complete closed-code membership graph and the
+quantified equality-kernel scheme in `ClosedClassCodes`. The full hull graph
+quantifies over every equivalent closed-ball code, rather than recording only
+the direct image of one code. Normalization preserves the radius guard and
+the VF-one flag. Intersecting this graph with the original open family's full
+preimage and projecting gives exactly the full closed-family preimage over
+the original base. This works for infinite families as well as finite ones.
+The existing closed-center theorem is the intended next reuse; a hull center
+need not belong to the original open ball, so this bridge alone is not3.13.
+
+Both new modules passed standalone pinned Lean compilation. The combined
+certificate covers 187 modules and 864 actual headline type/axiom checks,
+plus a fresh root import. All21 new full types were reviewed, including
+the actual Gamma quotient, full value-class preimages, genuine base scope,
+normalization and absence of extra finiteness or saturation hypotheses.
+Only `propext`, `Classical.choice` and `Quot.sound` occur. Matching earlier
+compiler artifacts and69 recorded external root-consumer interfaces are
+reused; this is not a source/headline audit of Sections4 or5. No dependency
+revision or authorized reference input was added.
