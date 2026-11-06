@@ -40,14 +40,15 @@ full invariant-preimage parameter interface. The checked Gamma-base extensions
 include C-minimality, VF algebraicity and exchange, finite RV-to-VF tuple images,
 finite VF-tuple coding, closed-ball centers, definable points in balls, finite
 value-fibre sets, bounded-family constancy, RV-fibre exceptions, and additive-coset
-exceptions. Descent also handles nonempty Gamma-definable real families and
-VF, RV and Gamma outputs over a small real ambient base. Small ambient bases with Gamma names now have descent for real VF/RV
-outputs over nonempty real-tuple families. Gamma-output and Gamma-domain
-extensions remain open. Other base-sensitive results
-still need their Gamma extensions. General same-base dcl transitivity,
+exceptions. Descent3.1 now handles every finite mixed VF/RV/Gamma indexing tuple and
+VF, RV and Gamma outputs over arbitrary small real/Gamma ambient bases. Both
+fibre cases of3.2 have all three output sorts over those same bases. Full
+proper code preimages retain exactly the original parameters; both real and
+Gamma parts of the ambient base have explicit cardinal bounds.
+General same-base dcl transitivity,
 monotonicity and idempotence are now proved, including the basic generated-base
 laws. Full Gamma acl transitivity remains separate. The last published combined certificate covers
-191 modules and 983 actual headline type/axiom checks, plus a fresh root import.
+192 modules and 1021 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -107,8 +108,7 @@ field. One function has both complete code graphs over the original Gamma
 base. The proof uses `OpenBallCenters` to obtain algebraic points, a finite
 real-base cover and a common mean. Genuine saturation, small B.real and
 (VF,Gamma)-generation are explicit. Both remaining branches of 3.18(2) are checked in GeneralCosetChoice.
-The remaining Gamma-base closure/descent extensions and guarded rational
-normal form remain open.
+Gamma acl transitivity and guarded rational normal form remain open.
 
 
 `GeneralCosetChoice.lean` completes Lemma 3.18(2). The exceptional cosets are
@@ -118,3 +118,13 @@ centers come from full 3.13. Substituting each exceptional center's profile
 and using constancy on the other cosets gives the full quotient graph and
 realization property. The closed case needs no saturation; the generated
 case retains 3.13's precise saturation and real-base size hypotheses.
+
+
+`GammaFullDescent.lean` completes the remaining parameter and sort scopes of
+3.1/3.2. Ordered Gamma acl=dcl, full output-class closure and a partial
+least-value relation provide finite actual-Gamma rows. The compactness cover
+and universal intersection retain the original base. Mixed Gamma indexing
+uses the entire nonzero RV preimage and eliminates each decoded name from
+all of its representatives. These results need no characteristic assumption;
+genuine saturation, a countable lower bound, both base size bounds and
+nonemptiness are explicit.

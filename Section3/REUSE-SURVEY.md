@@ -902,3 +902,38 @@ bounds. Only `propext`, `Classical.choice` and `Quot.sound` occur. No new
 standard-reference input or extra mathematical hypothesis was introduced.
 The two remaining work blocks are Gamma closure/descent extensions and the
 author-approved rational guarded normal form2.4.
+
+
+## Full ambient-Gamma and mixed-input descent (November 6, 2026)
+
+Reused `GammaBaseDescent` real-parameter promotion, common representative
+names, genuine compactness cover and same-base universal intersection.
+`GammaFiniteOrder` supplies actual Gamma acl=dcl. Promotion is extracted
+before real finite-row cuts, then `GammaGoodRelations.invariantHull` semantics
+are realized through same-base universal quantification to restore complete
+output value-class invariance. A definable partial least-output relation has
+at most one actual Gamma value per row. Singleton source rows survive both
+operations. No minimum is assumed for arbitrary rows, and no finite RV
+representative set is mistaken for a finite Gamma set.
+
+The checked Boolean/projection calculus from `GeneralCosetChoice` retains
+Gamma support throughout. Finite unions of finite actual-Gamma rows give a
+uniform cover, and nonempty universal intersection gives the final algebraic
+witness over exactly B. The fibre wrappers retain both ambient cardinal
+bounds; a pure cardinality lemma handles finite Gamma extensions without
+putting a fictitious first-order structure on Gamma.
+
+For Gamma indexing, `GammaClosureLaws` parameter elimination is applied to
+both real and Gamma algebraicity. Every decoded Gamma input is proved
+definable from each proper named RV code. The full mixed tuple preimage is
+used, including all representatives, arbitrary real sort patterns and zero
+arities. Code names disappear from the descended base.
+
+The coherent new module passed standalone pinned Lean compilation. The
+combined certificate covers192 modules,1021 actual headline type/axiom checks
+and a fresh project root. All38 new full types were reviewed for actual
+Gamma carriers, full code preimages, tuple arities, original parameter
+scope, true saturation and both cardinal bounds. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. There is no new accepted reference
+input or mathematical hypothesis. Gamma acl transitivity and the approved
+guarded rational normal form remain separate obligations.

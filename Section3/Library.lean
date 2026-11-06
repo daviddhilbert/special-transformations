@@ -94,6 +94,8 @@ import Section3.GeneralBallCenters
 
 import Section3.GeneralCosetChoice
 
+import Section3.GammaFullDescent
+
 /-!
 # Checked Section 3 library
 
