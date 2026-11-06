@@ -1,0 +1,1213 @@
+import Section6.AlignedComparison
+import Section6.AngularCodes
+import Section6.AngularComponent
+import Section6.AngularOrderCodes
+import Section6.AuxiliaryDenaming
+import Section6.CanonicalEmbedding
+import Section6.CommonEnvelopeComparison
+import Section6.ContractionGraph
+import Section6.DefinableMaps
+import Section6.DenefPasAlgebra
+import Section6.DenefPasConclusion
+import Section6.DenefPasInterpretation
+import Section6.DenefPasTrivialBranch
+import Section6.ElementaryTestFamily
+import Section6.ElementaryTransfer
+import Section6.EnvelopeUniformity
+import Section6.ExpandedImages
+import Section6.ExpandedLiterals
+import Section6.ExpandedLogic
+import Section6.ExpandedOpenBounds
+import Section6.ExpandedParameterRelabel
+import Section6.ExpandedRenaming
+import Section6.ExpandedRestriction
+import Section6.ExtraSortSemantics
+import Section6.FVBinding
+import Section6.FiniteAbstraction
+import Section6.FiniteCover
+import Section6.FiniteNamedSyntax
+import Section6.FiniteNormalizedElimination
+import Section6.FiniteParameterSyntax
+import Section6.FiniteSortContext
+import Section6.FragmentCompactness
+import Section6.FunctionalClosure
+import Section6.GeneratedDenaming
+import Section6.GeneratedParameters
+import Section6.HenselianClosure
+import Section6.HenselianElimination
+import Section6.HenselianImages
+import Section6.HenselianInputs
+import Section6.HenselianModel
+import Section6.HenselianTheory
+import Section6.MapFormulaDescent
+import Section6.NamedLanguage
+import Section6.NamedLogic
+import Section6.NativeAmalgamation
+import Section6.NativeExpandedSyntax
+import Section6.NativeFormulaElimination
+import Section6.NativeImageComparison
+import Section6.NativeImageTransport
+import Section6.NativeOccurrence
+import Section6.NativeTermMap
+import Section6.NativeTerms
+import Section6.NormalizedQuery
+import Section6.OneStepPresentation
+import Section6.PairInterpretation
+import Section6.PairSyntax
+import Section6.ParameterNaming
+import Section6.PolynomialDescent
+import Section6.PolynomialFormulaDescent
+import Section6.PreparedDescent
+import Section6.RVAbstraction
+import Section6.RVExpansionTransport
+import Section6.RVFormula
+import Section6.RVFragmentRenaming
+import Section6.RVGraphExpansion
+import Section6.RVGraphLanguage
+import Section6.RVQuotients
+import Section6.RVSourceFormula
+import Section6.RVSubstructure
+import Section6.RVTermSupport
+import Section6.RelativeSyntax
+import Section6.SentenceDenaming
+import Section6.SortedFragment
+import Section6.SyntacticDescent
+import Section6.SyntacticLemma63
+import Section6.TypedNativeTerms
+import Section6.UniformNormalizedElimination
+
+
+/-! Section 6's new shared-language library. Legacy snapshots are excluded.
+The remaining syntax/expansion obligations are listed in STATUS.md. -/
+
+set_option pp.explicit false
+set_option pp.fullNames true
+
+#check @SpecialTransformations.Section6.singleton_tuple_coordinates
+#print axioms SpecialTransformations.Section6.singleton_tuple_coordinates
+#check @SpecialTransformations.Section6.singleton_of_unique_relation
+#print axioms SpecialTransformations.Section6.singleton_of_unique_relation
+#check @SpecialTransformations.Section6.functionallyClosed_of_dclClosed
+#print axioms SpecialTransformations.Section6.functionallyClosed_of_dclClosed
+#check @SpecialTransformations.Section6.dclClosed_of_functionallyClosed
+#print axioms SpecialTransformations.Section6.dclClosed_of_functionallyClosed
+#check @SpecialTransformations.Section6.functionallyClosed_iff_dclClosed
+#print axioms SpecialTransformations.Section6.functionallyClosed_iff_dclClosed
+#check @SpecialTransformations.Section6.definable_singleton_fixed
+#print axioms SpecialTransformations.Section6.definable_singleton_fixed
+#check @SpecialTransformations.Section6.DclClosed.image
+#print axioms SpecialTransformations.Section6.DclClosed.image
+#check @SpecialTransformations.Section6.FunctionallyClosed.image
+#print axioms SpecialTransformations.Section6.FunctionallyClosed.image
+#check @SpecialTransformations.Section6.valuedAutomorphism
+#print axioms SpecialTransformations.Section6.valuedAutomorphism
+#check @SpecialTransformations.Section6.valuedAutomorphism_vf
+#print axioms SpecialTransformations.Section6.valuedAutomorphism_vf
+#check @SpecialTransformations.Section6.valuedAutomorphism_rv
+#print axioms SpecialTransformations.Section6.valuedAutomorphism_rv
+#check @SpecialTransformations.Section6.valuedAutomorphism_fixes_base
+#print axioms SpecialTransformations.Section6.valuedAutomorphism_fixes_base
+#check @SpecialTransformations.Section6.henselian_vf_dcl
+#print axioms SpecialTransformations.Section6.henselian_vf_dcl
+#check @SpecialTransformations.Section6.lemma_6_2_in_algebraic_envelope
+#print axioms SpecialTransformations.Section6.lemma_6_2_in_algebraic_envelope
+#check @SpecialTransformations.Section6.lemma_6_2
+#print axioms SpecialTransformations.Section6.lemma_6_2
+#check @SpecialTransformations.Section6.FunctionallyClosed.over
+#print axioms SpecialTransformations.Section6.FunctionallyClosed.over
+#check @SpecialTransformations.Section6.map_preserves_represented
+#print axioms SpecialTransformations.Section6.map_preserves_represented
+#check @SpecialTransformations.Section6.pointIn_iff_represented
+#print axioms SpecialTransformations.Section6.pointIn_iff_represented
+#check @SpecialTransformations.Section6.keyIn_iff_represented
+#print axioms SpecialTransformations.Section6.keyIn_iff_represented
+#check @SpecialTransformations.Section6.map_preserves_pointIn
+#print axioms SpecialTransformations.Section6.map_preserves_pointIn
+#check @SpecialTransformations.Section6.map_preserves_keyIn
+#print axioms SpecialTransformations.Section6.map_preserves_keyIn
+#check @SpecialTransformations.Section6.restrictSpecialBijection
+#print axioms SpecialTransformations.Section6.restrictSpecialBijection
+#check @SpecialTransformations.Section6.keyIn_of_pointIn
+#print axioms SpecialTransformations.Section6.keyIn_of_pointIn
+#check @SpecialTransformations.Section6.pullback_key_realized
+#print axioms SpecialTransformations.Section6.pullback_key_realized
+#check @SpecialTransformations.Section6.prepared_exists_descends
+#print axioms SpecialTransformations.Section6.prepared_exists_descends
+#check @SpecialTransformations.Section6.exists_preparation_with_descent
+#print axioms SpecialTransformations.Section6.exists_preparation_with_descent
+#check @SpecialTransformations.Section6.sortPredG_var_realize
+#print axioms SpecialTransformations.Section6.sortPredG_var_realize
+#check @SpecialTransformations.Section6.inAntecedent_false
+#print axioms SpecialTransformations.Section6.inAntecedent_false
+#check @SpecialTransformations.Section6.guardTrue_true
+#print axioms SpecialTransformations.Section6.guardTrue_true
+#check @SpecialTransformations.Section6.IsVFQF.ex_rv
+#print axioms SpecialTransformations.Section6.IsVFQF.ex_rv
+#check @SpecialTransformations.Section6.hasVFQE_of_step
+#print axioms SpecialTransformations.Section6.hasVFQE_of_step
+
+#print SpecialTransformations.Section6.FunctionallyClosed
+#print SpecialTransformations.Section6.DclClosed
+#print SpecialTransformations.Section6.FunctionallyClosedOver
+#print SpecialTransformations.Section6.HenselianAutomorphismInvariance
+#print SpecialTransformations.Section6.DefinableRVLifting
+#print SpecialTransformations.Section6.PointIn
+#print SpecialTransformations.Section6.KeyIn
+#print SpecialTransformations.Section6.VFQE_step
+#print SpecialTransformations.Section6.HasVFQE
+#print SpecialTransformations.Section6.IsVFQF
+
+#check @SpecialTransformations.Section6.RVFormula.abstractLeft_realize
+#print axioms SpecialTransformations.Section6.RVFormula.abstractLeft_realize
+#check @SpecialTransformations.Section6.RVFormula.existsLeft_realize
+#print axioms SpecialTransformations.Section6.RVFormula.existsLeft_realize
+#check @SpecialTransformations.Section6.RVFormula.assemble_realize
+#print axioms SpecialTransformations.Section6.RVFormula.assemble_realize
+#check @SpecialTransformations.Section6.RVTermSupport.termSort_func
+#print axioms SpecialTransformations.Section6.RVTermSupport.termSort_func
+#check @SpecialTransformations.Section6.RVTermSupport.leaves_quotient
+#print axioms SpecialTransformations.Section6.RVTermSupport.leaves_quotient
+#check @SpecialTransformations.Section6.RVTermSupport.leaves_inverse
+#print axioms SpecialTransformations.Section6.RVTermSupport.leaves_inverse
+#check @SpecialTransformations.Section6.RVTermSupport.realize_eq_of_leaves
+#print axioms SpecialTransformations.Section6.RVTermSupport.realize_eq_of_leaves
+#check @SpecialTransformations.Section6.keyTuple_mem
+#print axioms SpecialTransformations.Section6.keyTuple_mem
+#check @SpecialTransformations.Section6.keyIn_of_tuple
+#print axioms SpecialTransformations.Section6.keyIn_of_tuple
+#check @SpecialTransformations.Section6.prepared_formula_elimination
+#print axioms SpecialTransformations.Section6.prepared_formula_elimination
+#check @SpecialTransformations.Section6.AngularComponent.residue_eq_one_iff
+#print axioms SpecialTransformations.Section6.AngularComponent.residue_eq_one_iff
+#check @SpecialTransformations.Section6.AngularComponent.value_one_of_principal
+#print axioms SpecialTransformations.Section6.AngularComponent.value_one_of_principal
+#check @SpecialTransformations.Section6.AngularComponent.coordinates_kernel
+#print axioms SpecialTransformations.Section6.AngularComponent.coordinates_kernel
+#check @SpecialTransformations.Section6.AngularComponent.residue_lift_value_one
+#print axioms SpecialTransformations.Section6.AngularComponent.residue_lift_value_one
+#check @SpecialTransformations.Section6.AngularComponent.coordinates_surjective
+#print axioms SpecialTransformations.Section6.AngularComponent.coordinates_surjective
+#check @SpecialTransformations.Section6.AngularComponent.splitting
+#print axioms SpecialTransformations.Section6.AngularComponent.splitting
+#check @SpecialTransformations.Section6.AngularComponent.splitting_mk
+#print axioms SpecialTransformations.Section6.AngularComponent.splitting_mk
+#check @SpecialTransformations.Section6.AngularComponent.splittingWithZero
+#print axioms SpecialTransformations.Section6.AngularComponent.splittingWithZero
+#check @SpecialTransformations.Section6.AngularComponent.splittingWithZero_zero
+#print axioms SpecialTransformations.Section6.AngularComponent.splittingWithZero_zero
+#check @SpecialTransformations.Section6.AngularComponent.splittingWithZero_rv
+#print axioms SpecialTransformations.Section6.AngularComponent.splittingWithZero_rv
+#check @SpecialTransformations.Section6.RVAbstraction.polynomial_sort
+#print axioms SpecialTransformations.Section6.RVAbstraction.polynomial_sort
+#check @SpecialTransformations.Section6.RVAbstraction.polynomial_realize
+#print axioms SpecialTransformations.Section6.RVAbstraction.polynomial_realize
+#check @SpecialTransformations.Section6.RVAbstraction.term_realize
+#print axioms SpecialTransformations.Section6.RVAbstraction.term_realize
+#check @SpecialTransformations.Section6.RVAbstraction.formula_realize
+#print axioms SpecialTransformations.Section6.RVAbstraction.formula_realize
+#check @SpecialTransformations.Section6.contractionGraphCodes_definable
+#print axioms SpecialTransformations.Section6.contractionGraphCodes_definable
+#check @SpecialTransformations.Section6.contractionGraphCodes_sorted
+#print axioms SpecialTransformations.Section6.contractionGraphCodes_sorted
+#check @SpecialTransformations.Section6.exists_qf_contraction_graph
+#print axioms SpecialTransformations.Section6.exists_qf_contraction_graph
+#check @SpecialTransformations.Section6.finite_sentence_cover
+#print axioms SpecialTransformations.Section6.finite_sentence_cover
+#check @SpecialTransformations.Section6.finite_formula_cover
+#print axioms SpecialTransformations.Section6.finite_formula_cover
+#check @SpecialTransformations.Section6.uniform_of_local_certificates
+#print axioms SpecialTransformations.Section6.uniform_of_local_certificates
+
+#print SpecialTransformations.Section6.ContractionGraphFormula
+#print SpecialTransformations.Section6.RVAbstraction.Auxiliary
+#print SpecialTransformations.Section6.RVAbstraction.Fragment
+#print SpecialTransformations.Section6.RVAbstraction.Compatible
+#print SpecialTransformations.Section6.RVAbstraction.RelationsCompatible
+#print SpecialTransformations.Section6.RVAbstraction.GuardCompatible
+#print SpecialTransformations.Section6.AngularComponent.Data
+
+#check @SpecialTransformations.Section6.RVSubstructure.functions_compatible
+#print axioms SpecialTransformations.Section6.RVSubstructure.functions_compatible
+#check @SpecialTransformations.Section6.RVSubstructure.relations_compatible
+#print axioms SpecialTransformations.Section6.RVSubstructure.relations_compatible
+#check @SpecialTransformations.Section6.RVSubstructure.guard_compatible
+#print axioms SpecialTransformations.Section6.RVSubstructure.guard_compatible
+#check @SpecialTransformations.Section6.RVSubstructure.coefficient_spec
+#print axioms SpecialTransformations.Section6.RVSubstructure.coefficient_spec
+#check @SpecialTransformations.Section6.RVSubstructure.formula_realize_substructure
+#print axioms SpecialTransformations.Section6.RVSubstructure.formula_realize_substructure
+#check @SpecialTransformations.Section6.ExpandedLogic.hasVFQE_of_oneStep
+#print axioms SpecialTransformations.Section6.ExpandedLogic.hasVFQE_of_oneStep
+#check @SpecialTransformations.Section6.GuardedLift.formula_isVFQF
+#print axioms SpecialTransformations.Section6.GuardedLift.formula_isVFQF
+#check @SpecialTransformations.Section6.GuardedLift.formula_wellSorted
+#print axioms SpecialTransformations.Section6.GuardedLift.formula_wellSorted
+#check @SpecialTransformations.Section6.GuardedLift.formula_realize
+#print axioms SpecialTransformations.Section6.GuardedLift.formula_realize
+#check @SpecialTransformations.Section6.polynomial_descent_certificate
+#print axioms SpecialTransformations.Section6.polynomial_descent_certificate
+#check @SpecialTransformations.Section6.polynomial_formula_descent
+#print axioms SpecialTransformations.Section6.polynomial_formula_descent
+#check @SpecialTransformations.Section6.polynomial_source_formula_descent
+#print axioms SpecialTransformations.Section6.polynomial_source_formula_descent
+#check @SpecialTransformations.Section6.map_formula_descent
+#print axioms SpecialTransformations.Section6.map_formula_descent
+#check @SpecialTransformations.Section6.native_formula_elimination_points
+#print axioms SpecialTransformations.Section6.native_formula_elimination_points
+#check @SpecialTransformations.Section6.native_formula_elimination
+#print axioms SpecialTransformations.Section6.native_formula_elimination
+#check @SpecialTransformations.Section6.syntactic_lemma_6_3
+#print axioms SpecialTransformations.Section6.syntactic_lemma_6_3
+#check @SpecialTransformations.Section6.equivalent_of_elementary_cover
+#print axioms SpecialTransformations.Section6.equivalent_of_elementary_cover
+#check @SpecialTransformations.Section6.FragmentCompactness.realize_type
+#print axioms SpecialTransformations.Section6.FragmentCompactness.realize_type
+#check @SpecialTransformations.Section6.FragmentCompactness.countermodels
+#print axioms SpecialTransformations.Section6.FragmentCompactness.countermodels
+#check @SpecialTransformations.Section6.FragmentCompactness.definable_of_type_invariant
+#print axioms SpecialTransformations.Section6.FragmentCompactness.definable_of_type_invariant
+#check @SpecialTransformations.Section6.RVGraphLanguage.qf_definition_on_substructures
+#print axioms SpecialTransformations.Section6.RVGraphLanguage.qf_definition_on_substructures
+#check @SpecialTransformations.Section6.RVGraphLanguage.qf_contraction_definition
+#print axioms SpecialTransformations.Section6.RVGraphLanguage.qf_contraction_definition
+#check @SpecialTransformations.Section6.RVGraphLanguage.contractionGraphCodes_append
+#print axioms SpecialTransformations.Section6.RVGraphLanguage.contractionGraphCodes_append
+#check @SpecialTransformations.Section6.RVGraphLanguage.prepared_graph_formula
+#print axioms SpecialTransformations.Section6.RVGraphLanguage.prepared_graph_formula
+#check @SpecialTransformations.Section6.RVGraphExpansion.graph_expansion
+#print axioms SpecialTransformations.Section6.RVGraphExpansion.graph_expansion
+#check @SpecialTransformations.Section6.RVGraphExpansion.prepared_graph_formula
+#print axioms SpecialTransformations.Section6.RVGraphExpansion.prepared_graph_formula
+#check @SpecialTransformations.Section6.RVSourceFormula.lift_isVFQF
+#print axioms SpecialTransformations.Section6.RVSourceFormula.lift_isVFQF
+#check @SpecialTransformations.Section6.RVSourceFormula.lift_wellSorted
+#print axioms SpecialTransformations.Section6.RVSourceFormula.lift_wellSorted
+#check @SpecialTransformations.Section6.RVSourceFormula.lift_realize_substructure
+#print axioms SpecialTransformations.Section6.RVSourceFormula.lift_realize_substructure
+#check @SpecialTransformations.Section6.FiniteAbstraction.body_realize_substructure
+#print axioms SpecialTransformations.Section6.FiniteAbstraction.body_realize_substructure
+#check @SpecialTransformations.Section6.NativeTerms.exists_native_vf
+#print axioms SpecialTransformations.Section6.NativeTerms.exists_native_vf
+#check @SpecialTransformations.Section6.NativeTerms.realize_native
+#print axioms SpecialTransformations.Section6.NativeTerms.realize_native
+#check @SpecialTransformations.Section6.HenselianInputs.dclClosed
+#print axioms SpecialTransformations.Section6.HenselianInputs.dclClosed
+#check @SpecialTransformations.Section6.HenselianInputs.rv_surjective
+#print axioms SpecialTransformations.Section6.HenselianInputs.rv_surjective
+#check @SpecialTransformations.Section6.SortedFragment.fragment_boolean
+#print axioms SpecialTransformations.Section6.SortedFragment.fragment_boolean
+#check @SpecialTransformations.Section6.SortedFragment.definable_of_sorted_type_invariant
+#print axioms SpecialTransformations.Section6.SortedFragment.definable_of_sorted_type_invariant
+#check @SpecialTransformations.Section6.NativeTermMap.code_definable
+#print axioms SpecialTransformations.Section6.NativeTermMap.code_definable
+#check @SpecialTransformations.Section6.NativeTermMap.tupleMap_values
+#print axioms SpecialTransformations.Section6.NativeTermMap.tupleMap_values
+#check @SpecialTransformations.Section6.NamedLanguage.names_expansion
+#print axioms SpecialTransformations.Section6.NamedLanguage.names_expansion
+#check @SpecialTransformations.Section6.NamedLanguage.fromAuxiliary_rvQuantified
+#print axioms SpecialTransformations.Section6.NamedLanguage.fromAuxiliary_rvQuantified
+#check @SpecialTransformations.Section6.NamedLanguage.RVQuantified.guarded
+#print axioms SpecialTransformations.Section6.NamedLanguage.RVQuantified.guarded
+#check @SpecialTransformations.Section6.NamedLanguage.fromAuxiliary_realize
+#print axioms SpecialTransformations.Section6.NamedLanguage.fromAuxiliary_realize
+#check @SpecialTransformations.Section6.ParameterNaming.nameFinite_realize
+#print axioms SpecialTransformations.Section6.ParameterNaming.nameFinite_realize
+#check @SpecialTransformations.Section6.NativeOccurrence.native_shape
+#print axioms SpecialTransformations.Section6.NativeOccurrence.native_shape
+#check @SpecialTransformations.Section6.NativeOccurrence.native_sorted
+#print axioms SpecialTransformations.Section6.NativeOccurrence.native_sorted
+#check @SpecialTransformations.Section6.NativeOccurrence.coefficient_native
+#print axioms SpecialTransformations.Section6.NativeOccurrence.coefficient_native
+#check @SpecialTransformations.Section6.FiniteNamedSyntax.nameInput_realize
+#print axioms SpecialTransformations.Section6.FiniteNamedSyntax.nameInput_realize
+#check @SpecialTransformations.Section6.FVBinding.guards_realize
+#print axioms SpecialTransformations.Section6.FVBinding.guards_realize
+#check @SpecialTransformations.Section6.FVBinding.existsVF_realize_points
+#print axioms SpecialTransformations.Section6.FVBinding.existsVF_realize_points
+#check @SpecialTransformations.Section6.FiniteParameterSyntax.fragment_restrict
+#print axioms SpecialTransformations.Section6.FiniteParameterSyntax.fragment_restrict
+#check @SpecialTransformations.Section6.FiniteParameterSyntax.formula_fragment
+#print axioms SpecialTransformations.Section6.FiniteParameterSyntax.formula_fragment
+#check @SpecialTransformations.Section6.FiniteParameterSyntax.formula_realize
+#print axioms SpecialTransformations.Section6.FiniteParameterSyntax.formula_realize
+#check @SpecialTransformations.Section6.OriginalParameterSyntax.nameInput_realize
+#print axioms SpecialTransformations.Section6.OriginalParameterSyntax.nameInput_realize
+#check @SpecialTransformations.Section6.AuxiliaryDenaming.unname_realize
+#print axioms SpecialTransformations.Section6.AuxiliaryDenaming.unname_realize
+#check @SpecialTransformations.Section6.AuxiliaryDenaming.formula_isVFQF
+#print axioms SpecialTransformations.Section6.AuxiliaryDenaming.formula_isVFQF
+#check @SpecialTransformations.Section6.AuxiliaryDenaming.formula_wellSorted
+#print axioms SpecialTransformations.Section6.AuxiliaryDenaming.formula_wellSorted
+#check @SpecialTransformations.Section6.AuxiliaryDenaming.formula_realize
+#print axioms SpecialTransformations.Section6.AuxiliaryDenaming.formula_realize
+#check @SpecialTransformations.Section6.AngularComponent.encode_surjective
+#print axioms SpecialTransformations.Section6.AngularComponent.encode_surjective
+#check @SpecialTransformations.Section6.AngularComponent.residueCoordinate_encode
+#print axioms SpecialTransformations.Section6.AngularComponent.residueCoordinate_encode
+#check @SpecialTransformations.Section6.AngularComponent.encode_eq_encode
+#print axioms SpecialTransformations.Section6.AngularComponent.encode_eq_encode
+#check @SpecialTransformations.Section6.AngularComponent.encode_mul
+#print axioms SpecialTransformations.Section6.AngularComponent.encode_mul
+#check @SpecialTransformations.Section6.AngularComponent.exists_encode
+#print axioms SpecialTransformations.Section6.AngularComponent.exists_encode
+#check @SpecialTransformations.Section6.AngularComponent.forall_encode
+#print axioms SpecialTransformations.Section6.AngularComponent.forall_encode
+#check @SpecialTransformations.Section6.PairInterpretation.term_graph_definable
+#print axioms SpecialTransformations.Section6.PairInterpretation.term_graph_definable
+#check @SpecialTransformations.Section6.PairInterpretation.relation_of_terms
+#print axioms SpecialTransformations.Section6.PairInterpretation.relation_of_terms
+#check @SpecialTransformations.Section6.PairInterpretation.formula_set_definable
+#print axioms SpecialTransformations.Section6.PairInterpretation.formula_set_definable
+#check @SpecialTransformations.Section6.PairInterpretation.exists_formula
+#print axioms SpecialTransformations.Section6.PairInterpretation.exists_formula
+#check @SpecialTransformations.Section6.TypedNativeTerms.term_sorted
+#print axioms SpecialTransformations.Section6.TypedNativeTerms.term_sorted
+#check @SpecialTransformations.Section6.TypedNativeTerms.term_realize
+#print axioms SpecialTransformations.Section6.TypedNativeTerms.term_realize
+#check @SpecialTransformations.Section6.GeneratedParameters.rv_parameter_term
+#print axioms SpecialTransformations.Section6.GeneratedParameters.rv_parameter_term
+#check @SpecialTransformations.Section6.GeneratedParameters.expanded_rv_parameter_term
+#print axioms SpecialTransformations.Section6.GeneratedParameters.expanded_rv_parameter_term
+#check @SpecialTransformations.Section6.GeneratedDenaming.dename_rv_formula
+#print axioms SpecialTransformations.Section6.GeneratedDenaming.dename_rv_formula
+#print SpecialTransformations.Section6.HenselianInputs
+#print SpecialTransformations.Section6.HenselianInputs.of_envelope
+#print SpecialTransformations.Section6.RVGraphLanguage.RVQFDefinitions
+#print SpecialTransformations.Section6.NamedLanguage.RVQuantified
+#print SpecialTransformations.Section6.ExpandedLogic.OneStep
+#print SpecialTransformations.Section6.ExpandedLogic.HasVFQE
+#print SpecialTransformations.Section6.ElementaryCover
+#print SpecialTransformations.Section6.FragmentCompactness.BooleanClosed
+#print SpecialTransformations.Section6.FragmentCompactness.Equivalent
+#print SpecialTransformations.Section6.PairInterpretation.Data
+#print SpecialTransformations.Section6.HenselianTheory.hen00
+#print SpecialTransformations.Section6.HenselianTheory.canonicalHen00
+#print SpecialTransformations.Section6.HenselianTheory.expanded
+#print SpecialTransformations.Section6.HenselianTheory.named
+#check @SpecialTransformations.Section6.CommonEnvelopeComparison.existential_type_invariant
+#print axioms SpecialTransformations.Section6.CommonEnvelopeComparison.existential_type_invariant
+#check @SpecialTransformations.Section6.NativeAmalgamation.common_envelope
+#print axioms SpecialTransformations.Section6.NativeAmalgamation.common_envelope
+#check @SpecialTransformations.Section6.CanonicalEmbedding.normalize_eq
+#print axioms SpecialTransformations.Section6.CanonicalEmbedding.normalize_eq
+#check @SpecialTransformations.Section6.CanonicalEmbedding.normalized_apply
+#print axioms SpecialTransformations.Section6.CanonicalEmbedding.normalized_apply
+#check @SpecialTransformations.Section6.HenselianInputs.map
+#print axioms SpecialTransformations.Section6.HenselianInputs.map
+#check @SpecialTransformations.Section6.NativeExpandedSyntax.qf_isVFQF
+#print axioms SpecialTransformations.Section6.NativeExpandedSyntax.qf_isVFQF
+#check @SpecialTransformations.Section6.NativeExpandedSyntax.qf_wellSorted
+#print axioms SpecialTransformations.Section6.NativeExpandedSyntax.qf_wellSorted
+#check @SpecialTransformations.Section6.NativeExpandedSyntax.envelope_qf_type
+#print axioms SpecialTransformations.Section6.NativeExpandedSyntax.envelope_qf_type
+#check @SpecialTransformations.Section6.RVExpansionTransport.rv_preserved
+#print axioms SpecialTransformations.Section6.RVExpansionTransport.rv_preserved
+#check @SpecialTransformations.Section6.RVExpansionTransport.auxiliaryEquiv
+#print axioms SpecialTransformations.Section6.RVExpansionTransport.auxiliaryEquiv
+#check @SpecialTransformations.Section6.RVExpansionTransport.expandedEquiv
+#print axioms SpecialTransformations.Section6.RVExpansionTransport.expandedEquiv
+#check @SpecialTransformations.Section6.AngularComponent.encode_one
+#print axioms SpecialTransformations.Section6.AngularComponent.encode_one
+#check @SpecialTransformations.Section6.AngularComponent.encode_inverse
+#print axioms SpecialTransformations.Section6.AngularComponent.encode_inverse
+#print SpecialTransformations.Section6.NativeAmalgamation.SaturatedElementaryExtensionAt
+#check @SpecialTransformations.Section6.ExtraSortSemantics.laws_of_henselian_model
+#print axioms SpecialTransformations.Section6.ExtraSortSemantics.laws_of_henselian_model
+#check @SpecialTransformations.Section6.ExpandedImages.rvImage_bijective
+#print axioms SpecialTransformations.Section6.ExpandedImages.rvImage_bijective
+#check @SpecialTransformations.Section6.ExpandedImages.expandedEquiv
+#print axioms SpecialTransformations.Section6.ExpandedImages.expandedEquiv
+#check @SpecialTransformations.Section6.NormalizedQuery.realize
+#print axioms SpecialTransformations.Section6.NormalizedQuery.realize
+#check @SpecialTransformations.Section6.NormalizedQuery.named_realize
+#print axioms SpecialTransformations.Section6.NormalizedQuery.named_realize
+#check @SpecialTransformations.Section6.ExpandedRenaming.isVFQF
+#print axioms SpecialTransformations.Section6.ExpandedRenaming.isVFQF
+#check @SpecialTransformations.Section6.ExpandedRenaming.wellSorted
+#print axioms SpecialTransformations.Section6.ExpandedRenaming.wellSorted
+#check @SpecialTransformations.Section6.SentenceDenaming.dename
+#print axioms SpecialTransformations.Section6.SentenceDenaming.dename
+#check @SpecialTransformations.Section6.AlignedComparison.existential_type_invariant
+#print axioms SpecialTransformations.Section6.AlignedComparison.existential_type_invariant
+#print SpecialTransformations.Section6.ExtraSortSemantics.Laws
+#check @SpecialTransformations.Section6.PairSyntax.term_realize
+#print axioms SpecialTransformations.Section6.PairSyntax.term_realize
+#check @SpecialTransformations.Section6.PairSyntax.applyRelation_realize
+#print axioms SpecialTransformations.Section6.PairSyntax.applyRelation_realize
+#check @SpecialTransformations.Section6.PairSyntax.bounded_realize
+#print axioms SpecialTransformations.Section6.PairSyntax.bounded_realize
+#check @SpecialTransformations.Section6.PairSyntax.formula_realize
+#print axioms SpecialTransformations.Section6.PairSyntax.formula_realize
+#check @SpecialTransformations.Section6.NativeImageComparison.existential_type_invariant
+#print axioms SpecialTransformations.Section6.NativeImageComparison.existential_type_invariant
+#check @SpecialTransformations.Section6.NativeImageTransport.sorts_preserved
+#print axioms SpecialTransformations.Section6.NativeImageTransport.sorts_preserved
+#check @SpecialTransformations.Section6.NativeImageTransport.range_comp
+#print axioms SpecialTransformations.Section6.NativeImageTransport.range_comp
+#check @SpecialTransformations.Section6.NativeImageTransport.henselian_range_comp
+#print axioms SpecialTransformations.Section6.NativeImageTransport.henselian_range_comp
+#check @SpecialTransformations.Section6.EnvelopeUniformity.existential_type_invariant
+#print axioms SpecialTransformations.Section6.EnvelopeUniformity.existential_type_invariant
+#check @SpecialTransformations.Section6.UniformNormalizedElimination.eliminate
+#print axioms SpecialTransformations.Section6.UniformNormalizedElimination.eliminate
+#print SpecialTransformations.Section6.PairSyntax.Syntax
+#print SpecialTransformations.Section6.PairSyntax.Realizes
+#print SpecialTransformations.Section6.EnvelopeUniformity.PreparationInputs
+#print SpecialTransformations.Section6.EnvelopeUniformity.EarlierPreparation
+#print SpecialTransformations.Section6.UniformNormalizedElimination.NativeEnvelope
+#print SpecialTransformations.Section6.UniformNormalizedElimination.NativeEnvelopes
+#check @SpecialTransformations.Section6.FiniteSortContext.reindex_sort
+#print axioms SpecialTransformations.Section6.FiniteSortContext.reindex_sort
+#check @SpecialTransformations.Section6.ExpandedLiterals.rvEquality_fragment
+#print axioms SpecialTransformations.Section6.ExpandedLiterals.rvEquality_fragment
+#check @SpecialTransformations.Section6.ExpandedLiterals.vf_realize_sorted
+#print axioms SpecialTransformations.Section6.ExpandedLiterals.vf_realize_sorted
+#check @SpecialTransformations.Section6.ExpandedLiterals.rvEquality_realize
+#print axioms SpecialTransformations.Section6.ExpandedLiterals.rvEquality_realize
+#check @SpecialTransformations.Section6.ExpandedRestriction.isVFQF
+#print axioms SpecialTransformations.Section6.ExpandedRestriction.isVFQF
+#check @SpecialTransformations.Section6.ExpandedRestriction.wellSorted
+#print axioms SpecialTransformations.Section6.ExpandedRestriction.wellSorted
+#check @SpecialTransformations.Section6.ExpandedFreeRenaming.isVFQF
+#print axioms SpecialTransformations.Section6.ExpandedFreeRenaming.isVFQF
+#check @SpecialTransformations.Section6.ExpandedFreeRenaming.wellSorted
+#print axioms SpecialTransformations.Section6.ExpandedFreeRenaming.wellSorted
+#check @SpecialTransformations.Section6.ExpandedFreeRenaming.realize
+#print axioms SpecialTransformations.Section6.ExpandedFreeRenaming.realize
+#check @SpecialTransformations.Section6.FiniteContextLogic.oneStep_of_finite
+#print axioms SpecialTransformations.Section6.FiniteContextLogic.oneStep_of_finite
+#check @SpecialTransformations.Section6.FiniteContextLogic.hasVFQE_of_finite
+#print axioms SpecialTransformations.Section6.FiniteContextLogic.hasVFQE_of_finite
+#check @SpecialTransformations.Section6.AngularComponent.value_splitting
+#print axioms SpecialTransformations.Section6.AngularComponent.value_splitting
+#check @SpecialTransformations.Section6.AngularComponent.value_encode
+#print axioms SpecialTransformations.Section6.AngularComponent.value_encode
+#check @SpecialTransformations.Section6.AngularComponent.encode_nonzero
+#print axioms SpecialTransformations.Section6.AngularComponent.encode_nonzero
+#check @SpecialTransformations.Section6.AngularComponent.group_value_one
+#print axioms SpecialTransformations.Section6.AngularComponent.group_value_one
+#check @SpecialTransformations.Section6.AngularComponent.residue_unit_encode
+#print axioms SpecialTransformations.Section6.AngularComponent.residue_unit_encode
+#check @SpecialTransformations.Section6.AngularComponent.residue_domain_encode
+#print axioms SpecialTransformations.Section6.AngularComponent.residue_domain_encode
+#check @SpecialTransformations.Section6.AngularComponent.value_order_encode
+#print axioms SpecialTransformations.Section6.AngularComponent.value_order_encode
+#check @SpecialTransformations.Section6.RVQuotients.rv_inverse
+#print axioms SpecialTransformations.Section6.RVQuotients.rv_inverse
+#check @SpecialTransformations.Section6.RVQuotients.rv_division
+#print axioms SpecialTransformations.Section6.RVQuotients.rv_division
+#check @SpecialTransformations.Section6.RVFragmentRenaming.fragment
+#print axioms SpecialTransformations.Section6.RVFragmentRenaming.fragment
+#check @SpecialTransformations.Section6.FiniteNormalizedElimination.eliminate
+#print axioms SpecialTransformations.Section6.FiniteNormalizedElimination.eliminate
+#print SpecialTransformations.Section6.FiniteContextLogic.FiniteOneStep
+#check @SpecialTransformations.Section6.ExpandedParameterRelabel.term_sort
+#print axioms SpecialTransformations.Section6.ExpandedParameterRelabel.term_sort
+#check @SpecialTransformations.Section6.ExpandedParameterRelabel.guard
+#print axioms SpecialTransformations.Section6.ExpandedParameterRelabel.guard
+#check @SpecialTransformations.Section6.ExpandedParameterRelabel.allSorted
+#print axioms SpecialTransformations.Section6.ExpandedParameterRelabel.allSorted
+#check @SpecialTransformations.Section6.ExpandedParameterRelabel.isVFQF
+#print axioms SpecialTransformations.Section6.ExpandedParameterRelabel.isVFQF
+#check @SpecialTransformations.Section6.ExpandedParameterRelabel.wellSorted
+#print axioms SpecialTransformations.Section6.ExpandedParameterRelabel.wellSorted
+#check @SpecialTransformations.Section6.ExpandedOpenBounds.splitLast_free
+#print axioms SpecialTransformations.Section6.ExpandedOpenBounds.splitLast_free
+#check @SpecialTransformations.Section6.ExpandedOpenBounds.splitLast_cast
+#print axioms SpecialTransformations.Section6.ExpandedOpenBounds.splitLast_cast
+#check @SpecialTransformations.Section6.ExpandedOpenBounds.splitLast_last
+#print axioms SpecialTransformations.Section6.ExpandedOpenBounds.splitLast_last
+#check @SpecialTransformations.Section6.ExpandedOpenBounds.guard
+#print axioms SpecialTransformations.Section6.ExpandedOpenBounds.guard
+#check @SpecialTransformations.Section6.ExpandedOpenBounds.isVFQF
+#print axioms SpecialTransformations.Section6.ExpandedOpenBounds.isVFQF
+#check @SpecialTransformations.Section6.ExpandedOpenBounds.term_sort
+#print axioms SpecialTransformations.Section6.ExpandedOpenBounds.term_sort
+#check @SpecialTransformations.Section6.ExpandedOpenBounds.sortAssem_empty
+#print axioms SpecialTransformations.Section6.ExpandedOpenBounds.sortAssem_empty
+#check @SpecialTransformations.Section6.ExpandedOpenBounds.wellSorted
+#print axioms SpecialTransformations.Section6.ExpandedOpenBounds.wellSorted
+#check @SpecialTransformations.Section6.OneStepPresentation.inverse_vf
+#print axioms SpecialTransformations.Section6.OneStepPresentation.inverse_vf
+#check @SpecialTransformations.Section6.OneStepPresentation.inverse_rv
+#print axioms SpecialTransformations.Section6.OneStepPresentation.inverse_rv
+#check @SpecialTransformations.Section6.OneStepPresentation.inverse_new
+#print axioms SpecialTransformations.Section6.OneStepPresentation.inverse_new
+#check @SpecialTransformations.Section6.OneStepPresentation.old_sort
+#print axioms SpecialTransformations.Section6.OneStepPresentation.old_sort
+#check @SpecialTransformations.Section6.OneStepPresentation.inverse_sort
+#print axioms SpecialTransformations.Section6.OneStepPresentation.inverse_sort
+#check @SpecialTransformations.Section6.OneStepPresentation.body_isVFQF
+#print axioms SpecialTransformations.Section6.OneStepPresentation.body_isVFQF
+#check @SpecialTransformations.Section6.OneStepPresentation.body_wellSorted
+#print axioms SpecialTransformations.Section6.OneStepPresentation.body_wellSorted
+#check @SpecialTransformations.Section6.OneStepPresentation.old_value
+#print axioms SpecialTransformations.Section6.OneStepPresentation.old_value
+#check @SpecialTransformations.Section6.OneStepPresentation.body_realize
+#print axioms SpecialTransformations.Section6.OneStepPresentation.body_realize
+#check @SpecialTransformations.Section6.HenselianElimination.finite_oneStep
+#print axioms SpecialTransformations.Section6.HenselianElimination.finite_oneStep
+#check @SpecialTransformations.Section6.HenselianElimination.hasVFQE
+#print axioms SpecialTransformations.Section6.HenselianElimination.hasVFQE
+#print SpecialTransformations.Section6.HenselianElimination.RVLiteralNormalForm
+#check @SpecialTransformations.Section6.DenefPasMultiplication.pair_realize
+#print axioms SpecialTransformations.Section6.DenefPasMultiplication.pair_realize
+#check @SpecialTransformations.Section6.DenefPasMultiplication.graph_realize
+#print axioms SpecialTransformations.Section6.DenefPasMultiplication.graph_realize
+#check @SpecialTransformations.Section6.DenefPasCodes.zero_eq_none
+#print axioms SpecialTransformations.Section6.DenefPasCodes.zero_eq_none
+#check @SpecialTransformations.Section6.DenefPasCodes.decode_surjective
+#print axioms SpecialTransformations.Section6.DenefPasCodes.decode_surjective
+#check @SpecialTransformations.Section6.DenefPasCodes.decode_zero_iff
+#print axioms SpecialTransformations.Section6.DenefPasCodes.decode_zero_iff
+#check @SpecialTransformations.Section6.DenefPasCodes.residue_decode
+#print axioms SpecialTransformations.Section6.DenefPasCodes.residue_decode
+#check @SpecialTransformations.Section6.DenefPasCodes.gamma_decode
+#print axioms SpecialTransformations.Section6.DenefPasCodes.gamma_decode
+#check @SpecialTransformations.Section6.DenefPasAux.residueProjection_realize
+#print axioms SpecialTransformations.Section6.DenefPasAux.residueProjection_realize
+#check @SpecialTransformations.Section6.DenefPasAux.valueProjection_realize
+#print axioms SpecialTransformations.Section6.DenefPasAux.valueProjection_realize
+#check @SpecialTransformations.Section6.NamedLogic.of_unnamed
+#print axioms SpecialTransformations.Section6.NamedLogic.of_unnamed
+#check @SpecialTransformations.Section6.NamedLogic.named_sorts
+#print axioms SpecialTransformations.Section6.NamedLogic.named_sorts
+#check @SpecialTransformations.Section6.NamedLogic.proposition_6_4
+#print axioms SpecialTransformations.Section6.NamedLogic.proposition_6_4
+#check @SpecialTransformations.Section6.DenefPasInverse.inverse_iff
+#print axioms SpecialTransformations.Section6.DenefPasInverse.inverse_iff
+#check @SpecialTransformations.Section6.DenefPasInverse.one_realize
+#print axioms SpecialTransformations.Section6.DenefPasInverse.one_realize
+#check @SpecialTransformations.Section6.DenefPasInverse.graph_realize
+#print axioms SpecialTransformations.Section6.DenefPasInverse.graph_realize
+#check @SpecialTransformations.Section6.DenefPasEquality.r_realize
+#print axioms SpecialTransformations.Section6.DenefPasEquality.r_realize
+#check @SpecialTransformations.Section6.DenefPasEquality.g_realize
+#print axioms SpecialTransformations.Section6.DenefPasEquality.g_realize
+#check @SpecialTransformations.Section6.DenefPasEquality.zero_realize
+#print axioms SpecialTransformations.Section6.DenefPasEquality.zero_realize
+#check @SpecialTransformations.Section6.DenefPasEquality.equal_realize
+#print axioms SpecialTransformations.Section6.DenefPasEquality.equal_realize
+#check @SpecialTransformations.Section6.DenefPasCodes.coordinates_injective
+#print axioms SpecialTransformations.Section6.DenefPasCodes.coordinates_injective
+#check @SpecialTransformations.Section6.DenefPasCodes.decode_eq_iff
+#print axioms SpecialTransformations.Section6.DenefPasCodes.decode_eq_iff
+#check @SpecialTransformations.Section6.DenefPasCodes.decode_mulPair
+#print axioms SpecialTransformations.Section6.DenefPasCodes.decode_mulPair
+#check @SpecialTransformations.Section6.DenefPasCodes.residueValue_rv
+#print axioms SpecialTransformations.Section6.DenefPasCodes.residueValue_rv
+#check @SpecialTransformations.Section6.DenefPasCodes.residueValue_encode
+#print axioms SpecialTransformations.Section6.DenefPasCodes.residueValue_encode
+#check @SpecialTransformations.Section6.DenefPasCodes.angular_encode
+#print axioms SpecialTransformations.Section6.DenefPasCodes.angular_encode
+#check @SpecialTransformations.Section6.DenefPasCodes.angular_rv
+#print axioms SpecialTransformations.Section6.DenefPasCodes.angular_rv
+#check @SpecialTransformations.Section6.DenefPasCodes.angular_idempotent
+#print axioms SpecialTransformations.Section6.DenefPasCodes.angular_idempotent
+#check @SpecialTransformations.Section6.DenefPasCodes.angular_zero
+#print axioms SpecialTransformations.Section6.DenefPasCodes.angular_zero
+#print SpecialTransformations.Section6.NamedLogic.HasVFQE
+#print SpecialTransformations.Section6.NamedLogic.WellSorted
+#print SpecialTransformations.Section6.NamedLogic.IsVFQF
+
+#check @SpecialTransformations.Section6.DenefPasRV.domain_decode
+#print axioms SpecialTransformations.Section6.DenefPasRV.domain_decode
+#check @SpecialTransformations.Section6.DenefPasRV.units_decode
+#print axioms SpecialTransformations.Section6.DenefPasRV.units_decode
+#check @SpecialTransformations.Section6.DenefPasResidue.domain_realize
+#print axioms SpecialTransformations.Section6.DenefPasResidue.domain_realize
+#check @SpecialTransformations.Section6.DenefPasResidue.negPair_decode
+#print axioms SpecialTransformations.Section6.DenefPasResidue.negPair_decode
+#check @SpecialTransformations.Section6.DenefPasResidue.negGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasResidue.negGraph_realize
+#check @SpecialTransformations.Section6.DenefPasResidue.addPair_decode
+#print axioms SpecialTransformations.Section6.DenefPasResidue.addPair_decode
+#check @SpecialTransformations.Section6.DenefPasResidue.addGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasResidue.addGraph_realize
+#check @SpecialTransformations.Section6.ExpandedRawLogic.wellSorted_inf
+#print axioms SpecialTransformations.Section6.ExpandedRawLogic.wellSorted_inf
+#check @SpecialTransformations.Section6.ExpandedRawLogic.normalize
+#print axioms SpecialTransformations.Section6.ExpandedRawLogic.normalize
+#check @SpecialTransformations.Section6.ExpandedRawLogic.eliminate
+#print axioms SpecialTransformations.Section6.ExpandedRawLogic.eliminate
+#check @SpecialTransformations.Section6.HenselianNativeSyntax.tagEval_native
+#print axioms SpecialTransformations.Section6.HenselianNativeSyntax.tagEval_native
+#check @SpecialTransformations.Section6.HenselianNativeSyntax.sortCover
+#print axioms SpecialTransformations.Section6.HenselianNativeSyntax.sortCover
+#check @SpecialTransformations.Section6.HenselianNativeSyntax.on_isQF
+#print axioms SpecialTransformations.Section6.HenselianNativeSyntax.on_isQF
+#check @SpecialTransformations.Section6.HenselianNativeSyntax.native_qf
+#print axioms SpecialTransformations.Section6.HenselianNativeSyntax.native_qf
+#check @SpecialTransformations.Section6.HenselianNativeSyntax.native_term
+#print axioms SpecialTransformations.Section6.HenselianNativeSyntax.native_term
+#check @SpecialTransformations.Section6.HenselianNativeSyntax.bounded_native_term
+#print axioms SpecialTransformations.Section6.HenselianNativeSyntax.bounded_native_term
+#check @SpecialTransformations.Section6.RelationalTerms.lift_strip
+#print axioms SpecialTransformations.Section6.RelationalTerms.lift_strip
+#check @SpecialTransformations.Section6.RelationalTerms.equality
+#print axioms SpecialTransformations.Section6.RelationalTerms.equality
+#check @SpecialTransformations.Section6.RelationalTerms.relation
+#print axioms SpecialTransformations.Section6.RelationalTerms.relation
+#check @SpecialTransformations.Section6.RelationalTerms.strip_realize
+#print axioms SpecialTransformations.Section6.RelationalTerms.strip_realize
+#check @SpecialTransformations.Section6.HenselianRelationalSorting.term_sorted
+#print axioms SpecialTransformations.Section6.HenselianRelationalSorting.term_sorted
+#check @SpecialTransformations.Section6.HenselianRelationalSorting.term_realize
+#print axioms SpecialTransformations.Section6.HenselianRelationalSorting.term_realize
+#check @SpecialTransformations.Section6.HenselianRelationalSorting.sort_unique
+#print axioms SpecialTransformations.Section6.HenselianRelationalSorting.sort_unique
+#check @SpecialTransformations.Section6.HenselianRelationalSorting.relation_isQF
+#print axioms SpecialTransformations.Section6.HenselianRelationalSorting.relation_isQF
+#check @SpecialTransformations.Section6.HenselianRelationalSorting.relation_wellSorted
+#print axioms SpecialTransformations.Section6.HenselianRelationalSorting.relation_wellSorted
+#check @SpecialTransformations.Section6.HenselianRelationalSorting.relation_equivalent
+#print axioms SpecialTransformations.Section6.HenselianRelationalSorting.relation_equivalent
+#check @SpecialTransformations.Section6.HenselianRelationalSorting.atomicSorting
+#print axioms SpecialTransformations.Section6.HenselianRelationalSorting.atomicSorting
+#check @SpecialTransformations.Section6.HenselianRelationalSorting.eliminate
+#print axioms SpecialTransformations.Section6.HenselianRelationalSorting.eliminate
+#check @SpecialTransformations.Section6.DenefPasAuxLift.fieldQF_inf
+#print axioms SpecialTransformations.Section6.DenefPasAuxLift.fieldQF_inf
+#check @SpecialTransformations.Section6.DenefPasAuxLift.isFieldQF
+#print axioms SpecialTransformations.Section6.DenefPasAuxLift.isFieldQF
+#check @SpecialTransformations.Section6.DenefPasAuxLift.term_realize
+#print axioms SpecialTransformations.Section6.DenefPasAuxLift.term_realize
+#check @SpecialTransformations.Section6.DenefPasAuxLift.guard_realize
+#print axioms SpecialTransformations.Section6.DenefPasAuxLift.guard_realize
+#check @SpecialTransformations.Section6.DenefPasAuxLift.allResidue_realize
+#print axioms SpecialTransformations.Section6.DenefPasAuxLift.allResidue_realize
+#check @SpecialTransformations.Section6.DenefPasAuxLift.allValue_realize
+#print axioms SpecialTransformations.Section6.DenefPasAuxLift.allValue_realize
+#check @SpecialTransformations.Section6.DenefPasAuxLift.realize
+#print axioms SpecialTransformations.Section6.DenefPasAuxLift.realize
+#check @SpecialTransformations.Section6.DenefPasNativeCodes.valueRepresentative_value
+#print axioms SpecialTransformations.Section6.DenefPasNativeCodes.valueRepresentative_value
+#check @SpecialTransformations.Section6.DenefPasNativeCodes.code_pack
+#print axioms SpecialTransformations.Section6.DenefPasNativeCodes.code_pack
+#check @SpecialTransformations.Section6.DenefPasNativeCodes.code_surjective
+#print axioms SpecialTransformations.Section6.DenefPasNativeCodes.code_surjective
+#check @SpecialTransformations.Section6.AngularComponent.trivialResidueMap_surjective
+#print axioms SpecialTransformations.Section6.AngularComponent.trivialResidueMap_surjective
+#check @SpecialTransformations.Section6.AngularComponent.trivialResidueMap_eq_ac
+#print axioms SpecialTransformations.Section6.AngularComponent.trivialResidueMap_eq_ac
+#check @SpecialTransformations.Section6.AngularComponent.trivialAcEquiv
+#print axioms SpecialTransformations.Section6.AngularComponent.trivialAcEquiv
+#check @SpecialTransformations.Section6.AngularComponent.trivialAcEquiv_apply
+#print axioms SpecialTransformations.Section6.AngularComponent.trivialAcEquiv_apply
+#print SpecialTransformations.Section6.ExpandedRawLogic.AtomicSorting
+#print SpecialTransformations.Section6.ExpandedRawLogic.SortCover
+#print SpecialTransformations.Section6.DenefPasLanguage.language
+#print SpecialTransformations.Section6.DenefPasLanguage.dpStructure
+#print SpecialTransformations.Section6.DenefPasLanguage.IsFieldQF
+#print SpecialTransformations.Section6.DenefPasAuxLift.Model
+
+#check @SpecialTransformations.Section6.DenefPasNormalization.decode_coordinates
+#print axioms SpecialTransformations.Section6.DenefPasNormalization.decode_coordinates
+
+#check @SpecialTransformations.Section6.DenefPasNormalization.pair_eq_iff
+#print axioms SpecialTransformations.Section6.DenefPasNormalization.pair_eq_iff
+
+#check @SpecialTransformations.Section6.DenefPasNormalization.graph_realize
+#print axioms SpecialTransformations.Section6.DenefPasNormalization.graph_realize
+
+#check @SpecialTransformations.Section6.DenefPasMorley.normExpanded_realize
+#print axioms SpecialTransformations.Section6.DenefPasMorley.normExpanded_realize
+
+#check @SpecialTransformations.Section6.DenefPasMorley.relationGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasMorley.relationGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasOrder.compare_realize
+#print axioms SpecialTransformations.Section6.DenefPasOrder.compare_realize
+
+#check @SpecialTransformations.Section6.DenefPasOrder.graph_realize
+#print axioms SpecialTransformations.Section6.DenefPasOrder.graph_realize
+
+#check @SpecialTransformations.Section6.DenefPasNativeDictionary.units_realize
+#print axioms SpecialTransformations.Section6.DenefPasNativeDictionary.units_realize
+
+#check @SpecialTransformations.Section6.DenefPasNativeDictionary.functionGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasNativeDictionary.functionGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasNativeDictionary.relationGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasNativeDictionary.relationGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasNativeDictionary.realizes
+#print axioms SpecialTransformations.Section6.DenefPasNativeDictionary.realizes
+
+#check @SpecialTransformations.Section6.DenefPasDictionary.lift_realize
+#print axioms SpecialTransformations.Section6.DenefPasDictionary.lift_realize
+
+#check @SpecialTransformations.Section6.DenefPasDictionary.realizes
+#print axioms SpecialTransformations.Section6.DenefPasDictionary.realizes
+
+#check @SpecialTransformations.Section6.DenefPasDictionary.formula_realize
+#print axioms SpecialTransformations.Section6.DenefPasDictionary.formula_realize
+
+#print SpecialTransformations.Section6.DenefPasDictionary.dictionary
+#print SpecialTransformations.Section6.DenefPasDictionary.Model
+
+
+#check @SpecialTransformations.Section6.DenefPasNativeModel.liftRV_inr
+#print axioms SpecialTransformations.Section6.DenefPasNativeModel.liftRV_inr
+
+#check @SpecialTransformations.Section6.DenefPasNativeModel.nativeFunction_field
+#print axioms SpecialTransformations.Section6.DenefPasNativeModel.nativeFunction_field
+
+#check @SpecialTransformations.Section6.DenefPasNativeModel.nativeFunction_rv
+#print axioms SpecialTransformations.Section6.DenefPasNativeModel.nativeFunction_rv
+
+#check @SpecialTransformations.Section6.DenefPasForwardCodes.fieldValue_code
+#print axioms SpecialTransformations.Section6.DenefPasForwardCodes.fieldValue_code
+
+#check @SpecialTransformations.Section6.DenefPasForwardCodes.isField_code
+#print axioms SpecialTransformations.Section6.DenefPasForwardCodes.isField_code
+
+#check @SpecialTransformations.Section6.DenefPasForwardCodes.isResidue_code
+#print axioms SpecialTransformations.Section6.DenefPasForwardCodes.isResidue_code
+
+#check @SpecialTransformations.Section6.DenefPasForwardCodes.isValue_code
+#print axioms SpecialTransformations.Section6.DenefPasForwardCodes.isValue_code
+
+#check @SpecialTransformations.Section6.DenefPasForwardCodes.isAux_code
+#print axioms SpecialTransformations.Section6.DenefPasForwardCodes.isAux_code
+
+#check @SpecialTransformations.Section6.DenefPasForwardCodes.fieldFunction_code
+#print axioms SpecialTransformations.Section6.DenefPasForwardCodes.fieldFunction_code
+
+#check @SpecialTransformations.Section6.DenefPasForwardCodes.fieldFunction_graph
+#print axioms SpecialTransformations.Section6.DenefPasForwardCodes.fieldFunction_graph
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.category_code
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.category_code
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.category_cover
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.category_cover
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.category_auxValue
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.category_auxValue
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.function_patterns
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.function_patterns
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.relation_patterns
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.relation_patterns
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.zero_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.zero_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.field_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.field_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.auxiliary_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.auxiliary_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.category_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.category_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.fieldGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.fieldGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardPatterns.extra_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardPatterns.extra_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardAuxiliary.coordinate_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardAuxiliary.coordinate_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardAuxiliary.relationFormula_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardAuxiliary.relationFormula_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardAuxiliary.functionFormula_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardAuxiliary.functionFormula_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardAuxiliary.relationGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardAuxiliary.relationGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardAuxiliary.functionGraphGood_patterns
+#print axioms SpecialTransformations.Section6.DenefPasForwardAuxiliary.functionGraphGood_patterns
+
+#check @SpecialTransformations.Section6.DenefPasForwardAuxiliary.functionGraphGood_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardAuxiliary.functionGraphGood_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardAuxiliary.zeroFormula_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardAuxiliary.zeroFormula_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardAuxiliary.zeroGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardAuxiliary.zeroGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardAuxiliary.functionGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardAuxiliary.functionGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardEquality.equality_patterns
+#print axioms SpecialTransformations.Section6.DenefPasForwardEquality.equality_patterns
+
+#check @SpecialTransformations.Section6.DenefPasForwardEquality.equalityFormula_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardEquality.equalityFormula_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardEquality.auxiliaryEquality_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardEquality.auxiliaryEquality_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardEquality.equalityGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardEquality.equalityGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardCross.rvTerm_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardCross.rvTerm_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardCross.category_of_selected
+#print axioms SpecialTransformations.Section6.DenefPasForwardCross.category_of_selected
+
+#check @SpecialTransformations.Section6.DenefPasForwardCross.graph_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardCross.graph_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardCross.angular_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardCross.angular_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardCross.value_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardCross.value_realize
+
+#check @SpecialTransformations.Section6.DenefPasForwardDictionary.realizes
+#print axioms SpecialTransformations.Section6.DenefPasForwardDictionary.realizes
+
+#check @SpecialTransformations.Section6.DenefPasForwardDictionary.formula_realize
+#print axioms SpecialTransformations.Section6.DenefPasForwardDictionary.formula_realize
+
+#print SpecialTransformations.Section6.DenefPasForwardDictionary.dictionary
+#print SpecialTransformations.Section6.DenefPasNativeModel.structureOn
+
+
+#check @SpecialTransformations.Section6.DenefPasRVReduct.inclusion_injective
+#print axioms SpecialTransformations.Section6.DenefPasRVReduct.inclusion_injective
+
+#check @SpecialTransformations.Section6.DenefPasRVReduct.functions
+#print axioms SpecialTransformations.Section6.DenefPasRVReduct.functions
+
+#check @SpecialTransformations.Section6.DenefPasRVReduct.relations
+#print axioms SpecialTransformations.Section6.DenefPasRVReduct.relations
+
+#check @SpecialTransformations.Section6.DenefPasRVReduct.guard
+#print axioms SpecialTransformations.Section6.DenefPasRVReduct.guard
+
+#check @SpecialTransformations.Section6.DenefPasRVReduct.coefficient_realize
+#print axioms SpecialTransformations.Section6.DenefPasRVReduct.coefficient_realize
+
+#check @SpecialTransformations.Section6.DenefPasRVReduct.formula_realize
+#print axioms SpecialTransformations.Section6.DenefPasRVReduct.formula_realize
+
+#check @SpecialTransformations.Section6.DenefPasFieldTerms.realize
+#print axioms SpecialTransformations.Section6.DenefPasFieldTerms.realize
+
+#check @SpecialTransformations.Section6.DenefPasPolynomialCodes.isAux_realize
+#print axioms SpecialTransformations.Section6.DenefPasPolynomialCodes.isAux_realize
+
+#check @SpecialTransformations.Section6.DenefPasPolynomialCodes.realize
+#print axioms SpecialTransformations.Section6.DenefPasPolynomialCodes.realize
+
+#check @SpecialTransformations.Section6.DenefPasPolynomialCodes.decode_realize
+#print axioms SpecialTransformations.Section6.DenefPasPolynomialCodes.decode_realize
+
+#check @SpecialTransformations.Section6.DenefPasParameters.fieldZero_realize
+#print axioms SpecialTransformations.Section6.DenefPasParameters.fieldZero_realize
+
+#check @SpecialTransformations.Section6.DenefPasParameters.auxiliaryConstant_realize
+#print axioms SpecialTransformations.Section6.DenefPasParameters.auxiliaryConstant_realize
+
+#check @SpecialTransformations.Section6.DenefPasParameters.packed_sorts
+#print axioms SpecialTransformations.Section6.DenefPasParameters.packed_sorts
+
+#check @SpecialTransformations.Section6.DenefPasParameters.packed_vf
+#print axioms SpecialTransformations.Section6.DenefPasParameters.packed_vf
+
+#check @SpecialTransformations.Section6.DenefPasParameters.packed_rv
+#print axioms SpecialTransformations.Section6.DenefPasParameters.packed_rv
+
+#check @SpecialTransformations.Section6.DenefPasParameters.fieldParameter_realize
+#print axioms SpecialTransformations.Section6.DenefPasParameters.fieldParameter_realize
+
+#check @SpecialTransformations.Section6.DenefPasParameters.rvParameter_decode
+#print axioms SpecialTransformations.Section6.DenefPasParameters.rvParameter_decode
+
+#check @SpecialTransformations.Section6.DenefPasParameters.rvParameter_isAux
+#print axioms SpecialTransformations.Section6.DenefPasParameters.rvParameter_isAux
+
+#check @SpecialTransformations.Section6.DenefPasSubstitution.guard_subst
+#print axioms SpecialTransformations.Section6.DenefPasSubstitution.guard_subst
+
+#check @SpecialTransformations.Section6.DenefPasSubstitution.allResidue_subst
+#print axioms SpecialTransformations.Section6.DenefPasSubstitution.allResidue_subst
+
+#check @SpecialTransformations.Section6.DenefPasSubstitution.allValue_subst
+#print axioms SpecialTransformations.Section6.DenefPasSubstitution.allValue_subst
+
+#check @SpecialTransformations.Section6.DenefPasSubstitution.isFieldQF_subst
+#print axioms SpecialTransformations.Section6.DenefPasSubstitution.isFieldQF_subst
+
+#check @SpecialTransformations.Section6.DenefPasSubstitution.subst_realize
+#print axioms SpecialTransformations.Section6.DenefPasSubstitution.subst_realize
+
+#check @SpecialTransformations.Section6.DenefPasReturnParameters.replacement_isAux
+#print axioms SpecialTransformations.Section6.DenefPasReturnParameters.replacement_isAux
+
+#check @SpecialTransformations.Section6.DenefPasReturnParameters.coefficient_eq
+#print axioms SpecialTransformations.Section6.DenefPasReturnParameters.coefficient_eq
+
+#check @SpecialTransformations.Section6.DenefPasReturnParameters.coefficient_realize
+#print axioms SpecialTransformations.Section6.DenefPasReturnParameters.coefficient_realize
+
+#check @SpecialTransformations.Section6.DenefPasReturnFormula.isFieldQF
+#print axioms SpecialTransformations.Section6.DenefPasReturnFormula.isFieldQF
+
+#check @SpecialTransformations.Section6.DenefPasReturnFormula.realize
+#print axioms SpecialTransformations.Section6.DenefPasReturnFormula.realize
+
+#check @SpecialTransformations.Section6.DenefPasNativeElimination.eliminate_native_models
+#print axioms SpecialTransformations.Section6.DenefPasNativeElimination.eliminate_native_models
+
+#check @SpecialTransformations.Section6.DenefPasHenselianModels.extra_model
+#print axioms SpecialTransformations.Section6.DenefPasHenselianModels.extra_model
+
+#check @SpecialTransformations.Section6.DenefPasHenselianModels.expanded_model
+#print axioms SpecialTransformations.Section6.DenefPasHenselianModels.expanded_model
+
+#check @SpecialTransformations.Section6.DenefPasHenselianModels.eliminate_nontrivial
+#print axioms SpecialTransformations.Section6.DenefPasHenselianModels.eliminate_nontrivial
+
+#print SpecialTransformations.Section6.DenefPasForwardDictionary.dictionary
+#print SpecialTransformations.Section6.DenefPasHenselianModels.OrdinaryRecognition
+
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.rv_encode
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.rv_encode
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.code_pack
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.code_pack
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.code_surjective
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.code_surjective
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.field_code
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.field_code
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.rv_code
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.rv_code
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.fieldValue_code
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.fieldValue_code
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.ac_fieldValue_code
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.ac_fieldValue_code
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.rvValue_code
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.rvValue_code
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.code_eq_field
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.code_eq_field
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.code_eq_rv
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.code_eq_rv
+
+#check @SpecialTransformations.Section6.DenefPasTrivialCodes.equality_iff
+#print axioms SpecialTransformations.Section6.DenefPasTrivialCodes.equality_iff
+
+#check @SpecialTransformations.Section6.DenefPasTrivialFieldGraphs.fieldSymbol_eval
+#print axioms SpecialTransformations.Section6.DenefPasTrivialFieldGraphs.fieldSymbol_eval
+
+#check @SpecialTransformations.Section6.DenefPasTrivialFieldGraphs.field_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialFieldGraphs.field_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialFieldGraphs.rv_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialFieldGraphs.rv_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialFieldGraphs.fieldGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialFieldGraphs.fieldGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialRVGraphs.native_function
+#print axioms SpecialTransformations.Section6.DenefPasTrivialRVGraphs.native_function
+
+#check @SpecialTransformations.Section6.DenefPasTrivialRVGraphs.inputsRV_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialRVGraphs.inputsRV_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialRVGraphs.functionGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialRVGraphs.functionGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialMixedGraphs.equalityGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialMixedGraphs.equalityGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialMixedGraphs.fieldCode_decode
+#print axioms SpecialTransformations.Section6.DenefPasTrivialMixedGraphs.fieldCode_decode
+
+#check @SpecialTransformations.Section6.DenefPasTrivialMixedGraphs.rvMapGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialMixedGraphs.rvMapGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialRelationalGraphs.native_relation
+#print axioms SpecialTransformations.Section6.DenefPasTrivialRelationalGraphs.native_relation
+
+#check @SpecialTransformations.Section6.DenefPasTrivialRelationalGraphs.arguments_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialRelationalGraphs.arguments_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialRelationalGraphs.relationGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialRelationalGraphs.relationGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialRelationalGraphs.extraGraph_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialRelationalGraphs.extraGraph_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialDictionary.realizes
+#print axioms SpecialTransformations.Section6.DenefPasTrivialDictionary.realizes
+
+#check @SpecialTransformations.Section6.DenefPasTrivialDictionary.formula_realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialDictionary.formula_realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialParameters.rvParameter_value
+#print axioms SpecialTransformations.Section6.DenefPasTrivialParameters.rvParameter_value
+
+#check @SpecialTransformations.Section6.DenefPasTrivialParameters.replacement_isAux
+#print axioms SpecialTransformations.Section6.DenefPasTrivialParameters.replacement_isAux
+
+#check @SpecialTransformations.Section6.DenefPasTrivialParameters.decode_replacement
+#print axioms SpecialTransformations.Section6.DenefPasTrivialParameters.decode_replacement
+
+#check @SpecialTransformations.Section6.DenefPasTrivialElimination.isFieldQF
+#print axioms SpecialTransformations.Section6.DenefPasTrivialElimination.isFieldQF
+
+#check @SpecialTransformations.Section6.DenefPasTrivialElimination.realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialElimination.realize
+
+#check @SpecialTransformations.Section6.DenefPasTrivialTest.fieldQF_sup
+#print axioms SpecialTransformations.Section6.DenefPasTrivialTest.fieldQF_sup
+
+#check @SpecialTransformations.Section6.DenefPasTrivialTest.isFieldQF
+#print axioms SpecialTransformations.Section6.DenefPasTrivialTest.isFieldQF
+
+#check @SpecialTransformations.Section6.DenefPasTrivialTest.group_eq_one
+#print axioms SpecialTransformations.Section6.DenefPasTrivialTest.group_eq_one
+
+#check @SpecialTransformations.Section6.DenefPasTrivialTest.values_iff
+#print axioms SpecialTransformations.Section6.DenefPasTrivialTest.values_iff
+
+#check @SpecialTransformations.Section6.DenefPasTrivialTest.realize
+#print axioms SpecialTransformations.Section6.DenefPasTrivialTest.realize
+
+#check @SpecialTransformations.Section6.DenefPasElimination.combine_isFieldQF
+#print axioms SpecialTransformations.Section6.DenefPasElimination.combine_isFieldQF
+
+#check @SpecialTransformations.Section6.DenefPasElimination.encoded_corollary_6_5
+#print axioms SpecialTransformations.Section6.DenefPasElimination.encoded_corollary_6_5
+
+#print SpecialTransformations.Section6.DenefPasForwardDictionary.dictionary
+#print SpecialTransformations.Section6.DenefPasHenselianModels.OrdinaryRecognition
+
+
+#check @SpecialTransformations.Section6.DenefPasFreeParameters.restrict_realize
+#print axioms SpecialTransformations.Section6.DenefPasFreeParameters.restrict_realize
+
+#check @SpecialTransformations.Section6.DenefPasFreeParameters.encoded_corollary_6_5
+#print axioms SpecialTransformations.Section6.DenefPasFreeParameters.encoded_corollary_6_5
+
+#check @SpecialTransformations.Section6.DenefPasSorts.termSort_func
+#print axioms SpecialTransformations.Section6.DenefPasSorts.termSort_func
+
+#check @SpecialTransformations.Section6.DenefPasSorts.literalTerm_sort
+#print axioms SpecialTransformations.Section6.DenefPasSorts.literalTerm_sort
+
+#check @SpecialTransformations.Section6.DenefPasSorts.holds_unique
+#print axioms SpecialTransformations.Section6.DenefPasSorts.holds_unique
+
+#check @SpecialTransformations.Section6.DenefPasSorts.literalValue_holds
+#print axioms SpecialTransformations.Section6.DenefPasSorts.literalValue_holds
+
+#check @SpecialTransformations.Section6.DenefPasSorts.literalTerm_realize
+#print axioms SpecialTransformations.Section6.DenefPasSorts.literalTerm_realize
+
+#check @SpecialTransformations.Section6.DenefPasSorts.normalized_sort
+#print axioms SpecialTransformations.Section6.DenefPasSorts.normalized_sort
+
+#check @SpecialTransformations.Section6.DenefPasSorts.normalized_spec
+#print axioms SpecialTransformations.Section6.DenefPasSorts.normalized_spec
+
+#check @SpecialTransformations.Section6.DenefPasSorts.WellSorted.isFieldQF
+#print axioms SpecialTransformations.Section6.DenefPasSorts.WellSorted.isFieldQF
+
+#check @SpecialTransformations.Section6.DenefPasSorts.normalizedEqual_sorted
+#print axioms SpecialTransformations.Section6.DenefPasSorts.normalizedEqual_sorted
+
+#check @SpecialTransformations.Section6.DenefPasSorts.normalizedRel_sorted
+#print axioms SpecialTransformations.Section6.DenefPasSorts.normalizedRel_sorted
+
+#check @SpecialTransformations.Section6.DenefPasSorts.holds_sumElim
+#print axioms SpecialTransformations.Section6.DenefPasSorts.holds_sumElim
+
+#check @SpecialTransformations.Section6.DenefPasSorts.normalizedEqual_realize
+#print axioms SpecialTransformations.Section6.DenefPasSorts.normalizedEqual_realize
+
+#check @SpecialTransformations.Section6.DenefPasSorts.normalizedRel_realize
+#print axioms SpecialTransformations.Section6.DenefPasSorts.normalizedRel_realize
+
+#check @SpecialTransformations.Section6.DenefPasSorts.holds_snoc
+#print axioms SpecialTransformations.Section6.DenefPasSorts.holds_snoc
+
+#check @SpecialTransformations.Section6.DenefPasSorts.normalize
+#print axioms SpecialTransformations.Section6.DenefPasSorts.normalize
+
+#check @SpecialTransformations.Section6.DenefPasCorollary.corollary_6_5
+#print axioms SpecialTransformations.Section6.DenefPasCorollary.corollary_6_5
+
+#check @SpecialTransformations.Section6.DenefPasSorts.auxHolds_iff
+#print axioms SpecialTransformations.Section6.DenefPasSorts.auxHolds_iff
+
+#check @SpecialTransformations.Section6.DenefPasSorts.nativeAux_holds
+#print axioms SpecialTransformations.Section6.DenefPasSorts.nativeAux_holds
+
+#check @SpecialTransformations.Section6.DenefPasSorts.holds_isAux
+#print axioms SpecialTransformations.Section6.DenefPasSorts.holds_isAux
+
+#check @SpecialTransformations.Section6.DenefPasSorts.auxiliaryArgument_ne_field
+#print axioms SpecialTransformations.Section6.DenefPasSorts.auxiliaryArgument_ne_field
+
+#check @SpecialTransformations.Section6.DenefPasSorts.canonical_functions
+#print axioms SpecialTransformations.Section6.DenefPasSorts.canonical_functions
+
+#check @SpecialTransformations.Section6.DenefPasSorts.nativeAux_offsort
+#print axioms SpecialTransformations.Section6.DenefPasSorts.nativeAux_offsort
+
+#check @SpecialTransformations.Section6.DenefPasSorts.holds_tag_not_field
+#print axioms SpecialTransformations.Section6.DenefPasSorts.holds_tag_not_field
+
+#check @SpecialTransformations.Section6.DenefPasSorts.nativeAux_junk
+#print axioms SpecialTransformations.Section6.DenefPasSorts.nativeAux_junk
+
+#check @SpecialTransformations.Section6.DenefPasSorts.expansion_junk
+#print axioms SpecialTransformations.Section6.DenefPasSorts.expansion_junk
+
+#check @SpecialTransformations.Section6.DenefPasSorts.auxiliary_field_junk
+#print axioms SpecialTransformations.Section6.DenefPasSorts.auxiliary_field_junk
+
+#check @SpecialTransformations.Section6.DenefPasSorts.canonical_junk
+#print axioms SpecialTransformations.Section6.DenefPasSorts.canonical_junk
+
+#check @SpecialTransformations.Section6.DenefPasSorts.nativeRel_holds
+#print axioms SpecialTransformations.Section6.DenefPasSorts.nativeRel_holds
+
+#check @SpecialTransformations.Section6.DenefPasSorts.canonical_relations
+#print axioms SpecialTransformations.Section6.DenefPasSorts.canonical_relations
+
+#check @SpecialTransformations.Section6.DenefPasSorts.canonical
+#print axioms SpecialTransformations.Section6.DenefPasSorts.canonical
+
+#check @SpecialTransformations.Section6.DenefPasSorts.toAux_holds
+#print axioms SpecialTransformations.Section6.DenefPasSorts.toAux_holds
+
+#check @SpecialTransformations.Section6.DenefPasSorts.auxDefault_holds
+#print axioms SpecialTransformations.Section6.DenefPasSorts.auxDefault_holds
+
+#check @SpecialTransformations.Section6.DenefPasSorts.auxiliaryStructure_canonical
+#print axioms SpecialTransformations.Section6.DenefPasSorts.auxiliaryStructure_canonical
+
+#check @SpecialTransformations.Section6.DenefPasSorts.dpStructure_canonical
+#print axioms SpecialTransformations.Section6.DenefPasSorts.dpStructure_canonical
+
+#check @SpecialTransformations.Section6.DenefPasTheorem.corollary_6_5
+#print axioms SpecialTransformations.Section6.DenefPasTheorem.corollary_6_5
+
+#print SpecialTransformations.Section6.DenefPasSorts.Canonical
+#print SpecialTransformations.Section6.DenefPasSorts.AuxiliaryStructure
+#print SpecialTransformations.Section6.DenefPasSorts.WellSorted
+#print SpecialTransformations.Section6.DenefPasLanguage.IsFieldQF
+
