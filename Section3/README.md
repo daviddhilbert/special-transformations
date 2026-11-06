@@ -39,11 +39,12 @@ include C-minimality, VF algebraicity and exchange, finite RV-to-VF tuple images
 finite VF-tuple coding, closed-ball centers, definable points in balls, finite
 value-fibre sets, bounded-family constancy, RV-fibre exceptions, and additive-coset
 exceptions. Descent also handles nonempty Gamma-definable real families and
-VF, RV and Gamma outputs over a small real ambient base. Full ambient bases
-with Gamma names still require their descent extension. Other base-sensitive results
+VF, RV and Gamma outputs over a small real ambient base. Small ambient bases with Gamma names now have descent for real VF/RV
+outputs over nonempty real-tuple families. Gamma-output and Gamma-domain
+extensions remain open. Other base-sensitive results
 still need their Gamma extensions; defining the closure predicates does not
 prove their closure or generation laws. The last published combined certificate covers
-167 modules and 570 actual headline type/axiom checks, plus a fresh root import.
+170 modules and 640 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -55,3 +56,10 @@ See [LEGACY.md](LEGACY.md) for reuse candidates and pitfalls, and
 Definition 2.4 is being formalized with the author's approved rational VF
 factors and explicit domain guards; see [NORMAL-FORM-NOTE.md](NORMAL-FORM-NOTE.md).
 The semantic proof of 3.17 is independent of that still-open syntactic theorem.
+
+The coefficient-preserving geometry now lifts RV points algebraic over a VF
+parameter set into any algebraically closed VF subfield containing that set,
+even when that subfield's valuation is trivial. The full modelhood assertion
+of 3.14 remains open. Finite/cofinite RV fibres, uniform finite-side bounds
+and pure finite-threshold endpoint lemmas support the ongoing exchange proof;
+they do not by themselves establish 3.6 for RV or 3.7 for Gamma.

@@ -62,6 +62,10 @@ import Section3.GammaBaseTools
 
 import Section3.AlgebraicBaseGeometry
 
+import Section3.RVFibreGeometry
+import Section3.AlgebraicRVLifting
+import Section3.GammaBaseDescent
+
 /-!
 # Checked Section 3 library
 

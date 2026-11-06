@@ -502,4 +502,41 @@ and radii in the algebraically closed coefficient field's image. The new
 `AlgebraicBaseGeometry` lemma extends the existing valued C-minimality wrapper
 to an arbitrary coefficient-field embedding. The ambient valuation is
 nontrivial; the coefficient field's restricted valuation may be trivial.
-RV lifting and full acl modelhood remain to be proved.
+RV lifting is now checked in `AlgebraicRVLifting`; full acl modelhood remains open.
+
+
+## Coefficient lifting and ambient-base descent (November 5, 2026)
+
+Reused the pinned `ValOneEC.Good`/`IsKBall` coefficient geometry and the
+released RV and residue interpretations, extending the latter's definability
+proofs to arbitrary named coefficient subfields. If a finite RV set failed
+to lift in the coefficient field, one of its angular classes would avoid all
+finitely many coefficient centers. The ball tests there are uniform on its
+value fibre. Angular infinitude in residue characteristic zero contradicts
+finiteness. The proof needs no nontrivial valuation on the coefficient field.
+An independent valued-subfield elementary embedding uses released valued QE;
+its nontrivial restricted-valuation hypothesis is explicit.
+
+For the exchange route, the checked local RV-fibre exception theorem yields
+finite/cofinite traces. Genuine saturation supplies uniform finite-side bounds,
+and elementary order arguments supply finite images under bounded cuts and
+canonical endpoints for finite-threshold sets. The bridge from definable
+actual Gamma sets to finite thresholds and the eventual RV exchange theorem
+are still open. No conditional stability or exchange premise is imported.
+
+For real-output descent over Gamma-named ambient bases, reused the checked
+proper-code counting, support hull, tuple promotion and common-name cardinal
+bounds. Finite row cuts preserve the original invariant relation. Saturation
+is used only for the uniform finite subcover after temporary specialization;
+the final universal intersection is definable over exactly the original base.
+Both real and Gamma parts of the ambient base have explicit smallness bounds.
+
+The combined certificate covers 170 modules and 640 actual headline type/axiom
+checks, plus a fresh root import. The three new modules passed standalone Lean
+compilation; matching earlier compiler artifacts are reused explicitly. Only
+`propext`, `Classical.choice` and `Quot.sound` occur. The root's concurrent
+Section 4 and Section 5 imports are consumer checks using the recorded matching
+artifacts, including individual Section 4 compiler records. They do not certify
+those sections. Full types were reviewed for the coefficient
+lifting, valued elementary embedding, finite-side and endpoint tools, and
+ambient-Gamma-base real-output descent.

@@ -1255,7 +1255,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "GammaBallDefinablePoint",
@@ -1263,7 +1263,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "GammaValueFibreCounting",
@@ -1271,7 +1271,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "GammaFiniteValues",
@@ -1279,7 +1279,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RVOperations",
@@ -1287,7 +1287,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "PolynomialRVMonomial",
@@ -1295,7 +1295,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RVSmallPowers",
@@ -1303,7 +1303,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "SmallFamilyConstancy",
@@ -1311,7 +1311,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "GammaBaseTools",
@@ -1319,7 +1319,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "AlgebraicBaseGeometry",
@@ -1327,11 +1327,35 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "RVFibreGeometry",
+      "source_sha256": "8f4e1658458083e030c599dbd2cfeb91de2ed47cc79b8474a46ed80a1540280d",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "AlgebraicRVLifting",
+      "source_sha256": "4efe6ab3db36791d220696b0cd0677226b707a72394530d618f49cdd3c7d1892",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "GammaBaseDescent",
+      "source_sha256": "d3323ad1cfd9bbc43756616ef4d1817a86429fff9a69305910e513dbabf0de4f",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "45287c57c3fca2275b6326a2f2f17ec8c1536581a8b1fc00dd9ea91da0669d54",
+      "source_sha256": "c0d7cf99bcdba1d3c9d1c5f662f82216a610105ef533223e2f2189e48e76303c",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1339,7 +1363,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "c2145e033b2f888fbd7fcdc5760b1436cb5523ef12cde60a06f122be70ee28aa",
+      "source_sha256": "f33d06b42111c19262e71c5be07e4d3ab18ec448032b8f1a97f991a95bc09270",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1347,7 +1371,7 @@
     },
     {
       "module": "Root",
-      "source_sha256": "981e82e7647890b0ca7f5b5b8aa2360e2b1d13422a5ce2fa8dc170e816eaec50",
+      "source_sha256": "fb42dd3abe9a1c5556f7dc92401fa7b7145a7e0bf17bf4b4ae33f933c6927f30",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1355,7 +1379,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "167 integrated Section3 modules; matching compiler caches reused where indicated; fresh 570-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "170 integrated Section3 modules; matching compiler caches reused where indicated; fresh 640-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -4151,154 +4175,896 @@
       "Classical.choice",
       "Quot.sound"
     ],
-    "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": []
+    "SpecialTransformations.Section3.finite_or_cofinite_of_finite_exceptions": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rv_value_fibre_finite_or_cofinite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rv_value_fibre_finite_or_cofinite_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawClosure.Tuple.uniform_finite_side": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RawClosure.Tuple.uniform_finite_fibres_from_dichotomy": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.finite_image_of_uniform_small_cut": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.SameCuts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.Determines": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.IsInfimum": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.sameCuts_below": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.sameCuts_in_gap": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.Determines.compl": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.left_tail": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.one_side_bounded_below": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.exists_infimum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.BoundedBelow": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.CanonicalEndpoint": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.infimum_unique": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.canonicalEndpoint_unique": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.canonicalEndpoint_exists": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.canonicalEndpoint_touches": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.RightContact": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.LeftContact": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.finite_right_contacts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.finite_left_contacts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.FiniteThresholds.finite_touched_parameters": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.FunDef": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.SetDef": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.MapDef": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.constant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.add": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.neg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.val_le": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.val_eq_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ValuedOver.inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.Over.inResidue_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.Over.add_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.Over.neg_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.Over.liftFn_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.Over.liftTerm_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.Over.rv_eq_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.RVRepresentatives.Over.qf_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CoefficientRVGeometry.distance_eq_max": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CoefficientRVGeometry.coefficient_ball_pattern": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CoefficientRVGeometry.finite_exceptions": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.CoefficientRVGeometry.finite_rv_set_lifts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.c_minimal_valued_definable_subfield": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.rv_preimage_definable_over_subfield": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.algebraic_rv_lifts_algebraically_closed_subfield": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.valuedSubfieldEmbedding": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.valuedSubfieldElementary": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.ModelTheory.hasMore_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.scalarRows": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.scalarRows_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.cutFiniteRows": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.cutFiniteRows_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.cutFiniteRows_row_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GoodBaseRelation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GoodBaseRelation.mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.good_base_relation_of_algebraic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GoodBaseRelation.slice_common_names": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.uniform_good_base_relation_cover": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_1_full_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
+    "SpecialTransformations.ModelTheory.HasMore": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "bb284ad679cdd45d5207eb98a4a831691c07b316ba2793e6b698b75e2ac6f3e8",
+  "verifier_sha256": "4195cf683ec540246193627d33a8454860d8869446c628cc90869cfb22794d1f",
   "integration_root": {
     "path": "SpecialTransformations.lean",
-    "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n-/\n",
+    "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",
     "note": "Fresh compiler check of the exact working-copy root embedded here. Concurrent imports from other sections are consumer checks only; this certificate audits Section3 sources and headlines, not those sections.",
     "reused_external_consumer_artifacts": [
       {
         "module": "Section4.DefinableGeometry",
         "source_sha256": "e7e15c08e2b350dfbbca9fadefd071210324ed4ee240ef7023abec2bfc416d88",
-        "olean_sha256": "46cd1e722a9c5f4799d478bb3303dd5bd993539ca76e194dc1be21a73b7ecc33"
+        "olean_sha256": "46cd1e722a9c5f4799d478bb3303dd5bd993539ca76e194dc1be21a73b7ecc33",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "078b8944c769d9c6886c30f19e4dcad12721ba0c9c0219547e8bb47f8504ab80",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.Products",
         "source_sha256": "7677760ac7ee09a33fbb4508d3430e32b508ced780e2208f89958f9ee241e9aa",
-        "olean_sha256": "5164016660b4dc1f7e6bb253d85d37c3c52594b869d574b5cfca3d27796d03d9"
+        "olean_sha256": "5164016660b4dc1f7e6bb253d85d37c3c52594b869d574b5cfca3d27796d03d9",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "9400a1630f2795dd63f599bbbaa5b6c372904a2e1a76aea72252e6f401d201e4",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.CodeMaps",
         "source_sha256": "a5e019ce62f27de8f5d304a9cbdd8ddaa7e1010a32a83aedd51a59acf3e7ed21",
-        "olean_sha256": "1e0338b0fb425a3a0af39dffc1588d181e91960e526f7982ef4505545cf812b6"
+        "olean_sha256": "1e0338b0fb425a3a0af39dffc1588d181e91960e526f7982ef4505545cf812b6",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "3a3cd1fb5827b0a18ed389664c0ef34620efb3022029ca61357835e761db986a",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.FiniteMaps",
         "source_sha256": "89a08b967bfe0701bec8258361b8013c499f79a97d8b58b266e5ee5abefa8516",
-        "olean_sha256": "eb89022ddb734fa5dcf06a36670749e003ccb82c9255cfaf07c0b127dbe410cd"
+        "olean_sha256": "eb89022ddb734fa5dcf06a36670749e003ccb82c9255cfaf07c0b127dbe410cd",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "8c0832fe05f11fe00fc7d85af9ccf54a54c8c6b7e4c93dc478fa43505efb44cd",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.DefinableCategory",
         "source_sha256": "d6b722f285e992827680bf921efc73fce7b38d36e261315b3f655fbf3ed349a4",
-        "olean_sha256": "ebe2484bd162b31ab5b42654f5946113b1a19c42af361f13d8d11524ae7520e3"
+        "olean_sha256": "ebe2484bd162b31ab5b42654f5946113b1a19c42af361f13d8d11524ae7520e3",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "02051fe819a6cdcce0a2658c49444f7a2fd5612c4ab2e380eb0480fea6a131a3",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.Dimension",
         "source_sha256": "161d60c16bf6142376f63c93d2f5b3c1cbb7ffbfa08ffa7bc53257ee4f6d7a38",
-        "olean_sha256": "8534ce301c89a7c8f6cac644e2c8b0d7acfe53c659d7dcc57290597a4b933515"
+        "olean_sha256": "8534ce301c89a7c8f6cac644e2c8b0d7acfe53c659d7dcc57290597a4b933515",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "3601415dc17b66d823318bcc6da42fcfaa4b0b79809e28d8cc7e6fdd8b4adec2",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.Spaces",
         "source_sha256": "42f0700a627234ddb239b37b6a9b84400c4b4093668b0b6d4446ebd10db6b016",
-        "olean_sha256": "a4c47e441fcd0959cd22d31c20a9021077e316618f70d9feed233f1c3a1db1f5"
+        "olean_sha256": "a4c47e441fcd0959cd22d31c20a9021077e316618f70d9feed233f1c3a1db1f5",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "bf0c82bcb62ee85da47b77550768506a00af71712db177e22ba0a192cc9f9e85",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.UniformFinite",
         "source_sha256": "401145c63f82478ad5de430bb9a4f72dfabc7d2c39e838e5af44d75af77a5bf1",
-        "olean_sha256": "4bfa4bb6d0031876f91943c254eb132ba8d850db22f82deadb145de822ecd908"
+        "olean_sha256": "4bfa4bb6d0031876f91943c254eb132ba8d850db22f82deadb145de822ecd908",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "fbeccdac1913b723d3de118fac8446a361208d843bfb0b0d8ac89a81fbe3db00",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.FamilyCoding",
         "source_sha256": "87a872031360316d7790b11a3cc2ce7d80c4c449937d2072c601a7428330212c",
-        "olean_sha256": "d826f1ce1a147209289328071c210cce07c2ab1d575b760335172e1a6715b51c"
+        "olean_sha256": "d826f1ce1a147209289328071c210cce07c2ab1d575b760335172e1a6715b51c",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "03a54f794a3d26bd14602f220e10eb0025fc3b05d8b1e5edf80a6feca814ad23",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.TupleFamilies",
         "source_sha256": "40ac2d1de16d67341b25eff681865bb0a036b1734a89215ca9ff9ece73bf9cb4",
-        "olean_sha256": "0bf8826bc7f83b6168169f9874d61df5de4dfb6fb35af95b80cde505362cacbc"
+        "olean_sha256": "0bf8826bc7f83b6168169f9874d61df5de4dfb6fb35af95b80cde505362cacbc",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "adcbed22259c6018495c090ae0c73b7ca3c45feaf98dc5d33e6ee057d9f0ddd7",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.RealPresentations",
         "source_sha256": "fe53c8f6595de8e06ff34aa5bf1655cc672eb3a2d9599d1a8ad492c3f23e2d0c",
-        "olean_sha256": "235c5c2f5867b2a1170edd5b6a06a8a484b6a880550008501645e08efe44c253"
+        "olean_sha256": "235c5c2f5867b2a1170edd5b6a06a8a484b6a880550008501645e08efe44c253",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "bfe18b7ab84fa882c2a3ab308d6293234ba899cee6418bdbeb457f1de3282768",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.FiniteRefinement",
         "source_sha256": "73ead9c98e8cfd9771193a7ad42084b22b60af1c39699f38c760bd101821e7cd",
-        "olean_sha256": "bf7e25d6c99603757593df79dd1a3ae606673a8f7d2057fd5a96eb662bdad801"
+        "olean_sha256": "bf7e25d6c99603757593df79dd1a3ae606673a8f7d2057fd5a96eb662bdad801",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "1657df6aade7be2c4fbe8b792197be5de94dfca8d83ad305d846e0fb254d0b80",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.InjectionRefinement",
         "source_sha256": "086d829541266e29a635f9415a8b46437b0e5baf7a4c217c2f9bcc9622465206",
-        "olean_sha256": "c6a9f1d899ab9a5e933383c5d88806094a25ad3c3d8871d55d53b4af92db70f8"
+        "olean_sha256": "c6a9f1d899ab9a5e933383c5d88806094a25ad3c3d8871d55d53b4af92db70f8",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "e5eb66ef0c78f43aae56f0d1394a8e889b27c7db69e210e0ab7b5dd7c7a7dcf8",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.VFPadding",
         "source_sha256": "ca0f7610d9db3d713aff0d39627e94c088165eb7f54e90d9b41e6340d1c97472",
-        "olean_sha256": "4f4acb2087499bdf6417678ec80bbd40415ad06c3a7e4e82a982c4197640e140"
+        "olean_sha256": "4f4acb2087499bdf6417678ec80bbd40415ad06c3a7e4e82a982c4197640e140",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "cfc5d93a7545e805ba9436f88f50ed6511dd241e024d48e2ec8d8df8bfe59016",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.VFDimension",
         "source_sha256": "ba396134b2b058d8735e44260aec9415529dcfc5dd3a375227044382862072c8",
-        "olean_sha256": "1227e938d28c2fae14ec7a753879f59c08e130f6a77cf62e6e4a001f751aaa28"
+        "olean_sha256": "1227e938d28c2fae14ec7a753879f59c08e130f6a77cf62e6e4a001f751aaa28",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "5210b25b8df9c45bd831ae3aa23259448b6551bef45663d5331bbe96e321d6c6",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.CanonicalDimension",
         "source_sha256": "5a3851ad509dbd68152f0aa962f152e4a7d173010dc1225da9598fb8ce3ac2c3",
-        "olean_sha256": "50a368714dff46134788d19a4cdd090745e410544744072ea0d5a7f997bf6b61"
+        "olean_sha256": "50a368714dff46134788d19a4cdd090745e410544744072ea0d5a7f997bf6b61",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "0bfa12fbf6f1a5b9f6ee4aa7fac29413cb071fe80e36d80fed1ea905e01a9390",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.Congruences",
         "source_sha256": "b0091b22b8ea3bb35ff036b41053e54adeb2126d224ab0706ebaede273209f9b",
-        "olean_sha256": "bd08c906a83ffc13d2c008661437561749f1e84c961bc2ee0e96a86446c53380"
+        "olean_sha256": "bd08c906a83ffc13d2c008661437561749f1e84c961bc2ee0e96a86446c53380",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "0bb2b1155d5eae905e88844803303584df1de4e74a52d2860cb61354147bf37f",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.AdditiveCongruences",
         "source_sha256": "2539f6f4d63616175fb16ed9f4a34c45c9c38f89cb90bdf2498d338bcf6336be",
-        "olean_sha256": "a1bd77451d229a6d7de6bc36da67e3a43f014e261a9e9b00b63d17cce601e89b"
+        "olean_sha256": "a1bd77451d229a6d7de6bc36da67e3a43f014e261a9e9b00b63d17cce601e89b",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "652c5dc65d4160fd42b151fb43c18c3c697cbe55feaf54393a2eda5cacdae777",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.RVCategories",
         "source_sha256": "293417b73853af524960bab457b55ff3ab6d8a980057503a66fa67dbb6ea6a83",
-        "olean_sha256": "1712305669b9aa77f5b2267f2a6afffab536b12fdfe4c13cbaed1a0e37e7dfc0"
+        "olean_sha256": "1712305669b9aa77f5b2267f2a6afffab536b12fdfe4c13cbaed1a0e37e7dfc0",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "2e614bfcb0f3eed9c3aa2a05e9c8d33c0ec1b6303d79cb1878850ae794758c37",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.RVPadding",
         "source_sha256": "c725f07b9940574eecbeba3e3455af9826d4cb9025a073ed57775112fbe37fd0",
-        "olean_sha256": "3e478ea4b1ee326b5e9adb4a3b61a589a0894e1a72ccc4e9cd22afecf5079835"
+        "olean_sha256": "3e478ea4b1ee326b5e9adb4a3b61a589a0894e1a72ccc4e9cd22afecf5079835",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "f68a4c85b8c7c62c8926514e4af2c1d66f9995e0c3cbab42858389d7730ff754",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.RVFinitePadding",
         "source_sha256": "520946a299429e9f9287b69d4670ae01f3d3bb3cd176e64d31b4d6bce783c190",
-        "olean_sha256": "0f0b508675417d26c6682038018a7c05de4999c4fcca5749baf707ab31aaa9ef"
+        "olean_sha256": "0f0b508675417d26c6682038018a7c05de4999c4fcca5749baf707ab31aaa9ef",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "c0c742fe35d3c7988d68994619596516cd23e3e64b9818f7c90d70e4f9e0e79f",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.VFCategories",
         "source_sha256": "563db3896343ad39d48f0ba4d08696c478630ab91e8ad2847ac781bccb9cf34a",
-        "olean_sha256": "6c82f3b2603b1345c76758b3dac5061613d10a0e3e0db71a4f377cc4ea59efe6"
+        "olean_sha256": "6c82f3b2603b1345c76758b3dac5061613d10a0e3e0db71a4f377cc4ea59efe6",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "d48d54119a1d409195bb27fb8f4a1a045415d4e618636cfb1a76ad9084f96c03",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.PositivePresentation",
         "source_sha256": "0a07b659cd9838592a685bc288cc8c4a0aaa9aa42e48d40fb885fe46b0436548",
-        "olean_sha256": "33eab2dd1b8bea145ee7bacc0245cf2fc5db50490c8d2e4a9b54a1c4cb820835"
+        "olean_sha256": "33eab2dd1b8bea145ee7bacc0245cf2fc5db50490c8d2e4a9b54a1c4cb820835",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "3bc39b3806288bd1bb506038a6a00e862fd7fc81a18439a52595c017098d917a",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.Imported.GrothendieckRing",
         "source_sha256": "8eeccc5c125dd2d67c007fe6ec398837c94e1cee3a8db459383e554b980b889f",
-        "olean_sha256": "e0960c0e86f890dcc2b13453a239f2f017364cfaac10e0cec2f72b6f01329169"
+        "olean_sha256": "e0960c0e86f890dcc2b13453a239f2f017364cfaac10e0cec2f72b6f01329169",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "43a1b33a1c2715276ab5f8f22fa24baa6c5318f1e4017fefb7039899f0860f1c",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.PositiveCompletion",
         "source_sha256": "5489b6531ab98747aa0d80e7ac97ed98437a05c8aaee44b386cec97daeb62823",
-        "olean_sha256": "a49a82456b54c3c521628748bd39c0599fe866c507273b96543b71d5464995c6"
+        "olean_sha256": "a49a82456b54c3c521628748bd39c0599fe866c507273b96543b71d5464995c6",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "8edfddcbd6fa06177331a8b07bb9fc495dd859617a52e7361c6beb8a3748bdcd",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.CanonicalLift",
         "source_sha256": "823048aa8dd0afeb14231410a9325a973105c80d02586ea29665f64cde722630",
-        "olean_sha256": "0fc3b4f49fbb6f1fa77a8492140c91c4f6ffc5420c6df77feded2c2da6c13ee7"
+        "olean_sha256": "0fc3b4f49fbb6f1fa77a8492140c91c4f6ffc5420c6df77feded2c2da6c13ee7",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "9275c2513d9f4e62a462c2b72e0e2915e8cd97ec75595c2b887718840d05a35c",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.Fibres",
         "source_sha256": "ff9ff8de8712c2ed3fb11a0f3487c3dfdf7fd48ef71f2c0d0398d61d2df899b4",
-        "olean_sha256": "bdd08fd5299891c0c03915f859d0d674efa38d3cfdd4f17e089d966c24dc3841"
+        "olean_sha256": "bdd08fd5299891c0c03915f859d0d674efa38d3cfdd4f17e089d966c24dc3841",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "f7d667966da9ed10c7a17fba916b935e2058a9665631dc34fb48ffbb69829d2c",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.VFAlgebraicCoordinates",
+        "source_sha256": "e1987ca6804e8c6653df79bc43f3fe9ba296adf7ae55a4bccdc03d62e7c6e5f7",
+        "olean_sha256": "d4f92c3b246c52ffdd268127cf27a155e311276de7a900c9e755fa7ad252bfcd",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "2c0b50c0c3c5046ff361010b08bb755a0980e02f1c803dac5f2a6b94b6140b93",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.TupleTranscendence",
+        "source_sha256": "47a2d0915c14627b7859ea52bda434875cd5453007a704223a1ae192771117c6",
+        "olean_sha256": "5a4ca6fb84736a87caf60693487d52525c6a95546888630bdafd051c36872e5e",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "f137877b95aae510d5d2f4cb74b89c874ff57a335ac24b7aed2abcb66840d14f",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.FiniteGluing",
+        "source_sha256": "258d699e9d388e8969d161ce4746998bc8ba70c659a5f42f4ca7abff83ecf8b2",
+        "olean_sha256": "e1bf8405025ef09cac784dcf1432184f38e31d30ba47bc8328e5967f8a44150e",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "c5cba4f2429238e16ecd749727f5d7092dc5fd622049147936a01d2c782c4a3c",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.TupleBasis",
+        "source_sha256": "f32204f0c42256bb299dff30add44659281a91cd34153b4a6a58f13903db4ddc",
+        "olean_sha256": "dfc7c8592b304a489d502b7810ce00e245b7f90ab38467018b49c9703490b63e",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "d66003b45ce9a68f4adb1e37a8850f1135a07c72671f0fa9b3378cbf5f2590fa",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.VFTranscendence",
+        "source_sha256": "dac91cfcb59ff7436a0b203feec16f45368afcc2bedefa91fc71bd6815621c89",
+        "olean_sha256": "349fb6e1d6e5dfc45115e2e7c23b1316a33e2ab75f327f96040d44537178accd",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "f1ba2ea7ad739c9a8fa4e747d90df95b369891b0d63a148c20e0e6453173f613",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.FiniteCover",
+        "source_sha256": "cd9bfd9a4fc49bff9f087f075b69eb13caed2e0de42d41a76afe8c10eeb54b35",
+        "olean_sha256": "87f8cb81122fc5a45b2fc86eb5ac1451a4d52a482701db412ca3a3c68c83814a",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "26f3247bbced05829211f1df102ae67cd4c969b4cd76cdfff28b3b15e3f55e4c",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.CoordinatePieces",
+        "source_sha256": "b191f84b483597b0d8281011261cea61b36b24523cba1cee66f5d33b7076b6b5",
+        "olean_sha256": "0f08d1ea85539d1a231cb17fc3fe552eed41cd5725851d7346494f3c87b67d2c",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "a27587c03b14ade70dff9ed35127ca9af9c7aa21e2c18a903b5760ccbedf59a8",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.CoordinateDimension",
+        "source_sha256": "2eebf382372fd523909416cf991c7dc6da7bf6e1d1f71b4182728b75b301c152",
+        "olean_sha256": "1764abfd055fa4a943cb801f9b1e320cdac73f0319c4857e5b81a90ef91bbfa0",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "54a8f737516e4a5610c0137217eab87be9fdea60d388c0e82515f95b6661bea5",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.VFDimensionRank",
+        "source_sha256": "89bd110af07497bcac247131cb0705b3c18fb06dc395388488257939d20cdf40",
+        "olean_sha256": "3900d43348d9d3189e8ed721c2a664c76d521de05b3f9a1d85ed79431b302cf0",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "7e7ecf9121f8183a19421da2fb00f52b866c7878ba72e224fae0d0b4c9474f92",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.VFDimensionFibres",
+        "source_sha256": "c30748239d1e18425e57378d6254a5101aef2f12094e9ad6c1ef367a419e3dac",
+        "olean_sha256": "82bcd2da2426886511cb071214576f5ee7858691e3a2afe0cd44b0f4f3820cf5",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "6841f76e646f3cbd3ebae32f164276100e601305f440c04f8525695b009eac55",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.RelationFibres",
+        "source_sha256": "3eb34d5b29852397ba348de022cdaf0e01be5e1f6622a36c36ac2804e1ff71c0",
+        "olean_sha256": "33de8262131869afde4ee1ef83d4dafc83735f9eb3c8568fc1e6eb58f4e341a2",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "b0b390f044e4e346fd192772085b3662ce982ce128962e7e1413055c0def2692",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.FiniteCorrespondence",
+        "source_sha256": "25b905e6031961e846d355224227789286ef05dcd0f6556f7a95f9716cf0b746",
+        "olean_sha256": "0dbbc5d3f33845d0b385b9edd2c2375b55b94dd4085b663105293c0938408c15",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "db87d26886b0c70f86cce2de576b6ee42e2dc415bc0de0e13b1811b2ba2a3297",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.CanonicalRank",
+        "source_sha256": "a049e2fb2f3bdbb5cd47f54aa45b921241aa8481802e8d2e5b3eed0440e54e31",
+        "olean_sha256": "daba11ff6f25897df79fc7cd8ff2a46f75592727c5d5aa6c5b39f974df970ea1",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "145cfd6f8d5bc6e366ba176150ee46edbb02aac8be85311fee56f100643f58b5",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       },
       {
         "module": "Section4.Library",
-        "source_sha256": "809c3f49155d396531dfe6762df54abc2ada0efe9e8804c00829b3362f9c7312",
-        "olean_sha256": "b01f81fddc80c6e11d73aea81b5fc532310f6cc1d0b8f6f04b6b9ecc524eed32"
+        "source_sha256": "f599575c0c5b8eb201d8b159eceb4d3bfda5906177947d751f100acbf1f80333",
+        "olean_sha256": "10c8fd89fcbbf61bc3da8cc4dc5426d14a265a2833522fc4ccd35c4df0e8bcbc",
+        "compiler_record": ".scratch\\section4-verified\\results.json",
+        "source_dependency_fingerprint": "1c6319d2a4dfb97ee2f23270433382326752fe2c6696497f8b09db3ab07bb577",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.Geometry",
+        "source_sha256": "697017a55dd78cacbefcbe40c68855693c5a26f422f3a3bf0380e6c7237c0c04",
+        "olean_sha256": "07e3b351ea02dba6bc765ed7cb47a7360ccd0fcbb795c3318384e6aa87909844",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "b4dc1d736b48b965ad4dcb6915ce228b93b95abf7a4da1bdb84afeb3f58496db",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.Core",
+        "source_sha256": "2dc91ef55c7866394ccae75ddd9c3cb3b0d960c7ce88b24710987d9190201d75",
+        "olean_sha256": "23280bd9e6a7d0c5d8620b1df0ba49c0817c4def85e0fdee2f48f4500d3b9bb7",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "7ac4df762679fb765b5ca6c26f5b25f2e305c7d8def943edc6613287ac678fae",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.TransformGeometry",
+        "source_sha256": "cd849a3eb7525d6c4705afab572aee95ab46af8c563a988b35c225e6a10c513e",
+        "olean_sha256": "20eb3a275b75a04cfa91e055d63cddfef409ae4d181c6455d8e3e59607a7dad5",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "6fe617e27dec70717e5bcad1965f5fbc97fea0e94d9f1ee8e35ae872252edabb",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.RootConstruction",
+        "source_sha256": "85c6d6195b171885f0bd9cf98a8346beef3e14b17bafc74b1c343f8a5cfab8c6",
+        "olean_sha256": "dc0924d8f16cc84f68743e1d0c620677cdfdc07d51a998e2bd11e31e77e44150",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "dac2c397d48413056c2346ed8faae6d30161c6ab1da440516be7fa27cd754bf0",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.UnarySets",
+        "source_sha256": "6a20ada26d2a9ff3e815737faf3d7c36930b3eecd05cc4e8f64d426203ff0a56",
+        "olean_sha256": "33cd58ee1c4ed885210c9b594598508d0160b9a9f865cc50cdbb9fbadd88b67f",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "4b65813731511c518fd8ffa2404463d71291969dd3b24bdad9479109d60ef298",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.UnaryUniform",
+        "source_sha256": "fb9a1549751c34a830c9af5fa2c9a6cadd91de17ec660e7c04d78b1ef408bc9c",
+        "olean_sha256": "e97403562250dca731da2cb2cacc05ea50b0fc869f8529dc0992b1ccd2b8c9a5",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "1c98711474f6e335831ae5229ff45b4009ad20c085c1032b05c239046ab8f189",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.CoordinateLift",
+        "source_sha256": "e246f72d97cbc2e3068565036a68efa45f59d3231b15eda62089349b26ef55ea",
+        "olean_sha256": "48411acaf0535740e4bb8c9512bea4bd48c79ce5d78a4f5b0783a02df4549cf9",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "282a39ceb4c197775f41004bbd2c2792b20dc6e7a8b1d3e2e0afb6c7ea179472",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.UnaryRelations",
+        "source_sha256": "f4068dd0aa795373510ab82bdfbda01465b5759881994c6f3f885f94578b44fe",
+        "olean_sha256": "19c0d4bf934ef21a7fbbaa014e00b33a89f04fb68634d8cee0b2f14c663c5424",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "7f745d6cb26c6275fc5015cddfd4e13d3c80ee4973538603c8a15c9a4d244cc7",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.VerticalConstruction",
+        "source_sha256": "226b543f4b7e831eb98a438e68092942b42473ef2c57d7975a471c614c729a5b",
+        "olean_sha256": "7ec525147d4eac73b28865a8b42345ba6254078162456fc246146df6ac349f8c",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "2a5b4e1f6c766455180dea9bc665fa75f3574cf6f5318d3f93f1ec8dcc4d2342",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.UnaryMaps",
+        "source_sha256": "fd199734c6c5524865fdac1e592c36366b08449ab1e01ff9589a8934ecff7d34",
+        "olean_sha256": "72a876e789375b8faa164ab35069f21d570967437cc034ca8fac3e1adc8652b3",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "c93adaba29e6c0cc8cea2a0ca40e17dcbe6a49dd0c0e4194291fc72a19c058d3",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.Assembly",
+        "source_sha256": "3cc0948ed347f7e06e33f689137875c426d6b5f31d53b22e8fd67e5f83ecd002",
+        "olean_sha256": "91dd552fceacd802ad66e00b90c96ec560dbca36ec5b482a247b8ecb76b56213",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "77b54fede0b802865a1d8d72182195424a028e24dbb3f0080964eefc91d8c661",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.Centering",
+        "source_sha256": "17f569421e437bb83a28bd67a6fef769c10f10c3b6d96f23794285381e4af794",
+        "olean_sha256": "be459dff62e0bb285d5a550e8c31d617a44d9d55eea6ccf6f1e7037d3effe567",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "bbaf70517f6e583499df313fa4443a841446e9be692f954317c70329e917b92c",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.GeneralAssembly",
+        "source_sha256": "ba6b5a6b9cc8745b398333e55fbb1e8edf3e95f21a73b2efaded29bba07925bc",
+        "olean_sha256": "08eb9b2c1850554d1465c3d4eeac1bd04d02d7f35a194690a3db9ce0b92828f7",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "13b2629588d78be6ca6f543188a997ab5d8ce7f275d468125cfc44bfe710a9e0",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.GeneralExistence",
+        "source_sha256": "747e39fd759cf255cb29638f0336447849e1d4497de68cbe2e31603e6c72ddf3",
+        "olean_sha256": "962eca36764950438ee4613e37e4a79d42116ba25032118b4571378b62914d65",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "854581213b5b3203acadabfeb4f4a700138f1e891f567cbc7f18c8bc3940ee2e",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.PolynomialExpression",
+        "source_sha256": "5baa960b06dc724126090742ef2b743f51dfd7953267129f800df0b0e08ccefc",
+        "olean_sha256": "bfcccd4aea1334a15b69423cd5f84561dabbe221400523117220bf8f784d0a18",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "3be7e72a16cfb7079da985b554828e5a8e79cf640558aab0ce06d62fcd606dcc",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.PolynomialPreparation",
+        "source_sha256": "dc748a11e2be7334d229e04ed5d2a2b0d6e871871393dc1162f144bec8cf4337",
+        "olean_sha256": "b82d13abf08b50ade7bb3bcd95f3c217be674f849d5b995676e8a698a9a8b66d",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "5810d496a28b32eafe47efec9b019903682bd84fab6a5f0d6cae8f447769ff0a",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.PullbackLift",
+        "source_sha256": "cd83714a661a1b3a0c33b4f25d1dc9fb993b4a1794002fc7cdf26b57845f2aba",
+        "olean_sha256": "f7ba69c016d3e5297dc186e160835d886620a3778fa36cfe9094000374578cf6",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "f63a6da6d02cb64ea37b6fa158dc706bcb1cee3544e6f6a4a3452bd425806306",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.CategoryLift",
+        "source_sha256": "c40b1b5f58f6815ace0cc257961b614ae1fda41b5eaa171933df23d6715ed709",
+        "olean_sha256": "da7aa4670b6484ed5e5eae00b5b9b29c143dd678c3a7211c840c4b0ba308e274",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "2302ef96db3c5e5fb46cc2810727aecb5afcfc250b208db04bcb2acb84b52163",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.TaggedAmbient",
+        "source_sha256": "15e9b07e63252b23743605c2baf4755217553482a61a459888046b8fc40d225c",
+        "olean_sha256": "5ab99e55bede39ae8301c91739122f13b0d36e807fa4e212ff0a11e0b6c9bfab",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "ec2384ea202877751cd981b6270089bf5c9cbc43d19172e55f778c0ef643d493",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section4.MapParameters",
+        "source_sha256": "1ea549a9a3324090bd889039e0f3e82ad957983a4142d097597927f600f24639",
+        "olean_sha256": "20368439578f30a04e3f03c29dc95c28dccb14cd0e2217ae9f8a9e03b405b7ec",
+        "compiler_record": ".scratch\\section4-verified\\MapParameters.interactive.log.json",
+        "source_dependency_fingerprint": null,
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.ParameterExtension",
+        "source_sha256": "f87d0675b10af1b11975ca611bda6c7a3dfdf76cd2da644f7d555faabd8a783f",
+        "olean_sha256": "68433398a2199448b17fe703d2045219a1a1812d8425653e182c123c2af6d956",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "d5a75bbabf83e1398c4ddf52b22fa684780ec5ea4c2119a8ebaa3552a735afc9",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.GammaGraphs",
+        "source_sha256": "1edbb9f71b30fb41a99d9ea63d8d5d95b6fad50298eab40cfd6fe4b486dca8d4",
+        "olean_sha256": "a04d108f9f838d214a87ff80e057ff5df193d99eefe6933598d36c2064f9ed5c",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "5c450accdd2826afde143f1e80df979aa3e610cb29242bec4a79abd90565b4e8",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.GammaLogic",
+        "source_sha256": "f0819634026d934962afcabdd1fd2f20c00e704adb700d1f4440c89e4012f519",
+        "olean_sha256": "25d1f34b2d13ddc52d9672c86fde2e44190806e3d69948e9ef817130f7a871f6",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "88a1569528b0832821128102e580523fd5561248316e8f6326f62fa52fe36717",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.GammaRestriction",
+        "source_sha256": "f21c9fcea81eedb2469b1fe03c29d93c17cf32105cb9ac25a6046aa275e650b2",
+        "olean_sha256": "51e7aad6b7179d1ae457b72944f9e7bfc670230cc81d9b400b44d8b6d517292b",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "6be79432473ddd1f747c230f8d618ae9fea0580eb95d6e26080f672b1a594a0e",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.GammaExistence",
+        "source_sha256": "5afcc9165b01761264b40c508d46064609ba338aada9f3ca13f1b1b7446e945e",
+        "olean_sha256": "9136cc865919c3a08aeb5698772a9b9648f4b709a5f1f19a566554bfa0fbd1a1",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "b3d86b58314d3091068375ea8502cf60e29f0baebbd98b9e493afb3b88516209",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.GammaLift",
+        "source_sha256": "3789d2891466d49977b11fed4e34bab90172430a034c4039fc8ec36a242e69d0",
+        "olean_sha256": "c160b5c855ddb95908d82a65b157e46162aa75ffd5903c2414939defc65b7d0b",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "45af5d1216d538582bda0cb94a3545ea473ebfa6852e4f844355f98167c82ac0",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.GammaContraction",
+        "source_sha256": "c6b634e15b6aa158bf8e98f751e55f1c66c9de0cd1592cd7ee3c9c29bef22c88",
+        "olean_sha256": "23c4812858cb15f52b9848dda5b8ad7262519c1047acf8be03d39e232886230e",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "950c045d089c96f92eea7af65a45b5c1baa41e9bb347968e904db3c127482174",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
+      },
+      {
+        "module": "Section5.Library",
+        "source_sha256": "7dfadd92a8624da2092f9b00d1b2479d7d86dc79b2ae9fd3664ea5c7284cf943",
+        "olean_sha256": "fb9d41bb8db65a93b0ebf95db5c3a56de71012d234c879541c215555a4ae18e8",
+        "compiler_record": ".scratch\\section5-verified\\results.json",
+        "source_dependency_fingerprint": "d86f79a498ee14c0b21a1fe069d5de0b140de162c153e4690bcbc98d63cdd12e",
+        "note": "Consumer interface reuse only; individual records do not certify the whole external section."
       }
     ]
   },

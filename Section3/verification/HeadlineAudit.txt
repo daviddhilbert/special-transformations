@@ -11663,3 +11663,1112 @@ SpecialTransformations.Section3.RVMonomial.AbsoluteValueGroup : (M : Type) →
 'SpecialTransformations.Section3.c_minimal_over_algebraically_closed_base' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+@SpecialTransformations.Section3.finite_or_cofinite_of_finite_exceptions : ∀ {α β : Type} (f : α → β) (A T : Set α),
+  T.Finite →
+    (∀ (x y : α), f x = f y → x ∉ T → y ∉ T → (x ∈ A ↔ y ∈ A)) →
+      ∀ (b : β), {x | f x = b ∧ x ∈ A}.Finite ∨ {x | f x = b ∧ x ∉ A}.Finite
+'SpecialTransformations.Section3.finite_or_cofinite_of_finite_exceptions' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.rv_value_fibre_finite_or_cofinite : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (S A : Set M),
+  SpecialTransformations.Section3.DefinableAt S SpecialTransformations.Milestone0.SortTag.rv A →
+    ∀ (γ : SpecialTransformations.Section3.Values.Gamma),
+      (SpecialTransformations.Section3.Values.fibre A γ).Finite ∨
+        {t | SpecialTransformations.Section3.Values.vrv t = ↑γ ∧ ↑t ∉ A}.Finite
+'SpecialTransformations.Section3.rv_value_fibre_finite_or_cofinite' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.rv_value_fibre_finite_or_cofinite_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) (A : Set M),
+  SpecialTransformations.Section3.GammaParameters.DefinableAtBase B SpecialTransformations.Milestone0.SortTag.rv A →
+    ∀ (γ : SpecialTransformations.Section3.Values.Gamma),
+      (SpecialTransformations.Section3.Values.fibre A γ).Finite ∨
+        {t | SpecialTransformations.Section3.Values.vrv t = ↑γ ∧ ↑t ∉ A}.Finite
+'SpecialTransformations.Section3.rv_value_fibre_finite_or_cofinite_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RawClosure.Tuple.uniform_finite_side : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : Nat} {κ : Cardinal.{0}},
+  @SpecialTransformations.Section3.Saturated M inst κ →
+    ∀ (S : Set M),
+      @LT.lt Cardinal.{0} (@Preorder.toLT Cardinal.{0} (@PartialOrder.toPreorder Cardinal.{0} Cardinal.partialOrder))
+          (Cardinal.mk (@Set.Elem M S)) κ →
+        ∀ (D : Set (Fin n → M)),
+          @Set.Definable M S SpecialTransformations.Milestone0.LRV inst (Fin n) D →
+            ∀ (R Q : Set (Prod (Fin n → M) M)),
+              @SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable M inst n S R →
+                @SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable M inst n S Q →
+                  (∀ (a : Fin n → M),
+                      @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) D a →
+                        Or
+                          (@Set.Finite M
+                            (@Set.ofPred M fun x =>
+                              @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                (@Set.instMembership (Prod (Fin n → M) M)) R (@Prod.mk (Fin n → M) M a x)))
+                          (@Set.Finite M
+                            (@Set.ofPred M fun x =>
+                              @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                (@Set.instMembership (Prod (Fin n → M) M)) Q (@Prod.mk (Fin n → M) M a x)))) →
+                    ∃ N,
+                      ∀ (a : Fin n → M),
+                        @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) D a →
+                          Or
+                            (And
+                              (@Set.Finite M
+                                (@Set.ofPred M fun x =>
+                                  @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                    (@Set.instMembership (Prod (Fin n → M) M)) R (@Prod.mk (Fin n → M) M a x)))
+                              (@LE.le Nat instLENat
+                                (@Set.ncard M
+                                  (@Set.ofPred M fun x =>
+                                    @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                      (@Set.instMembership (Prod (Fin n → M) M)) R (@Prod.mk (Fin n → M) M a x)))
+                                N))
+                            (And
+                              (@Set.Finite M
+                                (@Set.ofPred M fun x =>
+                                  @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                    (@Set.instMembership (Prod (Fin n → M) M)) Q (@Prod.mk (Fin n → M) M a x)))
+                              (@LE.le Nat instLENat
+                                (@Set.ncard M
+                                  (@Set.ofPred M fun x =>
+                                    @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                      (@Set.instMembership (Prod (Fin n → M) M)) Q (@Prod.mk (Fin n → M) M a x)))
+                                N))
+'SpecialTransformations.Section3.RawClosure.Tuple.uniform_finite_side' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RawClosure.Tuple.uniform_finite_fibres_from_dichotomy : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : Nat} {κ : Cardinal.{0}},
+  @SpecialTransformations.Section3.Saturated M inst κ →
+    ∀ (S : Set M),
+      @LT.lt Cardinal.{0} (@Preorder.toLT Cardinal.{0} (@PartialOrder.toPreorder Cardinal.{0} Cardinal.partialOrder))
+          (Cardinal.mk (@Set.Elem M S)) κ →
+        ∀ (D : Set (Fin n → M)),
+          @Set.Definable M S SpecialTransformations.Milestone0.LRV inst (Fin n) D →
+            ∀ (R Q : Set (Prod (Fin n → M) M)),
+              @SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable M inst n S R →
+                @SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable M inst n S Q →
+                  (∀ (a : Fin n → M),
+                      @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) D a →
+                        Or
+                          (@Set.Finite M
+                            (@Set.ofPred M fun x =>
+                              @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                (@Set.instMembership (Prod (Fin n → M) M)) R (@Prod.mk (Fin n → M) M a x)))
+                          (@Set.Finite M
+                            (@Set.ofPred M fun x =>
+                              @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                (@Set.instMembership (Prod (Fin n → M) M)) Q (@Prod.mk (Fin n → M) M a x)))) →
+                    (∀ (a : Fin n → M),
+                        @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) D a →
+                          @Set.Infinite M
+                            (@Union.union (Set M) (@Set.instUnion M)
+                              (@Set.ofPred M fun x =>
+                                @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                  (@Set.instMembership (Prod (Fin n → M) M)) R (@Prod.mk (Fin n → M) M a x))
+                              (@Set.ofPred M fun x =>
+                                @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                  (@Set.instMembership (Prod (Fin n → M) M)) Q (@Prod.mk (Fin n → M) M a x)))) →
+                      ∃ N,
+                        ∀ (a : Fin n → M),
+                          @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) D a →
+                            And
+                              (@Set.Finite M
+                                  (@Set.ofPred M fun x =>
+                                    @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                      (@Set.instMembership (Prod (Fin n → M) M)) R (@Prod.mk (Fin n → M) M a x)) →
+                                @LE.le Nat instLENat
+                                  (@Set.ncard M
+                                    (@Set.ofPred M fun x =>
+                                      @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                        (@Set.instMembership (Prod (Fin n → M) M)) R (@Prod.mk (Fin n → M) M a x)))
+                                  N)
+                              (@Set.Finite M
+                                  (@Set.ofPred M fun x =>
+                                    @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                      (@Set.instMembership (Prod (Fin n → M) M)) Q (@Prod.mk (Fin n → M) M a x)) →
+                                @LE.le Nat instLENat
+                                  (@Set.ncard M
+                                    (@Set.ofPred M fun x =>
+                                      @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                                        (@Set.instMembership (Prod (Fin n → M) M)) Q (@Prod.mk (Fin n → M) M a x)))
+                                  N)
+'SpecialTransformations.Section3.RawClosure.Tuple.uniform_finite_fibres_from_dichotomy' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.finite_image_of_uniform_small_cut : ∀ {α β : Type} [inst : LinearOrder β] (A : Set α)
+  (f : α → β) (N : Nat),
+  (∀ (b : β),
+      Or
+        (And
+          (@Set.Finite α
+            (@Set.ofPred α fun x =>
+              And (@Membership.mem α (Set α) (@Set.instMembership α) A x)
+                (@LT.lt β
+                  (@Preorder.toLT β
+                    (@PartialOrder.toPreorder β
+                      (@SemilatticeInf.toPartialOrder β
+                        (@Lattice.toSemilatticeInf β
+                          (@DistribLattice.toLattice β (@instDistribLatticeOfLinearOrder β inst))))))
+                  (f x) b)))
+          (@LE.le Nat instLENat
+            (@Set.ncard α
+              (@Set.ofPred α fun x =>
+                And (@Membership.mem α (Set α) (@Set.instMembership α) A x)
+                  (@LT.lt β
+                    (@Preorder.toLT β
+                      (@PartialOrder.toPreorder β
+                        (@SemilatticeInf.toPartialOrder β
+                          (@Lattice.toSemilatticeInf β
+                            (@DistribLattice.toLattice β (@instDistribLatticeOfLinearOrder β inst))))))
+                    (f x) b)))
+            N))
+        (And
+          (@Set.Finite α
+            (@Set.ofPred α fun x =>
+              And (@Membership.mem α (Set α) (@Set.instMembership α) A x)
+                (Not
+                  (@LT.lt β
+                    (@Preorder.toLT β
+                      (@PartialOrder.toPreorder β
+                        (@SemilatticeInf.toPartialOrder β
+                          (@Lattice.toSemilatticeInf β
+                            (@DistribLattice.toLattice β (@instDistribLatticeOfLinearOrder β inst))))))
+                    (f x) b))))
+          (@LE.le Nat instLENat
+            (@Set.ncard α
+              (@Set.ofPred α fun x =>
+                And (@Membership.mem α (Set α) (@Set.instMembership α) A x)
+                  (Not
+                    (@LT.lt β
+                      (@Preorder.toLT β
+                        (@PartialOrder.toPreorder β
+                          (@SemilatticeInf.toPartialOrder β
+                            (@Lattice.toSemilatticeInf β
+                              (@DistribLattice.toLattice β (@instDistribLatticeOfLinearOrder β inst))))))
+                      (f x) b))))
+            N))) →
+    @Set.Finite β (@Set.image α β f A)
+'SpecialTransformations.Section3.finite_image_of_uniform_small_cut' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.SameCuts : {α : Type} → [LinearOrder α] → Finset α → α → α → Prop
+'SpecialTransformations.Section3.FiniteThresholds.SameCuts' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.Determines : {α : Type} → [LinearOrder α] → Finset α → Set α → Prop
+'SpecialTransformations.Section3.FiniteThresholds.Determines' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.IsInfimum : {α : Type} → [LinearOrder α] → Set α → α → Prop
+'SpecialTransformations.Section3.FiniteThresholds.IsInfimum' depends on axioms: [propext]
+@SpecialTransformations.Section3.FiniteThresholds.sameCuts_below : ∀ {α : Type} [inst : LinearOrder α] (E : Finset α)
+  (x y : α), (∀ c ∈ E, x < c) → (∀ c ∈ E, y < c) → SpecialTransformations.Section3.FiniteThresholds.SameCuts E x y
+'SpecialTransformations.Section3.FiniteThresholds.sameCuts_below' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.sameCuts_in_gap : ∀ {α : Type} [inst : LinearOrder α] (E : Finset α)
+  (c e x y : α),
+  (∀ t ∈ E, t ≤ c ∨ e ≤ t) →
+    c < x → x < e → c < y → y < e → SpecialTransformations.Section3.FiniteThresholds.SameCuts E x y
+'SpecialTransformations.Section3.FiniteThresholds.sameCuts_in_gap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.Determines.compl : ∀ {α : Type} [inst : LinearOrder α] (E : Finset α)
+  (A : Set α),
+  SpecialTransformations.Section3.FiniteThresholds.Determines E A →
+    SpecialTransformations.Section3.FiniteThresholds.Determines E Aᶜ
+'SpecialTransformations.Section3.FiniteThresholds.Determines.compl' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.left_tail : ∀ {α : Type} [inst : LinearOrder α] [Nonempty α]
+  (E : Finset α) (A : Set α),
+  SpecialTransformations.Section3.FiniteThresholds.Determines E A → ∃ b, ∀ (x y : α), x < b → y < b → (x ∈ A ↔ y ∈ A)
+'SpecialTransformations.Section3.FiniteThresholds.left_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.one_side_bounded_below : ∀ {α : Type} [inst : LinearOrder α]
+  [Nonempty α] (E : Finset α) (A : Set α),
+  SpecialTransformations.Section3.FiniteThresholds.Determines E A → (∃ b, ∀ x ∈ A, b ≤ x) ∨ ∃ b, ∀ x ∈ Aᶜ, b ≤ x
+'SpecialTransformations.Section3.FiniteThresholds.one_side_bounded_below' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.exists_infimum : ∀ {α : Type} [inst : LinearOrder α]
+  [@DenselyOrdered α
+      (@Preorder.toLT α
+        (@PartialOrder.toPreorder α
+          (@SemilatticeInf.toPartialOrder α
+            (@Lattice.toSemilatticeInf α (@DistribLattice.toLattice α (@instDistribLatticeOfLinearOrder α inst))))))]
+  [@NoMinOrder α
+      (@Preorder.toLT α
+        (@PartialOrder.toPreorder α
+          (@SemilatticeInf.toPartialOrder α
+            (@Lattice.toSemilatticeInf α (@DistribLattice.toLattice α (@instDistribLatticeOfLinearOrder α inst))))))]
+  [@NoMaxOrder α
+      (@Preorder.toLT α
+        (@PartialOrder.toPreorder α
+          (@SemilatticeInf.toPartialOrder α
+            (@Lattice.toSemilatticeInf α (@DistribLattice.toLattice α (@instDistribLatticeOfLinearOrder α inst))))))]
+  (E : Finset α) (A : Set α),
+  @SpecialTransformations.Section3.FiniteThresholds.Determines α inst E A →
+    @Set.Nonempty α A →
+      (∃ b,
+          ∀ (x : α),
+            @Membership.mem α (Set α) (@Set.instMembership α) A x →
+              @LE.le α
+                (@Preorder.toLE α
+                  (@PartialOrder.toPreorder α
+                    (@SemilatticeInf.toPartialOrder α
+                      (@Lattice.toSemilatticeInf α
+                        (@DistribLattice.toLattice α (@instDistribLatticeOfLinearOrder α inst))))))
+                b x) →
+        ∃ c,
+          And (@SpecialTransformations.Section3.FiniteThresholds.IsInfimum α inst A c)
+            (Or (@Membership.mem α (Set α) (@Set.instMembership α) A c)
+              (∃ e,
+                And
+                  (@LT.lt α
+                    (@Preorder.toLT α
+                      (@PartialOrder.toPreorder α
+                        (@SemilatticeInf.toPartialOrder α
+                          (@Lattice.toSemilatticeInf α
+                            (@DistribLattice.toLattice α (@instDistribLatticeOfLinearOrder α inst))))))
+                    c e)
+                  (@LE.le (Set α) (@Set.instLE α)
+                    (@Set.Ioo α
+                      (@PartialOrder.toPreorder α
+                        (@SemilatticeInf.toPartialOrder α
+                          (@Lattice.toSemilatticeInf α
+                            (@DistribLattice.toLattice α (@instDistribLatticeOfLinearOrder α inst)))))
+                      c e)
+                    A)))
+'SpecialTransformations.Section3.FiniteThresholds.exists_infimum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.BoundedBelow : {α : Type} → [LinearOrder α] → Set α → Prop
+'SpecialTransformations.Section3.FiniteThresholds.BoundedBelow' depends on axioms: [propext]
+@SpecialTransformations.Section3.FiniteThresholds.CanonicalEndpoint : {α : Type} → [LinearOrder α] → Set α → α → Prop
+'SpecialTransformations.Section3.FiniteThresholds.CanonicalEndpoint' depends on axioms: [propext]
+@SpecialTransformations.Section3.FiniteThresholds.infimum_unique : ∀ {α : Type} [inst : LinearOrder α] {A : Set α}
+  {c d : α},
+  SpecialTransformations.Section3.FiniteThresholds.IsInfimum A c →
+    SpecialTransformations.Section3.FiniteThresholds.IsInfimum A d → c = d
+'SpecialTransformations.Section3.FiniteThresholds.infimum_unique' depends on axioms: [propext]
+@SpecialTransformations.Section3.FiniteThresholds.canonicalEndpoint_unique : ∀ {α : Type} [inst : LinearOrder α]
+  {A : Set α} {c d : α},
+  SpecialTransformations.Section3.FiniteThresholds.CanonicalEndpoint A c →
+    SpecialTransformations.Section3.FiniteThresholds.CanonicalEndpoint A d → c = d
+'SpecialTransformations.Section3.FiniteThresholds.canonicalEndpoint_unique' depends on axioms: [propext]
+@SpecialTransformations.Section3.FiniteThresholds.canonicalEndpoint_exists : ∀ {α : Type} [inst : LinearOrder α]
+  [DenselyOrdered α] [NoMinOrder α] [NoMaxOrder α] (E : Finset α) (A : Set α),
+  SpecialTransformations.Section3.FiniteThresholds.Determines E A →
+    A.Nonempty → Aᶜ.Nonempty → ∃ c, SpecialTransformations.Section3.FiniteThresholds.CanonicalEndpoint A c
+'SpecialTransformations.Section3.FiniteThresholds.canonicalEndpoint_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.canonicalEndpoint_touches : ∀ {α : Type} [inst : LinearOrder α]
+  [DenselyOrdered α] [NoMinOrder α] [NoMaxOrder α] (E : Finset α) (A : Set α),
+  SpecialTransformations.Section3.FiniteThresholds.Determines E A →
+    A.Nonempty →
+      ∀ (c : α),
+        SpecialTransformations.Section3.FiniteThresholds.CanonicalEndpoint A c →
+          c ∈ A ∨ (∃ e, c < e ∧ Set.Ioo c e ⊆ A) ∨ ∃ e < c, Set.Ioo e c ⊆ A
+'SpecialTransformations.Section3.FiniteThresholds.canonicalEndpoint_touches' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.RightContact : {α : Type} →
+  [LinearOrder α] → {τ : Type} → (α → τ → Prop) → α → Set τ
+'SpecialTransformations.Section3.FiniteThresholds.RightContact' depends on axioms: [propext]
+@SpecialTransformations.Section3.FiniteThresholds.LeftContact : {α : Type} →
+  [LinearOrder α] → {τ : Type} → (α → τ → Prop) → α → Set τ
+'SpecialTransformations.Section3.FiniteThresholds.LeftContact' depends on axioms: [propext]
+@SpecialTransformations.Section3.FiniteThresholds.finite_right_contacts : ∀ {α : Type} [inst : LinearOrder α]
+  [DenselyOrdered α] {τ : Type} (R : α → τ → Prop) (b : α) (d : ℕ),
+  (∀ (x : α), {t | R x t}.Finite ∧ {t | R x t}.ncard ≤ d) →
+    (SpecialTransformations.Section3.FiniteThresholds.RightContact R b).Finite
+'SpecialTransformations.Section3.FiniteThresholds.finite_right_contacts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.finite_left_contacts : ∀ {α : Type} [inst : LinearOrder α]
+  [DenselyOrdered α] {τ : Type} (R : α → τ → Prop) (b : α) (d : ℕ),
+  (∀ (x : α), {t | R x t}.Finite ∧ {t | R x t}.ncard ≤ d) →
+    (SpecialTransformations.Section3.FiniteThresholds.LeftContact R b).Finite
+'SpecialTransformations.Section3.FiniteThresholds.finite_left_contacts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.FiniteThresholds.finite_touched_parameters : ∀ {α : Type} [inst : LinearOrder α]
+  [@DenselyOrdered α
+      (@Preorder.toLT α
+        (@PartialOrder.toPreorder α
+          (@SemilatticeInf.toPartialOrder α
+            (@Lattice.toSemilatticeInf α (@DistribLattice.toLattice α (@instDistribLatticeOfLinearOrder α inst))))))]
+  {τ : Type} (R : α → τ → Prop) (b : α) (d : Nat),
+  (∀ (x : α),
+      And (@Set.Finite τ (@Set.ofPred τ fun t => R x t))
+        (@LE.le Nat instLENat (@Set.ncard τ (@Set.ofPred τ fun t => R x t)) d)) →
+    ∀ (T : Set τ),
+      (∀ (t : τ),
+          @Membership.mem τ (Set τ) (@Set.instMembership τ) T t →
+            Or (R b t)
+              (Or
+                (@Membership.mem τ (Set τ) (@Set.instMembership τ)
+                  (@SpecialTransformations.Section3.FiniteThresholds.RightContact α inst τ R b) t)
+                (@Membership.mem τ (Set τ) (@Set.instMembership τ)
+                  (@SpecialTransformations.Section3.FiniteThresholds.LeftContact α inst τ R b) t))) →
+        @Set.Finite τ T
+'SpecialTransformations.Section3.FiniteThresholds.finite_touched_parameters' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.FunDef : {K Γ : Type} →
+  [inst : Field K] →
+    [inst_1 : LinearOrderedCommGroupWithZero Γ] → Valuation K Γ → Subfield K → {α : Type} → ((α → K) → K) → Prop
+'SpecialTransformations.Section3.ValuedOver.FunDef' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.SetDef : {K Γ : Type} →
+  [inst : Field K] →
+    [inst_1 : LinearOrderedCommGroupWithZero Γ] → Valuation K Γ → Subfield K → {α : Type} → Set (α → K) → Prop
+'SpecialTransformations.Section3.ValuedOver.SetDef' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.MapDef : {K Γ : Type} →
+  [inst : Field K] →
+    [inst_1 : LinearOrderedCommGroupWithZero Γ] → Valuation K Γ → Subfield K → {α β : Type} → ((α → K) → β → K) → Prop
+'SpecialTransformations.Section3.ValuedOver.MapDef' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.constant : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (F : Subfield K) {α : Type},
+  ∀ a ∈ F, SpecialTransformations.Section3.ValuedOver.FunDef v F fun x => a
+'SpecialTransformations.Section3.ValuedOver.constant' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.zero : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (F : Subfield K) {α : Type},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F fun x => 0
+'SpecialTransformations.Section3.ValuedOver.zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.one : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (F : Subfield K) {α : Type},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F fun x => 1
+'SpecialTransformations.Section3.ValuedOver.one' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.add : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (F : Subfield K) {α : Type} {f g : (α → K) → K},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+    SpecialTransformations.Section3.ValuedOver.FunDef v F g →
+      SpecialTransformations.Section3.ValuedOver.FunDef v F fun x => f x + g x
+'SpecialTransformations.Section3.ValuedOver.add' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.mul : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (F : Subfield K) {α : Type} {f g : (α → K) → K},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+    SpecialTransformations.Section3.ValuedOver.FunDef v F g →
+      SpecialTransformations.Section3.ValuedOver.FunDef v F fun x => f x * g x
+'SpecialTransformations.Section3.ValuedOver.mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.neg : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (F : Subfield K) {α : Type} {f : (α → K) → K},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+    SpecialTransformations.Section3.ValuedOver.FunDef v F fun x => -f x
+'SpecialTransformations.Section3.ValuedOver.neg' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.val_le : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (F : Subfield K) {α : Type} {f g : (α → K) → K},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+    SpecialTransformations.Section3.ValuedOver.FunDef v F g →
+      SpecialTransformations.Section3.ValuedOver.SetDef v F {x | v (f x) ≤ v (g x)}
+'SpecialTransformations.Section3.ValuedOver.val_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.val_eq_one : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (F : Subfield K) {α : Type} {f : (α → K) → K},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+    SpecialTransformations.Section3.ValuedOver.SetDef v F {x | v (f x) = 1}
+'SpecialTransformations.Section3.ValuedOver.val_eq_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.ValuedOver.inv : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (F : Subfield K) {α : Type} {f : (α → K) → K},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+    SpecialTransformations.Section3.ValuedOver.FunDef v F fun x => (f x)⁻¹
+'SpecialTransformations.Section3.ValuedOver.inv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.RVRepresentatives.Over.inResidue_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ)
+  (F : Subfield SpecialTransformations.Milestone0.Transfer.VFType) {β : Type}
+  {f : (β → SpecialTransformations.Milestone0.Transfer.VFType) → SpecialTransformations.Milestone0.Transfer.VFType},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+    SpecialTransformations.Section3.ValuedOver.SetDef v F
+      {x | SpecialTransformations.Section3.RVRepresentatives.InResidue v (f x)}
+'SpecialTransformations.Section3.RVRepresentatives.Over.inResidue_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RVRepresentatives.Over.add_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ)
+  (F : Subfield SpecialTransformations.Milestone0.Transfer.VFType) {β : Type}
+  {f g : (β → SpecialTransformations.Milestone0.Transfer.VFType) → SpecialTransformations.Milestone0.Transfer.VFType},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+    SpecialTransformations.Section3.ValuedOver.FunDef v F g →
+      SpecialTransformations.Section3.ValuedOver.FunDef v F fun x =>
+        SpecialTransformations.Section3.RVRepresentatives.add v (f x) (g x)
+'SpecialTransformations.Section3.RVRepresentatives.Over.add_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RVRepresentatives.Over.neg_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ)
+  (F : Subfield SpecialTransformations.Milestone0.Transfer.VFType) {β : Type}
+  {f : (β → SpecialTransformations.Milestone0.Transfer.VFType) → SpecialTransformations.Milestone0.Transfer.VFType},
+  SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+    SpecialTransformations.Section3.ValuedOver.FunDef v F fun x =>
+      SpecialTransformations.Section3.RVRepresentatives.neg v (f x)
+'SpecialTransformations.Section3.RVRepresentatives.Over.neg_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RVRepresentatives.Over.liftFn_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ)
+  (F : Subfield SpecialTransformations.Milestone0.Transfer.VFType) {β : Type} {k : ℕ}
+  (f : SpecialTransformations.Milestone0.Fn k)
+  (x :
+    (β → SpecialTransformations.Milestone0.Transfer.VFType) →
+      Fin k → SpecialTransformations.Milestone0.Transfer.VFType),
+  (∀ (i : Fin k), SpecialTransformations.Section3.ValuedOver.FunDef v F fun z => x z i) →
+    SpecialTransformations.Section3.ValuedOver.FunDef v F fun z =>
+      SpecialTransformations.Section3.RVRepresentatives.liftFn v f (x z)
+'SpecialTransformations.Section3.RVRepresentatives.Over.liftFn_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RVRepresentatives.Over.liftTerm_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ)
+  (F : Subfield SpecialTransformations.Milestone0.Transfer.VFType) {β α : Type}
+  (w : (β → SpecialTransformations.Milestone0.Transfer.VFType) → α → SpecialTransformations.Milestone0.Transfer.VFType),
+  (∀ (i : α), SpecialTransformations.Section3.ValuedOver.FunDef v F fun z => w z i) →
+    ∀ (t : SpecialTransformations.Milestone0.LRV.Term α),
+      SpecialTransformations.Section3.ValuedOver.FunDef v F fun z =>
+        SpecialTransformations.Section3.RVRepresentatives.liftTerm v (w z) t
+'SpecialTransformations.Section3.RVRepresentatives.Over.liftTerm_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RVRepresentatives.Over.rv_eq_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ)
+  (F : Subfield SpecialTransformations.Milestone0.Transfer.VFType),
+  (∀ (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV a b ↔ v a ≤ v b) →
+    ∀ {β : Type}
+      {f g :
+        (β → SpecialTransformations.Milestone0.Transfer.VFType) → SpecialTransformations.Milestone0.Transfer.VFType},
+      SpecialTransformations.Section3.ValuedOver.FunDef v F f →
+        SpecialTransformations.Section3.ValuedOver.FunDef v F g →
+          SpecialTransformations.Section3.ValuedOver.SetDef v F
+            {x | SpecialTransformations.Milestone0.iRv ↑(f x) = SpecialTransformations.Milestone0.iRv ↑(g x)}
+'SpecialTransformations.Section3.RVRepresentatives.Over.rv_eq_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.RVRepresentatives.Over.qf_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M inst
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM))))
+  (F :
+    @Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+      (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+        (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM))),
+  (∀ (a b : @SpecialTransformations.Milestone0.Transfer.VFType M inst),
+      Iff (@SpecialTransformations.Milestone0.VFValued.predV M inst a b)
+        (@LE.le Γ
+          (@Preorder.toLE Γ
+            (@PartialOrder.toPreorder Γ
+              (@SemilatticeInf.toPartialOrder Γ
+                (@Lattice.toSemilatticeInf Γ
+                  (@DistribLattice.toLattice Γ
+                    (@instDistribLatticeOfLinearOrder Γ
+                      (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M inst) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+            v a)
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M inst) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+            v b))) →
+    ∀ {α β : Type} {n : Nat} (sα : α → SpecialTransformations.Milestone0.SortTag)
+      (sn : Fin n → SpecialTransformations.Milestone0.SortTag)
+      (u :
+        (β → @SpecialTransformations.Milestone0.Transfer.VFType M inst) →
+          α → @SpecialTransformations.Milestone0.Transfer.VFType M inst)
+      (x :
+        (β → @SpecialTransformations.Milestone0.Transfer.VFType M inst) →
+          Fin n → @SpecialTransformations.Milestone0.Transfer.VFType M inst),
+      (∀ (i : α),
+          @SpecialTransformations.Section3.ValuedOver.FunDef (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+            Γ (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM) inst_1 v F β fun z => u z i) →
+        (∀ (i : Fin n),
+            @SpecialTransformations.Section3.ValuedOver.FunDef
+              (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM) inst_1 v F β fun z => x z i) →
+          ∀ (φ : SpecialTransformations.Milestone0.LRV.BoundedFormula α n),
+            @FirstOrder.Language.BoundedFormula.IsQF SpecialTransformations.Milestone0.LRV α n φ →
+              @SpecialTransformations.Milestone0.LRV.WellSorted α sα n sn φ →
+                @SpecialTransformations.Section3.ValuedOver.SetDef
+                  (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM) inst_1 v F β
+                  (@Set.ofPred (β → @SpecialTransformations.Milestone0.Transfer.VFType M inst) fun z =>
+                    @FirstOrder.Language.BoundedFormula.Realize SpecialTransformations.Milestone0.LRV M inst α n φ
+                      (fun i => @SpecialTransformations.Section3.RVRepresentatives.decode M inst (sα i) (u z i))
+                      fun i => @SpecialTransformations.Section3.RVRepresentatives.decode M inst (sn i) (x z i))
+'SpecialTransformations.Section3.RVRepresentatives.Over.qf_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.CoefficientRVGeometry.distance_eq_max : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ (x c : SpecialTransformations.Milestone0.Transfer.VFType),
+      CanonicalRV.encodedRv x ≠ CanonicalRV.encodedRv c → v (x - c) = max (v x) (v c)
+'SpecialTransformations.Section3.CoefficientRVGeometry.distance_eq_max' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.CoefficientRVGeometry.coefficient_ball_pattern : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ {K : Type} [inst_2 : Field K] (f : K →+* SpecialTransformations.Milestone0.Transfer.VFType)
+      (B : Set SpecialTransformations.Milestone0.Transfer.VFType),
+      ValOneEC.IsKBall f v B →
+        ∃ c,
+          ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+            v x = v y →
+              CanonicalRV.encodedRv x ≠ CanonicalRV.encodedRv (f c) →
+                CanonicalRV.encodedRv y ≠ CanonicalRV.encodedRv (f c) → (x ∈ B ↔ y ∈ B)
+'SpecialTransformations.Section3.CoefficientRVGeometry.coefficient_ball_pattern' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.CoefficientRVGeometry.finite_exceptions : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ {K : Type} [inst_2 : Field K] (f : K →+* SpecialTransformations.Milestone0.Transfer.VFType)
+      (U : Set SpecialTransformations.Milestone0.Transfer.VFType),
+      ValOneEC.Good f v U →
+        ∃ T,
+          T.Finite ∧
+            (∀ t ∈ T, ∃ c, CanonicalRV.encodedRv (f c) = t) ∧
+              ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                v x = v y → CanonicalRV.encodedRv x ∉ T → CanonicalRV.encodedRv y ∉ T → (x ∈ U ↔ y ∈ U)
+'SpecialTransformations.Section3.CoefficientRVGeometry.finite_exceptions' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.CoefficientRVGeometry.finite_rv_set_lifts : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ {K : Type} [inst_2 : Field K] (f : K →+* SpecialTransformations.Milestone0.Transfer.VFType),
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (A : Set (CanonicalRV.RVSort M)),
+          A.Finite → ValOneEC.Good f v {x | CanonicalRV.encodedRv x ∈ A} → ∀ t ∈ A, ∃ c, CanonicalRV.encodedRv (f c) = t
+'SpecialTransformations.Section3.CoefficientRVGeometry.finite_rv_set_lifts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.c_minimal_valued_definable_subfield : ∀ {N Γ : Type} [inst : Field N]
+  [@IsAlgClosed N inst] [inst_2 : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation N Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2)
+      (@DivisionRing.toRing N (@Field.toDivisionRing N inst))),
+  (∃ x,
+      And
+        (@Ne N x
+          (@OfNat.ofNat N (nat_lit 0)
+            (@Zero.toOfNat0 N
+              (@MulZeroClass.toZero N
+                (@instMulZeroClassOfSemiring N
+                  (@DivisionSemiring.toSemiring N (@Semifield.toDivisionSemiring N (@Field.toSemifield N inst))))))))
+        (@Ne Γ
+          (@DFunLike.coe
+            (@Valuation N Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2)
+              (@DivisionRing.toRing N (@Field.toDivisionRing N inst)))
+            N (fun x => Γ)
+            (@Valuation.instFunLike N Γ (@DivisionRing.toRing N (@Field.toDivisionRing N inst))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2))
+            v x)
+          (@OfNat.ofNat Γ (nat_lit 1)
+            (@One.toOfNat1 Γ
+              (@InvOneClass.toOne Γ
+                (@DivInvOneMonoid.toInvOneClass Γ
+                  (@DivisionMonoid.toDivInvOneMonoid Γ
+                    (@DivisionCommMonoid.toDivisionMonoid Γ
+                      (@CommGroupWithZero.toDivisionCommMonoid Γ
+                        (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst_2)))))))))) →
+    ∀ (F : @Subfield N (@Field.toDivisionRing N inst)) [@IsAlgClosed (↥F) (@Subfield.toField N inst F)] (U : Set N),
+      @Set.Definable₁ N
+          (@SetLike.coe (@Subfield N (@Field.toDivisionRing N inst)) N
+            (@Subfield.instSetLike N (@Field.toDivisionRing N inst)) F)
+          FirstOrder.Language.val (@FirstOrder.valStructure N inst Γ inst_2 v) U →
+        @ValOneEC.Good (↥F) (@Subfield.toField N inst F) N inst Γ inst_2
+          (@Subfield.subtype N (@Field.toDivisionRing N inst) F) v U
+'SpecialTransformations.Section3.c_minimal_valued_definable_subfield' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.rv_preimage_definable_over_subfield : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M inst
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+      (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+        (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+          (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))),
+  (∀ (x y : @SpecialTransformations.Milestone0.Transfer.VFType M inst),
+      Iff (@SpecialTransformations.Milestone0.VFValued.predV M inst x y)
+        (@LE.le Γ
+          (@Preorder.toLE Γ
+            (@PartialOrder.toPreorder Γ
+              (@SemilatticeInf.toPartialOrder Γ
+                (@Lattice.toSemilatticeInf Γ
+                  (@DistribLattice.toLattice Γ
+                    (@instDistribLatticeOfLinearOrder Γ
+                      (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                        (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M inst) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+            v x)
+          (@DFunLike.coe
+            (@Valuation (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM))))
+            (@SpecialTransformations.Milestone0.Transfer.VFType M inst) (fun x => Γ)
+            (@Valuation.instFunLike (@SpecialTransformations.Milestone0.Transfer.VFType M inst) Γ
+              (@DivisionRing.toRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+            v y))) →
+    ∀
+      (F :
+        @Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+      (S A : Set M),
+      @LE.le (Set M) (@Set.instLE M) S
+          (@Set.image (@Subtype M fun x => @SpecialTransformations.Milestone0.iVF M inst x) M
+            (@Subtype.val M fun x => @SpecialTransformations.Milestone0.iVF M inst x)
+            (@SetLike.coe
+              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+              (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              F)) →
+        @SpecialTransformations.Section3.DefinableAt M inst S SpecialTransformations.Milestone0.SortTag.rv A →
+          @Set.Definable₁ (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+            (@SetLike.coe
+              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+              (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              F)
+            FirstOrder.Language.val
+            (@FirstOrder.valStructure (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM) Γ inst_1 v)
+            (@Set.ofPred (@SpecialTransformations.Milestone0.Transfer.VFType M inst) fun x =>
+              @Membership.mem M (Set M) (@Set.instMembership M) A
+                (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iRV M inst x)
+                  (@CanonicalRV.encodedRv M inst hM x)))
+'SpecialTransformations.Section3.rv_preimage_definable_over_subfield' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.algebraic_rv_lifts_algebraically_closed_subfield : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M inst
+      SpecialTransformations.Milestone0.Axioms.ACVF],
+  @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M inst
+      SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀
+      (F :
+        @Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+      [@IsAlgClosed (↥F)
+          (@Subfield.toField (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM) F)]
+      (S : Set M),
+      @LE.le (Set M) (@Set.instLE M) S
+          (@Set.image (@Subtype M fun x => @SpecialTransformations.Milestone0.iVF M inst x) M
+            (@Subtype.val M fun x => @SpecialTransformations.Milestone0.iVF M inst x)
+            (@SetLike.coe
+              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+              (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+              F)) →
+        ∀ (t : @CanonicalRV.RVSort M inst),
+          @SpecialTransformations.Section3.AlgebraicAt M inst S SpecialTransformations.Milestone0.SortTag.rv
+              (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iRV M inst x) t) →
+            ∃ x,
+              @Eq (@CanonicalRV.RVSort M inst)
+                (@CanonicalRV.encodedRv M inst hM
+                  (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                    (fun x =>
+                      @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                        (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                          (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                            (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+                        (@SetLike.instMembership
+                          (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM)))
+                          (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                          (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                            (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M inst)
+                              (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M inst hM))))
+                        F x)
+                    x))
+                t
+'SpecialTransformations.Section3.algebraic_rv_lifts_algebraically_closed_subfield' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.valuedSubfieldEmbedding : {N Γ : Type} →
+  [inst : Field N] →
+    [inst_1 : LinearOrderedCommGroupWithZero Γ] →
+      (v : Valuation N Γ) → (F : Subfield N) → FirstOrder.Language.val.Embedding (↥F) N
+'SpecialTransformations.Section3.valuedSubfieldEmbedding' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.valuedSubfieldElementary : {N Γ : Type} →
+  [inst : Field N] →
+    [@IsAlgClosed N inst] →
+      [inst_2 : LinearOrderedCommGroupWithZero Γ] →
+        (v :
+            @Valuation N Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2)
+              (@DivisionRing.toRing N (@Field.toDivisionRing N inst))) →
+          (F : @Subfield N (@Field.toDivisionRing N inst)) →
+            [@IsAlgClosed (↥F) (@Subfield.toField N inst F)] →
+              (∃ x,
+                  And
+                    (@Ne (↥F) x
+                      (@OfNat.ofNat (↥F) (nat_lit 0)
+                        (@Zero.toOfNat0 (↥F)
+                          (@ZeroMemClass.zero (@Subfield N (@Field.toDivisionRing N inst)) N
+                            (@Subfield.instSetLike N (@Field.toDivisionRing N inst))
+                            (@MulZeroClass.toZero N
+                              (@instMulZeroClassOfSemiring N
+                                (@DivisionSemiring.toSemiring N
+                                  (@Semifield.toDivisionSemiring N (@Field.toSemifield N inst)))))
+                            ⋯ F))))
+                    (@Ne Γ
+                      (@DFunLike.coe
+                        (@Valuation N Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2)
+                          (@DivisionRing.toRing N (@Field.toDivisionRing N inst)))
+                        N (fun x => Γ)
+                        (@Valuation.instFunLike N Γ (@DivisionRing.toRing N (@Field.toDivisionRing N inst))
+                          (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2))
+                        v
+                        (@Subtype.val N
+                          (fun x =>
+                            @Membership.mem N (@Subfield N (@Field.toDivisionRing N inst))
+                              (@SetLike.instMembership (@Subfield N (@Field.toDivisionRing N inst)) N
+                                (@Subfield.instSetLike N (@Field.toDivisionRing N inst)))
+                              F x)
+                          x))
+                      (@OfNat.ofNat Γ (nat_lit 1)
+                        (@One.toOfNat1 Γ
+                          (@InvOneClass.toOne Γ
+                            (@DivInvOneMonoid.toInvOneClass Γ
+                              (@DivisionMonoid.toDivInvOneMonoid Γ
+                                (@DivisionCommMonoid.toDivisionMonoid Γ
+                                  (@CommGroupWithZero.toDivisionCommMonoid Γ
+                                    (@LinearOrderedCommGroupWithZero.toCommGroupWithZero Γ inst_2)))))))))) →
+                @FirstOrder.Language.ElementaryEmbedding FirstOrder.Language.val (↥F) N
+                  (@FirstOrder.valStructure (↥F) (@Subfield.toField N inst F) Γ inst_2
+                    (@Valuation.comap N Γ (@DivisionRing.toRing N (@Field.toDivisionRing N inst))
+                      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_2) (↥F)
+                      (@DivisionRing.toRing (↥F) (@Field.toDivisionRing (↥F) (@Subfield.toField N inst F)))
+                      (@Subfield.subtype N (@Field.toDivisionRing N inst) F) v))
+                  (@FirstOrder.valStructure N inst Γ inst_2 v)
+'SpecialTransformations.Section3.valuedSubfieldElementary' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.ModelTheory.HasMore : {M ι : Type} → Set ((ι → M) × M) → ℕ → Set (ι → M)
+'SpecialTransformations.ModelTheory.HasMore' does not depend on any axioms
+@SpecialTransformations.ModelTheory.hasMore_definable : ∀ {L : FirstOrder.Language} {M : Type} [inst : L.Structure M]
+  {ι : Type} (S : Set M) (R : Set ((ι → M) × M)),
+  S.Definable L {z | (z ∘ Sum.inl, z (Sum.inr 0)) ∈ R} →
+    ∀ (d : ℕ), S.Definable L (SpecialTransformations.ModelTheory.HasMore R d)
+'SpecialTransformations.ModelTheory.hasMore_definable' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.scalarRows : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {S : Set M} →
+        {k n : ℕ} →
+          {sn : Fin (n + 1) → SpecialTransformations.Milestone0.SortTag} →
+            SpecialTransformations.Section3.GammaParameters.Relation S k (n + 1) sn → Set ((Fin k ⊕ Fin n → M) × M)
+'SpecialTransformations.Section3.GammaParameters.scalarRows' depends on axioms: [propext, Classical.choice, Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.scalarRows_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : ℕ} {sn : Fin (n + 1) → SpecialTransformations.Milestone0.SortTag}
+  (Q : SpecialTransformations.Section3.GammaParameters.Relation S k (n + 1) sn),
+  S.Definable SpecialTransformations.Milestone0.LRV
+    {z | (z ∘ Sum.inl, z (Sum.inr 0)) ∈ SpecialTransformations.Section3.GammaParameters.scalarRows Q}
+'SpecialTransformations.Section3.GammaParameters.scalarRows_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation.cutFiniteRows : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {S : Set M} →
+        {k n : ℕ} →
+          {sn : Fin (n + 1) → SpecialTransformations.Milestone0.SortTag} →
+            SpecialTransformations.Section3.GammaParameters.Relation S k (n + 1) sn →
+              ℕ → SpecialTransformations.Section3.GammaParameters.Relation S k (n + 1) sn
+'SpecialTransformations.Section3.GammaParameters.Relation.cutFiniteRows' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.cutFiniteRows_finite : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : ℕ} {sn : Fin (n + 1) → SpecialTransformations.Milestone0.SortTag}
+  (Q : SpecialTransformations.Section3.GammaParameters.Relation S k (n + 1) sn) (d : ℕ) (c : Fin k → M) (a : Fin n → M),
+  {x | (c, Fin.snoc a x) ∈ (Q.cutFiniteRows d).carrier}.Finite
+'SpecialTransformations.Section3.GammaParameters.cutFiniteRows_finite' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.cutFiniteRows_row_eq : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : ℕ} {sn : Fin (n + 1) → SpecialTransformations.Milestone0.SortTag}
+  (Q : SpecialTransformations.Section3.GammaParameters.Relation S k (n + 1) sn) (d : ℕ) (c : Fin k → M) (a : Fin n → M),
+  {x | (c, Fin.snoc a x) ∈ Q.carrier}.Finite →
+    {x | (c, Fin.snoc a x) ∈ Q.carrier}.ncard ≤ d →
+      {x | (c, Fin.snoc a x) ∈ (Q.cutFiniteRows d).carrier} = {x | (c, Fin.snoc a x) ∈ Q.carrier}
+'SpecialTransformations.Section3.GammaParameters.cutFiniteRows_row_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GoodBaseRelation : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      SpecialTransformations.Section3.GammaParameters.Base →
+        (n : ℕ) → (Fin n → SpecialTransformations.Milestone0.SortTag) → SpecialTransformations.Milestone0.SortTag → Type
+'SpecialTransformations.Section3.GammaParameters.GoodBaseRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GoodBaseRelation.mk : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM :
+        @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+          SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM} →
+        {n : Nat} →
+          {sn : Fin n → SpecialTransformations.Milestone0.SortTag} →
+            {σ : SpecialTransformations.Milestone0.SortTag} →
+              (carrier : Set (Prod (Fin n → M) M)) →
+                @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B
+                    (@HAdd.hAdd Nat Nat Nat (@instHAdd Nat instAddNat) n
+                      (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1))))
+                    (fun i => @Fin.lastCases n (fun x => SpecialTransformations.Milestone0.SortTag) σ sn i)
+                    (@Set.ofPred
+                      (Fin
+                          (@HAdd.hAdd Nat Nat Nat (@instHAdd Nat instAddNat) n
+                            (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))) →
+                        M)
+                      fun z =>
+                      @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                        (@Set.instMembership (Prod (Fin n → M) M)) carrier
+                        (@Prod.mk (Fin n → M) M (@Fin.init n (fun i => M) z) (z (Fin.last n)))) →
+                  (∀ (a : Fin n → M),
+                      @Set.Finite M
+                        (@Set.ofPred M fun x =>
+                          @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                            (@Set.instMembership (Prod (Fin n → M) M)) carrier (@Prod.mk (Fin n → M) M a x))) →
+                    @SpecialTransformations.Section3.GammaParameters.GoodBaseRelation M sM hM B n sn σ
+'SpecialTransformations.Section3.GammaParameters.GoodBaseRelation.mk' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.good_base_relation_of_algebraic : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM) {n : Nat}
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (a : Fin n → M),
+  (∀ (i : Fin n), @SpecialTransformations.Milestone0.sortEval M sM (sn i) (a i)) →
+    ∀ (σ : SpecialTransformations.Milestone0.SortTag) (b : M),
+      @SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM
+          (@SpecialTransformations.Section3.GammaParameters.Base.mk M sM hM
+            (@Union.union (Set M) (@Set.instUnion M)
+              (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B) (@Set.range M (Fin n) a))
+            (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B))
+          σ b →
+        ∃ R,
+          @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M)) (@Set.instMembership (Prod (Fin n → M) M))
+            (@SpecialTransformations.Section3.GammaParameters.GoodBaseRelation.carrier M sM hM B n sn σ R)
+            (@Prod.mk (Fin n → M) M a b)
+'SpecialTransformations.Section3.GammaParameters.good_base_relation_of_algebraic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection : {M : Type} →
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] →
+    {n : ℕ} → Set (Fin n → M) → SpecialTransformations.Milestone0.SortTag → Set ((Fin n → M) × M) → Set M
+'SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection' depends on axioms: [propext]
+@SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM) {n : Nat}
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)),
+  @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn A →
+    ∀ (σ : SpecialTransformations.Milestone0.SortTag) (R : Set (Prod (Fin n → M) M)),
+      @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B
+          (@HAdd.hAdd Nat Nat Nat (@instHAdd Nat instAddNat) n
+            (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1))))
+          (fun i => @Fin.lastCases n (fun x => SpecialTransformations.Milestone0.SortTag) σ sn i)
+          (@Set.ofPred
+            (Fin
+                (@HAdd.hAdd Nat Nat Nat (@instHAdd Nat instAddNat) n
+                  (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))) →
+              M)
+            fun z =>
+            @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M)) (@Set.instMembership (Prod (Fin n → M) M)) R
+              (@Prod.mk (Fin n → M) M (@Fin.init n (fun i => M) z) (z (Fin.last n)))) →
+        @SpecialTransformations.Section3.GammaParameters.DefinableAtBase M sM hM B σ
+          (@SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection M sM n A σ R)
+'SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection_finite : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (A : Set (Fin n → M)),
+  A.Nonempty →
+    ∀ (σ : SpecialTransformations.Milestone0.SortTag) (R : Set ((Fin n → M) × M)),
+      (∀ (a : Fin n → M), {x | (a, x) ∈ R}.Finite) →
+        (SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection A σ R).Finite
+'SpecialTransformations.Section3.GammaParameters.baseFamilyIntersection_finite' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GoodBaseRelation.slice_common_names : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : SpecialTransformations.Section3.GammaParameters.Base) {n : ℕ}
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (σ : SpecialTransformations.Milestone0.SortTag)
+  (R : SpecialTransformations.Section3.GammaParameters.GoodBaseRelation B n sn σ) (b : M),
+  (insert b (SpecialTransformations.Section3.GammaParameters.commonRealNames B)).Definable
+    SpecialTransformations.Milestone0.LRV {a | (a, b) ∈ R.carrier}
+'SpecialTransformations.Section3.GammaParameters.GoodBaseRelation.slice_common_names' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.uniform_good_base_relation_cover : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  @LE.le Cardinal.{0} Cardinal.instLE Cardinal.aleph0 κ →
+    @SpecialTransformations.Section3.Saturated M sM κ →
+      ∀ (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM),
+        @LT.lt Cardinal.{0} (@Preorder.toLT Cardinal.{0} (@PartialOrder.toPreorder Cardinal.{0} Cardinal.partialOrder))
+            (Cardinal.mk (@Set.Elem M (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B))) κ →
+          @LT.lt Cardinal.{0}
+              (@Preorder.toLT Cardinal.{0} (@PartialOrder.toPreorder Cardinal.{0} Cardinal.partialOrder))
+              (Cardinal.mk
+                (@Set.Elem (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+                  (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B)))
+              κ →
+            ∀ {n : Nat} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)),
+              @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn A →
+                ∀ (σ : SpecialTransformations.Milestone0.SortTag) (b : M),
+                  (∀ (a : Fin n → M),
+                      @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) A a →
+                        @SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM
+                          (@SpecialTransformations.Section3.GammaParameters.Base.mk M sM hM
+                            (@Union.union (Set M) (@Set.instUnion M)
+                              (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B)
+                              (@Set.range M (Fin n) a))
+                            (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B))
+                          σ b) →
+                    ∃ R,
+                      ∀ (a : Fin n → M),
+                        @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) A a →
+                          @Membership.mem (Prod (Fin n → M) M) (Set (Prod (Fin n → M) M))
+                            (@Set.instMembership (Prod (Fin n → M) M))
+                            (@SpecialTransformations.Section3.GammaParameters.GoodBaseRelation.carrier M sM hM B n sn σ
+                              R)
+                            (@Prod.mk (Fin n → M) M a b)
+'SpecialTransformations.Section3.GammaParameters.uniform_good_base_relation_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.lemma_3_1_full_gamma_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  @LE.le Cardinal.{0} Cardinal.instLE Cardinal.aleph0 κ →
+    @SpecialTransformations.Section3.Saturated M sM κ →
+      ∀ (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM),
+        @LT.lt Cardinal.{0} (@Preorder.toLT Cardinal.{0} (@PartialOrder.toPreorder Cardinal.{0} Cardinal.partialOrder))
+            (Cardinal.mk (@Set.Elem M (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B))) κ →
+          @LT.lt Cardinal.{0}
+              (@Preorder.toLT Cardinal.{0} (@PartialOrder.toPreorder Cardinal.{0} Cardinal.partialOrder))
+              (Cardinal.mk
+                (@Set.Elem (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+                  (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B)))
+              κ →
+            ∀ {n : Nat} (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (A : Set (Fin n → M)),
+              @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn A →
+                @Set.Nonempty (Fin n → M) A →
+                  ∀ (σ : SpecialTransformations.Milestone0.SortTag) (b : M),
+                    (∀ (a : Fin n → M),
+                        @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) A a →
+                          @SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM
+                            (@SpecialTransformations.Section3.GammaParameters.Base.mk M sM hM
+                              (@Union.union (Set M) (@Set.instUnion M)
+                                (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B)
+                                (@Set.range M (Fin n) a))
+                              (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B))
+                            σ b) →
+                      @SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM B σ b
+'SpecialTransformations.Section3.GammaParameters.lemma_3_1_full_gamma_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
