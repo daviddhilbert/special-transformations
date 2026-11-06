@@ -585,3 +585,33 @@ definability, the genuine family constructor, Gamma/RV separation, Gamma tuple
 projection, algebraic closure equivalence and 3.7. Earlier matching compiler
 artifacts and the recorded external root-consumer interfaces are reused;
 this is not an audit of Sections 4 or 5.
+
+
+## RV exchange completed (November 5, 2026)
+
+Reused the checked parameter-promotion/finite-row cut in
+`GammaBaseDescent.good_base_relation_of_algebraic`, the new Gamma-name removal
+in `RVGammaAlgebraicity`, and the checked finite/cofinite RV geometry and 3.15.
+The legacy `Exchange.lean` contains conditional reductions; its exchange or
+reverse-finiteness premise is not assumed or imported as a proof.
+
+On each actual RV value fibre, genuine saturation supplies a uniform bound
+on finite reverse fibres. First-order counting above this bound defines a
+bad-output relation, invariant on every Gamma representative. The pure
+cofinite intersection argument makes its fibre finite. Thus a bad output is
+algebraic over the original real base plus that Gamma value; the proved Gamma
+independence removes it. A nonalgebraic output therefore has finite reverse
+fibres in every value class. Checked 3.15 makes the entire reverse relation
+finite. The final exchange theorem constructs its forward relation from the
+given algebraic witness, so no conditional finite-relation interface remains
+in the headline. A wrapper uses the checked Gamma-name equivalence to retain
+arbitrary existing Gamma names, without bounding that whole name set.
+
+The combined certificate covers 174 modules, 743 actual headline type/axiom
+checks and a fresh root import. The new coherent `RVExchange` module passed
+standalone Lean compilation. Only `propext`, `Classical.choice` and `Quot.sound`
+occur. Full types were reviewed for both exchange headlines, the complete
+bad-output relation, the actual uniform finite-side bound and the reverse
+finiteness theorem. ACVF(0,0), genuine saturation, the countable lower bound
+and real-base smallness are explicit; there is no VF-field-base or homogeneity
+premise. Other sections' root-consumer artifacts remain separately recorded.

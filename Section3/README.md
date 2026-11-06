@@ -17,7 +17,8 @@ comment blocks have since been corrected without changing proof code.
 The new checked library starts at [Library.lean](Library.lean), which imports
 only new audited modules and the pinned ACVF-QE definitions. It includes
 base-relative closure and compactness infrastructure, exact C-minimality,
-sorted tuple descent, ball and coordinate interfaces, results 3.8–3.12, 3.15, 3.17, 3.18(1), the closed-ball alternative of 3.18(2), and
+sorted tuple descent, ball and coordinate interfaces, both assertions of
+3.6 and 3.7, results 3.8–3.12, 3.15, 3.17, 3.18(1), the closed-ball alternative of 3.18(2), and
 quotient-family notation. Finite coding preserves the original parameter base
 and includes its complete graph in all VF tuple arities. Closed-ball centers
 are defined on the actual ball quotient over the same original base. Definable
@@ -44,7 +45,7 @@ outputs over nonempty real-tuple families. Gamma-output and Gamma-domain
 extensions remain open. Other base-sensitive results
 still need their Gamma extensions; defining the closure predicates does not
 prove their closure or generation laws. The last published combined certificate covers
-173 modules and 722 actual headline type/axiom checks, plus a fresh root import.
+174 modules and 743 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -61,8 +62,9 @@ The coefficient-preserving geometry now lifts RV points algebraic over a VF
 parameter set into any algebraically closed VF subfield containing that set,
 even when that subfield's valuation is trivial. The full modelhood assertion
 of 3.14 remains open. Finite/cofinite RV fibres, uniform finite-side bounds
-and pure finite-threshold endpoint lemmas support the ongoing exchange proof;
-they do not by themselves establish RV exchange 3.6. The Gamma assertion
+and pure finite-threshold endpoint lemmas supply the exchange proof;
+the full reverse-fibre argument in `RVExchange` now proves RV exchange
+3.6, including genuine Gamma-named bases. The Gamma assertion
 of 3.7 is now checked by the complete separation and finite-support argument
 in `RVGammaAlgebraicity`. It permits arbitrary existing Gamma names and needs
 only the real base to be small, under ACVF(0,0) and genuine saturation.

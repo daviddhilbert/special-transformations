@@ -1367,7 +1367,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "RVGammaAlgebraicity",
@@ -1375,11 +1375,19 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "RVExchange",
+      "source_sha256": "b07e9efe5685a445f252435a3fab6652f48b02731b80e8b6f060803aeb243d6c",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "028d969ce1433b2ec7a85455e1e6deea9967bc27facadc248908d0c1ddf3ed14",
+      "source_sha256": "1908a841777c808b5a304640886dedd3a515c2ddbeaa6e3221f43d98142dc0ea",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1387,7 +1395,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "350f8bf75ea7606dbc9626d8ae9262fba9fa3acadf88ba694ab4d696511bba12",
+      "source_sha256": "9b55398fb848b9a3a46686fc42ccd78e91b0f627d38f6acd3c6022c35c26e033",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1403,7 +1411,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "173 integrated Section3 modules; matching compiler caches reused where indicated; fresh 722-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "174 integrated Section3 modules; matching compiler caches reused where indicated; fresh 743-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -4934,11 +4942,111 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.GammaParameters.same_scalar_normalized_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_scalar_symm": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.same_scalar_code_left": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rawValueFibre": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rawValueFibre_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rawValueFibre_value": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rawValueFibre_infinite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rv_reverse_fibre_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.reverse_value_fibre_dichotomy": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.valueReverseRows": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.valueReverseRows_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.reverseBadRelation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.reverseBadRelation_fibre_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.uniform_reverse_value_fibre_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.uniform_forward_relation_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.reverseBadRelation_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.reverseBadRelation_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.reverse_value_fibre_finite_of_nonalg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.rv_reverse_relation_finite_of_nonalg": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_6_rv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_6_rv_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
     "SpecialTransformations.ModelTheory.HasMore": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "263eadd0fcf5bb1a00f3d40d29288b6694115fed9e6774ddd218a8003a1bb537",
+  "verifier_sha256": "dd39ac85f97c890c779b50782e590a918d68c6c4b76677d4d27ac857bcda9ee6",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",
