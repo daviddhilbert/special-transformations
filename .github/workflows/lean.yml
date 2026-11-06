@@ -1,0 +1,108 @@
+name: Lean verification
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Pinned build and headline audits
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      LEAN_NUM_THREADS: "2"
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Check out this revision
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Set up Lean and cached Mathlib dependencies
+        id: setup
+        uses: leanprover/lean-action@v1
+        with:
+          auto-config: "false"
+          build: "false"
+          test: "false"
+          lint: "false"
+          use-mathlib-cache: "true"
+
+      - name: Register the pinned QE package's sibling modules
+        run: python3 scripts/prepare_ci.py
+
+      - name: Build the pinned project from source
+        id: build
+        shell: bash
+        run: |
+          mkdir -p .scratch/ci-verified
+          lake -R build 2>&1 | tee .scratch/ci-verified/Build.log
+
+      - name: Audit published QE headline types and axioms
+        id: foundation
+        run: lake env python3 scripts/verify_ci.py
+
+      - name: Audit Section 3 when its verifier is present
+        id: section3
+        if: ${{ success() && hashFiles('Section3/verify.py') != '' }}
+        run: lake env python3 Section3/verify.py
+
+      - name: Audit Section 4 when its verifier is present
+        id: section4
+        if: ${{ success() && hashFiles('Section4/verify.py') != '' }}
+        run: lake env python3 Section4/verify.py
+
+      - name: Publish verification summary
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          cat <<'SUMMARY' >> "$GITHUB_STEP_SUMMARY"
+          ## Lean verification
+
+          | Check | Outcome |
+          | --- | --- |
+          | Pinned project build | ${{ steps.build.outcome }} |
+          | Published QE headline types and axioms | ${{ steps.foundation.outcome }} |
+          | Section 3 verifier, if present | ${{ steps.section3.outcome }} |
+          | Section 4 verifier, if present | ${{ steps.section4.outcome }} |
+
+          Download the verification artifact for compiler logs and headline audits.
+          A skipped step is not a passed check. This run covers the current library
+          entry points and selected headlines, not every paper result or legacy file.
+          Explicit hypotheses and fidelity to the paper still need review.
+          SUMMARY
+
+      - name: Retain verification evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: lean-verification-${{ github.sha }}
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            lean-toolchain
+            lake-manifest.json
+            .scratch/ci-verified/*
+            .scratch/section3-verified/*.log
+            .scratch/section3-verified/*.json
+            .scratch/section3-verified/*.txt
+            .scratch/section3-verified/HeadlineAudit.lean
+            .scratch/section4-verified/*.log
+            .scratch/section4-verified/*.json
+            .scratch/section4-verified/*.txt
+            .scratch/section4-verified/HeadlineAudit.lean
+            .scratch/section4-verified/CombinedImport.lean

@@ -5,6 +5,27 @@ been organized by paper section. QE is finished in `daviddhilbert/ACVF-QE`;
 do not restart its proof. The author's standing instructions are summarized below; Git history preserves
 the previous layout. These current paths supersede older instructions.
 
+## Required project workflow
+
+Read and follow [WORKFLOW.md](WORKFLOW.md) in every substantive proof session:
+
+1. Read applicable instructions, handoff and current status; inspect Git status
+   and preserve existing edits.
+2. Fix the exact paper target, definitions, parameter scope, prerequisites and
+   explicitly authorized hypotheses.
+3. Survey local and external reuse before rebuilding a substantial prerequisite;
+   follow `FORMALIZATION-REUSE-GUIDELINES.md` and record the decision.
+4. Implement a coherent module using pinned ACVF-QE and shared definitions.
+5. Compile in the pinned Lake environment, inspect the full headline type and
+   axioms, and check the affected integration boundary.
+6. Update the section status and, when needed, its handoff with the exact scope,
+   evidence, remaining obligations and concrete next step.
+7. Publish only within the current authorization; local editing permission does
+   not authorize a paper-repository push.
+
+The workflow governs the process. Section handoffs and plans record the
+mathematical strategy; old proof orders and status counts are not verification.
+
 ## Author's standing instructions
 
 - Work persistently on the authorized objective; do not stop at a partial
