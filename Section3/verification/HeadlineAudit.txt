@@ -15677,3 +15677,709 @@ SpecialTransformations.Section3.RVMonomial.AbsoluteValueGroup : (M : Type) →
 'SpecialTransformations.Section3.GammaParameters.corollary_3_14_gamma_base' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableOverBase.finite_iInter : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM} {n : Nat}
+  {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {ι : Type} (s : Finset ι) (F : ι → Set (Fin n → M)),
+  (∀ (i : ι),
+      @Membership.mem ι (Finset ι) (@SetLike.instMembership (Finset ι) ι (@Finset.instSetLike ι)) s i →
+        @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn (F i)) →
+    @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn
+      (@Set.ofPred (Fin n → M) fun z =>
+        And
+          (@Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M))
+            (@SpecialTransformations.Section3.GammaParameters.sortedUniverse M sM n sn) z)
+          (∀ (i : ι),
+            @Membership.mem ι (Finset ι) (@SetLike.instMembership (Finset ι) ι (@Finset.instSetLike ι)) s i →
+              @Membership.mem (Fin n → M) (Set (Fin n → M)) (@Set.instMembership (Fin n → M)) (F i) z))
+'SpecialTransformations.Section3.GammaParameters.DefinableOverBase.finite_iInter' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.tuple_singleton_definable_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM) {n : Nat}
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (a : Fin n → M),
+  (∀ (i : Fin n), @SpecialTransformations.Section3.GammaParameters.DefinableClosureAtBase M sM hM B (sn i) (a i)) →
+    @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn
+      (@singleton (Fin n → M) (Set (Fin n → M)) (@Set.instSingletonSet (Fin n → M)) a)
+'SpecialTransformations.Section3.GammaParameters.tuple_singleton_definable_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.gamma_fibre_tuple_definable_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM) {k : Nat}
+  (γ : Fin k → @SpecialTransformations.Section3.Values.Gamma M sM hM),
+  (∀ (i : Fin k), @SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase M sM hM B (γ i)) →
+    @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B k
+      (fun x => SpecialTransformations.Milestone0.SortTag.rv)
+      (@Set.ofPred (Fin k → M) fun c =>
+        ∀ (i : Fin k),
+          @Membership.mem M (Set M) (@Set.instMembership M)
+            (@SpecialTransformations.Section3.Values.gammaPullback M sM hM
+              (@singleton (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+                (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+                (@Set.instSingletonSet (@SpecialTransformations.Section3.Values.Gamma M sM hM)) (γ i)))
+            (c i))
+'SpecialTransformations.Section3.GammaParameters.gamma_fibre_tuple_definable_base' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.Relation.finite_real_support : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k n : Nat} {sn : Fin n → SpecialTransformations.Milestone0.SortTag}
+  (Q : @SpecialTransformations.Section3.GammaParameters.Relation M sM hM S k n sn),
+  ∃ F,
+    And (@LE.le (Set M) (@Set.instLE M) (@SetLike.coe (Finset M) M (@Finset.instSetLike M) F) S)
+      (∃ R,
+        @Eq (Set (Prod (Fin k → M) (Fin n → M)))
+          (@SpecialTransformations.Section3.GammaParameters.Relation.carrier M sM hM
+            (@SetLike.coe (Finset M) M (@Finset.instSetLike M) F) k n sn R)
+          (@SpecialTransformations.Section3.GammaParameters.Relation.carrier M sM hM S k n sn Q))
+'SpecialTransformations.Section3.GammaParameters.Relation.finite_real_support' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableOverBase.eliminate_definable_params : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B C : @SpecialTransformations.Section3.GammaParameters.Base M sM hM} {n : Nat}
+  {sn : Fin n → SpecialTransformations.Milestone0.SortTag} {U : Set (Fin n → M)},
+  @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM C n sn U →
+    (∀ (c : M),
+        @Membership.mem M (Set M) (@Set.instMembership M)
+            (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM C) c →
+          ∃ σ, @SpecialTransformations.Section3.GammaParameters.DefinableClosureAtBase M sM hM B σ c) →
+      (∀ (γ : @SpecialTransformations.Section3.Values.Gamma M sM hM),
+          @Membership.mem (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+              (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+              (@Set.instMembership (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+              (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM C) γ →
+            @SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase M sM hM B γ) →
+        @SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn U
+'SpecialTransformations.Section3.GammaParameters.DefinableOverBase.eliminate_definable_params' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.gamma_name_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM)
+  (γ : @SpecialTransformations.Section3.Values.Gamma M sM hM),
+  @Membership.mem (@SpecialTransformations.Section3.Values.Gamma M sM hM)
+      (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+      (@Set.instMembership (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+      (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B) γ →
+    @SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase M sM hM B γ
+'SpecialTransformations.Section3.GammaParameters.gamma_name_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.subset_closureBase : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM),
+  And
+    (@LE.le (Set M) (@Set.instLE M) (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B)
+      (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM
+        (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B)))
+    (@LE.le (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+      (@Set.instLE (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+      (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B)
+      (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM
+        (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B)))
+'SpecialTransformations.Section3.GammaParameters.subset_closureBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.closureBase_mono : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B C : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+  @LE.le (Set M) (@Set.instLE M) (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM B)
+      (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM C) →
+    @LE.le (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+        (@Set.instLE (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+        (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM B)
+        (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM C) →
+      And
+        (@LE.le (Set M) (@Set.instLE M)
+          (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM
+            (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B))
+          (@SpecialTransformations.Section3.GammaParameters.Base.real M sM hM
+            (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM C)))
+        (@LE.le (Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+          (@Set.instLE (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+          (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM
+            (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B))
+          (@SpecialTransformations.Section3.GammaParameters.Base.gamma M sM hM
+            (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM C)))
+'SpecialTransformations.Section3.GammaParameters.closureBase_mono' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableOverBase.closureBase_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM) {n : Nat}
+  (sn : Fin n → SpecialTransformations.Milestone0.SortTag) (U : Set (Fin n → M)),
+  Iff
+    (@SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM
+      (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B) n sn U)
+    (@SpecialTransformations.Section3.GammaParameters.DefinableOverBase M sM hM B n sn U)
+'SpecialTransformations.Section3.GammaParameters.DefinableOverBase.closureBase_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.DefinableAtBase.closureBase_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM) (σ : SpecialTransformations.Milestone0.SortTag)
+  (U : Set M),
+  Iff
+    (@SpecialTransformations.Section3.GammaParameters.DefinableAtBase M sM hM
+      (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B) σ U)
+    (@SpecialTransformations.Section3.GammaParameters.DefinableAtBase M sM hM B σ U)
+'SpecialTransformations.Section3.GammaParameters.DefinableAtBase.closureBase_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.closureBase_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM) (σ : SpecialTransformations.Milestone0.SortTag)
+  (b : M),
+  Iff
+    (@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM
+      (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B) σ b)
+    (@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM B σ b)
+'SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.closureBase_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.closureBase_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM)
+  (γ : @SpecialTransformations.Section3.Values.Gamma M sM hM),
+  Iff
+    (@SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase M sM hM
+      (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B) γ)
+    (@SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase M sM hM B γ)
+'SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.closureBase_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.closureBase_idempotent : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM),
+  @Eq (@SpecialTransformations.Section3.GammaParameters.Base M sM hM)
+    (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM
+      (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B))
+    (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B)
+'SpecialTransformations.Section3.GammaParameters.closureBase_idempotent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.closure_eq_self : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+  @SpecialTransformations.Section3.GammaParameters.VFGeneratedBase M sM hM B →
+    @Eq (@SpecialTransformations.Section3.GammaParameters.Base M sM hM)
+      (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B) B
+'SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.closure_eq_self' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase.closure_eq_self : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+  @SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase M sM hM B →
+    @Eq (@SpecialTransformations.Section3.GammaParameters.Base M sM hM)
+      (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM B) B
+'SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase.closure_eq_self' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.vfGammaGenerated : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : @SpecialTransformations.Section3.GammaParameters.Base M sM hM},
+  @SpecialTransformations.Section3.GammaParameters.VFGeneratedBase M sM hM B →
+    @SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase M sM hM B
+'SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.vfGammaGenerated' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.vfGammaGenerated_closure : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (A : Set M),
+  (∀ (a : M), @Membership.mem M (Set M) (@Set.instMembership M) A a → @SpecialTransformations.Milestone0.iVF M sM a) →
+    ∀ (G : Set (@SpecialTransformations.Section3.Values.Gamma M sM hM)),
+      @SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase M sM hM
+        (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM
+          (@SpecialTransformations.Section3.GammaParameters.Base.mk M sM hM A G))
+'SpecialTransformations.Section3.GammaParameters.vfGammaGenerated_closure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraic_vf_closure_generated_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  (A : Set M) (G : Set (@SpecialTransformations.Section3.Values.Gamma M sM hM))
+  (b : @SpecialTransformations.Milestone0.Transfer.VFType M sM),
+  Iff
+    (@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM
+      (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM
+        (@SpecialTransformations.Section3.GammaParameters.Base.mk M sM hM A G))
+      SpecialTransformations.Milestone0.SortTag.vf
+      (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iVF M sM x) b))
+    (@SpecialTransformations.Section3.AlgebraicAt M sM A SpecialTransformations.Milestone0.SortTag.vf
+      (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iVF M sM x) b))
+'SpecialTransformations.Section3.GammaParameters.algebraic_vf_closure_generated_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraic_rv_closure_generated_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  @LE.le Cardinal.{0} Cardinal.instLE Cardinal.aleph0 κ →
+    @SpecialTransformations.Section3.Saturated M sM κ →
+      @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+          SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (A : Set M),
+          @LT.lt Cardinal.{0}
+              (@Preorder.toLT Cardinal.{0} (@PartialOrder.toPreorder Cardinal.{0} Cardinal.partialOrder))
+              (Cardinal.mk (@Set.Elem M A)) κ →
+            ∀ (G : Set (@SpecialTransformations.Section3.Values.Gamma M sM hM)) (b : M),
+              Iff
+                (@SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM
+                  (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM
+                    (@SpecialTransformations.Section3.GammaParameters.Base.mk M sM hM A G))
+                  SpecialTransformations.Milestone0.SortTag.rv b)
+                (@SpecialTransformations.Section3.AlgebraicAt M sM A SpecialTransformations.Milestone0.SortTag.rv b)
+'SpecialTransformations.Section3.GammaParameters.algebraic_rv_closure_generated_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.GammaParameters.algebraic_rv_closure_generated_lifts : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM :
+    @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+      SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  @LE.le Cardinal.{0} Cardinal.instLE Cardinal.aleph0 κ →
+    @SpecialTransformations.Section3.Saturated M sM κ →
+      @FirstOrder.Language.Theory.Model SpecialTransformations.Milestone0.LRV M sM
+          SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (A : Set M),
+          (∀ (a : M),
+              @Membership.mem M (Set M) (@Set.instMembership M) A a → @SpecialTransformations.Milestone0.iVF M sM a) →
+            @LT.lt Cardinal.{0}
+                (@Preorder.toLT Cardinal.{0} (@PartialOrder.toPreorder Cardinal.{0} Cardinal.partialOrder))
+                (Cardinal.mk (@Set.Elem M A)) κ →
+              ∀ (G : Set (@SpecialTransformations.Section3.Values.Gamma M sM hM)) (t : @CanonicalRV.RVSort M sM),
+                @SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase M sM hM
+                    (@SpecialTransformations.Section3.GammaParameters.closureBase M sM hM
+                      (@SpecialTransformations.Section3.GammaParameters.Base.mk M sM hM A G))
+                    SpecialTransformations.Milestone0.SortTag.rv
+                    (@Subtype.val M (fun x => @SpecialTransformations.Milestone0.iRV M sM x) t) →
+                  ∃ x,
+                    @Eq (@CanonicalRV.RVSort M sM)
+                      (@CanonicalRV.encodedRv M sM hM
+                        (@Subtype.val (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                          (fun x =>
+                            @Membership.mem (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                              (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                              (@SetLike.instMembership
+                                (@Subfield (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                    (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM)))
+                                (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                (@Subfield.instSetLike (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                  (@Field.toDivisionRing (@SpecialTransformations.Milestone0.Transfer.VFType M sM)
+                                    (@SpecialTransformations.Milestone0.VFValued.instFieldVFType M sM hM))))
+                              (@SpecialTransformations.Section3.vfAlgebraicClosureField M sM hM A) x)
+                          x))
+                      t
+'SpecialTransformations.Section3.GammaParameters.algebraic_rv_closure_generated_lifts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.strictDisc_radius_le_of_subset : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+      (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+  (a b r s : K),
+  @Ne K r
+      (@OfNat.ofNat K (nat_lit 0)
+        (@Zero.toOfNat0 K
+          (@MulZeroClass.toZero K
+            (@instMulZeroClassOfSemiring K
+              (@DivisionSemiring.toSemiring K (@Semifield.toDivisionSemiring K (@Field.toSemifield K inst))))))) →
+    @LE.le (Set K) (@Set.instLE K)
+        (@Set.ofPred K fun x =>
+          @LT.lt Γ
+            (@Preorder.toLT Γ
+              (@PartialOrder.toPreorder Γ
+                (@SemilatticeInf.toPartialOrder Γ
+                  (@Lattice.toSemilatticeInf Γ
+                    (@DistribLattice.toLattice Γ
+                      (@instDistribLatticeOfLinearOrder Γ
+                        (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                          (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+            (@DFunLike.coe
+              (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+              K (fun x => Γ)
+              (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+              v
+              (@HSub.hSub K K K
+                (@instHSub K
+                  (@SubNegMonoid.toSub K
+                    (@AddGroup.toSubNegMonoid K
+                      (@AddGroupWithOne.toAddGroup K
+                        (@Ring.toAddGroupWithOne K (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))))))
+                x a))
+            (@DFunLike.coe
+              (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+              K (fun x => Γ)
+              (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+              v r))
+        (@Set.ofPred K fun x =>
+          @LT.lt Γ
+            (@Preorder.toLT Γ
+              (@PartialOrder.toPreorder Γ
+                (@SemilatticeInf.toPartialOrder Γ
+                  (@Lattice.toSemilatticeInf Γ
+                    (@DistribLattice.toLattice Γ
+                      (@instDistribLatticeOfLinearOrder Γ
+                        (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                          (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+            (@DFunLike.coe
+              (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+              K (fun x => Γ)
+              (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+              v
+              (@HSub.hSub K K K
+                (@instHSub K
+                  (@SubNegMonoid.toSub K
+                    (@AddGroup.toSubNegMonoid K
+                      (@AddGroupWithOne.toAddGroup K
+                        (@Ring.toAddGroupWithOne K (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))))))
+                x b))
+            (@DFunLike.coe
+              (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+              K (fun x => Γ)
+              (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+              v s)) →
+      @LE.le Γ
+        (@Preorder.toLE Γ
+          (@PartialOrder.toPreorder Γ
+            (@SemilatticeInf.toPartialOrder Γ
+              (@Lattice.toSemilatticeInf Γ
+                (@DistribLattice.toLattice Γ
+                  (@instDistribLatticeOfLinearOrder Γ
+                    (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                      (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+        (@DFunLike.coe
+          (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+            (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+          K (fun x => Γ)
+          (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+            (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+          v r)
+        (@DFunLike.coe
+          (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+            (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+          K (fun x => Γ)
+          (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+            (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+          v s)
+'SpecialTransformations.Section3.Balls.strictDisc_radius_le_of_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.strictDisc_radius_eq_of_eq : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+      (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+  (a b r s : K),
+  @Ne K r
+      (@OfNat.ofNat K (nat_lit 0)
+        (@Zero.toOfNat0 K
+          (@MulZeroClass.toZero K
+            (@instMulZeroClassOfSemiring K
+              (@DivisionSemiring.toSemiring K (@Semifield.toDivisionSemiring K (@Field.toSemifield K inst))))))) →
+    @Ne K s
+        (@OfNat.ofNat K (nat_lit 0)
+          (@Zero.toOfNat0 K
+            (@MulZeroClass.toZero K
+              (@instMulZeroClassOfSemiring K
+                (@DivisionSemiring.toSemiring K (@Semifield.toDivisionSemiring K (@Field.toSemifield K inst))))))) →
+      @Eq (Set K)
+          (@Set.ofPred K fun x =>
+            @LT.lt Γ
+              (@Preorder.toLT Γ
+                (@PartialOrder.toPreorder Γ
+                  (@SemilatticeInf.toPartialOrder Γ
+                    (@Lattice.toSemilatticeInf Γ
+                      (@DistribLattice.toLattice Γ
+                        (@instDistribLatticeOfLinearOrder Γ
+                          (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                            (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v
+                (@HSub.hSub K K K
+                  (@instHSub K
+                    (@SubNegMonoid.toSub K
+                      (@AddGroup.toSubNegMonoid K
+                        (@AddGroupWithOne.toAddGroup K
+                          (@Ring.toAddGroupWithOne K (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))))))
+                  x a))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v r))
+          (@Set.ofPred K fun x =>
+            @LT.lt Γ
+              (@Preorder.toLT Γ
+                (@PartialOrder.toPreorder Γ
+                  (@SemilatticeInf.toPartialOrder Γ
+                    (@Lattice.toSemilatticeInf Γ
+                      (@DistribLattice.toLattice Γ
+                        (@instDistribLatticeOfLinearOrder Γ
+                          (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                            (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v
+                (@HSub.hSub K K K
+                  (@instHSub K
+                    (@SubNegMonoid.toSub K
+                      (@AddGroup.toSubNegMonoid K
+                        (@AddGroupWithOne.toAddGroup K
+                          (@Ring.toAddGroupWithOne K (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))))))
+                  x b))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v s)) →
+        @Eq Γ
+          (@DFunLike.coe
+            (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+              (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+            K (fun x => Γ)
+            (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+            v r)
+          (@DFunLike.coe
+            (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+              (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+            K (fun x => Γ)
+            (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+              (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+            v s)
+'SpecialTransformations.Section3.Balls.strictDisc_radius_eq_of_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@SpecialTransformations.Section3.Balls.closedHull_eq_of_strictDisc_eq : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v :
+    @Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+      (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+  (a b r s : K),
+  @Ne K r
+      (@OfNat.ofNat K (nat_lit 0)
+        (@Zero.toOfNat0 K
+          (@MulZeroClass.toZero K
+            (@instMulZeroClassOfSemiring K
+              (@DivisionSemiring.toSemiring K (@Semifield.toDivisionSemiring K (@Field.toSemifield K inst))))))) →
+    @Ne K s
+        (@OfNat.ofNat K (nat_lit 0)
+          (@Zero.toOfNat0 K
+            (@MulZeroClass.toZero K
+              (@instMulZeroClassOfSemiring K
+                (@DivisionSemiring.toSemiring K (@Semifield.toDivisionSemiring K (@Field.toSemifield K inst))))))) →
+      @Eq (Set K)
+          (@Set.ofPred K fun x =>
+            @LT.lt Γ
+              (@Preorder.toLT Γ
+                (@PartialOrder.toPreorder Γ
+                  (@SemilatticeInf.toPartialOrder Γ
+                    (@Lattice.toSemilatticeInf Γ
+                      (@DistribLattice.toLattice Γ
+                        (@instDistribLatticeOfLinearOrder Γ
+                          (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                            (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v
+                (@HSub.hSub K K K
+                  (@instHSub K
+                    (@SubNegMonoid.toSub K
+                      (@AddGroup.toSubNegMonoid K
+                        (@AddGroupWithOne.toAddGroup K
+                          (@Ring.toAddGroupWithOne K (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))))))
+                  x a))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v r))
+          (@Set.ofPred K fun x =>
+            @LT.lt Γ
+              (@Preorder.toLT Γ
+                (@PartialOrder.toPreorder Γ
+                  (@SemilatticeInf.toPartialOrder Γ
+                    (@Lattice.toSemilatticeInf Γ
+                      (@DistribLattice.toLattice Γ
+                        (@instDistribLatticeOfLinearOrder Γ
+                          (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                            (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v
+                (@HSub.hSub K K K
+                  (@instHSub K
+                    (@SubNegMonoid.toSub K
+                      (@AddGroup.toSubNegMonoid K
+                        (@AddGroupWithOne.toAddGroup K
+                          (@Ring.toAddGroupWithOne K (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))))))
+                  x b))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v s)) →
+        @Eq (Set K)
+          (@Set.ofPred K fun x =>
+            @LE.le Γ
+              (@Preorder.toLE Γ
+                (@PartialOrder.toPreorder Γ
+                  (@SemilatticeInf.toPartialOrder Γ
+                    (@Lattice.toSemilatticeInf Γ
+                      (@DistribLattice.toLattice Γ
+                        (@instDistribLatticeOfLinearOrder Γ
+                          (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                            (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v
+                (@HSub.hSub K K K
+                  (@instHSub K
+                    (@SubNegMonoid.toSub K
+                      (@AddGroup.toSubNegMonoid K
+                        (@AddGroupWithOne.toAddGroup K
+                          (@Ring.toAddGroupWithOne K (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))))))
+                  x a))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v r))
+          (@Set.ofPred K fun x =>
+            @LE.le Γ
+              (@Preorder.toLE Γ
+                (@PartialOrder.toPreorder Γ
+                  (@SemilatticeInf.toPartialOrder Γ
+                    (@Lattice.toSemilatticeInf Γ
+                      (@DistribLattice.toLattice Γ
+                        (@instDistribLatticeOfLinearOrder Γ
+                          (@LinearOrderedCommMonoidWithZero.toLinearOrder Γ
+                            (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))))))))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v
+                (@HSub.hSub K K K
+                  (@instHSub K
+                    (@SubNegMonoid.toSub K
+                      (@AddGroup.toSubNegMonoid K
+                        (@AddGroupWithOne.toAddGroup K
+                          (@Ring.toAddGroupWithOne K (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))))))
+                  x b))
+              (@DFunLike.coe
+                (@Valuation K Γ (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1)
+                  (@DivisionRing.toRing K (@Field.toDivisionRing K inst)))
+                K (fun x => Γ)
+                (@Valuation.instFunLike K Γ (@DivisionRing.toRing K (@Field.toDivisionRing K inst))
+                  (@LinearOrderedCommGroupWithZero.toLinearOrderedCommMonoidWithZero Γ inst_1))
+                v s))
+'SpecialTransformations.Section3.Balls.closedHull_eq_of_strictDisc_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

@@ -666,3 +666,48 @@ nontrivial actual-value hypothesis. There is no saturation or cardinality
 premise. Matching earlier compiler artifacts and the 69 separately recorded
 external root-consumer interfaces are reused; this does not audit Sections 4
 or 5. The compiler and ACVF-QE revisions remain unchanged.
+
+
+## Genuine Gamma closure laws and generated-base lifting (November 5, 2026)
+
+Reused `GammaBaseTools.promote_gamma_relation`, its universal invariant hull,
+finite Gamma-support joins, original-base Boolean operations and real
+projection, plus Mathlib's finite parameter support theorem. A finite tuple
+of real definable names has a definable singleton over exactly the original
+base. A tuple of Gamma definable names has its full product of nonzero RV
+value fibres definable over that base. Intersecting these with the promoted
+relation and projecting all input names proves general dcl transitivity.
+Applying this to the actual `closureBase` proves its closure laws, without
+saturation or desired-conclusion hypotheses. The earlier real-only closure
+tools were used through bridges, rather than silently reinterpreted as
+imaginary-base theorems.
+
+The generated-base laws then combine the checked real/Gamma algebraicity
+equivalences with `rv_algebraicClosure_iff_lift` from `AclFieldImages`. For RV, the
+genuine saturation and small-real-generator assumptions come from the proved
+Gamma independence theorem. There is no bound on all Gamma generators or on
+the cardinality of their whole definable closure. Coefficient valuations may
+be trivial. This supplies an actual RV lift for the proposed general-center
+argument; it does not itself finish Lemma3.13.
+
+Focused pinned Mathlib valuation source inspection found `Valuation.map_sub_swap`,
+`map_add_lt` and `ne_zero_iff` in
+`Mathlib/RingTheory/Valuation/Basic.lean` at the unchanged Mathlib pin.
+Elementary ball geometry then compares two strict disc radii by taking the
+VF boundary point of the smaller radius. Equal proper open discs therefore
+have the same-radius closed hull. No value-group density or order completeness
+is assumed, and this hull is not topological closure. Existing local
+`BallTranslation` and the pinned Johnson ball geometry remain the intended
+bridges to complete ball-code families. Legacy conditional center reductions
+are still not treated as proofs.
+
+The three new modules passed standalone pinned Lean compilation. The combined
+certificate covers 183 modules, 809 actual headline type/axiom checks and a
+fresh root import. Only `propext`, `Classical.choice` and `Quot.sound` occur.
+Full new headline types were reviewed, including finite input arities,
+imaginary parameter scope, actual closure definitions, generator cardinal
+bounds and nonzero actual VF radii. Matching prior compiler artifacts and 69
+recorded external root-consumer interfaces are reused; this is not a proof
+audit of Sections 4 or 5. No dependency revision or mathematical assumption was
+added. General Gamma acl transitivity and other base-sensitive extensions
+remain separately open.

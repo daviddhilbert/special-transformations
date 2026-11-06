@@ -1391,7 +1391,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "AlgebraicSubfieldModel",
@@ -1399,7 +1399,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "AclModelGeometry",
@@ -1407,7 +1407,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "AclModel",
@@ -1415,7 +1415,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "GammaClosureElimination",
@@ -1423,7 +1423,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "GammaAclModel",
@@ -1431,11 +1431,35 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaClosureLaws",
+      "source_sha256": "2f6d40e6aad3c9cbe7fa6528c356ab1730db91809a0fdcb90cc069a315d82d0b",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "GeneratedBaseLifting",
+      "source_sha256": "bc6d334b12e0616620c196ff8ed389808352a2b8b808d1e9cae6722a09b74a76",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "OpenBallHullGeometry",
+      "source_sha256": "04cbd7ede027c97692cea5333930bc0a4abb193bdd2a1a433edef892c75fe860",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "464b00bec2bb7d83ce18c11acc90ca922500c657217281b86e1537603ffcabfa",
+      "source_sha256": "e388353a1cc4fe7cebb566a37ed172b93d0d92285cdb2e85bc11f955f4f5bc66",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1443,7 +1467,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "fdfe84d6041c2096438fc5786667f2cae37e536ed5b1a04502b90607b55017fd",
+      "source_sha256": "78603453b8577ef39cde9bddf6030c8b022e1dafe64519701ebd1256cd14c2ee",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1459,7 +1483,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "180 integrated Section3 modules; matching compiler caches reused where indicated; fresh 786-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "183 integrated Section3 modules; matching compiler caches reused where indicated; fresh 809-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -5302,11 +5326,126 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.finite_iInter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.tuple_singleton_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gamma_fibre_tuple_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.Relation.finite_real_support": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.eliminate_definable_params": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.gamma_name_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.subset_closureBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.closureBase_mono": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableOverBase.closureBase_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableAtBase.closureBase_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.AlgebraicAtBase.closureBase_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.GammaAlgebraicAtBase.closureBase_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.closureBase_idempotent": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.closure_eq_self": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase.closure_eq_self": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.VFGeneratedBase.vfGammaGenerated": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.vfGammaGenerated_closure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraic_vf_closure_generated_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraic_rv_closure_generated_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.algebraic_rv_closure_generated_lifts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.strictDisc_radius_le_of_subset": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.strictDisc_radius_eq_of_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.Balls.closedHull_eq_of_strictDisc_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
     "SpecialTransformations.ModelTheory.HasMore": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "5d6944478064c53818ca76ea4fc6ba3316490a7e9cf7b76afd75f5d7f758370b",
+  "verifier_sha256": "31d698d7ad9581611d5635ae503ba016576c82082d33cdaebae37cc44de5ceb2",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",

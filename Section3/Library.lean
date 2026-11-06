@@ -78,6 +78,10 @@ import Section3.AclModel
 import Section3.GammaClosureElimination
 import Section3.GammaAclModel
 
+import Section3.GammaClosureLaws
+import Section3.GeneratedBaseLifting
+import Section3.OpenBallHullGeometry
+
 /-!
 # Checked Section 3 library
 

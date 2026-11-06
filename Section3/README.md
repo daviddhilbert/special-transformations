@@ -43,9 +43,10 @@ exceptions. Descent also handles nonempty Gamma-definable real families and
 VF, RV and Gamma outputs over a small real ambient base. Small ambient bases with Gamma names now have descent for real VF/RV
 outputs over nonempty real-tuple families. Gamma-output and Gamma-domain
 extensions remain open. Other base-sensitive results
-still need their Gamma extensions; defining the closure predicates does not
-prove their closure or generation laws. The last published combined certificate covers
-180 modules and 786 actual headline type/axiom checks, plus a fresh root import.
+still need their Gamma extensions. General same-base dcl transitivity,
+monotonicity and idempotence are now proved, including the basic generated-base
+laws. Full Gamma acl transitivity remains separate. The last published combined certificate covers
+183 modules and 809 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -73,3 +74,12 @@ the full reverse-fibre argument in `RVExchange` now proves RV exchange
 of 3.7 is now checked by the complete separation and finite-support argument
 in `RVGammaAlgebraicity`. It permits arbitrary existing Gamma names and needs
 only the real base to be small, under ACVF(0,0) and genuine saturation.
+
+
+The dcl of pure VF and arbitrary Gamma generators introduces no new real
+algebraic elements beyond the real generators: for VF this holds in all
+ACVF, and for RV it uses the standing ACVF(0,0)/saturation/small-real-generator
+hypotheses. RV elements in that acl lift into the relative VF algebraic
+closure of the pure VF generators. These are checked prerequisites for the
+remaining general ball-center theorem. The same-radius closed hull of an
+open disc is also proved intrinsic, using actual VF boundary points.
