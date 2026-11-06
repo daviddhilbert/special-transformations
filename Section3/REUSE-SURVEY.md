@@ -831,3 +831,38 @@ exit zero and standard axioms. The published record embeds all recovery
 identities and distinguishes reused proofs from fresh imports. This is build
 dependency recovery, not a restart of QE or a new accepted input. The69
 source/cache-matched external root consumers remain import checks only.
+
+
+## Full mixed-family Lemma 3.13 (November 5, 2026)
+
+Reused the compiler-checked proper-open algebraic-point theorem in
+`OpenBallCenters` and full Gamma-base closed centers in `GammaClosedBallCenters`.
+The actual all-ball sort is the quotient of the closed/open charts by equality
+of their point sets, including equality across charts. Each chart embeds
+injectively, so a finite family pulls back to finite actual chart families;
+raw real code sets themselves are not counted as finite. Explicit code
+coverage handles arbitrary actual VF radii, radius-zero closed balls and the
+whole field, using the checked ordinary-valuation semantics.
+
+Definability of a family and of its center function is specified by the full
+real preimage in both charts over the same genuine Gamma base. Algebraic
+points in each ball give one finite real-base definable hitting cover. The
+center is the normalized mean of that same finite set intersected with the
+actual ball, so chart aliases have exactly the same value. The finite-family
+mean definability proof was extracted from the checked closed/open hitting-set
+construction and bridged to both complete quotient graphs. `GammaFiniteMeans`
+supplies the actual normalized mean; `MeanInBalls` proves containment. The
+normalization bridge transfers point-set membership, rather than equating
+two field instances. Restoring the original structure as the local instance
+after binding its normalization resolves the model-instance elaboration.
+
+The new coherent module passed standalone pinned Lean compilation. The
+combined certificate covers 190 modules, 940 actual headline type/axiom
+checks and a fresh root import. All42 new full types were reviewed, including
+the quotient kernel, code coverage, full two-chart graphs, genuine imaginary
+bases, true saturation and exact cardinality scope. Only `propext`,
+`Classical.choice` and `Quot.sound` occur. There is no new standard-reference
+input, center/choice hypothesis or Gamma-generator size bound. The pinned
+QE recovery and69 external consumer identities remain recorded separately.
+The generated3.18(2) application and other remaining targets are not counted
+as proved by this center theorem.

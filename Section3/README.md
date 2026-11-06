@@ -18,7 +18,7 @@ The new checked library starts at [Library.lean](Library.lean), which imports
 only new audited modules and the pinned ACVF-QE definitions. It includes
 base-relative closure and compactness infrastructure, exact C-minimality,
 sorted tuple descent, ball and coordinate interfaces, both assertions of
-3.6 and 3.7, results 3.8–3.12, 3.14–3.15, 3.17, 3.18(1), the closed-ball alternative of 3.18(2), and
+3.6 and 3.7, results 3.8–3.15, 3.17, 3.18(1), the closed-ball alternative of 3.18(2), and
 quotient-family notation. Finite coding preserves the original parameter base
 and includes its complete graph in all VF tuple arities. Closed-ball centers
 are defined on the actual ball quotient over the same original base. Definable
@@ -46,7 +46,7 @@ extensions remain open. Other base-sensitive results
 still need their Gamma extensions. General same-base dcl transitivity,
 monotonicity and idempotence are now proved, including the basic generated-base
 laws. Full Gamma acl transitivity remains separate. The last published combined certificate covers
-189 modules and 898 actual headline type/axiom checks, plus a fresh root import.
+190 modules and 940 actual headline type/axiom checks, plus a fresh root import.
 
 After building dependencies, run `lake env python3 Section3/verify.py` for the
 new library or `lake env python3 Archive/audit_section3.py` for the isolated
@@ -90,7 +90,7 @@ fields are characterized by their actual same-base predicates and have the
 same transcendence degree as the generated VF field. The standing VF-field
 base convention is retained; no saturation or cardinal bound is needed.
 Proper open balls now have their actual quotient and intrinsic closed-hull
-map. Its full definable-family hull bridge is now checked; general centers remain open.
+map. Full definable-family hull preservation and mixed-ball centers are now checked.
 
 
 Finite Gamma algebraic sets now have each element individually definable over
@@ -100,10 +100,10 @@ family definability over that same base, for arbitrary families. These results
 need only ACVF; the general ball-center theorem is still open.
 
 
-The proper-open-ball case of 3.13 is now compiler checked in
-`OpenBallCenters.lean`, including the complete same-base code graph. Its proof
-constructs finite algebraic center and RV-offset sets, lifts the offsets over
-the original VF generators, and uses a finite real-base cover and means.
-Genuine saturation and small real generators are explicit. The actual mixed
-ball-family wrapper, generated case of 3.18(2), remaining Gamma-base extensions
-and guarded rational normal form remain open.
+Lemma 3.13 is now checked in `GeneralBallCenters.lean` for actual mixed
+families of closed and proper-open balls, including singletons and the whole
+field. One function has both complete code graphs over the original Gamma
+base. The proof uses `OpenBallCenters` to obtain algebraic points, a finite
+real-base cover and a common mean. Genuine saturation, small B.real and
+(VF,Gamma)-generation are explicit. The generated case of 3.18(2), remaining
+Gamma-base extensions and guarded rational normal form remain open.

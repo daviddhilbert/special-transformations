@@ -1503,11 +1503,19 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GeneralBallCenters",
+      "source_sha256": "2d2a4bb8a21f043ebca43ad89489d0daf60e2ea70b261d4c0ebfc3464e4ecc79",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "e6c33c6466bfa397aa9b4e27ca0306bc3e5ebe30af147ab405a4492e4b3f160b",
+      "source_sha256": "6c69feebaefd54858598772821f33ae36d2029f0bd54be3f4d94909f15dcd28a",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1515,7 +1523,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "137af72c007ad3dad41ef7c5192c4209c7a2dedae8e9feba2d0cf3595c39f073",
+      "source_sha256": "1765237c7d575a015084f4fabc3c8d9046f3673923c7d5024c6b49a016995ebc",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1531,7 +1539,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "189 integrated Section3 modules; matching compiler caches reused where indicated; fresh 898-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "190 integrated Section3 modules; matching compiler caches reused where indicated; fresh 940-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -5889,12 +5897,196 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.BallImaginaries.Chart": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.chartSet": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.chartSetoid": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.Ball": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.underlying": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.underlying_injective": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.ofClosed": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.ofOpen": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.underlying_ofClosed": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.underlying_ofOpen": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.ofClosed_injective": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.ofOpen_injective": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.closedFamily": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.openFamily": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.closedFamily_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.openFamily_finite": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.family_cases": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.closed_disc_coded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.open_disc_coded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.universe_coded": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.FamilyDefinableBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.CenterDefinableBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.intersectionMean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.intersection_mean_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.normalizedMeanGraph": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.normalized_mean_graph_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.familyMean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.meanGraph": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.meanGraph_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.familyMean_graph_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.familyMean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.meanGraph": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.meanGraph_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.familyMean_graph_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.normalized_mean_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.normalized_mean_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.closed_center_image_definable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.finite_family_algebraic_points": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.familyMean": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.familyMean_definable_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.familyMean_mem": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.lemma_3_13": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
     "SpecialTransformations.ModelTheory.HasMore": [],
     "SpecialTransformations.Section3.OpenBallCodes.codedCenterGraph": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "7535845ff5ca48a17d8c9e5ab87c6a8ecaa94b244513e6a1cd43c26543d05bbb",
+  "verifier_sha256": "85356624348512d666a6cc2220d9a3d3d6e91fa8a9cf273955ab0d8e6dd17bea",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",
@@ -7284,6 +7476,12 @@
         "Quot.sound"
       ]
     },
-    "headline_types_and_axioms": "JohnsonACF.hasQEb : QECriterion.HasQEb ACFValidation.acf\n'JohnsonACF.hasQEb' depends on axioms: [propext, Classical.choice, Quot.sound]\nhasQE_ACVF_val : QECriterion.HasQE ValPM.ACVF_val\n'hasQE_ACVF_val' depends on axioms: [propext, Classical.choice, Quot.sound]\nSpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination : SpecialTransformations.Milestone0.HasQE\n  SpecialTransformations.Milestone0.Axioms.ACVF\n'SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
+    "headline_types_and_axioms": "JohnsonACF.hasQEb : QECriterion.HasQEb ACFValidation.acf\n'JohnsonACF.hasQEb' depends on axioms: [propext, Classical.choice, Quot.sound]\nhasQE_ACVF_val : QECriterion.HasQE ValPM.ACVF_val\n'hasQE_ACVF_val' depends on axioms: [propext, Classical.choice, Quot.sound]\nSpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination : SpecialTransformations.Milestone0.HasQE\n  SpecialTransformations.Milestone0.Axioms.ACVF\n'SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+    "local_lake_package_repair": {
+      "action": "Preserved another existing package target; direct pinned private environment remains in use.",
+      "package": "/mnt/c/Users/yimuy/Documents/ChatGPT/Special transformation/.lake/packages/acvf_qe",
+      "private_build_lib": "/mnt/c/Users/yimuy/Documents/ChatGPT/Special transformation/.scratch/section3-acvf-qe-recovery/.lake/build/lib/lean",
+      "cache": "/mnt/c/Users/yimuy/Documents/ChatGPT/Special transformation/.scratch/section3-acvf-qe-recovery/.scratch/local-qe-check/lib"
+    }
   }
 }
