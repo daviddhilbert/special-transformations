@@ -82,6 +82,9 @@ import Section3.GammaClosureLaws
 import Section3.GeneratedBaseLifting
 import Section3.OpenBallHullGeometry
 
+import Section3.GammaDefinableClosureField
+import Section3.OpenBallCodes
+
 /-!
 # Checked Section 3 library
 

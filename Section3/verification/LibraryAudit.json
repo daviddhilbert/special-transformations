@@ -1439,7 +1439,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "GeneratedBaseLifting",
@@ -1447,7 +1447,7 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
-      "reused": false
+      "reused": true
     },
     {
       "module": "OpenBallHullGeometry",
@@ -1455,11 +1455,27 @@
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
+      "reused": true
+    },
+    {
+      "module": "GammaDefinableClosureField",
+      "source_sha256": "97f921223a9914cb6ed46e4d4161682304f664dfb0ba60903bfa88af09553255",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
+      "reused": false
+    },
+    {
+      "module": "OpenBallCodes",
+      "source_sha256": "50b4eeed77a9bed4fa3517a31fec54fe4c01b0921f210bbc54f60440e02ace68",
+      "compiler_exit": 0,
+      "error_occurrences": 0,
+      "passed": true,
       "reused": false
     },
     {
       "module": "Library",
-      "source_sha256": "e388353a1cc4fe7cebb566a37ed172b93d0d92285cdb2e85bc11f955f4f5bc66",
+      "source_sha256": "0f1ce887faee3847f33f6cf0ce2f57f4f9c9f8633421b3a98a42295fe6d1f5ce",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1467,7 +1483,7 @@
     },
     {
       "module": "HeadlineAudit",
-      "source_sha256": "78603453b8577ef39cde9bddf6030c8b022e1dafe64519701ebd1256cd14c2ee",
+      "source_sha256": "26cc7929959ee49b734d433793946db5d33ec94e10cededcfb6baa7bbf8ad73b",
       "compiler_exit": 0,
       "error_occurrences": 0,
       "passed": true,
@@ -1483,7 +1499,7 @@
     }
   ],
   "date": "2026-11-05 America/Los_Angeles",
-  "scope": "183 integrated Section3 modules; matching compiler caches reused where indicated; fresh 809-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
+  "scope": "185 integrated Section3 modules; matching compiler caches reused where indicated; fresh 843-headline type/axiom audit and root import. Other paper targets remain open; see STATUS.md.",
   "dependency_pins": {
     "acvf_qe": "f3ef4ee679f921079aa8f742a2807a9cc724d2d6",
     "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474"
@@ -5441,11 +5457,158 @@
       "Classical.choice",
       "Quot.sound"
     ],
+    "SpecialTransformations.Section3.GammaParameters.DefinableClosureAtBase.algebraic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.real_definable_eliminate_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.definableClosureAtBase_function_symbol": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.definableClosureAtBase_vf_inv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.vfDefinableClosureFieldBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.vfAlgebraicClosureFieldBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.mem_vfAlgebraicClosureFieldBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.vfDefinableClosureFieldBase_le_algebraicClosureFieldBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.vfParameterField_le_definableClosureFieldBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.vfParameterField_le_dclBase_union_rv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.corollary_3_4_gamma_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.body": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.body_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.tuple": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.Proper": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.rawBall": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.ball": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.body_realize": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.ball_eq_open": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.Code": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.codeSetoid": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.OpenBall": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.underlying": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.underlying_injective": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.pullback": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullCode": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullCode_sorted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullCode_flag_ne_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.radius_ne_zero": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hull_raw_eq_of_raw_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hull": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hull_mk": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.raw_subset_hull": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.underlying_subset_hull": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "SpecialTransformations.Section3.QuotientFamilies.overDomain_iff_nonempty_values": [],
     "SpecialTransformations.ModelTheory.HasMore": []
   },
   "environment": "Exact Lean 4.33.1 and pinned dependencies in persistent WSL storage; matching ACVF-QE verification artifacts; sequential lean compiler runs.",
-  "verifier_sha256": "31d698d7ad9581611d5635ae503ba016576c82082d33cdaebae37cc44de5ceb2",
+  "verifier_sha256": "ea25d0306f07fba75b400d66d840ab041798fcdedc88d348ce779f4601c74b08",
   "integration_root": {
     "path": "SpecialTransformations.lean",
     "source": "import ACVFQE\nimport Section3.Library\nimport Section4.Library\nimport Section5.Library\n\n/-!\n# Special transformations: section-by-section coordination root\n\nQuantifier elimination is supplied by the pinned independent ACVF-QE package.\nThe relocated section snapshots are not imported automatically: their proof\nstatus and interfaces must be audited before integration.\n\nSection 4 uses the material in previous sections as given and records its\nown compiler and headline checks in Section4/STATUS.md. Its active library\nexcludes the relocated legacy snapshots.\n\nSection 5 likewise records its explicit accepted earlier inputs and its\nseparate compiler, headline-type and axiom checks in Section5/STATUS.md.\n-/\n",

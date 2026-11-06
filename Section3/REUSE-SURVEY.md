@@ -711,3 +711,39 @@ recorded external root-consumer interfaces are reused; this is not a proof
 audit of Sections 4 or 5. No dependency revision or mathematical assumption was
 added. General Gamma acl transitivity and other base-sensitive extensions
 remain separately open.
+
+
+## Gamma-base VF fields and proper open-ball coding (November 5, 2026)
+
+Reused the checked general dcl-parameter elimination in `GammaClosureLaws`
+to transfer original real-name function and inverse definitions over exactly
+the same genuine Gamma base. The existing `VFDefinableClosure` field proof
+was adapted to the actual `DefinableClosureAtBase` carrier. The algebraic
+field is linked to `AlgebraicAtBase` by the checked Gamma/VF algebraicity
+equivalence. Thus neither field is merely a renamed raw-real object without
+its required membership bridge. Existing `TranscendenceDegrees`,
+`SubfieldTrdeg` and RV-independence prove all three transcendence-degree
+equalities in the full Gamma-base scope, with the paper's standing VF-field
+base convention retained. No desired field-closure or trdeg equality is
+assumed, and no saturation or characteristic restriction is introduced.
+
+For proper open balls, reused the checked `ClosedBallCodes` evaluation and
+quotient schemes, recording that source in the new file. A strict disc is
+defined by negating the reverse weak RV-value comparison on correctly sorted
+terms. Its nonzero actual VF radius is part of the real-code guard. Ordinary
+valuation semantics is proved from the compatible valuation bridge, with
+the paper/Mathlib order reversal explicit in the proof. `OpenBallHullGeometry`
+then makes the same-radius closed hull independent of the code. The map is
+descended to actual ball imaginaries, and inclusion in the hull is proved.
+The full definable-family hull bridge and the finite-family center argument
+are still separate work; the new quotient alone is not Lemma3.13.
+
+The two new modules passed standalone pinned Lean compilation. The combined
+certificate covers 185 modules, 843 actual headline type/axiom checks and a
+fresh root import. Only `propext`, `Classical.choice` and `Quot.sound` occur.
+Full new headline types were reviewed, including actual Gamma-base field
+membership, original parameter sets, all finite VF tuple arities, arbitrary
+RV names, standing VF-field base convention, nonzero radii and actual ball
+quotients. Matching prior compiler artifacts and 69 recorded external
+root-consumer interfaces are reused; this is not a source/headline audit of
+Sections 4 or 5. No dependency revision or accepted input was added.
