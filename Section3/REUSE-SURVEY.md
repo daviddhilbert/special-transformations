@@ -438,7 +438,68 @@ supports using finSumFinEquiv and proves properness, reparameterization,
 intersections and monotonicity without representative names in the base.
 Closure idempotence and generated-base laws are separate obligations.
 
-All five added modules compile with exit0. The combined certificate covers
+All five added modules compile with exit0. At that checkpoint, the certificate covered
 154 modules, 454 actual headline type/axiom checks and a fresh root import;
 all axiom sets are contained in the three allowed standard axioms. New checks
 use one Lean worker; matching earlier checked compiler artifacts are reused.
+
+## Focused follow-up for 3.17 (November 5, 2026)
+
+A focused external search for Lean RV-valued monomial formalizations found
+no additional importable proof of 3.17. This is a search result, not a claim
+of exhaustive absence. The current [Mathlib ordered-group API](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Order/GroupWithZero/Basic.html)
+exposes the needed integer-power inequalities. Implementation uses the
+matching declarations inspected in the pinned local revision
+`0df444a360eaa60ab8c11dca51a86af692955474`, without upgrading Mathlib.
+
+The checked semantic proof reuses the released canonical RV quotient,
+residue operations, the checked mixed-polynomial realization theorem, and
+local polynomial RV constancy. Integer powers and bounded nonzero coefficient
+functions give uniform small-variable estimates using ordered-group laws;
+no Archimedean hypothesis is introduced. Residue operations require explicit
+zero and junk-zero branches. These ingredients now give the checked semantic proof of 3.17 in
+`SmallFamilyConstancy`. The author's rational-function normal form in 2.4
+remains an independent open obligation.
+
+
+## Structural checkpoint: Gamma bases and small families (November 5, 2026)
+
+Reused the checked finite real-base algebraic covers, nearest-root geometry,
+uniform finite means and RV independence of VF algebraicity. The Gamma-base
+3.11 proof names no containing ball. A globally bounded filtered finite set
+has a full invariant mean graph, and the original/normalized interpretations
+are explicit. Gamma-base 3.15 counts actual RV points within each value class;
+specialization supplies only a natural-number bound, with no retained names.
+
+For 3.17, the released canonical RV and residue equivalences provide the
+actual RV group with zero and its residue operations. Polynomial trailing
+degree and local RV constancy give rv(P(x))=rv(x)^m*rv(c) near zero. Integer
+powers, products and inverses preserve bounded coefficient functions.
+Nonzero exponents eventually force nonzero inputs outside the residue subset;
+the checked residue junk-zero branches then produce coefficients independent
+of x. Atomic equality, unit membership and value comparisons are independent
+of sufficiently small nonzero x on the bounded output box. Quantifier-free
+induction and released QE prove the complete set-valued statement, with actual
+Gamma thresholds and all larger thresholds. Zero RV coordinates and arity0
+are included. No Archimedean or new mathematical input is assumed.
+
+Closely related semantic components were assembled into a coherent module to
+avoid repeated compiler startup during proof development. Development-server
+checks were followed by actual standalone compiler checks of every module,
+the full headline/axiom audit and a fresh root import. The published combined
+certificate covers 167 modules and 570 headline checks. Only the three permitted
+standard axioms occur. Matching earlier artifacts are explicitly reused.
+
+`GammaBaseTools` retains full code invariance under Boolean operations and
+real-parameter promotion, without adding representative names to conclusions.
+It does not settle full ambient-Gamma-base descent or closure/generation laws.
+The verifier now hashes artifacts in small chunks after a memory-allocation
+failure; matching checked cache hashes remain unchanged.
+
+Further local reuse for 3.14: `ValOneEC.IsKBall`, `Good`, `good_solSet` and
+`atomGood_of_isAlgClosed` in the pinned JohnsonGeometry preserve both centers
+and radii in the algebraically closed coefficient field's image. The new
+`AlgebraicBaseGeometry` lemma extends the existing valued C-minimality wrapper
+to an arbitrary coefficient-field embedding. The ambient valuation is
+nontrivial; the coefficient field's restricted valuation may be trivial.
+RV lifting and full acl modelhood remain to be proved.

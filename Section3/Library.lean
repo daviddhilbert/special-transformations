@@ -52,6 +52,16 @@ import Section3.GammaClosedBallCenters
 
 import Section3.GammaOutputDescent
 
+import Section3.GammaBallDefinablePoint
+
+import Section3.GammaFiniteValues
+
+import Section3.SmallFamilyConstancy
+
+import Section3.GammaBaseTools
+
+import Section3.AlgebraicBaseGeometry
+
 /-!
 # Checked Section 3 library
 
@@ -59,4 +69,3 @@ This entry point uses the released ACVF-QE language. It does not import the
 legacy Section 3 targets or their placeholders. See STATUS.md for the exact
 paper coverage; importing this file is not a claim that all targets are closed.
 -/
-
