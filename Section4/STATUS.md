@@ -55,6 +55,35 @@ The unchanged pins are Lean 4.33.1, Mathlib
 `0df444a360eaa60ab8c11dca51a86af692955474`, and ACVF-QE
 `f3ef4ee679f921079aa8f742a2807a9cc724d2d6`.
 
+### Passing GitHub verification
+
+The [Section 4 publication run 42303747683](https://github.com/daviddhilbert/special-transformations/actions/runs/42303747683)
+for proof commit
+[`93166e6`](https://github.com/daviddhilbert/special-transformations/commit/93166e6779094bcc85ea3753fefc70e8e220008e)
+completed **successfully on November 6, 2026** (America/Los_Angeles).
+The pinned source build, cache-provenance regression tests, published QE
+headline audit, Section 3 verifier and Section 4 verifier all passed. The
+Section 4 step ran successfully, including its source compilations, full
+headline type/axiom output, library, combined import and project-root checks.
+This supplies passing CI source-build evidence alongside the local
+kernel-replay and full-type review recorded above.
+
+The [main-branch run 42303485856](https://github.com/daviddhilbert/special-transformations/actions/runs/42303485856)
+for
+[`21cff13`](https://github.com/daviddhilbert/special-transformations/commit/21cff13d8f9beb28e6ed84e04242e9deae875cb6)
+also completed successfully that day, including the Section 4 and Section 5
+verifiers. No Section 4 files changed between these two commits.
+Both runs retained their `lean-verification-<full commit SHA>` artifacts,
+containing compiler logs and headline audits in each run's Artifacts section.
+
+Earlier runs `42297717897` and `42299437473` were cancelled when subsequent
+publications triggered new runs on `main`; they are not the passing records.
+The isolated run used `codex/section4-verification` to avoid those automatic
+cancellations. No proof changes were needed during this CI follow-up.
+These successes certify the named commits; a workflow triggered by a later
+documentation update is a separate run. See [HANDOFF.md](HANDOFF.md) for
+continuation instructions and the completed scope.
+
 ## Mathematical coverage
 
 | Targets | Checked content |
