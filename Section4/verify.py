@@ -31,8 +31,8 @@ signal.signal(signal.SIGTERM, lambda signum, frame: sys.exit(128 + signum))
 version = subprocess.check_output(['lean', '--version'], text=True).strip()
 if '4.33.1' not in version:
     raise RuntimeError('Expected Lean 4.33.1, got: ' + version)
-env = os.environ.copy()
-env['LEAN_PATH'] = str(LIB) + os.pathsep + env.get('LEAN_PATH', '')
+project_env = os.environ.copy()
+env = dict(project_env, LEAN_PATH=str(LIB) + os.pathsep + project_env.get('LEAN_PATH', ''))
 
 def sha(path):
     result = hashlib.sha256()
@@ -132,7 +132,7 @@ def compiled_dependencies(name):
         collect(dep)
     return result
 
-def run(name, source, output=None, fingerprint=None, fresh=False):
+def run(name, source, output=None, fingerprint=None, fresh=False, *, compile_env=env):
     before = sha(source)
     if name in scanned_sources and before != scanned_sources[name]:
         raise RuntimeError('Source changed after dependency scan: ' + name)
@@ -154,7 +154,8 @@ def run(name, source, output=None, fingerprint=None, fresh=False):
             cmd += ['-o', str(output)]
         cmd += [str(source)]
         with log.open('w', encoding='utf-8') as stream:
-            rc = subprocess.run(cmd, cwd=ROOT, env=env, stdout=stream, stderr=subprocess.STDOUT).returncode
+            rc = subprocess.run(cmd, cwd=ROOT, env=compile_env,
+                                stdout=stream, stderr=subprocess.STDOUT).returncode
     text = log.read_text(encoding='utf-8')
     if sha(source) != before:
         raise RuntimeError('Source changed during check: ' + name)
@@ -1141,7 +1142,9 @@ for name, block in audits:
 combined = BUILD / 'CombinedImport.lean'
 combined.write_text('import ACVFQE\nimport Section4.Library\n', encoding='utf-8')
 run('CombinedImport', combined)
-run('CoordinationRoot', ROOT / 'SpecialTransformations.lean')
+# Later sections also import Section 4 modules outside the verified library's
+# closure. Use the complete Lake build for the whole-project import check.
+run('CoordinationRoot', ROOT / 'SpecialTransformations.lean', compile_env=project_env)
 for name, expected in scanned_sources.items():
     if sha(ROOT / (name.replace('.', '/') + '.lean')) != expected:
         raise RuntimeError('Source changed before certificate completed: ' + name)

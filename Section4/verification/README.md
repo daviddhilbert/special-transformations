@@ -37,6 +37,10 @@ lake env python3 Section4/verify.py
 python3 -m unittest discover -s scripts -p test_lean_provenance.py -v
 ```
 
+The headline and combined QE import checks use the verifier's Section 4
+artifacts. The project root check uses the complete Lake build because later
+sections also import Section 4 modules outside the Section 4 library closure.
+
 The public verifier rejects old source-only caches. Reuse requires the exact
 resolved compiled provider closure, lookup order, own dependency artifacts,
 source, compiler, pins, output parts and logs. Recorded replay evidence is

@@ -347,16 +347,32 @@ headlines += [
     'GammaSpecialBijection.withoutZero_spec',
     'Focus.printedSharp_disjoint_hull',
     'Focus.printedTarget_disjoint',
+    'Paper.theorem_5_4',
+    'Paper.theorem_5_5',
+    'Paper.corollary_5_6',
+    'Paper.corollary_5_6_gamma',
+    'Paper.corollary_5_7',
+    'Paper.corollary_5_7_finite',
+    'Paper.corollary_5_7_gamma',
+    'Paper.corollary_5_7_finite_gamma',
 ]
 library_text = (ROOT / 'Section5/Library.lean').read_text(encoding='utf-8')
-for headline in headlines:
-    if '#print axioms SpecialTransformations.Section5.' + headline not in library_text:
-        raise RuntimeError('Missing library headline audit: ' + headline)
+declared_audits = re.findall(r'^#print axioms ([\w.]+)$', library_text, re.M)
+expected_audits = set(declared_audits)
+required_audits = {'SpecialTransformations.Section5.' + name for name in headlines}
+missing_audits = required_audits - expected_audits
+if missing_audits:
+    raise RuntimeError('Missing library headline audits: ' + ', '.join(sorted(missing_audits)))
+if len(expected_audits) != len(declared_audits):
+    raise RuntimeError('Duplicate library headline audit')
+checked_types = set(re.findall(r'^#check @([\w.]+)$', library_text, re.M))
+missing_types = expected_audits - checked_types
+if missing_types:
+    raise RuntimeError('Missing full headline type checks: ' + ', '.join(sorted(missing_types)))
 text = (BUILD / 'Section5.Library.log').read_text(encoding='utf-8')
 audits = re.findall(r"'([^'\n]+)' depends on axioms:\s*\[([^]]*)\]", text)
 audits += [(name, '') for name in re.findall(r"'([^'\n]+)' does not depend on any axioms", text)]
-expected_audits = {'SpecialTransformations.Section5.' + name for name in headlines}
-if len(audits) != len(headlines) or {name for name, _ in audits} != expected_audits:
+if len(audits) != len(expected_audits) or {name for name, _ in audits} != expected_audits:
     raise RuntimeError('Incomplete headline audit')
 allowed = {'propext', 'Classical.choice', 'Quot.sound'}
 for name, block in audits:
