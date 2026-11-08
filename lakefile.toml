@@ -258,6 +258,11 @@ globs = [
 ]
 
 [[lean_lib]]
+name = "SharedParameterBridges"
+srcDir = "Shared"
+roots = ["ParamBridgeShift", "ParamBridgeRelabel"]
+
+[[lean_lib]]
 name = "Section6"
 roots = ["Section6.Library"]
 
