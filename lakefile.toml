@@ -76,6 +76,7 @@ globs = [
   "Section4.Imported.IntegralKrullDimension",
   "Section4.Imported.NoetherNormalizationTrdeg",
   "Section4.Imported.PolynomialCoordinateBasis",
+  "Section4.Library",
   "Section4.LiftBijections",
   "Section4.LiftFibres",
   "Section4.LiftMorphism",
