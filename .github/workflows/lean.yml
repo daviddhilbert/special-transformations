@@ -31,15 +31,33 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Set up Lean and cached Mathlib dependencies
+      - name: Install the pinned Lean toolchain
         id: setup
-        uses: leanprover/lean-action@v1
-        with:
-          auto-config: "false"
-          build: "false"
-          test: "false"
-          lint: "false"
-          use-mathlib-cache: "true"
+        shell: bash
+        run: |
+          if [[ $(<lean-toolchain) != leanprover/lean4:v4.33.1 ]]; then
+            echo "Update the release asset and checksum for the new Lean pin."
+            exit 1
+          fi
+          archive="$RUNNER_TEMP/lean-4.33.1-linux.tar.zst"
+          # The release API serves the official archive when the release-page
+          # download route times out.
+          curl --fail --silent --show-error --location --retry 4 --connect-timeout 15 \
+            --max-time 600 --header 'Accept: application/octet-stream' \
+            --output "$archive" https://api.github.com/repos/leanprover/lean4/releases/assets/523687465
+          printf '%s  %s\n' 890afd185370f85666025b883914ab4f4b339136f8c96167b69cfb62aecaf235 "$archive" |
+            sha256sum --check --strict
+          tar --zstd -xf "$archive" -C "$RUNNER_TEMP"
+          rm "$archive"
+          toolchain="$RUNNER_TEMP/lean-4.33.1-linux/bin"
+          "$toolchain/lean" --version
+          "$toolchain/lake" --version
+          echo "$toolchain" >> "$GITHUB_PATH"
+
+      - name: Restore cached Mathlib dependencies
+        env:
+          MATHLIB_CACHE_GET_URL: https://cache.mathlib.org/mathlib4
+        run: lake exe cache get
 
       - name: Register the pinned QE package's sibling modules
         run: python3 scripts/prepare_ci.py
