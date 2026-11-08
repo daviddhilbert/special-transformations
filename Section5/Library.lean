@@ -18,6 +18,14 @@ import Section5.TaggedAmbient
 import Section5.GammaLift
 import Section5.GammaContraction
 import Section5.ZeroNormalization
+import Section5.Surjectivity
+import Section5.GammaBaseInputs
+import Section5.GammaPolynomialSupport
+import Section5.GammaInvariantLogic
+import Section5.GammaDimensionalPresentation
+import Section5.GammaSurjectivity
+import Section5.GammaLiftRelation
+import Section5.GammaDimensionCriterion
 
 /-!
 # Section 5 library
@@ -403,6 +411,45 @@ set_option pp.fullNames true
 #print axioms SpecialTransformations.Section5.corollary_5_7
 #check @SpecialTransformations.Section5.corollary_5_7_finite
 #print axioms SpecialTransformations.Section5.corollary_5_7_finite
+#check @SpecialTransformations.Section5.uniformVerticalObstacles
+#print axioms SpecialTransformations.Section5.uniformVerticalObstacles
+#check @SpecialTransformations.Section5.dimensional_presentation
+#print axioms SpecialTransformations.Section5.dimensional_presentation
+#check @SpecialTransformations.Section5.finite_fibres_of_presentation
+#print axioms SpecialTransformations.Section5.finite_fibres_of_presentation
+#check @SpecialTransformations.Section5.Paper.theorem_5_4
+#print axioms SpecialTransformations.Section5.Paper.theorem_5_4
+#check @SpecialTransformations.Section5.Paper.theorem_5_5
+#print axioms SpecialTransformations.Section5.Paper.theorem_5_5
+#check @SpecialTransformations.Section5.Paper.corollary_5_6
+#print axioms SpecialTransformations.Section5.Paper.corollary_5_6
+#check @SpecialTransformations.Section5.Paper.corollary_5_7
+#print axioms SpecialTransformations.Section5.Paper.corollary_5_7
+#check @SpecialTransformations.Section5.Paper.corollary_5_7_finite
+#print axioms SpecialTransformations.Section5.Paper.corollary_5_7_finite
+#check @SpecialTransformations.Section5.gammaPresentationInput
+#print axioms SpecialTransformations.Section5.gammaPresentationInput
+#check @SpecialTransformations.Section5.gammaPolynomialSupportInput_of_fieldBase
+#print axioms SpecialTransformations.Section5.gammaPolynomialSupportInput_of_fieldBase
+#check @SpecialTransformations.Section5.gammaPolynomialSupportInput_of_generatedBase
+#print axioms SpecialTransformations.Section5.gammaPolynomialSupportInput_of_generatedBase
+#check @SpecialTransformations.Section5.gammaLogicInput
+#print axioms SpecialTransformations.Section5.gammaLogicInput
+#check @SpecialTransformations.Section5.Paper.corollary_5_6_gamma
+#print axioms SpecialTransformations.Section5.Paper.corollary_5_6_gamma
+#check @SpecialTransformations.Section5.gammaDimensionalPresentation_of_rank
+#print axioms SpecialTransformations.Section5.gammaDimensionalPresentation_of_rank
+#check @SpecialTransformations.Section5.gammaLift_of_rank
+#print axioms SpecialTransformations.Section5.gammaLift_of_rank
+#print SpecialTransformations.Section5.GammaHasVFDimLE
+#check @SpecialTransformations.Section5.gamma_rank_of_dimension
+#print axioms SpecialTransformations.Section5.gamma_rank_of_dimension
+#check @SpecialTransformations.Section5.finiteRVFibres_of_gammaIso
+#print axioms SpecialTransformations.Section5.finiteRVFibres_of_gammaIso
+#check @SpecialTransformations.Section5.Paper.corollary_5_7_gamma
+#print axioms SpecialTransformations.Section5.Paper.corollary_5_7_gamma
+#check @SpecialTransformations.Section5.Paper.corollary_5_7_finite_gamma
+#print axioms SpecialTransformations.Section5.Paper.corollary_5_7_finite_gamma
 #check @SpecialTransformations.Section5.keyTags_definable
 #print axioms SpecialTransformations.Section5.keyTags_definable
 #check @SpecialTransformations.Section5.taggedAmbient_pullback

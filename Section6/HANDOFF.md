@@ -1,5 +1,46 @@
 # Section 6 handoff
 
+The paper-level exports are in [PaperResults.lean](PaperResults.lean).
+Both headline types and their axiom audits passed the pinned source check
+in `.scratch/section6-paper-results-v1.log`. The algebraic-envelope provider
+is `UniformNormalizedElimination.nativeEnvelopes`. The ordinary
+nontrivial-valuation interpretation is
+`DenefPasHenselianModels.ordinaryRecognition`. Both compile, and the
+trivial-valuation Denef–Pas branch uses the checked separate translation.
+Use [STATUS.md](STATUS.md) and [STATEMENT-REVIEW.md](STATEMENT-REVIEW.md)
+for the current verification and exact scope.
+
+## Earlier checkpoints
+
+November 7 audit. The published Section 6 headlines are conditional on
+the displayed preparation, native-envelope and expanded normal-form
+interfaces. Corollary 6.5 also takes ordinary recognition for the
+nontrivial branch. See [publication audit](../PUBLICATION-AUDIT.md)
+and [statement review](STATEMENT-REVIEW.md).
+
+The local repair proves `EnvelopeUniformity.earlierPreparation`.
+`RVReductQE.lean` derives the required pure RV definitions from the
+pinned sorted QE theorem. `EarlierPreparation.lean` proves the bridge
+from Marker's one-variable saturation to finite tuple types and uses
+countability of a finitely generated LRV substructure to apply the
+checked Section 5 uniform-obstacle theorem. The target and Section 6
+library checks both exited zero. `ExpandedNormalForm.lean` proves
+the RV normal form from the native envelope. `HenselianRVClosure.lean`
+supplies the RV descent inside a pure-characteristic-zero algebraic
+envelope, and `PureHenselianInputs.lean` uses it to construct the
+earlier RV centre input. The remaining general native-envelope and
+ordinary-recognition obligations are separate.
+
+For the next proof, establish the representation of
+`HenselianTheory.canonicalHen00`. Start with the recognition of the
+actual tagged structure in `DenefPasHenselianModels.nativeStructure`,
+including the translation between `henselScheme` and
+`HenselianLocalRing`. In the converse direction, extract the field and
+valuation from a native model and construct its compatible embedding
+into an algebraically closed valued extension. The checked pure
+algebraic-envelope adapter supplies the RV centre input once the
+valuation, embedding, Galois extension and base image are available.
+
 Updated November 6, 2026. The requested syntactic Lemma 6.3, Proposition
 6.4 and Corollary 6.5 are complete within their displayed authorized inputs.
 The active entry point is Section6.Library. Earlier sections were accepted

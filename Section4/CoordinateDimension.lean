@@ -29,14 +29,14 @@ theorem coordinate_piece_of_algebraic {S : Set M} {n r k d : ℕ} (hd : d ≤ k)
 /-- Uniformize coordinate algebraicity over the original small parameter
 base. Saturation gives finitely many finite-relation pieces, and finite
 gluing gives a genuine finite-to-one witness with k VF coordinates. -/
-theorem vfDim_le_of_coordinate_algebraicity
+theorem finite_mixed_map_of_coordinate_algebraicity
     {κ : Cardinal} (hs : Saturated M κ) {S : Set M} (hsmall : Cardinal.mk S < κ)
-    (Γ : DefinableGeometry.Space LRV M) {n r : ℕ}
+    {n r : ℕ}
     (A : DefSet (rawMixedSpace (M := M) n r) S) (k : ℕ)
     (halg : ∀ a : A, ∃ d ≤ k, ∃ v : Fin d → Fin n,
       ∀ j, RawClosure.AlgebraicOver (S ∪ Set.range (vfValues (a.val.1 ∘ v)))
         (a.val.1 j).val) :
-    vfDim Γ A ≤ k := by
+    ∃ f : Map A (DefSet.univ (rawMixedSpace (M := M) k r) S), f.FiniteFibres := by
   let P := rawMixedSpace (M := M) n r
   let Data := CoordinatePiece (M := M) S n k
   let U (D : Data) := P.preimage (D.source r).carrier
@@ -66,8 +66,18 @@ theorem vfDim_le_of_coordinate_algebraicity
     have hmem := (P.preimage_decode ((D c').source r).carrier
       ⟨mixedValues a.val, mixedValues_mem_domain a.val⟩).mp hac'
     simpa only [P, decode_mixedValues] using hmem
-  obtain ⟨f, hf⟩ := finite_cover_finite_map A B (fun c : C => (D c).source r)
+  exact finite_cover_finite_map A B (fun c : C => (D c).source r)
     (fun c => (D c).paddedProjection r) (fun c => (D c).paddedProjection_finite r) hcover'
+
+theorem vfDim_le_of_coordinate_algebraicity
+    {κ : Cardinal} (hs : Saturated M κ) {S : Set M} (hsmall : Cardinal.mk S < κ)
+    (Γ : DefinableGeometry.Space LRV M) {n r : ℕ}
+    (A : DefSet (rawMixedSpace (M := M) n r) S) (k : ℕ)
+    (halg : ∀ a : A, ∃ d ≤ k, ∃ v : Fin d → Fin n,
+      ∀ j, RawClosure.AlgebraicOver (S ∪ Set.range (vfValues (a.val.1 ∘ v)))
+        (a.val.1 j).val) :
+    vfDim Γ A ≤ k := by
+  obtain ⟨f, hf⟩ := finite_mixed_map_of_coordinate_algebraicity hs hsmall A k halg
   exact (vfDim_le_iff Γ A k).mpr ⟨k, le_rfl, .rv r, f, hf⟩
 
 end SpecialTransformations.Section4

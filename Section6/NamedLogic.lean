@@ -123,13 +123,12 @@ names and the original free and bound contexts are retained. -/
 theorem proposition_6_4 {C : Type} [LRV.Structure C] (E : Language)
     (S : LRV.Substructure C) (sS : ↥(S : Set C) → SortTag)
     (hS : ∀ s, sortEval (sS s) (s : C))
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnvelopes : UniformNormalizedElimination.NativeEnvelopes E)
     (hNormal : HenselianElimination.RVLiteralNormalForm E) :
     HasVFQE sS (HenselianTheory.named E S) := by
   apply of_unnamed sS (HenselianTheory.expanded E) (HenselianTheory.named E S)
-    (HenselianElimination.hasVFQE E hMarker hEarlier hEnvelopes hNormal)
+    (HenselianElimination.hasVFQE E hEarlier hEnvelopes hNormal)
   · exact Set.subset_union_left
   · intro M _ _ _ hM s
     exact named_sorts E S sS hS M hM s

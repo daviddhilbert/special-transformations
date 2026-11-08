@@ -16,13 +16,13 @@ namespace SpecialTransformations.Section4
 
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 
-theorem vfDim_le_of_point_trdeg {κ : Cardinal} (hs : Saturated M κ)
+theorem finite_mixed_map_of_point_trdeg {κ : Cardinal} (hs : Saturated M κ)
     {S : Set M} (hsmall : Cardinal.mk S < κ)
-    (Γ : DefinableGeometry.Space LRV M) {n r : ℕ}
+    {n r : ℕ}
     (A : DefSet (rawMixedSpace (M := M) n r) S) (k : ℕ)
     (hdeg : ∀ a : A, vfTupleTrdeg S a.val.1 ≤ (k : Cardinal)) :
-    vfDim Γ A ≤ k := by
-  apply vfDim_le_of_coordinate_algebraicity hs hsmall Γ A k
+    ∃ f : Map A (DefSet.univ (rawMixedSpace (M := M) k r) S), f.FiniteFibres := by
+  apply finite_mixed_map_of_coordinate_algebraicity hs hsmall A k
   intro a
   obtain ⟨d, hd, v, hv⟩ := exists_algebraic_coordinate_basis
     (vfParameterField S) a.val.1 (hdeg a)
@@ -32,6 +32,15 @@ theorem vfDim_le_of_point_trdeg {κ : Cardinal} (hs : Saturated M κ)
   apply (algebraicAt_vf_iff_parameterField _ (a.val.1 j)).mpr
   rw [vfParameterField_union_tuple]
   exact hv j
+
+theorem vfDim_le_of_point_trdeg {κ : Cardinal} (hs : Saturated M κ)
+    {S : Set M} (hsmall : Cardinal.mk S < κ)
+    (Γ : DefinableGeometry.Space LRV M) {n r : ℕ}
+    (A : DefSet (rawMixedSpace (M := M) n r) S) (k : ℕ)
+    (hdeg : ∀ a : A, vfTupleTrdeg S a.val.1 ≤ (k : Cardinal)) :
+    vfDim Γ A ≤ k := by
+  obtain ⟨f, hf⟩ := finite_mixed_map_of_point_trdeg hs hsmall A k hdeg
+  exact (vfDim_le_iff Γ A k).mpr ⟨k, le_rfl, .rv r, f, hf⟩
 
 /-- The pointwise rank criterion, including empty sets and zero arities. -/
 theorem vfDim_le_iff_point_trdeg

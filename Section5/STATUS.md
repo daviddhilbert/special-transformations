@@ -1,11 +1,92 @@
 # Section 5 proof status
 
+**The published Lean Corollary 5.7 is conditional.** The paper does not state
+these as additional hypotheses. The Lean general export assumes uniform
+vertical obstacles and a dimensional presentation. The published finite
+export also takes finite-RV-fibre invariance as an input. Its compiler and
+axiom checks verify those conditional statements.
+See [the Lean signatures](CategoryLift.lean#L88) and [INPUTS.md](INPUTS.md).
+
+## November 7 repair
+
+The local `Section5.Paper` exports in [Surjectivity.lean](Surjectivity.lean)
+derive both forms of Corollary 5.7 over real parameter sets under the
+standing saturation, smallness, and pure-characteristic-zero assumptions.
+The VF categories use the actual Gamma quotient for dimension. The
+definable set and map graphs are over the same real parameter set `S`.
+The general and finite variants construct their actual isomorphisms.
+The compatible valuation is obtained internally. The same local exports
+remove the obstacle premise from real Theorems 5.4 and 5.5 and Corollary 5.6.
+
+`VerticalObstacles` proves the uniform relation from unary QE, the
+definable closed-ball relation, parameter promotion, and genuine
+saturation. `CategoryPresentations` uses the Section 4 rank proof's actual
+finite map to `VF^k × RV^r`, the injection refinement, and its
+real-coordinate image. `Surjectivity` uses the Section 4 finite-map
+characterization to transport finite RV fibres. Each of these new modules
+has compiled with exit zero in the pinned environment.
+The combined `Section5.Library` source check also exited zero and
+printed 291 axiom reports. The full types of the new real-parameter
+headlines and the internal Gamma presentation were inspected. Their
+axiom lists contain only `propext`, `Classical.choice`, and `Quot.sound`.
+The log is `.scratch/section5-repair-library-retry.log`.
+
+For named Gamma parameters, `GammaBaseInputs`, `GammaPolynomialSupport`
+and `GammaInvariantLogic` supply the internal real presentation, finite
+VF polynomial support and full invariant graph operations. The
+specialization names finitely many proper RV codes solely inside the
+proof. The published polynomial-support interface quantifies over
+arbitrary real sets. Its checked producer uses the paper's VF coefficient
+field, which is also derived internally for a VF/Gamma-generated base.
+`Section5.Paper.corollary_5_6_gamma` combines these proofs with the
+vertical-obstacle theorem over the original base. The corresponding
+combined library and root check exited zero with 295 axiom reports.
+The pointwise VF rank bound now gives a checked original-base
+dimensional presentation in `GammaDimensionalPresentation`.
+`GammaFiniteFibres` also compiles and transports finite RV fibres
+along an original-base isomorphism. Both use finite RV code
+specialization only in internal proofs. `GammaDimension` proves the
+rank bound from the finite-map definition. `GammaSurjectivity` combines
+these proofs in the general and finite named-Gamma versions of
+Corollary 5.7. Their full types retain the paper's standing VF
+coefficient-field, characteristic, smallness and saturation conditions.
+The combined library and root exited zero with 301 axiom reports.
+See `.scratch/section5-repair-gamma-final-root.log`. The two-repository
+[publication audit](../PUBLICATION-AUDIT.md) reviews the published
+revisions separately.
+
 The author authorizes the needed Sections 2–4 as given. The statements below
-keep unfinished earlier interfaces as explicit hypotheses. No Section 5
+keep accepted earlier interfaces as explicit hypotheses. No Section 5
 existence theorem, induction conclusion, or special-bijection construction
 is assumed as an input. On November 6 the author authorized publishing this
 Section 5 checkpoint so the dependency of Section 6 is available remotely.
 Unrelated workspace edits remain outside the publication.
+
+Author update, November 6, 2026: all material before Section 7 has been
+pushed. The continuation point is Section 7. The verification records below
+remain tied to their named commits and stated scopes.
+
+## Published checkpoint and passing CI
+
+The Section 5 checkpoint was published in
+[`21cff13`](https://github.com/daviddhilbert/special-transformations/commit/21cff13d8f9beb28e6ed84e04242e9deae875cb6).
+Its [main-branch verification run 42303485856](https://github.com/daviddhilbert/special-transformations/actions/runs/42303485856)
+completed **successfully on November 6, 2026** (America/Los_Angeles).
+The pinned project source build, compiled-import cache provenance checks,
+published QE headline audit, and Section 3, Section 4 and Section 5 verifiers
+all ran and passed. The run retained its verification artifact with compiler
+logs, provider manifests and headline audit output.
+
+All 28 published Section 5 Lean files match the completed local checkpoint
+byte for byte. The passing CI source build and Section 5 audit add remote
+verification evidence to the local compiler, kernel-replay and consumer
+checks described below. The accepted Sections 2–4 inputs and the scope of
+the normalized representatives remain unchanged; no Section 5 proof
+obligation remains within that scope.
+
+This CI result certifies the named published commit. It does not assign a
+passing result to later documentation updates. The current documentation
+update is authorized for a local commit only; no push is authorized.
 
 ## November 6 normalization and verification
 
@@ -83,8 +164,8 @@ schema rejection, changed fingerprints, changed output, changed logs and
 tampered replay evidence. A regression runs the actual verifier cache-hit
 path twice and checks that replay evidence remains in both memory and the
 saved cache. Valid reused entries are retained unchanged.
-The YAML structure and step/evidence wiring are checked locally. These local
-checks do not claim a remote Actions result. The publication includes the
+The YAML structure and step/evidence wiring are checked locally. The separate
+passing remote run is recorded above. The publication includes the
 Section 5 sources, library registration and verifier/CI wiring; scratch
 compiler artifacts remain local. The existing Section 4 cache regression
 coverage is retained.
@@ -263,4 +344,4 @@ or an independent check of Sections 2–4.
 That earlier audit changed no implementation source or paper convention.
 The subsequent authorized normalization and verification changes are recorded
 above. Earlier-section proofs and dependency pins are unchanged by this work.
-No commit or push was made.
+No commit or push was made during that earlier audit.

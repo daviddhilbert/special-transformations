@@ -2,17 +2,13 @@ import ACVFQE
 import Section3.Library
 import Section4.Library
 import Section5.Library
+import Section6.Library
+import Section7.Library
+import Section8.Library
 
 /-!
-# Special transformations: section-by-section coordination root
+# Special transformations through Section 8
 
-Quantifier elimination is supplied by the pinned independent ACVF-QE package.
-The relocated section snapshots are not imported automatically: their proof
-status and interfaces must be audited before integration.
-
-Sections 2--3 are completed in their documented scope. Section 4 uses their
-checked interfaces; its targets and verification are recorded in Section4/STATUS.md.
-
-Section 5 records its accepted earlier inputs and its separate compiler,
-headline-type and axiom checks in Section5/STATUS.md.
+The active section libraries use the pinned ACVF-QE language.
+Each section's status records its theorem scope and verification.
 -/

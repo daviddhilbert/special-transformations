@@ -23,13 +23,9 @@ the convention `0⁻¹ = 0`; do not add a VF inverse symbol.
 | Logical step toward 6.4 | `RelativeSyntax.hasVFQE_of_step` | Generic conditional reduction in LRV; does not establish its geometric step hypothesis |
 | Syntactic Lemma 6.3 | `SyntacticLemma63`, integrated and audited | Arbitrary original parameter names, actual existential FV tuple, output selected before substructure and RV expansion; uniform model application is in UniformNormalizedElimination |
 | Full Lemma 6.3 | `UniformNormalizedElimination.eliminate`, integrated and audited | Uniform formula for finite normalized input, retaining free VF parameters; explicit earlier preparation and ordinary native-envelope inputs; final integrated check passed |
-| Proposition 6.4 | `NamedLogic.proposition_6_4`, integrated and audited | Original base named; full arbitrary free/bound contexts. Earlier preparation, normal form, Marker and ordinary native-envelope inputs are explicit; final integrated check passed |
-| Corollary 6.5 | `DenefPasTheorem.corollary_6_5`, integrated and audited | Actual angular-component splitting and both valuation branches, original arbitrary free names, proper sort discipline and only RF/Gamma binders; explicit standard/earlier inputs; final integrated check passed |
+| Proposition 6.4 | `Paper.proposition_6_4` | Arbitrary RV-only expansion and original named base. All elimination inputs are supplied by checked proofs. |
+| Corollary 6.5 | `Paper.corollary_6_5` | Ordinary henselian valued fields of pure characteristic zero, with angular component and arbitrary sorted auxiliary expansion. Both valuation branches. |
 
-The final pinned Lake certificate checks 78 modules, 444 full headline
-types/axioms and the combined ACVF-QE + Section5 + Section6 import, with
-compiler exits 0 and only the three permitted axioms. Exact sources, logs,
-cache/provider identities and compiled artifacts are preserved in
-`.scratch/section6-final78-444/`. See STATUS.md and STATEMENT-REVIEW.md for
-the exact conditional scope. Earlier assembled and paused-run checkpoints
-remain historical evidence. Legacy Sec6.lean and Sec6QE.lean are excluded.
+See [STATUS.md](STATUS.md) and [STATEMENT-REVIEW.md](STATEMENT-REVIEW.md)
+for current evidence and exact hypotheses. Legacy Sec6.lean and Sec6QE.lean
+are excluded from the active library.

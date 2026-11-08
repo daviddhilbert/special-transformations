@@ -1,12 +1,14 @@
 # Section 8: Further structural properties
 
-Existing section-specific files and any earlier scaffolds were moved here
-unchanged. This is an organization step, not a claim that Section 8
-is formalized or that these sources compile in the current environment.
+The [target list](TARGETS.md) follows the paper's numbered statements.
+The active library verifies Lemmas 8.1–8.7 and 8.9, Definition 8.8,
+and the VF and RV almost-everywhere definitions. The results use the
+released VF/RV language and give the statements over the original
+Gamma base where applicable. [Status](STATUS.md) records the checked
+statements, assumptions, and integration. The [reuse survey](REUSE-SURVEY.md)
+records the earlier results used.
 
-The next task is [Section 3 and the remaining Section 2 material](../Section3/HANDOFF.md).
-Do not bulk-import these legacy snapshots into the active library. Audit
-their paper statements, parameters, explicit hypotheses, placeholders and
-actual dependencies before reuse. Old headers describe historical states.
-
-See `../Archive/MOVE-INDEX.json` for old paths and initial content hashes.
+The `Sec8*` files are historical snapshots. Their old headers describe
+the former project and their hypotheses are not current proof evidence.
+They are excluded from [the Section 8 entry point](Library.lean).
+See [the move index](../Archive/MOVE-INDEX.json) for their provenance.

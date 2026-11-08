@@ -2299,7 +2299,7 @@ theorem atomicSorting (hEnv : UniformNormalizedElimination.NativeEnvelopes E) :
 
 /-- Raw syntax can be used for an interpretation into a relational RV
 expansion. Atomic sorting and the sort cover are discharged above. -/
-theorem eliminate (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
+theorem eliminate
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnv : UniformNormalizedElimination.NativeEnvelopes E)
     (hNormal : HenselianElimination.RVLiteralNormalForm E)
@@ -2309,7 +2309,7 @@ theorem eliminate (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
       ExpandedRawLogic.Equivalent (HenselianTheory.expanded E) s sn φ ψ :=
   ExpandedRawLogic.eliminate (HenselianTheory.expanded E)
     (HenselianNativeSyntax.sortCover E hEnv) (atomicSorting hEnv)
-    (HenselianElimination.hasVFQE E hMarker hEarlier hEnv hNormal) s φ sn
+    (HenselianElimination.hasVFQE E hEarlier hEnv hNormal) s φ sn
 
 end SpecialTransformations.Section6.HenselianRelationalSorting
 
@@ -2333,7 +2333,6 @@ open AngularComponent DenefPasCodes DenefPasLanguage DenefPasNativeModel DenefPa
 open DenefPasParameters FiniteSortContext
 
 theorem eliminate_native_models (E : _root_.FirstOrder.Language.{0, 0})
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnv : UniformNormalizedElimination.NativeEnvelopes (DenefPasMorley.signature E))
     (hNormal : HenselianElimination.RVLiteralNormalForm (DenefPasMorley.signature E))
@@ -2351,7 +2350,7 @@ theorem eliminate_native_models (E : _root_.FirstOrder.Language.{0, 0})
   let R := RVPart ns
   let e := partition ns
   let θ := PairSyntax.formula (DenefPasForwardDictionary.dictionary E) φ
-  obtain ⟨η, hη, hsη, heη⟩ := HenselianRelationalSorting.eliminate hMarker hEarlier hEnv hNormal
+  obtain ⟨η, hη, hsη, heη⟩ := HenselianRelationalSorting.eliminate hEarlier hEnv hNormal
     ns (fun _ : Fin 0 => .rv) θ
   let θ' : (Native E).Formula (V ⊕ R) := (BoundedFormula.relabelEquiv e) η
   have he : ∀ j, Sum.elim (fun _ : V => SortTag.vf) (fun _ : R => .rv) (e j) = ns j := by
@@ -2482,7 +2481,6 @@ end Expansion
 
 theorem eliminate_nontrivial (hRecognition : OrdinaryRecognition)
     (E : _root_.FirstOrder.Language.{0, 0})
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnv : UniformNormalizedElimination.NativeEnvelopes (DenefPasMorley.signature E))
     (hNormal : HenselianElimination.RVLiteralNormalForm (DenefPasMorley.signature E))
@@ -2494,7 +2492,7 @@ theorem eliminate_nontrivial (hRecognition : OrdinaryRecognition)
         letI : (language E).Structure (DenefPasAuxLift.Model E v a) := dpStructure E v a
         ¬ Trivial v → ∀ z : I → DenefPasAuxLift.Model E v a, Sorted E v a s z →
           (φ.Realize z ↔ ψ.Realize z) := by
-  obtain ⟨ψ, hψ, he⟩ := DenefPasNativeElimination.eliminate_native_models E hMarker hEarlier hEnv hNormal s φ
+  obtain ⟨ψ, hψ, he⟩ := DenefPasNativeElimination.eliminate_native_models E hEarlier hEnv hNormal s φ
   refine ⟨ψ, hψ, ?_⟩
   intro K Γ _ _ v a _ _ _ _ hnt z hz
   letI : LRV.Structure (Model E v a) := nativeStructure v a

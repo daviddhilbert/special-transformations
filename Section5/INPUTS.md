@@ -1,5 +1,12 @@
 # Accepted inputs and actual scope
 
+This table describes the interfaces of the published checkpoint.
+The local real and named-Gamma `Section5.Paper` exports now construct
+the uniform obstacle, dimensional presentation and finite-fibre witnesses.
+The named-Gamma proofs also construct the invariant logic, polynomial
+support and internal real presentations. See [STATUS.md](STATUS.md)
+for the checked headline scopes.
+
 The author explicitly permits all needed material from Sections 2–4 as
 given. Its independent verification is outside this Section 5 work. Missing
 earlier exports appear as exact theorem hypotheses. No Section 5 conclusion

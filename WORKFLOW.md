@@ -116,7 +116,7 @@ source hashes and the configuration change in the verification artifact.
 Review this workaround when updating the dependency pin.
 
 The workflow builds the pinned project root and audits the published QE
-headline types and axioms. It runs the Section 3, Section 4 and Section 5 verifiers when
+headline types and axioms. It runs the Section 3, Section 4, Section 5 and Section 7 verifiers when
 they are present in the checked-out revision. It retains logs, audits and status
 records as downloadable artifacts, including available diagnostics on failure.
 The run summary records these separate step outcomes.
@@ -127,6 +127,12 @@ to that manifest and to compiled Section 5 dependencies. It rejects the old
 source-only cache format and checks provider stability across the run. The
 workflow also runs the cache provenance regression checks. Earlier mathematics
 remains an explicitly given input to this verifier.
+
+The Section 7 verifier freshly compiles its active modules, resolves and
+fingerprints the complete earlier compiled import closure before and after,
+audits its selected full headline types and axioms, and checks its import
+together with ACVF-QE. Its coverage is recorded in Section7/STATUS.md.
+The coordination root also builds the Section 6 and Section 8 entry points.
 
 An old source-only cache entry is not sufficient to establish compiled-input
 provenance. A separate kernel replay may re-certify unchanged, previously

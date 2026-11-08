@@ -26,7 +26,6 @@ def inputEquiv (n : ℕ) : (V ⊕ Fin n) ⊕ R ≃
   ((Fintype.equivFin V).sumCongr (Equiv.refl _)).sumCongr rvEquiv
 
 theorem eliminate
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnvelopes : UniformNormalizedElimination.NativeEnvelopes E) {n : ℕ}
     (φ : (Expanded E).Formula ((V ⊕ Fin n) ⊕ R)) (hφ : Fragment φ) :
@@ -40,7 +39,7 @@ theorem eliminate
   let φ' := (BoundedFormula.relabelEquiv (inputEquiv (V := V) (R := R) n)) φ
   have hφ' : Fragment φ' := RVFragmentRenaming.fragment
     ((Fintype.equivFin V).sumCongr (Equiv.refl _)) rvEquiv φ hφ
-  obtain ⟨ψ, hψ, hsψ, he⟩ := UniformNormalizedElimination.eliminate E hMarker hEarlier hEnvelopes φ' hφ'
+  obtain ⟨ψ, hψ, hsψ, he⟩ := UniformNormalizedElimination.eliminate E hEarlier hEnvelopes φ' hφ'
   have hs : ∀ j, Sum.elim (fun _ => SortTag.vf) (fun _ => .rv)
       ((freeEquiv (V := V) (R := R)).symm j) = AlignedComparison.sorts j := by
     intro j

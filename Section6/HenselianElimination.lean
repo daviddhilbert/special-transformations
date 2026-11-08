@@ -28,7 +28,6 @@ def RVLiteralNormalForm (E : _root_.FirstOrder.Language.{0, 0}) : Prop :=
         (φ.Realize (Sum.elim v r) ↔ χ.Realize (Sum.elim v r))
 
 theorem finite_oneStep (E : _root_.FirstOrder.Language.{0, 0})
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnvelopes : UniformNormalizedElimination.NativeEnvelopes E)
     (hNormal : RVLiteralNormalForm E) : FiniteContextLogic.FiniteOneStep (HenselianTheory.expanded E) := by
@@ -41,7 +40,7 @@ theorem finite_oneStep (E : _root_.FirstOrder.Language.{0, 0})
   let θ : (Expanded E).Formula ((V ⊕ Fin 1) ⊕ R) := OneStepPresentation.body s sn φ
   obtain ⟨χ, hχ, hχsem⟩ := hNormal (V ⊕ Fin 1) R θ
     (OneStepPresentation.body_wellSorted s sn φ hsφ) (OneStepPresentation.body_isVFQF s sn φ hφ)
-  obtain ⟨ψ, hψ, hsψ, heψ⟩ := FiniteNormalizedElimination.eliminate hMarker hEarlier hEnvelopes χ hχ
+  obtain ⟨ψ, hψ, hsψ, heψ⟩ := FiniteNormalizedElimination.eliminate hEarlier hEnvelopes χ hχ
   let g : V ⊕ R → I ⊕ Fin n := (partition (Sum.elim s sn)).symm
   have hg : ∀ i : V ⊕ R, Sum.elim s sn (g i) = Sum.elim (fun _ => SortTag.vf) (fun _ => .rv) i := by
     rintro (i | i) <;> exact i.property
@@ -99,10 +98,9 @@ theorem finite_oneStep (E : _root_.FirstOrder.Language.{0, 0})
 authorized earlier normal form, preparation and ordinary envelope inputs
 printed explicitly. The named-base adapter is a separate logical step. -/
 theorem hasVFQE (E : _root_.FirstOrder.Language.{0, 0})
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnvelopes : UniformNormalizedElimination.NativeEnvelopes E)
     (hNormal : RVLiteralNormalForm E) : ExpandedLogic.HasVFQE (HenselianTheory.expanded E) :=
-  FiniteContextLogic.hasVFQE_of_finite _ (finite_oneStep E hMarker hEarlier hEnvelopes hNormal)
+  FiniteContextLogic.hasVFQE_of_finite _ (finite_oneStep E hEarlier hEnvelopes hNormal)
 
 end SpecialTransformations.Section6.HenselianElimination

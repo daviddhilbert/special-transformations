@@ -53,8 +53,14 @@ mathematical strategy; old proof orders and status counts are not verification.
 ## Fixed conventions
 
 - Use the released ACVF-QE language and theory as the common starting point.
-  Its RV inversion captures the author's group-language convention. The missing
-  inverse symbol was an error in the Lean transcription, not in the paper.
+  The author clarified on November 5, 2026 that the paper explicitly omitted
+  inverse symbols before Convention 2.5 and that RV inversion must be named
+  for the intended QE statement. This is a correction to the paper's language
+  specification, not merely its Lean transcription. The implementation already
+  names RV inversion; VF inversion remains unnamed. See `LANGUAGE-ERRATA.md`.
+  Later sections concern definable sets, for which a definable inverse
+  suffices. Naming it does not change definable sets or acl/dcl over the same
+  parameters; do not impose a new downstream language requirement on that basis.
 - RV has one absorbing element, `rv(0)`, written as zero/infinity in the paper's
   conventions. Do not add a second absorbing point. `pK` is the nonzero group;
   `pInK` is the full residue-field predicate including zero.
@@ -63,8 +69,9 @@ mathematical strategy; old proof orders and status counts are not verification.
 - The material after Definition 2.4 works over pure characteristic zero and an
   appropriately saturated model, with the stated small base substructure.
   Preserve theorem-specific scope: Theorem 2.8 is stated for ACVF itself.
-- Distinguish same valuation from same RV class. Do not repeat older comments
-  attributing defects in a Lean transcription to the paper.
+- Distinguish same valuation from same RV class. Distinguish transcription
+  mistakes from author-approved corrections to the paper; the RV-inversion
+  correction is documented in `LANGUAGE-ERRATA.md`.
 
 ## Layout and verification
 

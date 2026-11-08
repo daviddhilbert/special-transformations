@@ -1,0 +1,707 @@
+import Section7.GammaPolynomial
+import Section7.PolynomialNormalization
+import Section7.EncodedResidueRoots
+import Section7.LiftRelations
+import Section7.ValuationHenselian
+import Section7.Imported.EtaleLifting
+import Section7.GammaPolynomialAlgebra
+import Section7.JacobianNormalization
+import Section7.SimpleRootNormalization
+import Section7.IntegralNormalization
+import Section7.Imported.JacobianEtale
+import Section7.PolynomialSystemEtale
+import Section7.Imported.UnramifiedUniqueness
+import Section7.EtaleSections
+import Section7.MultivariateHensel
+import Section7.GeneralizedHensel
+import Section7.EncodedHensel
+import Section7.ResiduePolynomialProjection
+import Section7.FieldConstructibility
+import Section7.ResidueConstructibility
+import Section7.GeneratedRVRepresentatives
+import Section7.PolynomialFibreExtraction
+import Section7.IntegerAvoidance
+import Section7.WeightedLeadingTerms
+import Section7.LaurentClearing
+import Section7.GuardedFibreDomains
+import Section7.GuardedResidueSums
+import Section7.GuardedBaseMonomials
+import Section7.AlgebraicRowWitness
+import Section7.FiniteRVPolynomialPattern
+import Section7.GuardedParameterScope
+import Section7.GuardedLaurentSide
+import Section7.WeightedPolynomialTests
+import Section7.AlgebraicResidueRoot
+import Section7.PullbackLiftRelations
+import Section7.TupleCoordinates
+import Section7.PolynomialCoordinateMaps
+import Section7.DefinableTupleQuantifiers
+import Section7.LiftingAlgebra
+import Section7.LiftingDefinability
+import Section7.CorrespondenceLifting
+import Section7.BalancedCorrespondence
+import Section7.LiftedIsomorphism
+import Section7.PositiveLift
+import Section7.LiftingPresentations
+import Section7.PositiveSurjectivity
+import Section7.GammaLiftEquivalence
+import Section7.GammaScissors
+import Section7.WeightedLeadingOperations
+import Section7.ResidueCharacteristic
+import Section7.ResidueDerivativeNormalization
+import Section7.SimpleResidueExtraction
+import Section7.ResidueFibreEvaluation
+
+/-! Active Section 7 library. The relocated legacy snapshots are excluded.
+See STATUS.md for exact proved scope and remaining paper obligations. -/
+
+set_option pp.explicit true
+set_option pp.fullNames true
+set_option pp.universes true
+
+#check @SpecialTransformations.Section7.GammaRVIso.liftIso
+#print axioms SpecialTransformations.Section7.GammaRVIso.liftIso
+#check @SpecialTransformations.Section7.Paper.corollary_7_7_gamma
+#print axioms SpecialTransformations.Section7.Paper.corollary_7_7_gamma
+#check @SpecialTransformations.Section7.Paper.corollary_7_7_finite_gamma
+#print axioms SpecialTransformations.Section7.Paper.corollary_7_7_finite_gamma
+
+#check @SpecialTransformations.Section7.PolynomialPresentation.eval_polynomial
+#print axioms SpecialTransformations.Section7.PolynomialPresentation.eval_polynomial
+#check @SpecialTransformations.Section7.rvFibre_nonempty
+#print axioms SpecialTransformations.Section7.rvFibre_nonempty
+#check @SpecialTransformations.Section7.rvFibre_value
+#print axioms SpecialTransformations.Section7.rvFibre_value
+#check @SpecialTransformations.Section7.rvFibre_close
+#print axioms SpecialTransformations.Section7.rvFibre_close
+#check @SpecialTransformations.Section7.valuation_pow_sub_pow_lt
+#print axioms SpecialTransformations.Section7.valuation_pow_sub_pow_lt
+#check @SpecialTransformations.Section7.valuation_prod_pow_sub_lt
+#print axioms SpecialTransformations.Section7.valuation_prod_pow_sub_lt
+#check @SpecialTransformations.Section7.gammaPolynomial_eval_le
+#print axioms SpecialTransformations.Section7.gammaPolynomial_eval_le
+#check @SpecialTransformations.Section7.gammaPolynomial_eval_sub_lt
+#print axioms SpecialTransformations.Section7.gammaPolynomial_eval_sub_lt
+#check @SpecialTransformations.Section7.residueRoot_iff_exists
+#print axioms SpecialTransformations.Section7.residueRoot_iff_exists
+#check @SpecialTransformations.Section7.PolynomialPresentation.eval_normalize
+#print axioms SpecialTransformations.Section7.PolynomialPresentation.eval_normalize
+#check @SpecialTransformations.Section7.PolynomialPresentation.homogeneous_normalize
+#print axioms SpecialTransformations.Section7.PolynomialPresentation.homogeneous_normalize
+#check @SpecialTransformations.Section7.rv_mul_eq_representative_iff
+#print axioms SpecialTransformations.Section7.rv_mul_eq_representative_iff
+#check @SpecialTransformations.Section7.gammaPolynomial_normalizingScalar_exists
+#print axioms SpecialTransformations.Section7.gammaPolynomial_normalizingScalar_exists
+#check @SpecialTransformations.Section7.rvFibre_scale_iff
+#print axioms SpecialTransformations.Section7.rvFibre_scale_iff
+#check @SpecialTransformations.Section7.gammaPolynomial_normalization
+#print axioms SpecialTransformations.Section7.gammaPolynomial_normalization
+#check @SpecialTransformations.Section7.exists_gammaPolynomial_normalization
+#print axioms SpecialTransformations.Section7.exists_gammaPolynomial_normalization
+#check @SpecialTransformations.Section7.encodedRVFibre_eq
+#print axioms SpecialTransformations.Section7.encodedRVFibre_eq
+#check @SpecialTransformations.Section7.encoded_residueRoot_iff_exists
+#print axioms SpecialTransformations.Section7.encoded_residueRoot_iff_exists
+#check @SpecialTransformations.Section7.FibreBijection.equiv
+#print axioms SpecialTransformations.Section7.FibreBijection.equiv
+#check @SpecialTransformations.Section7.FibreBijection.equiv_mem
+#print axioms SpecialTransformations.Section7.FibreBijection.equiv_mem
+#check @SpecialTransformations.Section7.FibreBijection.equiv_graph
+#print axioms SpecialTransformations.Section7.FibreBijection.equiv_graph
+#check @SpecialTransformations.Section7.IsLift.restrict
+#print axioms SpecialTransformations.Section7.IsLift.restrict
+#check @SpecialTransformations.Section7.diagonal_isLift
+#print axioms SpecialTransformations.Section7.diagonal_isLift
+#check @SpecialTransformations.Section7.valuationRing_henselian
+#print axioms SpecialTransformations.Section7.valuationRing_henselian
+#check @SpecialTransformations.Section7.Imported.EtaleLifting.residuePoint_lifts
+#print axioms SpecialTransformations.Section7.Imported.EtaleLifting.residuePoint_lifts
+
+#check @SpecialTransformations.Section7.PolynomialPresentation.polynomial_ofFamily
+#print axioms SpecialTransformations.Section7.PolynomialPresentation.polynomial_ofFamily
+#check @SpecialTransformations.Section7.isGammaPolynomial_ofFamily
+#print axioms SpecialTransformations.Section7.isGammaPolynomial_ofFamily
+#check @SpecialTransformations.Section7.isGammaPolynomial_zero
+#print axioms SpecialTransformations.Section7.isGammaPolynomial_zero
+#check @SpecialTransformations.Section7.isGammaPolynomial_monomial
+#print axioms SpecialTransformations.Section7.isGammaPolynomial_monomial
+#check @SpecialTransformations.Section7.IsGammaPolynomial.sum
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.sum
+#check @SpecialTransformations.Section7.IsGammaPolynomial.add
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.add
+#check @SpecialTransformations.Section7.IsGammaPolynomial.nsmul
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.nsmul
+#check @SpecialTransformations.Section7.IsGammaPolynomial.neg
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.neg
+#check @SpecialTransformations.Section7.IsGammaPolynomial.mul
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.mul
+#check @SpecialTransformations.Section7.isGammaPolynomial_one
+#print axioms SpecialTransformations.Section7.isGammaPolynomial_one
+#check @SpecialTransformations.Section7.IsGammaPolynomial.prod
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.prod
+#check @SpecialTransformations.Section7.IsGammaPolynomial.pderiv
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.pderiv
+#check @SpecialTransformations.Section7.isGammaPolynomial_jacobian
+#print axioms SpecialTransformations.Section7.isGammaPolynomial_jacobian
+#check @SpecialTransformations.Section7.not_residueRoot_iff_eval_eq
+#print axioms SpecialTransformations.Section7.not_residueRoot_iff_eval_eq
+#check @SpecialTransformations.Section7.IsSimpleCommonResidueRoot.jacobian_eval_value
+#print axioms SpecialTransformations.Section7.IsSimpleCommonResidueRoot.jacobian_eval_value
+#check @SpecialTransformations.Section7.IsSimpleCommonResidueRoot.polynomial_ne_zero
+#print axioms SpecialTransformations.Section7.IsSimpleCommonResidueRoot.polynomial_ne_zero
+#check @SpecialTransformations.Section7.diagonalScale_X
+#print axioms SpecialTransformations.Section7.diagonalScale_X
+#check @SpecialTransformations.Section7.diagonalScale_C
+#print axioms SpecialTransformations.Section7.diagonalScale_C
+#check @SpecialTransformations.Section7.diagonalScale_monomial
+#print axioms SpecialTransformations.Section7.diagonalScale_monomial
+#check @SpecialTransformations.Section7.eval_diagonalScale
+#print axioms SpecialTransformations.Section7.eval_diagonalScale
+#check @SpecialTransformations.Section7.pderiv_diagonalScale
+#print axioms SpecialTransformations.Section7.pderiv_diagonalScale
+#check @SpecialTransformations.Section7.eval_normalizePolynomial
+#print axioms SpecialTransformations.Section7.eval_normalizePolynomial
+#check @SpecialTransformations.Section7.PolynomialPresentation.normalize_polynomial
+#print axioms SpecialTransformations.Section7.PolynomialPresentation.normalize_polynomial
+#check @SpecialTransformations.Section7.normalizePolynomial_isGamma
+#print axioms SpecialTransformations.Section7.normalizePolynomial_isGamma
+#check @SpecialTransformations.Section7.eval_jacobianPolynomial
+#print axioms SpecialTransformations.Section7.eval_jacobianPolynomial
+#check @SpecialTransformations.Section7.jacobianMatrix_normalize
+#print axioms SpecialTransformations.Section7.jacobianMatrix_normalize
+#check @SpecialTransformations.Section7.jacobianPolynomial_eval_normalize
+#print axioms SpecialTransformations.Section7.jacobianPolynomial_eval_normalize
+#check @SpecialTransformations.Section7.residueRoot_scaled_evaluations_iff
+#print axioms SpecialTransformations.Section7.residueRoot_scaled_evaluations_iff
+#check @SpecialTransformations.Section7.jacobian_normalizingFactor_value
+#print axioms SpecialTransformations.Section7.jacobian_normalizingFactor_value
+#check @SpecialTransformations.Section7.jacobian_residueRoot_normalize_iff
+#print axioms SpecialTransformations.Section7.jacobian_residueRoot_normalize_iff
+#check @SpecialTransformations.Section7.IsSimpleCommonResidueRoot.normalize
+#print axioms SpecialTransformations.Section7.IsSimpleCommonResidueRoot.normalize
+#check @SpecialTransformations.Section7.simpleRoot_normalization_iff
+#print axioms SpecialTransformations.Section7.simpleRoot_normalization_iff
+#check @SpecialTransformations.Section7.IsSimpleCommonResidueRoot.normalized_jacobian_value
+#print axioms SpecialTransformations.Section7.IsSimpleCommonResidueRoot.normalized_jacobian_value
+#check @SpecialTransformations.Section7.normalization_solution_iff
+#print axioms SpecialTransformations.Section7.normalization_solution_iff
+#check @SpecialTransformations.Section7.exists_simpleRoot_normalization
+#print axioms SpecialTransformations.Section7.exists_simpleRoot_normalization
+#check @SpecialTransformations.Section7.normalizedGammaPolynomial_integral
+#print axioms SpecialTransformations.Section7.normalizedGammaPolynomial_integral
+#check @SpecialTransformations.Section7.normalizedGammaPolynomial_coeff_le
+#print axioms SpecialTransformations.Section7.normalizedGammaPolynomial_coeff_le
+#check @SpecialTransformations.Section7.map_jacobianPolynomial
+#print axioms SpecialTransformations.Section7.map_jacobianPolynomial
+#check @SpecialTransformations.Section7.exists_integral_simpleRoot_normalization
+#print axioms SpecialTransformations.Section7.exists_integral_simpleRoot_normalization
+
+#print SpecialTransformations.Section7.PolynomialPresentation
+#print SpecialTransformations.Section7.PolynomialPresentation.polynomial
+#print SpecialTransformations.Section7.PolynomialPresentation.Homogeneous
+#print SpecialTransformations.Section7.IsGammaPolynomial
+#print SpecialTransformations.Section7.RVFibre
+#print SpecialTransformations.Section7.IsResidueRoot
+#print SpecialTransformations.Section7.PolynomialPresentation.normalize
+#print SpecialTransformations.Section7.EncodedRVFibre
+#print SpecialTransformations.Section7.FibreBijection
+#print SpecialTransformations.Section7.IsLift
+#print SpecialTransformations.Section7.PolynomialPresentation.ofFamily
+#print SpecialTransformations.Section7.jacobianMatrix
+#print SpecialTransformations.Section7.jacobianPolynomial
+#print SpecialTransformations.Section7.jacobianValue
+#print SpecialTransformations.Section7.IsSimpleCommonResidueRoot
+#print SpecialTransformations.Section7.diagonalScale
+#print SpecialTransformations.Section7.normalizePolynomial
+
+#check @SpecialTransformations.Section7.Imported.JacobianEtale.localizationAway_standardSmooth
+#print axioms SpecialTransformations.Section7.Imported.JacobianEtale.localizationAway_standardSmooth
+#check @SpecialTransformations.Section7.polynomialSystemPresentation_jacobian
+#print axioms SpecialTransformations.Section7.polynomialSystemPresentation_jacobian
+#check @SpecialTransformations.Section7.polynomialSystemPresentation_dimension
+#print axioms SpecialTransformations.Section7.polynomialSystemPresentation_dimension
+#check @SpecialTransformations.Section7.polynomialSystemEtaleRing_etale
+#print axioms SpecialTransformations.Section7.polynomialSystemEtaleRing_etale
+#check @SpecialTransformations.Section7.polynomialSystemPoint_mk
+#print axioms SpecialTransformations.Section7.polynomialSystemPoint_mk
+#check @SpecialTransformations.Section7.polynomialSystemPoint_jacobian
+#print axioms SpecialTransformations.Section7.polynomialSystemPoint_jacobian
+#check @SpecialTransformations.Section7.polynomialSystemVariable_aeval
+#print axioms SpecialTransformations.Section7.polynomialSystemVariable_aeval
+#check @SpecialTransformations.Section7.polynomialSystemVariable_relation
+#print axioms SpecialTransformations.Section7.polynomialSystemVariable_relation
+#check @SpecialTransformations.Section7.polynomialSystemEtalePoint_variable
+#print axioms SpecialTransformations.Section7.polynomialSystemEtalePoint_variable
+#check @SpecialTransformations.Section7.polynomialSystemHom_ext
+#print axioms SpecialTransformations.Section7.polynomialSystemHom_ext
+#check @SpecialTransformations.Section7.Imported.UnramifiedUniqueness.exists_idempotent_diagonal
+#print axioms SpecialTransformations.Section7.Imported.UnramifiedUniqueness.exists_idempotent_diagonal
+#check @SpecialTransformations.Section7.Imported.UnramifiedUniqueness.comp_eq_comp_of_isUnit
+#print axioms SpecialTransformations.Section7.Imported.UnramifiedUniqueness.comp_eq_comp_of_isUnit
+#check @SpecialTransformations.Section7.Imported.UnramifiedUniqueness.ext_of_quotient_eq
+#print axioms SpecialTransformations.Section7.Imported.UnramifiedUniqueness.ext_of_quotient_eq
+#check @SpecialTransformations.Section7.etale_residuePoint_injective
+#print axioms SpecialTransformations.Section7.etale_residuePoint_injective
+#check @SpecialTransformations.Section7.etale_residuePoint_bijective
+#print axioms SpecialTransformations.Section7.etale_residuePoint_bijective
+#check @SpecialTransformations.Section7.aeval_residue
+#print axioms SpecialTransformations.Section7.aeval_residue
+#check @SpecialTransformations.Section7.residue_tuple_eq_of_congr
+#print axioms SpecialTransformations.Section7.residue_tuple_eq_of_congr
+#check @SpecialTransformations.Section7.residue_eval_eq_of_congr
+#print axioms SpecialTransformations.Section7.residue_eval_eq_of_congr
+#check @SpecialTransformations.Section7.polynomial_eval_isUnit_of_congr
+#print axioms SpecialTransformations.Section7.polynomial_eval_isUnit_of_congr
+#check @SpecialTransformations.Section7.multivariate_simpleRoot_unique
+#print axioms SpecialTransformations.Section7.multivariate_simpleRoot_unique
+#check @SpecialTransformations.Section7.multivariate_simpleRoot_exists
+#print axioms SpecialTransformations.Section7.multivariate_simpleRoot_exists
+#check @SpecialTransformations.Section7.multivariate_simpleRoot_lift
+#print axioms SpecialTransformations.Section7.multivariate_simpleRoot_lift
+#check @SpecialTransformations.Section7.rv_eq_one_iff_sub_lt_one
+#print axioms SpecialTransformations.Section7.rv_eq_one_iff_sub_lt_one
+#check @SpecialTransformations.Section7.integer_unitFibre_iff
+#print axioms SpecialTransformations.Section7.integer_unitFibre_iff
+#check @SpecialTransformations.Section7.generalized_hensel
+#print axioms SpecialTransformations.Section7.generalized_hensel
+#check @SpecialTransformations.Section7.encoded_generalized_hensel
+#print axioms SpecialTransformations.Section7.encoded_generalized_hensel
+
+#print SpecialTransformations.Section7.PolynomialSystemRing
+#print SpecialTransformations.Section7.polynomialSystemPresentation
+#print SpecialTransformations.Section7.PolynomialSystemEtaleRing
+#print SpecialTransformations.Section7.polynomialSystemVariable
+#print SpecialTransformations.Section7.polynomialSystemPoint
+#print SpecialTransformations.Section7.polynomialSystemEtalePoint
+#print SpecialTransformations.Section7.EncodedSimpleCommonResidueRoot
+
+/-! Continuation headlines. The explicit declaration binders are printed
+with `#check @`; ordinary notation keeps the mathematical types readable. -/
+set_option pp.explicit false
+set_option pp.fullNames false
+
+#check @SpecialTransformations.Section7.exists_gammaPolynomial_residue_projection
+#print axioms SpecialTransformations.Section7.exists_gammaPolynomial_residue_projection
+#check @SpecialTransformations.Section7.eval_ringTermPolynomial
+#print axioms SpecialTransformations.Section7.eval_ringTermPolynomial
+#check @SpecialTransformations.Section7.fieldTuplePrime_mem_zeroLocus
+#print axioms SpecialTransformations.Section7.fieldTuplePrime_mem_zeroLocus
+#check @SpecialTransformations.Section7.isConstructible_polynomial_zeroLocus
+#print axioms SpecialTransformations.Section7.isConstructible_polynomial_zeroLocus
+#check @SpecialTransformations.Section7.qf_ring_constructible
+#print axioms SpecialTransformations.Section7.qf_ring_constructible
+#check @SpecialTransformations.Section7.field_definable_constructible
+#print axioms SpecialTransformations.Section7.field_definable_constructible
+#check @SpecialTransformations.Section7.remark_7_5
+#print axioms SpecialTransformations.Section7.remark_7_5
+#check @SpecialTransformations.Section7.mem_generatedBase_vfField
+#print axioms SpecialTransformations.Section7.mem_generatedBase_vfField
+#check @SpecialTransformations.Section7.generatedBase_rv_representative
+#print axioms SpecialTransformations.Section7.generatedBase_rv_representative
+#check @SpecialTransformations.Section7.eval_specializeVariable
+#print axioms SpecialTransformations.Section7.eval_specializeVariable
+#check @SpecialTransformations.Section7.derivative_specializeVariable
+#print axioms SpecialTransformations.Section7.derivative_specializeVariable
+#check @SpecialTransformations.Section7.iterate_derivative_specializeVariable
+#print axioms SpecialTransformations.Section7.iterate_derivative_specializeVariable
+#check @SpecialTransformations.Section7.exists_nonzero_root_of_finite_polynomial_pattern
+#print axioms SpecialTransformations.Section7.exists_nonzero_root_of_finite_polynomial_pattern
+#check @SpecialTransformations.Section7.exists_iterate_derivative_simpleRoot
+#print axioms SpecialTransformations.Section7.exists_iterate_derivative_simpleRoot
+#check @SpecialTransformations.Section7.exists_integer_eval_ne_zero
+#print axioms SpecialTransformations.Section7.exists_integer_eval_ne_zero
+#check @SpecialTransformations.Section7.eval_rowCombinationDeterminant
+#print axioms SpecialTransformations.Section7.eval_rowCombinationDeterminant
+#check @SpecialTransformations.Section7.exists_integer_rowCombinations
+#print axioms SpecialTransformations.Section7.exists_integer_rowCombinations
+#check @SpecialTransformations.Section7.weightedLeadingTerm_eq_zero_iff
+#print axioms SpecialTransformations.Section7.weightedLeadingTerm_eq_zero_iff
+#check @SpecialTransformations.Section7.weightedLeadingTerm_eq_iff_sub_lt
+#print axioms SpecialTransformations.Section7.weightedLeadingTerm_eq_iff_sub_lt
+#check @SpecialTransformations.Section7.exists_clearLaurentExponents
+#print axioms SpecialTransformations.Section7.exists_clearLaurentExponents
+#check @SpecialTransformations.Section7.prod_shiftedLaurent_pow
+#print axioms SpecialTransformations.Section7.prod_shiftedLaurent_pow
+#check @SpecialTransformations.Section7.gammaPolynomial_of_shiftedLaurent
+#print axioms SpecialTransformations.Section7.gammaPolynomial_of_shiftedLaurent
+#check @SpecialTransformations.Section7.monomial_absolute_eq_of_values
+#print axioms SpecialTransformations.Section7.monomial_absolute_eq_of_values
+#check @SpecialTransformations.Section7.inResidue_iff_of_absolute_eq
+#print axioms SpecialTransformations.Section7.inResidue_iff_of_absolute_eq
+#check @SpecialTransformations.Section7.residuePolynomial_domain_iff_of_values
+#print axioms SpecialTransformations.Section7.residuePolynomial_domain_iff_of_values
+#check @SpecialTransformations.Section7.literal_domain_iff_of_values
+#print axioms SpecialTransformations.Section7.literal_domain_iff_of_values
+#check @SpecialTransformations.Section7.orderLiteral_holds_iff_of_values
+#print axioms SpecialTransformations.Section7.orderLiteral_holds_iff_of_values
+#check @SpecialTransformations.Section7.encoded_weightedLeadingTerm_one
+#print axioms SpecialTransformations.Section7.encoded_weightedLeadingTerm_one
+#check @SpecialTransformations.Section7.residuePolynomial_rawEval_of_representatives
+#print axioms SpecialTransformations.Section7.residuePolynomial_rawEval_of_representatives
+#check @SpecialTransformations.Section7.ringTerm_realize_map
+#print axioms SpecialTransformations.Section7.ringTerm_realize_map
+#check @SpecialTransformations.Section7.monomial_rawEval_eq_encoded
+#print axioms SpecialTransformations.Section7.monomial_rawEval_eq_encoded
+#check @SpecialTransformations.Section7.weightedLeadingTerm_value
+#print axioms SpecialTransformations.Section7.weightedLeadingTerm_value
+#check @SpecialTransformations.Section7.weightedLeadingTerm_eq_iff_of_value_ne
+#print axioms SpecialTransformations.Section7.weightedLeadingTerm_eq_iff_of_value_ne
+#check @SpecialTransformations.Section7.weightedLeadingTerm_mul_of_exact
+#print axioms SpecialTransformations.Section7.weightedLeadingTerm_mul_of_exact
+#check @SpecialTransformations.Section7.residueField_charZero_of_model00
+#print axioms SpecialTransformations.Section7.residueField_charZero_of_model00
+#check @SpecialTransformations.Section7.iterate_pderiv_map
+#print axioms SpecialTransformations.Section7.iterate_pderiv_map
+#check @SpecialTransformations.Section7.pderiv_normalizePolynomial
+#print axioms SpecialTransformations.Section7.pderiv_normalizePolynomial
+#check @SpecialTransformations.Section7.iterate_pderiv_normalizePolynomial
+#print axioms SpecialTransformations.Section7.iterate_pderiv_normalizePolynomial
+#check @SpecialTransformations.Section7.IsGammaPolynomial.iterate_pderiv
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.iterate_pderiv
+#check @SpecialTransformations.Section7.iterate_normalizingScalar_value
+#print axioms SpecialTransformations.Section7.iterate_normalizingScalar_value
+#check @SpecialTransformations.Section7.residueRoot_iff_normalized_integral_eval
+#print axioms SpecialTransformations.Section7.residueRoot_iff_normalized_integral_eval
+#check @SpecialTransformations.Section7.specializeResidue_isRoot_one_iff
+#print axioms SpecialTransformations.Section7.specializeResidue_isRoot_one_iff
+#check @SpecialTransformations.Section7.exists_simpleResidueRoot_of_specialized_residue
+#print axioms SpecialTransformations.Section7.exists_simpleResidueRoot_of_specialized_residue
+#check @SpecialTransformations.Section7.valuationRing_value_one_of_residue_ne_zero
+#print axioms SpecialTransformations.Section7.valuationRing_value_one_of_residue_ne_zero
+#check @SpecialTransformations.Section7.scaledRV_eq_iff_residue_eq
+#print axioms SpecialTransformations.Section7.scaledRV_eq_iff_residue_eq
+#check @SpecialTransformations.Section7.valuation_eval_lt_iff_specialized_residue
+#print axioms SpecialTransformations.Section7.valuation_eval_lt_iff_specialized_residue
+
+#print SpecialTransformations.Section7.ringTermPolynomial
+#print SpecialTransformations.Section7.fieldTuplePrime
+#print SpecialTransformations.Section7.rowCombinationDeterminant
+#print SpecialTransformations.Section7.specializeVariable
+#print SpecialTransformations.Section7.weightedLeadingTerm
+#print SpecialTransformations.Section7.originalMonomialCoefficient
+
+#check @SpecialTransformations.Section7.originalBase_finite_RV_row
+#print axioms SpecialTransformations.Section7.originalBase_finite_RV_row
+
+/- Lemma 7.4 and its original-base extraction. -/
+#check @SpecialTransformations.Section7.exists_simpleResidueRoot_of_finite_RV_pattern
+#print axioms SpecialTransformations.Section7.exists_simpleResidueRoot_of_finite_RV_pattern
+#check @SpecialTransformations.Section7.originalBase_guarded_parameters
+#print axioms SpecialTransformations.Section7.originalBase_guarded_parameters
+#check @SpecialTransformations.Section7.originalLaurentValue_encoded
+#print axioms SpecialTransformations.Section7.originalLaurentValue_encoded
+#check @SpecialTransformations.Section7.originalLaurentValue_value_eq
+#print axioms SpecialTransformations.Section7.originalLaurentValue_value_eq
+#check @SpecialTransformations.Section7.encodedRV_absolute_eq_of_equal_values
+#print axioms SpecialTransformations.Section7.encodedRV_absolute_eq_of_equal_values
+#check @SpecialTransformations.Section7.encoded_weightedLeadingTerm_mul_of_exact
+#print axioms SpecialTransformations.Section7.encoded_weightedLeadingTerm_mul_of_exact
+#check @SpecialTransformations.Section7.originalLaurentValue_value_of_inK
+#print axioms SpecialTransformations.Section7.originalLaurentValue_value_of_inK
+#check @SpecialTransformations.Section7.guarded_residue_sum_leadingTerm
+#print axioms SpecialTransformations.Section7.guarded_residue_sum_leadingTerm
+#check @SpecialTransformations.Section7.guarded_outer_times_residue_sum
+#print axioms SpecialTransformations.Section7.guarded_outer_times_residue_sum
+#check @SpecialTransformations.Section7.originalLaurentValue_mul
+#print axioms SpecialTransformations.Section7.originalLaurentValue_mul
+#check @SpecialTransformations.Section7.originalLaurentValue_mul_sum
+#print axioms SpecialTransformations.Section7.originalLaurentValue_mul_sum
+#check @SpecialTransformations.Section7.residueRoot_iff_eval_lt_at
+#print axioms SpecialTransformations.Section7.residueRoot_iff_eval_lt_at
+#check @SpecialTransformations.Section7.weightedPolynomialEquality_iff
+#print axioms SpecialTransformations.Section7.weightedPolynomialEquality_iff
+#check @SpecialTransformations.Section7.gammaPolynomial_of_shiftedLaurent_allow_zero
+#print axioms SpecialTransformations.Section7.gammaPolynomial_of_shiftedLaurent_allow_zero
+#check @SpecialTransformations.Section7.guardedSideLaurentTerm_eq
+#print axioms SpecialTransformations.Section7.guardedSideLaurentTerm_eq
+#check @SpecialTransformations.Section7.exists_guardedSide_polynomial
+#print axioms SpecialTransformations.Section7.exists_guardedSide_polynomial
+#check @SpecialTransformations.Section7.encodedGuardedVariables_eq
+#print axioms SpecialTransformations.Section7.encodedGuardedVariables_eq
+#check @SpecialTransformations.Section7.encodedGuardedVariables_absolute_eq
+#print axioms SpecialTransformations.Section7.encodedGuardedVariables_absolute_eq
+#check @SpecialTransformations.Section7.exists_guardedLiteral_tests
+#print axioms SpecialTransformations.Section7.exists_guardedLiteral_tests
+#check @SpecialTransformations.Section7.exists_guardedClause_tests
+#print axioms SpecialTransformations.Section7.exists_guardedClause_tests
+#check @SpecialTransformations.Section7.lemma_7_4
+#print axioms SpecialTransformations.Section7.lemma_7_4
+#print SpecialTransformations.Section7.allRVVariableEquiv
+#print SpecialTransformations.Section7.originalLaurentValue
+#print SpecialTransformations.Section7.guardedSideExponent
+#print SpecialTransformations.Section7.guardedSideCoefficient
+
+/- Definition 7.3 on arbitrary ambient pullbacks. -/
+#check @SpecialTransformations.Section7.isFullPullback_iff_preimage_image
+#print axioms SpecialTransformations.Section7.isFullPullback_iff_preimage_image
+#check @SpecialTransformations.Section7.isFullPullback_preimage
+#print axioms SpecialTransformations.Section7.isFullPullback_preimage
+#check @SpecialTransformations.Section7.ProjectionFibreBijection.equiv
+#print axioms SpecialTransformations.Section7.ProjectionFibreBijection.equiv
+#check @SpecialTransformations.Section7.ProjectionFibreBijection.equiv_graph
+#print axioms SpecialTransformations.Section7.ProjectionFibreBijection.equiv_graph
+#check @SpecialTransformations.Section7.IsAmbientLift.restrict
+#print axioms SpecialTransformations.Section7.IsAmbientLift.restrict
+#check @SpecialTransformations.Section7.ambientLift_of_full_fibres
+#print axioms SpecialTransformations.Section7.ambientLift_of_full_fibres
+#check @SpecialTransformations.Section7.isLift_iff_projectionFibreBijection
+#print axioms SpecialTransformations.Section7.isLift_iff_projectionFibreBijection
+#check @SpecialTransformations.Section7.isAmbientLift_univ_iff
+#print axioms SpecialTransformations.Section7.isAmbientLift_univ_iff
+#check @SpecialTransformations.Section7.rvLift_eq_companion_preimage
+#print axioms SpecialTransformations.Section7.rvLift_eq_companion_preimage
+#check @SpecialTransformations.Section7.rvLift_fullPullback
+#print axioms SpecialTransformations.Section7.rvLift_fullPullback
+#print SpecialTransformations.Section7.IsFullPullback
+#print SpecialTransformations.Section7.ProjectionFibreBijection
+#print SpecialTransformations.Section7.IsAmbientLift
+#print SpecialTransformations.Section7.IsPartialAmbientLift
+#print SpecialTransformations.Section7.mixedRVProjection
+
+/- Theorem 7.6 and its local polynomial and definability arguments. -/
+#check @SpecialTransformations.Section7.productTuple_left
+#print axioms SpecialTransformations.Section7.productTuple_left
+#check @SpecialTransformations.Section7.productTuple_right
+#print axioms SpecialTransformations.Section7.productTuple_right
+#check @SpecialTransformations.Section7.productLeft_ne_right
+#print axioms SpecialTransformations.Section7.productLeft_ne_right
+#check @SpecialTransformations.Section7.productTuple_ext
+#print axioms SpecialTransformations.Section7.productTuple_ext
+#check @SpecialTransformations.Section7.extend_productLeft
+#print axioms SpecialTransformations.Section7.extend_productLeft
+#check @SpecialTransformations.Section7.extend_productRight
+#print axioms SpecialTransformations.Section7.extend_productRight
+#check @SpecialTransformations.Section7.isGammaPolynomial_C
+#print axioms SpecialTransformations.Section7.isGammaPolynomial_C
+#check @SpecialTransformations.Section7.isGammaPolynomial_X
+#print axioms SpecialTransformations.Section7.isGammaPolynomial_X
+#check @SpecialTransformations.Section7.IsGammaPolynomial.pow
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.pow
+#check @SpecialTransformations.Section7.IsGammaPolynomial.aeval
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.aeval
+#check @SpecialTransformations.Section7.IsGammaPolynomial.rename
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.rename
+#check @SpecialTransformations.Section7.residueRoot_rename_iff
+#print axioms SpecialTransformations.Section7.residueRoot_rename_iff
+#check @SpecialTransformations.Section7.pderiv_rename_eq_zero_of_notMem_range
+#print axioms SpecialTransformations.Section7.pderiv_rename_eq_zero_of_notMem_range
+#check @SpecialTransformations.Section7.specializeCoordinates_eval
+#print axioms SpecialTransformations.Section7.specializeCoordinates_eval
+#check @SpecialTransformations.Section7.IsGammaPolynomial.specializeCoordinates
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.specializeCoordinates
+#check @SpecialTransformations.Section7.pderiv_specializeCoordinates
+#print axioms SpecialTransformations.Section7.pderiv_specializeCoordinates
+#check @SpecialTransformations.Section7.definable_existsUnique_tuple
+#print axioms SpecialTransformations.Section7.definable_existsUnique_tuple
+#check @SpecialTransformations.Section7.rawTupleFibreGuard_definable
+#print axioms SpecialTransformations.Section7.rawTupleFibreGuard_definable
+#check @SpecialTransformations.Section7.definable_rvTuple
+#print axioms SpecialTransformations.Section7.definable_rvTuple
+#check @SpecialTransformations.Section7.IsGammaPolynomial.zsmul
+#print axioms SpecialTransformations.Section7.IsGammaPolynomial.zsmul
+#check @SpecialTransformations.Section7.gammaPolynomial_derivativeMultiplier
+#print axioms SpecialTransformations.Section7.gammaPolynomial_derivativeMultiplier
+#check @SpecialTransformations.Section7.derivativeMultiplier_eval_value
+#print axioms SpecialTransformations.Section7.derivativeMultiplier_eval_value
+#check @SpecialTransformations.Section7.residueRoot_mul_left
+#print axioms SpecialTransformations.Section7.residueRoot_mul_left
+#check @SpecialTransformations.Section7.derivative_multiplier_error_lt
+#print axioms SpecialTransformations.Section7.derivative_multiplier_error_lt
+#check @SpecialTransformations.Section7.derivative_weighted_mul_eval_eq
+#print axioms SpecialTransformations.Section7.derivative_weighted_mul_eval_eq
+#check @SpecialTransformations.Section7.derivative_weighted_mul_eval_lt
+#print axioms SpecialTransformations.Section7.derivative_weighted_mul_eval_lt
+#check @SpecialTransformations.Section7.normalizedPartialEntry_le
+#print axioms SpecialTransformations.Section7.normalizedPartialEntry_le
+#check @SpecialTransformations.Section7.residuePartialJacobian_entry_eq_zero_iff
+#print axioms SpecialTransformations.Section7.residuePartialJacobian_entry_eq_zero_iff
+#check @SpecialTransformations.Section7.residuePartialJacobian_det_ne_zero_of_diagonal
+#print axioms SpecialTransformations.Section7.residuePartialJacobian_det_ne_zero_of_diagonal
+#check @SpecialTransformations.Section7.partialJacobian_value_of_residue_det_ne_zero
+#print axioms SpecialTransformations.Section7.partialJacobian_value_of_residue_det_ne_zero
+#check @SpecialTransformations.Section7.valuation_zsmul_lt
+#print axioms SpecialTransformations.Section7.valuation_zsmul_lt
+#check @SpecialTransformations.Section7.integerPolynomialCombination_gamma
+#print axioms SpecialTransformations.Section7.integerPolynomialCombination_gamma
+#check @SpecialTransformations.Section7.residuePartialJacobian_integerCombination
+#print axioms SpecialTransformations.Section7.residuePartialJacobian_integerCombination
+#check @SpecialTransformations.Section7.exists_integerCombination_partialJacobians
+#print axioms SpecialTransformations.Section7.exists_integerCombination_partialJacobians
+#check @SpecialTransformations.Section7.isGammaPolynomial_partialJacobian
+#print axioms SpecialTransformations.Section7.isGammaPolynomial_partialJacobian
+#check @SpecialTransformations.Section7.eval_jacobian_specializeCoordinates
+#print axioms SpecialTransformations.Section7.eval_jacobian_specializeCoordinates
+#check @SpecialTransformations.Section7.extend_coordinates_self
+#print axioms SpecialTransformations.Section7.extend_coordinates_self
+#check @SpecialTransformations.Section7.partialJacobian_not_residueRoot_of_residue_det_ne_zero
+#print axioms SpecialTransformations.Section7.partialJacobian_not_residueRoot_of_residue_det_ne_zero
+#check @SpecialTransformations.Section7.simpleResidueRoot_specializeCoordinates
+#print axioms SpecialTransformations.Section7.simpleResidueRoot_specializeCoordinates
+#check @SpecialTransformations.Section7.productTuple_mem_RVFibre
+#print axioms SpecialTransformations.Section7.productTuple_mem_RVFibre
+#check @SpecialTransformations.Section7.fibreBijection_of_polynomial_partialJacobians
+#print axioms SpecialTransformations.Section7.fibreBijection_of_polynomial_partialJacobians
+#check @SpecialTransformations.Section7.exists_localPolynomialSystem
+#print axioms SpecialTransformations.Section7.exists_localPolynomialSystem
+#check @SpecialTransformations.Section7.rawOneWayLiftDomain_definable
+#print axioms SpecialTransformations.Section7.rawOneWayLiftDomain_definable
+#check @SpecialTransformations.Section7.rawLiftDomain_definable
+#print axioms SpecialTransformations.Section7.rawLiftDomain_definable
+#check @SpecialTransformations.Section7.rawVF_injective
+#print axioms SpecialTransformations.Section7.rawVF_injective
+#check @SpecialTransformations.Section7.rawVF_mem_rawTupleFibre_iff
+#print axioms SpecialTransformations.Section7.rawVF_mem_rawTupleFibre_iff
+#check @SpecialTransformations.Section7.existsUnique_rawTupleFibre_iff
+#print axioms SpecialTransformations.Section7.existsUnique_rawTupleFibre_iff
+#check @SpecialTransformations.Section7.rawLiftDomain_mem_iff
+#print axioms SpecialTransformations.Section7.rawLiftDomain_mem_iff
+#check @SpecialTransformations.Section7.rawVF_rvTuple_of_RVFibre
+#print axioms SpecialTransformations.Section7.rawVF_rvTuple_of_RVFibre
+#check @SpecialTransformations.Section7.firstLiftPiece_definable
+#print axioms SpecialTransformations.Section7.firstLiftPiece_definable
+#check @SpecialTransformations.Section7.gluedLift_definable
+#print axioms SpecialTransformations.Section7.gluedLift_definable
+#check @SpecialTransformations.Section7.productTuple_rv_of_rawTupleFibre
+#print axioms SpecialTransformations.Section7.productTuple_rv_of_rawTupleFibre
+#check @SpecialTransformations.Section7.gluedLift_good
+#print axioms SpecialTransformations.Section7.gluedLift_good
+#check @SpecialTransformations.Section7.exists_originalBase_gluedLift
+#print axioms SpecialTransformations.Section7.exists_originalBase_gluedLift
+#check @SpecialTransformations.Section7.finiteRVCoordinate_algebraic
+#print axioms SpecialTransformations.Section7.finiteRVCoordinate_algebraic
+#check @SpecialTransformations.Section7.correspondenceRight_algebraic
+#print axioms SpecialTransformations.Section7.correspondenceRight_algebraic
+#check @SpecialTransformations.Section7.correspondenceLeft_algebraic
+#print axioms SpecialTransformations.Section7.correspondenceLeft_algebraic
+#check @SpecialTransformations.Section7.appendCoordinate_castSucc
+#print axioms SpecialTransformations.Section7.appendCoordinate_castSucc
+#check @SpecialTransformations.Section7.appendCoordinate_last
+#print axioms SpecialTransformations.Section7.appendCoordinate_last
+#check @SpecialTransformations.Section7.notMem_range_appendCoordinate
+#print axioms SpecialTransformations.Section7.notMem_range_appendCoordinate
+#check @SpecialTransformations.Section7.exists_originalPolynomial_for_coordinate
+#print axioms SpecialTransformations.Section7.exists_originalPolynomial_for_coordinate
+#check @SpecialTransformations.Section7.exists_correspondence_local_polynomials
+#print axioms SpecialTransformations.Section7.exists_correspondence_local_polynomials
+#check @SpecialTransformations.Section7.exists_gluedLift_of_gamma_definable
+#print axioms SpecialTransformations.Section7.exists_gluedLift_of_gamma_definable
+#check @SpecialTransformations.Section7.theorem_7_6
+#print axioms SpecialTransformations.Section7.theorem_7_6
+#check @SpecialTransformations.Section7.theorem_7_6_sorted
+#print axioms SpecialTransformations.Section7.theorem_7_6_sorted
+#print SpecialTransformations.Section7.productTuple
+#print SpecialTransformations.Section7.productLeft
+#print SpecialTransformations.Section7.productRight
+#print SpecialTransformations.Section7.specializeCoordinates
+#print SpecialTransformations.Section7.integralPartialJacobian
+#print SpecialTransformations.Section7.residuePartialJacobian
+#print SpecialTransformations.Section7.integerPolynomialCombination
+#print SpecialTransformations.Section7.partialJacobianPolynomial
+#print SpecialTransformations.Section7.rawTupleFibre
+#print SpecialTransformations.Section7.rawLiftDomain
+#print SpecialTransformations.Section7.rawVF
+#print SpecialTransformations.Section7.rawRV
+#print SpecialTransformations.Section7.firstLiftPiece
+#print SpecialTransformations.Section7.gluedLift
+#print SpecialTransformations.Section7.appendCoordinate
+
+/- Corollary 7.7 and the positive lift construction. -/
+#check @SpecialTransformations.Section7.rawTupleFibre_deleteZero_iff
+#print axioms SpecialTransformations.Section7.rawTupleFibre_deleteZero_iff
+#check @SpecialTransformations.Section7.existsUnique_deleteZero_iff
+#print axioms SpecialTransformations.Section7.existsUnique_deleteZero_iff
+#check @SpecialTransformations.Section7.productTuple_deletePairCoordinates
+#print axioms SpecialTransformations.Section7.productTuple_deletePairCoordinates
+#check @SpecialTransformations.Section7.rawLiftDomain_deleteZero_pair
+#print axioms SpecialTransformations.Section7.rawLiftDomain_deleteZero_pair
+#check @SpecialTransformations.Section7.rawWeight_insertZero
+#print axioms SpecialTransformations.Section7.rawWeight_insertZero
+#check @SpecialTransformations.Section7.rawWeight_le_arity
+#print axioms SpecialTransformations.Section7.rawWeight_le_arity
+#check @SpecialTransformations.Section7.rawWeight_le_pred_iff_zero
+#print axioms SpecialTransformations.Section7.rawWeight_le_pred_iff_zero
+#check @SpecialTransformations.Section7.padZeroPair_productTuple
+#print axioms SpecialTransformations.Section7.padZeroPair_productTuple
+#check @SpecialTransformations.Section7.padZeroPair_definable
+#print axioms SpecialTransformations.Section7.padZeroPair_definable
+#check @SpecialTransformations.Section7.zeroPadded_correspondence_definable
+#print axioms SpecialTransformations.Section7.zeroPadded_correspondence_definable
+#check @SpecialTransformations.Section7.nonzeroRVTuple_definable
+#print axioms SpecialTransformations.Section7.nonzeroRVTuple_definable
+#check @SpecialTransformations.Section7.exists_balancedCorrespondence_lift
+#print axioms SpecialTransformations.Section7.exists_balancedCorrespondence_lift
+#check @SpecialTransformations.Section7.rawVolumeCorrespondence_definable
+#print axioms SpecialTransformations.Section7.rawVolumeCorrespondence_definable
+#check @SpecialTransformations.Section7.rawVolumeCorrespondence_mem
+#print axioms SpecialTransformations.Section7.rawVolumeCorrespondence_mem
+#check @SpecialTransformations.Section7.rvIso_inv_apply
+#print axioms SpecialTransformations.Section7.rvIso_inv_apply
+#check @SpecialTransformations.Section7.rvIso_apply_inv
+#print axioms SpecialTransformations.Section7.rvIso_apply_inv
+#check @SpecialTransformations.Section7.rawVolumeCorrespondence_balanced
+#print axioms SpecialTransformations.Section7.rawVolumeCorrespondence_balanced
+#check @SpecialTransformations.Section7.rawVolumeCorrespondence_right_finite
+#print axioms SpecialTransformations.Section7.rawVolumeCorrespondence_right_finite
+#check @SpecialTransformations.Section7.rawVolumeCorrespondence_left_finite
+#print axioms SpecialTransformations.Section7.rawVolumeCorrespondence_left_finite
+#check @SpecialTransformations.Section7.rawVolumeCorrespondence_definableOverBase
+#print axioms SpecialTransformations.Section7.rawVolumeCorrespondence_definableOverBase
+#check @SpecialTransformations.Section7.exists_rvIso_volume_lift
+#print axioms SpecialTransformations.Section7.exists_rvIso_volume_lift
+#check @SpecialTransformations.Section7.liftedGraph_definable
+#print axioms SpecialTransformations.Section7.liftedGraph_definable
+#check @SpecialTransformations.Section7.liftedGraph_existsUnique_right
+#print axioms SpecialTransformations.Section7.liftedGraph_existsUnique_right
+#check @SpecialTransformations.Section7.productTuple_swapPairCoordinates
+#print axioms SpecialTransformations.Section7.productTuple_swapPairCoordinates
+#check @SpecialTransformations.Section7.rawLiftDomain_swap
+#print axioms SpecialTransformations.Section7.rawLiftDomain_swap
+#check @SpecialTransformations.Section7.liftedGraph_existsUnique_left
+#print axioms SpecialTransformations.Section7.liftedGraph_existsUnique_left
+#check @SpecialTransformations.Section7.liftedGraph_isAmbientLift
+#print axioms SpecialTransformations.Section7.liftedGraph_isAmbientLift
+#check @SpecialTransformations.Section7.rvLift_isomorphic_of_volume_lift
+#print axioms SpecialTransformations.Section7.rvLift_isomorphic_of_volume_lift
+#check @SpecialTransformations.Section7.rvLift_restrict_mem_iff
+#print axioms SpecialTransformations.Section7.rvLift_restrict_mem_iff
+#check @SpecialTransformations.Section7.rvLift_restrict_union
+#print axioms SpecialTransformations.Section7.rvLift_restrict_union
+#check @SpecialTransformations.Section7.rvLift_restrict_inter
+#print axioms SpecialTransformations.Section7.rvLift_restrict_inter
+#check @SpecialTransformations.Section7.rvLift_scissor
+#print axioms SpecialTransformations.Section7.rvLift_scissor
+#check @SpecialTransformations.Section7.rvLiftObject_iso_of_rvIso
+#print axioms SpecialTransformations.Section7.rvLiftObject_iso_of_rvIso
+#check @SpecialTransformations.Section7.positiveLift_class
+#print axioms SpecialTransformations.Section7.positiveLift_class
+#check @SpecialTransformations.Section7.positiveFiniteLift_class
+#print axioms SpecialTransformations.Section7.positiveFiniteLift_class
+#check @SpecialTransformations.Section7.positiveLift_surjective_of_representation
+#print axioms SpecialTransformations.Section7.positiveLift_surjective_of_representation
+#check @SpecialTransformations.Section7.positiveFiniteLift_surjective_of_representation
+#print axioms SpecialTransformations.Section7.positiveFiniteLift_surjective_of_representation
+#check @SpecialTransformations.Section7.finite_fibres_of_section5_presentation
+#print axioms SpecialTransformations.Section7.finite_fibres_of_section5_presentation
+#check @SpecialTransformations.Section7.section5_finite_dimensional_presentation
+#print axioms SpecialTransformations.Section7.section5_finite_dimensional_presentation
+#check @SpecialTransformations.Section7.corollary_7_7
+#print axioms SpecialTransformations.Section7.corollary_7_7
+#check @SpecialTransformations.Section7.corollary_7_7_finite
+#print axioms SpecialTransformations.Section7.corollary_7_7_finite
+#print SpecialTransformations.Section7.deletePairCoordinates
+#print SpecialTransformations.Section7.rawWeight
+#print SpecialTransformations.Section7.padZeroPair
+#print SpecialTransformations.Section7.rawVolumeCorrespondence
+#print SpecialTransformations.Section7.liftedGraph
+#print SpecialTransformations.Section7.swapPairCoordinates
+#print SpecialTransformations.Section7.companionGraph
+#print SpecialTransformations.Section7.rvLift_empty_iso
+#print SpecialTransformations.Section7.positiveLiftInvariant
+#print SpecialTransformations.Section7.positiveLift
+#print SpecialTransformations.Section7.positiveFiniteLiftInvariant
+#print SpecialTransformations.Section7.positiveFiniteLift
+#print SpecialTransformations.Section5.UniformVerticalObstacles
+#check @SpecialTransformations.DefinableGeometry.Map.ofFunctionalRelation
+#print axioms SpecialTransformations.DefinableGeometry.Map.ofFunctionalRelation
+#check @SpecialTransformations.DefinableGeometry.Map.ofFunctionalRelation_graph
+#print axioms SpecialTransformations.DefinableGeometry.Map.ofFunctionalRelation_graph

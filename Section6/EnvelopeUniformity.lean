@@ -1,6 +1,7 @@
 import Section6.NativeImageComparison
 import Section6.NativeImageTransport
 import Section6.NativeAmalgamation
+import Section6.CountableEnvelope
 import Section6.NativeExpandedSyntax
 
 /-! The common-envelope argument combines the accepted earlier
@@ -43,8 +44,7 @@ variable [(LHom.sumInl : LRV →ᴸ Expanded E).IsExpansionOn M]
 variable [(LHom.sumInl : LRV →ᴸ Expanded E).IsExpansionOn N]
 variable [U ⊨ Axioms.ACVF] [V ⊨ Axioms.ACVF]
 
-theorem existential_type_invariant (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
-    (hEarlier : EarlierPreparation) {r m n : ℕ}
+theorem existential_type_invariant (hEarlier : EarlierPreparation) {r m n : ℕ}
     (hM : M ⊨ HenselianTheory.expanded E) (hN : N ⊨ HenselianTheory.expanded E)
     (hU : U ⊨ Axioms.ACVF00) (hV : V ⊨ Axioms.ACVF00)
     (hcU : CanonicalStructure.IsCanonical (M := U))
@@ -64,9 +64,9 @@ theorem existential_type_invariant (hMarker : NativeAmalgamation.SaturatedElemen
   have hbV := fun i => (NativeImageTransport.sorts_preserved g (sorts i) (b i)).mpr (hb i)
   have hqf := NativeExpandedSyntax.envelope_qf_type (inferInstance : U ⊨ Axioms.ACVF)
     (inferInstance : V ⊨ Axioms.ACVF) hcU hcV f g sorts a b haU hbV htype
-  let κ := max (Order.succ Cardinal.aleph0) (Order.succ (Cardinal.mk U))
-  obtain ⟨C, sC, h00, hc, hsat, j, k, hjk⟩ := NativeAmalgamation.common_envelope hMarker
-    κ (le_max_right _ _) hU hV hcU hcV (f ∘ a) (g ∘ b) hqf
+  let κ := Order.succ Cardinal.aleph0
+  obtain ⟨C, sC, h00, hc, hsat, j, k, hjk⟩ := NativeAmalgamation.common_countable_envelope
+    hU hV hcU hcV (f ∘ a) (g ∘ b) hqf
   letI := sC
   letI : C ⊨ Axioms.ACVF := h00.mono (by intro σ hσ; exact Or.inl (Or.inl hσ))
   let f' := j.toEmbedding.comp f
@@ -75,7 +75,7 @@ theorem existential_type_invariant (hMarker : NativeAmalgamation.SaturatedElemen
   have haC := fun i => (NativeImageTransport.sorts_preserved f' (sorts i) (a i)).mpr (ha i)
   have hX' := NativeImageTransport.henselian_range_comp f hX hcU hc j
   have hY' := NativeImageTransport.henselian_range_comp g hY hcV hc k
-  have hp := hEarlier C sC inferInstance h00 hc κ (le_max_left _ _) hsat r m (f' ∘ a) haC
+  have hp := hEarlier C sC inferInstance h00 hc κ le_rfl hsat r m (f' ∘ a) haC
   cases hp with
   | of_valuation v hv hdefs hObstacles =>
     exact NativeImageComparison.existential_type_invariant hM hN hc h00 f' g' hX' hY'

@@ -1,5 +1,32 @@
 # Accepted earlier and standard inputs
 
+## Current paper exports
+
+[PaperResults.lean](PaperResults.lean) supplies the assumptions of the
+earlier conditional helpers through checked proofs. Earlier preparation
+comes from Section 3's RV normal form and Section 5's uniform obstacles.
+The expanded literal normal form follows from the constructed native
+envelopes. The common envelope uses elementary amalgamation and the
+released countable saturation result. Native field and valuation
+extraction, the simple-root scheme, and the concrete RV quotient give
+`nativeEnvelopes` and `ordinaryRecognition`. In the algebraic closure,
+the characteristic-zero valuation invariance follows from the checked
+coprime factor-lifting argument.
+
+The generic saturated-extension quotation, native envelopes, ordinary
+recognition, and the other preparation interfaces remain visible in
+the appropriate lower-level or historical statements. The paper
+headlines 6.4 and 6.5 take none of these as inputs. The algebraic-envelope
+form of Lemma 6.2 still exposes its authorized valuation-invariance input.
+See [STATEMENT-REVIEW.md](STATEMENT-REVIEW.md) and [STATUS.md](STATUS.md).
+
+## Earlier input record
+
+This records the published inputs. The local proof
+`EnvelopeUniformity.earlierPreparation` discharges the ambient pure-RV
+definition and uniform-obstacle inputs. See [STATUS.md](STATUS.md) for
+the local verification and remaining hypotheses.
+
 The author expressly permits the needed materials in Sections 2–5 as
 given. This does not authorize assuming Lemmas 6.2 or 6.3, Proposition 6.4,
 or Corollary 6.5. The old `HenselAclStep` and

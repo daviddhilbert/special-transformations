@@ -31,7 +31,6 @@ theorem combine_isFieldQF {E : _root_.FirstOrder.Language.{0, 0}} {I : Type}
 
 theorem encoded_corollary_6_5 (hRecognition : DenefPasHenselianModels.OrdinaryRecognition)
     (E : _root_.FirstOrder.Language.{0, 0})
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnv : UniformNormalizedElimination.NativeEnvelopes (DenefPasMorley.signature E))
     (hNormal : HenselianElimination.RVLiteralNormalForm (DenefPasMorley.signature E))
@@ -44,7 +43,7 @@ theorem encoded_corollary_6_5 (hRecognition : DenefPasHenselianModels.OrdinaryRe
         ∀ z : I → DenefPasAuxLift.Model E v a, Sorted E v a s z →
           (φ.Realize z ↔ ψ.Realize z) := by
   obtain ⟨ψN, hN, heN⟩ := DenefPasHenselianModels.eliminate_nontrivial hRecognition E
-    hMarker hEarlier hEnv hNormal s φ
+    hEarlier hEnv hNormal s φ
   let ψT := DenefPasTrivialElimination.formula s φ
   refine ⟨combine ψT ψN, combine_isFieldQF (DenefPasTrivialElimination.isFieldQF s φ) hN, ?_⟩
   intro K Γ _ _ v a _ _ _ _
@@ -89,7 +88,6 @@ theorem restrict_realize {E : _root_.FirstOrder.Language.{0, 0}} {I M : Type}
 
 theorem encoded_corollary_6_5 (hRecognition : DenefPasHenselianModels.OrdinaryRecognition)
     (E : _root_.FirstOrder.Language.{0, 0})
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnv : UniformNormalizedElimination.NativeEnvelopes (DenefPasMorley.signature E))
     (hNormal : HenselianElimination.RVLiteralNormalForm (DenefPasMorley.signature E))
@@ -103,7 +101,7 @@ theorem encoded_corollary_6_5 (hRecognition : DenefPasHenselianModels.OrdinaryRe
           (φ.Realize z ↔ ψ.Realize z) := by
   let A := φ.freeVarFinset
   let sA : A → SortKind := fun i => s i.val
-  obtain ⟨ψA, hA, heA⟩ := DenefPasElimination.encoded_corollary_6_5 hRecognition E hMarker hEarlier
+  obtain ⟨ψA, hA, heA⟩ := DenefPasElimination.encoded_corollary_6_5 hRecognition E hEarlier
     hEnv hNormal sA (restrict φ)
   let f : A → (language E).Term I := fun i => .var i.val
   refine ⟨ψA.subst f, DenefPasSubstitution.isFieldQF_subst f hA, ?_⟩
@@ -576,7 +574,6 @@ open AngularComponent DenefPasCodes DenefPasLanguage DenefPasParameters DenefPas
 
 theorem corollary_6_5 (hRecognition : DenefPasHenselianModels.OrdinaryRecognition)
     (E : _root_.FirstOrder.Language.{0, 0}) (p : AuxiliarySorts E)
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnv : UniformNormalizedElimination.NativeEnvelopes (DenefPasMorley.signature E))
     (hNormal : HenselianElimination.RVLiteralNormalForm (DenefPasMorley.signature E))
@@ -590,7 +587,7 @@ theorem corollary_6_5 (hRecognition : DenefPasHenselianModels.OrdinaryRecognitio
         ∀ z : I → DenefPasAuxLift.Model E v a, Sorted E v a s z →
           (φ.Realize z ↔ ψ.Realize z) := by
   obtain ⟨χ, hχ, heχ⟩ := DenefPasFreeParameters.encoded_corollary_6_5 hRecognition E
-    hMarker hEarlier hEnv hNormal s φ
+    hEarlier hEnv hNormal s φ
   obtain ⟨ψ, hsψ, heψ⟩ := normalize p s hχ Fin.elim0
   refine ⟨ψ, hsψ, hsψ.isFieldQF, ?_⟩
   intro K Γ _ _ v a _ _ _ _ hc
@@ -956,7 +953,6 @@ open AngularComponent DenefPasCodes DenefPasLanguage DenefPasParameters DenefPas
 
 theorem corollary_6_5 (hRecognition : DenefPasHenselianModels.OrdinaryRecognition)
     (E : _root_.FirstOrder.Language.{0, 0}) (p : AuxiliarySorts E)
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation)
     (hEnv : UniformNormalizedElimination.NativeEnvelopes (DenefPasMorley.signature E))
     (hNormal : HenselianElimination.RVLiteralNormalForm (DenefPasMorley.signature E))
@@ -970,7 +966,7 @@ theorem corollary_6_5 (hRecognition : DenefPasHenselianModels.OrdinaryRecognitio
         ∀ z : I → DenefPasAuxLift.Model E v a, Sorted E v a s z →
           (φ.Realize z ↔ ψ.Realize z) := by
   obtain ⟨ψ, hsψ, hψ, heψ⟩ := DenefPasCorollary.corollary_6_5 hRecognition E p
-    hMarker hEarlier hEnv hNormal s φ
+    hEarlier hEnv hNormal s φ
   refine ⟨ψ, hsψ, hψ, ?_⟩
   intro K Γ _ _ v a _ _ _ d
   letI : E.Structure (Aux v) := auxiliaryStructure p v d

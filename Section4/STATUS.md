@@ -122,8 +122,11 @@ zero before division. Nonemptiness is explicit for the Krull comparisons
 and the polydisc or attained-point statements that require it. VF and RV
 dimensions use zero for the empty set. For 4.11,
 definability is over the original base and retains complete Gamma
-pullbacks; no definable section is assumed. RV has its single absorbing
-element, and valuation comparisons track the reversed multiplicative order.
+pullbacks. The value tuple belongs to the extended carrier `GammaTop`
+so a coordinate forced to be `rv(0)` can have value infinity. A tuple
+of finite values cannot detect the dimension-one set
+`{rv(0)} × Kˣ`. RV has its single absorbing element, and valuation
+comparisons track the reversed multiplicative order.
 
 Injectivity of finite-volume forgetting concerns the positive quotients.
 Canonical lifting here covers objects and the stated commuting-map
@@ -141,3 +144,11 @@ plan is retained in [PLAN.md](PLAN.md); this status is the verification record.
 
 This publication contains only the active Section 4 sources and their
 verification, attribution and integration support. Legacy snapshots remain excluded.
+
+## November 7 repair to Lemma 4.13
+
+`Section4.Paper.lemma_4_13` applies the checked Section 3 RV exchange
+theorem internally and works in the canonical presentation of the
+released model. The source and consumer checks exited zero. Its full
+type and axiom report were inspected in
+`.scratch/section5-repair-paper-4-13-audit.log`.

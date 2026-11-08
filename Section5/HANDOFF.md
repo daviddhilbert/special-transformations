@@ -1,10 +1,34 @@
 # Section 5 handoff
 
-Updated November 6, 2026. Section 5 is complete within the explicit accepted
-Sections 2–4 inputs in INPUTS.md. The author authorized committing and
-pushing this checkpoint so Section 6's dependency is available remotely.
+The November 7 real-parameter repair is in [Surjectivity.lean](Surjectivity.lean).
+It discharges the three premises of the published Corollary 5.7 with
+the checked vertical-obstacle relation, dimensional presentation and
+finite-fibre transport. It uses the actual Gamma quotient in the
+dimension definition. [GammaSurjectivity.lean](GammaSurjectivity.lean)
+proves the general and finite versions over the original base with named
+Gamma values. It uses the paper's VF coefficient-field convention.
+`GammaDimension` starts from the graph of an actual finite-to-one map
+to VF, RV and Gamma coordinates. `GammaDimensionalPresentation` uses
+its rank bound to obtain a same-base mixed presentation.
+`GammaFiniteFibres` transports finite fibres along a same-base
+isomorphism. The full types and axioms are in
+`.scratch/section5-repair-gamma-final-root.log`.
+See [STATUS.md](STATUS.md) and the [publication audit](../PUBLICATION-AUDIT.md).
+
+The published Section 5 checkpoint verifies conditional Lean statements.
+Corollary 5.7 still assumes uniform vertical obstacles and a dimensional
+presentation. Its published finite variant also assumes finite-RV-fibre
+invariance. These are formalization obligations needed to recover the
+paper's statement. See [STATUS.md](STATUS.md) and [INPUTS.md](INPUTS.md).
+
+The November 6, 2026 checkpoint is published in
+[`21cff13`](https://github.com/daviddhilbert/special-transformations/commit/21cff13d8f9beb28e6ed84e04242e9deae875cb6),
+so Section 6's dependency is available remotely. Its passing CI is recorded below.
 The active entry point is Section5.Library; Sec5.lean and LegacyScaffold
 remain unimported historical references.
+
+The author confirmed on November 6, 2026 that all material through Section 6
+has been pushed. Continue with Section 7 using the published earlier sections.
 
 ## Scope and inputs
 
@@ -49,6 +73,26 @@ with compiler exit 0 using the accepted earlier compiled artifacts. All 28
 published Lean source bytes and 77 earlier source identities matched their
 records; the four shared cache tests passed for both Sections 4 and 5.
 
+## Published checkpoint and passing CI
+
+The [main-branch verification run 42303485856](https://github.com/daviddhilbert/special-transformations/actions/runs/42303485856)
+for published commit `21cff13d8f9beb28e6ed84e04242e9deae875cb6`
+completed **successfully on November 6, 2026** (America/Los_Angeles).
+The pinned project source build, compiled-import cache provenance checks,
+published QE headline audit, and Section 3, Section 4 and Section 5 verifiers
+all ran and passed. Compiler logs, provider manifests and headline audits
+are retained in the run's verification artifact.
+
+All 28 published Section 5 Lean source files match the local certificate
+byte for byte. This supplies passing CI source-build and Section 5 audit
+evidence alongside the local replay and consumer checks above. The CI result
+applies to the named published commit; later documentation updates require
+their own run when published.
+
+That checkpoint supplies the published conditional `Section5.Library`
+used by Section 7. The current real-parameter repair and the remaining
+named-Gamma work are recorded above.
+
 ## Reuse and publication
 
 Use `lake env python3 Section5/verify.py` with the accepted earlier compiled
@@ -56,10 +100,9 @@ interfaces on the import path. The verifier records actual resolved compiled
 providers, source and artifact identities, cache/replay provenance and full
 headline audits. The repository workflow includes the Section 5 audit and
 preserves the existing Section 4 and Section 5 cache-regression coverage.
-Local workflow checks do not imply a completed remote Actions run.
+The passing remote run is linked above; local workflow checks are recorded
+separately in STATUS.md.
 
-Section 6's earlier separate publication is commit 4f93a69. This Section 5
-publication supplies its missing source dependency. There is no remaining
-Section 5 proof obligation within the displayed accepted-input scope.
-Preserve unrelated workspace edits; further publication requires its own
-authorization.
+Section 6's earlier separate publication is commit 4f93a69. The published
+Section 5 checkpoint supplies its source dependency. Preserve unrelated
+workspace edits. Further publication requires a new explicit instruction.

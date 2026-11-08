@@ -6,6 +6,27 @@ import Section6.AuxiliaryDenaming
 import Section6.CanonicalEmbedding
 import Section6.CommonEnvelopeComparison
 import Section6.ContractionGraph
+import Section6.ConcreteLogic
+import Section6.ConcreteACVF
+import Section6.ConcreteHenselian
+import Section6.ConcreteRVAxioms
+import Section6.DenefPasRecognition
+import Section6.NativeEnvelopeConstruction
+import Section6.NativePresentation
+import Section6.NativeResidueOperations
+import Section6.PaperResults
+import Section6.ConcreteCharacteristic
+import Section6.ConcreteExtension
+import Section6.ConcreteFieldAxioms
+import Section6.ConcreteResidueOps
+import Section6.HenselianFactorization
+import Section6.HenselianInvariance
+import Section6.HenselianValuationRing
+import Section6.Imported.CoprimeFactorLifting
+import Section6.IntegralConjugates
+import Section6.NativeHenselian
+import Section6.NativeRVOperations
+import Section6.CountableEnvelope
 import Section6.DefinableMaps
 import Section6.DenefPasAlgebra
 import Section6.DenefPasConclusion
@@ -14,6 +35,11 @@ import Section6.DenefPasTrivialBranch
 import Section6.ElementaryTestFamily
 import Section6.ElementaryTransfer
 import Section6.EnvelopeUniformity
+import Section6.EarlierPreparation
+import Section6.HenselianRVClosure
+import Section6.PureHenselianInputs
+import Section6.ExpandedNormalForm
+import Section6.PaperPreparation
 import Section6.ExpandedImages
 import Section6.ExpandedLiterals
 import Section6.ExpandedLogic
@@ -39,6 +65,7 @@ import Section6.HenselianImages
 import Section6.HenselianInputs
 import Section6.HenselianModel
 import Section6.HenselianTheory
+import Section6.HenselScheme
 import Section6.MapFormulaDescent
 import Section6.NamedLanguage
 import Section6.NamedLogic
@@ -48,6 +75,7 @@ import Section6.NativeFormulaElimination
 import Section6.NativeImageComparison
 import Section6.NativeImageTransport
 import Section6.NativeOccurrence
+import Section6.NativeRV
 import Section6.NativeTermMap
 import Section6.NativeTerms
 import Section6.NormalizedQuery
@@ -78,10 +106,25 @@ import Section6.UniformNormalizedElimination
 
 
 /-! Section 6's new shared-language library. Legacy snapshots are excluded.
-The remaining syntax/expansion obligations are listed in STATUS.md. -/
+The paper-level elimination statements are exported by PaperResults. -/
 
 set_option pp.explicit false
 set_option pp.fullNames true
+
+#check @SpecialTransformations.Section6.NativeAmalgamation.elementary_amalgam
+#print axioms SpecialTransformations.Section6.NativeAmalgamation.elementary_amalgam
+#check @SpecialTransformations.Section6.NativeAmalgamation.common_countable_envelope
+#print axioms SpecialTransformations.Section6.NativeAmalgamation.common_countable_envelope
+#check @SpecialTransformations.Section6.ConcreteRV.residueCode_reduction
+#print axioms SpecialTransformations.Section6.ConcreteRV.residueCode_reduction
+#check @SpecialTransformations.Section6.ConcreteValued.canonical
+#print axioms SpecialTransformations.Section6.ConcreteValued.canonical
+#check @SpecialTransformations.Section6.NativeValuation.exists_valuation_predV
+#print axioms SpecialTransformations.Section6.NativeValuation.exists_valuation_predV
+#check @SpecialTransformations.Section6.NativeRV.equiv_le
+#print axioms SpecialTransformations.Section6.NativeRV.equiv_le
+#check @SpecialTransformations.Section6.HenselianTheory.henselScheme_realize
+#print axioms SpecialTransformations.Section6.HenselianTheory.henselScheme_realize
 
 #check @SpecialTransformations.Section6.singleton_tuple_coordinates
 #print axioms SpecialTransformations.Section6.singleton_tuple_coordinates
@@ -454,6 +497,22 @@ set_option pp.fullNames true
 #print SpecialTransformations.Section6.PairSyntax.Realizes
 #print SpecialTransformations.Section6.EnvelopeUniformity.PreparationInputs
 #print SpecialTransformations.Section6.EnvelopeUniformity.EarlierPreparation
+#check @SpecialTransformations.Section6.RVGraphLanguage.rvQFDefinitions_of_acvf
+#print axioms SpecialTransformations.Section6.RVGraphLanguage.rvQFDefinitions_of_acvf
+#check @SpecialTransformations.Section6.EnvelopeUniformity.earlierPreparation
+#print axioms SpecialTransformations.Section6.EnvelopeUniformity.earlierPreparation
+#check @SpecialTransformations.Section6.Paper.lemma_6_2_of_algebraic_envelope
+#print axioms SpecialTransformations.Section6.Paper.lemma_6_2_of_algebraic_envelope
+#check @SpecialTransformations.Section6.HenselianInputs.of_pure_algebraic_envelope
+#print axioms SpecialTransformations.Section6.HenselianInputs.of_pure_algebraic_envelope
+#check @SpecialTransformations.Section6.HenselianElimination.rvLiteralNormalForm_of_nativeEnvelopes
+#print axioms SpecialTransformations.Section6.HenselianElimination.rvLiteralNormalForm_of_nativeEnvelopes
+#check @SpecialTransformations.Section6.Paper.syntactic_lemma_6_3
+#print axioms SpecialTransformations.Section6.Paper.syntactic_lemma_6_3
+#check @SpecialTransformations.Section6.Paper.proposition_6_4_of_native_inputs
+#print axioms SpecialTransformations.Section6.Paper.proposition_6_4_of_native_inputs
+#check @SpecialTransformations.Section6.Paper.corollary_6_5_of_native_inputs
+#print axioms SpecialTransformations.Section6.Paper.corollary_6_5_of_native_inputs
 #print SpecialTransformations.Section6.UniformNormalizedElimination.NativeEnvelope
 #print SpecialTransformations.Section6.UniformNormalizedElimination.NativeEnvelopes
 #check @SpecialTransformations.Section6.FiniteSortContext.reindex_sort
@@ -1211,3 +1270,69 @@ set_option pp.fullNames true
 #print SpecialTransformations.Section6.DenefPasSorts.WellSorted
 #print SpecialTransformations.Section6.DenefPasLanguage.IsFieldQF
 
+
+#check @SpecialTransformations.Section6.ConcreteValued.extension
+#print axioms SpecialTransformations.Section6.ConcreteValued.extension
+
+#check @SpecialTransformations.Section6.HenselianTheory.valuationRing_henselian
+#print axioms SpecialTransformations.Section6.HenselianTheory.valuationRing_henselian
+
+#check @SpecialTransformations.Section6.NativeValuation.valuedField_of_hen00
+#print axioms SpecialTransformations.Section6.NativeValuation.valuedField_of_hen00
+
+#check @SpecialTransformations.Section6.NativeValuation.henselian
+#print axioms SpecialTransformations.Section6.NativeValuation.henselian
+
+#check @SpecialTransformations.Section6.NativeValuation.residueCharZero
+#print axioms SpecialTransformations.Section6.NativeValuation.residueCharZero
+
+#check @SpecialTransformations.Section6.NativeRV.equiv_units
+#print axioms SpecialTransformations.Section6.NativeRV.equiv_units
+
+#check @SpecialTransformations.Section6.NativeRV.equiv_mul
+#print axioms SpecialTransformations.Section6.NativeRV.equiv_mul
+
+#check @SpecialTransformations.Section6.NativeRV.equiv_inv
+#print axioms SpecialTransformations.Section6.NativeRV.equiv_inv
+
+#check @SpecialTransformations.Section6.henselian_automorphism_invariance
+#print axioms SpecialTransformations.Section6.henselian_automorphism_invariance
+
+#check @SpecialTransformations.Section6.nat_sub_value_one
+#print axioms SpecialTransformations.Section6.nat_sub_value_one
+
+#check @SpecialTransformations.Section6.ConcreteValued.model_valuedField
+#print axioms SpecialTransformations.Section6.ConcreteValued.model_valuedField
+
+#check @SpecialTransformations.Section6.ConcreteValued.model_ACVF00
+#print axioms SpecialTransformations.Section6.ConcreteValued.model_ACVF00
+
+#check @SpecialTransformations.Section6.ConcreteValued.model_canonicalHen00
+#print axioms SpecialTransformations.Section6.ConcreteValued.model_canonicalHen00
+
+#check @SpecialTransformations.Section6.NativeRV.equiv_addResidue
+#print axioms SpecialTransformations.Section6.NativeRV.equiv_addResidue
+
+#check @SpecialTransformations.Section6.NativeRV.equiv_negResidue
+#print axioms SpecialTransformations.Section6.NativeRV.equiv_negResidue
+
+#check @SpecialTransformations.Section6.NativePresentation.presentation
+#print axioms SpecialTransformations.Section6.NativePresentation.presentation
+
+#check @SpecialTransformations.Section6.UniformNormalizedElimination.nativeEnvelope
+#print axioms SpecialTransformations.Section6.UniformNormalizedElimination.nativeEnvelope
+
+#check @SpecialTransformations.Section6.UniformNormalizedElimination.nativeEnvelopes
+#print axioms SpecialTransformations.Section6.UniformNormalizedElimination.nativeEnvelopes
+
+#check @SpecialTransformations.Section6.DenefPasHenselianModels.nativeStructure_eq
+#print axioms SpecialTransformations.Section6.DenefPasHenselianModels.nativeStructure_eq
+
+#check @SpecialTransformations.Section6.DenefPasHenselianModels.ordinaryRecognition
+#print axioms SpecialTransformations.Section6.DenefPasHenselianModels.ordinaryRecognition
+
+#check @SpecialTransformations.Section6.Paper.proposition_6_4
+#print axioms SpecialTransformations.Section6.Paper.proposition_6_4
+
+#check @SpecialTransformations.Section6.Paper.corollary_6_5
+#print axioms SpecialTransformations.Section6.Paper.corollary_6_5

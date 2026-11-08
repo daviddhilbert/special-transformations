@@ -5,6 +5,34 @@ Lean 4.33.1; Mathlib `0df444a360eaa60ab8c11dca51a86af692955474`;
 ACVF-QE `f3ef4ee679f921079aa8f742a2807a9cc724d2d6`.
 No dependency or language upgrade.
 
+The November 7 preparation proof uses released sorted QE for the pure RV
+reduct. It evaluates VF terms at the original substructure parameters.
+The uniformity proof uses the checked Section 5 obstacle construction
+and builds finite-tuple saturation from Marker's one-variable property.
+
+## Native representation and countable envelopes
+
+- The pinned `RVKernelResidue`, `CanonicalRV`, and `VFValued` supply the
+  ordinary residue code, the equivalence from equal RV fibres, and the
+  valuation-predicate construction. The adapters use the henselian
+  valued-field axioms. The field and valuation realization arguments
+  adapted from ACVF-QE retain their MIT notices.
+- Mathlib's finite formula support, Łoś theorem, and elementary embeddings
+  give an amalgam over tuples of the same complete type. The pinned
+  `CountableSaturatedExtension` then gives genuine aleph-one saturation.
+  The preparation theorem uses this bound because its base is finitely
+  generated.
+- The pinned Johnson modules supply valuation extension to an algebraic
+  closure and algebraic closedness of the residue field. Section 7 supplies
+  arbitrary-polynomial root lifting through its checked étale proof.
+- NYLL proves algebraic-extension uniqueness on Lean 4.35.0-rc2. Its
+  coprime factor-lifting argument uses a universal factorization ring
+  already present in the pinned Mathlib. The port specializes it to the
+  ordinary residue field and uses the checked Section 7 residue-point
+  lifting theorem. The port compiled in the pinned environment.
+  `Imported/NYLL-LICENSE` records the Apache-2.0 license.
+  [NYLL source revision](https://github.com/n-yamaguchi-0729/NYLL/tree/0fbaf705e33806c8482dd85e169de005ba13d762)
+
 ## Local comparison and decisions
 
 | Source | Inspected scope | Decision |

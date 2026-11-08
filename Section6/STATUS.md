@@ -1,5 +1,73 @@
 # Section 6 status
 
+## Paper results
+
+On November 7, 2026, the pinned Lean source check of
+[PaperResults.lean](PaperResults.lean) passed with exit zero. The full types
+of `Section6.Paper.proposition_6_4` and `Section6.Paper.corollary_6_5`
+contain the paper's named-base and ordinary henselian assumptions,
+respectively. Both axiom reports contain only `propext`,
+`Classical.choice`, and `Quot.sound`. The source check and headline
+output are in `.scratch/section6-paper-results-v1.log`. The revised
+`Section6.Library` compiled with exit zero and 481 permitted-axiom
+reports in `.scratch/section6-final-library.log`. This checked the new
+sources and the library entry point in the pinned environment, with
+matching earlier compiled imports reused. The combined library check
+through Section 8 passed in `.scratch/section-through8-audit-v3.log`.
+The kernel replay and provider identities are recorded in
+`.scratch/section-through8-audit-evidence.json`.
+
+The named theorem allows arbitrary RV-only added symbols and keeps every
+original constant. The Denef–Pas theorem allows arbitrary sorted
+auxiliary symbols, chooses its formula before the valued field and
+interpretation, and covers trivial and nontrivial valuations. It uses
+the actual henselian valuation ring, field and residue characteristic
+zero, and an angular component. The extra preparation, expanded
+normal-form, saturation, algebraic-envelope and ordinary-recognition
+inputs of the earlier wrappers are supplied by proofs.
+
+`NativePresentation` recovers the concrete valued field and RV quotient
+from the native model. `NativeEnvelopeConstruction` extends the valuation
+to an algebraic closure, using the proved valuation invariance there.
+`DenefPasRecognition` identifies the angular-component interpretation with
+the concrete henselian model. `ElementaryAmalgam` and `CountableEnvelope`
+use the pinned countable saturation theorem. The separate provider checks
+are recorded in `.scratch/section6-native-presentation-v6.log`,
+`.scratch/section6-native-envelope-v1.log`,
+`.scratch/section6-recognition-v2.log` and
+`.scratch/section6-countable-integration.log`.
+
+## Earlier checkpoints
+
+November 7 local repair. The verified `EnvelopeUniformity.earlierPreparation`
+now supplies both previously assumed parts. `RVReductQE.lean` obtains
+RV-only quantifier-free definitions over the original substructure.
+`EarlierPreparation.lean` derives uniform vertical obstacles using
+genuine small-parameter saturation and the repaired Section 5 theorem.
+The pinned target and `Section6.Library` checks exited zero. The latter
+prints the full types and permitted axioms in
+`.scratch/section5-repair-section6-preparation-root.log`.
+Syntactic Lemma 6.3 keeps the henselian-substructure input.
+Proposition 6.4 and Corollary 6.5 use the proved preparation and
+display their remaining inputs.
+For Lemma 6.2, `Section6.Paper.lemma_6_2_of_algebraic_envelope` proves
+functional closure over the original base. Averaging the finite Galois
+orbit of an RV representative supplies the descent inside the pure
+characteristic zero envelope. The theorem retains the algebraic envelope
+and the authorized henselian valuation invariance. Its full type and
+permitted axioms passed in
+`.scratch/section5-repair-section6-henselian-rv-source-v2.log`.
+The checked `ExpandedNormalForm` proof derives the RV literal normal
+form from the native envelopes. Its source and full type/axiom audit
+passed in `.scratch/section5-repair-section6-expanded-normal-source.log`.
+The revised 6.4 and 6.5 wrappers use this proof internally. General
+native-envelope construction and ordinary recognition remain open.
+The final source, Section 6 library, and combined ACVF-QE, Section 5
+and Section 6 import checks exited zero. The full revised types and
+450 permitted axiom reports are in
+`.scratch/section5-repair-section6-final-library.log`.
+The publication record below describes the earlier conditional snapshot.
+
 Updated November 6, 2026 (America/Los_Angeles). The requested syntactic
 Lemma 6.3, Proposition 6.4 and Corollary 6.5 are proved and integrated with
 the explicit authorized earlier and standard-reference inputs below.

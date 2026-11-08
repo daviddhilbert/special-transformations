@@ -6,25 +6,17 @@ an elementary algebraic envelope, and geometric descent along the actual
 Section 5 special bijections. Earlier sections are accepted as given under
 the author's explicit instruction; they are not rederived.
 
-The continuation constructs the actual formula in Lemma 6.3, the uniform
-henselian elimination step, Proposition 6.4 over the original named base,
-and the Denef-Pas translation for Corollary 6.5. The final checked
-theorem, `DenefPasTheorem.corollary_6_5`, retains arbitrary original free
-names, handles trivial and nontrivial valuations, and produces a properly
-sorted formula with only RF/Gamma quantifiers. The explicit standard and
-earlier inputs remain visible.
+[PaperResults.lean](PaperResults.lean) gives Proposition 6.4 over the
+original named base and Corollary 6.5 for ordinary Denef–Pas structures.
+The corollary retains arbitrary original free names, covers both
+valuation branches, and produces a sorted formula with only RF/Gamma
+quantifiers. The proofs supply the representation and saturation
+interfaces used by the earlier helpers.
 
-[STATUS.md](STATUS.md) records compiler and axiom evidence;
-[TARGETS.md](TARGETS.md) distinguishes geometric descent from full
-syntactic elimination; [INPUTS.md](INPUTS.md) displays the earlier and
-standard-reference inputs; [STATEMENT-REVIEW.md](STATEMENT-REVIEW.md)
-reviews the three requested headline scopes;
-[HANDOFF.md](HANDOFF.md) records the next step.
-The final pinned Lake check passed 78 modules, 444 full headline type/axiom
-audits and the combined ACVF-QE + Section5 + Section6 import. Only the three
-permitted Lean axioms occur. The final immutable evidence is under
-`.scratch/section6-final78-444/`. Explicit theorem hypotheses remain;
-INPUTS.md and STATEMENT-REVIEW.md give their scopes.
+[STATUS.md](STATUS.md) records compiler and axiom evidence.
+[TARGETS.md](TARGETS.md), [INPUTS.md](INPUTS.md), and
+[STATEMENT-REVIEW.md](STATEMENT-REVIEW.md) give the theorem scopes and
+the earlier results used.
 
 Run `lake env python3 Section6/verify.py` in the pinned environment with the
 accepted earlier compiled interfaces on the import path. Verification

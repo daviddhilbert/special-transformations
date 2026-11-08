@@ -1,9 +1,7 @@
 # Section 6 statement and hypothesis review
 
-November 6, 2026. This reviews mathematical scope separately from compiler
-and axiom evidence; the final pinned Library check passed 78 modules and
-444 full headline audits, including the printed hypothesis definitions.
-See STATUS.md for the exact evidence.
+November 7, 2026. This reviews mathematical scope separately from compiler
+and axiom evidence. See [STATUS.md](STATUS.md) for the current verification.
 All names below are under `SpecialTransformations.Section6`.
 
 ## Lemma 6.3
@@ -25,7 +23,7 @@ Free VF parameters are retained in that uniform statement.
 
 ## Proposition 6.4
 
-`NamedLogic.proposition_6_4` proves the defined `NamedLogic.HasVFQE`
+`Paper.proposition_6_4` proves the defined `NamedLogic.HasVFQE`
 property for `HenselianTheory.named E S`. Unfolding that property gives
 every arbitrary free-variable type, every finite bound context and every
 properly sorted formula an equivalent properly sorted formula with no VF
@@ -33,14 +31,15 @@ binders. Original constants for S are opened and reclosed using Mathlib's
 actual syntax equivalence. Their sorts come from the original atomic
 diagram. No finiteness restriction is imposed on the named base.
 
-The displayed inputs are Marker's genuine saturated elementary-extension
-existence, earlier preparation, ordinary native envelopes, and earlier
-RV-literal normalization. No one-step or relative-QE premise remains.
-The encoded native henselian theory retains nontrivial valuation.
+The encoded native theory uses the paper's nontrivially valued named
+setting. Canonical values on wrongly sorted tuples implement the
+many-sorted presentation. The proof constructs the algebraic envelope,
+ordinary henselian valuation-ring interpretation, countable elementary
+comparison, earlier preparation and expanded literal normal form.
 
 ## Corollary 6.5
 
-`DenefPasTheorem.corollary_6_5` chooses one formula before all actual fields,
+`Paper.corollary_6_5` chooses one formula before all actual fields,
 valuations, angular components, sorted auxiliary interpretations and
 original free assignments. Its field and actual residue field have
 characteristic zero; its valuation ring satisfies Mathlib's
@@ -55,13 +54,10 @@ between the declared auxiliary sorts and relations on those products.
 Its interpretation and all primitive sort laws are constructed. Neither a
 DP dictionary nor `Canonical` nor an elimination statement is assumed.
 
-The four preceding standard/earlier inputs remain explicit, specialized
-to the constructed relational RV expansion. There is also the authorized
-standard `OrdinaryRecognition` input: an actual nontrivially valued
-pure-characteristic-zero henselian field with angular component satisfies
-the displayed native tagged henselian axioms. It asserts no elimination,
-definability or Section 6 conclusion. The trivial branch does not use it.
-INPUTS.md records these boundaries; axiom audits do not discharge them.
+The nontrivial branch uses the proved identification of the
+angular-component splitting with the concrete leading-term model and its
+henselian axioms. The trivial branch uses the separate formula translation.
+[INPUTS.md](INPUTS.md) records which earlier proofs are used.
 
 ## Language conventions
 
@@ -73,6 +69,6 @@ separate. RV has a single absorbing zero/infinity, residue units are not
 arbitrary nonzero RV classes, and value comparisons reverse Mathlib's
 multiplicative valuation order as required by the paper.
 
-The final theorem bodies are in DenefPasConclusion and the ordinary-model
-bridge is in DenefPasInterpretation. Their old helper paths are compatibility
-imports. Public names and the hypothesis scopes reviewed above are unchanged.
+The final exports are in [PaperResults.lean](PaperResults.lean).
+The earlier elimination and translation statements remain available as
+helpers with their explicit interfaces.

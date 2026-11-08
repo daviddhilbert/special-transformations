@@ -8,8 +8,9 @@ tracks paper coverage; [STATUS.md](STATUS.md) records compiler evidence and
 The November 6 normalization resolves the zero-fibre issue by choosing an
 equivalent nonzero active locus. It leaves the actual map, inverse, endpoints,
 length, alternation and original parameters unchanged and proves the printed
-disjoint C-sharp codomain for that representative. Under the accepted earlier
-inputs, no Section 5 obligation remains after the completed checks in STATUS.md.
+disjoint C-sharp codomain for that representative. The November 7
+`Section5.Paper` exports cover real and named-Gamma parameters.
+STATUS.md records the hypotheses and verification for each form.
 
 | Source | Export or construction | Coverage |
 | --- | --- | --- |
@@ -23,8 +24,8 @@ inputs, no Section 5 obligation remains after the completed checks in STATUS.md.
 | Finite-family observation | `theorem_5_5_finite`, `theorem_5_5_finite_gamma` | Simultaneous preparation without discarding earlier contractions |
 | Theorem 5.5 | `theorem_5_5`, `theorem_5_5_gamma` | Arbitrary definable original VF domain, contraction, pullback target and alternating concatenation |
 | Corollary 5.6 | `corollary_5_6`, `corollary_5_6_gamma` | Every finite mixed VF/RV arity; actual special bijection and pullback image |
-| Corollary 5.7, general | `corollary_5_7`, `corollary_5_7_gamma` | Actual Section 4 RV object and lift, original-base isomorphism |
-| Corollary 5.7, finite | `corollary_5_7_finite`, `corollary_5_7_finite_gamma` | Actual finite-volume RV object and lift, original-base isomorphism |
+| Corollary 5.7, general | `Paper.corollary_5_7`, `Paper.corollary_5_7_gamma` | Actual same-base isomorphism to a canonical lift, starting from the finite-map dimension bound. The proofs construct the obstacles and dimensional presentations. |
+| Corollary 5.7, finite | `Paper.corollary_5_7_finite`, `Paper.corollary_5_7_finite_gamma` | Both proofs transport finite RV fibres and construct an RV object with finite volume fibres. |
 
 The final checkpoint verifies 28 modules and 282 headline types and axiom
 lists. Twenty-six unchanged source-compiled modules were re-certified by a

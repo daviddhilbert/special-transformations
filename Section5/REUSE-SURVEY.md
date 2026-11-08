@@ -133,3 +133,32 @@ The driver is credited to Kim Morrison and Sebastian Ullrich under Apache-2.0,
 following the pinned source header. It is retained under `.scratch/` as verification
 evidence, not imported into the mathematical library. No extra dependency, language
 or proof assumption is introduced. STATUS.md records the completed check's scope.
+# November 7 repair of the real-parameter lifting theorems
+
+The uniform obstacle argument reuses the released QE pin
+`f3ef4ee679f921079aa8f742a2807a9cc724d2d6` and the checked
+`Section3.MixedRootFree.mixed_finite_definable_obstacles`,
+`ClosedBallCodes`, `ClosedClassCodes.rawBall_definable`,
+`RawClosure.Tuple.promote_definable_fibre` and
+`Section4.definable_finite_subcover_index`. Use closed balls through
+two points to state the local control condition with real codes. This
+avoids imposing an actual value representative for an ambient open
+radius. Each code for a successful obstacle relation gets a finite
+cardinality bound before the finite subcover is taken. The proof uses
+Mathlib's finite set union and cardinality lemmas at the existing
+`0df444a360eaa60ab8c11dca51a86af692955474` pin.
+
+For dimensional presentation, expose the real finite map already
+constructed by `Section4.CoordinateDimension` and `VFDimensionRank`.
+Apply the checked `injection_refinement` and flatten only the real
+RV factors. Use the previous Section 7 finite-map transport proof in
+Section 5 so that both consumers share it. The checked
+`GammaParameters.DefinableWith.specialize` gives the separate internal
+real presentation used for a named-Gamma set.
+
+The focused external search for Lean uniform VF polynomial root
+families, RV pullbacks and ACVF special bijections found the project
+and mathematical references, including the Hrushovski–Kazhdan proof,
+but no independent Lean module supplying the required mixed-family
+interface. The implementation reuses the local checked QE and finite
+cover route. It ports no external code.

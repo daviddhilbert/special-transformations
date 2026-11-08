@@ -27,7 +27,6 @@ def NativeEnvelopes (E : _root_.FirstOrder.Language.{0, 0}) : Prop :=
     NativeEnvelope M
 
 theorem eliminate (E : _root_.FirstOrder.Language.{0, 0})
-    (hMarker : NativeAmalgamation.SaturatedElementaryExtensionAt)
     (hEarlier : EnvelopeUniformity.EarlierPreparation) (hEnvelopes : NativeEnvelopes E)
     {r m n : ℕ}
     (φ : (Expanded E).Formula ((Fin r ⊕ Fin n) ⊕ (Fin m ⊕ Empty))) (hφ : Fragment φ) :
@@ -46,7 +45,7 @@ theorem eliminate (E : _root_.FirstOrder.Language.{0, 0})
       | in_model hU hcU f hX =>
         cases hN with
         | in_model hV hcV g hY =>
-          exact EnvelopeUniformity.existential_type_invariant hMarker hEarlier
+          exact EnvelopeUniformity.existential_type_invariant hEarlier
             inferInstance inferInstance hU hV hcU hcV f g hX hY a b ha hb φ hφ
             (fun χ hχ hsχ => ht χ ⟨hχ, hsχ⟩))
   exact ⟨ψ, hψ, hsψ, he⟩
