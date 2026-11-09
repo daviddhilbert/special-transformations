@@ -334,9 +334,9 @@ theorem exists_guardedLiteral_tests (t : Fin n → _root_.RVCalc.RV v)
       · intro j hj
         rw [Finset.mem_singleton.mp hj]
         change IsGammaPolynomial v γ α ((P - Q).map E.subtype)
-        rw [map_sub (MvPolynomial.map E.subtype) P Q,
-          sub_eq_add_neg (P.map E.subtype) (Q.map E.subtype)]
-        exact hP.add v ((hab.symm ▸ hQ).neg v)
+        have hsub : (P - Q).map E.subtype = P.map E.subtype + -(Q.map E.subtype) :=
+          ((MvPolynomial.map E.subtype).map_sub P Q).trans (sub_eq_add_neg _ _)
+        exact hsub.symm ▸ hP.add v ((hab.symm ▸ hQ).neg v)
       · intro s hs hpat
         apply hcompare s hs
         simpa only [test, if_pos hab] using hpat (α, P - Q) (Finset.mem_singleton_self _)

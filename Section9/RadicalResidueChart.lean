@@ -38,10 +38,12 @@ theorem isPolynomialTangent_iff_of_radical_chart [IsAlgClosed K]
     have hprod (i : Fin d ⊕ Unit) :
         pderiv i (A * B) = A * pderiv i B + B * pderiv i A := by
       rw [pderiv_mul, add_comm, mul_comm (pderiv i A) B]
-    simp only [D, hprod, map_add, map_mul, add_mul, Finset.sum_add_distrib,
-      Finset.mul_sum, mul_assoc]
+    simp only [D, hprod, MvPolynomial.eval_add, MvPolynomial.eval_mul, add_mul,
+      Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]
   have hDsub (A B : MvPolynomial (Fin d ⊕ Unit) K) : D (A - B) = D A - D B := by
-    simp only [D, map_sub, sub_mul, Finset.sum_sub_distrib]
+    have hsub (i : Fin d ⊕ Unit) : pderiv i (A - B) = pderiv i A - pderiv i B :=
+      (pderiv i).map_sub A B
+    simp only [D, hsub, eval_sub, sub_mul, Finset.sum_sub_distrib]
   have hDrename (A : MvPolynomial (Fin d) K) : D (rename ι A) = ∑ j, (pderiv j A).eval p * h j := by
     have hzero : pderiv (.inr ()) (rename ι A) = 0 := by
       induction A using MvPolynomial.induction_on with
@@ -57,12 +59,14 @@ theorem isPolynomialTangent_iff_of_radical_chart [IsAlgClosed K]
       add_mem' := by
         rintro A B ⟨ha, hda⟩ ⟨hb, hdb⟩
         have he : D (A + B) = D A + D B := by
-          simp only [D, map_add, add_mul, Finset.sum_add_distrib]
-        exact ⟨by rw [map_add, ha, hb, add_zero], by rw [he, hda, hdb, add_zero]⟩
+          have hadd (i : Fin d ⊕ Unit) : pderiv i (A + B) = pderiv i A + pderiv i B :=
+            (pderiv i).map_add A B
+          simp only [D, hadd, MvPolynomial.eval_add, add_mul, Finset.sum_add_distrib]
+        exact ⟨by rw [MvPolynomial.eval_add, ha, hb, add_zero], by rw [he, hda, hdb, add_zero]⟩
       smul_mem' := by
         rintro A B ⟨hb, hdb⟩
         change (A * B).eval q = 0 ∧ D (A * B) = 0
-        exact ⟨by rw [map_mul, hb, mul_zero], by rw [hDmul, hb, hdb, mul_zero, zero_mul, add_zero]⟩ }
+        exact ⟨by rw [MvPolynomial.eval_mul, hb, mul_zero], by rw [hDmul, hb, hdb, mul_zero, zero_mul, add_zero]⟩ }
   have hIJ : residueChartIdeal P R ≤ J := by
     apply Ideal.span_le.mpr
     rintro A (⟨i, rfl⟩ | rfl)
@@ -71,7 +75,7 @@ theorem isPolynomialTangent_iff_of_radical_chart [IsAlgClosed K]
       exact ⟨hP i p hp, htest i⟩
     · change (X₀ * rename ι R - 1).eval q = 0 ∧ D (X₀ * rename ι R - 1) = 0
       constructor
-      · rw [map_sub, map_mul, map_one, eval_X, eval_rename]
+      · rw [eval_sub, MvPolynomial.eval_mul, eval_one, eval_X, eval_rename]
         change (R.eval p)⁻¹ * R.eval p - 1 = 0
         rw [inv_mul_cancel₀ hR, sub_self]
       · have hDX : D X₀ = s (.inr ()) := by
@@ -92,7 +96,7 @@ theorem isPolynomialTangent_iff_of_radical_chart [IsAlgClosed K]
     have hB : R.eval a ≠ 0 := by
       intro hzero
       have he := hz _ (Ideal.subset_span (Or.inr (Set.mem_singleton (X₀ * rename ι R - 1))))
-      rw [aeval_eq_eval, map_sub, map_mul, eval_rename, hzero, mul_zero, map_one, zero_sub] at he
+      rw [aeval_eq_eval, eval_sub, MvPolynomial.eval_mul, eval_rename, hzero, mul_zero, eval_one, zero_sub] at he
       exact (neg_ne_zero.mpr one_ne_zero) he
     rw [aeval_eq_eval, eval_rename]
     exact hQ a (hchart a hA hB)

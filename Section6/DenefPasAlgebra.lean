@@ -785,7 +785,12 @@ theorem inverse_iff (v : Valuation K Γ) (p q : RVCalc.RV v) :
       · rintro rfl
         exact mul_inv_cancel p
       · intro h
-        exact mul_left_cancel (h.trans (mul_inv_cancel p).symm)
+        calc
+          q = 1 * q := (one_mul q).symm
+          _ = (p⁻¹ * p) * q := congrArg (fun t => t * q) (inv_mul_cancel p).symm
+          _ = p⁻¹ * (p * q) := mul_assoc (p⁻¹ : RVCalc.RVUnit v) p q
+          _ = p⁻¹ * 1 := congrArg (fun t => p⁻¹ * t) h
+          _ = p⁻¹ := mul_one (p⁻¹ : RVCalc.RVUnit v)
 
 theorem one_realize (v : Valuation K Γ) (a : Data v) {I : Type} (z : I → Aux v) :
     decode v a (fun i => (one i : auxLanguage.Term I).realize z) = some 1 := by

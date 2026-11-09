@@ -80,14 +80,14 @@ theorem isGaussEvaluation_of_independent_residues
   let incl : A →+* B := valuationRingInclusion v E
   let q := Q.eval₂ incl x
   have hco : (Q.coeff s).val = 1 := by
-    have he := congrArg (coeff s) hQ
+    have he := congrArg (fun p : MvPolynomial ι E => p.coeff s) hQ
     change (Q.map A.subtype).coeff s = N.coeff s at he
     dsimp only [N] at he
     rw [coeff_map, coeff_C_mul, show P.coeff s = c from rfl, inv_mul_cancel₀ hc] at he
     exact he
   have hred : Q.map (residue A) ≠ 0 := by
     intro h
-    have he := congrArg (coeff s) h
+    have he := congrArg (fun p : MvPolynomial ι (ResidueField A) => p.coeff s) h
     rw [coeff_map, coeff_zero] at he
     exact ((residue_nonzero_iff w _).mpr (by rw [hco, map_one])) he
   have hq : residue B q ≠ 0 := by

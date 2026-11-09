@@ -27,9 +27,9 @@ private def tailIndex : AffineTailCode m → InputCode m :=
 
 private noncomputable def aProduct : FreeCommRing (InputCode m) := ∏ i : Fin m, FreeCommRing.of (.inl (.inl (0,i)))
 private noncomputable def bProduct : FreeCommRing (InputCode m) := ∏ i : Fin m, FreeCommRing.of (.inl (.inl (1,i)))
-private def headDet : FreeCommRing (InputCode m) := FreeCommRing.of (.inl (.inr 0))
-private def desiredDet : FreeCommRing (InputCode m) := FreeCommRing.of (.inl (.inr 1))
-private def slopeProduct : FreeCommRing (InputCode m) := FreeCommRing.of (.inr 0)
+private noncomputable def headDet : FreeCommRing (InputCode m) := FreeCommRing.of (.inl (.inr 0))
+private noncomputable def desiredDet : FreeCommRing (InputCode m) := FreeCommRing.of (.inl (.inr 1))
+private noncomputable def slopeProduct : FreeCommRing (InputCode m) := FreeCommRing.of (.inr 0)
 
 private noncomputable def term (p : FreeCommRing (InputCode m)) : LRV.Term (InputCode m) :=
   RingSyntax.ofRingTerm (FirstOrder.Ring.termOfFreeCommRing p)

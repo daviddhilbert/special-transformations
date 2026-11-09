@@ -74,18 +74,28 @@ theorem isPolynomialTangent_of_base_equations
         algebraMap E K ((Q j).eval x) := by
       rw [eval_map]
       exact (eval₂_comp (algebraMap E K) x (Q j)).symm
-    have h : P.eval (algebraMap E K ∘ x) = 0 := hP _ hx
-    rw [hsplit, map_sum (eval (algebraMap E K ∘ x))] at h
-    simp only [map_mul, eval_C, hv] at h
-    have hsum : (∑ j ∈ J, (Q j).eval x • b j) = 0 := by
-      simpa only [Algebra.smul_def, mul_comm] using h
+    let xK := algebraMap E K ∘ x
+    have hsum : (∑ j ∈ J, (Q j).eval x • b j) = 0 := calc
+      _ = ∑ j ∈ J, (MvPolynomial.C (b j) * (Q j).map (algebraMap E K)).eval xK := by
+        apply Finset.sum_congr rfl
+        intro k _
+        rw [MvPolynomial.eval_mul, eval_C, hv k, Algebra.smul_def, mul_comm]
+      _ = (∑ j ∈ J, MvPolynomial.C (b j) * (Q j).map (algebraMap E K)).eval xK :=
+        (eval_sum J _ xK).symm
+      _ = P.eval xK := congrArg (fun A : MvPolynomial (Fin d) K => A.eval xK) hsplit.symm
+      _ = 0 := hP _ hx
     have he := linearIndependent_iff'ₛ.mp b.linearIndependent J
       (fun j => (Q j).eval x) (fun _ => 0) (by simpa only [zero_smul, Finset.sum_const_zero] using hsum)
       j hj
     exact he
-  rw [hsplit]
-  simp only [map_sum, Finset.sum_mul, pderiv_mul, pderiv_C, zero_mul, zero_add,
-    map_mul, eval_C, mul_assoc]
+  refine (congrArg (fun A : MvPolynomial (Fin d) K =>
+    ∑ i, (pderiv i A).eval p * h i) hsplit).trans ?_
+  have hderiv (i : Fin d) :
+      pderiv i (∑ j ∈ J, MvPolynomial.C (b j) * (Q j).map (algebraMap E K)) =
+        ∑ j ∈ J, pderiv i (MvPolynomial.C (b j) * (Q j).map (algebraMap E K)) :=
+    map_sum (pderiv i : Derivation K (MvPolynomial (Fin d) K) (MvPolynomial (Fin d) K)) _ _
+  simp only [hderiv, eval_sum, Finset.sum_mul, pderiv_mul, pderiv_C, zero_mul, zero_add,
+    MvPolynomial.eval_mul, eval_C, mul_assoc]
   rw [Finset.sum_comm]
   apply Finset.sum_eq_zero
   intro j hj
