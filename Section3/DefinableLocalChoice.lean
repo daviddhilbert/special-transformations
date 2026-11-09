@@ -44,11 +44,12 @@ theorem good_choice_of_definable (S : Set M) (P : Set ((Fin n → M) × M))
     rw [haQ]
     rfl
 
-/-- Pointwise choices lying in definable closure give a definable choice
-graph over the same small base, using genuine saturation. -/
-theorem definable_choice_graph {κ : Cardinal} (hs : Saturated M κ)
-    (S : Set M) (hsmall : Cardinal.mk S < κ)
-    (A : Set (Fin n → M)) (hA : S.Definable LRV A)
+/-- The domain may use additional small parameters if the local choice
+graphs and their admissibility are already defined over the original base.
+The finite gluing therefore yields an original-base graph. -/
+theorem definable_choice_graph_over {κ : Cardinal} (hs : Saturated M κ)
+    (S T : Set M) (hST : S ⊆ T) (hsmall : Cardinal.mk T < κ)
+    (A : Set (Fin n → M)) (hA : T.Definable LRV A)
     (P : Set ((Fin n → M) × M)) (hP : RelationDefinable S P)
     (hlocal : ∀ a ∈ A, ∃ b, (a, b) ∈ P ∧
       (S ∪ Set.range a).Definable₁ LRV {b}) :
@@ -62,8 +63,8 @@ theorem definable_choice_graph {κ : Cardinal} (hs : Saturated M κ)
     obtain ⟨b, hab, hb⟩ := hlocal a ha
     obtain ⟨R, haR⟩ := good_choice_of_definable S P hP a b hab hb
     exact ⟨dom R, Set.mem_range_self R, b, haR⟩
-  obtain ⟨C₀, hfin, hsub, hcov⟩ := hs.definable_finite_subcover_tuple S hsmall A hA C
-    (by rintro c ⟨R, rfl⟩; exact domain_definable S R.val R.property.1) hcover
+  obtain ⟨C₀, hfin, hsub, hcov⟩ := hs.definable_finite_subcover_tuple T hsmall A hA C
+    (by rintro c ⟨R, rfl⟩; exact (domain_definable S R.val R.property.1).mono hST) hcover
   let rel (c : C₀) : GoodChoice S P := Classical.choose (hsub c.property)
   have hrel (c : C₀) : dom (rel c) = c.val := Classical.choose_spec (hsub c.property)
   let D := (fun c : C₀ => (rel c).val) '' Set.univ
@@ -85,6 +86,18 @@ theorem definable_choice_graph {κ : Cardinal} (hs : Saturated M κ)
     change a ∈ dom (rel ⟨c, hc⟩)
     rw [hrel]
     exact hac
+
+/-- Pointwise choices lying in definable closure give a definable choice
+graph over the same small base, using genuine saturation. -/
+theorem definable_choice_graph {κ : Cardinal} (hs : Saturated M κ)
+    (S : Set M) (hsmall : Cardinal.mk S < κ)
+    (A : Set (Fin n → M)) (hA : S.Definable LRV A)
+    (P : Set ((Fin n → M) × M)) (hP : RelationDefinable S P)
+    (hlocal : ∀ a ∈ A, ∃ b, (a, b) ∈ P ∧
+      (S ∪ Set.range a).Definable₁ LRV {b}) :
+    ∃ U : Set ((Fin n → M) × M), RelationDefinable S U ∧ SingleValued U ∧
+      U ⊆ P ∧ ∀ a ∈ A, ∃ b, (a, b) ∈ U :=
+  definable_choice_graph_over hs S S (fun _ h => h) hsmall A hA P hP hlocal
 
 /-- A genuine partial function with its complete graph definable over S. -/
 theorem definable_choice {κ : Cardinal} (hs : Saturated M κ)

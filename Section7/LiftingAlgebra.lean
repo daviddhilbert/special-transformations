@@ -556,7 +556,10 @@ namespace SpecialTransformations.Section7
 
 variable {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ]
 
-theorem exists_localPolynomialSystem [IsAlgClosed K]
+/-- The local lifting system together with its weights and both simple
+Jacobian blocks. The extra witnesses are used in Section 9 to compute
+the Jacobian of this particular lift. -/
+theorem exists_weightedLocalPolynomialSystem [IsAlgClosed K]
     (v : Valuation K Γ) [CharZero (ResidueField v.valuationSubring)] (E : Subfield K)
     {n : ℕ} (t s : Fin n → RVCalc.RV v) (ht : ∀ i, t i ≠ none) (hs : ∀ i, s i ≠ none)
     (α β : Fin n → Γ) (F G : Fin n → MvPolynomial (Fin (n + n)) E) :
@@ -574,8 +577,14 @@ theorem exists_localPolynomialSystem [IsAlgClosed K]
       (pderiv (productLeft n n i) (g i))) →
     (∀ i j, i ≠ j → pderiv (productRight n n j) (f i) = 0) →
     (∀ i j, i ≠ j → pderiv (productLeft n n j) (g i) = 0) →
-    ∃ H : Fin n → MvPolynomial (Fin (n + n)) E,
-      FibreBijection v {p | ∀ i, ((H i).map E.subtype).eval (productTuple p.1 p.2) = 0} t s := by
+    ∃ (H : Fin n → MvPolynomial (Fin (n + n)) E) (w : Fin n → Γ),
+      let Z := fun i => (H i).map E.subtype
+      (∀ i, IsGammaPolynomial v γ (w i) (Z i)) ∧
+      ¬ IsResidueRoot v u (jacobianValue (fun j => γ (productLeft n n j)) w)
+        (partialJacobianPolynomial (productLeft n n) Z) ∧
+      ¬ IsResidueRoot v u (jacobianValue (fun j => γ (productRight n n j)) w)
+        (partialJacobianPolynomial (productRight n n) Z) ∧
+      FibreBijection v {p | ∀ i, (Z i).eval (productTuple p.1 p.2) = 0} t s := by
   classical
   let u := productTuple t s
   let γ := fun j => RVCalc.vrv v (u j)
@@ -671,13 +680,41 @@ theorem exists_localPolynomialSystem [IsAlgClosed K]
     funext i
     simp only [H, Z, integerPolynomialCombination, f', g', A, D, f, g, map_add, map_zsmul,
       map_mul, map_X, pderiv_map]
-  refine ⟨H, ?_⟩
-  change FibreBijection v {p | ∀ i, ((fun i => (H i).map E.subtype) i).eval
-    (productTuple p.1 p.2) = 0} t s
-  rw [hmap]
-  exact fibreBijection_of_polynomial_partialJacobians v t s ht hs Z hZ hZr
+  refine ⟨H, w, ?_⟩
+  let W := fun i => (H i).map E.subtype
+  change (∀ i, IsGammaPolynomial v γ (w i) (W i)) ∧
+    ¬ IsResidueRoot v u (jacobianValue (fun j => γ (L j)) w) (partialJacobianPolynomial L W) ∧
+    ¬ IsResidueRoot v u (jacobianValue (fun j => γ (R j)) w) (partialJacobianPolynomial R W) ∧
+    FibreBijection v {p | ∀ i, (W i).eval (productTuple p.1 p.2) = 0} t s
+  rw [show W = Z from hmap]
+  exact ⟨hZ, hJL, hJR, fibreBijection_of_polynomial_partialJacobians v t s ht hs Z hZ hZr
     (by simpa only [u, L, productTuple_left] using hJL)
-    (by simpa only [u, R, productTuple_right] using hJR)
+    (by simpa only [u, R, productTuple_right] using hJR)⟩
+
+theorem exists_localPolynomialSystem [IsAlgClosed K]
+    (v : Valuation K Γ) [CharZero (ResidueField v.valuationSubring)] (E : Subfield K)
+    {n : ℕ} (t s : Fin n → RVCalc.RV v) (ht : ∀ i, t i ≠ none) (hs : ∀ i, s i ≠ none)
+    (α β : Fin n → Γ) (F G : Fin n → MvPolynomial (Fin (n + n)) E) :
+    let u := productTuple t s
+    let γ := fun j => RVCalc.vrv v (u j)
+    let f := fun i => (F i).map E.subtype
+    let g := fun i => (G i).map E.subtype
+    (∀ i, IsGammaPolynomial v γ (α i) (f i)) →
+    (∀ i, IsGammaPolynomial v γ (β i) (g i)) →
+    (∀ i, IsResidueRoot v u (α i) (f i)) →
+    (∀ i, IsResidueRoot v u (β i) (g i)) →
+    (∀ i, ¬ IsResidueRoot v u (α i / γ (productRight n n i))
+      (pderiv (productRight n n i) (f i))) →
+    (∀ i, ¬ IsResidueRoot v u (β i / γ (productLeft n n i))
+      (pderiv (productLeft n n i) (g i))) →
+    (∀ i j, i ≠ j → pderiv (productRight n n j) (f i) = 0) →
+    (∀ i j, i ≠ j → pderiv (productLeft n n j) (g i) = 0) →
+    ∃ H : Fin n → MvPolynomial (Fin (n + n)) E,
+      FibreBijection v {p | ∀ i, ((H i).map E.subtype).eval (productTuple p.1 p.2) = 0} t s := by
+  intro u γ f g hf hg hfr hgr hdf hdg hoffF hoffG
+  obtain ⟨H, w, h⟩ := exists_weightedLocalPolynomialSystem v E t s ht hs α β F G
+    hf hg hfr hgr hdf hdg hoffF hoffG
+  exact ⟨H, h.2.2.2⟩
 
 end SpecialTransformations.Section7
 

@@ -97,6 +97,11 @@ jobs:
         if: ${{ !cancelled() && steps.build.outcome == 'success' && hashFiles('Section7/verify.py') != '' }}
         run: lake env python3 Section7/verify.py
 
+      - name: Audit Section 9
+        id: section9
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: lake env python3 scripts/verify_ci.py section9
+
       - name: Publish verification summary
         if: ${{ always() }}
         shell: bash
@@ -113,6 +118,7 @@ jobs:
           | Section 4 verifier, if present | ${{ steps.section4.outcome }} |
           | Section 5 verifier, if present | ${{ steps.section5.outcome }} |
           | Section 7 verifier, if present | ${{ steps.section7.outcome }} |
+          | Section 9 headline types and axioms | ${{ steps.section9.outcome }} |
 
           Download the verification artifact for compiler logs and headline audits.
           A skipped step is not a passed check. This run covers the current library
@@ -149,3 +155,4 @@ jobs:
             .scratch/section7-verified/*.json
             .scratch/section7-verified/*.txt
             .scratch/section7-verified/*.lean
+            .scratch/section9-verified/*

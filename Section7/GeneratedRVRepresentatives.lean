@@ -62,16 +62,57 @@ private theorem rvFibre_openBall (t : CanonicalRV.RVSort M) (ht : t ≠ 0) :
   rw [← ha]
   exact ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩
 
-/-- Every nonzero named RV element of an actual (VF,Gamma)-generated base
-has a representative in that same base's VF part. The saturation is the
-genuine Section 3 predicate, with the original small real base. -/
+/-- A finite algebraic witness in a named RV ball gives a definable
+representative, by taking the mean after restricting to that ball. -/
+theorem definable_rv_representative_of_algebraic_lift
+    (h00 : M ⊨ Axioms.ACVF00) (S : Set M) (t : CanonicalRV.RVSort M)
+    (ht : t.val ∈ S) (ht0 : t ≠ 0) (a : VFType (M := M))
+    (ha : CanonicalRV.encodedRv a = t) (haAlg : AlgebraicAt S .vf a.val) :
+    ∃ x : VFType (M := M), DefinableClosureAt S .vf x.val ∧ CanonicalRV.encodedRv x = t := by
+  classical
+  have htNamed : DefinableClosureAt S .rv t.val := definableClosureAt_of_mem ht t.property
+  obtain ⟨D, hD, hDf, haD⟩ := haAlg
+  let U : Set M := D ∩ {x | iVF x ∧ iRv x = t.val}
+  have hpre : DefinableAt S .vf {x | iVF x ∧ iRv x = t.val} := by
+    simpa only [Set.mem_singleton_iff] using
+      htNamed.rv_preimage
+  have hUd : DefinableAt S .vf U := hD.inter hpre
+  have hUf : U.Finite := hDf.subset Set.inter_subset_left
+  have haU : a.val ∈ U := ⟨haD, a.property, congrArg Subtype.val ha⟩
+  let U' : Set (VFType (M := M)) := Subtype.val ⁻¹' U
+  have hUf' : U'.Finite := hUf.preimage Subtype.val_injective.injOn
+  let F := hUf'.toFinset
+  have hFmem (x : VFType (M := M)) : x ∈ F ↔ x.val ∈ U := by
+    exact hUf'.mem_toFinset
+  have hne : F.Nonempty := ⟨a, (hFmem _).mpr haU⟩
+  have himage : Subtype.val '' (F : Set (VFType (M := M))) = U := by
+    ext x
+    constructor
+    · rintro ⟨y, hy, rfl⟩
+      exact (hFmem y).mp hy
+    · intro hx
+      exact ⟨⟨x, hUd.2 hx⟩, (hFmem _).mpr hx, rfl⟩
+  let B : Base (M := M) := ⟨S, ∅⟩
+  have hmeanDef : DefinableClosureAt S .vf (normalizedMean F) :=
+    (at_base_empty_iff S .vf {normalizedMean F}).mp
+      (finite_mean_definable_base h00 B F (real_definableAtBase B .vf _ (himage.symm ▸ hUd)))
+  obtain ⟨O, hO⟩ := rvFibre_openBall t ht0
+  have hmean := OpenBallCodes.normalized_mean_mem h00 O F hne (by
+    intro x hx
+    apply (hO x).mpr
+    exact Subtype.ext ((hFmem x).mp hx).2.2)
+  have hmeanVF : iVF (normalizedMean F) :=
+    OpenBallCodes.underlying_subset_vf O hmean
+  exact ⟨⟨normalizedMean F, hmeanVF⟩, hmeanDef, (hO _).mp hmean⟩
+
+/-- Every nonzero named RV element of a generated base has a
+representative in its VF part. -/
 theorem generatedBase_rv_representative {κ : Cardinal} (hκ : Cardinal.aleph0 ≤ κ)
     (hs : Saturated M κ) (h00 : M ⊨ Axioms.ACVF00)
     (B : Base (M := M)) (hsmall : Cardinal.mk B.real < κ)
     (hB : VFGammaGeneratedBase B) (t : CanonicalRV.RVSort M)
     (htB : t.val ∈ B.real) (ht0 : t ≠ 0) :
     ∃ x : VFType (M := M), x.val ∈ B.real ∧ CanonicalRV.encodedRv x = t := by
-  classical
   have hclosed := hB.closure_eq_self
   obtain ⟨A, G, hAB, _, hA, hgen⟩ := hB
   have htNamed : DefinableClosureAt B.real .rv t.val := definableClosureAt_of_mem htB t.property
@@ -82,40 +123,9 @@ theorem generatedBase_rv_representative {κ : Cardinal} (hκ : Cardinal.aleph0 �
     ((Cardinal.mk_le_mk_of_subset hAB).trans_lt hsmall) G t (hgen.symm ▸ htAlg)
   have haAlg : AlgebraicAt B.real .vf a.val.val :=
     ((mem_vfAlgebraicClosureField A a.val).mp a.property).mono hAB
-  obtain ⟨D, hD, hDf, haD⟩ := haAlg
-  let U : Set M := D ∩ {x | iVF x ∧ iRv x = t.val}
-  have hpre : DefinableAt B.real .vf {x | iVF x ∧ iRv x = t.val} := by
-    simpa only [Set.mem_singleton_iff] using
-      htNamed.rv_preimage
-  have hUd : DefinableAt B.real .vf U := hD.inter hpre
-  have hUf : U.Finite := hDf.subset Set.inter_subset_left
-  have haU : a.val.val ∈ U := ⟨haD, a.val.property, congrArg Subtype.val ha⟩
-  let U' : Set (VFType (M := M)) := Subtype.val ⁻¹' U
-  have hUf' : U'.Finite := hUf.preimage Subtype.val_injective.injOn
-  let F := hUf'.toFinset
-  have hFmem (x : VFType (M := M)) : x ∈ F ↔ x.val ∈ U := by
-    exact hUf'.mem_toFinset
-  have hne : F.Nonempty := ⟨a.val, (hFmem _).mpr haU⟩
-  have himage : Subtype.val '' (F : Set (VFType (M := M))) = U := by
-    ext x
-    constructor
-    · rintro ⟨y, hy, rfl⟩
-      exact (hFmem y).mp hy
-    · intro hx
-      exact ⟨⟨x, hUd.2 hx⟩, (hFmem _).mpr hx, rfl⟩
-  have hmeanDef := finite_mean_definable_base h00 B F
-    (real_definableAtBase B .vf _ (himage.symm ▸ hUd))
-  have hmeanB : normalizedMean F ∈ B.real := by
-    have hm : normalizedMean F ∈ (closureBase B).real := ⟨.vf, hmeanDef⟩
-    rw [hclosed] at hm
-    exact hm
-  obtain ⟨O, hO⟩ := rvFibre_openBall t ht0
-  have hmean := OpenBallCodes.normalized_mean_mem h00 O F hne (by
-    intro x hx
-    apply (hO x).mpr
-    exact Subtype.ext ((hFmem x).mp hx).2.2)
-  have hmeanVF : iVF (normalizedMean F) :=
-    OpenBallCodes.underlying_subset_vf O hmean
-  exact ⟨⟨normalizedMean F, hmeanVF⟩, hmeanB, (hO _).mp hmean⟩
+  obtain ⟨x, hx, hxt⟩ := definable_rv_representative_of_algebraic_lift h00 B.real t htB ht0 a.val ha haAlg
+  refine ⟨x, ?_, hxt⟩
+  have hx' : x.val ∈ (closureBase B).real := ⟨.vf, real_definableAtBase B .vf _ hx⟩
+  rwa [hclosed] at hx'
 
 end SpecialTransformations.Section7

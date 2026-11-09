@@ -1,12 +1,16 @@
 # Section 9: Differentiation
 
-Existing section-specific files and any earlier scaffolds were moved here
-unchanged. This is an organization step, not a claim that Section 9
-is formalized or that these sources compile in the current environment.
+The active entry point is [Library.lean](Library.lean). Work starts from
+the [published library through Section 8](https://github.com/daviddhilbert/special-transformations/tree/32d7815b7a58624a620abb9d6423721b7e094520).
+[STATUS.md](STATUS.md) records the Lean checks, exact hypotheses, and open obligations.
+[LEMMA-9.15.md](LEMMA-9.15.md) gives the arity-two obstruction, the
+corrected RV comparison proof and the separate Gamma descent statement.
+`GaussGraphConstruction.lean` supplies the shared graph-field input
+for these results and 9.16 from the authorized finite-extension
+reference in `FiniteHenselianExtensionReference`.
 
-The next task is [Section 3 and the remaining Section 2 material](../Section3/HANDOFF.md).
-Do not bulk-import these legacy snapshots into the active library. Audit
-their paper statements, parameters, explicit hypotheses, placeholders and
-actual dependencies before reuse. Old headers describe historical states.
+`Sec9Limits.lean`, `Sec9AE.lean` and `LegacyScaffold/` are historical
+snapshots outside the active entry point. Their hypotheses and old
+headers require review before reuse.
 
 See `../Archive/MOVE-INDEX.json` for old paths and initial content hashes.

@@ -57,16 +57,22 @@ Section 8 has a separate [entry point](Section8/Library.lean) and
 [status](Section8/STATUS.md) covering its structural results and recording
 their exact scope, including the explicit henselization inputs.
 
+Section 9's [entry point](Section9/Library.lean) covers limits,
+differentiation and Jacobians in the approved finite-volume scope.
+Its [status](Section9/STATUS.md) records the corrections to the paper
+and the explicit finite henselian extension reference.
+
 ## Build and inspect
 
 Lean 4.33.1 and the matching Mathlib revision are pinned. `lake build` builds
 the coordination root, which imports the completed `ACVFQE` library and the
-Section 3 through Section 8 entry points. Legacy
+Section 3 through Section 9 entry points. Legacy
 section snapshots are deliberately not imported into that root automatically.
 
 ```sh
 lake exe cache get
 lake build
+lake env python3 scripts/verify_ci.py section9
 python3 Archive/inspect_legacy.py --check-moves
 python3 Archive/inspect_legacy.py --plan Section3/Sec3Fibre.lean
 ```

@@ -370,11 +370,11 @@ theorem liftedGraph_isAmbientLift (e : U ≅ V)
       subst u''
       exact (Prod.ext hpu.symm hu'.symm).trans hcu.symm
 
-theorem rvLift_isomorphic_of_volume_lift (e : U ≅ V)
+theorem exists_liftMap_of_volume_lift (e : U ≅ V)
     (A : Set (Fin (k + k) → M)) (hA : S.Definable LRV A)
-    (hgood : rawVolumeCorrespondence e.hom.map ⊆ rawLiftDomain A)
-    (Δ : Space LRV M) :
-    Nonempty ((rvLiftObject Δ U).obj ≅ (rvLiftObject Δ V).obj) := by
+    (hgood : rawVolumeCorrespondence e.hom.map ⊆ rawLiftDomain A) :
+    ∃ f : Map (rvLift U) (rvLift V), Function.Bijective f ∧
+      ∀ p : rvLift U, liftedGraph e.hom.map A p.val (f p).val := by
   let R := liftedGraph e.hom.map A
   have hd := liftedGraph_definable e.hom.map A hA
   have hdom : ∀ p q, R p q → p ∈ (rvLift U).carrier ∧ q ∈ (rvLift V).carrier :=
@@ -397,6 +397,14 @@ theorem rvLift_isomorphic_of_volume_lift (e : U ≅ V)
       obtain ⟨p, hp, _⟩ := liftedGraph_existsUnique_left e A hgood q
       let p' : rvLift U := ⟨p, hp.1⟩
       exact ⟨p', Subtype.ext (huniq p (f p').val q.val (hf p') hp)⟩
+  exact ⟨f, hb, hf⟩
+
+theorem rvLift_isomorphic_of_volume_lift (e : U ≅ V)
+    (A : Set (Fin (k + k) → M)) (hA : S.Definable LRV A)
+    (hgood : rawVolumeCorrespondence e.hom.map ⊆ rawLiftDomain A)
+    (Δ : Space LRV M) :
+    Nonempty ((rvLiftObject Δ U).obj ≅ (rvLiftObject Δ V).obj) := by
+  obtain ⟨f, hb, _⟩ := exists_liftMap_of_volume_lift e A hA hgood
   exact ⟨DefinableSetCat.isoOfBijective (A := (rvLiftObject Δ U).obj)
     (B := (rvLiftObject Δ V).obj) f hb⟩
 

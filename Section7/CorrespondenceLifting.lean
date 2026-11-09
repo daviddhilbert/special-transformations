@@ -108,7 +108,9 @@ theorem exists_originalPolynomial_for_coordinate {κ : Cardinal} (hκ : Cardinal
     rw [map_rename]
     exact pderiv_rename_eq_zero_of_notMem_range g (notMem_range_appendCoordinate f i hi hj hji) _
 
-theorem exists_correspondence_local_polynomials {κ : Cardinal} (hκ : Cardinal.aleph0 ≤ κ)
+/-- A finite-to-finite RV correspondence has local lifting equations with
+weights and simple Jacobian blocks over the same coefficient field. -/
+theorem exists_correspondence_weighted_local_polynomials {κ : Cardinal} (hκ : Cardinal.aleph0 ≤ κ)
     (hsat : Saturated M κ) (h00 : M ⊨ Axioms.ACVF00)
     (B : Base (M := M)) (hsmall : Cardinal.mk B.real < κ) (hB : VFGammaGeneratedBase B)
     (v : Valuation (VFType (M := M)) Γ)
@@ -120,8 +122,15 @@ theorem exists_correspondence_local_polynomials {κ : Cardinal} (hκ : Cardinal.
     {b : Fin n → M | productTuple (raw ∘ t) b ∈ C}.Finite →
     {a : Fin n → M | productTuple a (raw ∘ s) ∈ C}.Finite →
     let E := vfDefinableClosureFieldBase B
-    ∃ H : Fin n → MvPolynomial (Fin (n + n)) E,
-      FibreBijection v {p | ∀ i, ((H i).map E.subtype).eval (productTuple p.1 p.2) = 0} t s := by
+    ∃ (H : Fin n → MvPolynomial (Fin (n + n)) E) (w : Fin n → Γ),
+      let u := productTuple t s
+      let Z := fun i => (H i).map E.subtype
+      (∀ i, IsGammaPolynomial v (fun j => _root_.RVCalc.vrv v (u j)) (w i) (Z i)) ∧
+      ¬ IsResidueRoot v u (jacobianValue (fun j => _root_.RVCalc.vrv v (t j)) w)
+        (partialJacobianPolynomial (productLeft n n) Z) ∧
+      ¬ IsResidueRoot v u (jacobianValue (fun j => _root_.RVCalc.vrv v (s j)) w)
+        (partialJacobianPolynomial (productRight n n) Z) ∧
+      FibreBijection v {p | ∀ i, (Z i).eval (productTuple p.1 p.2) = 0} t s := by
   classical
   intro raw hab hright hleft
   let L := productLeft n n
@@ -156,10 +165,30 @@ theorem exists_correspondence_local_polynomials {κ : Cardinal} (hκ : Cardinal.
     exists_originalPolynomial_for_coordinate hκ hsat h00 B hsmall hB v hv R (L i) (hL i) u hu (halgL i)
   letI : IsAlgClosed (VFType (M := M)) := VFAlgClosed.isAlgClosed_vfType
   letI : CharZero (ResidueField v.valuationSubring) := residueField_charZero_of_model00 v hv h00
-  exact exists_localPolynomialSystem v (vfDefinableClosureFieldBase B) t s ht hs α β F G
-    hF hG hrF hrG hdF hdG
-    (fun i j h => hoF i (R j) (hR j) (fun he => h ((R.injective he).symm)))
-    (fun i j h => hoG i (L j) (hL j) (fun he => h ((L.injective he).symm)))
+  simpa only [productTuple_left, productTuple_right] using
+    exists_weightedLocalPolynomialSystem v (vfDefinableClosureFieldBase B) t s ht hs α β F G
+      hF hG hrF hrG hdF hdG
+      (fun i j h => hoF i (R j) (hR j) (fun he => h ((R.injective he).symm)))
+      (fun i j h => hoG i (L j) (hL j) (fun he => h ((L.injective he).symm)))
+
+theorem exists_correspondence_local_polynomials {κ : Cardinal} (hκ : Cardinal.aleph0 ≤ κ)
+    (hsat : Saturated M κ) (h00 : M ⊨ Axioms.ACVF00)
+    (B : Base (M := M)) (hsmall : Cardinal.mk B.real < κ) (hB : VFGammaGeneratedBase B)
+    (v : Valuation (VFType (M := M)) Γ)
+    (hv : ∀ x y : VFType (M := M), VFValued.predV x y ↔ v x ≤ v y)
+    {n : ℕ} (C : Set (Fin (n + n) → M)) (hC : DefinableOverBase B (fun _ => .rv) C)
+    (t s : Fin n → _root_.RVCalc.RV v) (ht : ∀ i, t i ≠ none) (hs : ∀ i, s i ≠ none) :
+    let raw := fun u => (CanonicalRV.equiv v hv u).val
+    productTuple (raw ∘ t) (raw ∘ s) ∈ C →
+    {b : Fin n → M | productTuple (raw ∘ t) b ∈ C}.Finite →
+    {a : Fin n → M | productTuple a (raw ∘ s) ∈ C}.Finite →
+    let E := vfDefinableClosureFieldBase B
+    ∃ H : Fin n → MvPolynomial (Fin (n + n)) E,
+      FibreBijection v {p | ∀ i, ((H i).map E.subtype).eval (productTuple p.1 p.2) = 0} t s := by
+  intro raw hab hright hleft
+  obtain ⟨H, w, h⟩ := exists_correspondence_weighted_local_polynomials hκ hsat h00 B hsmall hB
+    v hv C hC t s ht hs hab hright hleft
+  exact ⟨H, h.2.2.2⟩
 
 end SpecialTransformations.Section7
 

@@ -44,6 +44,8 @@ mathematical strategy; old proof orders and status counts are not verification.
   results in Engler--Prestel's *Valued Fields* may be used as explicitly stated
   hypotheses under the author's authorization. Do not silently turn citations
   to Yin's other paper into proved inputs. Prefer existing checked proofs.
+- The author has given standing approval to use the Stacks Project and its
+  Lean formalization. Record the tags and preserve source attribution.
 - Use genuine small-parameter saturation and homogeneity, not a structure
   bundling the desired paper lemmas as its definition of saturation.
 - Survey existing formalizations before rebuilding a substantial prerequisite;

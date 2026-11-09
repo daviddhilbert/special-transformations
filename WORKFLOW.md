@@ -117,7 +117,10 @@ Review this workaround when updating the dependency pin.
 
 The workflow builds the pinned project root and audits the published QE
 headline types and axioms. It runs the Section 3, Section 4, Section 5 and Section 7 verifiers when
-they are present in the checked-out revision. It retains logs, audits and status
+they are present in the checked-out revision. The Section 9 audit imports
+the integrated library, prints the definitions and headline types, and
+checks the axiom allowlist with `lake env python3 scripts/verify_ci.py section9`.
+It retains logs, audits and status
 records as downloadable artifacts, including available diagnostics on failure.
 The run summary records these separate step outcomes.
 
