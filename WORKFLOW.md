@@ -77,7 +77,9 @@ using it. A verified result requires:
 Record commands, compiler and dependency versions, source identity, exit
 status, headline type and axiom output. Distinguish fresh builds from reused
 artifacts and selected-module checks from wider integration checks. Cached
-evidence requires matching source and dependency fingerprints. Broaden checks
+evidence requires matching source and dependency fingerprints. Record compiler
+warnings separately from exit status. Flag any remaining conditional or
+partial result in the section status and public coverage summary. Broaden checks
 when failures, changed interfaces or unresolved concerns justify it.
 
 ## 6. Record and hand off
@@ -108,12 +110,10 @@ Stop at a requested handoff; otherwise continue the authorized objective.
 and manual dispatch after it is published to GitHub. Runs appear under
 **Actions**; commits themselves appear in the repository's commit history.
 
-The pinned QE release declares only its root module in Lake, although its
-proofs use sibling module names. `scripts/prepare_ci.py` registers all shipped
-proof modules as library roots in the CI checkout before the build. It checks
-the exact dependency revision, leaves every Lean source unchanged, and saves
-source hashes and the configuration change in the verification artifact.
-Review this workaround when updating the dependency pin.
+The pinned QE release declares its proof modules as Lake roots.
+The Python 3.11+ script `scripts/prepare_ci.py` checks the exact dependency
+revision and its module registration, then records the proof source hashes
+in the verification artifact.
 
 The workflow builds the pinned project root and audits the published QE
 headline types and axioms. It runs the Section 3, Section 4, Section 5 and Section 7 verifiers when
@@ -122,7 +122,9 @@ the integrated library, prints the definitions and headline types, and
 checks the axiom allowlist with `lake env python3 scripts/verify_ci.py section9`.
 It retains logs, audits and status
 records as downloadable artifacts, including available diagnostics on failure.
-The run summary records these separate step outcomes.
+The source build uses four Lean threads. The audit driver runs up to four
+independent verifiers concurrently against the same completed Lake build.
+Each verifier retains its own logs and result in the run summary.
 
 The Section 5 verifier resolves the accepted earlier compiled import closure
 with Lean, records provider paths and artifact hashes, and binds cache reuse

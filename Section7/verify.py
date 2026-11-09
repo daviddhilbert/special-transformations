@@ -43,12 +43,12 @@ def write_json(path, data):
     path.write_text(json.dumps(data, indent=2) + '\n')
 
 version = subprocess.check_output(['lean', '--version'], text=True).strip()
-if '4.33.1' not in version or (ROOT / 'lean-toolchain').read_text().strip() != 'leanprover/lean4:v4.33.1':
+if '4.35.0' not in version or (ROOT / 'lean-toolchain').read_text().strip() != 'leanprover/lean4:v4.35.0':
     raise RuntimeError('Incorrect Lean toolchain: ' + version)
 manifest = json.loads((ROOT / 'lake-manifest.json').read_text())
 expected = {
-    'mathlib': ('0df444a360eaa60ab8c11dca51a86af692955474', 'https://github.com/leanprover-community/mathlib4.git'),
-    'acvf_qe': ('f3ef4ee679f921079aa8f742a2807a9cc724d2d6', 'https://github.com/daviddhilbert/ACVF-QE.git'),
+    'mathlib': ('56a005855ea17e0b0958f73ec801ae140b0a1679', 'https://github.com/leanprover-community/mathlib4.git'),
+    'acvf_qe': ('848d9a57cbb945258db5fbf99b859173e7b43ac2', 'https://github.com/daviddhilbert/ACVF-QE.git'),
 }
 pin_rows = []
 for name, (revision, url) in expected.items():

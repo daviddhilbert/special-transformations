@@ -191,7 +191,7 @@ theorem henselian_Spoint_lift
       StandardEtalePair.HasMap.isUnit_derivative_f pres.P pres.hasMap
     rw [ha₀, Polynomial.aeval_algHom_apply]
     exact (hu.map φh).ne_zero
-  have hTFAE := (HenselianLocalRing.TFAE S).out 0 1
+  have hTFAE := (HenselianLocalRing.TFAE S).out 1 2
   obtain ⟨x, hxroot, hxres⟩ :=
     (hTFAE.mp ‹HenselianLocalRing S›) pres.P.f pres.P.monic_f a₀ hroot hsimple
   have hHasMapx : pres.P.HasMap x := by

@@ -307,7 +307,7 @@ private theorem hensel_section {R : Type*} [CommRing R] [HenselianLocalRing R]
     have hz : Polynomial.aeval x₀ (P.g ^ k) = 0 := by rw [← hcond]; simp [hd, hf0]
     rw [map_pow] at hz; exact (hgu.pow k).ne_zero hz
   have H := HenselianLocalRing.TFAE R
-  have hb := (H.out 0 1).mp (by infer_instance)
+  have hb := (H.out 1 2).mp (by infer_instance)
   obtain ⟨a, haroot, harez⟩ := hb P.f P.monic_f x₀ hf0 hderiv
   refine ⟨a, ⟨haroot, ?_⟩, harez⟩
   apply isUnit_of_residue; rw [residue_aeval, harez]; exact hgu

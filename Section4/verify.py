@@ -29,8 +29,8 @@ atexit.register(lambda: (BUILD / 'status.txt').write_text('FAIL\n')
     if (BUILD / 'status.txt').read_text().strip() == 'RUNNING' else None)
 signal.signal(signal.SIGTERM, lambda signum, frame: sys.exit(128 + signum))
 version = subprocess.check_output(['lean', '--version'], text=True).strip()
-if '4.33.1' not in version:
-    raise RuntimeError('Expected Lean 4.33.1, got: ' + version)
+if '4.35.0' not in version:
+    raise RuntimeError('Expected Lean 4.35.0, got: ' + version)
 project_env = os.environ.copy()
 env = dict(project_env, LEAN_PATH=str(LIB) + os.pathsep + project_env.get('LEAN_PATH', ''))
 

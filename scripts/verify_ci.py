@@ -2,11 +2,14 @@
 """Audit published headlines after `lake build`; run with `lake env python3`."""
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 
 ROOT = Path(__file__).resolve().parent.parent
 QE_HEADLINES = [
@@ -14,6 +17,10 @@ QE_HEADLINES = [
     'hasQE_ACVF_val',
     'hasQEb_ACVF_val',
     'SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination',
+    'ValPM.hasQE_ACVF_trivial_val',
+    'ValPM.hasQEb_ACVF_trivial_val',
+    'SpecialTransformations.TrivialRV.canonical_trivial_rv_qe',
+    'SpecialTransformations.TrivialRV.hasQE',
 ]
 SECTION9_HEADLINES = [
     'lemma_9_2',
@@ -62,10 +69,57 @@ SECTION9_SUPPORT_HEADLINES = [
 ALLOWED = {'propext', 'Classical.choice', 'Quot.sound'}
 
 
+def run_workflow_audits():
+    """Run independent verifiers against the same completed Lake build."""
+    checks = {
+        'foundation': ('scripts/verify_ci.py', 'qe'),
+        'section3': ('Section3/verify.py',),
+        'section4': ('Section4/verify.py',),
+        'section5': ('Section5/verify.py',),
+        'section7': ('Section7/verify.py',),
+        'section9': ('scripts/verify_ci.py', 'section9'),
+    }
+    out = ROOT / '.scratch' / 'ci-verified'
+    out.mkdir(parents=True, exist_ok=True)
+    env = dict(os.environ, LEAN_NUM_THREADS='1', PYTHONUNBUFFERED='1')
+
+    def run(label, args):
+        if not (ROOT / args[0]).is_file():
+            return 'skipped', 0.0
+        started = time.monotonic()
+        with (out / (label + '.log')).open('w', encoding='utf-8') as log:
+            result = subprocess.run([sys.executable, *args], cwd=ROOT, env=env,
+                                    stdout=log, stderr=subprocess.STDOUT)
+        return ('success' if result.returncode == 0 else 'failure',
+                time.monotonic() - started)
+
+    outcomes = {}
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futures = {pool.submit(run, label, args): label for label, args in checks.items()}
+        for future in as_completed(futures):
+            label = futures[future]
+            outcome, seconds = future.result()
+            outcomes[label] = outcome
+            print(f'{label}: {outcome} ({seconds:.1f}s)', flush=True)
+            if outcome == 'failure':
+                lines = (out / (label + '.log')).read_text(encoding='utf-8', errors='replace').splitlines()
+                for line in lines[-40:]:
+                    print('  ' + line, flush=True)
+
+    output = os.environ.get('GITHUB_OUTPUT')
+    if output:
+        with Path(output).open('a', encoding='utf-8') as stream:
+            for label in checks:
+                stream.write(f'{label}={outcomes[label]}\n')
+    return int('failure' in outcomes.values())
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('scope', choices=('qe', 'section9'), nargs='?', default='qe')
+    parser.add_argument('scope', choices=('qe', 'section9', 'all'), nargs='?', default='qe')
     args = parser.parse_args()
+    if args.scope == 'all':
+        return run_workflow_audits()
     if args.scope == 'section9':
         label = 'Section 9'
         out = ROOT / '.scratch' / 'section9-verified'
@@ -123,7 +177,7 @@ def main():
 
 if __name__ == '__main__':
     try:
-        main()
+        raise SystemExit(main())
     except Exception as exc:
         print(str(exc), file=sys.stderr)
         raise SystemExit(1)

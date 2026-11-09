@@ -94,7 +94,7 @@ permitted axioms. The logs and source and artifact hashes are in
 `.scratch/section9/publication/`. The clean repository-wide build is a
 separate GitHub Actions check.
 
-Section 9 uses Lean 4.33.1 at `819816b2e0a3bf405af45ae5c7af2491d8f5bee6`,
+The original Section 9 publication used Lean 4.33.1 at `819816b2e0a3bf405af45ae5c7af2491d8f5bee6`,
 Mathlib at `0df444a360eaa60ab8c11dca51a86af692955474`, and ACVF-QE at
 `f3ef4ee679f921079aa8f742a2807a9cc724d2d6`. The library import and
 headline checks passed on November 8 under these pins. The local

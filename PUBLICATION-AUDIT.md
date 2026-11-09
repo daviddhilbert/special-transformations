@@ -1,5 +1,34 @@
 # Publication audit
 
+## Lean 4.35.0 migration review
+
+The QE package builds with Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`.
+The fresh QE scope audit checked 13 complete types and axiom reports. The
+declaration-wide audit checked 3,998 declarations across all 85 package
+modules against the three permitted axioms. The ordinary and RV languages
+each have separate trivial and nontrivial valuation results. The audit
+unfolded the theories and checked the quantifier order of `HasQE`.
+
+The package removes the old unused C-minimality placeholder. The checked
+theorem is in Section 3. The two `ValOneEC` polynomial interfaces retain
+their types and use Mathlib's `Polynomial.monic_of_natDegree_le_of_coeff_eq_one`
+and `Polynomial.lifts_and_natDegree_eq_and_monic`. These are small adapters
+to the existing Mathlib results.
+
+The eleven licensed Section 9 Stacks files were compared with upstream
+revision `5ed82d14634e8d9576bb844c7bd4e3da66d450e7` and compiled on the matching
+pins. The two index changes restore the upstream calls to Mathlib's
+one-based `TFAE.out`. The types and axiom reports of the 04GN existence result
+and the 04GS map, locality, and uniqueness were checked. The finite henselian
+extension premise used by Section 9 remains a separate Engler–Prestel input.
+See [Section 9 status](Section9/STATUS.md).
+
+The QE Lake build recorded 344 warning lines, including module-system,
+deprecation, and other linter diagnostics. These warnings are a separate
+quality measure from the compiler exit and axiom checks. The review covered
+the two reused Mathlib polynomial results and the two imported Stacks tags.
+[Kim Morrison's critique](https://kim-em.github.io/blog/2026-11-5-axioms-formalization-of-the-stacks-project/)
+
 ## Library through Section 8
 
 The current library imports the active Section 3 through Section 8

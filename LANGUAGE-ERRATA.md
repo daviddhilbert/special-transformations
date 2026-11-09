@@ -88,12 +88,12 @@ the released theory. [Released RV linkage axioms](https://github.com/daviddhilbe
 ## Trivial valuations and QE
 
 The author confirmed that the intended QE statement has separate
-trivially valued and nontrivially valued cases. The published RV
-theorem supplies the nontrivially valued case. In the trivial case
+trivially valued and nontrivially valued cases. The nontrivial RV
+theorem is `theorem_2_3_quantifier_elimination`. In the trivial case
 with the intended quotient and residue operations, RV is the field in
-a second copy and QE reduces to ACF. The local QE checkout proves
-`canonical_trivial_rv_qe` for these canonical structures in every
-characteristic. The published revision contains the nontrivial branch.
+a second copy and QE reduces to ACF. The QE dependency proves
+`TrivialRV.canonical_trivial_rv_qe` for these canonical structures in every
+characteristic and `TrivialRV.hasQE` for their common sentence theory.
 [Released theory](https://github.com/daviddhilbert/ACVF-QE/blob/f3ef4ee679f921079aa8f742a2807a9cc724d2d6/Proofs/Enc.lean#L1478)
 
 The two statements are separate. Uniform QE for their union would fail in the current language.

@@ -23,8 +23,8 @@ BUILD.mkdir(parents=True, exist_ok=True)
 (BUILD / 'status.txt').write_text('RUNNING\n')
 (LIB / 'Section3').mkdir(parents=True, exist_ok=True)
 version = subprocess.check_output(['lean', '--version'], text=True).strip()
-if '4.33.1' not in version:
-    raise RuntimeError('Expected pinned Lean 4.33.1: ' + version)
+if '4.35.0' not in version:
+    raise RuntimeError('Expected pinned Lean 4.35.0: ' + version)
 modules, visiting = [], set()
 def visit(module):
     if module in modules:

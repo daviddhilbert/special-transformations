@@ -8,8 +8,6 @@ Apache 2.0 license is in [LICENSE](LICENSE). They supply the filtered
 property. [Stacks 04GN](https://stacks.math.columbia.edu/tag/04GN),
 [Stacks 04GS](https://stacks.math.columbia.edu/tag/04GS).
 
-The port targets this repository's Lean 4.33.1 and Mathlib pin. It
-removes an unused tactic import unavailable under the pin, makes one
-augmentation cocone naturality equality explicit, and uses the pinned
-indices of `HenselianLocalRing.TFAE`. The port uses the upstream Lean
-module names to preserve the dependency layout.
+The port uses Lean 4.35.0 and the matching upstream Mathlib revision.
+It omits an unused tactic import and makes one augmentation cocone
+naturality equality explicit. The Lake library keeps the original module names.

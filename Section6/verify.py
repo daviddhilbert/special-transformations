@@ -24,7 +24,7 @@ BUILD.mkdir(parents=True, exist_ok=True)
 env = os.environ.copy()
 env['LEAN_PATH'] = str(LIB) + os.pathsep + env.get('LEAN_PATH', '')
 version = subprocess.check_output(['lean', '--version'], text=True).strip()
-if '4.33.1' not in version:
+if '4.35.0' not in version:
     raise RuntimeError('Wrong Lean version: ' + version)
 
 def sha(path):
@@ -39,8 +39,8 @@ def save(path, value):
 
 manifest = json.loads((ROOT / 'lake-manifest.json').read_text())
 pins = {p['name']: p['rev'] for p in manifest['packages']}
-assert pins['mathlib'] == '0df444a360eaa60ab8c11dca51a86af692955474'
-assert pins['acvf_qe'] == 'f3ef4ee679f921079aa8f742a2807a9cc724d2d6'
+assert pins['mathlib'] == '56a005855ea17e0b0958f73ec801ae140b0a1679'
+assert pins['acvf_qe'] == '848d9a57cbb945258db5fbf99b859173e7b43ac2'
 pin_key = sha(ROOT / 'lean-toolchain') + sha(ROOT / 'lake-manifest.json')
 cache_path = BUILD / 'cache.json'
 cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}

@@ -5,7 +5,7 @@ Yimu Yin, APAL (2010), [arXiv:1006.2467](https://arxiv.org/abs/1006.2467).
 This repository is now a thin coordination project for formalizing the paper
 section by section. The completed ACF/ACVF/RV quantifier-elimination proofs
 live in [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE), pinned here at
-`f3ef4ee679f921079aa8f742a2807a9cc724d2d6`.
+`848d9a57cbb945258db5fbf99b859173e7b43ac2`.
 
 The RV QE result uses the corrected language with a named RV inverse. The
 author confirmed that the omission of inverse symbols before Convention 2.5
@@ -22,11 +22,11 @@ QE is finished and is a dependency of this work.
 
 | Folder | Scope |
 | --- | --- |
-| [Section3/](Section3/README.md) | Next task; structural properties and remaining Section 2 preliminaries |
+| [Section3/](Section3/README.md) | Structural properties and remaining Section 2 preliminaries |
 | [Section4/](Section4/README.md) | Dimensions, definable categories, and Grothendieck constructions |
 | [Section5/](Section5/README.md) | RV-pullbacks and special bijections |
 | [Section6/](Section6/README.md) | Henselian-field QE and descent |
-| [Section7/](Section7/README.md) | Lifting functions; checked foundations, main lifting results open |
+| [Section7/](Section7/README.md) | Lifting functions and Jacobians through Corollary 7.7 |
 | Section8/ | Further structural properties |
 | Section9/ | Differentiation |
 | Section10/ | Categories with volume forms |
@@ -59,12 +59,14 @@ their exact scope, including the explicit henselization inputs.
 
 Section 9's [entry point](Section9/Library.lean) covers limits,
 differentiation and Jacobians in the approved finite-volume scope.
-Its [status](Section9/STATUS.md) records the corrections to the paper
-and the explicit finite henselian extension reference.
+The positive-arity results for Lemma 9.15, Theorem 9.16, and intrinsic
+Gamma descent use the named Engler–Prestel finite-extension premise.
+The [Section 9 status](Section9/STATUS.md) records that premise and the
+author-approved corrections to the paper.
 
 ## Build and inspect
 
-Lean 4.33.1 and the matching Mathlib revision are pinned. `lake build` builds
+Lean 4.35.0 and the matching Mathlib revision are pinned. `lake build` builds
 the coordination root, which imports the completed `ACVFQE` library and the
 Section 3 through Section 9 entry points. Legacy
 section snapshots are deliberately not imported into that root automatically.

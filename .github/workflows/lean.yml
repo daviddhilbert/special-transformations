@@ -35,21 +35,21 @@ jobs:
         id: setup
         shell: bash
         run: |
-          if [[ $(<lean-toolchain) != leanprover/lean4:v4.33.1 ]]; then
+          if [[ $(<lean-toolchain) != leanprover/lean4:v4.35.0 ]]; then
             echo "Update the release asset and checksum for the new Lean pin."
             exit 1
           fi
-          archive="$RUNNER_TEMP/lean-4.33.1-linux.tar.zst"
+          archive="$RUNNER_TEMP/lean-4.35.0-linux.tar.zst"
           # The release API serves the official archive when the release-page
           # download route times out.
           curl --fail --silent --show-error --location --retry 4 --connect-timeout 15 \
             --max-time 600 --header 'Accept: application/octet-stream' \
-            --output "$archive" https://api.github.com/repos/leanprover/lean4/releases/assets/523687465
-          printf '%s  %s\n' 890afd185370f85666025b883914ab4f4b339136f8c96167b69cfb62aecaf235 "$archive" |
+            --output "$archive" https://api.github.com/repos/leanprover/lean4/releases/assets/634574462
+          printf '%s  %s\n' 7289597a44543246c9227b8cae501767e095ce17f6d448b95fc4a8dc97268f6d "$archive" |
             sha256sum --check --strict
           tar --zstd -xf "$archive" -C "$RUNNER_TEMP"
           rm "$archive"
-          toolchain="$RUNNER_TEMP/lean-4.33.1-linux/bin"
+          toolchain="$RUNNER_TEMP/lean-4.35.0-linux/bin"
           "$toolchain/lean" --version
           "$toolchain/lake" --version
           echo "$toolchain" >> "$GITHUB_PATH"
@@ -59,7 +59,7 @@ jobs:
           MATHLIB_CACHE_GET_URL: https://cache.mathlib.org/mathlib4
         run: lake exe cache get
 
-      - name: Register the pinned QE package's sibling modules
+      - name: Check the pinned QE package's module registration
         run: python3 scripts/prepare_ci.py
 
       - name: Check compiled import cache provenance
@@ -68,39 +68,17 @@ jobs:
 
       - name: Build the pinned project from source
         id: build
+        env:
+          LEAN_NUM_THREADS: "4"
         shell: bash
         run: |
           mkdir -p .scratch/ci-verified
           lake -R build 2>&1 | tee .scratch/ci-verified/Build.log
 
-      - name: Audit published QE headline types and axioms
-        id: foundation
-        run: lake env python3 scripts/verify_ci.py
-
-      - name: Audit Section 3 when its verifier is present
-        id: section3
-        if: ${{ success() && hashFiles('Section3/verify.py') != '' }}
-        run: lake env python3 Section3/verify.py
-
-      - name: Audit Section 4 when its verifier is present
-        id: section4
-        if: ${{ success() && hashFiles('Section4/verify.py') != '' }}
-        run: lake env python3 Section4/verify.py
-
-      - name: Audit Section 5 when its verifier is present
-        id: section5
-        if: ${{ !cancelled() && steps.build.outcome == 'success' && hashFiles('Section5/verify.py') != '' }}
-        run: lake env python3 Section5/verify.py
-
-      - name: Audit Section 7 when its verifier is present
-        id: section7
-        if: ${{ !cancelled() && steps.build.outcome == 'success' && hashFiles('Section7/verify.py') != '' }}
-        run: lake env python3 Section7/verify.py
-
-      - name: Audit Section 9
-        id: section9
+      - name: Run the headline audits concurrently
+        id: audits
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
-        run: lake env python3 scripts/verify_ci.py section9
+        run: lake env python3 scripts/verify_ci.py all
 
       - name: Publish verification summary
         if: ${{ always() }}
@@ -113,12 +91,12 @@ jobs:
           | --- | --- |
           | Pinned project build | ${{ steps.build.outcome }} |
           | Compiled import cache regression checks | ${{ steps.provenance.outcome }} |
-          | Published QE headline types and axioms | ${{ steps.foundation.outcome }} |
-          | Section 3 verifier, if present | ${{ steps.section3.outcome }} |
-          | Section 4 verifier, if present | ${{ steps.section4.outcome }} |
-          | Section 5 verifier, if present | ${{ steps.section5.outcome }} |
-          | Section 7 verifier, if present | ${{ steps.section7.outcome }} |
-          | Section 9 headline types and axioms | ${{ steps.section9.outcome }} |
+          | Published QE headline types and axioms | ${{ steps.audits.outputs.foundation || 'skipped' }} |
+          | Section 3 verifier, if present | ${{ steps.audits.outputs.section3 || 'skipped' }} |
+          | Section 4 verifier, if present | ${{ steps.audits.outputs.section4 || 'skipped' }} |
+          | Section 5 verifier, if present | ${{ steps.audits.outputs.section5 || 'skipped' }} |
+          | Section 7 verifier, if present | ${{ steps.audits.outputs.section7 || 'skipped' }} |
+          | Section 9 headline types and axioms | ${{ steps.audits.outputs.section9 || 'skipped' }} |
 
           Download the verification artifact for compiler logs and headline audits.
           A skipped step is not a passed check. This run covers the current library

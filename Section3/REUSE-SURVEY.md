@@ -24,7 +24,8 @@ discovery and source inspection; compiler evidence is recorded separately.
 - `LocalAssembly.fullQE` and `CanonicalStructure.sortedQF_*` provide the
   raw-to-sorted unary definability bridge on canonical tagged structures.
   This avoids rebuilding QE or assuming a closure-identification principle.
-- Do not use `Enc.theorem_2_8_c_minimal`: its proof contains `sorry`.
+- The older QE pin carried an unused C-minimality placeholder. The checked
+  theorem is `Section3.theorem_2_8_c_minimal`.
 - Existing package verification artifacts have matching source and the pinned
   checkout is clean. A fresh root import passed locally in WSL this session.
   This is not a fresh build of all 81 package modules.
