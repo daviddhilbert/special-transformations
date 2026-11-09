@@ -27,7 +27,11 @@ local notation "k" => ModelResidue M
 private theorem map_polynomialOfCoefficients {K L : Type} [Field K] [Field L] {a b : ℕ}
     (f : K →+* L) (s : Fin a → Fin b →₀ ℕ) (c : Fin a → K) :
     (polynomialOfCoefficients s c).map f = polynomialOfCoefficients s (f ∘ c) := by
-  simp only [polynomialOfCoefficients, map_sum, map_monomial, Function.comp_apply]
+  unfold polynomialOfCoefficients
+  calc
+    _ = ∑ i, (MvPolynomial.map f) (monomial (s i) (c i)) :=
+      map_sum (MvPolynomial.map (σ := Fin b) f) _ _
+    _ = _ := Finset.sum_congr rfl (fun i _ => map_monomial f (s i) (c i))
 
 theorem exists_chartValue_of_full_volumePair_dimension
     (hc : CanonicalStructure.IsCanonical (M := M)) (B : BaseContext M) (hn : 0 < n)
