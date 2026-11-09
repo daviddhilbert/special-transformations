@@ -13,7 +13,7 @@ rev = "56a005855ea17e0b0958f73ec801ae140b0a1679"
 [[require]]
 name = "acvf_qe"
 git = "https://github.com/daviddhilbert/ACVF-QE.git"
-rev = "848d9a57cbb945258db5fbf99b859173e7b43ac2"
+rev = "939346b0a99899e22a873479364e3cc5d142731c"
 
 [[lean_lib]]
 name = "SpecialTransformations"

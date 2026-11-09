@@ -40,7 +40,7 @@ def save(path, value):
 manifest = json.loads((ROOT / 'lake-manifest.json').read_text())
 pins = {p['name']: p['rev'] for p in manifest['packages']}
 assert pins['mathlib'] == '56a005855ea17e0b0958f73ec801ae140b0a1679'
-assert pins['acvf_qe'] == '848d9a57cbb945258db5fbf99b859173e7b43ac2'
+assert pins['acvf_qe'] == '939346b0a99899e22a873479364e3cc5d142731c'
 pin_key = sha(ROOT / 'lean-toolchain') + sha(ROOT / 'lake-manifest.json')
 cache_path = BUILD / 'cache.json'
 cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}

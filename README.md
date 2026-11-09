@@ -5,7 +5,7 @@ Yimu Yin, APAL (2010), [arXiv:1006.2467](https://arxiv.org/abs/1006.2467).
 This repository is now a thin coordination project for formalizing the paper
 section by section. The completed ACF/ACVF/RV quantifier-elimination proofs
 live in [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE), pinned here at
-`848d9a57cbb945258db5fbf99b859173e7b43ac2`.
+`939346b0a99899e22a873479364e3cc5d142731c`.
 
 The RV QE result uses the corrected language with a named RV inverse. The
 author confirmed that the omission of inverse symbols before Convention 2.5
