@@ -17,3 +17,8 @@ their paper statements, parameters, explicit hypotheses, placeholders and
 actual dependencies before reuse. Old headers describe historical states.
 
 See `../Archive/MOVE-INDEX.json` for old paths and initial content hashes.
+
+The active library verifies the positive-degree RV-valued and
+Gamma-valued forward lifts in Theorem 10.5.
+See [status](STATUS.md), [handoff](HANDOFF.md), and the
+[reuse survey](REUSE-SURVEY.md).

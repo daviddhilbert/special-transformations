@@ -759,3 +759,14 @@ globs = [
   "Section9.NestedGaussField",
   "Section9.OrdinaryHenselization",
 ]
+
+[[lean_lib]]
+name = "Section10"
+roots = ["Section10.Library"]
+globs = [
+  "Section10.EssentialVFMap",
+  "Section10.RVVolumeLift",
+  "Section10.RVVolumeRepresentative",
+  "Section10.WeightedJacobianLocus",
+  "Section10.GammaVolumeLift",
+]
