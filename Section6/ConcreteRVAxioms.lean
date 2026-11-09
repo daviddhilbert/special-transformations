@@ -50,7 +50,8 @@ theorem value_eq_zero {q : RVCalc.RV v} : RVCalc.vrv v q = 0 ↔ q = none := by
 
 theorem rvMul_assoc (p q r : RVCalc.RV v) :
     RVCalc.rvMul v (RVCalc.rvMul v p q) r = RVCalc.rvMul v p (RVCalc.rvMul v q r) := by
-  cases p <;> cases q <;> cases r <;> simp [RVCalc.rvMul, mul_assoc]
+  cases p <;> cases q <;> cases r <;> simp [RVCalc.rvMul]
+  exact mul_assoc (_ : RVCalc.RVUnit v) _ _
 
 theorem rvMul_comm (p q : RVCalc.RV v) : RVCalc.rvMul v p q = RVCalc.rvMul v q p := by
   cases p with

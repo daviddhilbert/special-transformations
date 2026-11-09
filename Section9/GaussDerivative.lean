@@ -42,7 +42,7 @@ theorem value_pderiv_le_of_gauss (v : Valuation K G) (x : ι → K)
   let s := d - Finsupp.single i 1
   have hs : v (s.prod fun j p => x j ^ p) ≤ 1 := by
     rw [Finsupp.prod, map_prod]
-    apply Finset.prod_le_one (fun _ _ => zero_le)
+    apply Finset.prod_le_one₀ (fun _ _ => zero_le)
     intro j _
     rw [map_pow]
     exact pow_le_one₀ zero_le (hx j)
@@ -112,7 +112,7 @@ theorem exists_same_value_of_gaussPolynomial (v : Valuation K G) (x : ι → K)
   rw [aeval_monomial, map_mul]
   have hprod : v (e.prod fun i m => x i ^ m) ≤ 1 := by
     rw [Finsupp.prod, map_prod]
-    apply Finset.prod_le_one (fun _ _ => zero_le)
+    apply Finset.prod_le_one₀ (fun _ _ => zero_le)
     intro i _
     rw [map_pow]
     exact pow_le_one₀ zero_le (hx i)

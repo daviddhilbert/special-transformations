@@ -56,7 +56,7 @@ theorem rvDim_parameter_invariant
       exact ⟨v i, rfl⟩
     have hrank := hTI.encard_le_eRk_of_subset hsub
     have hcard : (rvTupleRank hcan hex S a.val : ℕ∞) ≤ (Set.range (t ∘ v)).encard := by
-      simpa only [ENat.card_eq_coe_fintype_card, Fintype.card_fin] using htvinj.encard_range
+      simpa only [ENat.card_eq_coe_fintype_card, Fintype.card_fin] using htvinj.encard_range.ge
     have hrank' := hcard.trans hrank
     have hnat : rvTupleRank hcan hex S a.val ≤ rvTupleRank hcan hex T t := by
       have hfinite : rvTupleERank hcan hex T t ≠ ⊤ :=

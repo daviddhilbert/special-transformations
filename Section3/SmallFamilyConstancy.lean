@@ -136,7 +136,7 @@ abbrev AbsoluteValueGroup (M : Type) [LRV.Structure M] [M ⊨ Axioms.ACVF] :=
 The radius belongs to the actual restricted value group. -/
 def SmallUniform {α : Type} (D : Set α) (P : VFType (M := M) → α → Prop) : Prop :=
   ∃ r : (AbsoluteValueGroup M)ˣ, ∀ x : VFType (M := M), x ≠ 0 →
-    (Values.presentationValuation (M := M)).restrict x < r → ∀ y ∈ D, P x y
+    (Values.presentationValuation (M := M)).restrict x < r.val → ∀ y ∈ D, P x y
 
 theorem SmallUniform.of_forall {α : Type} {D : Set α} {P : VFType (M := M) → α → Prop}
     (hP : ∀ x, x ≠ 0 → ∀ y ∈ D, P x y) : SmallUniform D P :=
@@ -216,7 +216,7 @@ theorem homogeneous_polynomial {α : Type} (D : Set α)
   obtain ⟨r,hr⟩ := Valued.mem_nhds.mp hc
   refine ⟨r,?_⟩
   intro x hx hs y hy
-  have he := hr (show v.restrict (x-0) < r by simpa only [sub_zero] using hs)
+  have he := hr (show v.restrict (x-0) < r.val by simpa only [sub_zero] using hs)
   simpa only [Set.mem_setOf_eq,zpow_natCast] using he
 
 theorem nonzero_exponent_outside_residue {α : Type} (D : Set α)
@@ -849,7 +849,7 @@ theorem lemma_3_17_absolute (S : Set M)
     (hb : ∀ x : VFType (M := M), x ≠ 0 → ∀ ys ∈ f x, ∀ i, ys i ≠ 0 →
       (lo : AbsoluteValueGroup M) ≤ absoluteHom (ys i) ∧ absoluteHom (ys i) ≤ hi) :
     ∃ r : (AbsoluteValueGroup M)ˣ, ∀ x z : VFType (M := M), x ≠ 0 → z ≠ 0 →
-      Values.presentationValuation.restrict x < r → Values.presentationValuation.restrict z < r →
+      Values.presentationValuation.restrict x < r.val → Values.presentationValuation.restrict z < r.val →
         f x = f z := by
   obtain ⟨p,φ,hφ,hgraph⟩ := hdef
   obtain ⟨ψ,hq,hw,heq⟩ := theorem_2_3_quantifier_elimination
@@ -912,7 +912,7 @@ theorem lemma_3_17 (S : Set M)
   refine ⟨δ,?_⟩
   intro ε hδε x z hx hz hsx hsz
   have hδε' : δ.val ≤ ε.val := hδε
-  have hsmall (w : VFType (M := M)) (hw : ε.val < Values.vfValueHom w) : v.restrict w < r := by
+  have hsmall (w : VFType (M := M)) (hw : ε.val < Values.vfValueHom w) : v.restrict w < r.val := by
     have hh := lt_of_le_of_lt hδε' hw
     change Values.valueEquiv v hv (Values.vfValueHom w) < Values.valueEquiv v hv δ.val at hh
     rw [hδ] at hh

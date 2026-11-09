@@ -28,7 +28,7 @@ theorem perturbed_root_near_factor (v : Valuation K G) (s : Finset I) (t : Finse
   have hlower : v c * (∏ _i ∈ s, ε) ≤ v (c * ∏ i ∈ s, (y - a i)) := by
     rw [map_mul, map_prod]
     apply mul_le_mul_of_nonneg_left _ zero_le
-    apply Finset.prod_le_prod (fun _ _ => zero_le)
+    apply Finset.prod_le_prod₀ (fun _ _ => zero_le)
     intro i hi
     exact le_of_not_gt fun h => hnone ⟨i, hi, h⟩
   have he := eq_neg_of_add_eq_zero_left hroot

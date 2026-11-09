@@ -22,6 +22,7 @@ section Algebraic
 
 variable {E K : Type*} [Field E] [Field K] [Algebra E K] {d : ℕ}
 
+set_option maxHeartbeats 800000 in
 theorem isPolynomialTangent_of_base_equations
     (C : Set (Fin d → K)) (p h : Fin d → K)
     (hbase : ∀ Q : MvPolynomial (Fin d) E,
@@ -73,8 +74,8 @@ theorem isPolynomialTangent_of_base_equations
         algebraMap E K ((Q j).eval x) := by
       rw [eval_map]
       exact (eval₂_comp (algebraMap E K) x (Q j)).symm
-    have h := hP _ hx
-    rw [hsplit, map_sum] at h
+    have h : P.eval (algebraMap E K ∘ x) = 0 := hP _ hx
+    rw [hsplit, map_sum (eval (algebraMap E K ∘ x))] at h
     simp only [map_mul, eval_C, hv] at h
     have hsum : (∑ j ∈ J, (Q j).eval x • b j) = 0 := by
       simpa only [Algebra.smul_def, mul_comm] using h

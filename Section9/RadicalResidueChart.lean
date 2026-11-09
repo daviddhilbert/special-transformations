@@ -18,6 +18,7 @@ noncomputable def residueChartIdeal (P : Fin m → MvPolynomial (Fin d) K) (R : 
     Ideal (MvPolynomial (Fin d ⊕ Unit) K) :=
   Ideal.span (Set.range (fun i => rename Sum.inl (P i)) ∪ {X (.inr ()) * rename Sum.inl R - 1})
 
+set_option maxHeartbeats 800000 in
 theorem isPolynomialTangent_iff_of_radical_chart [IsAlgClosed K]
     (C : Set (Fin d → K)) (p : Fin d → K) (hp : p ∈ C)
     (P : Fin m → MvPolynomial (Fin d) K) (R : MvPolynomial (Fin d) K)
@@ -34,7 +35,10 @@ theorem isPolynomialTangent_iff_of_radical_chart [IsAlgClosed K]
   let X₀ : MvPolynomial (Fin d ⊕ Unit) K := X (.inr ())
   let D (A : MvPolynomial (Fin d ⊕ Unit) K) := ∑ i, (pderiv i A).eval q * s i
   have hDmul (A B : MvPolynomial (Fin d ⊕ Unit) K) : D (A * B) = A.eval q * D B + B.eval q * D A := by
-    simp only [D, Derivation.leibniz, smul_eq_mul, map_add, map_mul, add_mul, Finset.sum_add_distrib,
+    have hprod (i : Fin d ⊕ Unit) :
+        pderiv i (A * B) = A * pderiv i B + B * pderiv i A := by
+      rw [pderiv_mul, add_comm, mul_comm (pderiv i A) B]
+    simp only [D, hprod, map_add, map_mul, add_mul, Finset.sum_add_distrib,
       Finset.mul_sum, mul_assoc]
   have hDsub (A B : MvPolynomial (Fin d ⊕ Unit) K) : D (A - B) = D A - D B := by
     simp only [D, map_sub, sub_mul, Finset.sum_sub_distrib]

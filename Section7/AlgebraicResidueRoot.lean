@@ -242,6 +242,7 @@ theorem encodedGuardedVariables_absolute_eq {s t : Fin n → _root_.RVCalc.RV v}
   exact encodedRV_absolute_eq_of_equal_values v hv _ _
     ((rvFibre_value v hx (e i)).trans ((hst (e i)).trans (rvFibre_value v hy (e i)).symm))
 
+set_option maxHeartbeats 800000 in
 theorem exists_guardedLiteral_tests (t : Fin n → _root_.RVCalc.RV v)
     (ht : ∀ i, t i ≠ none) (L : RVLiteral I R V) (hL : RVLiteral.Domain av rr (ev t) L) :
     ∃ J : Finset (Γ × MvPolynomial (Fin n) E),
@@ -333,7 +334,8 @@ theorem exists_guardedLiteral_tests (t : Fin n → _root_.RVCalc.RV v)
       · intro j hj
         rw [Finset.mem_singleton.mp hj]
         change IsGammaPolynomial v γ α ((P - Q).map E.subtype)
-        rw [map_sub, sub_eq_add_neg]
+        rw [map_sub (MvPolynomial.map E.subtype) P Q,
+          sub_eq_add_neg (P.map E.subtype) (Q.map E.subtype)]
         exact hP.add v ((hab.symm ▸ hQ).neg v)
       · intro s hs hpat
         apply hcompare s hs

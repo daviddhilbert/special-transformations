@@ -51,8 +51,8 @@ private def atArithmetic : Arithmetic n → TestCode n r s :=
       (Sum.elim (Sum.inl ∘ Sum.inl ∘ Sum.inl ∘ Sum.inl ∘ Sum.inr)
         (Sum.inl ∘ Sum.inl ∘ Sum.inl ∘ Sum.inr)))
 
-private def aTerm (j : Fin n) : FreeCommRing (Arithmetic n) := FreeCommRing.of (.inl (.inl j))
-private def bTerm (j : Fin n) : FreeCommRing (Arithmetic n) := FreeCommRing.of (.inl (.inr j))
+private noncomputable def aTerm (j : Fin n) : FreeCommRing (Arithmetic n) := FreeCommRing.of (.inl (.inl j))
+private noncomputable def bTerm (j : Fin n) : FreeCommRing (Arithmetic n) := FreeCommRing.of (.inl (.inr j))
 
 private noncomputable def residualTerm (i : Fin n) : LRV.Term (Arithmetic n) :=
   RingSyntax.ofRingTerm (FirstOrder.Ring.termOfFreeCommRing

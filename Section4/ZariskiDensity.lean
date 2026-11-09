@@ -14,13 +14,14 @@ noncomputable section
 
 namespace SpecialTransformations.Section4
 
+set_option maxHeartbeats 600000 in
 theorem polynomial_over_subfield {K : Type} [Field K] (E : Subfield K)
     {n : ℕ} (p : MvPolynomial (Fin n) K) (hcoeff : ∀ m, p.coeff m ∈ E) :
     ∃ q : MvPolynomial (Fin n) E, q.map E.subtype = p := by
   let q : MvPolynomial (Fin n) E :=
     ∑ m ∈ p.support, MvPolynomial.monomial m ⟨p.coeff m, hcoeff m⟩
   refine ⟨q, ?_⟩
-  simp only [q, map_sum, MvPolynomial.map_monomial, Subfield.subtype_apply, Subtype.coe_mk]
+  simp only [q, map_sum (MvPolynomial.map E.subtype), MvPolynomial.map_monomial, Subfield.subtype_apply, Subtype.coe_mk]
   exact p.as_sum.symm
 
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]

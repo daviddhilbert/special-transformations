@@ -21,10 +21,10 @@ attribute [local instance] FirstOrder.Ring.compatibleRingOfRing
 abbrev AffineTailCode (m : ℕ) := (Fin 4 × Fin m) ⊕ Fin 1
 private abbrev SlopeCode (m : ℕ) := AffineTailCode m ⊕ Fin m
 
-private def tailVar (k : Fin 4) (i : Fin m) : FreeCommRing (SlopeCode m) :=
+private noncomputable def tailVar (k : Fin 4) (i : Fin m) : FreeCommRing (SlopeCode m) :=
   FreeCommRing.of (.inl (.inl (k,i)))
 
-private def slopeVar (i : Fin m) : FreeCommRing (SlopeCode m) := FreeCommRing.of (.inr i)
+private noncomputable def slopeVar (i : Fin m) : FreeCommRing (SlopeCode m) := FreeCommRing.of (.inr i)
 
 private noncomputable def zeroTerm (p : FreeCommRing (SlopeCode m)) : LRV.Term (SlopeCode m) :=
   RingSyntax.ofRingTerm (FirstOrder.Ring.termOfFreeCommRing p)
