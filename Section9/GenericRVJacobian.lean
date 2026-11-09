@@ -24,14 +24,19 @@ variable {M : Type} [LRV.Structure M] [M ⊨ Axioms.ACVF] {n : ℕ}
 local notation "RV" => CanonicalRV.RVSort M
 local notation "k" => ModelResidue M
 
+set_option backward.isDefEq.respectTransparency true in
 private theorem map_polynomialOfCoefficients {K L : Type} [Field K] [Field L] {a b : ℕ}
     (f : K →+* L) (s : Fin a → Fin b →₀ ℕ) (c : Fin a → K) :
     (polynomialOfCoefficients s c).map f = polynomialOfCoefficients s (f ∘ c) := by
-  unfold polynomialOfCoefficients
-  calc
-    _ = ∑ i, (MvPolynomial.map f) (monomial (s i) (c i)) :=
-      map_sum (MvPolynomial.map (σ := Fin b) f) _ _
-    _ = _ := Finset.sum_congr rfl (fun i _ => map_monomial f (s i) (c i))
+  classical
+  ext m
+  simp only [polynomialOfCoefficients, coeff_map, coeff_sum, Function.comp_apply]
+  rw [map_sum f]
+  apply Finset.sum_congr rfl
+  intro i _
+  by_cases hi : s i = m
+  · simp only [coeff_monomial, if_pos hi]
+  · simp only [coeff_monomial, if_neg hi, map_zero]
 
 theorem exists_chartValue_of_full_volumePair_dimension
     (hc : CanonicalStructure.IsCanonical (M := M)) (B : BaseContext M) (hn : 0 < n)
