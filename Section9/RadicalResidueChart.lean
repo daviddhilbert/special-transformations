@@ -75,7 +75,7 @@ theorem isPolynomialTangent_iff_of_radical_chart [IsAlgClosed K]
       exact ⟨hP i p hp, htest i⟩
     · change (X₀ * rename ι R - 1).eval q = 0 ∧ D (X₀ * rename ι R - 1) = 0
       constructor
-      · rw [eval_sub, MvPolynomial.eval_mul, eval_one, eval_X, eval_rename]
+      · rw [eval_sub, MvPolynomial.eval_mul, (eval q).map_one, eval_X, eval_rename]
         change (R.eval p)⁻¹ * R.eval p - 1 = 0
         rw [inv_mul_cancel₀ hR, sub_self]
       · have hDX : D X₀ = s (.inr ()) := by
@@ -96,7 +96,7 @@ theorem isPolynomialTangent_iff_of_radical_chart [IsAlgClosed K]
     have hB : R.eval a ≠ 0 := by
       intro hzero
       have he := hz _ (Ideal.subset_span (Or.inr (Set.mem_singleton (X₀ * rename ι R - 1))))
-      rw [aeval_eq_eval, eval_sub, MvPolynomial.eval_mul, eval_rename, hzero, mul_zero, eval_one, zero_sub] at he
+      rw [aeval_eq_eval, eval_sub, MvPolynomial.eval_mul, eval_rename, hzero, mul_zero, (eval z).map_one, zero_sub] at he
       exact (neg_ne_zero.mpr one_ne_zero) he
     rw [aeval_eq_eval, eval_rename]
     exact hQ a (hchart a hA hB)

@@ -88,7 +88,8 @@ theorem isGaussEvaluation_of_independent_residues
   have hred : Q.map (residue A) ≠ 0 := by
     intro h
     have he := congrArg (fun p : MvPolynomial ι (ResidueField A) => p.coeff s) h
-    rw [coeff_map, coeff_zero] at he
+    rw [coeff_map] at he
+    change residue A (Q.coeff s) = 0 at he
     exact ((residue_nonzero_iff w _).mpr (by rw [hco, map_one])) he
   have hq : residue B q ≠ 0 := by
     intro hz
