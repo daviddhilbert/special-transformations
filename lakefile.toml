@@ -277,6 +277,8 @@ globs = [
   "Section6.ConcreteRVAxioms",
   "Section6.DenefPasRecognition",
   "Section6.NativeEnvelopeConstruction",
+  "Section6.HenselianAlgebraicClosure",
+  "Section6.HenselianOneStep",
   "Section6.NativePresentation",
   "Section6.NativeResidueOperations",
   "Section6.PaperResults",

@@ -18,11 +18,11 @@ the convention `0⁻¹ = 0`; do not add a VF inverse symbol.
 | Definition 6.1 | `FunctionalClosure`: all finite input/output arities, full graphs of partial functions, arbitrary parameter sets | Generic first-order language; specialize to the released LRV normalization |
 | Closing step of 6.2 | `functionallyClosed_iff_dclClosed`; elementary-image transfer | No model-theory conclusion is assumed |
 | VF step of 6.2 | `HenselianClosure`: valued-field automorphisms induce actual LRV automorphisms; Mathlib infinite Galois fixed-field theorem | Actual henselian valuation ring; standard valuation-invariance quotation; earlier algebraic-envelope and centre inputs |
-| Lemma 6.2 | `HenselianModel.lemma_6_2` | Actual substructures, elementary algebraic envelope, original base image retained |
+| Lemma 6.2 | `Paper.lemma_6_2` | Given nontrivially valued henselian substructure with RV surjectivity. Constructs the valued algebraic closure inside the ambient model and proves functional closure there. |
 | Geometric descent in 6.3 | `PreparedDescent`: restrictions of actual special bijections; realization of every substructure key; descent of prepared existential predicates | Section 5 preparation used as given; arbitrary predicates on RV; includes zero fibres |
 | Logical step toward 6.4 | `RelativeSyntax.hasVFQE_of_step` | Generic conditional reduction in LRV; does not establish its geometric step hypothesis |
 | Syntactic Lemma 6.3 | `SyntacticLemma63`, integrated and audited | Arbitrary original parameter names, actual existential FV tuple, output selected before substructure and RV expansion; uniform model application is in UniformNormalizedElimination |
-| Full Lemma 6.3 | `UniformNormalizedElimination.eliminate`, integrated and audited | Uniform formula for finite normalized input, retaining free VF parameters; explicit earlier preparation and ordinary native-envelope inputs; final integrated check passed |
+| Full Lemma 6.3 | `Paper.lemma_6_3` | Uniform elimination of a finite existential VF tuple from a well-sorted VF-quantifier-free formula. Retains all free VF and RV variables and supplies the preparation, native envelopes and literal normalization by checked proofs. |
 | Proposition 6.4 | `Paper.proposition_6_4` | Arbitrary RV-only expansion and original named base. All elimination inputs are supplied by checked proofs. |
 | Corollary 6.5 | `Paper.corollary_6_5` | Ordinary henselian valued fields of pure characteristic zero, with angular component and arbitrary sorted auxiliary expansion. Both valuation branches. |
 

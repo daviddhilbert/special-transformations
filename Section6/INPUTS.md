@@ -16,8 +16,11 @@ coprime factor-lifting argument.
 The generic saturated-extension quotation, native envelopes, ordinary
 recognition, and the other preparation interfaces remain visible in
 the appropriate lower-level or historical statements. The paper
-headlines 6.4 and 6.5 take none of these as inputs. The algebraic-envelope
-form of Lemma 6.2 still exposes its authorized valuation-invariance input.
+headlines 6.4 and 6.5 take none of these as inputs. The standalone Lemma
+6.3 uses the same checked providers. The standalone Lemma 6.2 constructs
+the valued algebraic closure in the given ambient model and invokes the
+proved valuation invariance. The lower-level envelope form retains its
+explicit valuation-invariance input.
 See [STATEMENT-REVIEW.md](STATEMENT-REVIEW.md) and [STATUS.md](STATUS.md).
 
 ## Earlier input record

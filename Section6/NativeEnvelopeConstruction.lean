@@ -21,22 +21,6 @@ namespace SpecialTransformations.Section6.UniformNormalizedElimination
 
 open ConcreteValued NativeValuation
 
-private def concreteFieldEquiv {L Δ : Type} [Field L] [LinearOrderedCommGroupWithZero Δ]
-    (w : Valuation L Δ) [@Theory.Model LRV (Carrier w) (nativeStructure w) Axioms.ACVF] :
-    letI := nativeStructure w
-    L ≃+* VFType (M := Carrier w) := by
-  letI := nativeStructure w
-  let f : L →+* VFType (M := Carrier w) :=
-    { toFun := fun x => ⟨.inl x, vf_inl w x⟩
-      map_zero' := Subtype.ext (vfZero_eq w).symm
-      map_one' := Subtype.ext (vfOne_eq w).symm
-      map_add' := fun x y => Subtype.ext (vfAdd_eq w x y).symm
-      map_mul' := fun x y => Subtype.ext (vfMul_eq w x y).symm }
-  apply RingEquiv.ofBijective f
-  refine ⟨f.injective, fun x => ?_⟩
-  obtain ⟨y, hy⟩ := of_vf w x.val x.property
-  exact ⟨y, Subtype.ext hy.symm⟩
-
 theorem nativeEnvelope
     {M : Type} [LRV.Structure M] (h : M ⊨ HenselianTheory.canonicalHen00) :
     NativeEnvelope M := by
@@ -67,30 +51,16 @@ theorem nativeEnvelope
   let P := NativePresentation.presentation v hv hc
   let f : M ↪[LRV] U := (extension v w).comp P.symm.toEmbedding
   let Y := ExpandedImages.Image f
-  let θ := concreteFieldEquiv w
+  let θ := fieldEquiv w
   let baseMap := θ.toRingHom.comp ι
   let F := baseMap.fieldRange
-  let μ : K →+* F :=
-    { toFun := fun x => ⟨baseMap x, baseMap.mem_fieldRange_self x⟩
-      map_zero' := Subtype.ext baseMap.map_zero
-      map_one' := Subtype.ext baseMap.map_one
-      map_add' := fun x y => Subtype.ext (baseMap.map_add x y)
-      map_mul' := fun x y => Subtype.ext (baseMap.map_mul x y) }
-  let e : K ≃+* F := RingEquiv.ofBijective μ
-    ⟨μ.injective, fun x => by
-      obtain ⟨y, hy⟩ := x.property
-      exact ⟨y, Subtype.ext hy⟩⟩
+  let e : K ≃+* F := baseMap.rangeRestrictFieldEquiv
   letI : IsGalois K L := inferInstance
   letI : IsGalois F (VFType (M := U)) :=
     IsGalois.of_equiv_equiv (f := e) (g := θ) (RingHom.ext fun _ => rfl)
   let W := w.comap θ.symm.toRingHom
-  have hW (x y : VFType (M := U)) : VFValued.predV x y ↔ W x ≤ W y := by
-    obtain ⟨x, rfl⟩ := θ.surjective x
-    obtain ⟨y, rfl⟩ := θ.surjective y
-    change iLe (iRv (Sum.inl y : U)) (iRv (.inl x)) ↔
-      w (θ.symm (θ x)) ≤ w (θ.symm (θ y))
-    rw [rvMap_eq, rvMap_eq, le_inr, RVCalc.vrv_rv, RVCalc.vrv_rv,
-      θ.symm_apply_apply, θ.symm_apply_apply]
+  have hW (x y : VFType (M := U)) : VFValued.predV x y ↔ W x ≤ W y :=
+    fieldEquiv_valuation w x y
   have hH : HenselianLocalRing (W.comap F.subtype).valuationSubring := by
     apply HenselianTheory.henselian_of_compatible_equiv v _ e
     intro x y

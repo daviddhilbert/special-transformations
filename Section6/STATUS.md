@@ -1,5 +1,35 @@
 # Section 6 status
 
+## Standalone Lemmas 6.2 and 6.3
+
+On November 10, 2026, the standalone targets
+[HenselianAlgebraicClosure](HenselianAlgebraicClosure.lean) and
+[HenselianOneStep](HenselianOneStep.lean) built successfully with Lean
+4.35.0. Their full headline types were checked and both axiom reports
+list only `propext`, `Classical.choice`, and `Quot.sound`. The local
+logs are in `.scratch/section6-standalone/`.
+
+The integrated `lake -R build Section6` and
+`lake env python3 scripts/verify_ci.py section6` also exited zero.
+The integrated audit covered all 483 declared headline types and axiom
+reports. `standalone.log`, `HeadlineAudit.log`, and `Evidence.txt`
+record the build, audit, source hashes and dependency pins.
+
+Lemma 6.2 starts with a henselian substructure of the given pure
+characteristic zero ACVF model, with nontrivial valuation and RV
+surjectivity. The proof takes the algebraic closure of its valued field
+inside the ambient field and restricts the valuation. The released QE
+theorem makes the resulting leading-term model elementary. The checked
+valuation invariance, fixed-field and RV descent arguments then give
+functional closure in the ambient model.
+
+Lemma 6.3 eliminates a finite existential VF tuple from a well-sorted
+VF-quantifier-free formula in an arbitrary RV-only expansion. It
+preserves the original free VF and RV variables. The output is chosen
+before the model and uses only RV quantifiers. The earlier preparation,
+literal normalization and native envelopes are supplied by the same
+checked providers used for Proposition 6.4.
+
 ## Paper results
 
 On November 7, 2026, the pinned Lean source check of
@@ -26,20 +56,9 @@ zero, and an angular component. The extra preparation, expanded
 normal-form, saturation, algebraic-envelope and ordinary-recognition
 inputs of the earlier wrappers are supplied by proofs.
 
-The standalone Lemma 6.2 already takes the ambient ACVF model and the
-henselian substructure as given. Its additional input is an elementary
-algebraic envelope inside the ambient model, corresponding to the algebraic
-closure of the substructure's valued field there. The proof uses finite
-Galois orbits in that algebraic part to descend definable elements.
-Corollary 3.14 proves that the model-theoretic algebraic closure is an
-elementary submodel. The remaining connection for the standalone export
-is to use that result and identify the inherited valued-field and RV
-structures with the inputs to the descent proof.
-
-The same algebraic-closure argument applies when starting with a
-henselian field on its own. In the quantifier elimination proof, no
-ambient ACVF model is given. The native construction extends the field
-and valuation to an algebraic closure and supplies the envelope there.
+The quantifier elimination proof starts with a henselian field on its
+own. The native construction extends the field and valuation to an
+algebraic closure and supplies the envelope there.
 
 `NativePresentation` recovers the concrete valued field and RV quotient
 from the native model. `NativeEnvelopeConstruction` extends the valuation

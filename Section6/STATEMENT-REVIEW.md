@@ -1,10 +1,29 @@
 # Section 6 statement and hypothesis review
 
-November 7, 2026. This reviews mathematical scope separately from compiler
+Updated November 10, 2026. This reviews mathematical scope separately from compiler
 and axiom evidence. See [STATUS.md](STATUS.md) for the current verification.
 All names below are under `SpecialTransformations.Section6`.
 
+## Lemma 6.2
+
+The November 10 standalone `Paper.lemma_6_2` takes the ambient
+ACVF(0,0) model, the substructure and its actual VF subfield, and the
+valuation compatible with the ambient comparison. The inherited
+valuation is nontrivial and henselian, and every RV element of the
+substructure has a representative in its field. The conclusion is
+functional closure over the substructure in the normalized ambient
+model. The valued algebraic closure, elementary embedding, Galois
+property and henselian valuation invariance are supplied by the proof.
+
 ## Lemma 6.3
+
+The November 10 standalone `Paper.lemma_6_3` starts with an arbitrary
+well-sorted VF-quantifier-free formula with finitely many original free
+VF and RV variables and a finite VF tuple to eliminate. It chooses one
+equivalent formula with only RV quantifiers before the model and sorted
+assignments. It uses the same preparation and native envelopes as 6.4.
+
+### Lower-level statements
 
 `syntactic_lemma_6_3` in SyntacticLemma63.lean starts with an actual
 RV-fragment formula, arbitrary original VF/RV base names, a finite tuple of

@@ -186,4 +186,38 @@ theorem model_ACVF00 [IsAlgClosed K] [CharZero K] [CharZero (ConcreteRV.Residue 
   · exact charZeroVF_realize v k
   · exact residueCharZero_realize v hp
 
+def fieldEquiv {L Δ : Type} [Field L] [LinearOrderedCommGroupWithZero Δ]
+    (w : Valuation L Δ) [@Theory.Model LRV (Carrier w) (nativeStructure w) Axioms.ACVF] :
+    letI := nativeStructure w
+    L ≃+* VFType (M := Carrier w) := by
+  letI := nativeStructure w
+  let f : L →+* VFType (M := Carrier w) :=
+    { toFun := fun x => ⟨.inl x, vf_inl w x⟩
+      map_zero' := Subtype.ext (vfZero_eq w).symm
+      map_one' := Subtype.ext (vfOne_eq w).symm
+      map_add' := fun x y => Subtype.ext (vfAdd_eq w x y).symm
+      map_mul' := fun x y => Subtype.ext (vfMul_eq w x y).symm }
+  apply RingEquiv.ofBijective f
+  refine ⟨f.injective, fun x => ?_⟩
+  obtain ⟨y, hy⟩ := of_vf w x.val x.property
+  exact ⟨y, Subtype.ext hy.symm⟩
+
+theorem fieldEquiv_valuation {L Δ : Type} [Field L]
+    [LinearOrderedCommGroupWithZero Δ] (w : Valuation L Δ)
+    [@Theory.Model LRV (Carrier w) (nativeStructure w) Axioms.ACVF] :
+    letI := nativeStructure w
+    let θ := fieldEquiv w
+    ∀ a b : VFType (M := Carrier w), VFValued.predV a b ↔ w (θ.symm a) ≤ w (θ.symm b) := by
+  letI := nativeStructure w
+  let θ := fieldEquiv w
+  change ∀ a b : VFType (M := Carrier w), VFValued.predV a b ↔
+    w (θ.symm a) ≤ w (θ.symm b)
+  intro a b
+  obtain ⟨a, rfl⟩ := θ.surjective a
+  obtain ⟨b, rfl⟩ := θ.surjective b
+  change iLe (iRv (Sum.inl b : Carrier w)) (iRv (.inl a)) ↔
+    w (θ.symm (θ a)) ≤ w (θ.symm (θ b))
+  rw [rvMap_eq, rvMap_eq, le_inr, RVCalc.vrv_rv, RVCalc.vrv_rv,
+    θ.symm_apply_apply, θ.symm_apply_apply]
+
 end SpecialTransformations.Section6.ConcreteValued

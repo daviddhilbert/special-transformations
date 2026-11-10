@@ -12,6 +12,8 @@ import Section6.ConcreteHenselian
 import Section6.ConcreteRVAxioms
 import Section6.DenefPasRecognition
 import Section6.NativeEnvelopeConstruction
+import Section6.HenselianAlgebraicClosure
+import Section6.HenselianOneStep
 import Section6.NativePresentation
 import Section6.NativeResidueOperations
 import Section6.PaperResults
@@ -503,6 +505,10 @@ set_option pp.fullNames true
 #print axioms SpecialTransformations.Section6.EnvelopeUniformity.earlierPreparation
 #check @SpecialTransformations.Section6.Paper.lemma_6_2_of_algebraic_envelope
 #print axioms SpecialTransformations.Section6.Paper.lemma_6_2_of_algebraic_envelope
+#check @SpecialTransformations.Section6.Paper.lemma_6_2
+#print axioms SpecialTransformations.Section6.Paper.lemma_6_2
+#check @SpecialTransformations.Section6.Paper.lemma_6_3
+#print axioms SpecialTransformations.Section6.Paper.lemma_6_3
 #check @SpecialTransformations.Section6.HenselianInputs.of_pure_algebraic_envelope
 #print axioms SpecialTransformations.Section6.HenselianInputs.of_pure_algebraic_envelope
 #check @SpecialTransformations.Section6.HenselianElimination.rvLiteralNormalForm_of_nativeEnvelopes

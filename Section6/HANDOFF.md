@@ -1,6 +1,14 @@
 # Section 6 handoff
 
-The paper-level exports are in [PaperResults.lean](PaperResults.lean).
+The November 10 standalone exports are `Paper.lemma_6_2` in
+[HenselianAlgebraicClosure.lean](HenselianAlgebraicClosure.lean) and
+`Paper.lemma_6_3` in [HenselianOneStep.lean](HenselianOneStep.lean).
+Both standalone Lean 4.35.0 builds and full type and axiom checks
+passed, as did the integrated Section 6 build and all 483 headline
+audits. The logs and source hashes are in
+`.scratch/section6-standalone/`. See [STATUS.md](STATUS.md) for the scope.
+
+Proposition 6.4 and Corollary 6.5 are in [PaperResults.lean](PaperResults.lean).
 Both headline types and their axiom audits passed the pinned source check
 in `.scratch/section6-paper-results-v1.log`. The algebraic-envelope provider
 is `UniformNormalizedElimination.nativeEnvelopes`. The ordinary
