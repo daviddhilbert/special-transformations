@@ -2,13 +2,28 @@
 
 Yimu Yin, APAL (2010), [arXiv:1006.2467](https://arxiv.org/abs/1006.2467).
 
-The [Lean blueprint](https://daviddhilbert.github.io/special-transformations/)
-maps the main results in Sections 2–10 to their formal statements and proof
-dependencies. [Dependency graph](https://daviddhilbert.github.io/special-transformations/dependency-graph.svg)
+## Project closeout
+
+The Lean formalization is complete for the agreed scope of Sections 2–10.
+The blueprint maps the main results to their Lean statements and proof
+dependencies. [Live blueprint](https://daviddhilbert.github.io/special-transformations/)
+· [Dependency graph](https://daviddhilbert.github.io/special-transformations/dependency-graph.svg)
 · [Source and build instructions](blueprint/README.md)
 
-This repository is now a thin coordination project for formalizing the paper
-section by section. The completed ACF/ACVF/RV quantifier-elimination proofs
+The full Lean 4.35.0 library build and all 3,543 headline axiom audits
+passed at `285f323`. The audit reports list only `propext`,
+`Classical.choice`, and `Quot.sound`. The two Engler–Prestel hypotheses
+remain explicit in the affected results. The blueprint marks the Stacks
+proofs as checked Lean imports. [GitHub Actions verification](https://github.com/daviddhilbert/special-transformations/actions/runs/42867152699)
+
+The agreed scope excludes C-minimality for trivial valuations, the
+whole-field ball case of Lemma 8.4, and the broader ambient categories
+in Sections 9–10. Remark 3.19 was retracted. The withdrawn Gamma clause
+of Lemma 9.15 has a documented valued-field counterexample with a
+group-level obstruction checked in Lean. [Retraction](Section3/RETRACTIONS.md)
+· [Counterexample](Section9/LEMMA-9.15.md)
+
+The completed ACF/ACVF/RV quantifier-elimination proofs
 live in [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE), pinned here at
 `939346b0a99899e22a873479364e3cc5d142731c`.
 
@@ -19,11 +34,10 @@ only a Lean transcription error. See [language erratum](LANGUAGE-ERRATA.md).
 This affects the QE formulation, not the later definable-set theory: inverse
 is already definable, so naming it does not change the definable sets.
 
-## Continue here
+## Library map
 
-Read [Section3/HANDOFF.md](Section3/HANDOFF.md) in the next session. Its scope
-is **all of Section 3 and the material in Section 2 after Theorem 2.3**.
-QE is finished and is a dependency of this work.
+The handoff records the completed Section 3 work and the material in
+Section 2 after Theorem 2.3. [Section 3 handoff](Section3/HANDOFF.md)
 
 | Folder | Scope |
 | --- | --- |
