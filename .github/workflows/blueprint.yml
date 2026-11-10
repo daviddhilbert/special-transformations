@@ -1,0 +1,60 @@
+name: Publish Lean blueprint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "blueprint/**"
+      - ".github/workflows/blueprint.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: read
+
+concurrency:
+  group: blueprint-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/configure-pages@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: blueprint/requirements.txt
+      - name: Install Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends graphviz libgraphviz-dev
+      - name: Build the web blueprint
+        run: |
+          python -m pip install -r blueprint/requirements.txt
+          leanblueprint web
+          test -s blueprint/web/index.html
+          test -s blueprint/web/dependency-graph.svg
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: blueprint/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

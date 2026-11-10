@@ -2,6 +2,11 @@
 
 Yimu Yin, APAL (2010), [arXiv:1006.2467](https://arxiv.org/abs/1006.2467).
 
+The [Lean blueprint](https://daviddhilbert.github.io/special-transformations/)
+maps the main results in Sections 2–10 to their formal statements and proof
+dependencies. [Dependency graph](https://daviddhilbert.github.io/special-transformations/dependency-graph.svg)
+· [Source and build instructions](blueprint/README.md)
+
 This repository is now a thin coordination project for formalizing the paper
 section by section. The completed ACF/ACVF/RV quantifier-elimination proofs
 live in [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE), pinned here at
