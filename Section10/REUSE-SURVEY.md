@@ -82,3 +82,52 @@ pins. A focused search for Lean formalizations of Yin's special bijections,
 RV pullbacks and volume surjectivity found the paper and related motivic
 integration literature. The local checked preparation and differentiation
 interfaces supply the prerequisites without a new reference hypothesis.
+
+## Gamma-valued surjectivity
+
+The November 9 search for Lean implementations of Gamma-valued motivic
+surjectivity and finite VF support for mixed RV formulas found Yin's
+paper and related formalization candidates, but no independent proof
+compatible with the pinned language. The unary finite-support result in
+[MixedPolynomialSupport.lean](../Section3/MixedPolynomialSupport.lean)
+is a close local analogue. For arbitrary VF arity, reuse the checked
+`DefinableOver.quantifier_free` and `qf_source_boolean` from Section 3.
+Their sorted Boolean expressions already isolate the VF polynomials
+inside RV expressions. Collect their RV values by a syntax induction
+and use the original parameter package to make the tuple definable.
+
+Use all real RV codes of Gamma in the graph relation. Agreement on the
+collected data and the original RV labels makes membership agree for
+every code of the Gamma output. The form then descends through the same
+pullback labels and determinant-one essential map as the RV case.
+This reuses the local MIT-licensed development and the existing pins,
+with no choice of a definable Gamma-to-RV section or new reference
+hypothesis.
+
+## Essential morphisms and measured scissors
+
+The paper's Remark 10.2 uses agreement outside a VF-small set. Use the
+dimension and independent-tuple results in [Section 4](../Section4/VFDimensionRank.lean)
+to recognize agreement over the original parameter set. The chain and
+inverse laws use [Lemma 9.12](../Section9/MixedDifferentiationAE.lean) on
+the actual composable restrictions and the uniqueness of the fixed-label
+Jacobian. On RV use the existing
+[finite-volume RV chain rule](../Section9/GenericRVJacobianChain.lean) and
+the [Gamma product formula](../Section9/GammaJacobian.lean).
+
+For Corollary 10.6 use the existing
+[positive additive presentation](../Section4/PositiveAdditivePresentation.lean).
+The [Section 7 lift and restriction identities](../Section7/LiftedIsomorphism.lean)
+handle the underlying sets. The remaining check compares the two
+pullbacks of the same weight along the original label map. In degree zero,
+the paper uses the unmeasured categories. Reuse
+[Corollary 7.7](../Section7/PositiveSurjectivity.lean) in that degree.
+The constant-volume versions use the same determinant-one representation
+as Theorem 10.4, including its preservation of the range of the form.
+
+The source survey on November 9 checked
+[the numbered statements in the paper](https://arxiv.org/pdf/1006.2467v1#page=27)
+and searched for compatible Lean proofs of measured essential bijections
+and Grothendieck scissors. The search found the paper and related motivic
+integration literature. The checked MIT-licensed local proofs provide the
+needed interfaces under the existing Lean, Mathlib and ACVF-QE pins.

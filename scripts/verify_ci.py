@@ -116,11 +116,20 @@ def run_workflow_audits():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('scope', choices=('qe', 'section9', 'all'), nargs='?', default='qe')
+    parser.add_argument('scope', choices=('qe', 'section9', 'section10', 'all'), nargs='?', default='qe')
     args = parser.parse_args()
     if args.scope == 'all':
         return run_workflow_audits()
-    if args.scope == 'section9':
+    if args.scope == 'section10':
+        label = 'Section 10'
+        out = ROOT / '.scratch' / 'section10-verified'
+        source = ROOT / 'Section10' / 'Library.lean'
+        directives = source.read_text(encoding='utf-8')
+        headlines = re.findall(r'(?m)^#print axioms (\S+)$', directives)
+        types = re.findall(r'(?m)^#check @(\S+)$', directives)
+        if not headlines or headlines != types or len(headlines) != len(set(headlines)):
+            raise RuntimeError('Expected paired and distinct Section 10 type and axiom directives')
+    elif args.scope == 'section9':
         label = 'Section 9'
         out = ROOT / '.scratch' / 'section9-verified'
         prefix = 'SpecialTransformations.Section9.'
@@ -139,14 +148,15 @@ def main():
     status = out / 'status.txt'
     status.write_text('RUNNING\n', encoding='utf-8')
     try:
-        source = out / 'HeadlineAudit.lean'
-        source.write_text(
-            'import SpecialTransformations\n'
-            + print_options
-            + '\n'.join('#print ' + name for name in definitions)
-            + '\n'
-            + '\n'.join('#check @' + h + '\n#print axioms ' + h for h in headlines)
-            + '\n', encoding='utf-8')
+        if args.scope != 'section10':
+            source = out / 'HeadlineAudit.lean'
+            source.write_text(
+                'import SpecialTransformations\n'
+                + print_options
+                + '\n'.join('#print ' + name for name in definitions)
+                + '\n'
+                + '\n'.join('#check @' + h + '\n#print axioms ' + h for h in headlines)
+                + '\n', encoding='utf-8')
         result = subprocess.run(
             ['lean', str(source)], cwd=ROOT, capture_output=True, text=True,
             encoding='utf-8', errors='replace')
@@ -155,6 +165,8 @@ def main():
         print(output, end='')
         if result.returncode or re.search(r'\berror\b|\bsorry(?:Ax)?\b', output, re.I):
             raise RuntimeError('Headline compilation or diagnostics failed')
+        if args.scope == 'section10' and any(f'@{name} :' not in output for name in headlines):
+            raise RuntimeError('Incomplete Section 10 headline type output')
         audits = re.findall(
             r"'([^'\n]+)' depends on axioms:\s*\[([^]]*)\]", output)
         audits += [(name, '') for name in re.findall(

@@ -1,22 +1,18 @@
 # Section 10 status
 
-The verification recorded below used Lean 4.33.1. The standalone
-Section10 target is a local checkpoint on the Lean 4.35.0 main
-baseline. Fresh 4.35.0 compilation and headline review are pending.
-
 The target is [Section 10 of arXiv:1006.2467v1](https://arxiv.org/pdf/1006.2467v1#page=27),
 with the author's finite-volume `RV[n]` and `VF[n]` scope. The two legacy
 proof files and the scaffold remain historical material.
 
 | Paper target | Current scope |
 | --- | --- |
-| Definitions 10.1 and 10.3 | The positive-degree RV and Gamma form, object and essential-map data are checked. `EssentialVFMap` has a same-base definable bijection between subsets with VF-small complements, and the two measure-preservation predicates use its actual mixed VF Jacobian. The full categories, degree-zero assembly and category laws are open. |
-| Remark 10.2 | The almost-everywhere equivalence and inverse on VF morphism classes are open. |
-| Theorem 10.4 | Open. The legacy lemma assumes the existence of the desired lifted object. |
-| Theorem 10.5 | The positive-degree [RV-valued](RVVolumeRepresentative.lean) and [Gamma-valued](GammaVolumeLift.lean) cases both pass compilation, type and axiom review, and the library import check. Each gives an essential bijection between the full lifts, follows the original label isomorphism at every source point, and satisfies the measure equation pointwise for the restricted map. |
-| Corollary 10.6 | Open. |
+| Definitions 10.1 and 10.3 | The [VF](MeasuredVFCategory.lean) and [RV](MeasuredRVCategory.lean) groupoids are implemented in positive degree. The [graded categories](GradedCategories.lean) include the unmeasured categories in degree zero and the constant-volume subcategories in positive degree. |
+| Remark 10.2 | [Almost-everywhere agreement](EssentialVFGerms.lean) is equivalent to equality on independent VF tuples. [The quotient](MeasuredVFCategory.lean) is equivalent to the type of measured germs. Identity, composition and inversion use [actual chart Jacobians](EssentialVFMeasure.lean). |
+| Theorem 10.4 | Both positive-degree cases, [RV-valued](RVVolumeSurjectivity.lean) and [Gamma-valued](GammaVolumeSurjectivity.lean), pass the pinned checks. The [constant-volume](UnitVolume.lean) and [unmeasured degree-zero](ZeroDegree.lean) specializations are also verified. |
+| Theorem 10.5 | Both positive-degree cases, [RV-valued](RVVolumeRepresentative.lean) and [Gamma-valued](GammaVolumeLift.lean), pass the pinned checks. They preserve the given label map and satisfy the measure equation on the actual restricted VF chart. They apply to the constant-volume subcategories, and the [degree-zero specialization](ZeroDegree.lean) uses the unmeasured lift. |
+| Corollary 10.6 | The [RV-valued and Gamma-valued additive lifts](MeasuredPositiveLift.lean) preserve the class of every generator and are surjective. The [constant-volume](UnitVolume.lean) and [unmeasured degree-zero](ZeroDegree.lean) variants are also verified. |
 
-Both statements use the released ACVF language, the paper's
+Both cases of 10.5 use the released ACVF language, the paper's
 pure-characteristic-zero setting through `BaseContext`, and the explicit
 `VFGammaGeneratedBase` condition on the original parameter base. Both
 volume maps are finite-to-one. The essential RV isomorphism is between
@@ -42,7 +38,65 @@ Both cases use [EssentialVFMap.lean](EssentialVFMap.lean) to transfer
 the Jacobian across a restriction to the complement of the closure of
 the exceptional VF projection.
 
+For Remark 10.2, the independent tuples are taken over the VF parameter
+field of the original small base. Agreement on these tuples is equivalent
+to agreement on a same-base definable set with VF-small complement. The
+VF groupoid uses the measured representative on each actual composable
+overlap. After applying Lemma 9.12, it restricts away from the closure of
+the exceptional VF projection. The RV groupoids use the pointwise Gamma
+equation and the checked RV chain rule on a definable RV co-small locus.
+
+For Corollary 10.6, [MeasuredScissors](MeasuredScissors.lean) defines the
+positive additive presentations using measured isomorphisms, the empty
+object and restrictions of the same form. Lift preserves all three
+relations. Theorem 10.4 gives a preimage for every VF generator and
+Theorem 10.5 gives invariance under the source isomorphisms. The RV-valued
+lift retains `FiniteHenselianExtensionReference` from 10.5. The Gamma
+lift has no external mathematical premise. The constant-volume proofs
+restrict the forms to their neutral values and reuse the same lift.
+
 ## Verification
+
+This checkout pins Lean 4.35.0. The `codex/section10-checkpoint` workflow
+builds the standalone `Section10` target and audits `Section10.Library`.
+The local evidence below comes from the original Lean 4.33.1 checkout.
+
+The final local check of `Section10/Library.lean` through pinned
+`lake env lean` exited 0. All 18 active Section 10 modules have matching
+source and artifact fingerprints. The final log prints the full types
+and axiom reports for 29 declarations. Every report lists exactly
+`propext`, `Classical.choice` and `Quot.sound`. The type review checked
+the same-base finite-volume objects, the original label map in both
+positive-degree 10.5 conclusions, the equivalence of measured germs with
+the quotient by almost-everywhere agreement, and the generator and
+surjectivity statements for the additive lifts. The unmeasured
+degree-zero statements keep the normalized model, saturation and
+smallness hypotheses of the Section 5 and 7 results they specialize.
+
+The final evidence is in `.scratch/section10/Library-local.log`,
+`Library-local.exit` and `section10-local-audit.json`. The individual
+`*-local.exit` and `*-local.sha256` receipts record the fresh source
+checks. The earlier checks below supply the fingerprints for the five
+unchanged proof modules reused in the final run.
+
+Both cases of 10.4 start with a same-base definable set with `k + 1` VF
+coordinates and finite RV fibres. They construct a finite-volume RV
+object and an essential VF bijection to its lift. The shared proof
+constructs a representative with Jacobian one. The RV form is nonzero.
+The Gamma form uses the imaginary presentation, and
+`RVPreparationData.lean` determines its graph by a finite same-base RV
+tuple. The two statements retain `BaseContext`, `CharZero`, canonicality
+and the paper's `VFGammaGeneratedBase` scope. Neither needs an external
+reference hypothesis.
+
+Fresh Linux checks through pinned `lake env` compiled
+`RVPreparationData.lean`, the refactored `RVVolumeSurjectivity.lean`,
+`GammaVolumeSurjectivity.lean`, and `Section10/Library.lean`. Each exited
+0. The library printed the full types of both 10.4 headlines and reported
+`[propext, Classical.choice, Quot.sound]` for each. The `*-gamma.log` and
+`*-gamma.exit` files and `theorem-104-gamma-fingerprints.sha256` are in
+`.scratch/section10/`. The earlier standalone RV check and its Section 5
+prerequisite are recorded in the `*-linux` receipts.
 
 `Section10.Library` is the active entry point of the `Section10` Lake
 target. Fresh pinned `lake env` source checks ran
@@ -74,5 +128,5 @@ and exit-code files, `provider-check-final.log` and
 `.scratch/section10/` in `RVVolumeLift.log` and
 `WeightedJacobianLocus.log`, with their respective exit-code files.
 
-See [handoff](HANDOFF.md) for the precise next step and
+See [handoff](HANDOFF.md) for the proof routes and
 [reuse survey](REUSE-SURVEY.md) for the source audit.

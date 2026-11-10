@@ -1,5 +1,12 @@
 import Section10.RVVolumeRepresentative
 import Section10.GammaVolumeLift
+import Section10.RVVolumeSurjectivity
+import Section10.GammaVolumeSurjectivity
+import Section10.MeasuredPositiveLift
+import Section10.MeasuredRVCategory
+import Section10.UnitVolume
+import Section10.GradedCategories
+import Section10.ZeroDegree
 
 /-! The active Section 10 entry point. Its checked scope is recorded in
 `Section10/STATUS.md`. -/
@@ -16,3 +23,58 @@ import Section10.GammaVolumeLift
 #print axioms SpecialTransformations.Section10.theorem_10_5_rv_volume
 #check @SpecialTransformations.Section10.theorem_10_5_gamma_volume
 #print axioms SpecialTransformations.Section10.theorem_10_5_gamma_volume
+
+#check @SpecialTransformations.Section10.theorem_10_4_rv_volume
+#print axioms SpecialTransformations.Section10.theorem_10_4_rv_volume
+
+#check @SpecialTransformations.Section10.theorem_10_4_gamma_volume
+#print axioms SpecialTransformations.Section10.theorem_10_4_gamma_volume
+
+#check @SpecialTransformations.Section10.MeasuredVF.ae_iff_agreement
+#print axioms SpecialTransformations.Section10.MeasuredVF.ae_iff_agreement
+#check @SpecialTransformations.Section10.MeasuredVF.quotientEquiv
+#print axioms SpecialTransformations.Section10.MeasuredVF.quotientEquiv
+#check @SpecialTransformations.Section10.MeasuredVF.isoOfRepresentative
+#print axioms SpecialTransformations.Section10.MeasuredVF.isoOfRepresentative
+#check @SpecialTransformations.Section10.rvVolumeGroupoid
+#print axioms SpecialTransformations.Section10.rvVolumeGroupoid
+#check @SpecialTransformations.Section10.gammaVolumeGroupoid
+#print axioms SpecialTransformations.Section10.gammaVolumeGroupoid
+
+#check @SpecialTransformations.Section10.MeasuredRV.lift_scissor
+#print axioms SpecialTransformations.Section10.MeasuredRV.lift_scissor
+#check @SpecialTransformations.Section10.rvMeasuredPositiveLift_generator
+#print axioms SpecialTransformations.Section10.rvMeasuredPositiveLift_generator
+#check @SpecialTransformations.Section10.gammaMeasuredPositiveLift_generator
+#print axioms SpecialTransformations.Section10.gammaMeasuredPositiveLift_generator
+#check @SpecialTransformations.Section10.corollary_10_6_rv
+#print axioms SpecialTransformations.Section10.corollary_10_6_rv
+#check @SpecialTransformations.Section10.corollary_10_6_gamma
+#print axioms SpecialTransformations.Section10.corollary_10_6_gamma
+
+#check @SpecialTransformations.Section10.theorem_10_4_rv_unit
+#print axioms SpecialTransformations.Section10.theorem_10_4_rv_unit
+#check @SpecialTransformations.Section10.theorem_10_4_gamma_unit
+#print axioms SpecialTransformations.Section10.theorem_10_4_gamma_unit
+#check @SpecialTransformations.Section10.corollary_10_6_rv_unit
+#print axioms SpecialTransformations.Section10.corollary_10_6_rv_unit
+#check @SpecialTransformations.Section10.corollary_10_6_gamma_unit
+#print axioms SpecialTransformations.Section10.corollary_10_6_gamma_unit
+
+#check @SpecialTransformations.Section10.vfDegreeCoproductCategory
+#print axioms SpecialTransformations.Section10.vfDegreeCoproductCategory
+#check @SpecialTransformations.Section10.rvVolumeDegreeCoproductCategory
+#print axioms SpecialTransformations.Section10.rvVolumeDegreeCoproductCategory
+#check @SpecialTransformations.Section10.gammaVolumeDegreeCoproductCategory
+#print axioms SpecialTransformations.Section10.gammaVolumeDegreeCoproductCategory
+#check @SpecialTransformations.Section10.rvUnitVolumeDegreeCoproductCategory
+#print axioms SpecialTransformations.Section10.rvUnitVolumeDegreeCoproductCategory
+#check @SpecialTransformations.Section10.gammaUnitVolumeDegreeCoproductCategory
+#print axioms SpecialTransformations.Section10.gammaUnitVolumeDegreeCoproductCategory
+
+#check @SpecialTransformations.Section10.theorem_10_4_zero
+#print axioms SpecialTransformations.Section10.theorem_10_4_zero
+#check @SpecialTransformations.Section10.theorem_10_5_zero
+#print axioms SpecialTransformations.Section10.theorem_10_5_zero
+#check @SpecialTransformations.Section10.corollary_10_6_zero
+#print axioms SpecialTransformations.Section10.corollary_10_6_zero

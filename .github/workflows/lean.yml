@@ -20,6 +20,7 @@ jobs:
     env:
       LEAN_NUM_THREADS: "2"
       PYTHONUNBUFFERED: "1"
+      SECTION10_ONLY: ${{ github.ref == 'refs/heads/codex/section10-checkpoint' }}
     steps:
       - name: Check out this revision
         uses: actions/checkout@v5
@@ -68,6 +69,7 @@ jobs:
 
       - name: Build the pinned project from source
         id: build
+        if: ${{ env.SECTION10_ONLY != 'true' }}
         env:
           LEAN_NUM_THREADS: "4"
         shell: bash
@@ -77,13 +79,41 @@ jobs:
 
       - name: Run the headline audits concurrently
         id: audits
-        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        if: ${{ env.SECTION10_ONLY != 'true' && !cancelled() && steps.build.outcome == 'success' }}
         run: lake env python3 scripts/verify_ci.py all
+
+      - name: Build the standalone Section10 target
+        id: section10_build
+        if: ${{ env.SECTION10_ONLY == 'true' }}
+        env:
+          LEAN_NUM_THREADS: "4"
+        shell: bash
+        run: |
+          mkdir -p .scratch/section10-verified
+          lake -R build Section10 2>&1 | tee .scratch/section10-verified/Build.log
+
+      - name: Audit the Section 10 headline types and axioms
+        id: section10_audit
+        if: ${{ env.SECTION10_ONLY == 'true' && !cancelled() && steps.section10_build.outcome == 'success' }}
+        run: lake env python3 scripts/verify_ci.py section10
 
       - name: Publish verification summary
         if: ${{ always() }}
         shell: bash
         run: |
+          if [[ "$SECTION10_ONLY" == true ]]; then
+            cat <<'SUMMARY' >> "$GITHUB_STEP_SUMMARY"
+          ## Standalone Section 10 verification
+
+          | Check | Outcome |
+          | --- | --- |
+          | `lake -R build Section10` | ${{ steps.section10_build.outcome }} |
+          | Section 10 headline types and axioms | ${{ steps.section10_audit.outcome }} |
+
+          The verification artifact contains the build log and the full headline audit.
+          SUMMARY
+            exit 0
+          fi
           cat <<'SUMMARY' >> "$GITHUB_STEP_SUMMARY"
           ## Lean verification
 
@@ -134,3 +164,4 @@ jobs:
             .scratch/section7-verified/*.txt
             .scratch/section7-verified/*.lean
             .scratch/section9-verified/*
+            .scratch/section10-verified/*

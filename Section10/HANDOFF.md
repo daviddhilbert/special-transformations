@@ -1,9 +1,5 @@
 # Section 10 continuation
 
-The verification recorded below used Lean 4.33.1. The standalone
-Section10 target is a local checkpoint on the Lean 4.35.0 main
-baseline. Fresh 4.35.0 compilation and headline review are pending.
-
 Follow the root workflow and [Section 3 handoff](../Section3/HANDOFF.md).
 The paper target is [arXiv:1006.2467v1, §10](https://arxiv.org/pdf/1006.2467v1#page=27)
 in the approved finite-volume `RV[n]` and `VF[n]` scope for both
@@ -41,18 +37,42 @@ and [WeightedJacobianLocus.lean](WeightedJacobianLocus.lean). It starts with
 It supplies the quotient of target and source total coordinate values
 at every independent source point. The proof uses the definable mixed
 determinant to compare the values of `J * ∏ xᵢ` and `∏ yᵢ`, then applies
-the pointwise Gamma rule on the restricted lift. At degree zero, use
-the unmeasured categories as in Definitions 10.1 and 10.3.
+the pointwise Gamma rule on the restricted lift. At degree zero,
+[ZeroDegree.lean](ZeroDegree.lean) uses the unmeasured categories of
+Definitions 10.1 and 10.3 and specializes the lift results from Sections
+5 and 7.
 
 The fresh checks and full headline audit ran in the isolated Windows
 Lake environment after Linux resumed intermittently. The pins and
 restored artifact hashes matched. See `.scratch/section10/windows/` for
 local logs and exit-code receipts.
 
-Start next with the RV-valued case of 10.4. Add the volume form as a graph coordinate
-before applying special bijections, then use the approved almost-everywhere
-form of 9.11. Check a separate bridge for the Gamma-valued case, where a
-Gamma coordinate is an imaginary and the allowed objects have RV tags.
-For Remark 10.2 and 10.6, check composition and inversion on common
-full-dimensional domains, and reuse the Section 4 and Section 7 scissors
-infrastructure after verifying its weighted variants.
+Both cases of 10.4 are proved in
+[RVVolumeSurjectivity.lean](RVVolumeSurjectivity.lean) and
+[GammaVolumeSurjectivity.lean](GammaVolumeSurjectivity.lean). Section 3
+QE determines the graph of the Gamma form by the original RV tags and
+finitely many additional RV values of VF terms. Section 5 prepares this
+tuple, and the form itself descends through the pullback labels. Both
+cases share the determinant-one restriction. Standalone compilation,
+library import, and both headline audits passed under the original Lean
+4.33.1 pins.
+
+[EssentialVFGerms.lean](EssentialVFGerms.lean) characterizes agreement
+outside a definable VF-small subset by equality on independent points.
+[EssentialVFMeasure.lean](EssentialVFMeasure.lean) applies Lemma 9.12 to
+the composable restrictions and transfers the measure equations across the
+small cut. [MeasuredVFCategory.lean](MeasuredVFCategory.lean) identifies
+the quotient with these germs and supplies the groupoid. The separate
+[RV groupoids](MeasuredRVCategory.lean) use the RV chain rule of Section 9.
+
+[MeasuredScissors.lean](MeasuredScissors.lean) transports forms along
+the canonical lift and proves that it respects the scissors relations.
+[MeasuredPositiveLift.lean](MeasuredPositiveLift.lean) derives the
+surjectivity of the two homomorphisms using Theorems 10.4 and 10.5.
+[UnitVolume.lean](UnitVolume.lean) restricts this to neutral weights, and
+[GradedCategories.lean](GradedCategories.lean) supplies the coproducts
+indexed by degree. The library entry point contains the type and axiom
+checks for the corresponding declarations. The pinned local check exited
+0, and all 29 axiom reports contain only the three accepted axioms. The
+full types and receipt are in `.scratch/section10/Library-local.log` and
+`.scratch/section10/section10-local-audit.json`.
