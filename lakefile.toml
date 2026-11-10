@@ -764,6 +764,7 @@ globs = [
 name = "Section10"
 roots = ["Section10.Library"]
 globs = [
+  "Section10.Library",
   "Section10.EssentialVFMap",
   "Section10.RVVolumeLift",
   "Section10.RVVolumeRepresentative",
