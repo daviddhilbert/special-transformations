@@ -627,7 +627,25 @@ has a same-base lower-dimensional exception in positive degree.
 \uses{def:lift-categories,lem:rv-rank}
 \end{definition}
 
-\begin{lemma}[9.15. Comparing VF lifts with RV Jacobians]
+\begin{proposition}[Section 9 support. Henselized graph-field construction]
+\label{prop:henselized-graph-field}
+\lean{SpecialTransformations.Section9.acvf_henselizedGaussGraphInput_of_finite_extension_reference}
+\leanok
+The graph-field data used by the Section 9 Jacobian arguments can be
+constructed in the ambient ACVF field under the finite henselian
+extension hypothesis.
+\uses{hyp:finite-henselian-extension}
+\end{proposition}
+\begin{proof}
+\leanok
+\uses{import:stacks-04GN,import:stacks-04GS}
+Construct the ordinary henselization of the Gauss valuation ring
+and embed it into the ambient valuation ring using the local map
+from its universal property. The finite-extension hypothesis supplies
+the henselianity and residue-degree calculation for the graph field.
+\end{proof}
+
+\begin{lemma}[9.15. Comparing VF lifts with RV Jacobians in positive arity]
 \label{lem:rv-jacobian-comparison}
 \lean{SpecialTransformations.Section9.lemma_9_15_finite_volume_of_reference_input}
 \leanok
@@ -636,7 +654,7 @@ finite-volume essential RV isomorphism has the specified RV
 Jacobian comparison off the indicated lower-dimensional loci.
 The positive-arity theorem uses the explicit finite henselian
 extension input described below.
-\uses{def:rv-jacobian,lem:vf-differentiation,hyp:finite-henselian-extension}
+\uses{def:rv-jacobian,lem:vf-differentiation,prop:henselized-graph-field}
 \end{lemma}
 \begin{proof}
 \leanok
@@ -648,15 +666,15 @@ has a documented valued-field counterexample. Lean checks its
 underlying group permutation and change of the sum of valuations.
 \end{proof}
 
-\begin{theorem}[9.16. A lift with prescribed Jacobian]
+\begin{theorem}[9.16. A lift with prescribed Jacobian in positive arity]
 \label{thm:prescribed-lift}
-\lean{SpecialTransformations.Section9.theorem_9_16_finite_volume_of_reference_input,SpecialTransformations.Section9.exists_prescribed_lift_zero_arity}
+\lean{SpecialTransformations.Section9.theorem_9_16_finite_volume_of_reference_input}
 \leanok
 In the finite-volume generated-base setting, the two compatibility
 conditions on the RV isomorphism give a same-base definable VF lift
 with the prescribed RV Jacobian away from a VF-small exception.
-Positive arity uses the explicit finite henselian extension input.
-\uses{def:rv-jacobian,hyp:finite-henselian-extension}
+The proof takes the henselized graph-field data as input.
+\uses{def:rv-jacobian,prop:henselized-graph-field}
 \end{theorem}
 \begin{proof}
 \leanok
@@ -666,14 +684,37 @@ the compatible definable lift, and assemble the pieces with the
 checked exceptional-set bounds.
 \end{proof}
 
-For the positive-arity reference inputs, the
-\repoFile{Section9/STATUS.md}{Section 9 status} states the authorized
-Engler--Prestel facts on henselianity of finite extensions and
-equality of residue and field degrees when the value group is
-unchanged in residue characteristic zero. The graph-field
-construction itself is checked, using the
-\repoFile{Section9/VendoredStacks/README.md}{vendored Stacks proofs}
-for Tags 04GN and 04GS.
+\begin{theorem}[9.16. A lift with prescribed Jacobian in arity zero]
+\label{thm:prescribed-lift-zero}
+\lean{SpecialTransformations.Section9.exists_prescribed_lift_zero_arity}
+\leanok
+In arity zero the prescribed Jacobian is one and the label
+isomorphism lifts in VF.
+\uses{def:rv-jacobian}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:correspondence-lift}
+Lift the label map using the empty VF coordinate tuple. Its
+determinant is the empty product.
+\end{proof}
+
+\begin{proposition}[Section 9 support. Gamma descent on RV polydiscs]
+\label{prop:gamma-polydisc-descent}
+\lean{SpecialTransformations.Section9.gammaDescent_polydiscs_of_vfSmall_exception}
+\leanok
+For the stated definable bijections of RV polydiscs, a fixed finite
+Jacobian value off a VF-small set equals the ratio of the products of
+the target and source values in the multiplicative valuation convention.
+\uses{prop:henselized-graph-field}
+\end{proposition}
+\begin{proof}
+\leanok
+\uses{lem:vf-dimension}
+Use the intrinsic coarsening and compare the residue-generic tangent
+determinant on the graph field. The dimension bound puts independent
+VF tuples outside the exceptional set.
+\end{proof}
 
 \section{Categories with volume forms}
 
@@ -798,12 +839,13 @@ and the exact degree and constant-volume specializations. The
 broader ambient categories in Sections 9--10 lie outside the
 approved scope.
 
-\section*{External reference hypotheses}
+\section*{Reference hypotheses and checked imports}
 
 The amber graph nodes mark explicit mathematical hypotheses in the
-Lean results. The ordinary model assumptions, such as characteristic,
-saturation and the parameter base, are stated with the individual results
-and in the linked section status files.
+Lean results. Purple nodes mark the checked Stacks imports. The
+ordinary model assumptions, such as characteristic, saturation and
+the parameter base, are stated with the individual results and in
+the linked section status files.
 
 \begin{assumption}[Immediate henselization]
 \label{hyp:immediate-henselization}
@@ -827,9 +869,36 @@ positive-degree RV-valued cases of 10.5 and 10.6 also use it.
 \repoFile{Section9/GaussGraphConstruction.lean\#L17}{Lean hypothesis}
 \end{assumption}
 
-The Stacks results on the ordinary henselization
-(\href{https://stacks.math.columbia.edu/tag/04GN}{04GN}
-and \href{https://stacks.math.columbia.edu/tag/04GS}{04GS}) enter as
-\repoFile{Section9/VendoredStacks/README.md}{checked imports}.
+\begin{checkedimport}[Stacks 04GN. Existence of the ordinary henselization]
+\label{import:stacks-04GN}
+\leanok
+A local ring has a henselian local algebra with the same residue
+field and a filtered étale presentation.
+\href{https://stacks.math.columbia.edu/tag/04GN}{Stacks Lemma 10.155.1}
+\end{checkedimport}
+\begin{proof}
+\leanok
+The pinned library builds the vendored proof of
+\repoFile{Section9/VendoredStacks/StacksFrontier/RingTheory/Henselian/Henselization/Existence.lean\#L711}{\texttt{IsLocalRing.exists\_henselization}}.
+\end{proof}
+
+\begin{checkedimport}[Stacks 04GS. Universal property of the ordinary henselization]
+\label{import:stacks-04GS}
+\leanok
+A local map from a local ring into a henselian local ring extends
+uniquely across the ordinary henselization. The Section 9 construction
+uses the extension map and its locality.
+\href{https://stacks.math.columbia.edu/tag/04GS}{Stacks Lemma 10.155.6}
+\end{checkedimport}
+\begin{proof}
+\leanok
+The pinned library builds the vendored
+\repoFile{Section9/VendoredStacks/StacksFrontier/RingTheory/Henselian/HenselizationUniversalProperty.lean\#L375}{local extension map and its properties}.
+\end{proof}
+
+The \repoFile{Section9/VendoredStacks/README.md}{vendored source record}
+gives the AxiomMath Stacks revision and license. Both imports are used
+in the construction of the embedded henselization of the Gauss
+valuation ring.
 The current Section 6 paper exports supply saturation, algebraic
 envelopes and ordinary henselian recognition by checked proofs.

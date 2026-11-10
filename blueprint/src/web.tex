@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{hyperref}
-\usepackage[thms=definition+lemma+proposition+theorem+corollary+remark+assumption]{blueprint}
+\usepackage[thms=definition+lemma+proposition+theorem+corollary+remark+assumption+checkedimport]{blueprint}
 \usepackage{source_links}
 \usepackage{dependency_graph}
 \input{common}
@@ -10,7 +10,8 @@
 \begin{document}
 \maketitle
 \noindent\href{dependency-graph.svg}{\textbf{Open the dependency graph}}\par
-Amber boxes identify external hypotheses. Click a node to open its statement.
+Purple boxes identify checked Lean imports. Amber boxes identify
+external hypotheses. Click a node to open its statement.
 \tableofcontents
 \input{content}
 \end{document}

@@ -26,6 +26,9 @@ The SVG works from a local file, and each node opens its statement. Run
 `leanblueprint serve` to use the interactive graph in the sidebar.
 The print version is `blueprint/print/print.pdf`.
 
+Purple boxes identify checked Lean imports, including the two Stacks
+results used in Section 9. Amber boxes identify external hypotheses.
+
 The shared statements are in `src/content.tex`. For each declaration added
 there, record its source file and line at the checked revision in
 `src/source-links.tsv`.

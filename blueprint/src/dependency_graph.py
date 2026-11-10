@@ -22,10 +22,17 @@ def render_graph(document):
 
 def ProcessOptions(options, document):
     data = document.userdata["dep_graph"]
-    data.setdefault("shapes", {"definition": "box"})["assumption"] = "box"
-    data["legend"].append(("Amber boxes", "external hypotheses in the Lean theorem types"))
+    data.setdefault("shapes", {"definition": "box"}).update(
+        assumption="box", checkedimport="box"
+    )
+    data["legend"].extend([
+        ("Amber boxes", "external hypotheses in the Lean theorem types"),
+        ("Purple boxes", "checked Lean imports"),
+    ])
     color = data["colorizer"]
     fillcolor = data["fillcolorizer"]
-    data["colorizer"] = lambda node: "#8a5a12" if node.thmName == "assumption" else color(node)
-    data["fillcolorizer"] = lambda node: "#ffe8b3" if node.thmName == "assumption" else fillcolor(node)
+    borders = {"assumption": "#8a5a12", "checkedimport": "#4e3b9e"}
+    fills = {"assumption": "#ffe8b3", "checkedimport": "#e4e0ff"}
+    data["colorizer"] = lambda node: borders.get(node.thmName) or color(node)
+    data["fillcolorizer"] = lambda node: fills.get(node.thmName) or fillcolor(node)
     document.addPackageResource(PackagePreCleanupCB(data=render_graph))
