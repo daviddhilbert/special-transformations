@@ -26,10 +26,9 @@ The inverse has integral reciprocal slope, so the slope is one.
 Lemma 8.5 uses this slope step in its local RV difference calculation.
 [Engler–Prestel, Theorems 4.1.3, 5.2.2 and 5.2.5](https://link.springer.com/book/10.1007/3-540-30035-X).
 
-The Lemma 8.4 exports use field representatives of finite radii for
-both balls. The whole-field case, which Definition 2.6 includes as
-the clopen ball of radius minus infinity, needs a restriction to
-proper centered subballs before applying the checked result.
+Lemma 8.4 is scoped to proper centered balls, with field representatives
+of finite radii for both balls. The author excluded the whole-field ball
+case from Lemma 8.4 on November 9, 2026.
 
 
 The library audit replayed all 40 Section 8 modules and 595 declarations

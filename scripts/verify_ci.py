@@ -48,6 +48,7 @@ SECTION9_HEADLINES = [
     'exists_prescribed_lift_zero_arity',
     'gammaDescent_polydiscs_of_vfSmall_exception',
     'acvf_henselizedGaussGraphInput_of_finite_extension_reference',
+    'monomialPermutation_bijOn_and_changes_sum',
 ]
 SECTION9_DEFINITIONS = [
     'IsLimitSet', 'IsMinimalLimitSet', 'HasVFDerivativeAt', 'HasVFJacobianAt',
@@ -67,26 +68,29 @@ SECTION9_SUPPORT_HEADLINES = [
     'Section7.exists_liftMap_of_volume_lift',
 ]
 ALLOWED = {'propext', 'Classical.choice', 'Quot.sound'}
+LIBRARY_SECTIONS = (5, 6, 7, 8, 10)
 
 
-def run_workflow_audits():
-    """Run independent verifiers against the same completed Lake build."""
+def run_workflow_audits(independent):
+    """Audit the completed Lake build, with optional independent source checks."""
+    verifier_flags = () if independent else ('--audit-built',)
     checks = {
         'foundation': ('scripts/verify_ci.py', 'qe'),
-        'section3': ('Section3/verify.py',),
-        'section4': ('Section4/verify.py',),
-        'section5': ('Section5/verify.py',),
-        'section7': ('Section7/verify.py',),
+        'section3': ('Section3/verify.py', *verifier_flags),
+        'section4': ('Section4/verify.py', *verifier_flags),
+        'section5': ('Section5/verify.py',) if independent else ('scripts/verify_ci.py', 'section5'),
+        'section6': ('scripts/verify_ci.py', 'section6'),
+        'section7': ('Section7/verify.py',) if independent else ('scripts/verify_ci.py', 'section7'),
+        'section8': ('scripts/verify_ci.py', 'section8'),
         'section9': ('scripts/verify_ci.py', 'section9'),
         'section10': ('scripts/verify_ci.py', 'section10'),
     }
     out = ROOT / '.scratch' / 'ci-verified'
     out.mkdir(parents=True, exist_ok=True)
+    workers = min(4, int(os.environ.get('LEAN_NUM_THREADS', '4')))
     env = dict(os.environ, LEAN_NUM_THREADS='1', PYTHONUNBUFFERED='1')
 
     def run(label, args):
-        if not (ROOT / args[0]).is_file():
-            return 'skipped', 0.0
         started = time.monotonic()
         with (out / (label + '.log')).open('w', encoding='utf-8') as log:
             result = subprocess.run([sys.executable, *args], cwd=ROOT, env=env,
@@ -95,7 +99,7 @@ def run_workflow_audits():
                 time.monotonic() - started)
 
     outcomes = {}
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {pool.submit(run, label, args): label for label, args in checks.items()}
         for future in as_completed(futures):
             label = futures[future]
@@ -117,19 +121,24 @@ def run_workflow_audits():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('scope', choices=('qe', 'section9', 'section10', 'all'), nargs='?', default='qe')
+    libraries = {f'section{section}': section for section in LIBRARY_SECTIONS}
+    parser.add_argument('scope', choices=('qe', *libraries, 'section9', 'built', 'all'),
+                        nargs='?', default='qe')
     args = parser.parse_args()
-    if args.scope == 'all':
-        return run_workflow_audits()
-    if args.scope == 'section10':
-        label = 'Section 10'
-        out = ROOT / '.scratch' / 'section10-verified'
-        source = ROOT / 'Section10' / 'Library.lean'
+    if args.scope in ('built', 'all'):
+        return run_workflow_audits(independent=args.scope == 'all')
+    section = libraries.get(args.scope)
+    if section:
+        label = f'Section {section}'
+        # Keep Lake-build audits separate from independent source certificates.
+        out = ROOT / '.scratch' / ('section10-verified' if section == 10 else f'ci-verified/section{section}')
+        source = ROOT / f'Section{section}' / 'Library.lean'
         directives = source.read_text(encoding='utf-8')
         headlines = re.findall(r'(?m)^#print axioms (\S+)$', directives)
         types = re.findall(r'(?m)^#check @(\S+)$', directives)
-        if not headlines or headlines != types or len(headlines) != len(set(headlines)):
-            raise RuntimeError('Expected paired and distinct Section 10 type and axiom directives')
+        if (not headlines or set(headlines) != set(types)
+                or len(headlines) != len(types) or len(headlines) != len(set(headlines))):
+            raise RuntimeError(f'Expected paired and distinct {label} type and axiom directives')
     elif args.scope == 'section9':
         label = 'Section 9'
         out = ROOT / '.scratch' / 'section9-verified'
@@ -149,7 +158,7 @@ def main():
     status = out / 'status.txt'
     status.write_text('RUNNING\n', encoding='utf-8')
     try:
-        if args.scope != 'section10':
+        if not section:
             source = out / 'HeadlineAudit.lean'
             source.write_text(
                 'import SpecialTransformations\n'
@@ -176,6 +185,8 @@ def main():
             raise RuntimeError('Incomplete or unexpected headline axiom audit')
         records = []
         for name, block in audits:
+            # Some library audits print universe instantiations on axiom names.
+            block = re.sub(r'\.\{[^}]*\}', '', block)
             axioms = {x.strip() for x in block.split(',') if x.strip()}
             if axioms - ALLOWED:
                 raise RuntimeError('Unexpected axioms for ' + name + ': ' + str(axioms - ALLOWED))

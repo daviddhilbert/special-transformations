@@ -2,8 +2,10 @@
 """Compile the new Section 3 library and audit its exported headlines.
 
 Usage after building pinned dependencies: lake env python3 Section3/verify.py
+Use --audit-built after a successful Lake project build to audit its headlines.
 All logs and build artifacts are scratch output. No legacy source is imported.
 """
+import argparse
 import json
 import hashlib
 import os
@@ -17,11 +19,15 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'Archive'))
 from inspect_legacy import code_only
 
-BUILD = ROOT / '.scratch/section3-verified'
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--audit-built', action='store_true')
+audit_built = parser.parse_args().audit_built
+BUILD = ROOT / ('.scratch/ci-verified/section3' if audit_built else '.scratch/section3-verified')
 LIB = BUILD / 'lib'
 BUILD.mkdir(parents=True, exist_ok=True)
 (BUILD / 'status.txt').write_text('RUNNING\n')
-(LIB / 'Section3').mkdir(parents=True, exist_ok=True)
+if not audit_built:
+    (LIB / 'Section3').mkdir(parents=True, exist_ok=True)
 version = subprocess.check_output(['lean', '--version'], text=True).strip()
 if '4.35.0' not in version:
     raise RuntimeError('Expected pinned Lean 4.35.0: ' + version)
@@ -267,7 +273,8 @@ headlines += ['SpecialTransformations.Section3.LaurentWords.clip', 'SpecialTrans
 def qualify(h):
     return h if h.startswith(('SpecialTransformations.', 'ValOneEC.')) else 'SpecialTransformations.Section3.' + h
 env = os.environ.copy()
-env['LEAN_PATH'] = str(LIB) + os.pathsep + env.get('LEAN_PATH', '')
+if not audit_built:
+    env['LEAN_PATH'] = str(LIB) + os.pathsep + env.get('LEAN_PATH', '')
 rows = []
 def sha(path):
     # DrvFS can return ENOMEM under concurrent WSL memory pressure. Retry
@@ -327,10 +334,11 @@ for module in modules:
     source = ROOT / 'Section3' / (module + '.lean')
     if re.search(r'\b(?:sorry|admit|axiom)\b', code_only(source.read_text(encoding='utf-8'))):
         raise RuntimeError('Placeholder or custom axiom in ' + str(source))
-    deps = re.findall(r'^import Section3\.(\w+)$', source.read_text(encoding='utf-8'), re.M)
-    fingerprints[module] = hashlib.sha256((version + pin_key + sha(source) +
-        ''.join(fingerprints[d] for d in deps)).encode()).hexdigest()
-    run(module, source, LIB / 'Section3' / (module + '.olean'), fingerprints[module])
+    if not audit_built:
+        deps = re.findall(r'^import Section3\.(\w+)$', source.read_text(encoding='utf-8'), re.M)
+        fingerprints[module] = hashlib.sha256((version + pin_key + sha(source) +
+            ''.join(fingerprints[d] for d in deps)).encode()).hexdigest()
+        run(module, source, LIB / 'Section3' / (module + '.olean'), fingerprints[module])
 source = BUILD / 'HeadlineAudit.lean'
 source.write_text('import Section3.Library\n' + '\n'.join(
     ('set_option pp.explicit true in\n' if h in explicit_types else '') +
@@ -345,6 +353,10 @@ allowed = {'propext', 'Classical.choice', 'Quot.sound'}
 for name, block in audits:
     if set(filter(None, (s.strip() for s in block.split(',')))) - allowed:
         raise RuntimeError('Unexpected axiom: ' + name)
-run('Root', ROOT / 'SpecialTransformations.lean')
+if not audit_built:
+    run('Root', ROOT / 'SpecialTransformations.lean')
 (BUILD / 'status.txt').write_text('PASS\n')
-print('PASS: checked library, headline types, allowed axioms, and project root. See STATUS.md for scope.')
+if audit_built:
+    print('PASS: Section 3 headline types and allowed axioms from the Lake build.')
+else:
+    print('PASS: checked library, headline types, allowed axioms, and project root. See STATUS.md for scope.')

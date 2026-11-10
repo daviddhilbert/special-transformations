@@ -106,36 +106,45 @@ Stop at a requested handoff; otherwise continue the authorized objective.
 
 ## Automated GitHub checks
 
-[Lean verification](.github/workflows/lean.yml) runs on pushes, pull requests
-and manual dispatch after it is published to GitHub. Runs appear under
-**Actions**; commits themselves appear in the repository's commit history.
+[Lean verification](.github/workflows/lean.yml) runs on pushes to `main`,
+pull requests, a weekly schedule and manual dispatch. Runs appear under
+**Actions**.
 
 The pinned QE release declares its proof modules as Lake roots.
 The Python 3.11+ script `scripts/prepare_ci.py` checks the exact dependency
 revision and its module registration, then records the proof source hashes
 in the verification artifact.
 
-The workflow builds the pinned project root and audits the published QE
-headline types and axioms. It runs the Section 3, Section 4, Section 5 and Section 7 verifiers when
-they are present in the checked-out revision. The Section 9 audit imports
-the integrated library, prints the definitions and headline types, and
-checks the axiom allowlist with `lake env python3 scripts/verify_ci.py section9`.
-The Section 10 audit prints and checks the paired headline types and axioms
-in `Section10.Library` with `lake env python3 scripts/verify_ci.py section10`.
-The workflow retains logs, audits and status records as downloadable
-artifacts, including available diagnostics on failure.
-The source build uses four Lean threads. The audit driver runs up to four
-independent verifiers concurrently against the same completed Lake build.
-Each verifier retains its own logs and result in the run summary.
+Routine runs build the pinned project root and run
+`lake env python3 scripts/verify_ci.py built` against the compiled files
+from that same run. This checks headline types and allowed axioms for
+published QE and Sections 3–10. It uses the Section 3 and 4 verifiers'
+headline lists and runs the Section 5, 6, 7, 8 and 10 library directives
+directly. The Section 9 audit imports the integrated library and prints
+the selected definitions and headline types.
 
-The Section 5 verifier resolves the accepted earlier compiled import closure
+Pull requests whose changes are confined to `Section10/` build the standalone
+Section 10 target and run `lake env python3 scripts/verify_ci.py section10`.
+The scope is selected within the verification job. Changes to shared
+inputs, pins or workflow configuration trigger the full project build.
+
+Weekly and manually dispatched runs use
+`lake env python3 scripts/verify_ci.py all` after the project build. This
+mode also runs the independent source verifiers for Sections 3, 4, 5
+and 7. Both modes record the results by section and retain compiler logs,
+headline audits and diagnostics as downloadable artifacts. The source
+build uses four Lean threads and the audit driver runs up to four checks
+concurrently. Set `LEAN_NUM_THREADS=1` before a local run to build and
+audit one module or section at a time.
+
+The independent Section 5 verifier resolves the accepted earlier compiled import closure
 with Lean, records provider paths and artifact hashes, and binds cache reuse
 to that manifest and to compiled Section 5 dependencies. It rejects the old
 source-only cache format and checks provider stability across the run. The
 workflow also runs the cache provenance regression checks. Earlier mathematics
 remains an explicitly given input to this verifier.
 
-The Section 7 verifier freshly compiles its active modules, resolves and
+The independent Section 7 verifier freshly compiles its active modules, resolves and
 fingerprints the complete earlier compiled import closure before and after,
 audits its selected full headline types and axioms, and checks its import
 together with ACVF-QE. Its coverage is recorded in Section7/STATUS.md.

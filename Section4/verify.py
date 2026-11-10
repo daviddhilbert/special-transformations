@@ -4,8 +4,10 @@
 Run in the pinned Lake environment with the earlier modules available.
 Compiler output and the actual headline type/axiom audit go in .scratch/.
 The verifier does not rebuild, certify, or change Sections 2--3.
+Use --audit-built after a successful Lake project build to audit its headlines.
 """
 from pathlib import Path
+import argparse
 import hashlib
 import json
 import os
@@ -21,7 +23,10 @@ from inspect_legacy import code_only
 sys.path.insert(0, str(ROOT / 'scripts'))
 from lean_provenance import SCHEMA, artifacts, cache_matches, digest, file_stamps, providers
 
-BUILD = ROOT / '.scratch/section4-verified'
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--audit-built', action='store_true')
+audit_built = parser.parse_args().audit_built
+BUILD = ROOT / ('.scratch/ci-verified/section4' if audit_built else '.scratch/section4-verified')
 LIB = BUILD / 'lib'
 BUILD.mkdir(parents=True, exist_ok=True)
 (BUILD / 'status.txt').write_text('RUNNING\n')
@@ -32,7 +37,8 @@ version = subprocess.check_output(['lean', '--version'], text=True).strip()
 if '4.35.0' not in version:
     raise RuntimeError('Expected Lean 4.35.0, got: ' + version)
 project_env = os.environ.copy()
-env = dict(project_env, LEAN_PATH=str(LIB) + os.pathsep + project_env.get('LEAN_PATH', ''))
+env = project_env if audit_built else dict(
+    project_env, LEAN_PATH=str(LIB) + os.pathsep + project_env.get('LEAN_PATH', ''))
 
 def sha(path):
     result = hashlib.sha256()
@@ -107,15 +113,17 @@ def resolve_given(label):
         raise RuntimeError('Compiled import provider probe failed: ' + label)
     return providers(json.loads(probe_result.read_text(encoding='utf-8')))
 
-given_providers = resolve_given('ImportProviders.before')
-if any(name.startswith('Section4.') for name in given_providers):
-    raise RuntimeError('Earlier-section boundary unexpectedly imports Section 4')
-(BUILD / 'import-providers.json').write_text(json.dumps(dict(schema=SCHEMA,
-    lean_path=env['LEAN_PATH'], providers=given_providers), indent=2) + '\n')
-given_stamps = file_stamps(given_providers)
-provider_key = digest(dict(schema=SCHEMA, lean_path=env['LEAN_PATH'],
-    providers=given_providers, verifier_sha256=sha(Path(__file__)),
-    provenance_helper_sha256=sha(ROOT / 'scripts/lean_provenance.py')))
+given_providers, given_stamps, provider_key = {}, {}, None
+if not audit_built:
+    given_providers = resolve_given('ImportProviders.before')
+    if any(name.startswith('Section4.') for name in given_providers):
+        raise RuntimeError('Earlier-section boundary unexpectedly imports Section 4')
+    (BUILD / 'import-providers.json').write_text(json.dumps(dict(schema=SCHEMA,
+        lean_path=env['LEAN_PATH'], providers=given_providers), indent=2) + '\n')
+    given_stamps = file_stamps(given_providers)
+    provider_key = digest(dict(schema=SCHEMA, lean_path=env['LEAN_PATH'],
+        providers=given_providers, verifier_sha256=sha(Path(__file__)),
+        provenance_helper_sha256=sha(ROOT / 'scripts/lean_provenance.py')))
 
 def compiled_dependencies(name):
     result = {}
@@ -180,9 +188,10 @@ def run(name, source, output=None, fingerprint=None, fresh=False, *, compile_env
         cache_path.write_text(json.dumps(cache, indent=2) + '\n')
     return text
 
-for name in modules:
-    run(name, ROOT / (name.replace('.', '/') + '.lean'),
-        LIB / (name.replace('.', '/') + '.olean'), fingerprints[name], fresh=name=='Section4.Library')
+if not audit_built:
+    for name in modules:
+        run(name, ROOT / (name.replace('.', '/') + '.lean'),
+            LIB / (name.replace('.', '/') + '.olean'), fingerprints[name], fresh=name=='Section4.Library')
 
 headlines = [
     'SpecialTransformations.DefinableGeometry.Space.RelationDefinable.comp',
@@ -1139,19 +1148,23 @@ for name, block in audits:
     found = set(filter(None, (part.strip() for part in block.split(','))))
     if found - allowed:
         raise RuntimeError('Unexpected axioms for ' + name + ': ' + str(found - allowed))
-combined = BUILD / 'CombinedImport.lean'
-combined.write_text('import ACVFQE\nimport Section4.Library\n', encoding='utf-8')
-run('CombinedImport', combined)
-# Later sections also import Section 4 modules outside the verified library's
-# closure. Use the complete Lake build for the whole-project import check.
-run('CoordinationRoot', ROOT / 'SpecialTransformations.lean', compile_env=project_env)
+if not audit_built:
+    combined = BUILD / 'CombinedImport.lean'
+    combined.write_text('import ACVFQE\nimport Section4.Library\n', encoding='utf-8')
+    run('CombinedImport', combined)
+    # Later sections also import Section 4 modules outside the verified library's
+    # closure. Use the complete Lake build for the whole-project import check.
+    run('CoordinationRoot', ROOT / 'SpecialTransformations.lean', compile_env=project_env)
 for name, expected in scanned_sources.items():
     if sha(ROOT / (name.replace('.', '/') + '.lean')) != expected:
         raise RuntimeError('Source changed before certificate completed: ' + name)
 (BUILD / 'headlines.json').write_text(json.dumps(
     [dict(name=name, axioms=[s.strip() for s in block.split(',') if s.strip()])
      for name, block in audits], indent=2) + '\n')
-if resolve_given('ImportProviders.after') != given_providers:
+if not audit_built and resolve_given('ImportProviders.after') != given_providers:
     raise RuntimeError('Resolved compiled providers changed during verification')
 (BUILD / 'status.txt').write_text('PASS\n')
-print('PASS: Section 4 library, full headline types, allowed axioms, combined QE import, and project root.')
+if audit_built:
+    print('PASS: Section 4 headline types and allowed axioms from the Lake build.')
+else:
+    print('PASS: Section 4 library, full headline types, allowed axioms, combined QE import, and project root.')

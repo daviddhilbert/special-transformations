@@ -2,8 +2,11 @@ name: Lean verification
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: "23 12 * * 1"
 
 permissions:
   contents: read
@@ -20,12 +23,27 @@ jobs:
     env:
       LEAN_NUM_THREADS: "2"
       PYTHONUNBUFFERED: "1"
-      SECTION10_ONLY: ${{ github.ref == 'refs/heads/codex/section10-checkpoint' }}
     steps:
       - name: Check out this revision
         uses: actions/checkout@v5
         with:
           persist-credentials: false
+          fetch-depth: ${{ github.event_name == 'pull_request' && 2 || 1 }}
+
+      - name: Select verification scope
+        id: scope
+        shell: bash
+        run: |
+          mode=built
+          if [[ "$GITHUB_EVENT_NAME" == schedule || "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+            mode=all
+          elif [[ "$GITHUB_EVENT_NAME" == pull_request ]] &&
+               git rev-parse --verify --quiet HEAD^1 >/dev/null &&
+               git diff --quiet --no-renames HEAD^1 HEAD -- . ':(exclude)Section10/**' &&
+               [[ -n "$(git diff --name-only --no-renames HEAD^1 HEAD -- Section10/)" ]]; then
+            mode=section10
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -69,39 +87,48 @@ jobs:
 
       - name: Build the pinned project from source
         id: build
-        if: ${{ env.SECTION10_ONLY != 'true' }}
+        if: ${{ steps.scope.outputs.mode != 'section10' }}
         env:
           LEAN_NUM_THREADS: "4"
         shell: bash
         run: |
           mkdir -p .scratch/ci-verified
           lake -R build 2>&1 | tee .scratch/ci-verified/Build.log
+          if grep -F "declaration uses 'sorry'" .scratch/ci-verified/Build.log; then
+            exit 1
+          fi
 
       - name: Run the headline audits concurrently
         id: audits
-        if: ${{ env.SECTION10_ONLY != 'true' && !cancelled() && steps.build.outcome == 'success' }}
-        run: lake env python3 scripts/verify_ci.py all
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        env:
+          AUDIT_SCOPE: ${{ steps.scope.outputs.mode }}
+          LEAN_NUM_THREADS: "4"
+        run: lake env python3 scripts/verify_ci.py "$AUDIT_SCOPE"
 
       - name: Build the standalone Section10 target
         id: section10_build
-        if: ${{ env.SECTION10_ONLY == 'true' }}
+        if: ${{ steps.scope.outputs.mode == 'section10' }}
         env:
           LEAN_NUM_THREADS: "4"
         shell: bash
         run: |
           mkdir -p .scratch/section10-verified
           lake -R build Section10 2>&1 | tee .scratch/section10-verified/Build.log
+          if grep -F "declaration uses 'sorry'" .scratch/section10-verified/Build.log; then
+            exit 1
+          fi
 
       - name: Audit the Section 10 headline types and axioms
         id: section10_audit
-        if: ${{ env.SECTION10_ONLY == 'true' && !cancelled() && steps.section10_build.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.section10_build.outcome == 'success' }}
         run: lake env python3 scripts/verify_ci.py section10
 
       - name: Publish verification summary
         if: ${{ always() }}
         shell: bash
         run: |
-          if [[ "$SECTION10_ONLY" == true ]]; then
+          if [[ "${{ steps.scope.outputs.mode }}" == section10 ]]; then
             cat <<'SUMMARY' >> "$GITHUB_STEP_SUMMARY"
           ## Standalone Section 10 verification
 
@@ -117,15 +144,21 @@ jobs:
           cat <<'SUMMARY' >> "$GITHUB_STEP_SUMMARY"
           ## Lean verification
 
+          Audit mode: ${{ steps.scope.outputs.mode }}.
+          The `built` mode uses this run's Lake artifacts for headline audits.
+          The `all` mode also runs the independent section source verifiers.
+
           | Check | Outcome |
           | --- | --- |
           | Pinned project build | ${{ steps.build.outcome }} |
           | Compiled import cache regression checks | ${{ steps.provenance.outcome }} |
           | Published QE headline types and axioms | ${{ steps.audits.outputs.foundation || 'skipped' }} |
-          | Section 3 verifier, if present | ${{ steps.audits.outputs.section3 || 'skipped' }} |
-          | Section 4 verifier, if present | ${{ steps.audits.outputs.section4 || 'skipped' }} |
-          | Section 5 verifier, if present | ${{ steps.audits.outputs.section5 || 'skipped' }} |
-          | Section 7 verifier, if present | ${{ steps.audits.outputs.section7 || 'skipped' }} |
+          | Section 3 headline types and axioms | ${{ steps.audits.outputs.section3 || 'skipped' }} |
+          | Section 4 headline types and axioms | ${{ steps.audits.outputs.section4 || 'skipped' }} |
+          | Section 5 headline types and axioms | ${{ steps.audits.outputs.section5 || 'skipped' }} |
+          | Section 6 headline types and axioms | ${{ steps.audits.outputs.section6 || 'skipped' }} |
+          | Section 7 headline types and axioms | ${{ steps.audits.outputs.section7 || 'skipped' }} |
+          | Section 8 headline types and axioms | ${{ steps.audits.outputs.section8 || 'skipped' }} |
           | Section 9 headline types and axioms | ${{ steps.audits.outputs.section9 || 'skipped' }} |
           | Section 10 headline types and axioms | ${{ steps.audits.outputs.section10 || 'skipped' }} |
 
@@ -146,7 +179,7 @@ jobs:
           path: |
             lean-toolchain
             lake-manifest.json
-            .scratch/ci-verified/*
+            .scratch/ci-verified/**
             .scratch/section3-verified/*.log
             .scratch/section3-verified/*.json
             .scratch/section3-verified/*.txt

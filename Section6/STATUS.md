@@ -26,6 +26,21 @@ zero, and an angular component. The extra preparation, expanded
 normal-form, saturation, algebraic-envelope and ordinary-recognition
 inputs of the earlier wrappers are supplied by proofs.
 
+The standalone Lemma 6.2 already takes the ambient ACVF model and the
+henselian substructure as given. Its additional input is an elementary
+algebraic envelope inside the ambient model, corresponding to the algebraic
+closure of the substructure's valued field there. The proof uses finite
+Galois orbits in that algebraic part to descend definable elements.
+Corollary 3.14 proves that the model-theoretic algebraic closure is an
+elementary submodel. The remaining connection for the standalone export
+is to use that result and identify the inherited valued-field and RV
+structures with the inputs to the descent proof.
+
+The same algebraic-closure argument applies when starting with a
+henselian field on its own. In the quantifier elimination proof, no
+ambient ACVF model is given. The native construction extends the field
+and valuation to an algebraic closure and supplies the envelope there.
+
 `NativePresentation` recovers the concrete valued field and RV quotient
 from the native model. `NativeEnvelopeConstruction` extends the valuation
 to an algebraic closure, using the proved valuation invariance there.
