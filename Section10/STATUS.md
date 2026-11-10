@@ -57,9 +57,17 @@ restrict the forms to their neutral values and reuse the same lift.
 
 ## Verification
 
-This checkout pins Lean 4.35.0. The `codex/section10-checkpoint` workflow
-builds the standalone `Section10` target and audits `Section10.Library`.
-The local evidence below comes from the original Lean 4.33.1 checkout.
+The standalone `lake -R build Section10` and headline audit passed with
+Lean 4.35.0 on November 9, 2026. All 29 printed types match the Lean
+4.33.1 output up to whitespace. Every report lists `propext`,
+`Classical.choice` and `Quot.sound`.
+[Verified checkpoint](https://github.com/daviddhilbert/special-transformations/commit/7f2e697c8cfcb2702504f78ef3cc79289f040179),
+[Actions run](https://github.com/daviddhilbert/special-transformations/actions/runs/42738182685),
+[verification artifact](https://github.com/daviddhilbert/special-transformations/actions/runs/42738182685/artifacts/13728552237).
+
+`SpecialTransformations.lean` imports `Section10.Library`, and the full
+project workflow includes the Section 10 audit. The local evidence below
+comes from the original Lean 4.33.1 checkout.
 
 The final local check of `Section10/Library.lean` through pinned
 `lake env lean` exited 0. All 18 active Section 10 modules have matching

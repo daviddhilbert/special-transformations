@@ -78,6 +78,7 @@ def run_workflow_audits():
         'section5': ('Section5/verify.py',),
         'section7': ('Section7/verify.py',),
         'section9': ('scripts/verify_ci.py', 'section9'),
+        'section10': ('scripts/verify_ci.py', 'section10'),
     }
     out = ROOT / '.scratch' / 'ci-verified'
     out.mkdir(parents=True, exist_ok=True)

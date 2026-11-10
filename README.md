@@ -29,7 +29,7 @@ QE is finished and is a dependency of this work.
 | [Section7/](Section7/README.md) | Lifting functions and Jacobians through Corollary 7.7 |
 | Section8/ | Further structural properties |
 | Section9/ | Differentiation |
-| Section10/ | Categories with volume forms |
+| [Section10/](Section10/README.md) | Categories with volume forms |
 | [Shared/](Shared/README.md) | Seven syntax/parameter helpers required by the section code |
 | [Archive/](Archive/README.md) | Remaining model-building snapshots and limited historical evidence |
 
@@ -64,17 +64,22 @@ Gamma descent use the named Engler–Prestel finite-extension premise.
 The [Section 9 status](Section9/STATUS.md) records that premise and the
 author-approved corrections to the paper.
 
+Section 10's [entry point](Section10/Library.lean) includes the RV-valued
+and Gamma-valued finite-volume categories, measured lifts and positive
+Grothendieck homomorphisms. See the [Section 10 status](Section10/STATUS.md)
+for the statements, explicit hypotheses and verification scope.
+
 ## Build and inspect
 
 Lean 4.35.0 and the matching Mathlib revision are pinned. `lake build` builds
 the coordination root, which imports the completed `ACVFQE` library and the
-Section 3 through Section 9 entry points. Legacy
+Section 3 through Section 10 entry points. Legacy
 section snapshots are deliberately not imported into that root automatically.
 
 ```sh
 lake exe cache get
 lake build
-lake env python3 scripts/verify_ci.py section9
+lake env python3 scripts/verify_ci.py all
 python3 Archive/inspect_legacy.py --check-moves
 python3 Archive/inspect_legacy.py --plan Section3/Sec3Fibre.lean
 ```

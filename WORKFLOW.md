@@ -120,8 +120,10 @@ headline types and axioms. It runs the Section 3, Section 4, Section 5 and Secti
 they are present in the checked-out revision. The Section 9 audit imports
 the integrated library, prints the definitions and headline types, and
 checks the axiom allowlist with `lake env python3 scripts/verify_ci.py section9`.
-It retains logs, audits and status
-records as downloadable artifacts, including available diagnostics on failure.
+The Section 10 audit prints and checks the paired headline types and axioms
+in `Section10.Library` with `lake env python3 scripts/verify_ci.py section10`.
+The workflow retains logs, audits and status records as downloadable
+artifacts, including available diagnostics on failure.
 The source build uses four Lean threads. The audit driver runs up to four
 independent verifiers concurrently against the same completed Lake build.
 Each verifier retains its own logs and result in the run summary.

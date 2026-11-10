@@ -127,6 +127,7 @@ jobs:
           | Section 5 verifier, if present | ${{ steps.audits.outputs.section5 || 'skipped' }} |
           | Section 7 verifier, if present | ${{ steps.audits.outputs.section7 || 'skipped' }} |
           | Section 9 headline types and axioms | ${{ steps.audits.outputs.section9 || 'skipped' }} |
+          | Section 10 headline types and axioms | ${{ steps.audits.outputs.section10 || 'skipped' }} |
 
           Download the verification artifact for compiler logs and headline audits.
           A skipped step is not a passed check. This run covers the current library
