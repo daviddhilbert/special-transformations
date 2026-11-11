@@ -35,41 +35,22 @@ theorem nearestRoots_mem_closedDisc (R : Finset K) (A : Set K) (a : K) (ρ : Rad
     rw [he]
     exact v.map_add_le hrx hxB
 
-theorem nearestRoots_mem_openDisc (R : Finset K) (A : Set K) (a : K) (ρ : Radius Γ)
+theorem nearestRoots_mem_openDisc (R : Finset K) (A : Set K) (a : K) (ρ : OpenRadius Γ)
     (hA : A ⊆ openDisc v a ρ) (hR : ∃ r ∈ R, r ∈ openDisc v a ρ) :
     ∀ r ∈ nearestRoots v R A, r ∈ openDisc v a ρ := by
   intro r hr
-  cases ρ with
-  | none => trivial
-  | some γ =>
-    by_cases hγ : OrderDual.ofDual γ = 0
-    · have heγ : γ = OrderDual.toDual (0 : Γ) := congrArg OrderDual.toDual hγ
-      subst γ
-      change A ⊆ openDisc v a (↑(0 : OrderDual Γ)) at hA
-      change (∃ s ∈ R, s ∈ openDisc v a (↑(0 : OrderDual Γ))) at hR
-      have hA' : A ⊆ closedDisc v a (↑(0 : OrderDual Γ)) := by
-        simpa only [openDisc_infinity, closedDisc_infinity] using hA
-      have hR' : ∃ s ∈ R, s ∈ closedDisc v a (↑(0 : OrderDual Γ)) := by
-        simpa only [openDisc_infinity, closedDisc_infinity] using hR
-      change r ∈ openDisc v a (↑(0 : OrderDual Γ))
-      simpa only [openDisc_infinity, closedDisc_infinity] using
-        nearestRoots_mem_closedDisc v R A a _ hA' hR' r hr
-    · obtain ⟨hrR, x, hxA, hnear⟩ := Finset.mem_filter.mp hr
-      obtain ⟨s, hsR, hsB⟩ := hR
-      have hxB : v (x - a) < OrderDual.ofDual γ := by
-        simpa only [openDisc, if_neg hγ, Set.mem_ofPred_eq] using hA hxA
-      have hsB' : v (s - a) < OrderDual.ofDual γ := by
-        simpa only [openDisc, if_neg hγ, Set.mem_ofPred_eq] using hsB
-      have hsx : v (s - x) < OrderDual.ofDual γ := by
-        have he : s - x = (s - a) - (x - a) := by ring
-        rw [he]
-        exact v.map_sub_lt hsB' hxB
-      have hrx := lt_of_le_of_lt (hnear s hsR) hsx
-      change r ∈ if OrderDual.ofDual γ = 0 then {a} else {x | v (x - a) < OrderDual.ofDual γ}
-      rw [if_neg hγ]
-      change v (r - a) < OrderDual.ofDual γ
-      have he : r - a = (r - x) + (x - a) := by ring
-      rw [he]
-      exact v.map_add_lt hrx hxB
+  obtain ⟨hrR, x, hxA, hnear⟩ := Finset.mem_filter.mp hr
+  obtain ⟨s, hsR, hsB⟩ := hR
+  have hxB : v (x - a) < (OrderDual.ofDual ρ : Γˣ).val := hA hxA
+  have hsB' : v (s - a) < (OrderDual.ofDual ρ : Γˣ).val := hsB
+  have hsx : v (s - x) < (OrderDual.ofDual ρ : Γˣ).val := by
+    have he : s - x = (s - a) - (x - a) := by ring
+    rw [he]
+    exact v.map_sub_lt hsB' hxB
+  have hrx := lt_of_le_of_lt (hnear s hsR) hsx
+  change v (r - a) < (OrderDual.ofDual ρ : Γˣ).val
+  have he : r - a = (r - x) + (x - a) := by ring
+  rw [he]
+  exact v.map_add_lt hrx hxB
 
 end SpecialTransformations.Section3.Balls

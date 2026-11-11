@@ -109,10 +109,12 @@ theorem encodedBall_disc {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation (VFType (M := M)) Γ)
     (hv : ∀ x y : VFType (M := M), VFValued.predV x y ↔ v x ≤ v y)
     (B : Set M) (hB : IsBall B) :
-    ∃ a ρ, {x : VFType (M := M) | x.val ∈ B} = Balls.openDisc v a ρ ∨
-      {x : VFType (M := M) | x.val ∈ B} = Balls.closedDisc v a ρ := by
+    ∃ a, (∃ ρ : Balls.OpenRadius Γ,
+      {x : VFType (M := M) | x.val ∈ B} = Balls.openDisc v a ρ) ∨
+      (∃ ρ : Balls.Radius Γ,
+        {x : VFType (M := M) | x.val ∈ B} = Balls.closedDisc v a ρ) := by
   rcases hB with hB | ⟨a, t, ha, ht, ht0, hB⟩ | (⟨a, t, ha, ht, ht0, hB⟩ | ⟨a, ha, hB⟩)
-  · refine ⟨0, ⊥, Or.inr ?_⟩
+  · refine ⟨0, Or.inr ⟨⊥, ?_⟩⟩
     ext x
     change x.val ∈ B ↔ True
     rw [hB]
@@ -120,7 +122,7 @@ theorem encodedBall_disc {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
   · let a' : VFType (M := M) := ⟨a, ha⟩
     obtain ⟨b, hb⟩ := CanonicalRV.encodedRv_surjective (⟨t, ht⟩ : CanonicalRV.RVSort M)
     have hb' : iRv b.val = t := congrArg Subtype.val hb
-    refine ⟨a', ↑(OrderDual.toDual (v b)), Or.inr ?_⟩
+    refine ⟨a', Or.inr ⟨↑(OrderDual.toDual (v b)), ?_⟩⟩
     apply Set.ext
     intro (x : VFType (M := M))
     change x.val ∈ B ↔ v (x - a') ≤ v b
@@ -139,12 +141,12 @@ theorem encodedBall_disc {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
       intro he
       exact ht0 (hb'.symm.trans ((CanonicalRV.encodedRv_zero_iff b).mpr he))
     have hvb : v b ≠ 0 := (map_ne_zero v).mpr hb0
-    refine ⟨a', ↑(OrderDual.toDual (v b)), Or.inl ?_⟩
+    refine ⟨a', Or.inl ⟨Balls.openRadius (v b) hvb, ?_⟩⟩
     apply Set.ext
     intro (x : VFType (M := M))
-    change x.val ∈ B ↔ x ∈ Balls.openDisc v a' (↑(OrderDual.toDual (v b)))
+    change x.val ∈ B ↔ x ∈ Balls.openDisc v a' (Balls.openRadius (v b) hvb)
     rw [hB]
-    simp only [Balls.openDisc, OrderDual.ofDual_toDual, if_neg hvb, Set.mem_ofPred_eq]
+    simp only [Balls.openDisc_openRadius, Set.mem_ofPred_eq]
     change (iVF x.val ∧ iLe t (iRv (iVFAdd x.val (iVFNeg a))) ∧
       ¬ iLe (iRv (iVFAdd x.val (iVFNeg a))) t) ↔ v (x - a') < v b
     rw [and_iff_right x.property]
@@ -156,7 +158,7 @@ theorem encodedBall_disc {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
     rw [hb', hd] at hle hge
     rw [hle, hge, lt_iff_le_not_ge]
   · let a' : VFType (M := M) := ⟨a, ha⟩
-    refine ⟨a', ↑(0 : OrderDual Γ), Or.inr ?_⟩
+    refine ⟨a', Or.inr ⟨↑(0 : OrderDual Γ), ?_⟩⟩
     rw [Balls.closedDisc_infinity]
     apply Set.ext
     intro (x : VFType (M := M))

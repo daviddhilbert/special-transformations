@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "scope": "The repaired Section4.PolydiscLocal module and its eight public declaration types/axioms; not a complete Section 4 library audit.",
+  "environment": "diamond-integral consumer with byte-matched library source",
+  "lean": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "source_sha256": "a5cf5a838f2e6711e1c1767793738a16137ba0d3a150a678fdb8d76990bde8a5",
+  "consumer_manifest_sha256": "b613041fb9d72978799af0155a1efc40e6ed2bd1a3c47a00b77cbebfcdd40bcc",
+  "axioms": {
+    "SpecialTransformations.Section4.ValuedPolydisc.mem_carrier_iff": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.ValuedPolydisc.side_mem_nhds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.ValuedPolydisc.side_infinite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.ValuedPolydisc.carrier_eq_paper_balls": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.exists_nonzero_ball_subset": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.exists_polydisc_subset_of_mem_nhds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.independent_definable_mem_nhds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.independent_definable_contains_polydisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "compiler_exit_code": 0
+}

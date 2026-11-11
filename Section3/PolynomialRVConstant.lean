@@ -47,7 +47,7 @@ variable {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
 
 include hv in
 theorem polynomial_rv_constant_openDisc (p : Polynomial (VFType (M := M)))
-    (a : VFType (M := M)) (r : Balls.Radius Γ)
+    (a : VFType (M := M)) (r : Balls.OpenRadius Γ)
     (hroot : ∀ c ∈ p.roots, c ∉ Balls.openDisc v a r)
     (x y : VFType (M := M)) (hx : x ∈ Balls.openDisc v a r)
     (hy : y ∈ Balls.openDisc v a r) : iRv (p.eval x).val = iRv (p.eval y).val := by

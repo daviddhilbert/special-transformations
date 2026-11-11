@@ -30,8 +30,8 @@ theorem finite_exceptions (S : Set M)
     {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation (VFType (M := M)) Γ)
     (hv : ∀ x y : VFType (M := M), VFValued.predV x y ↔ v x ≤ v y)
-    (hq : ∀ d : Q, ∃ a r, {x | q x = d} = Balls.openDisc v a r ∨
-      {x | q x = d} = Balls.closedDisc v a r) :
+    (hq : ∀ d : Q, ∃ a, (∃ r : Balls.OpenRadius Γ, {x | q x = d} = Balls.openDisc v a r) ∨
+      (∃ r : Balls.Radius Γ, {x | q x = d} = Balls.closedDisc v a r)) :
     {d : Q | ∃ x y, q x = d ∧ q y = d ∧ f x ≠ f y}.Finite := by
   obtain ⟨R, _, _, hO, hC⟩ := mixed_finite_definable_obstacles v hv S (graph f) hgraph
   apply (R.finite_toSet.image q).subset
@@ -40,7 +40,7 @@ theorem finite_exceptions (S : Set M)
   have havoid : ∀ c ∈ R, q c ≠ d := by
     intro c hc he
     exact hd ⟨c, hc, he⟩
-  obtain ⟨a, r, he | he⟩ := hq d
+  obtain ⟨a, ⟨r, he⟩ | ⟨r, he⟩⟩ := hq d
   · have hav : ∀ c ∈ R, c ∉ Balls.openDisc v a r := by
       intro c hc hh
       exact havoid c hc ((Set.ext_iff.mp he c).mpr hh)

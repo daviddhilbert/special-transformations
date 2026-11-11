@@ -42,10 +42,9 @@ theorem closedPolydisc_uniform_iff (v : Valuation K Γ) {n : ℕ}
 
 theorem openPolydisc_uniform_iff (v : Valuation K Γ) {n : ℕ}
     (a x : Fin n → K) (γ : OrderDual Γ) (hγ : OrderDual.ofDual γ ≠ 0) :
-    x ∈ openPolydisc v a (fun _ => (γ : Radius Γ)) ↔
+    x ∈ openPolydisc v a (fun _ => openRadius (OrderDual.ofDual γ) hγ) ↔
       γ < tupleValuation v (fun i => x i - a i) := by
-  change (∀ i, x i ∈ openDisc v (a i) ↑γ) ↔ _
-  simp only [openDisc, if_neg hγ, Set.mem_ofPred_eq]
+  change (∀ i, v (x i - a i) < OrderDual.ofDual γ) ↔ _
   change (∀ i, v (x i - a i) < OrderDual.ofDual γ) ↔
     Finset.univ.sup (fun i => v (x i - a i)) < OrderDual.ofDual γ
   rw [Finset.sup_lt_iff (by simpa only [bot_eq_zero] using (pos_iff_ne_zero.mpr hγ))]

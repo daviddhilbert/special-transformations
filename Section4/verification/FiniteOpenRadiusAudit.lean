@@ -1,0 +1,20 @@
+import Section4.PolydiscLocal
+set_option pp.universes true
+set_option pp.fullNames true
+set_option format.width 120
+#check @SpecialTransformations.Section4.ValuedPolydisc.mem_carrier_iff
+#print axioms SpecialTransformations.Section4.ValuedPolydisc.mem_carrier_iff
+#check @SpecialTransformations.Section4.ValuedPolydisc.side_mem_nhds
+#print axioms SpecialTransformations.Section4.ValuedPolydisc.side_mem_nhds
+#check @SpecialTransformations.Section4.ValuedPolydisc.side_infinite
+#print axioms SpecialTransformations.Section4.ValuedPolydisc.side_infinite
+#check @SpecialTransformations.Section4.ValuedPolydisc.carrier_eq_paper_balls
+#print axioms SpecialTransformations.Section4.ValuedPolydisc.carrier_eq_paper_balls
+#check @SpecialTransformations.Section4.exists_nonzero_ball_subset
+#print axioms SpecialTransformations.Section4.exists_nonzero_ball_subset
+#check @SpecialTransformations.Section4.exists_polydisc_subset_of_mem_nhds
+#print axioms SpecialTransformations.Section4.exists_polydisc_subset_of_mem_nhds
+#check @SpecialTransformations.Section4.independent_definable_mem_nhds
+#print axioms SpecialTransformations.Section4.independent_definable_mem_nhds
+#check @SpecialTransformations.Section4.independent_definable_contains_polydisc
+#print axioms SpecialTransformations.Section4.independent_definable_contains_polydisc

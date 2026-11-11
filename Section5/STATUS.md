@@ -1,5 +1,14 @@
 # Section 5 proof status
 
+## Finite open-radius migration
+
+Six direct geometry/preparation consumers now use the author-corrected
+`Section3.Balls.OpenRadius`. `Section5.Library` builds with the corrected
+Section 3 definitions in the pinned diamond-integral consumer environment.
+The source-matched audit is recorded in
+[the correction note](../Section3/OPEN-DISC-RADIUS-NOTE.md). Earlier complete
+Section 5 certificates retain their original source identities.
+
 **The published Lean Corollary 5.7 is conditional.** The paper does not state
 these as additional hypotheses. The Lean general export assumes uniform
 vertical obstacles and a dimensional presentation. The published finite

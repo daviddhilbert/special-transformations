@@ -20,7 +20,7 @@ theorem qf_rootFree_constant (S : Set M) (p : Parameters S)
     (hp : ∀ i (h : iVF (p.values i)), (⟨p.values i, h⟩ : VFType (M := M)) ∈ E)
     (φ : LRV.BoundedFormula (Fin p.length) 1) (hqf : φ.IsQF)
     (hws : WellSorted p.sorts (fun _ => .vf) φ)
-    (a : VFType (M := M)) (r : Balls.Radius Γ)
+    (a : VFType (M := M)) (r : Balls.OpenRadius Γ)
     (havoid : ∀ c ∈ PolynomialObstacles.obstacles E (PolynomialSupport.formula p E hp φ),
       c ∉ Balls.openDisc v a r)
     (x y : VFType (M := M)) (hx : x ∈ Balls.openDisc v a r)
@@ -38,7 +38,7 @@ This strengthens pointwise local constancy and uses the completed QE input. -/
 theorem finite_definable_obstacles (S U : Set M) (hU : DefinableAt S .vf U) :
     ∃ R : Finset (VFType (M := M)), R.Nonempty ∧
       DefinableAt S .vf (Subtype.val '' (R : Set (VFType (M := M)))) ∧
-      ∀ (a : VFType (M := M)) (r : Balls.Radius Γ),
+      ∀ (a : VFType (M := M)) (r : Balls.OpenRadius Γ),
         (∀ c ∈ R, c ∉ Balls.openDisc v a r) →
         ∀ x ∈ Balls.openDisc v a r, ∀ y ∈ Balls.openDisc v a r,
           (x.val ∈ U ↔ y.val ∈ U) := by

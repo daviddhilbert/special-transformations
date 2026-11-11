@@ -75,6 +75,12 @@ mathematical strategy; old proof orders and status counts are not verification.
   mistakes from author-approved corrections to the paper; the RV-inversion
   correction is documented in `LANGUAGE-ERRATA.md`.
 
+- Open discs have finite valuative radius. Use `Section3.Balls.OpenRadius`
+  (`OrderDual Γˣ`) for proper open discs. Radius infinity gives a singleton
+  closed disc only; do not restore an open-disc-at-infinity convention. This
+  is the author's November 9, 2026 correction; see
+  `Section3/OPEN-DISC-RADIUS-NOTE.md`.
+
 ## Layout and verification
 
 - `Section3/` includes the remaining Section 2 tasks. `Section4/` through

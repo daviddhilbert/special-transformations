@@ -184,42 +184,19 @@ private theorem exists_controlling_fibre {Γ : Type} [LinearOrderedCommGroupWith
 
 private theorem closed_through_pair_subset {K Γ : Type} [Field K]
     [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (a x y : K)
-    (r : Balls.Radius Γ) (hx : x ∈ Balls.openDisc v a r)
+    (r : Balls.OpenRadius Γ) (hx : x ∈ Balls.openDisc v a r)
     (hy : y ∈ Balls.openDisc v a r) :
     Balls.closedDisc v x (↑(OrderDual.toDual (v (y - x)))) ⊆ Balls.openDisc v a r := by
-  cases r with
-  | none => exact Set.subset_univ _
-  | some γ =>
-    by_cases hγ : OrderDual.ofDual γ = 0
-    · have hr : γ = (0 : OrderDual Γ) := hγ
-      subst γ
-      change x ∈ (if (0 : Γ) = 0 then {a} else {z | v (z - a) < 0}) at hx
-      change y ∈ (if (0 : Γ) = 0 then {a} else {z | v (z - a) < 0}) at hy
-      change _ ⊆ (if (0 : Γ) = 0 then {a} else {z | v (z - a) < 0})
-      simp only [if_pos rfl, Set.mem_singleton_iff] at hx hy ⊢
-      subst x
-      subst y
-      intro z hz
-      change v (z - a) ≤ v (a - a) at hz
-      rw [sub_self, map_zero, le_zero_iff, map_eq_zero, sub_eq_zero] at hz
-      exact hz
-    · change x ∈ (if OrderDual.ofDual γ = 0 then {a} else
-        {z | v (z - a) < OrderDual.ofDual γ}) at hx
-      change y ∈ (if OrderDual.ofDual γ = 0 then {a} else
-        {z | v (z - a) < OrderDual.ofDual γ}) at hy
-      change _ ⊆ (if OrderDual.ofDual γ = 0 then {a} else
-        {z | v (z - a) < OrderDual.ofDual γ})
-      rw [if_neg hγ] at hx hy ⊢
-      intro z hz
-      change v (z - x) ≤ v (y - x) at hz
-      change v (x - a) < OrderDual.ofDual γ at hx
-      change v (y - a) < OrderDual.ofDual γ at hy
-      change v (z - a) < OrderDual.ofDual γ
-      have hyx : v (y - x) < OrderDual.ofDual γ := by
-        rw [show y - x = (y - a) - (x - a) by ring]
-        exact v.map_sub_lt hy hx
-      rw [show z - a = (z - x) + (x - a) by ring]
-      exact v.map_add_lt (hz.trans_lt hyx) hx
+  intro z hz
+  change v (z - x) ≤ v (y - x) at hz
+  change v (x - a) < (OrderDual.ofDual r : Γˣ).val at hx
+  change v (y - a) < (OrderDual.ofDual r : Γˣ).val at hy
+  change v (z - a) < (OrderDual.ofDual r : Γˣ).val
+  have hyx : v (y - x) < (OrderDual.ofDual r : Γˣ).val := by
+    rw [show y - x = (y - a) - (x - a) by ring]
+    exact v.map_sub_lt hy hx
+  rw [show z - a = (z - x) + (x - a) by ring]
+  exact v.map_add_lt (hz.trans_lt hyx) hx
 
 private theorem uniformControllingRelation {κ : Cardinal} (hs : Saturated M κ)
     (hsmall : Cardinal.mk S < κ) {Γ : Type} [LinearOrderedCommGroupWithZero Γ]

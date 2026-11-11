@@ -63,8 +63,7 @@ theorem finite_definable_hitting_set (hc : CanonicalStructure.IsCanonical (M := 
       (y : VFType (M := M)) (hy : y ∈ ValOneEC.openBall v a (v b)) :
       (x ∈ ⋃ B ∈ hfF.toFinset, B ↔ y ∈ ⋃ B ∈ hfF.toFinset, B) := by
     have hb : v b ≠ 0 := ne_of_gt (lt_of_le_of_lt zero_le hx)
-    have heq : Balls.openDisc v a (↑(OrderDual.toDual (v b))) = ValOneEC.openBall v a (v b) := by
-      simp only [Balls.openDisc, OrderDual.ofDual_toDual, if_neg hb]
+    have heq : Balls.openDisc v a (Balls.openRadius (v b) hb) = ValOneEC.openBall v a (v b) := by
       rfl
     exact (hUmem x).symm.trans ((hconst a _ (heq.symm ▸ havoid) x
       (heq.symm ▸ hx) y (heq.symm ▸ hy)).trans (hUmem y))

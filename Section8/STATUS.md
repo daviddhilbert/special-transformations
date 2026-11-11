@@ -1,5 +1,31 @@
 # Section 8 status
 
+## Finite-open-radius consumer verification
+
+The author-approved finite-open-radius correction also reaches
+`UnaryBalls.lean`. Its small-ball witness now uses `Balls.OpenRadius` and
+`Balls.openRadius` with the proved nonzero radius. The old conditional
+singleton presentation is removed from this caller. Both headline statements
+are unchanged. Source SHA-256: `37d8f2a735a065d227ad9500557daad04293eb07a11c4304ac4d9845dd7c3b6b`.
+
+The diamond-integral consumer built this module and its differentiation and
+RV-local-constancy import boundary under Lean 4.35.0, with pinned ACVF-QE
+`939346b0a99899e22a873479364e3cc5d142731c` and Mathlib
+`56a005855ea17e0b0958f73ec801ae140b0a1679`. The full consumer check
+`lake env python3 'section 2/verify.py'` passed with 195 section theorems and
+292 selected reuse declarations. It explicitly prints the full types and
+axioms of `rawOpenBall_infinite` and
+`infinite_definable_contains_small_ball`; only `propext`, `Classical.choice`
+and `Quot.sound` occur. The source agrees with the dependency copy, and the
+portable finite-radius patch now includes this caller.
+
+Evidence in `/workspace/diamond-integral/section 2/`: `.scratch/r036-verification.log`,
+`verification/headline-audit.txt`, `verification/status.json` and
+`reuse/manifest.json`. This is a selected consumer import/build and caller
+audit, not a fresh verification of the complete Section 8 library. The older
+complete-library checkpoint below has its own source and toolchain scope.
+
+
 ## Complete Section 8 verification
 
 On November 7, 2026, all 40 active modules and the combined import of

@@ -19,7 +19,7 @@ theorem mixed_qf_rootFree_constant (S : Set M) (p : Parameters S)
     (hp : ∀ i (h : iVF (p.values i)), (⟨p.values i, h⟩ : VFType (M := M)) ∈ E)
     (φ : LRV.BoundedFormula (Fin p.length) (m + 1)) (hqf : φ.IsQF)
     (hws : WellSorted p.sorts contextSort φ)
-    (a : VFType (M := M)) (r : Balls.Radius Γ)
+    (a : VFType (M := M)) (r : Balls.OpenRadius Γ)
     (havoid : ∀ c ∈ PolynomialObstacles.obstacles E (MixedPolynomialSupport.formula p E hp φ),
       c ∉ Balls.openDisc v a r)
     (x y : VFType (M := M)) (hx : x ∈ Balls.openDisc v a r)
@@ -54,7 +54,7 @@ theorem mixed_finite_definable_obstacles (S : Set M) (U : Set (Fin (m + 1) → M
     (hU : DefinableOver S contextSort U) :
     ∃ R : Finset (VFType (M := M)), R.Nonempty ∧
       DefinableAt S .vf (Subtype.val '' (R : Set (VFType (M := M)))) ∧
-      (∀ (a : VFType (M := M)) (r : Balls.Radius Γ),
+      (∀ (a : VFType (M := M)) (r : Balls.OpenRadius Γ),
         (∀ c ∈ R, c ∉ Balls.openDisc v a r) →
         ∀ x ∈ Balls.openDisc v a r, ∀ y ∈ Balls.openDisc v a r,
         ∀ ys : Fin m → M, (∀ j, iRV (ys j)) →

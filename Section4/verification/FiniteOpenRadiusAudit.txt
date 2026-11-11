@@ -1,0 +1,87 @@
+warning: special_transformations: repository has local changes:
+  /workspace/diamond-integral/.lake/packages/special_transformations
+@SpecialTransformations.Section4.ValuedPolydisc.mem_carrier_iff : ∀ {K Γ : Type} [inst : Field.{0} K]
+  [inst_1 : LinearOrderedCommGroupWithZero.{0} Γ] {v : Valuation.{0, 0} K Γ} {n : ℕ}
+  (D : SpecialTransformations.Section4.ValuedPolydisc v n) (x : Fin n → K),
+  Membership.mem.{0, 0} D.carrier x ↔ Membership.mem.{0, 0} (Set.pi.{0, 0} Set.univ.{0} D.side) x
+'SpecialTransformations.Section4.ValuedPolydisc.mem_carrier_iff' depends on axioms: [propext, Quot.sound.{u}]
+@SpecialTransformations.Section4.ValuedPolydisc.side_mem_nhds : ∀ {K Γ : Type} [inst : Field.{0} K]
+  [inst_1 : LinearOrderedCommGroupWithZero.{0} Γ] [inst_2 : Valued.{0, 0} K Γ] {n : ℕ}
+  (D : SpecialTransformations.Section4.ValuedPolydisc Valued.v.{0, 0} n) (i : Fin n),
+  Membership.mem.{0, 0} (nhds.{0} (D.centre i)) (D.side i)
+'SpecialTransformations.Section4.ValuedPolydisc.side_mem_nhds' depends on axioms: [propext,
+ Classical.choice.{u},
+ Quot.sound.{u}]
+@SpecialTransformations.Section4.ValuedPolydisc.side_infinite : ∀ {K Γ : Type} [inst : Field.{0} K]
+  [inst_1 : LinearOrderedCommGroupWithZero.{0} Γ] [inst_2 : Valued.{0, 0} K Γ],
+  (∃ ε, Ne.{1} ε 0 ∧ LT.lt.{0} (Valued.v.{0, 0} ε) 1) →
+    ∀ {n : ℕ} (D : SpecialTransformations.Section4.ValuedPolydisc Valued.v.{0, 0} n) (i : Fin n),
+      Set.Infinite.{0} (D.side i)
+'SpecialTransformations.Section4.ValuedPolydisc.side_infinite' depends on axioms: [propext,
+ Classical.choice.{u},
+ Quot.sound.{u}]
+@SpecialTransformations.Section4.ValuedPolydisc.carrier_eq_paper_balls : ∀ {K Γ : Type} [inst : Field.{0} K]
+  [inst_1 : LinearOrderedCommGroupWithZero.{0} Γ] {v : Valuation.{0, 0} K Γ} {n : ℕ}
+  (D : SpecialTransformations.Section4.ValuedPolydisc v n),
+  Eq.{1} D.carrier
+    (Set.ofPred.{0} fun x =>
+      ∀ (i : Fin n),
+        Membership.mem.{0, 0}
+          (SpecialTransformations.Section3.Balls.openDisc v (D.centre i)
+            (SpecialTransformations.Section3.Balls.openRadius (v (D.step i)) ⋯))
+          (x i))
+'SpecialTransformations.Section4.ValuedPolydisc.carrier_eq_paper_balls' depends on axioms: [propext,
+ Classical.choice.{u},
+ Quot.sound.{u}]
+@SpecialTransformations.Section4.exists_nonzero_ball_subset : ∀ {K Γ : Type} [inst : Field.{0} K]
+  [inst_1 : LinearOrderedCommGroupWithZero.{0} Γ] [inst_2 : Valued.{0, 0} K Γ] (a : K) {s : Set.{0} K},
+  Membership.mem.{0, 0} (nhds.{0} a) s →
+    ∃ r,
+      Ne.{1} r 0 ∧
+        (Set.ofPred.{0} fun x => LT.lt.{0} (Valued.v.{0, 0} (HSub.hSub.{0, 0, 0} x a)) (Valued.v.{0, 0} r)) ⊆ s
+'SpecialTransformations.Section4.exists_nonzero_ball_subset' depends on axioms: [propext,
+ Classical.choice.{u},
+ Quot.sound.{u}]
+@SpecialTransformations.Section4.exists_polydisc_subset_of_mem_nhds : ∀ {K Γ : Type} [inst : Field.{0} K]
+  [inst_1 : LinearOrderedCommGroupWithZero.{0} Γ] [inst_2 : Valued.{0, 0} K Γ] {n : ℕ} (a : Fin n → K)
+  {s : Set.{0} (Fin n → K)}, Membership.mem.{0, 0} (nhds.{0} a) s → ∃ D, Eq.{1} D.centre a ∧ D.carrier ⊆ s
+'SpecialTransformations.Section4.exists_polydisc_subset_of_mem_nhds' depends on axioms: [propext,
+ Classical.choice.{u},
+ Quot.sound.{u}]
+@SpecialTransformations.Section4.independent_definable_mem_nhds : ∀ {Γ : Type}
+  [inst : LinearOrderedCommGroupWithZero.{0} Γ] {M : Type}
+  [inst_1 : FirstOrder.Language.Structure.{0, 0, 0} SpecialTransformations.Milestone0.LRV M]
+  [hM : FirstOrder.Language.Theory.Model.{0, 0, 0} M SpecialTransformations.Milestone0.Axioms.ACVF]
+  [inst_2 : Valued.{0, 0} SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ LE.le.{0} (Valued.v.{0, 0} x) (Valued.v.{0, 0} y)) →
+    ∀ (S : Set.{0} M) {n : ℕ} (X : Set.{0} (Fin n → M)),
+      SpecialTransformations.Section3.DefinableOver S (fun x => SpecialTransformations.Milestone0.SortTag.vf) X →
+        ∀ (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+          AlgebraicIndependent.{0, 0, 0} (↥(SpecialTransformations.Section3.vfParameterField S)) a →
+            Membership.mem.{0, 0} X (SpecialTransformations.Section4.vfValues a) →
+              Membership.mem.{0, 0} (nhds.{0} a)
+                (Set.ofPred.{0} fun x => Membership.mem.{0, 0} X (SpecialTransformations.Section4.vfValues x))
+'SpecialTransformations.Section4.independent_definable_mem_nhds' depends on axioms: [propext,
+ Classical.choice.{u},
+ Quot.sound.{u}]
+@SpecialTransformations.Section4.independent_definable_contains_polydisc : ∀ {Γ : Type}
+  [inst : LinearOrderedCommGroupWithZero.{0} Γ] {M : Type}
+  [inst_1 : FirstOrder.Language.Structure.{0, 0, 0} SpecialTransformations.Milestone0.LRV M]
+  [hM : FirstOrder.Language.Theory.Model.{0, 0, 0} M SpecialTransformations.Milestone0.Axioms.ACVF]
+  [inst_2 : Valued.{0, 0} SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ LE.le.{0} (Valued.v.{0, 0} x) (Valued.v.{0, 0} y)) →
+    ∀ (S : Set.{0} M) {n : ℕ} (X : Set.{0} (Fin n → M)),
+      SpecialTransformations.Section3.DefinableOver S (fun x => SpecialTransformations.Milestone0.SortTag.vf) X →
+        ∀ (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+          AlgebraicIndependent.{0, 0, 0} (↥(SpecialTransformations.Section3.vfParameterField S)) a →
+            Membership.mem.{0, 0} X (SpecialTransformations.Section4.vfValues a) →
+              ∃ D,
+                Eq.{1} D.centre a ∧
+                  ∀ (x : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                    Membership.mem.{0, 0} D.carrier x →
+                      Membership.mem.{0, 0} X (SpecialTransformations.Section4.vfValues x)
+'SpecialTransformations.Section4.independent_definable_contains_polydisc' depends on axioms: [propext,
+ Classical.choice.{u},
+ Quot.sound.{u}]

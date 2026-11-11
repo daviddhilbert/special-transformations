@@ -152,3 +152,14 @@ theorem internally and works in the canonical presentation of the
 released model. The source and consumer checks exited zero. Its full
 type and axiom report were inspected in
 `.scratch/section5-repair-paper-4-13-audit.log`.
+# November 9 finite-open-radius compatibility update
+
+The author-approved finite-open-radius convention has been propagated to the
+one direct caller in this section, `PolydiscLocal.lean`. Its
+`ValuedPolydisc.carrier_eq_paper_balls` uses `Balls.openRadius` on the already
+nonzero step values. The carrier and geometric hypotheses are unchanged.
+The selected module builds in the Lean 4.35.0 `diamond-integral` environment,
+with byte-matched source in this checkout and its dependency. The eight
+public declaration types and axioms are recorded in
+`verification/FiniteOpenRadiusAudit.{lean,txt,json}`. This selected-module
+check is separate from the historical full-section verification below.

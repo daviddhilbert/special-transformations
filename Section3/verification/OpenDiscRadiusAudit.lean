@@ -1,0 +1,508 @@
+import Section3.Library
+import Section5.Library
+set_option pp.universes true
+set_option pp.fullNames true
+set_option format.width 120
+#print SpecialTransformations.Section3.Balls.OpenRadius
+#print SpecialTransformations.Section3.Balls.openDisc
+#print SpecialTransformations.Section3.Balls.closedDisc
+#check @SpecialTransformations.Section3.AdditiveCosets.coset_discs
+#print axioms SpecialTransformations.Section3.AdditiveCosets.coset_discs
+#check @SpecialTransformations.Section3.AdditiveCosets.lemma_3_18_1
+#print axioms SpecialTransformations.Section3.AdditiveCosets.lemma_3_18_1
+#check @SpecialTransformations.Section3.qf_rootFree_constant_closed
+#print axioms SpecialTransformations.Section3.qf_rootFree_constant_closed
+#check @SpecialTransformations.Section3.finite_definable_obstacles_both
+#print axioms SpecialTransformations.Section3.finite_definable_obstacles_both
+#check @SpecialTransformations.Section3.definable_point_of_proper_subset_canonical
+#print axioms SpecialTransformations.Section3.definable_point_of_proper_subset_canonical
+#check @SpecialTransformations.Section3.lemma_3_11
+#print axioms SpecialTransformations.Section3.lemma_3_11
+#check @SpecialTransformations.Section3.BallFibreConstancy.mem_graph
+#print axioms SpecialTransformations.Section3.BallFibreConstancy.mem_graph
+#check @SpecialTransformations.Section3.BallFibreConstancy.finite_exceptions
+#print axioms SpecialTransformations.Section3.BallFibreConstancy.finite_exceptions
+#check @SpecialTransformations.Section3.Balls.openDisc_openRadius
+#print axioms SpecialTransformations.Section3.Balls.openDisc_openRadius
+#check @SpecialTransformations.Section3.Balls.closedDisc_bottom
+#print axioms SpecialTransformations.Section3.Balls.closedDisc_bottom
+#check @SpecialTransformations.Section3.Balls.closedDisc_infinity
+#print axioms SpecialTransformations.Section3.Balls.closedDisc_infinity
+#check @SpecialTransformations.Section3.Balls.centre_mem_closedDisc
+#print axioms SpecialTransformations.Section3.Balls.centre_mem_closedDisc
+#check @SpecialTransformations.Section3.Balls.centre_mem_openDisc
+#print axioms SpecialTransformations.Section3.Balls.centre_mem_openDisc
+#check @SpecialTransformations.Section3.Balls.closedPolydisc_infinity
+#print axioms SpecialTransformations.Section3.Balls.closedPolydisc_infinity
+#check @SpecialTransformations.Section3.Balls.rvFibre_zero
+#print axioms SpecialTransformations.Section3.Balls.rvFibre_zero
+#check @SpecialTransformations.Section3.Balls.rvFibre_eq_openDisc
+#print axioms SpecialTransformations.Section3.Balls.rvFibre_eq_openDisc
+#check @SpecialTransformations.Section3.Balls.closedDisc_zero_downward
+#print axioms SpecialTransformations.Section3.Balls.closedDisc_zero_downward
+#check @SpecialTransformations.Section3.Balls.openDisc_zero_downward
+#print axioms SpecialTransformations.Section3.Balls.openDisc_zero_downward
+#check @SpecialTransformations.Section3.ball_zero_downward
+#print axioms SpecialTransformations.Section3.ball_zero_downward
+#check @SpecialTransformations.Section3.Balls.sub_mem_closedDisc_iff
+#print axioms SpecialTransformations.Section3.Balls.sub_mem_closedDisc_iff
+#check @SpecialTransformations.Section3.Balls.sub_mem_openDisc_iff
+#print axioms SpecialTransformations.Section3.Balls.sub_mem_openDisc_iff
+#check @SpecialTransformations.Section3.Balls.rv_sub_constant_openDisc
+#print axioms SpecialTransformations.Section3.Balls.rv_sub_constant_openDisc
+#check @SpecialTransformations.Section3.Balls.rv_sub_constant_closedDisc
+#print axioms SpecialTransformations.Section3.Balls.rv_sub_constant_closedDisc
+#check @SpecialTransformations.Section3.BallFamilies.finite_definable_hitting_set
+#print axioms SpecialTransformations.Section3.BallFamilies.finite_definable_hitting_set
+#check @SpecialTransformations.Section3.BallFamilies.closed_family_centres
+#print axioms SpecialTransformations.Section3.BallFamilies.closed_family_centres
+#check @SpecialTransformations.Section3.Balls.rv_eq_of_sub_lt
+#print axioms SpecialTransformations.Section3.Balls.rv_eq_of_sub_lt
+#check @SpecialTransformations.Section3.Balls.closedDisc_rv_constant
+#print axioms SpecialTransformations.Section3.Balls.closedDisc_rv_constant
+#check @SpecialTransformations.Section3.Balls.openDisc_rv_constant
+#print axioms SpecialTransformations.Section3.Balls.openDisc_rv_constant
+#check @SpecialTransformations.Section3.rv_difference_normalize
+#print axioms SpecialTransformations.Section3.rv_difference_normalize
+#check @SpecialTransformations.Section3.rv_le_normalize
+#print axioms SpecialTransformations.Section3.rv_le_normalize
+#check @SpecialTransformations.Section3.closedBall_set_normalize
+#print axioms SpecialTransformations.Section3.closedBall_set_normalize
+#check @SpecialTransformations.Section3.openBall_set_normalize
+#print axioms SpecialTransformations.Section3.openBall_set_normalize
+#check @SpecialTransformations.Section3.isBall_normalize
+#print axioms SpecialTransformations.Section3.isBall_normalize
+#check @SpecialTransformations.Section3.isBall_subset_vf
+#print axioms SpecialTransformations.Section3.isBall_subset_vf
+#check @SpecialTransformations.Section3.encodedBall_disc
+#print axioms SpecialTransformations.Section3.encodedBall_disc
+#check @SpecialTransformations.Section3.GammaParameters.lemma_3_11_gamma_base
+#print axioms SpecialTransformations.Section3.GammaParameters.lemma_3_11_gamma_base
+#check @SpecialTransformations.Section3.BallImaginaries.underlying_injective
+#print axioms SpecialTransformations.Section3.BallImaginaries.underlying_injective
+#check @SpecialTransformations.Section3.BallImaginaries.underlying_ofClosed
+#print axioms SpecialTransformations.Section3.BallImaginaries.underlying_ofClosed
+#check @SpecialTransformations.Section3.BallImaginaries.underlying_ofOpen
+#print axioms SpecialTransformations.Section3.BallImaginaries.underlying_ofOpen
+#check @SpecialTransformations.Section3.BallImaginaries.ofClosed_injective
+#print axioms SpecialTransformations.Section3.BallImaginaries.ofClosed_injective
+#check @SpecialTransformations.Section3.BallImaginaries.ofOpen_injective
+#print axioms SpecialTransformations.Section3.BallImaginaries.ofOpen_injective
+#check @SpecialTransformations.Section3.BallImaginaries.closedFamily_finite
+#print axioms SpecialTransformations.Section3.BallImaginaries.closedFamily_finite
+#check @SpecialTransformations.Section3.BallImaginaries.openFamily_finite
+#print axioms SpecialTransformations.Section3.BallImaginaries.openFamily_finite
+#check @SpecialTransformations.Section3.BallImaginaries.family_cases
+#print axioms SpecialTransformations.Section3.BallImaginaries.family_cases
+#check @SpecialTransformations.Section3.BallImaginaries.closed_disc_coded
+#print axioms SpecialTransformations.Section3.BallImaginaries.closed_disc_coded
+#check @SpecialTransformations.Section3.BallImaginaries.open_disc_coded
+#print axioms SpecialTransformations.Section3.BallImaginaries.open_disc_coded
+#check @SpecialTransformations.Section3.BallImaginaries.universe_coded
+#print axioms SpecialTransformations.Section3.BallImaginaries.universe_coded
+#check @SpecialTransformations.Section3.BallFamilies.intersection_mean_definable
+#print axioms SpecialTransformations.Section3.BallFamilies.intersection_mean_definable
+#check @SpecialTransformations.Section3.BallFamilies.normalized_mean_graph_definable
+#print axioms SpecialTransformations.Section3.BallFamilies.normalized_mean_graph_definable
+#check @SpecialTransformations.Section3.ClosedBallCodes.meanGraph_definable
+#print axioms SpecialTransformations.Section3.ClosedBallCodes.meanGraph_definable
+#check @SpecialTransformations.Section3.ClosedBallCodes.familyMean_graph_definable_base
+#print axioms SpecialTransformations.Section3.ClosedBallCodes.familyMean_graph_definable_base
+#check @SpecialTransformations.Section3.OpenBallCodes.meanGraph_definable
+#print axioms SpecialTransformations.Section3.OpenBallCodes.meanGraph_definable
+#check @SpecialTransformations.Section3.OpenBallCodes.familyMean_graph_definable_base
+#print axioms SpecialTransformations.Section3.OpenBallCodes.familyMean_graph_definable_base
+#check @SpecialTransformations.Section3.ClosedBallCodes.normalized_mean_mem
+#print axioms SpecialTransformations.Section3.ClosedBallCodes.normalized_mean_mem
+#check @SpecialTransformations.Section3.OpenBallCodes.normalized_mean_mem
+#print axioms SpecialTransformations.Section3.OpenBallCodes.normalized_mean_mem
+#check @SpecialTransformations.Section3.BallImaginaries.closed_center_image_definable
+#print axioms SpecialTransformations.Section3.BallImaginaries.closed_center_image_definable
+#check @SpecialTransformations.Section3.BallImaginaries.finite_family_algebraic_points
+#print axioms SpecialTransformations.Section3.BallImaginaries.finite_family_algebraic_points
+#check @SpecialTransformations.Section3.BallImaginaries.familyMean_definable_base
+#print axioms SpecialTransformations.Section3.BallImaginaries.familyMean_definable_base
+#check @SpecialTransformations.Section3.BallImaginaries.familyMean_mem
+#print axioms SpecialTransformations.Section3.BallImaginaries.familyMean_mem
+#check @SpecialTransformations.Section3.BallImaginaries.lemma_3_13
+#print axioms SpecialTransformations.Section3.BallImaginaries.lemma_3_13
+#check @SpecialTransformations.Section3.Barycentre.mean_sub_eq
+#print axioms SpecialTransformations.Section3.Barycentre.mean_sub_eq
+#check @SpecialTransformations.Section3.Barycentre.natCast_value_one
+#print axioms SpecialTransformations.Section3.Barycentre.natCast_value_one
+#check @SpecialTransformations.Section3.Barycentre.mean_mem_closedDisc
+#print axioms SpecialTransformations.Section3.Barycentre.mean_mem_closedDisc
+#check @SpecialTransformations.Section3.Barycentre.mean_mem_openDisc
+#print axioms SpecialTransformations.Section3.Barycentre.mean_mem_openDisc
+#check @SpecialTransformations.Section3.mixed_qf_rootFree_constant
+#print axioms SpecialTransformations.Section3.mixed_qf_rootFree_constant
+#check @SpecialTransformations.Section3.mixed_qf_rootFree_constant_closed
+#print axioms SpecialTransformations.Section3.mixed_qf_rootFree_constant_closed
+#check @SpecialTransformations.Section3.mixed_finite_definable_obstacles
+#print axioms SpecialTransformations.Section3.mixed_finite_definable_obstacles
+#check @SpecialTransformations.Section3.Balls.nearestRoots_nonempty
+#print axioms SpecialTransformations.Section3.Balls.nearestRoots_nonempty
+#check @SpecialTransformations.Section3.Balls.nearestRoots_mem_closedDisc
+#print axioms SpecialTransformations.Section3.Balls.nearestRoots_mem_closedDisc
+#check @SpecialTransformations.Section3.Balls.nearestRoots_mem_openDisc
+#print axioms SpecialTransformations.Section3.Balls.nearestRoots_mem_openDisc
+#check @SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_raw_definable
+#print axioms SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_raw_definable
+#check @SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_normalize
+#print axioms SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_normalize
+#check @SpecialTransformations.Section3.OpenBallCodes.finite_hull_centers
+#print axioms SpecialTransformations.Section3.OpenBallCodes.finite_hull_centers
+#check @SpecialTransformations.Section3.OpenBallCodes.finite_hull_center_image
+#print axioms SpecialTransformations.Section3.OpenBallCodes.finite_hull_center_image
+#check @SpecialTransformations.Section3.Balls.strictDisc_recenter_iff
+#print axioms SpecialTransformations.Section3.Balls.strictDisc_recenter_iff
+#check @SpecialTransformations.Section3.Balls.hull_boundary_distance
+#print axioms SpecialTransformations.Section3.Balls.hull_boundary_distance
+#check @SpecialTransformations.Section3.Balls.hull_boundary_rv_fibre_iff
+#print axioms SpecialTransformations.Section3.Balls.hull_boundary_rv_fibre_iff
+#check @SpecialTransformations.Section3.BallFamilies.open_centers_of_finite_hitting_set
+#print axioms SpecialTransformations.Section3.BallFamilies.open_centers_of_finite_hitting_set
+#check @SpecialTransformations.Section3.OpenBallCodes.membership_raw_definable
+#print axioms SpecialTransformations.Section3.OpenBallCodes.membership_raw_definable
+#check @SpecialTransformations.Section3.OpenBallCodes.relation_definable
+#print axioms SpecialTransformations.Section3.OpenBallCodes.relation_definable
+#check @SpecialTransformations.Section3.OpenBallCodes.rawBall_normalize
+#print axioms SpecialTransformations.Section3.OpenBallCodes.rawBall_normalize
+#check @SpecialTransformations.Section3.OpenBallCodes.membership_definable
+#print axioms SpecialTransformations.Section3.OpenBallCodes.membership_definable
+#check @SpecialTransformations.Section3.OpenBallCodes.differenceGraph_definable
+#print axioms SpecialTransformations.Section3.OpenBallCodes.differenceGraph_definable
+#check @SpecialTransformations.Section3.OpenBallCodes.center_sort_of_graph
+#print axioms SpecialTransformations.Section3.OpenBallCodes.center_sort_of_graph
+#check @SpecialTransformations.Section3.OpenBallCodes.offsets_definable_base
+#print axioms SpecialTransformations.Section3.OpenBallCodes.offsets_definable_base
+#check @SpecialTransformations.Section3.OpenBallCodes.raw_center_mem
+#print axioms SpecialTransformations.Section3.OpenBallCodes.raw_center_mem
+#check @SpecialTransformations.Section3.OpenBallCodes.underlying_nonempty
+#print axioms SpecialTransformations.Section3.OpenBallCodes.underlying_nonempty
+#check @SpecialTransformations.Section3.OpenBallCodes.underlying_subset_vf
+#print axioms SpecialTransformations.Section3.OpenBallCodes.underlying_subset_vf
+#check @SpecialTransformations.Section3.OpenBallCodes.offsets_finite
+#print axioms SpecialTransformations.Section3.OpenBallCodes.offsets_finite
+#check @SpecialTransformations.Section3.GammaParameters.finite_hitting_set_of_algebraic_points
+#print axioms SpecialTransformations.Section3.GammaParameters.finite_hitting_set_of_algebraic_points
+#check @SpecialTransformations.Section3.OpenBallCodes.algebraic_point_of_boundary_offset
+#print axioms SpecialTransformations.Section3.OpenBallCodes.algebraic_point_of_boundary_offset
+#check @SpecialTransformations.Section3.OpenBallCodes.finite_family_algebraic_points
+#print axioms SpecialTransformations.Section3.OpenBallCodes.finite_family_algebraic_points
+#check @SpecialTransformations.Section3.OpenBallCodes.coded_open_centers_from_hitting_set
+#print axioms SpecialTransformations.Section3.OpenBallCodes.coded_open_centers_from_hitting_set
+#check @SpecialTransformations.Section3.OpenBallCodes.open_centers_from_real_hitting_set
+#print axioms SpecialTransformations.Section3.OpenBallCodes.open_centers_from_real_hitting_set
+#check @SpecialTransformations.Section3.OpenBallCodes.lemma_3_13_proper_open
+#print axioms SpecialTransformations.Section3.OpenBallCodes.lemma_3_13_proper_open
+#check @SpecialTransformations.Section3.polynomial_rv_eq_of_linear_factors
+#print axioms SpecialTransformations.Section3.polynomial_rv_eq_of_linear_factors
+#check @SpecialTransformations.Section3.polynomial_rv_constant_openDisc
+#print axioms SpecialTransformations.Section3.polynomial_rv_constant_openDisc
+#check @SpecialTransformations.Section3.polynomial_rv_constant_closedDisc
+#print axioms SpecialTransformations.Section3.polynomial_rv_constant_closedDisc
+#check @SpecialTransformations.Section3.RVFibreConstancy.mem_graph
+#print axioms SpecialTransformations.Section3.RVFibreConstancy.mem_graph
+#check @SpecialTransformations.Section3.RVFibreConstancy.corollary_3_12
+#print axioms SpecialTransformations.Section3.RVFibreConstancy.corollary_3_12
+#check @SpecialTransformations.Section3.Balls.closedDisc_zero_radial
+#print axioms SpecialTransformations.Section3.Balls.closedDisc_zero_radial
+#check @SpecialTransformations.Section3.Balls.openDisc_zero_radial
+#print axioms SpecialTransformations.Section3.Balls.openDisc_zero_radial
+#check @SpecialTransformations.Section3.ball_zero_radial
+#print axioms SpecialTransformations.Section3.ball_zero_radial
+#check @SpecialTransformations.Section3.ball_avoiding_zero_rv
+#print axioms SpecialTransformations.Section3.ball_avoiding_zero_rv
+#check @SpecialTransformations.Section3.Remark319Audit.mem_points
+#print axioms SpecialTransformations.Section3.Remark319Audit.mem_points
+#check @SpecialTransformations.Section3.Remark319Audit.signs_image
+#print axioms SpecialTransformations.Section3.Remark319Audit.signs_image
+#check @SpecialTransformations.Section3.Remark319Audit.rawSigns_definable
+#print axioms SpecialTransformations.Section3.Remark319Audit.rawSigns_definable
+#check @SpecialTransformations.Section3.Remark319Audit.zero_not_mem
+#print axioms SpecialTransformations.Section3.Remark319Audit.zero_not_mem
+#check @SpecialTransformations.Section3.Remark319Audit.rawSigns_not_ball
+#print axioms SpecialTransformations.Section3.Remark319Audit.rawSigns_not_ball
+#check @SpecialTransformations.Section3.Remark319Audit.rawSigns_not_valuation_units
+#print axioms SpecialTransformations.Section3.Remark319Audit.rawSigns_not_valuation_units
+#check @SpecialTransformations.Section3.qf_rootFree_constant
+#print axioms SpecialTransformations.Section3.qf_rootFree_constant
+#check @SpecialTransformations.Section3.finite_definable_obstacles
+#print axioms SpecialTransformations.Section3.finite_definable_obstacles
+#check @SpecialTransformations.Section3.Balls.tupleValuation_le_coordinate
+#print axioms SpecialTransformations.Section3.Balls.tupleValuation_le_coordinate
+#check @SpecialTransformations.Section3.Balls.le_tupleValuation_iff
+#print axioms SpecialTransformations.Section3.Balls.le_tupleValuation_iff
+#check @SpecialTransformations.Section3.Balls.tupleValuation_zero
+#print axioms SpecialTransformations.Section3.Balls.tupleValuation_zero
+#check @SpecialTransformations.Section3.Balls.tupleValuation_empty
+#print axioms SpecialTransformations.Section3.Balls.tupleValuation_empty
+#check @SpecialTransformations.Section3.Balls.closedPolydisc_uniform_iff
+#print axioms SpecialTransformations.Section3.Balls.closedPolydisc_uniform_iff
+#check @SpecialTransformations.Section3.Balls.openPolydisc_uniform_iff
+#print axioms SpecialTransformations.Section3.Balls.openPolydisc_uniform_iff
+#check @SpecialTransformations.Section3.Balls.valuativeCentre_of_zero_mem
+#print axioms SpecialTransformations.Section3.Balls.valuativeCentre_of_zero_mem
+#check @SpecialTransformations.Section3.Balls.valuativeCentre_of_constant
+#print axioms SpecialTransformations.Section3.Balls.valuativeCentre_of_constant
+#check @SpecialTransformations.Section3.Balls.closedDisc_value_constant
+#print axioms SpecialTransformations.Section3.Balls.closedDisc_value_constant
+#check @SpecialTransformations.Section3.Balls.openDisc_value_constant
+#print axioms SpecialTransformations.Section3.Balls.openDisc_value_constant
+#check @SpecialTransformations.Section3.Balls.valuativeCentre_closedDisc
+#print axioms SpecialTransformations.Section3.Balls.valuativeCentre_closedDisc
+#check @SpecialTransformations.Section3.Balls.valuativeCentre_openDisc
+#print axioms SpecialTransformations.Section3.Balls.valuativeCentre_openDisc
+#check @SpecialTransformations.Section5.oneCode_definable
+#print axioms SpecialTransformations.Section5.oneCode_definable
+#check @SpecialTransformations.Section5.rvConstant_definable
+#print axioms SpecialTransformations.Section5.rvConstant_definable
+#check @SpecialTransformations.Section5.rv_zero_ne_one
+#print axioms SpecialTransformations.Section5.rv_zero_ne_one
+#check @SpecialTransformations.Section5.membershipMap_iff
+#print axioms SpecialTransformations.Section5.membershipMap_iff
+#check @SpecialTransformations.Section5.membershipMap_eq_iff
+#print axioms SpecialTransformations.Section5.membershipMap_eq_iff
+#check @SpecialTransformations.Section5.Map.extend_apply
+#print axioms SpecialTransformations.Section5.Map.extend_apply
+#check @SpecialTransformations.Section5.Map.imageRepresentative_spec
+#print axioms SpecialTransformations.Section5.Map.imageRepresentative_spec
+#check @SpecialTransformations.Section5.Map.descend_apply
+#print axioms SpecialTransformations.Section5.Map.descend_apply
+#check @SpecialTransformations.Section5.Map.descend_unique
+#print axioms SpecialTransformations.Section5.Map.descend_unique
+#check @SpecialTransformations.Section5.Contractible.refine
+#print axioms SpecialTransformations.Section5.Contractible.refine
+#check @SpecialTransformations.Section5.pairRVMaps_contractible_left
+#print axioms SpecialTransformations.Section5.pairRVMaps_contractible_left
+#check @SpecialTransformations.Section5.pairRVMaps_contractible_right
+#print axioms SpecialTransformations.Section5.pairRVMaps_contractible_right
+#check @SpecialTransformations.Section5.pairRVMaps_comp
+#print axioms SpecialTransformations.Section5.pairRVMaps_comp
+#check @SpecialTransformations.Section5.baseImage_carrier
+#print axioms SpecialTransformations.Section5.baseImage_carrier
+#check @SpecialTransformations.Section5.mem_baseImage
+#print axioms SpecialTransformations.Section5.mem_baseImage
+#check @SpecialTransformations.Section5.dropHead_image_pullback
+#print axioms SpecialTransformations.Section5.dropHead_image_pullback
+#check @SpecialTransformations.Section5.baseImage_pullback
+#print axioms SpecialTransformations.Section5.baseImage_pullback
+#check @SpecialTransformations.Section5.baseImage_tagged
+#print axioms SpecialTransformations.Section5.baseImage_tagged
+#check @SpecialTransformations.Section5.replace_zero_insertHead
+#print axioms SpecialTransformations.Section5.replace_zero_insertHead
+#check @SpecialTransformations.Section5.canonicalImage_allTagged
+#print axioms SpecialTransformations.Section5.canonicalImage_allTagged
+#check @SpecialTransformations.Section5.Chain.lastKind_allTagged
+#print axioms SpecialTransformations.Section5.Chain.lastKind_allTagged
+#check @SpecialTransformations.Section5.baseImage_allTagged
+#print axioms SpecialTransformations.Section5.baseImage_allTagged
+#check @SpecialTransformations.Section5.headKey_eq_iff
+#print axioms SpecialTransformations.Section5.headKey_eq_iff
+#check @SpecialTransformations.Section5.headImage_carrier
+#print axioms SpecialTransformations.Section5.headImage_carrier
+#check @SpecialTransformations.Section5.headKey_image_pullback
+#print axioms SpecialTransformations.Section5.headKey_image_pullback
+#check @SpecialTransformations.Section5.headImage_pullback
+#print axioms SpecialTransformations.Section5.headImage_pullback
+#check @SpecialTransformations.Section5.headImage_mono
+#print axioms SpecialTransformations.Section5.headImage_mono
+#check @SpecialTransformations.Section5.headImage_tagged
+#print axioms SpecialTransformations.Section5.headImage_tagged
+#check @SpecialTransformations.Section5.headImage_allTagged
+#print axioms SpecialTransformations.Section5.headImage_allTagged
+#check @SpecialTransformations.Section5.headDescend_apply
+#print axioms SpecialTransformations.Section5.headDescend_apply
+#check @SpecialTransformations.Section5.SpecialBijection.restrict_prepared_at
+#print axioms SpecialTransformations.Section5.SpecialBijection.restrict_prepared_at
+#check @SpecialTransformations.Section5.SpecialBijection.restrict_contracted_indicator_at
+#print axioms SpecialTransformations.Section5.SpecialBijection.restrict_contracted_indicator_at
+#check @SpecialTransformations.Section5.vertical_relation_of_zero_obstacles
+#print axioms SpecialTransformations.Section5.vertical_relation_of_zero_obstacles
+#check @SpecialTransformations.Section5.allTagged_hull
+#print axioms SpecialTransformations.Section5.allTagged_hull
+#check @SpecialTransformations.Section5.headKey_mem_iff
+#print axioms SpecialTransformations.Section5.headKey_mem_iff
+#check @SpecialTransformations.Section5.dropHead_headTag
+#print axioms SpecialTransformations.Section5.dropHead_headTag
+#check @SpecialTransformations.Section5.vertical_rvGraph_transfer
+#print axioms SpecialTransformations.Section5.vertical_rvGraph_transfer
+#check @SpecialTransformations.Section5.Map.transportImage_apply
+#print axioms SpecialTransformations.Section5.Map.transportImage_apply
+#check @SpecialTransformations.Section5.restricted_map_injective
+#print axioms SpecialTransformations.Section5.restricted_map_injective
+#check @SpecialTransformations.Section5.restricted_image_mem_iff
+#print axioms SpecialTransformations.Section5.restricted_image_mem_iff
+#check @SpecialTransformations.Section5.vertical_graph_image
+#print axioms SpecialTransformations.Section5.vertical_graph_image
+#check @SpecialTransformations.Section5.complete_head_preparation
+#print axioms SpecialTransformations.Section5.complete_head_preparation
+#check @SpecialTransformations.Section5.restrict_prepared_map
+#print axioms SpecialTransformations.Section5.restrict_prepared_map
+#check @SpecialTransformations.Section5.tagged_rvMap_preparation
+#print axioms SpecialTransformations.Section5.tagged_rvMap_preparation
+#check @SpecialTransformations.Section5.rvPreparation_zero
+#print axioms SpecialTransformations.Section5.rvPreparation_zero
+#check @SpecialTransformations.Section5.rvPreparation_succ
+#print axioms SpecialTransformations.Section5.rvPreparation_succ
+#check @SpecialTransformations.Section5.rvPreparation_all
+#print axioms SpecialTransformations.Section5.rvPreparation_all
+#check @SpecialTransformations.Section5.mean_normalize
+#print axioms SpecialTransformations.Section5.mean_normalize
+#check @SpecialTransformations.Section5.mean_definable_normalized
+#print axioms SpecialTransformations.Section5.mean_definable_normalized
+#check @SpecialTransformations.Section5.rv_eq_zero_iff
+#print axioms SpecialTransformations.Section5.rv_eq_zero_iff
+#check @SpecialTransformations.Section5.mean_sameRV
+#print axioms SpecialTransformations.Section5.mean_sameRV
+#check @SpecialTransformations.Section5.unaryPoint_eta
+#print axioms SpecialTransformations.Section5.unaryPoint_eta
+#check @SpecialTransformations.Section5.mem_rootFibre
+#print axioms SpecialTransformations.Section5.mem_rootFibre
+#check @SpecialTransformations.Section5.rootFibre_card_le
+#print axioms SpecialTransformations.Section5.rootFibre_card_le
+#check @SpecialTransformations.Section5.rootBound_card
+#print axioms SpecialTransformations.Section5.rootBound_card
+#check @SpecialTransformations.Section5.rootBound_zero
+#print axioms SpecialTransformations.Section5.rootBound_zero
+#check @SpecialTransformations.Section5.rootFocus_center
+#print axioms SpecialTransformations.Section5.rootFocus_center
+#check @SpecialTransformations.Section5.nextRoot_fibre_subset
+#print axioms SpecialTransformations.Section5.nextRoot_fibre_subset
+#check @SpecialTransformations.Section5.rootBound_step
+#print axioms SpecialTransformations.Section5.rootBound_step
+#check @SpecialTransformations.Section5.unary_code_iff
+#print axioms SpecialTransformations.Section5.unary_code_iff
+#check @SpecialTransformations.Section5.FiniteRootSet.mem_points
+#print axioms SpecialTransformations.Section5.FiniteRootSet.mem_points
+#check @SpecialTransformations.Section5.FiniteRootSet.points_subset
+#print axioms SpecialTransformations.Section5.FiniteRootSet.points_subset
+#check @SpecialTransformations.Section5.FiniteRootSet.rawFamily_labels
+#print axioms SpecialTransformations.Section5.FiniteRootSet.rawFamily_labels
+#check @SpecialTransformations.Section5.FiniteRootSet.rawFamily_bound
+#print axioms SpecialTransformations.Section5.FiniteRootSet.rawFamily_bound
+#check @SpecialTransformations.Section5.FiniteRootSet.rawFamily_definable
+#print axioms SpecialTransformations.Section5.FiniteRootSet.rawFamily_definable
+#check @SpecialTransformations.Section5.Chain.alternating_none
+#print axioms SpecialTransformations.Section5.Chain.alternating_none
+#check @SpecialTransformations.Section5.Chain.append_alternating
+#print axioms SpecialTransformations.Section5.Chain.append_alternating
+#check @SpecialTransformations.Section5.Chain.append_toMap
+#print axioms SpecialTransformations.Section5.Chain.append_toMap
+#check @SpecialTransformations.Section5.Chain.lastKind_tagged
+#print axioms SpecialTransformations.Section5.Chain.lastKind_tagged
+#check @SpecialTransformations.Section5.FiniteRootSet.mem_push_points
+#print axioms SpecialTransformations.Section5.FiniteRootSet.mem_push_points
+#check @SpecialTransformations.Section5.FiniteRootSet.push_id_points
+#print axioms SpecialTransformations.Section5.FiniteRootSet.push_id_points
+#check @SpecialTransformations.Section5.FiniteRootSet.push_comp_points
+#print axioms SpecialTransformations.Section5.FiniteRootSet.push_comp_points
+#check @SpecialTransformations.Section5.FiniteRootSet.step_points
+#print axioms SpecialTransformations.Section5.FiniteRootSet.step_points
+#check @SpecialTransformations.Section5.FiniteRootSet.step_bound
+#print axioms SpecialTransformations.Section5.FiniteRootSet.step_bound
+#check @SpecialTransformations.Section5.FiniteRootSet.step_tagged
+#print axioms SpecialTransformations.Section5.FiniteRootSet.step_tagged
+#check @SpecialTransformations.Section5.FiniteRootSet.iterate
+#print axioms SpecialTransformations.Section5.FiniteRootSet.iterate
+#check @SpecialTransformations.Section5.FiniteRootSet.centralize_tagged
+#print axioms SpecialTransformations.Section5.FiniteRootSet.centralize_tagged
+#check @SpecialTransformations.Section5.FiniteRootSet.centralize_after
+#print axioms SpecialTransformations.Section5.FiniteRootSet.centralize_after
+#check @SpecialTransformations.Section5.scalarContractible_iff
+#print axioms SpecialTransformations.Section5.scalarContractible_iff
+#check @SpecialTransformations.Section5.polynomial_contractible_of_zero_roots
+#print axioms SpecialTransformations.Section5.polynomial_contractible_of_zero_roots
+#check @SpecialTransformations.Section5.polynomialCode_eq
+#print axioms SpecialTransformations.Section5.polynomialCode_eq
+#check @SpecialTransformations.Section5.polynomialCode_definable
+#print axioms SpecialTransformations.Section5.polynomialCode_definable
+#check @SpecialTransformations.Section5.zeroCode_definable
+#print axioms SpecialTransformations.Section5.zeroCode_definable
+#check @SpecialTransformations.Section5.polynomialZeroSet_finite
+#print axioms SpecialTransformations.Section5.polynomialZeroSet_finite
+#check @SpecialTransformations.Section5.theorem_5_4_unary
+#print axioms SpecialTransformations.Section5.theorem_5_4_unary
+#check @SpecialTransformations.Section5.RootFamily.image_fibre_cover
+#print axioms SpecialTransformations.Section5.RootFamily.image_fibre_cover
+#check @SpecialTransformations.Section5.RootFamily.push_bound
+#print axioms SpecialTransformations.Section5.RootFamily.push_bound
+#check @SpecialTransformations.Section5.relation_contractible_of_zero_obstacles
+#print axioms SpecialTransformations.Section5.relation_contractible_of_zero_obstacles
+#check @SpecialTransformations.Section5.unary_relation_preparation
+#print axioms SpecialTransformations.Section5.unary_relation_preparation
+#check @SpecialTransformations.Section5.isRVPullback_inter
+#print axioms SpecialTransformations.Section5.isRVPullback_inter
+#check @SpecialTransformations.Section5.sameRV_replace
+#print axioms SpecialTransformations.Section5.sameRV_replace
+#check @SpecialTransformations.Section5.Focus.restrict_eta
+#print axioms SpecialTransformations.Section5.Focus.restrict_eta
+#check @SpecialTransformations.Section5.Focus.restrict_image_subset
+#print axioms SpecialTransformations.Section5.Focus.restrict_image_subset
+#check @SpecialTransformations.Section5.Primitive.restrict
+#print axioms SpecialTransformations.Section5.Primitive.restrict
+#check @SpecialTransformations.Section5.Chain.cons_alternating_iff
+#print axioms SpecialTransformations.Section5.Chain.cons_alternating_iff
+#check @SpecialTransformations.Section5.Chain.restrict
+#print axioms SpecialTransformations.Section5.Chain.restrict
+#check @SpecialTransformations.Section5.SpecialBijection.restrict_at
+#print axioms SpecialTransformations.Section5.SpecialBijection.restrict_at
+#check @SpecialTransformations.Section5.SpecialBijection.restrict
+#print axioms SpecialTransformations.Section5.SpecialBijection.restrict
+#check @SpecialTransformations.Section5.RootFamily.mem_fibre
+#print axioms SpecialTransformations.Section5.RootFamily.mem_fibre
+#check @SpecialTransformations.Section5.RootFamily.card_bound
+#print axioms SpecialTransformations.Section5.RootFamily.card_bound
+#check @SpecialTransformations.Section5.RootFamily.bound_zero
+#print axioms SpecialTransformations.Section5.RootFamily.bound_zero
+#check @SpecialTransformations.Section5.RootFamily.rawFamily_labels
+#print axioms SpecialTransformations.Section5.RootFamily.rawFamily_labels
+#check @SpecialTransformations.Section5.RootFamily.rawFamily_bound
+#print axioms SpecialTransformations.Section5.RootFamily.rawFamily_bound
+#check @SpecialTransformations.Section5.RootFamily.rawFamily_definable
+#print axioms SpecialTransformations.Section5.RootFamily.rawFamily_definable
+#check @SpecialTransformations.Section5.RootFamily.mem_imageSet
+#print axioms SpecialTransformations.Section5.RootFamily.mem_imageSet
+#check @SpecialTransformations.Section5.RootFamily.imageSet_subset
+#print axioms SpecialTransformations.Section5.RootFamily.imageSet_subset
+#check @SpecialTransformations.Section5.RootFamily.step_fibre_subset
+#print axioms SpecialTransformations.Section5.RootFamily.step_fibre_subset
+#check @SpecialTransformations.Section5.RootFamily.step_bound
+#print axioms SpecialTransformations.Section5.RootFamily.step_bound
+#check @SpecialTransformations.Section5.RootFamily.step_tagged
+#print axioms SpecialTransformations.Section5.RootFamily.step_tagged
+#check @SpecialTransformations.Section5.RootFamily.iterate
+#print axioms SpecialTransformations.Section5.RootFamily.iterate
+#check @SpecialTransformations.Section5.RootFamily.canonical_fibre_subset
+#print axioms SpecialTransformations.Section5.RootFamily.canonical_fibre_subset
+#check @SpecialTransformations.Section5.RootFamily.canonical_bound
+#print axioms SpecialTransformations.Section5.RootFamily.canonical_bound
+#check @SpecialTransformations.Section5.RootFamily.centralize_after
+#print axioms SpecialTransformations.Section5.RootFamily.centralize_after
+#check @SpecialTransformations.Section5.RootFamily.restrict_bound
+#print axioms SpecialTransformations.Section5.RootFamily.restrict_bound
+#check @SpecialTransformations.Section5.RootFamily.centralize_boundary
+#print axioms SpecialTransformations.Section5.RootFamily.centralize_boundary
+#check @SpecialTransformations.Section5.rawUnaryValues_injective
+#print axioms SpecialTransformations.Section5.rawUnaryValues_injective
+#check @SpecialTransformations.Section5.mem_rawUnarySet_values
+#print axioms SpecialTransformations.Section5.mem_rawUnarySet_values
+#check @SpecialTransformations.Section5.rawUnarySet_definable
+#print axioms SpecialTransformations.Section5.rawUnarySet_definable
+#check @SpecialTransformations.Section5.obstacleFamily_bound
+#print axioms SpecialTransformations.Section5.obstacleFamily_bound
+#check @SpecialTransformations.Section5.lemma_5_2_at_boundary
+#print axioms SpecialTransformations.Section5.lemma_5_2_at_boundary
+#check @SpecialTransformations.Section5.lemma_5_2
+#print axioms SpecialTransformations.Section5.lemma_5_2
+#check @SpecialTransformations.Section5.lemma_5_2_after
+#print axioms SpecialTransformations.Section5.lemma_5_2_after
+#check @SpecialTransformations.Section5.Chain.append_assoc
+#print axioms SpecialTransformations.Section5.Chain.append_assoc
+#check @SpecialTransformations.Section5.Chain.append_suffix_alternating
+#print axioms SpecialTransformations.Section5.Chain.append_suffix_alternating
+#check @SpecialTransformations.Section5.theorem_5_5_unary
+#print axioms SpecialTransformations.Section5.theorem_5_5_unary
+#check @SpecialTransformations.Section5.uniformVerticalObstacles
+#print axioms SpecialTransformations.Section5.uniformVerticalObstacles

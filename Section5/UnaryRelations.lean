@@ -87,7 +87,7 @@ theorem relation_contractible_of_zero_obstacles {k : ℕ}
     (v : Valuation (VF (M := M)) Γ)
     (hv : ∀ x y : VF (M := M), VFValued.predV x y ↔ v x ≤ v y)
     (U : Set (Fin (k + 1) → M)) (Q : Finset (VF (M := M)))
-    (hO : ∀ (a : VF (M := M)) (r : Section3.Balls.Radius Γ),
+    (hO : ∀ (a : VF (M := M)) (r : Section3.Balls.OpenRadius Γ),
       (∀ x ∈ Q, x ∉ Section3.Balls.openDisc v a r) →
       ∀ x ∈ Section3.Balls.openDisc v a r, ∀ y ∈ Section3.Balls.openDisc v a r,
       ∀ ys : Fin k → M, (∀ i, iRV (ys i)) → (Fin.cons x.val ys ∈ U ↔ Fin.cons y.val ys ∈ U))
@@ -109,14 +109,14 @@ theorem relation_contractible_of_zero_obstacles {k : ℕ}
     rfl
   · obtain ⟨he, _⟩ := T.unary_inverse_fibre v hv hB b hb
     let a := vfAt (T.inverseMap b).val 0
-    let ρ : Section3.Balls.Radius Γ := ↑(OrderDual.toDual (v (vfAt b.val 0)))
     have hrad : v (vfAt b.val 0) ≠ 0 := (map_ne_zero v).mpr hb
+    let ρ : Section3.Balls.OpenRadius Γ := Section3.Balls.openRadius (v (vfAt b.val 0)) hrad
     have hmem (x : VF (M := M)) (hx : x ∈ Section3.Balls.openDisc v a ρ) :
         unaryPoint x (T.inverseMap b).val.2 ∈ T.inverseFibre b := by
       rw [he]
       refine ⟨?_, rfl⟩
       change v (x - a) < v (vfAt b.val 0)
-      simpa only [Section3.Balls.openDisc, ρ, OrderDual.ofDual_toDual, if_neg hrad,
+      simpa only [ρ, Section3.Balls.openDisc_openRadius,
         Set.mem_ofPred_eq] using hx
     have havoid : ∀ x ∈ Q, x ∉ Section3.Balls.openDisc v a ρ := by
       intro x hx hxd
@@ -130,7 +130,7 @@ theorem relation_contractible_of_zero_obstacles {k : ℕ}
       ⟨T.inverseMap c, rfl, by rw [T.apply_inverse]; exact hbc.symm⟩
     rw [he] at hcF
     have hy : vfAt (T.inverseMap c).val 0 ∈ Section3.Balls.openDisc v a ρ := by
-      simpa only [Section3.Balls.openDisc, ρ, OrderDual.ofDual_toDual, if_neg hrad,
+      simpa only [ρ, Section3.Balls.openDisc_openRadius,
         Set.mem_ofPred_eq] using hcF.1
     exact hO a ρ havoid a (Section3.Balls.centre_mem_openDisc v a ρ) _ hy ys hys
 

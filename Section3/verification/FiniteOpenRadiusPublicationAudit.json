@@ -1,0 +1,1337 @@
+{
+  "status": "PASS",
+  "publication_base": "ff2c999c6946a2b200f8778384c847f58e4ed521",
+  "patch_development_base": "9cc9760892092dd34cfad4a6dee655843c52f30c",
+  "consumer_commit": "82fe1a127def2c24ca32a97935ff3de3f732a84c",
+  "scope": "Current SpecialTransformations coordination-root Lake build; full types and logical principles of 260 public declarations in the 30 approved changed source modules. Does not independently re-audit every unchanged later theorem or every statement against the paper.",
+  "lean": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "build_command": [
+    "lake",
+    "build"
+  ],
+  "build_exit_code": 0,
+  "headline_command": [
+    "lake",
+    "env",
+    "lean",
+    "Section3/verification/FiniteOpenRadiusPublicationAudit.lean"
+  ],
+  "headline_exit_code": 0,
+  "headline_count": 260,
+  "source_sha256": {
+    "Section3/AdditiveCosets.lean": "402caced2e84057dd98a3eab719fc2a66bc8e9f655e172c7cebea94b14401d35",
+    "Section3/BallDefinablePoint.lean": "f6f76e71546929173cc4e3e15b0cd97049168a8079e95670444c0d9fe6ccaefe",
+    "Section3/BallFibreConstancy.lean": "9d68df4cfc621f738b6618082439de72bbd46a079567d20c2faa898596483038",
+    "Section3/BallGeometry.lean": "8563c6b7c9f8ff27d01e766aa228c1e01e2038b9cac61f446a887027201d1764",
+    "Section3/BallInitial.lean": "4d7fbb7165b15da770537bc1cf129608bb1ec3f29c13e5df99af42d718296fae",
+    "Section3/BallTranslation.lean": "4780f7195396cff928d5dd44dcf6929f9651731af5bb36d8b2dad484a5d8b2fa",
+    "Section3/ClosedBallCentres.lean": "ce1c73b967760adc347bb21b42ce5b758f3213da84310231e427973619be9305",
+    "Section3/DiscCentres.lean": "5ca823dfb7e02d5bc0c69ed21438ab4956af5852447770bfbef8ab286e19eb34",
+    "Section3/EncodedBallGeometry.lean": "add5784f3891f42234cf5b3f01de9f55048f394d61ed2832068ab3cce6b1623e",
+    "Section3/GammaBallDefinablePoint.lean": "0fab53c558f328b02258d1e171ad892f1cc61c5e91ea0909b159f361947209ea",
+    "Section3/GeneralBallCenters.lean": "48a970543652632bbcd4ed8bff821e53526131917135c0180cbfd5c7a4fd1dd5",
+    "Section3/MeanInBalls.lean": "36b1dabff1af27c44fd77d72cb143571b0138aad864bf2fbd132c92affa31189",
+    "Section3/MixedRootFree.lean": "84c57b5f6d3f4b78d0c05d7c1f37388f090028bd96d5265d160e0e81b92993c1",
+    "Section3/NearestRoots.lean": "51fe3c77b606e6d3ca5ba6730637453167c7194d60015b57641408c796c642c3",
+    "Section3/OpenBallCenters.lean": "5b86e44febac041f672b06d83ec7ebecbdf609272b5779d889841298f97afd66",
+    "Section3/PolynomialRVConstant.lean": "27d09a5188c426f1690a90e8010cf55c897ed4688453ae0c3a97c75d31caeb9c",
+    "Section3/RVFibreConstancy.lean": "13df89229525a6a1dc2523af34239c22b7d9dee345a7267c7af2db215615527d",
+    "Section3/RadialBalls.lean": "65e214bcabf57ee7bd80797d68e51f3935cf72c9d47ddae2a8d906d65c6186bc",
+    "Section3/Remark319Audit.lean": "5d336e30341096ccddb0bf88f311957013726001c3064a08f3f19f3f263ce8a9",
+    "Section3/RootFreeConstancy.lean": "9947c54bdbbbc22199c90ece705ebdc4806943ce383e95a821661b097307ee8a",
+    "Section3/TupleValuation.lean": "3e92429f8427000b5bbf11e9ee23cef568d4c741239f5e364337d58f67b674af",
+    "Section3/ValuativeCentre.lean": "af42e6d3c109de9bfe1acfb8fc55618cb8aa98913ab3461bd9e1928f185d0245",
+    "Section4/PolydiscLocal.lean": "a5cf5a838f2e6711e1c1767793738a16137ba0d3a150a678fdb8d76990bde8a5",
+    "Section5/Assembly.lean": "f135eeff083c6305898d2c711a99f9f30a3f785be6b8251d03b15c7978592b3e",
+    "Section5/GeneralAssembly.lean": "c6a269f7dcb26f025173206b227e539f82733d0cb21cdc6bee7e184bb4a2b8a9",
+    "Section5/RootConstruction.lean": "e250b511d6bd07449e7d9d83acce40326aa5e29b4ed452c009dec8dd1f065145",
+    "Section5/UnaryRelations.lean": "148d760408ac09a0399046812479ccc50752e6484dc502ae48f2f029a199f1fc",
+    "Section5/UnarySets.lean": "a5aac0a5c449fb39743e1b7c4aef642b91065cbf924c05a0427d39ad870bbaeb",
+    "Section5/VerticalObstacles.lean": "2131aaa9f7d821344b72bb908d4ac21e983a893636fe91c16b01e223744c9e61",
+    "Section8/UnaryBalls.lean": "37d8f2a735a065d227ad9500557daad04293eb07a11c4304ac4d9845dd7c3b6b"
+  },
+  "patch_sha256": "1025b80e4d836f501bb09a342effbf33a6e02a2cba48d75bb01262e4027c98a7",
+  "audit_source_sha256": "c51875cf7789e868397a3a6c7f21a4c7b5ee5a305d3f6ca57fd217f0bd460203",
+  "audit_output_sha256": "6ee44166d2224f26c6620752dfaf6be382c265b373050f6db45bffb10fde4b19",
+  "axioms": {
+    "SpecialTransformations.Section3.AdditiveCosets.coset_discs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.AdditiveCosets.lemma_3_18_1": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.qf_rootFree_constant_closed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.finite_definable_obstacles_both": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.definable_point_of_proper_subset_canonical": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.lemma_3_11": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallFibreConstancy.mem_graph": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallFibreConstancy.finite_exceptions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.openDisc_openRadius": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.closedDisc_bottom": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.closedDisc_infinity": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.centre_mem_closedDisc": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.centre_mem_openDisc": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.closedPolydisc_infinity": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.rvFibre_zero": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.rvFibre_eq_openDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.closedDisc_zero_downward": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.openDisc_zero_downward": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ball_zero_downward": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.sub_mem_closedDisc_iff": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.sub_mem_openDisc_iff": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.rv_sub_constant_openDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.rv_sub_constant_closedDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.finite_definable_hitting_set": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.closed_family_centres": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.rv_eq_of_sub_lt": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.closedDisc_rv_constant": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.openDisc_rv_constant": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.rv_difference_normalize": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.rv_le_normalize": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.closedBall_set_normalize": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.openBall_set_normalize": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.isBall_normalize": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.isBall_subset_vf": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.encodedBall_disc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.lemma_3_11_gamma_base": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.underlying_injective": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.underlying_ofClosed": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.underlying_ofOpen": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.ofClosed_injective": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.ofOpen_injective": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.closedFamily_finite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.openFamily_finite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.family_cases": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.closed_disc_coded": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.open_disc_coded": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.universe_coded": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.intersection_mean_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.normalized_mean_graph_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.meanGraph_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.familyMean_graph_definable_base": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.meanGraph_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.familyMean_graph_definable_base": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ClosedBallCodes.normalized_mean_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.normalized_mean_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.closed_center_image_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.finite_family_algebraic_points": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.familyMean_definable_base": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.familyMean_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallImaginaries.lemma_3_13": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Barycentre.mean_sub_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Barycentre.natCast_value_one": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Barycentre.mean_mem_closedDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Barycentre.mean_mem_openDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.mixed_qf_rootFree_constant": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.mixed_qf_rootFree_constant_closed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.mixed_finite_definable_obstacles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.nearestRoots_nonempty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.nearestRoots_mem_closedDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.nearestRoots_mem_openDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_raw_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.hullCenterCode_normalize": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.finite_hull_centers": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.finite_hull_center_image": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.strictDisc_recenter_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.hull_boundary_distance": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.hull_boundary_rv_fibre_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.BallFamilies.open_centers_of_finite_hitting_set": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.membership_raw_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.relation_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.rawBall_normalize": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.membership_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.differenceGraph_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.center_sort_of_graph": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.offsets_definable_base": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.raw_center_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.underlying_nonempty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.underlying_subset_vf": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.offsets_finite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.GammaParameters.finite_hitting_set_of_algebraic_points": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.algebraic_point_of_boundary_offset": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.finite_family_algebraic_points": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.coded_open_centers_from_hitting_set": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.open_centers_from_real_hitting_set": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.OpenBallCodes.lemma_3_13_proper_open": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.polynomial_rv_eq_of_linear_factors": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.polynomial_rv_constant_openDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.polynomial_rv_constant_closedDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.RVFibreConstancy.mem_graph": [
+      "propext"
+    ],
+    "SpecialTransformations.Section3.RVFibreConstancy.corollary_3_12": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.closedDisc_zero_radial": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.openDisc_zero_radial": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ball_zero_radial": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.ball_avoiding_zero_rv": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.mem_points": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.signs_image": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.rawSigns_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.zero_not_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.rawSigns_not_ball": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Remark319Audit.rawSigns_not_valuation_units": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.qf_rootFree_constant": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.finite_definable_obstacles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.tupleValuation_le_coordinate": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.le_tupleValuation_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.tupleValuation_zero": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.tupleValuation_empty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.closedPolydisc_uniform_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.openPolydisc_uniform_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.valuativeCentre_of_zero_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.valuativeCentre_of_constant": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.closedDisc_value_constant": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.openDisc_value_constant": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.valuativeCentre_closedDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section3.Balls.valuativeCentre_openDisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.oneCode_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rvConstant_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rv_zero_ne_one": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.membershipMap_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.membershipMap_eq_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Map.extend_apply": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Map.imageRepresentative_spec": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Map.descend_apply": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Map.descend_unique": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Contractible.refine": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.pairRVMaps_contractible_left": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.pairRVMaps_contractible_right": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.pairRVMaps_comp": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.baseImage_carrier": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.mem_baseImage": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.dropHead_image_pullback": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.baseImage_pullback": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.baseImage_tagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.replace_zero_insertHead": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.canonicalImage_allTagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Chain.lastKind_allTagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.baseImage_allTagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.headKey_eq_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.headImage_carrier": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.headKey_image_pullback": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.headImage_pullback": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.headImage_mono": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.headImage_tagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.headImage_allTagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.headDescend_apply": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.SpecialBijection.restrict_prepared_at": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.SpecialBijection.restrict_contracted_indicator_at": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.vertical_relation_of_zero_obstacles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.allTagged_hull": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.headKey_mem_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.dropHead_headTag": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.vertical_rvGraph_transfer": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Map.transportImage_apply": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.restricted_map_injective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.restricted_image_mem_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.vertical_graph_image": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.complete_head_preparation": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.restrict_prepared_map": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.tagged_rvMap_preparation": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rvPreparation_zero": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rvPreparation_succ": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rvPreparation_all": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.mean_normalize": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.mean_definable_normalized": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rv_eq_zero_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.mean_sameRV": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.unaryPoint_eta": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.mem_rootFibre": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rootFibre_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rootBound_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rootBound_zero": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rootFocus_center": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.nextRoot_fibre_subset": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rootBound_step": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.unary_code_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.mem_points": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.points_subset": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.rawFamily_labels": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.rawFamily_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.rawFamily_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Chain.alternating_none": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Chain.append_alternating": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Chain.append_toMap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Chain.lastKind_tagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.mem_push_points": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.push_id_points": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.push_comp_points": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.step_points": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.step_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.step_tagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.iterate": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.centralize_tagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.FiniteRootSet.centralize_after": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.scalarContractible_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.polynomial_contractible_of_zero_roots": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.polynomialCode_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.polynomialCode_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.zeroCode_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.polynomialZeroSet_finite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.theorem_5_4_unary": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.image_fibre_cover": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.push_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.relation_contractible_of_zero_obstacles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.unary_relation_preparation": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.isRVPullback_inter": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.sameRV_replace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Focus.restrict_eta": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Focus.restrict_image_subset": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Primitive.restrict": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Chain.cons_alternating_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Chain.restrict": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.SpecialBijection.restrict_at": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.SpecialBijection.restrict": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.mem_fibre": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.card_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.bound_zero": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.rawFamily_labels": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.rawFamily_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.rawFamily_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.mem_imageSet": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.imageSet_subset": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.step_fibre_subset": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.step_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.step_tagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.iterate": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.canonical_fibre_subset": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.canonical_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.centralize_after": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.restrict_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.RootFamily.centralize_boundary": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rawUnaryValues_injective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.mem_rawUnarySet_values": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.rawUnarySet_definable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.obstacleFamily_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.lemma_5_2_at_boundary": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.lemma_5_2": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.lemma_5_2_after": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Chain.append_assoc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.Chain.append_suffix_alternating": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.theorem_5_5_unary": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section5.uniformVerticalObstacles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.ValuedPolydisc.mem_carrier_iff": [
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.ValuedPolydisc.side_mem_nhds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.ValuedPolydisc.side_infinite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.ValuedPolydisc.carrier_eq_paper_balls": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.exists_nonzero_ball_subset": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.exists_polydisc_subset_of_mem_nhds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.independent_definable_mem_nhds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section4.independent_definable_contains_polydisc": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section8.rawOpenBall_infinite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "SpecialTransformations.Section8.infinite_definable_contains_small_ball": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  }
+}

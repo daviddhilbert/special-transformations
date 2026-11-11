@@ -54,14 +54,7 @@ theorem ValuedPolydisc.side_infinite [Valued K Γ]
 theorem ValuedPolydisc.carrier_eq_paper_balls {v : Valuation K Γ} {n : ℕ}
     (D : ValuedPolydisc v n) :
     D.carrier = {x | ∀ i, x i ∈ Balls.openDisc v (D.centre i)
-      (↑(OrderDual.toDual (v (D.step i))) : Balls.Radius Γ)} := by
-  ext x
-  apply forall_congr'
-  intro i
-  change (v (x i - D.centre i) < v (D.step i)) ↔
-    x i ∈ (if v (D.step i) = 0 then {D.centre i}
-      else {y | v (y - D.centre i) < v (D.step i)})
-  rw [if_neg (v.ne_zero_iff.mpr (D.step_ne_zero i))]
+      (Balls.openRadius (v (D.step i)) (v.ne_zero_iff.mpr (D.step_ne_zero i)))} := by
   rfl
 
 theorem exists_nonzero_ball_subset [Valued K Γ] (a : K) {s : Set K} (hs : s ∈ 𝓝 a) :

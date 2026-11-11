@@ -404,11 +404,9 @@ theorem normalized_mean_mem (h00 : M ⊨ Axioms.ACVF00) (D : OpenBall M)
   let a : VFType (M := M) := ⟨q.val 0,q.property.1 0⟩
   let r : VFType (M := M) := ⟨q.val 1,q.property.1 1⟩
   have hr : v r ≠ 0 := (v.ne_zero_iff).mpr (@radius_ne_zero M N hN q.val hqN)
-  have he : @ball M N q.val = Balls.openDisc v a (↑(OrderDual.toDual (v r))) := by
+  have he : @ball M N q.val = Balls.openDisc v a (Balls.openRadius (v r) hr) := by
     rw [@ball_eq_open M N hN Γ hΓ v hv q.val hqN]
-    change ValOneEC.openBall v a (v r) =
-      (if v r = 0 then {a} else ValOneEC.openBall v a (v r))
-    exact (if_neg hr).symm
+    rfl
   have hFN (x : VFType (M := M)) (hx : x ∈ F) : x ∈ @ball M N q.val := by
     have hh := hF x hx
     rw [← hq] at hh
@@ -418,7 +416,7 @@ theorem normalized_mean_mem (h00 : M ⊨ Axioms.ACVF00) (D : OpenBall M)
   have hm : (@Barycentre.mean M N hN F) ∈ @ball M N q.val := by
     rw [he]
     apply @Barycentre.mean_mem_openDisc M N hN Γ hΓ v hv h00N F hne a
-      (↑(OrderDual.toDual (v r)))
+      (Balls.openRadius (v r) hr)
     intro x hx
     rw [← he]
     exact hFN x hx

@@ -16,17 +16,13 @@ theorem sub_mem_closedDisc_iff (v : Valuation K Γ) (a c x : K) (r : Radius Γ) 
     change v ((x - c) - (a - c)) ≤ OrderDual.ofDual γ ↔ v (x - a) ≤ OrderDual.ofDual γ
     rw [hd]
 
-theorem sub_mem_openDisc_iff (v : Valuation K Γ) (a c x : K) (r : Radius Γ) :
+theorem sub_mem_openDisc_iff (v : Valuation K Γ) (a c x : K) (r : OpenRadius Γ) :
     x - c ∈ openDisc v (a - c) r ↔ x ∈ openDisc v a r := by
   have hd : (x - c) - (a - c) = x - a := by abel
-  cases r with
-  | none => rfl
-  | some γ =>
-    by_cases hγ : OrderDual.ofDual γ = 0
-    · simp only [openDisc, if_pos hγ, Set.mem_singleton_iff]
-      exact sub_left_inj
-    · simp only [openDisc, if_neg hγ, Set.mem_ofPred_eq]
-      rw [hd]
+  change v ((x - c) - (a - c)) < (OrderDual.ofDual r : Γˣ).val ↔
+    v (x - a) < (OrderDual.ofDual r : Γˣ).val
+  rw [hd]
+
 end General
 
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
@@ -35,7 +31,7 @@ variable {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
     (hv : ∀ x y : VFType (M := M), VFValued.predV x y ↔ v x ≤ v y)
 
 include hv in
-theorem rv_sub_constant_openDisc (a c : VFType (M := M)) (r : Radius Γ)
+theorem rv_sub_constant_openDisc (a c : VFType (M := M)) (r : OpenRadius Γ)
     (hc : c ∉ openDisc v a r) (x y : VFType (M := M))
     (hx : x ∈ openDisc v a r) (hy : y ∈ openDisc v a r) :
     iRv (x - c).val = iRv (y - c).val := by

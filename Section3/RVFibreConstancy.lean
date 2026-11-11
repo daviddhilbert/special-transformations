@@ -44,7 +44,7 @@ theorem corollary_3_12 (S B : Set M) (f : domain B → Fin m → M)
     have hc0 : c ≠ 0 := by
       intro he
       exact ht0 (ha.symm.trans ((CanonicalRV.encodedRv_zero_iff c).mpr he))
-    let ρ : Balls.Radius Γ := ↑(OrderDual.toDual (v c))
+    let ρ : Balls.OpenRadius Γ := Balls.openRadius (v c) ((map_ne_zero v).mpr hc0)
     have hball : Balls.rvFibre (CanonicalRV.encodedRv c) = Balls.openDisc v c ρ :=
       Balls.rvFibre_eq_openDisc v hv c hc0
     have hmem (x : VFType (M := M)) (hx : iRv x.val = t) : x ∈ Balls.openDisc v c ρ := by

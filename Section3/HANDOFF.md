@@ -1,5 +1,11 @@
 # Handoff: Section 3 and post-QE Section 2 complete
 
+November 9 update: the author has corrected open discs to have finite radii.
+See [OPEN-DISC-RADIUS-NOTE.md](OPEN-DISC-RADIUS-NOTE.md) for the local changes,
+current Lean 4.35.0 verification and consumer patch. The older release details
+and dependency versions below belong to the historical completed checkpoint.
+
+
 Updated November 6, 2026 (America/Los_Angeles). This replaces the November 4
 startup handoff. The requested formalization is complete in the author's
 approved scope; there is no remaining Section 3 proof campaign to restart.

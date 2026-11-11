@@ -141,7 +141,7 @@ theorem mean_sameRV (h00 : M ⊨ Axioms.ACVF00) (F : Finset (VF (M := M)))
     letI := hΓ
     have hball := Section3.Balls.rvFibre_eq_openDisc v hv a ha
     have hmem (x : VF (M := M)) (hx : x ∈ F) :
-        x ∈ Section3.Balls.openDisc v a (↑(OrderDual.toDual (v a))) := by
+        x ∈ Section3.Balls.openDisc v a (Section3.Balls.openRadius (v a) ((map_ne_zero v).mpr ha)) := by
       rw [← hball]
       exact congrArg Subtype.val (hF x hx)
     have hm := Section3.Barycentre.mean_mem_openDisc v hv h00 F hne a _ hmem
@@ -750,14 +750,14 @@ theorem polynomial_contractible_of_zero_roots
     letI := hΓ
     obtain ⟨he, _⟩ := U.unary_inverse_fibre v hv hB b hb
     let a := vfAt (U.inverseMap b).val 0
-    let ρ : Section3.Balls.Radius Γ := ↑(OrderDual.toDual (v (vfAt b.val 0)))
     have hrad : v (vfAt b.val 0) ≠ 0 := (map_ne_zero v).mpr hb
+    let ρ : Section3.Balls.OpenRadius Γ := Section3.Balls.openRadius (v (vfAt b.val 0)) hrad
     have hmem (x : VF (M := M)) (hx : x ∈ Section3.Balls.openDisc v a ρ) :
         unaryPoint x (U.inverseMap b).val.2 ∈ U.inverseFibre b := by
       rw [he]
       refine ⟨?_, rfl⟩
       change v (x - a) < v (vfAt b.val 0)
-      simpa only [Section3.Balls.openDisc, ρ, OrderDual.ofDual_toDual, if_neg hrad,
+      simpa only [ρ, Section3.Balls.openDisc_openRadius,
         Set.mem_ofPred_eq] using hx
     have hroot : ∀ r ∈ p.roots, r ∉ Section3.Balls.openDisc v a ρ := by
       intro r hr hrd
@@ -776,7 +776,7 @@ theorem polynomial_contractible_of_zero_roots
       ⟨U.inverseMap c, rfl, by rw [U.apply_inverse]; exact hbc.symm⟩
     rw [he] at hcF
     have hy : vfAt (U.inverseMap c).val 0 ∈ Section3.Balls.openDisc v a ρ := by
-      simpa only [Section3.Balls.openDisc, ρ, OrderDual.ofDual_toDual, if_neg hrad,
+      simpa only [ρ, Section3.Balls.openDisc_openRadius,
         Set.mem_ofPred_eq] using hcF.1
     exact Subtype.ext (Section3.polynomial_rv_constant_openDisc v hv p a ρ hroot _ _
       (Section3.Balls.centre_mem_openDisc v a ρ) hy)

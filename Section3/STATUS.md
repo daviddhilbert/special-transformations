@@ -1,5 +1,19 @@
 # Current proof status
 
+## November 9, 2026: finite open radii
+
+The author corrected the old open-disc-at-infinity convention. Proper open
+discs now use `OpenRadius Γ := OrderDual Γˣ`; singleton radius infinity belongs
+to closed discs. The corrected Section 3 and Section 5 libraries build through
+the pinned Diamond Integral consumer. The final publication check also builds the current complete coordination
+root, including newer later sections, and audits 260 public declarations
+across all 30 changed source modules. Its source-matched evidence is recorded
+in [OPEN-DISC-RADIUS-NOTE.md](OPEN-DISC-RADIUS-NOTE.md) and
+`verification/FiniteOpenRadiusPublicationAudit.json`. The older 250-declaration
+record remains a historical checkpoint. The broader records below describe
+their historical checkpoints, not a fresh full audit of this modified tree.
+
+
 All active targets in Section 3 and Section 2 after Theorem 2.3 are proved,
 including the author-approved guarded rational Definition 2.4.
 Remark 3.19 is retracted by the author and excluded.

@@ -774,14 +774,14 @@ theorem lemma_5_2_at_boundary (h00 : M ⊨ Axioms.ACVF00) (A : DefSet (M := M) S
     obtain ⟨he, _⟩ := T.unary_inverse_fibre v hv hB b hb
     rw [T.inverse_apply] at he
     let centre := vfAt a.val 0
-    let ρ : Section3.Balls.Radius Γ := ↑(OrderDual.toDual (v (vfAt b.val 0)))
     have hrad : v (vfAt b.val 0) ≠ 0 := (map_ne_zero v).mpr hb
+    let ρ : Section3.Balls.OpenRadius Γ := Section3.Balls.openRadius (v (vfAt b.val 0)) hrad
     have hmem (x : VF (M := M)) (hx : x ∈ Section3.Balls.openDisc v centre ρ) :
         unaryPoint x a.val.2 ∈ T.inverseFibre b := by
       rw [he]
       refine ⟨?_, rfl⟩
       change v (x - centre) < v (vfAt b.val 0)
-      simpa only [Section3.Balls.openDisc, ρ, OrderDual.ofDual_toDual, if_neg hrad,
+      simpa only [ρ, Section3.Balls.openDisc_openRadius,
         Set.mem_ofPred_eq] using hx
     have havoid : ∀ x ∈ Q, x ∉ Section3.Balls.openDisc v centre ρ := by
       intro x hx hxd
@@ -800,7 +800,7 @@ theorem lemma_5_2_at_boundary (h00 : M ⊨ Axioms.ACVF00) (A : DefSet (M := M) S
       ⟨u, rfl, by rw [T.apply_inverse]; exact hbc.symm⟩
     rw [he] at huF
     have hy : vfAt u.val 0 ∈ Section3.Balls.openDisc v centre ρ := by
-      simpa only [Section3.Balls.openDisc, ρ, OrderDual.ofDual_toDual, if_neg hrad,
+      simpa only [ρ, Section3.Balls.openDisc_openRadius,
         Set.mem_ofPred_eq] using huF.1
     have hconst := hO centre ρ havoid centre (Section3.Balls.centre_mem_openDisc v centre ρ)
       (vfAt u.val 0) hy (fun i => (a.val.2 i).val) (fun i => (a.val.2 i).property)

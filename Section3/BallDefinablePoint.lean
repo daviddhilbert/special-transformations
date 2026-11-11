@@ -40,7 +40,7 @@ closed ball, including the singleton and whole-field conventions. -/
 theorem finite_definable_obstacles_both (S U : Set M) (hU : DefinableAt S .vf U) :
     ∃ R : Finset (VFType (M := M)), R.Nonempty ∧
       DefinableAt S .vf (Subtype.val '' (R : Set (VFType (M := M)))) ∧
-      (∀ (a : VFType (M := M)) (r : Balls.Radius Γ),
+      (∀ (a : VFType (M := M)) (r : Balls.OpenRadius Γ),
         (∀ c ∈ R, c ∉ Balls.openDisc v a r) →
         ∀ x ∈ Balls.openDisc v a r, ∀ y ∈ Balls.openDisc v a r,
           (x.val ∈ U ↔ y.val ∈ U)) ∧
@@ -87,7 +87,8 @@ theorem definable_point_of_proper_subset_canonical
     (hc : CanonicalStructure.IsCanonical (M := M)) (h00 : M ⊨ Axioms.ACVF00)
     (S A : Set M) (hA : DefinableAt S .vf A) (hne : A.Nonempty)
     (B : Set (VFType (M := M)))
-    (hB : ∃ a ρ, B = Balls.openDisc v a ρ ∨ B = Balls.closedDisc v a ρ)
+    (hB : ∃ a, (∃ ρ : Balls.OpenRadius Γ, B = Balls.openDisc v a ρ) ∨
+      (∃ ρ : Balls.Radius Γ, B = Balls.closedDisc v a ρ))
     (hsub : ∀ x : VFType (M := M), x.val ∈ A → x ∈ B)
     (hproper : ∃ b ∈ B, b.val ∉ A) :
     ∃ b : VFType (M := M), b ∈ B ∧ DefinableClosureAt S .vf b.val := by
@@ -101,7 +102,7 @@ theorem definable_point_of_proper_subset_canonical
     have hmiss : ∀ r ∈ R, r ∉ B := by simpa only [not_exists, not_and] using hnot
     obtain ⟨a, ha⟩ := hT
     obtain ⟨b, hb, hbA⟩ := hproper
-    obtain ⟨c, ρ, hB' | hB'⟩ := hB
+    obtain ⟨c, ⟨ρ, hB'⟩ | ⟨ρ, hB'⟩⟩ := hB
     · have hab := hO c ρ (hB' ▸ hmiss) a (hB' ▸ hsub a ha) b (hB' ▸ hb)
       exact hbA (hab.mp ha)
     · have hab := hC c ρ (hB' ▸ hmiss) a (hB' ▸ hsub a ha) b (hB' ▸ hb)
@@ -112,7 +113,7 @@ theorem definable_point_of_proper_subset_canonical
     rw [← NearestRootSyntax.nearest_eq_image v hv R A hA.2]
     exact NearestRootSyntax.nearest_definable S _ A hRdef.raw_definable hA.raw_definable
   have hNB : ∀ x ∈ N, x ∈ B := by
-    obtain ⟨c, ρ, hB' | hB'⟩ := hB
+    obtain ⟨c, ⟨ρ, hB'⟩ | ⟨ρ, hB'⟩⟩ := hB
     · rw [hB']
       exact Balls.nearestRoots_mem_openDisc v R T c ρ
         (fun x hx => hB' ▸ hsub x hx) (hB' ▸ hTR)
@@ -120,7 +121,7 @@ theorem definable_point_of_proper_subset_canonical
       exact Balls.nearestRoots_mem_closedDisc v R T c ρ
         (fun x hx => hB' ▸ hsub x hx) (hB' ▸ hTR)
   have hmB : mean N ∈ B := by
-    obtain ⟨c, ρ, hB' | hB'⟩ := hB
+    obtain ⟨c, ⟨ρ, hB'⟩ | ⟨ρ, hB'⟩⟩ := hB
     · rw [hB']
       exact mean_mem_openDisc v hv h00 N hN c ρ (hB' ▸ hNB)
     · rw [hB']

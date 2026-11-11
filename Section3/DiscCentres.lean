@@ -37,28 +37,18 @@ theorem closedDisc_rv_constant (a : VFType (M := M)) (r : Radius Γ)
     exact lt_of_le_of_lt hx hγ
 
 include hv in
-theorem openDisc_rv_constant (a : VFType (M := M)) (r : Radius Γ)
+theorem openDisc_rv_constant (a : VFType (M := M)) (r : OpenRadius Γ)
     (hzero : (0 : VFType (M := M)) ∉ openDisc v a r)
     (x : VFType (M := M)) (hx : x ∈ openDisc v a r) : iRv x.val = iRv a.val := by
   have ha : a ≠ 0 := by
     intro h
     exact hzero (h ▸ centre_mem_openDisc v a r)
-  cases r with
-  | none => exact (hzero (Set.mem_univ _)).elim
-  | some γ =>
-    by_cases hγ : OrderDual.ofDual γ = 0
-    · have hxa : x = a := by simpa only [openDisc, if_pos hγ, Set.mem_singleton_iff] using hx
-      rw [hxa]
-    · have hγa : OrderDual.ofDual γ ≤ v a := by
-        apply le_of_not_gt
-        intro h
-        apply hzero
-        change (0 : VFType (M := M)) ∈
-          if OrderDual.ofDual γ = 0 then {a} else {x | v (x - a) < OrderDual.ofDual γ}
-        rw [if_neg hγ]
-        simpa only [Set.mem_ofPred_eq, zero_sub, Valuation.map_neg] using h
-      have hx' : v (x - a) < OrderDual.ofDual γ := by
-        simpa only [openDisc, if_neg hγ, Set.mem_ofPred_eq] using hx
-      exact rv_eq_of_sub_lt v hv x a ha (lt_of_lt_of_le hx' hγa)
+  have hγa : (OrderDual.ofDual r : Γˣ).val ≤ v a := by
+    apply le_of_not_gt
+    intro h
+    apply hzero
+    change v (0 - a) < (OrderDual.ofDual r : Γˣ).val
+    simpa only [zero_sub, Valuation.map_neg] using h
+  exact rv_eq_of_sub_lt v hv x a ha (lt_of_lt_of_le hx hγa)
 
 end SpecialTransformations.Section3.Balls

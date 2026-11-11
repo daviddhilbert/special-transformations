@@ -1060,3 +1060,17 @@ compiled, and the full 197-module/1393-headline/root certificate
 passed. Full intended theorem types and all new standard-three-axiom
 audits were reviewed. Definition 2.4 and all active Section 3 targets are
 closed; the author-retracted Remark 3.19 is excluded.
+
+## November 9, 2026: correction of the reused open-disc interface
+
+The author rejected the singleton interpretation of an open disc at radius
+infinity while reviewing Diamond Integral §2.1. The correction reuses
+Mathlib's nonzero units as finite multiplicative values, the existing strict
+valuation inequality, and the companion library's already nonzero real open
+ball codes (`OpenBallCodes.Proper`). It introduces no new valued-field or
+model-theoretic prerequisite. Mathlib's valued-neighbourhood basis already
+uses units to exclude valuation zero. Direct import remains the chosen route,
+with the local interface correction recorded as a source-matched patch over
+`9cc9760892092dd34cfad4a6dee655843c52f30c` in the consumer. See
+[OPEN-DISC-RADIUS-NOTE.md](OPEN-DISC-RADIUS-NOTE.md) for exact pins and fresh
+build/type/axiom evidence. Earlier certificates retain their historical scope.

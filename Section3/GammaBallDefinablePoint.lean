@@ -72,7 +72,8 @@ theorem lemma_3_11_gamma_base (h00 : M ⊨ Axioms.ACVF00) (B : Base (M := M))
     have hU : U.Nonempty := by
       obtain ⟨a,ha⟩ := hne
       exact ⟨⟨a,hAN.2 ha⟩,ha⟩
-    have hdisc : ∃ a ρ, V = Balls.openDisc v a ρ ∨ V = Balls.closedDisc v a ρ :=
+    have hdisc : ∃ a, (∃ ρ : Balls.OpenRadius Γ, V = Balls.openDisc v a ρ) ∨
+      (∃ ρ : Balls.Radius Γ, V = Balls.closedDisc v a ρ) :=
       encodedBall_disc v hv C hCN
     have hsub : ∀ a ∈ U, a ∈ V := fun a ha => hproper.1 ha
     have hprop : ∃ b ∈ V, b.val ∉ A := by
@@ -84,13 +85,13 @@ theorem lemma_3_11_gamma_base (h00 : M ⊨ Axioms.ACVF00) (B : Base (M := M))
       have hmiss₀ : ∀ r ∈ R₀, r ∉ V := fun r hr => hmiss r (hR₀R hr)
       obtain ⟨a,ha⟩ := hU
       obtain ⟨b,hb,hbA⟩ := hprop
-      obtain ⟨c,ρ,he | he⟩ := hdisc
+      obtain ⟨c, ⟨ρ, he⟩ | ⟨ρ, he⟩⟩ := hdisc
       · exact hbA ((hO c ρ (he ▸ hmiss₀) a (he ▸ hsub a ha) b (he ▸ hb)).mp ha)
       · exact hbA ((hCl c ρ (he ▸ hmiss₀) a (he ▸ hsub a ha) b (he ▸ hb)).mp ha)
     let F := Balls.nearestRoots v R U
     have hF : F.Nonempty := Balls.nearestRoots_nonempty v R hR U hU
     have hFV : ∀ x ∈ F, x ∈ V := by
-      obtain ⟨c,ρ,he | he⟩ := hdisc
+      obtain ⟨c, ⟨ρ, he⟩ | ⟨ρ, he⟩⟩ := hdisc
       · rw [he]
         exact Balls.nearestRoots_mem_openDisc v R U c ρ
           (fun x hx => he ▸ hsub x hx) (he ▸ hTR)
@@ -98,7 +99,7 @@ theorem lemma_3_11_gamma_base (h00 : M ⊨ Axioms.ACVF00) (B : Base (M := M))
         exact Balls.nearestRoots_mem_closedDisc v R U c ρ
           (fun x hx => he ▸ hsub x hx) (he ▸ hTR)
     have hmV : mean F ∈ V := by
-      obtain ⟨c,ρ,he | he⟩ := hdisc
+      obtain ⟨c, ⟨ρ, he⟩ | ⟨ρ, he⟩⟩ := hdisc
       · rw [he]
         exact mean_mem_openDisc v hv h00N F hF c ρ (he ▸ hFV)
       · rw [he]

@@ -59,10 +59,9 @@ theorem infinite_definable_contains_small_ball {S A : Set M}
   have hU := Filter.inter_mem (strictBall_mem_nhds a' r' hr')
     (R.finite_toSet.isClosed.isOpen_compl.mem_nhds hR)
   obtain ⟨s, hs0, hs⟩ := Section4.exists_nonzero_ball_subset a' hU
-  let ρ : Balls.Radius Γ := ↑(OrderDual.toDual (v s))
+  let ρ : Balls.OpenRadius Γ := Balls.openRadius (v s) (v.ne_zero_iff.mpr hs0)
   have hdisc (x : VFType (M := M)) : x ∈ Balls.openDisc v a' ρ ↔ v (x - a') < v s := by
-    change x ∈ (if v s = 0 then {a'} else {y | v (y - a') < v s}) ↔ _
-    rw [if_neg (v.ne_zero_iff.mpr hs0)] <;> rfl
+    rfl
   have havoid : ∀ c ∈ R, c ∉ Balls.openDisc v a' ρ := by
     intro c hc hcd
     exact (hs ((hdisc c).mp hcd)).2 hc

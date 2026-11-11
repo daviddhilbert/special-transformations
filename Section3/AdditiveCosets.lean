@@ -16,11 +16,11 @@ include hv
 theorem coset_discs (H : AddSubgroup (VFType (M := M)))
     (hH : IsBall (Subtype.val '' (H : Set (VFType (M := M)))))
     (d : VFType (M := M) ⧸ H) :
-    ∃ a r, {x | QuotientAddGroup.mk' H x = d} = Balls.openDisc v a r ∨
-      {x | QuotientAddGroup.mk' H x = d} = Balls.closedDisc v a r := by
+    ∃ a, (∃ r : Balls.OpenRadius Γ, {x | QuotientAddGroup.mk' H x = d} = Balls.openDisc v a r) ∨
+      (∃ r : Balls.Radius Γ, {x | QuotientAddGroup.mk' H x = d} = Balls.closedDisc v a r) := by
   obtain ⟨c, hc⟩ := QuotientAddGroup.mk'_surjective H d
-  obtain ⟨a, r, he | he⟩ := encodedBall_disc v hv _ hH
-  · refine ⟨a + c, r, Or.inl ?_⟩
+  obtain ⟨a, ⟨r, he⟩ | ⟨r, he⟩⟩ := encodedBall_disc v hv _ hH
+  · refine ⟨a + c, Or.inl ⟨r, ?_⟩⟩
     ext x
     change QuotientAddGroup.mk' H x = d ↔ _
     rw [← hc]
@@ -32,7 +32,7 @@ theorem coset_discs (H : AddSubgroup (VFType (M := M)))
       · rintro ⟨z, hz, hez⟩; exact (Subtype.ext hez : z = x - c) ▸ hz
     exact hmem.trans ((Set.ext_iff.mp he (x - c)).trans (by
       simpa only [add_sub_cancel_right] using Balls.sub_mem_openDisc_iff v (a + c) c x r))
-  · refine ⟨a + c, r, Or.inr ?_⟩
+  · refine ⟨a + c, Or.inr ⟨r, ?_⟩⟩
     ext x
     change QuotientAddGroup.mk' H x = d ↔ _
     rw [← hc]

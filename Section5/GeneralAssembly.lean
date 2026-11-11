@@ -33,7 +33,7 @@ def UniformVerticalObstacles {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
   ∀ {m k : ℕ} (U : DefSet (M := M) S (n + 1) k)
     (A : DefSet (M := M) S (n + 1) m), IsRVPullback (carrier A) →
   ∃ R : VerticalRootFamily A, ∃ d : ℕ, R.Bound d ∧
-    ∀ (p : Point (M := M) n m) (a : VF (M := M)) (r : Section3.Balls.Radius Γ),
+    ∀ (p : Point (M := M) n m) (a : VF (M := M)) (r : Section3.Balls.OpenRadius Γ),
       (∀ x ∈ Section3.Balls.openDisc v a r, insertHead x p ∈ carrier A) →
       (∀ x ∈ R.fibre p, x ∉ Section3.Balls.openDisc v a r) →
       ∀ x ∈ Section3.Balls.openDisc v a r, ∀ y ∈ Section3.Balls.openDisc v a r,

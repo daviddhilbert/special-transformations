@@ -205,11 +205,7 @@ theorem hull_boundary_rv_fibre_iff (a c x r y : VFType (M := M)) (hr : r ≠ 0)
     have hzv : v r = 0 := by rw [← he,hz,map_zero]
     exact hr (v.zero_iff.mp hzv)
   have hF := Set.ext_iff.mp (rvFibre_eq_openDisc v hv (x-c) hxc) (y-c)
-  have hn : v (x-c) ≠ 0 := by rw [he]; exact (v.ne_zero_iff).mpr hr
   have hd : (y-c)-(x-c) = y-x := by abel
-  change iRv (y-c).val = iRv (x-c).val ↔ (y-c) ∈
-    (if v (x-c) = 0 then {x-c} else {z | v (z-(x-c)) < v (x-c)}) at hF
-  rw [if_neg hn] at hF
   change iRv (y-c).val = iRv (x-c).val ↔ v ((y-c)-(x-c)) < v (x-c) at hF
   rw [hd,he] at hF
   exact hF.trans (strictDisc_recenter_iff v a x y r hx)
@@ -271,11 +267,8 @@ theorem open_centers_of_finite_hitting_set {Γ : Type} [LinearOrderedCommGroupWi
       exact ⟨x,Finset.mem_filter.mpr ⟨hxR,hxD⟩⟩
     obtain ⟨a,r,hr,he⟩ := hopen t ht
     have hn : v r ≠ 0 := (v.ne_zero_iff).mpr hr
-    have he' : D t = Balls.openDisc v a (↑(OrderDual.toDual (v r))) := by
+    have he' : D t = Balls.openDisc v a (Balls.openRadius (v r) hn) := by
       rw [he]
-      change ValOneEC.openBall v a (v r) =
-        (if v r = 0 then {a} else {x | v (x-a) < v r})
-      rw [if_neg hn]
       rfl
     rw [he']
     exact mean_mem_openDisc v hv h00 (F t) hne a _ (fun x hx => by
@@ -597,25 +590,22 @@ theorem offsets_finite (A : Set (OpenBall M)) (hA : A.Finite) (c : A → M)
   let X : VFType (M := M) := ⟨x D,underlying_subset_vf D.val (hx D)⟩
   let Y : VFType (M := M) := ⟨y,underlying_subset_vf D.val hy⟩
   have hn : v r ≠ 0 := (v.ne_zero_iff).mpr (radius_ne_zero q.val q.property)
-  have hb : ball q.val = Balls.openDisc v a (↑(OrderDual.toDual (v r))) := by
+  have hb : ball q.val = Balls.openDisc v a (Balls.openRadius (v r) hn) := by
     rw [ball_eq_open v hv q.val q.property]
-    change ValOneEC.openBall v a (v r) =
-      (if v r = 0 then {a} else {z | v (z-a) < v r})
-    rw [if_neg hn]
     rfl
-  have hx' : X ∈ Balls.openDisc v a (↑(OrderDual.toDual (v r))) := by
+  have hx' : X ∈ Balls.openDisc v a (Balls.openRadius (v r) hn) := by
     rw [← hb]
     change x D ∈ rawBall q.val
     have hXD := hx D
     rw [← hq] at hXD
     exact hXD
-  have hy' : Y ∈ Balls.openDisc v a (↑(OrderDual.toDual (v r))) := by
+  have hy' : Y ∈ Balls.openDisc v a (Balls.openRadius (v r) hn) := by
     rw [← hb]
     change y ∈ rawBall q.val
     have hh := hy
     rw [← hq] at hh
     exact hh
-  have hc' : C ∉ Balls.openDisc v a (↑(OrderDual.toDual (v r))) := by
+  have hc' : C ∉ Balls.openDisc v a (Balls.openRadius (v r) hn) := by
     rw [← hb]
     change c D ∉ rawBall q.val
     have hh := hcout

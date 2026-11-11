@@ -86,7 +86,7 @@ theorem rawSigns_not_ball (h00 : M ⊨ Axioms.ACVF00) : ¬ IsBall (rawSigns (M :
   have hmean : Barycentre.mean (points (M := M)) = 0 := by
     simp [Barycentre.mean, points, Finset.sum_pair hdiff]
   have hne : (points (M := M)).Nonempty := ⟨1, Finset.mem_insert_self _ _⟩
-  obtain ⟨a, ρ, he | he⟩ := encodedBall_disc v hv (rawSigns (M := M)) hB
+  obtain ⟨a, ⟨ρ, he⟩ | ⟨ρ, he⟩⟩ := encodedBall_disc v hv (rawSigns (M := M)) hB
   · have hmem : ∀ x ∈ points (M := M), x ∈ Balls.openDisc v a ρ := by
       intro x hx
       exact (Set.ext_iff.mp he x).mp ⟨x, hx, rfl⟩
