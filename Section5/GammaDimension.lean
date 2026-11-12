@@ -25,7 +25,7 @@ variable {M : Type} [sM : LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 local notation "N" => (@CanonicalStructure.normalize M sM)
 local notation "hN" => (@CanonicalStructure.normalized_model M sM hM)
 
-private def gammaMapGraph {n m j r d : ℕ} {A : Set (Point (M := M) n m)}
+public def gammaMapGraph {n m j r d : ℕ} {A : Set (Point (M := M) n m)}
     (f : A → Point (M := M) j r × (Fin d → Values.Gamma (M := M))) :
     Point (M := M) n m → Point (M := M) j (r + d) → Prop :=
   fun x y => ∃ a : A, a.val = x ∧ ∃ t : Fin d → GammaParameters.Code (M := M),

@@ -46,7 +46,7 @@ namespace EssentialVFMap
 variable {A : DefSet (rawMixedSpace (M := M) n r) S}
 variable {B : DefSet (rawMixedSpace (M := M) n s) S}
 
-private theorem complement_dim_lt {m : ℕ}
+public theorem complement_dim_lt {m : ℕ}
     {X Y Z : DefSet (rawMixedSpace (M := M) n m) S}
     (hc : CanonicalStructure.IsCanonical (M := M)) {κ : Cardinal}
     (hs : Saturated M κ) (hS : Cardinal.mk S < κ)

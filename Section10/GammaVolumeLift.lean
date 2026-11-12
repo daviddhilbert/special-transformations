@@ -36,7 +36,7 @@ normalization of an already canonical structure. -/
 def volumeGammaSpace (hc : CanonicalStructure.IsCanonical (M := M)) : Space LRV M :=
   (normalize_eq_of_isCanonical hc) ▸ (@gammaSpace M sM hM)
 
-private theorem gammaCarrier (hc : CanonicalStructure.IsCanonical (M := M)) :
+public theorem gammaCarrier (hc : CanonicalStructure.IsCanonical (M := M)) :
     (volumeGammaSpace hc).Carrier = Values.Gamma (M := M) := by
   have transport {s t : LRV.Structure M} (h : s = t) (D : @Space LRV M s) :
       (@Space.Carrier LRV M t (h ▸ D)) = (@Space.Carrier LRV M s D) := by

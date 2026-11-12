@@ -26,10 +26,10 @@ local notation "RV" => CanonicalRV.RVSort M
 local notation "Γ" => Values.Gamma (M := M)
 local notation "n" => (k + 1)
 
-private abbrev ambient {A B : RVFiniteObject (M := M) S n} (e : A ≅ B) : A.obj ≅ B.obj :=
+public abbrev ambient {A B : RVFiniteObject (M := M) S n} (e : A ≅ B) : A.obj ≅ B.obj :=
   (finiteVolumeProperty S n).ι.mapIso e
 
-private theorem gammaEquation {G : Type} [Monoid G] (j : Γ →* G)
+public theorem gammaEquation {G : Type} [Monoid G] (j : Γ →* G)
     {a b : G} {t s : Fin n → RV} {ht : ∀ i, (t i).val ≠ iRVZero}
     {hs : ∀ i, (s i).val ≠ iRVZero} :
     a = b * j (rvGammaJacobian t s ht hs) ↔
@@ -45,19 +45,19 @@ private theorem gammaEquation {G : Type} [Monoid G] (j : Γ →* G)
         rw [mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]
       _ = _ := by rw [h, mul_assoc, ← map_mul, div_eq_mul_inv]
 
-private theorem small_union (hc : CanonicalStructure.IsCanonical (M := M)) (C : BaseContext M)
+public theorem small_union (hc : CanonicalStructure.IsCanonical (M := M)) (C : BaseContext M)
     {r : ℕ} {X Y : DefSet (rawRVSpace (M := M) r) (C.base : Set M)}
     (hx : rvDim X < n) (hy : rvDim Y < n) : rvDim (X.union Y) < n :=
   (rvDim_union_le_max hc (rvExchangeInput_of_earlier C.uncountable.le C.saturated C.model00)
     C.saturated C.small X Y).trans_lt (max_lt hx hy)
 
-private def isoPreimage {A B : RVFiniteObject (M := M) S n} (e : A ≅ B)
+public def isoPreimage {A B : RVFiniteObject (M := M) S n} (e : A ≅ B)
     (Y : DefSet (rawRVSpace (M := M) B.obj.arity) S) :
     DefSet (rawRVSpace (M := M) A.obj.arity) S :=
   ⟨{x | ∃ u : A.obj.domain, u.val = x ∧ ((ambient e).hom.map u).val ∈ Y.carrier},
     (ambient e).hom.map.definable_preimage Y.definable⟩
 
-private theorem dim_isoPreimage {A B : RVFiniteObject (M := M) S n} (e : A ≅ B)
+public theorem dim_isoPreimage {A B : RVFiniteObject (M := M) S n} (e : A ≅ B)
     (Y : DefSet (rawRVSpace (M := M) B.obj.arity) S) : rvDim (isoPreimage e Y) ≤ rvDim Y := by
   let X := isoPreimage e Y
   have hi : X.carrier ⊆ A.obj.domain.carrier := by
@@ -76,11 +76,11 @@ private theorem dim_isoPreimage {A B : RVFiniteObject (M := M) S n} (e : A ≅ B
     Section7.rvIso_inv_apply (ambient e)).injective he'
   exact Subtype.ext (congrArg (fun p : A.obj.domain => p.val) hv)
 
-private theorem ambient_inverse {A B : RVFiniteObject (M := M) S n} (e : A ≅ B)
+public theorem ambient_inverse {A B : RVFiniteObject (M := M) S n} (e : A ≅ B)
     (u : B.obj.domain) : (ambient e).hom.map ((ambient e.symm).hom.map u) = u :=
   Section7.rvIso_inv_apply (ambient e).symm u
 
-private theorem rvIdentityJacobian (hc : CanonicalStructure.IsCanonical (M := M)) (C : BaseContext M)
+public theorem rvIdentityJacobian (hc : CanonicalStructure.IsCanonical (M := M)) (C : BaseContext M)
     (A : RVFiniteObject (M := M) (C.base : Set M) n)
     (hA : ∀ u : A.obj.domain, ∀ i, (A.obj.value u i).val ≠ iRVZero) :
     ∃ X : DefSet (rawRVSpace (M := M) A.obj.arity) (C.base : Set M), rvDim X < n ∧

@@ -31,7 +31,7 @@ local notation "V" => Fin n → VF
 local notation "v" => Values.vfValueHom (M := M)
 
 private abbrev Pair (n r s : ℕ) := (Fin n ⊕ Fin r) ⊕ (Fin n ⊕ Fin s)
-private abbrev Entry (n : ℕ) := Fin n × Fin n
+public abbrev Entry (n : ℕ) := Fin n × Fin n
 private abbrev LinearCode (n r s : ℕ) := Pair n r s ⊕ Entry n
 private abbrev TolCode (n r s : ℕ) := LinearCode n r s ⊕ Fin 1
 private abbrev RadCode (n r s : ℕ) := TolCode n r s ⊕ Fin 1

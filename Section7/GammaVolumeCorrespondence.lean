@@ -34,7 +34,7 @@ def gammaRVLabelGraph (U V : GammaRVObject B k)
     Point (M := M) 0 (rvObjectArity U.object) → Point (M := M) 0 (rvObjectArity V.object) → Prop :=
   fun p q => ∃ u : rvObjectDomain U.object, u.val = p.2 ∧ (F u).val = q.2
 
-private def gammaVolumeGraph (U V : GammaRVObject B k)
+public def gammaVolumeGraph (U V : GammaRVObject B k)
     (F : rvObjectDomain U.object → rvObjectDomain V.object) :
     Point (M := M) 0 k → Point (M := M) 0 k → Prop :=
   fun t s => ∃ u : rvObjectDomain U.object, gammaVolumeValue U u = t.2 ∧ gammaVolumeValue V (F u) = s.2

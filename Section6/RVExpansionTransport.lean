@@ -91,7 +91,7 @@ def auxiliaryEquiv (e : Y ≃[LRV] X) [E.Structure (SubRV (Y : Set C))] :
     | inl r =>
       exact e.map_rel r.val (RVSubstructure.inclusion Y ∘ z)
 
-private theorem inverse_arguments (e : Y ≃[LRV] X) {k : ℕ} (z : Fin k → Y)
+public theorem inverse_arguments (e : Y ≃[LRV] X) {k : ℕ} (z : Fin k → Y)
     (h : ∀ i, iRV (z i).val) (hx : ∀ i, iRV (e (z i)).val) :
     (rvEquiv e).symm ∘
       (fun i => (⟨⟨(e (z i)).val, hx i⟩, (e (z i)).property⟩ : SubRV (X : Set D))) =
@@ -101,7 +101,7 @@ private theorem inverse_arguments (e : Y ≃[LRV] X) {k : ℕ} (z : Fin k → Y)
   simp only [Function.comp_apply, Equiv.apply_symm_apply]
   rfl
 
-private theorem native_zero (Z : LRV.Substructure C) :
+public theorem native_zero (Z : LRV.Substructure C) :
     Structure.funMap (L := LRV) Fn.rvZero (Fin.elim0 : Fin 0 → Z) =
       RVSubstructure.inclusion Z (RVSubstructure.zero Z) := by
   apply Subtype.ext

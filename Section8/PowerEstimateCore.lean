@@ -317,15 +317,15 @@ namespace SpecialTransformations.Section8
 variable {M : Type} [LRV.Structure M] [M ⊨ Axioms.ACVF] {ι : Type} {n m k : ℕ}
 attribute [local instance] FirstOrder.Ring.compatibleRingOfRing
 
-private noncomputable def estimateLeft (q : ℕ) : LRV.Term (Fin 5) :=
+public noncomputable def estimateLeft (q : ℕ) : LRV.Term (Fin 5) :=
   let t : Fin 5 → FreeCommRing (Fin 5) := FreeCommRing.of
   RingSyntax.ofRingTerm (FirstOrder.Ring.termOfFreeCommRing ((t 0 - t 1) ^ q))
 
-private noncomputable def estimateRight (p q : ℕ) : LRV.Term (Fin 5) :=
+public noncomputable def estimateRight (p q : ℕ) : LRV.Term (Fin 5) :=
   let t : Fin 5 → FreeCommRing (Fin 5) := FreeCommRing.of
   RingSyntax.ofRingTerm (FirstOrder.Ring.termOfFreeCommRing (t 2 ^ q * (t 3 - t 4) ^ p))
 
-private def estimateClause (mode : PowerComparison) (p q : ℕ)
+public def estimateClause (mode : PowerComparison) (p q : ℕ)
     (a b : Fin n → M) (y z : Fin m → M) (c : M) : Prop :=
   let forward := fun i : Fin m => fun j : Fin n =>
     termValueLe (estimateLeft q) (estimateRight p q) ![z i, y i, c, b j, a j]
@@ -539,16 +539,16 @@ namespace SpecialTransformations.Section8
 
 variable {M : Type} [LRV.Structure M] [M ⊨ Axioms.ACVF] {ι : Type} {n m k : ℕ}
 
-private abbrev EstimateIndices (ι : Type) (n m : ℕ) := ((ι ⊕ (Fin n ⊕ Fin m)) ⊕ Fin 2) ⊕ Fin 2
+public abbrev EstimateIndices (ι : Type) (n m : ℕ) := ((ι ⊕ (Fin n ⊕ Fin m)) ⊕ Fin 2) ⊕ Fin 2
 
-private def estimateRVGraphCodes (G : Set (ι ⊕ (Fin n ⊕ Fin m) → M)) (p q : ℕ)
+public def estimateRVGraphCodes (G : Set (ι ⊕ (Fin n ⊕ Fin m) → M)) (p q : ℕ)
     (mode : PowerComparison) :
     Set (EstimateIndices ι n m → M) :=
   {z | z ∘ Sum.inl ∈ estimateGraphCodes G p q mode ∧ ∀ i : Fin 2,
     iVF (z (.inl (.inr i))) ∧ GammaParameters.NonzeroRV (z (.inr i)) ∧
       iRv (z (.inl (.inr i))) = z (.inr i)}
 
-private def estimateProject : (ι ⊕ Fin n) ⊕ Fin 2 → EstimateIndices ι n m :=
+public def estimateProject : (ι ⊕ Fin n) ⊕ Fin 2 → EstimateIndices ι n m :=
   Sum.elim (Sum.elim (fun i => .inl (.inl (.inl i))) (fun i => .inl (.inl (.inr (.inl i))))) Sum.inr
 
 def estimateRVCodes (G : Set (ι ⊕ (Fin n ⊕ Fin m) → M)) (p q : ℕ)

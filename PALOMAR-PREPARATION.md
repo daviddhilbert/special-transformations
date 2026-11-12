@@ -36,3 +36,9 @@ Further compiler-directed preparation exposes helpers used by public
 declarations. The ordinary nontriviality formula uses an explicit finite index
 in both statement and library to avoid elaboration-dependent auxiliary proofs.
 Fresh checks are pending for these changes.
+
+A conservative lexical dependency survey identified further private helpers
+used in exposed definitions or public declaration types, including transitive
+helper dependencies. Their visibility was promoted without changing bodies,
+hypotheses or theorem statements. This is a preparation aid, not compiler
+evidence; the complete pinned build and headline checks remain required.

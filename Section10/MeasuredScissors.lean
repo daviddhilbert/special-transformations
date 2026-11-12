@@ -109,7 +109,7 @@ def lift (hc : CanonicalStructure.IsCanonical (M := M)) (U : MeasuredRV C d k) :
   form := U.form.comp (liftLabelMap U.underlying.obj)
   allowed a := U.allowed (liftLabelMap U.underlying.obj a)
 
-private theorem lift_empty (hc : CanonicalStructure.IsCanonical (M := M)) :
+public theorem lift_empty (hc : CanonicalStructure.IsCanonical (M := M)) :
     lift hc (empty : MeasuredRV C d k) = MeasuredVF.empty := by
   let A : DefSet (rawMixedSpace (M := M) n 0) S := rvLift (RVObject.empty S n)
   have he : A = DefSet.empty _ S := DefSet.eq_of_carrier_eq (Set.eq_empty_iff_forall_notMem.mpr (by

@@ -90,7 +90,7 @@ theorem GammaGraphDefinable.diagonal
     change a.val = y at hy
     exact (hx.symm.trans hy) ▸ hxy
 
-private def keyPointMap (S : Set M) (n m : ℕ) :
+public def keyPointMap (S : Set M) (n m : ℕ) :
     Map (PresentedSet.univ (pointSpace (M := M) n m) S)
       (PresentedSet.univ (pointSpace 0 (n + m)) S) :=
   Map.comp (flattenKeyMap (PresentedSet.univ (keySpace n m) S))

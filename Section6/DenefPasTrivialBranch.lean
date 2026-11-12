@@ -23,7 +23,7 @@ namespace SpecialTransformations.Section6.DenefPasTrivialCodes
 open AngularComponent DenefPasCodes DenefPasLanguage DenefPasNativeCodes DenefPasNativeModel
 variable {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ]
 
-private theorem rv_onto (v : Valuation K Γ) : Function.Surjective (RVCalc.rv v) := by
+public theorem rv_onto (v : Valuation K Γ) : Function.Surjective (RVCalc.rv v) := by
   intro q
   cases q with
   | none => exact ⟨0, RVCalc.rv_zero⟩

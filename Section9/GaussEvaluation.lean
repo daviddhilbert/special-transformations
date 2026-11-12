@@ -15,7 +15,7 @@ namespace SpecialTransformations.Section9
 
 variable {K G ι : Type*} [Field K] [LinearOrderedCommGroupWithZero G]
 
-private theorem residue_nonzero_iff (v : Valuation K G) (a : v.valuationSubring) :
+public theorem residue_nonzero_iff (v : Valuation K G) (a : v.valuationSubring) :
     residue v.valuationSubring a ≠ 0 ↔ v (a : K) = 1 := by
   have ha : v (a : K) ≤ 1 := (Valuation.mem_valuationSubring_iff v _).mp a.property
   rw [ne_eq, residue_eq_zero_iff, Valuation.mem_maximalIdeal_iff, not_lt]

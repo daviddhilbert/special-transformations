@@ -41,7 +41,7 @@ private theorem rawOpenBallAt_definable {ι : Type} {S : Set M}
   rw [hinit]
   rfl
 
-private def rawInfinitySide (r y : M) : Prop :=
+public def rawInfinitySide (r y : M) : Prop :=
   ¬ iLe (iRv iVFOne) (iRv (iVFMul y r))
 
 private theorem rawInfinitySide_definable {ι : Type} (S : Set M) (r y : ι) :
@@ -68,7 +68,7 @@ private theorem rawInfinitySide_definable {ι : Type} (S : Set M) (r y : ι) :
       · exact hrv hone
       · exact hrv hmul)).compl
 
-private def rawLimitHit {m : ℕ} (finite : Fin m → Bool) (G : Set (Fin 1 ⊕ Fin m → M)) :
+public def rawLimitHit {m : ℕ} (finite : Fin m → Bool) (G : Set (Fin 1 ⊕ Fin m → M)) :
     Set (Fin m ⊕ Fin 2 → M) :=
   {q | ∃ z ∈ G, (iVF (z (.inl 0)) ∧ z (.inl 0) ≠ iVFZero) ∧
     z (.inl 0) ∈ rawOpenBall iVFZero (q (.inr 1)) ∧ ∀ i,

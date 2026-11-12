@@ -24,24 +24,24 @@ local notation "VF" => VFType (M := M)
 attribute [local instance] FirstOrder.Ring.compatibleRingOfRing
 
 abbrev AffineHeadCode (m : ℕ) := (Fin 4 × Fin m) ⊕ Fin 2
-private abbrev InputCode (m : ℕ) := AffineHeadCode m ⊕ Fin 1
+public abbrev InputCode (m : ℕ) := AffineHeadCode m ⊕ Fin 1
 
-private def tailIndex : AffineTailCode m → InputCode m :=
+public def tailIndex : AffineTailCode m → InputCode m :=
   Sum.elim (Sum.inl ∘ Sum.inl) Sum.inr
 
-private noncomputable def aProduct : FreeCommRing (InputCode m) := ∏ i : Fin m, FreeCommRing.of (.inl (.inl (0,i)))
-private noncomputable def bProduct : FreeCommRing (InputCode m) := ∏ i : Fin m, FreeCommRing.of (.inl (.inl (1,i)))
-private noncomputable def headDet : FreeCommRing (InputCode m) := FreeCommRing.of (.inl (.inr 0))
-private noncomputable def desiredDet : FreeCommRing (InputCode m) := FreeCommRing.of (.inl (.inr 1))
-private noncomputable def slopeProduct : FreeCommRing (InputCode m) := FreeCommRing.of (.inr 0)
+public noncomputable def aProduct : FreeCommRing (InputCode m) := ∏ i : Fin m, FreeCommRing.of (.inl (.inl (0,i)))
+public noncomputable def bProduct : FreeCommRing (InputCode m) := ∏ i : Fin m, FreeCommRing.of (.inl (.inl (1,i)))
+public noncomputable def headDet : FreeCommRing (InputCode m) := FreeCommRing.of (.inl (.inr 0))
+public noncomputable def desiredDet : FreeCommRing (InputCode m) := FreeCommRing.of (.inl (.inr 1))
+public noncomputable def slopeProduct : FreeCommRing (InputCode m) := FreeCommRing.of (.inr 0)
 
 private noncomputable def term (p : FreeCommRing (InputCode m)) : LRV.Term (InputCode m) :=
   RingSyntax.ofRingTerm (FirstOrder.Ring.termOfFreeCommRing p)
 
-private def guard : Set (InputCode m → M) := {z |
+public def guard : Set (InputCode m → M) := {z |
   (term headDet).realize z ≠ iVFZero ∧ termValueEq (term (headDet * bProduct)) (term (desiredDet * aProduct)) z}
 
-private def inputs (j : Fin m) : Set (InputCode m → M) :=
+public def inputs (j : Fin m) : Set (InputCode m → M) :=
   {z | iVF (z (.inr 0))} ∩ (fun z => z ∘ tailIndex) ⁻¹' affineTailCorrectionCodes j ∩
   ((guard ∩ {z | (term (headDet * slopeProduct)).realize z = (term desiredDet).realize z}) ∪
     (guardᶜ ∩ {z | (term (aProduct * slopeProduct)).realize z = (term bProduct).realize z}))

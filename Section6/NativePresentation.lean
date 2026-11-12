@@ -76,7 +76,7 @@ theorem pack_bijective : Function.Bijective (pack v hv) := by
     · obtain ⟨q, hq⟩ := (equiv v hv).surjective ⟨z, hz⟩
       exact ⟨.inr q, congrArg Subtype.val hq⟩
 
-private theorem model_relation_sort (hc : M ⊨ HenselianTheory.canonicalNative)
+public theorem model_relation_sort (hc : M ⊨ HenselianTheory.canonicalNative)
     {n : ℕ} (r : Rel n) (z : Fin n → M) (hz : Structure.RelMap (L := LRV) r z) :
     ∀ i, sortEval (Rel.argSort r i) (z i) := by
   have h := sentence_realize hc (show HenselianTheory.nativeRelationSort r ∈
@@ -92,12 +92,12 @@ private theorem model_relation_sort (hc : M ⊨ HenselianTheory.canonicalNative)
     change iRV (z i)
     simpa only [hs] using h z hz i
 
-private theorem tuple_one {A : Type} (z : Fin 1 → A) : z = ![z 0] := by
+public theorem tuple_one {A : Type} (z : Fin 1 → A) : z = ![z 0] := by
   funext i
   fin_cases i
   rfl
 
-private theorem tuple_two {A : Type} (z : Fin 2 → A) : z = ![z 0, z 1] := by
+public theorem tuple_two {A : Type} (z : Fin 2 → A) : z = ![z 0, z 1] := by
   funext i
   fin_cases i <;> rfl
 

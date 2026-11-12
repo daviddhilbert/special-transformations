@@ -472,7 +472,7 @@ each is checked after precomposing with the (jointly surjective on the colimit) 
 reduce to the corresponding properties of `fⱼ`.  Uniqueness of `f`: any solution `g` restricts to
 `g ∘ ιⱼ`, which solves the étale problem for `A_j`, hence equals `fⱼ` by Tag 08HQ uniqueness; as
 the `ιⱼ` are jointly epic into the colimit, `g = f`. -/
-private theorem existsUnique_algHom_aux
+public theorem existsUnique_algHom_aux
     {R : Type u} {A : Type v} {S : Type w}
     [CommRing R] [CommRing A] [CommRing S] [Algebra R A] [Algebra R S]
     [HenselianLocalRing S]

@@ -21,7 +21,7 @@ namespace SpecialTransformations.Section9
 variable {M : Type} [LRV.Structure M] [M ⊨ Axioms.ACVF] {S : Set M} {n : ℕ}
 variable {U V : RVObject (M := M) S n}
 
-private theorem rvAppend_eq_productTuple (x y : Fin n → CanonicalRV.RVSort M) :
+public theorem rvAppend_eq_productTuple (x y : Fin n → CanonicalRV.RVSort M) :
     rvAppend x y = productTuple x y := by
   apply productTuple_ext
   · intro i

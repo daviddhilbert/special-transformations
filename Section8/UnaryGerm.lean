@@ -300,11 +300,11 @@ variable {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] {m : ℕ}
 private def IsDominant (v : Valuation K Γ) (z : Fin m → K) (j : Fin m) : Prop :=
   (∀ i, v (z i) ≤ v (z j)) ∧ (∀ i, i < j → v (z i) < v (z j))
 
-private noncomputable def maximizers (v : Valuation K Γ) (z : Fin m → K) : Finset (Fin m) := by
+public noncomputable def maximizers (v : Valuation K Γ) (z : Fin m → K) : Finset (Fin m) := by
   classical
   exact Finset.univ.filter (fun j => ∀ i, v (z i) ≤ v (z j))
 
-private theorem maximizers_nonempty (v : Valuation K Γ) (z : Fin m → K) (hm : 0 < m) :
+public theorem maximizers_nonempty (v : Valuation K Γ) (z : Fin m → K) (hm : 0 < m) :
     (maximizers v z).Nonempty := by
   classical
   obtain ⟨j, hj, hmax⟩ := Finset.exists_max_image Finset.univ (fun j : Fin m => v (z j))
@@ -574,7 +574,7 @@ variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 variable {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
 attribute [local instance] FirstOrder.Ring.compatibleRingOfRing
 
-private def rvTerm {ι : Type} (t : LRV.Term ι) : LRV.Term ι := .func Fn.rvMap ![t]
+public def rvTerm {ι : Type} (t : LRV.Term ι) : LRV.Term ι := .func Fn.rvMap ![t]
 
 private theorem rvTerm_realize {ι : Type} (t : LRV.Term ι) (z : ι → M) :
     (rvTerm t).realize z = iRv (t.realize z) := by

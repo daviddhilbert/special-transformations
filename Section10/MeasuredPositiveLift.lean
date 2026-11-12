@@ -51,7 +51,7 @@ def gammaMeasuredIso (U V : MeasuredRV C GScale k) : Prop :=
 variable [CharZero (VFType (M := M))]
 
 include Ξ hB in
-private theorem rv_lift_iso (hfinite : FiniteHenselianExtensionReference)
+public theorem rv_lift_iso (hfinite : FiniteHenselianExtensionReference)
     {U V : MeasuredRV C RScale k} (h : rvMeasuredIso C U V) :
     Nonempty (U.lift hc ≅ V.lift hc) := by
   obtain ⟨e⟩ := h
@@ -59,7 +59,7 @@ private theorem rv_lift_iso (hfinite : FiniteHenselianExtensionReference)
   exact ⟨MeasuredVF.isoOfRepresentative ⟨g, hg⟩⟩
 
 include Ξ hB in
-private theorem gamma_lift_iso {U V : MeasuredRV C GScale k} (h : gammaMeasuredIso hc C U V) :
+public theorem gamma_lift_iso {U V : MeasuredRV C GScale k} (h : gammaMeasuredIso hc C U V) :
     Nonempty (U.lift hc ≅ V.lift hc) := by
   obtain ⟨e⟩ := h
   obtain ⟨g, hg, _⟩ := theorem_10_5_gamma_volume hc C Ξ hB e

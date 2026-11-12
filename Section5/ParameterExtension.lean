@@ -79,7 +79,7 @@ namespace Chain
 
 variable {A : DefSet (M := M) S n m} {B : DefSet (M := M) S n l}
 
-private def extendBaseAux (hSR : S ⊆ R) {a b : ℕ}
+public def extendBaseAux (hSR : S ⊆ R) {a b : ℕ}
     {X : DefSet (M := M) S n a} {Y : DefSet (M := M) S n b} :
     Chain S n X Y → Chain R n (Section5.extendBase X hSR) (Section5.extendBase Y hSR)
   | .nil A => .nil (Section5.extendBase A hSR)

@@ -50,16 +50,16 @@ theorem gammaLiftVF_finite (U : GammaRVObject B k) (h : GammaRVFiniteVolumes U) 
   exact @rvLift_finite_rv_fibres M N hn (@GammaRVObject.codes M sM hM B k U) k
     (@GammaRVObject.object M sM hM B k U) h x
 
-private abbrev PackedVFPoint (M : Type) [LRV.Structure M] :=
+public abbrev PackedVFPoint (M : Type) [LRV.Structure M] :=
   Σ a : ℕ × ℕ, Point (M := M) a.1 a.2
 
-private abbrev PackedRVPoint (M : Type) [LRV.Structure M] (k : ℕ) :=
+public abbrev PackedRVPoint (M : Type) [LRV.Structure M] (k : ℕ) :=
   Σ m : ℕ, (Fin m → RV (M := M)) × (Fin k → RV (M := M))
 
-private def vfPacked (A : GammaVFObject B k) : Set (PackedVFPoint M) :=
+public def vfPacked (A : GammaVFObject B k) : Set (PackedVFPoint M) :=
   Set.range (fun x : A.domain => ⟨A.arity, x.val⟩)
 
-private def rvPacked (U : GammaRVObject B k) : Set (Option (PackedRVPoint M k)) :=
+public def rvPacked (U : GammaRVObject B k) : Set (Option (PackedRVPoint M k)) :=
   Set.range (fun u : rvObjectDomain U.object => some ⟨rvObjectArity U.object, u.val, gammaVolumeValue U u⟩)
 
 private def packVolume (k : ℕ) : PackedVFPoint M → Option (PackedRVPoint M k)
@@ -108,7 +108,7 @@ theorem GammaRVScissor.lift {U V W X : GammaRVObject B k} (h : GammaRVScissor U 
     by simp only [packed_lift_eq, hW, Set.preimage_union],
     by simp only [packed_lift_eq, hX, Set.preimage_inter]⟩
 
-private def gammaRVEmpty (B : Base (M := M)) (k : ℕ) : GammaRVObject B k := by
+public def gammaRVEmpty (B : Base (M := M)) (k : ℕ) : GammaRVObject B k := by
   let N := @CanonicalStructure.normalize M sM
   let S := @Base.real M sM hM B
   let U := @RVObject.empty M N S k
@@ -129,7 +129,7 @@ private def gammaRVEmpty (B : Base (M := M)) (k : ℕ) : GammaRVObject B k := by
       rintro ⟨p, q, ⟨u, _, _⟩, _⟩
       exact u.property)
 
-private theorem gammaRVEmpty_finite (B : Base (M := M)) (k : ℕ) :
+public theorem gammaRVEmpty_finite (B : Base (M := M)) (k : ℕ) :
     GammaRVFiniteVolumes (gammaRVEmpty B k) := by
   intro v
   exact Set.finite_empty.subset (fun u _ => False.elim u.property)
@@ -148,7 +148,7 @@ def gammaVFPresentation (B : Base (M := M)) (k : ℕ) :
   empty := gammaLiftVF (gammaRVEmpty B k)
   scissor := GammaVFScissor
 
-private def restrictPresentation {X : Type} (P : Presentation X)
+public def restrictPresentation {X : Type} (P : Presentation X)
     (p : X → Prop) (h : p P.empty) : Presentation {x : X // p x} where
   iso x y := P.iso x.val y.val
   empty := ⟨P.empty, h⟩

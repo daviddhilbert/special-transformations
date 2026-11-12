@@ -20,38 +20,38 @@ namespace SpecialTransformations.Section9
 
 variable {M : Type} [LRV.Structure M] [M ⊨ Axioms.ACVF] {n m : ℕ}
 
-private abbrev GraphIndex (n m : ℕ) := Fin n ⊕ Fin m
-private abbrev DerivativeIndex (n m : ℕ) := GraphIndex n m ⊕ Fin 1
-private abbrev ToleranceIndex (n m : ℕ) := DerivativeIndex n m ⊕ Fin 1
-private abbrev RadiusIndex (n m : ℕ) := ToleranceIndex n m ⊕ Fin 1
-private abbrev IncrementIndex (n m : ℕ) := RadiusIndex n m ⊕ Fin 1
-private abbrev TestIndex (n m : ℕ) := IncrementIndex n m ⊕ Fin m
+public abbrev GraphIndex (n m : ℕ) := Fin n ⊕ Fin m
+public abbrev DerivativeIndex (n m : ℕ) := GraphIndex n m ⊕ Fin 1
+public abbrev ToleranceIndex (n m : ℕ) := DerivativeIndex n m ⊕ Fin 1
+public abbrev RadiusIndex (n m : ℕ) := ToleranceIndex n m ⊕ Fin 1
+public abbrev IncrementIndex (n m : ℕ) := RadiusIndex n m ⊕ Fin 1
+public abbrev TestIndex (n m : ℕ) := IncrementIndex n m ⊕ Fin m
 
-private noncomputable def ringTerm {ι : Type} (p : FreeCommRing ι) : LRV.Term ι :=
+public noncomputable def ringTerm {ι : Type} (p : FreeCommRing ι) : LRV.Term ι :=
   RingSyntax.ofRingTerm (FirstOrder.Ring.termOfFreeCommRing p)
 
-private def inputIndex (j : Fin n) : TestIndex n m := .inl (.inl (.inl (.inl (.inl (.inl j)))))
-private def valueIndex (i : Fin m) : TestIndex n m := .inl (.inl (.inl (.inl (.inl (.inr i)))))
-private def slopeIndex : TestIndex n m := .inl (.inl (.inl (.inl (.inr 0))))
-private def toleranceIndex : TestIndex n m := .inl (.inl (.inl (.inr 0)))
-private def radiusIndex : TestIndex n m := .inl (.inl (.inr 0))
-private def incrementIndex : TestIndex n m := .inl (.inr 0)
+public def inputIndex (j : Fin n) : TestIndex n m := .inl (.inl (.inl (.inl (.inl (.inl j)))))
+public def valueIndex (i : Fin m) : TestIndex n m := .inl (.inl (.inl (.inl (.inl (.inr i)))))
+public def slopeIndex : TestIndex n m := .inl (.inl (.inl (.inl (.inr 0))))
+public def toleranceIndex : TestIndex n m := .inl (.inl (.inl (.inr 0)))
+public def radiusIndex : TestIndex n m := .inl (.inl (.inr 0))
+public def incrementIndex : TestIndex n m := .inl (.inr 0)
 
-private def shiftedTerm (j l : Fin n) : LRV.Term (TestIndex n m) :=
+public def shiftedTerm (j l : Fin n) : LRV.Term (TestIndex n m) :=
   if j = l then .func Fn.vfAdd ![.var (inputIndex l), .var incrementIndex]
   else .var (inputIndex l)
 
-private noncomputable def shiftedCode (j : Fin n) (z : TestIndex n m → M) : GraphIndex n m → M :=
+public noncomputable def shiftedCode (j : Fin n) (z : TestIndex n m → M) : GraphIndex n m → M :=
   Sum.elim (fun l => (shiftedTerm j l).realize z) (z ∘ Sum.inr)
 
-private noncomputable def scaledTerm : LRV.Term (TestIndex n m) :=
+public noncomputable def scaledTerm : LRV.Term (TestIndex n m) :=
   ringTerm (FreeCommRing.of toleranceIndex * FreeCommRing.of incrementIndex)
 
-private noncomputable def errorTerm (i : Fin m) : LRV.Term (TestIndex n m) :=
+public noncomputable def errorTerm (i : Fin m) : LRV.Term (TestIndex n m) :=
   ringTerm (FreeCommRing.of (.inr i) - FreeCommRing.of (valueIndex i) -
     FreeCommRing.of slopeIndex * FreeCommRing.of incrementIndex)
 
-private def badIncrement (G : Set (GraphIndex n m → M)) (j : Fin n) (i : Fin m) :
+public def badIncrement (G : Set (GraphIndex n m → M)) (j : Fin n) (i : Fin m) :
     Set (TestIndex n m → M) :=
   {z | shiftedCode j z ∈ G ∧
     (iVF (z incrementIndex) ∧ z incrementIndex ≠ iVFZero) ∧
@@ -69,7 +69,7 @@ private theorem badIncrement_definable {S : Set M} {G : Set (GraphIndex n m → 
     ((termValueLe_definable S (.var radiusIndex) (.var incrementIndex)).compl.inter
       (termValueLe_definable S scaledTerm (errorTerm i))))
 
-private def badOnRadius (G : Set (GraphIndex n m → M)) (j : Fin n) (i : Fin m) :
+public def badOnRadius (G : Set (GraphIndex n m → M)) (j : Fin n) (i : Fin m) :
     Set (RadiusIndex n m → M) :=
   {z | ∃ t : Fin 1 → M, ∃ y : Fin m → M, Sum.elim (Sum.elim z t) y ∈ badIncrement G j i}
 
@@ -78,7 +78,7 @@ private theorem badOnRadius_definable {S : Set M} {G : Set (GraphIndex n m → M
     S.Definable LRV (badOnRadius G j i) :=
   ((badIncrement_definable hG j i).exists_of_finite).exists_of_finite
 
-private def hasGoodRadius (G : Set (GraphIndex n m → M)) (j : Fin n) (i : Fin m) :
+public def hasGoodRadius (G : Set (GraphIndex n m → M)) (j : Fin n) (i : Fin m) :
     Set (ToleranceIndex n m → M) :=
   {z | ∃ r : Fin 1 → M, (iVF (r 0) ∧ r 0 ≠ iVFZero) ∧
     Sum.elim z r ∉ badOnRadius G j i}

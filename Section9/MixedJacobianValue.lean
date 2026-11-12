@@ -25,7 +25,7 @@ local notation "VF" => VFType (M := M)
 variable {A : DefSet (rawMixedSpace (M := M) n r) S}
 variable {B : DefSet (rawMixedSpace (M := M) n s) S}
 
-private def fullJacobianDomain (f : Map A B) : Set ((Fin n ⊕ Fin r) → M) :=
+public def fullJacobianDomain (f : Map A B) : Set ((Fin n ⊕ Fin r) → M) :=
   (fun z => z ∘ Sum.inl) '' mixedJacobianCodes f
 
 def totalMixedJacobianCodes (f : Map A B) : Set (((Fin n ⊕ Fin r) ⊕ Fin 1) → M) :=

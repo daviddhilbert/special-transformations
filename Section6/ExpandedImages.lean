@@ -84,7 +84,7 @@ private theorem inverse_arguments
   rw [Equiv.apply_symm_apply]
   rfl
 
-private theorem image_zero (f : Embedding LRV M C) :
+public theorem image_zero (f : Embedding LRV M C) :
     f.equivRange (ExtraSortSemantics.zero (E := E) (M := M)) =
       RVSubstructure.inclusion (Image f) (RVSubstructure.zero (Image f)) := by
   apply Subtype.ext
@@ -98,7 +98,7 @@ private theorem image_zero (f : Embedding LRV M C) :
   rw [hs]
   convert h using 1 <;> congr 1 <;> funext i <;> exact i.elim0
 
-private theorem inverse_values (f : Embedding LRV M C) {k : ℕ} (z : Fin k → M)
+public theorem inverse_values (f : Embedding LRV M C) {k : ℕ} (z : Fin k → M)
     (hz : ∀ i, tagEval (E := E) .rv (z i)) (hx : ∀ i, iRV (f (z i))) :
     (fun i => ((rvEquiv (E := E) f).symm
       (⟨⟨f (z i), hx i⟩, ⟨z i, rfl⟩⟩ : SubRV ((Image f) : Set C))).val) = z := by
