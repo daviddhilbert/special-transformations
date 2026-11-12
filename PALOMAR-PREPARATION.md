@@ -89,3 +89,12 @@ the Solution imports the substantive paper library. An MIT LICENSE file now
 makes the repository license explicit, consistently with the published
 archive metadata; the separate upstream notices remain in their original
 locations.
+
+The independent file resets Lean's module-local matcher and auxiliary-lemma
+caches between copied source modules, preserving original helper names.
+The canonical and focus definable maps are named definition holes with
+unconditional pointwise equations; their Map types still require actual
+definability. Function extensionality and proof irrelevance make these
+equations fully determine the maps. The Solution proves both equations by
+reflexivity from the existing implementations; no new paper hypothesis is
+introduced. Exact-snapshot comparison and full preflight remain required.

@@ -45,6 +45,8 @@
     "SpecialTransformations.DefinableGeometry.Space.RelationDefinable.swap",
     "SpecialTransformations.Section5.Focus.activeMap_apply",
     "SpecialTransformations.Section5.Focus.inactiveMap_apply",
+    "SpecialTransformations.Section5.canonicalMap_value",
+    "SpecialTransformations.Section5.Focus.etaMap_value",
     "SpecialTransformations.Section4.realSpace._proof_1",
     "SpecialTransformations.Section4.realSpace._proof_2",
     "SpecialTransformations.Section4.realSpace._proof_3",
@@ -58,5 +60,9 @@
     "propext",
     "Classical.choice",
     "Quot.sound"
+  ],
+  "definition_names": [
+    "SpecialTransformations.Section5.canonicalMap",
+    "SpecialTransformations.Section5.Focus.etaMap"
   ]
 }

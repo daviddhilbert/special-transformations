@@ -766,34 +766,8 @@ theorem subCode_eq (x y : VF (M := M)) : subCode x.val y.val = (x - y).val := by
 theorem rvCode_definable (S : Set M) {α : Type} (i : α) : RawFun S α (fun z => rvCode (z i)) := by sorry
 theorem subCode_definable (S : Set M) {α : Type} (i j : α) : RawFun S α (fun z => subCode (z i) (z j)) := by sorry
 def canonicalCodes {n m : ℕ} (z : Fin n ⊕ Fin m → M) : Fin n ⊕ Fin (n + m) → M := Sum.elim (z ∘ Sum.inl) (Fin.append (fun i => rvCode (z (.inl i))) (z ∘ Sum.inr))
-def canonicalMap {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : Map A (PresentedSet.univ (pointSpace n (n + m)) S) := Map.ofCodes (M := M) (sM := sM) (P := pointSpace n m) (Q := pointSpace n (n + m)) A (@canonical M sM hM n m) (canonicalCodes (M := M) (sM := sM) (n := n) (m := m))
-    (by
-      intro i
-      cases i with
-      | inl i => exact rawProj S (Sum.inl i : Fin n ⊕ Fin m)
-      | inr i =>
-        refine Fin.addCases (fun j => ?_) (fun j => ?_) i
-        · simpa [canonicalCodes] using rvCode_definable S (Sum.inl j : Fin n ⊕ Fin m)
-        · simpa [canonicalCodes] using rawProj S (Sum.inr j : Fin n ⊕ Fin m))
-    (by
-      intro c
-      change (∀ i, iVF (canonicalCodes c.val (.inl i))) ∧ ∀ i, iRV (canonicalCodes c.val (.inr i))
-      refine ⟨c.property.1, ?_⟩
-      intro i
-      refine Fin.addCases (fun j => ?_) (fun j => ?_) i
-      · simp only [canonicalCodes, Sum.elim_inr, Fin.append_left]
-        rw [rvCode_eq (sM := sM) (c.val (Sum.inl j)) (by simpa [Function.comp_def, sortEval, iVF] using c.property.1 j)]
-        exact rv_mem hM (c.property.1 j)
-      · simpa [canonicalCodes, Function.comp_def, sortEval, iRV] using c.property.2 j)
-    (by
-      intro c
-      refine Prod.ext ?_ ?_
-      · rfl
-      funext i
-      refine Fin.addCases (fun j => ?_) (fun j => ?_) i
-      · apply Subtype.ext
-        simpa [canonicalCodes, canonical, rv] using rvCode_eq (sM := sM) (c.val (Sum.inl j)) (by simpa [Function.comp_def, sortEval, iVF] using c.property.1 j)
-      · simp [canonicalCodes, canonical])
+def canonicalMap {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : Map A (PresentedSet.univ (pointSpace n (n + m)) S) := by sorry
+theorem canonicalMap_value {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) (a : A) : ((canonicalMap A).toFun a).val = canonical a.val := by sorry
 def canonicalImage {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : DefSet (M := M) S n (n + m) := Map.image (canonicalMap A)
 end SpecialTransformations.Section5
 set_option backward.isDefEq.respectTransparency false
@@ -864,24 +838,8 @@ def activeMap (D : Focus A j k) : Map D.active (PresentedSet.univ (pointSpace n 
 def inactiveMap (D : Focus A j k) : Map D.inactive (PresentedSet.univ (pointSpace n m) S) := Map.inclusion (Set.subset_univ _)
 @[simp] theorem activeMap_apply (D : Focus A j k) (p : D.active) : (D.activeMap p).val = replace j p.val (vfSub (p.val.1 j) (D.center p.val)) := by sorry
 @[simp] theorem inactiveMap_apply (D : Focus A j k) (p : D.inactive) : (D.inactiveMap p).val = p.val := by sorry
-noncomputable def etaMap (D : Focus A j k) : Map A (PresentedSet.univ (pointSpace n m) S) := Map.mk (fun p => ⟨D.toFocusGeometry.eta p.val, Set.mem_univ _⟩)
-    (RelationDefinable.congr _ _ (RelationDefinable.union _ _ (Map.graph_definable D.activeMap) (Map.graph_definable D.inactiveMap))
-      (by
-        intro p q
-        constructor
-        · rintro (⟨a, rfl, he⟩ | ⟨a, rfl, he⟩)
-          · refine ⟨⟨a.val, a.property.1⟩, rfl, ?_⟩
-            simpa [FocusGeometry.eta, vfSub, a.property.2] using he
-          · refine ⟨⟨a.val, a.property.1⟩, rfl, ?_⟩
-            simpa [FocusGeometry.eta, a.property.2] using he
-        · rintro ⟨a, rfl, he⟩
-          by_cases hc : a.val ∈ D.locus
-          · left
-            refine ⟨⟨a.val, a.property, hc⟩, rfl, ?_⟩
-            simpa [FocusGeometry.eta, vfSub, hc] using he
-          · right
-            refine ⟨⟨a.val, a.property, hc⟩, rfl, ?_⟩
-            simpa [FocusGeometry.eta, hc] using he))
+noncomputable def etaMap (D : Focus A j k) : Map A (PresentedSet.univ (pointSpace n m) S) := by sorry
+theorem etaMap_value (D : Focus A j k) (a : A) : (D.etaMap.toFun a).val = D.toFocusGeometry.eta a.val := by sorry
 noncomputable def etaImage (D : Focus A j k) : DefSet (M := M) S n m := Map.image D.etaMap
 end Focus
 end SpecialTransformations.Section5

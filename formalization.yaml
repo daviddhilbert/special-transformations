@@ -94,7 +94,12 @@ review:
     The twelve legacy sorry/admit tokens occur only in
     Section3/Sec3_frozen.lean and Section3/Sec3_sat.lean, which are excluded
     from the active library. Deliberate holes in the independent Challenge
-    are specifications, not claimed source proofs. No independent human
+    are specifications, not claimed source proofs. The canonical and focus
+    definable-map implementations have intentional definition holes,
+    constrained by unconditional pointwise equations. Their types require
+    definability over the original parameter set; these equations fully
+    determine the maps by proof irrelevance. The Solution proves both
+    equations by reflexivity from the existing implementations. No independent human
     expert review or Palomar acceptance is claimed.
 alignment:
   namespace: "SpecialTransformations"
