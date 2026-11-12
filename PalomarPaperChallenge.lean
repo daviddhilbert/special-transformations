@@ -836,6 +836,8 @@ def centerMap (D : Focus A j k) : Map D.active (PresentedSet.univ (Section4.vfSp
           exact ⟨a.property, rfl⟩))
 def activeMap (D : Focus A j k) : Map D.active (PresentedSet.univ (pointSpace n m) S) := Map.comp (subtractMap j (PresentedSet.prod D.active (PresentedSet.univ (Section4.vfSpace 1) S))) (Map.pair (Map.id D.active) D.centerMap)
 def inactiveMap (D : Focus A j k) : Map D.inactive (PresentedSet.univ (pointSpace n m) S) := Map.inclusion (Set.subset_univ _)
+@[simp] theorem activeMap_apply (D : Focus A j k) (p : D.active) : (D.activeMap p).val = replace j p.val (vfSub (p.val.1 j) (D.center p.val)) := by sorry
+@[simp] theorem inactiveMap_apply (D : Focus A j k) (p : D.inactive) : (D.inactiveMap p).val = p.val := by sorry
 noncomputable def etaMap (D : Focus A j k) : Map A (PresentedSet.univ (pointSpace n m) S) := Map.mk (fun p => ⟨D.toFocusGeometry.eta p.val, Set.mem_univ _⟩)
     (RelationDefinable.congr _ _ (RelationDefinable.union _ _ (Map.graph_definable D.activeMap) (Map.graph_definable D.inactiveMap))
       (by
