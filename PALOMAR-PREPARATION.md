@@ -74,3 +74,8 @@ implementation information. The read-only inventory now explicitly imports
 all of each needed module to recover source ranges for extraction. This is
 an authoring-tool import mode; the independent Challenge still may import
 only Palomar-approved foundational libraries.
+
+The author chose a smaller first submission: Theorem 5.5 and Corollary 5.6,
+the core deformation results. Theorem 9.16 and both measured versions of
+Theorem 10.5 remain in the verified library but are outside this first
+Comparator claim. No proof files or archived releases are removed.

@@ -29,10 +29,7 @@ run_cmd do
   let env ← getEnv
   let roots : Array Name := #[
     `SpecialTransformations.Section5.Paper.theorem_5_5,
-    `SpecialTransformations.Section5.Paper.corollary_5_6,
-    `SpecialTransformations.Section9.theorem_9_16_finite_volume_of_reference_input,
-    `SpecialTransformations.Section10.theorem_10_5_rv_volume,
-    `SpecialTransformations.Section10.theorem_10_5_gamma_volume]
+    `SpecialTransformations.Section5.Paper.corollary_5_6]
   let qeModules : Array String := QE_MODULES
   let mut todo : Array Name := roots
   for name in roots do
