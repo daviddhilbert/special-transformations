@@ -17,7 +17,7 @@ variable {G Γ : Type*} [CommGroup G] [AddCommGroup Γ] [LinearOrder Γ]
 
 variable (v : G →* Multiplicative Γ)
 
-private abbrev value (x : G) : Γ := (v x).toAdd
+public abbrev value (x : G) : Γ := (v x).toAdd
 
 /-- The locus of two nonzero elements in the maximal ideal, in additive order. -/
 def PositivePair (p : G × G) : Prop := 0 < value v p.1 ∧ 0 < value v p.2

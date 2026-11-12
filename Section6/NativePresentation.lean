@@ -101,7 +101,7 @@ private theorem tuple_two {A : Type} (z : Fin 2 → A) : z = ![z 0, z 1] := by
   funext i
   fin_cases i <;> rfl
 
-private theorem map_function (hc : M ⊨ HenselianTheory.canonicalNative)
+public theorem map_function (hc : M ⊨ HenselianTheory.canonicalNative)
     {n : ℕ} (f : Fn n) (z : Fin n → Carrier v) :
     pack v hv (Structure.funMap (L := LRV) f z) =
       Structure.funMap (L := LRV) f (pack v hv ∘ z) := by

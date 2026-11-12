@@ -1,5 +1,6 @@
 module
 
+public import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 public import Mathlib.RingTheory.Valuation.ValuationSubring
 
 @[expose] public section

@@ -19,7 +19,7 @@ namespace SpecialTransformations.Section6
 variable {L Γ : Type*} [Field L] [LinearOrderedCommGroupWithZero Γ]
 variable (F : Subfield L) [IsGalois F L]
 
-private theorem finite_orbit (x : L) : (Set.range (fun σ : L ≃ₐ[F] L => σ x)).Finite := by
+public theorem finite_orbit (x : L) : (Set.range (fun σ : L ≃ₐ[F] L => σ x)).Finite := by
   refine ((minpoly F x).rootSet_finite L).subset ?_
   rintro _ ⟨σ, rfl⟩
   have hx : IsIntegral F x := Algebra.IsIntegral.isIntegral x

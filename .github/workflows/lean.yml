@@ -98,6 +98,11 @@ jobs:
             exit 1
           fi
 
+      - name: Inventory proposed statement dependencies
+        if: ${{ steps.build.outcome == 'success' }}
+        continue-on-error: true
+        run: lake env python3 scripts/statement_surface.py
+
       - name: Run the headline audits concurrently
         id: audits
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}

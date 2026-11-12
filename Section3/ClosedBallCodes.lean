@@ -13,7 +13,7 @@ open SpecialTransformations.Milestone0.Transfer
 namespace SpecialTransformations.Section3.ClosedBallCodes
 variable {M : Type} [LRV.Structure M]
 
-private def variableTerm (i : Fin 4) : LRV.Term (Fin 0 ⊕ Fin 4) := .var (.inr i)
+public def variableTerm (i : Fin 4) : LRV.Term (Fin 0 ⊕ Fin 4) := .var (.inr i)
 
 /-- The first coordinates are a center, a radius representative and a flag.
 Flag zero codes the whole field; any other flag codes the closed ball. -/

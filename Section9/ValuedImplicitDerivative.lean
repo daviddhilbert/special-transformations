@@ -18,7 +18,7 @@ namespace SpecialTransformations.Section9
 variable {K G R : Type*} [Field K] [LinearOrderedCommGroupWithZero G]
 variable [CommRing R] [Algebra R K] {n : ℕ}
 
-private noncomputable def scalarInputLinearTerm (P : MvPolynomial (Fin n ⊕ Unit) R)
+public noncomputable def scalarInputLinearTerm (P : MvPolynomial (Fin n ⊕ Unit) R)
     (x : Fin n ⊕ Unit → K) (h : Fin n → K) : K :=
   ∑ i, aeval x (pderiv (Sum.inl i) P) * h i
 

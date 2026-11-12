@@ -59,7 +59,7 @@ def HenselianAutomorphismInvariance (v : Valuation (VFType (M := M)) Γ)
     ∀ σ : VFType (M := M) ≃ₐ[K] VFType (M := M),
       ∀ a b, v (σ a) ≤ v (σ b) ↔ v a ≤ v b
 
-private theorem valuedEmbedding_vf
+public theorem valuedEmbedding_vf
     (F : VFType (M := M) →+* VFType (M := M))
     (hF : ∀ a b, VFValued.predV (F a) (F b) ↔ VFValued.predV a b)
     (a : VFType (M := M)) :
@@ -67,7 +67,7 @@ private theorem valuedEmbedding_vf
   change (ValuedModelMap.components F hF).carrierMap a.val = (F a).val
   exact (ValuedModelMap.components F hF).carrierMap_vf a.property
 
-private theorem valuedEmbedding_rv
+public theorem valuedEmbedding_rv
     (F : VFType (M := M) →+* VFType (M := M))
     (hF : ∀ a b, VFValued.predV (F a) (F b) ↔ VFValued.predV a b)
     (a : VFType (M := M)) :

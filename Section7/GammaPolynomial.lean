@@ -1,5 +1,6 @@
 module
 
+public import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 public import RVClassEquality
 public import RVValueMap
 public import Mathlib.Algebra.MvPolynomial.Eval

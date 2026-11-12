@@ -79,7 +79,7 @@ theorem rvValues_injective {n : ℕ} : Function.Injective (rvValues (M := M) (n 
   funext i
   exact Subtype.ext (congrFun he i)
 
-private theorem values_range_definable {n : ℕ} (σ : SortTag) :
+public theorem values_range_definable {n : ℕ} (σ : SortTag) :
     (∅ : Set M).Definable LRV
       (Set.range (fun x : Fin n → {z : M // sortEval σ z} => fun i => (x i).val)) := by
   have h (i : Fin n) := (definableAt_sort (∅ : Set M) σ).raw_definable.preimage_comp

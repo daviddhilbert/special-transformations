@@ -13,7 +13,7 @@ open SpecialTransformations.Milestone0.Transfer
 namespace SpecialTransformations.Section3.OpenBallCodes
 variable {M : Type} [sM : LRV.Structure M]
 
-private def variableTerm (i : Fin 3) : LRV.Term (Fin 0 ⊕ Fin 3) := .var (.inr i)
+public def variableTerm (i : Fin 3) : LRV.Term (Fin 0 ⊕ Fin 3) := .var (.inr i)
 
 /-- A strict disc is the negation of the reverse weak valuation comparison.
 The first two VF coordinates are its center and actual radius representative. -/

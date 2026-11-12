@@ -119,7 +119,7 @@ theorem realSpace_definable_iff (S : Set M) {n : ℕ} (σ : Fin n → SortTag)
   rw [realSpace_preimage]
   exact ⟨fun h => ⟨h, hsort⟩, And.left⟩
 
-private theorem nonzero_rv_domain_definable (S : Set M) :
+public theorem nonzero_rv_domain_definable (S : Set M) :
     RawDefinable S {z : Fin 1 → M | iRV (z 0) ∧ z 0 ≠ iRVZero} := by
   have hr := sort_coordinate_definable (M := M) S .rv (0 : Fin 1)
   have hz : DefinableClosureAt S .rv (iRVZero : M) :=
