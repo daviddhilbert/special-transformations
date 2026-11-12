@@ -117,7 +117,7 @@ variable {U V W : RVVolumeObject (M := M) S k}
   cases h
   rfl
 
-private theorem weight_eq (f : RVVolumeIso U V) (u : U.essential.underlying.obj.domain) :
+public theorem weight_eq (f : RVVolumeIso U V) (u : U.essential.underlying.obj.domain) :
     Values.vrv (U.essential.form.value u) *
       (rvVolumeGamma (U.essential.underlying.obj.value u) (rvEssential_value_nonzero _ u)).val =
     Values.vrv (V.essential.form.value ((ambient f.labels).hom.map u)) *
@@ -208,7 +208,7 @@ variable {U V W : GammaVolumeObject hc S k}
   cases h
   rfl
 
-private theorem weight_eq (f : GammaVolumeIso U V) (u : U.essential.underlying.obj.domain) :
+public theorem weight_eq (f : GammaVolumeIso U V) (u : U.essential.underlying.obj.domain) :
     gammaFormValue U.essential.form u *
       rvVolumeGamma (U.essential.underlying.obj.value u) (rvEssential_value_nonzero _ u) =
     gammaFormValue V.essential.form ((ambient f.labels).hom.map u) *

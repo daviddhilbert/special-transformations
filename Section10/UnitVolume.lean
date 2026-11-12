@@ -60,7 +60,7 @@ private theorem unit_representation {G : Type} [CommMonoidWithZero G] {d : Volum
   exact (congrArg (fun x : DefSet.univ d.space (C.base : Set M) => d.value x.val) (hg a).2).symm
 
 include Ξ hB in
-private theorem rv_unit_lift_iso (hfinite : FiniteHenselianExtensionReference)
+public theorem rv_unit_lift_iso (hfinite : FiniteHenselianExtensionReference)
     {U V : MeasuredRV C RUnit k} (h : rvUnitIso C U V) :
     Nonempty (U.lift hc ≅ V.lift hc) := by
   obtain ⟨e⟩ := h
@@ -68,7 +68,7 @@ private theorem rv_unit_lift_iso (hfinite : FiniteHenselianExtensionReference)
   exact ⟨MeasuredVF.isoOfRepresentative ⟨g, hg⟩⟩
 
 include Ξ hB in
-private theorem gamma_unit_lift_iso {U V : MeasuredRV C GUnit k} (h : gammaUnitIso hc C U V) :
+public theorem gamma_unit_lift_iso {U V : MeasuredRV C GUnit k} (h : gammaUnitIso hc C U V) :
     Nonempty (U.lift hc ≅ V.lift hc) := by
   obtain ⟨e⟩ := h
   obtain ⟨g, hg, _⟩ := theorem_10_5_gamma_volume hc C Ξ hB e

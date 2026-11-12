@@ -47,3 +47,7 @@ The next compiler pass found the short helper 	erm in the affine-head
 formula interface. Its visibility is now public as well. The dependency
 is updated to the mechanically passing ACVF-QE snapshot above; integration
 requires fresh compilation against this exact pin.
+
+The next full build reached the final Section 10 modules. Four additional
+helper declarations used by exposed measured-category constructions are
+now public; their statements and proof bodies are unchanged.
