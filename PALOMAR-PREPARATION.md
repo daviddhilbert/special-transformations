@@ -14,10 +14,12 @@ ACVF-QE is pinned to its corresponding module migration at
 8f90dfd22de9f2c821382830eee326d1f0cf4990; the old proof release is not compatible
 with importing those sources as Lean modules.
 
-Fresh compilation and headline audits remain required. No Palomar submission
-has been sent. Independent Challenge/Solution packaging is still outstanding.
-The proposed central targets and all their explicit reference hypotheses must
-be reviewed independently of this mechanical source migration.
+The production library compilation and 3,543 headline type/axiom audits
+passed at f2fbe2eea4083bb21174fa48b720eb80a901fbc0 (run 43274534495).
+The independently stated first submission now selects only Theorem 5.5
+and Corollary 5.6, at the author's request. Its exact-snapshot standalone
+compilation and full Palomar preflight are tracked separately below.
+No Special transformations intake has been sent.
 
 The migration exposes helpers needed by exported definition bodies and adds
 the exact Mathlib imports identified by the compiler. It does not supply new
@@ -79,3 +81,11 @@ The author chose a smaller first submission: Theorem 5.5 and Corollary 5.6,
 the core deformation results. Theorem 9.16 and both measured versions of
 Theorem 10.5 remain in the verified library but are outside this first
 Comparator claim. No proof files or archived releases are removed.
+
+The bounded core statement retains the existing definition values and lists
+its representation lemmas as additional Comparator proof obligations, not
+assumptions of the two principal results. The Challenge imports only Mathlib;
+the Solution imports the substantive paper library. An MIT LICENSE file now
+makes the repository license explicit, consistently with the published
+archive metadata; the separate upstream notices remain in their original
+locations.

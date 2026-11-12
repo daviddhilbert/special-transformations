@@ -52,7 +52,8 @@ run_cmd do
       todo := todo.push dependency
     let (kind, value) := match info with
       | .defnInfo val => ("definition", some val.value)
-      | .thmInfo _ => ("theorem", none)
+      | .thmInfo val =>
+          ("theorem", if (name.toString.splitOn "._proof_").length > 1 then some val.value else none)
       | .inductInfo val => ("inductive", none)
       | .ctorInfo _ => ("constructor", none)
       | .recInfo _ => ("recursor", none)
