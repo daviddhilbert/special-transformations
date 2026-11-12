@@ -127,3 +127,19 @@ their obsolete QE files are not part of the current source tree.
 Project code retains the MIT license declared by the original project.
 External code retains its own notices; ACVF-QE includes an attributed
 Apache-2.0 ultrapower adaptation. Preserve those notices when reusing it.
+
+## First Palomar statement package
+
+The first Comparator configuration selects Theorem 5.5 and Corollary 5.6,
+the core deformation and polynomial preparation results. Its independent
+`PalomarPaperChallenge` retains the exact characteristic, genuine saturation,
+small-parameter and coefficient hypotheses. Supporting representation facts
+are also compared; they introduce no extra hypotheses of the main results.
+The Jacobian and measured-lifting results remain in this larger library and
+are outside this first configuration.
+
+`PalomarPaperSolution` imports the existing proofs. Standalone statement
+compilation, exact comparison, permitted-axiom audits and Palomar's complete
+mechanical preflight are separate checks. See `PALOMAR-PREPARATION.md` and
+the source-pinned GitHub Actions reports; this preparation branch is not a
+claim of registration or independent expert review.

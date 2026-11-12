@@ -1,0 +1,67 @@
+name: Independent paper statement check
+on:
+  push:
+    branches: [codex/palomar-submission]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: paper-statements-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  challenge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Install the pinned Lean toolchain
+        id: setup
+        shell: bash
+        run: |
+          if [[ $(<lean-toolchain) != leanprover/lean4:v4.35.0 ]]; then
+            echo "Update the release asset and checksum for the new Lean pin."
+            exit 1
+          fi
+          archive="$RUNNER_TEMP/lean-4.35.0-linux.tar.zst"
+          # The release API serves the official archive when the release-page
+          # download route times out.
+          curl --fail --silent --show-error --location --retry 4 --connect-timeout 15 \
+            --max-time 600 --header 'Accept: application/octet-stream' \
+            --output "$archive" https://api.github.com/repos/leanprover/lean4/releases/assets/634574462
+          printf '%s  %s\n' 7289597a44543246c9227b8cae501767e095ce17f6d448b95fc4a8dc97268f6d "$archive" |
+            sha256sum --check --strict
+          tar --zstd -xf "$archive" -C "$RUNNER_TEMP"
+          rm "$archive"
+          toolchain="$RUNNER_TEMP/lean-4.35.0-linux/bin"
+          "$toolchain/lean" --version
+          "$toolchain/lake" --version
+          echo "$toolchain" >> "$GITHUB_PATH"
+
+      - name: Restore cached Mathlib dependencies
+        env:
+          MATHLIB_CACHE_GET_URL: https://cache.mathlib.org/mathlib4
+        run: lake exe cache get
+
+      - name: Restore exact-source compiled project cache
+        id: project_cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .lake/build
+            .lake/packages/acvf_qe/.lake/build
+          key: paper-compiled-v1-${{ hashFiles('**/*.lean', '!PalomarPaperChallenge.lean', '!PalomarPaperSolution.lean', '!.lake/**', '!.scratch/**', 'lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}
+
+      - name: Compile the independent statement
+        shell: bash
+        run: |
+          mkdir -p .scratch/palomar-statements
+          lake build PalomarPaperChallenge 2>&1 | tee .scratch/palomar-statements/Challenge.log
+      - name: Retain statement diagnostics
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: paper-statement-check-${{ github.sha }}
+          include-hidden-files: true
+          path: .scratch/palomar-statements/**

@@ -1,0 +1,119 @@
+version: "v0.4"
+project:
+  name: "Special transformations in algebraically closed valued fields"
+  description: >-
+    A Lean formalization of special transformations and RV lifting in
+    algebraically closed valued fields of pure characteristic zero. The
+    first Comparator configuration selects Theorem 5.5 and Corollary 5.6:
+    special-bijection deformation to RV-pullbacks and preparation of
+    polynomial RV values. Genuine saturation and a small original parameter
+    set are explicit. Jacobian and measured-lifting results remain in the
+    larger verified library but are outside this first submission claim.
+  authors: ["Yimu Yin"]
+  responsible_maintainers: ["Yimu Yin"]
+  license: "MIT"
+classification:
+  arxiv: ["math.LO"]
+  msc2020: ["03C60", "03B35"]
+sources:
+  - title: "Special transformations in algebraically closed valued fields"
+    authors: ["Yimu Yin"]
+    id: "arXiv:1006.2467v1"
+    location: "https://arxiv.org/abs/1006.2467v1"
+    type: paper
+    relationship: formalizes
+    note: >-
+      Theorem 5.5 and Corollary 5.6, the core deformation results, in
+      the corrected RV language. Later Jacobian and measured-lifting
+      results are not part of this first Comparator selection.
+  - title: "Model Theory: An Introduction"
+    authors: ["David Marker"]
+    type: book
+    relationship: background
+    note: "Types, saturation, compactness and elementary maps."
+related_formalizations:
+  - id: "https://github.com/daviddhilbert/ACVF-QE"
+    relationship: builds-on
+    note: >-
+      The pinned shared language, RV encoding and checked QE foundation.
+      The exact dependency revision is recorded in lake-manifest.json.
+  - id: "https://github.com/TauCetiProject/TauCeti"
+    relationship: adapts
+    note: >-
+      GrothendieckRing port from revision
+      027f880ff251fa1cbd16ee9d6c03fb74ea254bed. Apache-2.0 attribution
+      and the imported module README are retained under Section4/Imported.
+status:
+  scope: >-
+    Two core deformation entry points: Theorem 5.5 and Corollary 5.6.
+    They require a pure-characteristic-zero ACVF model, genuine saturation
+    and a parameter set smaller than its saturation bound. Theorem 5.5
+    further specifies a given special bijection and a polynomial with all
+    coefficients in the parameter set. Tuple arities can be zero. No strong
+    homogeneity, VF/Gamma-generated base or henselian reference input is
+    a hypothesis of these two headlines. Legacy source is not active
+    proof evidence; later-section results are outside this first comparison.
+  sorry_count: 12
+  sorry_in_definitions: 0
+  axioms: ["propext", "Classical.choice", "Quot.sound"]
+automation:
+  methods:
+    - method: agent
+      models: []
+      framework: "Codex / ChatGPT"
+      tool_setup: "Author-directed Lean development, compilation and headline audits."
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "Local development and GitHub Actions verification."
+      prompting_notes: "Exact scope, parameter bases and explicit reference hypotheses."
+  spend_usd: "not tracked"
+  notes: >-
+    Historical model identifiers and aggregate costs were not tracked.
+    Human authorship and responsibility are distinct from AI assistance.
+fidelity:
+  divergences: >-
+    RV inversion is named and totalized at zero under the author's correction
+    to the paper's language specification; VF inversion remains unnamed.
+    RV has one absorbing element. Mathlib's multiplicative valuation order
+    reverses the paper's additive order. Definition 2.4 uses the documented
+    rational correction, and Remark 3.19 is retracted. Sections 9 and 10
+    retain the documented finite-volume and differentiation corrections.
+    These limitations are disclosed rather than attributed silently to the
+    literal printed statements. Source-to-paper fidelity is self-assessed;
+    exact-snapshot machine verification is recorded separately by the
+    Comparator configuration and GitHub Actions reports.
+review:
+  status: "self-assessed; no independent expert review claimed"
+  reviewers: []
+  notes: >-
+    The module-format library build and 3,543 headline audits passed at
+    f2fbe2eea4083bb21174fa48b720eb80a901fbc0 (GitHub Actions run 43274534495),
+    with only the permitted logical axioms. The independent statement pair
+    requires its own exact-snapshot compilation and full Palomar preflight.
+    The twelve legacy sorry/admit tokens occur only in
+    Section3/Sec3_frozen.lean and Section3/Sec3_sat.lean, which are excluded
+    from the active library. Deliberate holes in the independent Challenge
+    are specifications, not claimed source proofs. No independent human
+    expert review or Palomar acceptance is claimed.
+alignment:
+  namespace: "SpecialTransformations"
+  statements:
+    - source: "Yin, Theorem 5.5"
+      lean: "SpecialTransformations.Section5.Paper.theorem_5_5"
+      module: "Section5.Surjectivity"
+      status: proved
+      note: >-
+        Pure characteristic zero, genuine saturation, a small parameter set,
+        and polynomial coefficients in that set. The output is an
+        RV-pullback and polynomial RV values are constant on its RV fibres.
+    - source: "Yin, Corollary 5.6"
+      lean: "SpecialTransformations.Section5.Paper.corollary_5_6"
+      module: "Section5.Surjectivity"
+      status: proved
+      note: "Deformation to an RV-pullback over the original small parameter set."
+acknowledgements: >-
+  Lean and Mathlib contributors; the separately attributed upstream proof
+  adaptations; the Stacks Project and its Lean formalization where cited
+  in the retained source. No novelty of the underlying mathematical results
+  or priority over earlier formalizations is claimed.
