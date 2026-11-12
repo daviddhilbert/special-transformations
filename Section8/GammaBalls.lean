@@ -20,7 +20,7 @@ namespace SpecialTransformations.Section8
 
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 
-private def gammaDiscMem (a x : VFType (M := M)) (γ : Values.Gamma (M := M)) : Prop :=
+public def gammaDiscMem (a x : VFType (M := M)) (γ : Values.Gamma (M := M)) : Prop :=
   γ.val < Values.vfValueHom (x - a)
 
 /-- An ordinary paper radius in the actual Gamma sort, with the paper's

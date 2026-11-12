@@ -12,7 +12,7 @@ open SpecialTransformations.Milestone0.Transfer
 namespace SpecialTransformations.Section3.NearestRootSyntax
 variable {M : Type} [LRV.Structure M]
 
-private def var (i : Fin 3) : LRV.Term (Fin 3 ⊕ Fin 0) := .var (.inl i)
+public def var (i : Fin 3) : LRV.Term (Fin 3 ⊕ Fin 0) := .var (.inl i)
 public def difference (i : Fin 3) : LRV.Term (Fin 3 ⊕ Fin 0) :=
   .func Fn.rvMap ![.func Fn.vfAdd ![var i, .func Fn.vfNeg ![var 1] ] ]
 

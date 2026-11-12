@@ -23,26 +23,26 @@ local notation "VF" => VFType (M := M)
 attribute [local instance] FirstOrder.Ring.compatibleRingOfRing
 
 abbrev AffineTailCode (m : ℕ) := (Fin 4 × Fin m) ⊕ Fin 1
-private abbrev SlopeCode (m : ℕ) := AffineTailCode m ⊕ Fin m
+public abbrev SlopeCode (m : ℕ) := AffineTailCode m ⊕ Fin m
 
-private noncomputable def tailVar (k : Fin 4) (i : Fin m) : FreeCommRing (SlopeCode m) :=
+public noncomputable def tailVar (k : Fin 4) (i : Fin m) : FreeCommRing (SlopeCode m) :=
   FreeCommRing.of (.inl (.inl (k,i)))
 
-private noncomputable def slopeVar (i : Fin m) : FreeCommRing (SlopeCode m) := FreeCommRing.of (.inr i)
+public noncomputable def slopeVar (i : Fin m) : FreeCommRing (SlopeCode m) := FreeCommRing.of (.inr i)
 
-private noncomputable def zeroTerm (p : FreeCommRing (SlopeCode m)) : LRV.Term (SlopeCode m) :=
+public noncomputable def zeroTerm (p : FreeCommRing (SlopeCode m)) : LRV.Term (SlopeCode m) :=
   RingSyntax.ofRingTerm (FirstOrder.Ring.termOfFreeCommRing p)
 
-private noncomputable def slopeEquation (i : Fin m) : FreeCommRing (SlopeCode m) :=
+public noncomputable def slopeEquation (i : Fin m) : FreeCommRing (SlopeCode m) :=
   tailVar 0 i * slopeVar i - tailVar 1 i
 
-private noncomputable def outputEquation (i : Fin m) : FreeCommRing (SlopeCode m) :=
+public noncomputable def outputEquation (i : Fin m) : FreeCommRing (SlopeCode m) :=
   tailVar 3 i - (tailVar 1 i + slopeVar i * (tailVar 2 i - tailVar 0 i))
 
-private noncomputable def productEquation : FreeCommRing (SlopeCode m) :=
+public noncomputable def productEquation : FreeCommRing (SlopeCode m) :=
   (∏ i, slopeVar i) - FreeCommRing.of (.inl (.inr 0))
 
-private def affineTailArithmetic (j : Fin m) : Set (SlopeCode m → M) := {z |
+public def affineTailArithmetic (j : Fin m) : Set (SlopeCode m → M) := {z |
   (∀ i, iVF (z i)) ∧ (∀ i ≠ j, (zeroTerm (slopeEquation i)).realize z = iVFZero) ∧
   (∀ i, (zeroTerm (outputEquation i)).realize z = iVFZero) ∧
   (zeroTerm productEquation).realize z = iVFZero}

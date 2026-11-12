@@ -129,7 +129,7 @@ public theorem nonzero_rv_domain_definable (S : Set M) :
   letI := CanonicalStructure.normalize (M := M)
   exact hr.inter hzraw.1.compl
 
-private theorem rv_comparison_definable (S : Set M) :
+public theorem rv_comparison_definable (S : Set M) :
     RawDefinable S {z : Fin 2 → M | iRV (z 0) ∧ iRV (z 1) ∧ iLe (z 0) (z 1)} := by
   have h0 := sort_coordinate_definable (M := M) S .rv (0 : Fin 2)
   have h1 := sort_coordinate_definable (M := M) S .rv (1 : Fin 2)

@@ -17,7 +17,7 @@ namespace SpecialTransformations.Section9
 
 variable {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ]
 
-private def coefficientValuationRingEquiv (v : Valuation K Γ) (E L : Subfield K) (h : E ≤ L) :
+public def coefficientValuationRingEquiv (v : Valuation K Γ) (E L : Subfield K) (h : E ≤ L) :
     (v.comap E.subtype).valuationSubring ≃+*
       ((v.comap L.subtype).comap (E.comap L.subtype).subtype).valuationSubring :=
   let e := graphCoefficientEquiv E L h
@@ -28,7 +28,7 @@ private def coefficientValuationRingEquiv (v : Valuation K Γ) (E L : Subfield K
     map_mul' := fun a b => Subtype.ext (map_mul e.symm a.val b.val)
     map_add' := fun a b => Subtype.ext (map_add e.symm a.val b.val) }
 
-private instance coefficientValuationRingEquiv_isLocalHom (v : Valuation K Γ)
+public instance coefficientValuationRingEquiv_isLocalHom (v : Valuation K Γ)
     (E L : Subfield K) (h : E ≤ L) :
     IsLocalHom (coefficientValuationRingEquiv v E L h).toRingHom := by
   let e := coefficientValuationRingEquiv v E L h

@@ -1,5 +1,6 @@
 module
 
+public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 public import Section9.ValuedPowerBasis
 public import Mathlib.Algebra.Polynomial.Lifts
 public import Mathlib.FieldTheory.PrimitiveElement
