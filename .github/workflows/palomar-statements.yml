@@ -66,11 +66,12 @@ jobs:
         shell: bash
         run: lake comparator --config comparator.json 2>&1 | tee .scratch/palomar-statements/Comparator.log
       - name: Inspect the first differing language definition
+        continue-on-error: true
         if: ${{ always() }}
         shell: bash
         run: |
           for target_module in PalomarPaperChallenge PalomarPaperSolution; do
-            printf 'module\nimport all %s\nset_option pp.all true\n#print CanonicalStructure.sortZero\n' "$target_module" > ".scratch/palomar-statements/Inspect-$target_module.lean"
+            printf 'module\nimport all %s\nimport Lean\nmeta import Lean\nset_option pp.all true\n#print CanonicalStructure.sortZero\n#print SpecialTransformations.Section5.SpecialBijection.toMap\nopen Lean in\nrun_cmd do\n  let env ← getEnv\n  for n in #[`CanonicalStructure.sortZero, `SpecialTransformations.Section5.SpecialBijection.toMap] do\n    let some (.defnInfo d) := env.find? n | throwError "Missing definition"\n    let tag := match d.hints with | .regular h => s!"regular {h}" | .abbrev => "abbrev" | .opaque => "opaque"\n    logInfo m!"HINT {n}: {tag}"\n' "$target_module" > ".scratch/palomar-statements/Inspect-$target_module.lean"
             lake env lean ".scratch/palomar-statements/Inspect-$target_module.lean" > ".scratch/palomar-statements/Inspect-$target_module.log" 2>&1
             lake env leanexport "$target_module" -- CanonicalStructure.sortZero > ".scratch/palomar-statements/SortZero-$target_module.ndjson"
           done

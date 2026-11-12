@@ -27,7 +27,7 @@ upstream license notices accompany the source.
 
 `PalomarPaperChallenge.lean` imports Mathlib and trusted Lean meta modules;
 it imports neither the paper library nor ACVF-QE. Its current pruned form
-has 790 physical lines and about 59 KB. The model, pure characteristic zero,
+has 976 physical lines and about 71 KB. The model, pure characteristic zero,
 genuine saturation, small parameter set, and theorem-specific coefficient
 condition remain explicit. No new paper hypothesis has been added.
 
@@ -43,8 +43,9 @@ auxiliary-lemma caches are reset between copied source modules to preserve
 compiler-generated declaration names. This changes compiler cache state,
 not mathematical declarations or axioms.
 
-The pruned dependency inventory follows the two explicit map interfaces,
-excluding their unnecessary graph-construction implementations. Inventory
+The pruned comparison follows the two explicit map interfaces. Copied
+implementation scaffolding remains in the file to preserve Lean reduction
+metadata, while its unnecessary helper propositions are not separate claims. Inventory
 and source extraction are authoring tools, not verification evidence.
 
 ## Intake boundary
