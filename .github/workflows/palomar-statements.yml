@@ -18,6 +18,8 @@ jobs:
           persist-credentials: false
       - name: Install the pinned Lean toolchain
         id: setup
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           if [[ $(<lean-toolchain) != leanprover/lean4:v4.35.0 ]]; then
@@ -29,6 +31,7 @@ jobs:
           # download route times out.
           curl --fail --silent --show-error --location --retry 4 --connect-timeout 15 \
             --max-time 600 --header 'Accept: application/octet-stream' \
+            --header "Authorization: Bearer $GH_TOKEN" \
             --output "$archive" https://api.github.com/repos/leanprover/lean4/releases/assets/634574462
           printf '%s  %s\n' 7289597a44543246c9227b8cae501767e095ce17f6d448b95fc4a8dc97268f6d "$archive" |
             sha256sum --check --strict

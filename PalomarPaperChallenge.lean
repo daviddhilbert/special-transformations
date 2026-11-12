@@ -265,7 +265,8 @@ open scoped FirstOrder
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Milestone0.Transfer
 variable {M : Type} [LRV.Structure M]
-theorem rv_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iRV (iRv x) := by sorry
+theorem rv_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) :
+    iRV (iRv x) := by sorry
 end SpecialTransformations.Milestone0.Transfer
 namespace SpecialTransformations.Milestone0.Transfer
 variable {M : Type} [LRV.Structure M]
@@ -273,9 +274,12 @@ theorem vf_zero_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
     iVF (iVFZero (M := M))  := by sorry
 theorem vf_one_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
     iVF (iVFOne (M := M))  := by sorry
-theorem vf_add_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M} (hx : iVF x) (hy : iVF y) : iVF (iVFAdd x y) := by sorry
-theorem vf_neg_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iVF (iVFNeg x) := by sorry
-theorem vf_mul_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M} (hx : iVF x) (hy : iVF y) : iVF (iVFMul x y) := by sorry
+theorem vf_add_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) : iVF (iVFAdd x y)  := by sorry
+theorem vf_neg_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : iVF (iVFNeg x)  := by sorry
+theorem vf_mul_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) : iVF (iVFMul x y)  := by sorry
 end SpecialTransformations.Milestone0.Transfer
 end
 section
@@ -284,16 +288,29 @@ open SpecialTransformations.Milestone0
 open SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Milestone0
 namespace Transfer
-theorem vf_add_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M} (hx : iVF x) (hy : iVF y) (hz : iVF z) : iVFAdd (iVFAdd x y) z = iVFAdd x (iVFAdd y z) := by sorry
-theorem vf_add_comm {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M} (hx : iVF x) (hy : iVF y) : iVFAdd x y = iVFAdd y x := by sorry
-theorem vf_add_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iVFAdd x iVFZero = x := by sorry
-theorem vf_add_neg {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iVFAdd x (iVFNeg x) = iVFZero := by sorry
-theorem vf_mul_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M} (hx : iVF x) (hy : iVF y) (hz : iVF z) : iVFMul (iVFMul x y) z = iVFMul x (iVFMul y z) := by sorry
-theorem vf_mul_comm {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M} (hx : iVF x) (hy : iVF y) : iVFMul x y = iVFMul y x := by sorry
-theorem vf_mul_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iVFMul x iVFOne = x := by sorry
-theorem vf_left_distrib {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M} (hx : iVF x) (hy : iVF y) (hz : iVF z) : iVFMul x (iVFAdd y z) = iVFAdd (iVFMul x y) (iVFMul x z) := by sorry
-theorem vf_zero_ne_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) : iVFZero (M := by sorry
-theorem vf_mul_inv_or_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : x = iVFZero ∨ ∃ y : M, iVF y ∧ iVFMul x y = iVFOne := by sorry
+theorem vf_add_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M}
+    (hx : iVF x) (hy : iVF y) (hz : iVF z) :
+    iVFAdd (iVFAdd x y) z = iVFAdd x (iVFAdd y z) := by sorry
+theorem vf_add_comm {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) : iVFAdd x y = iVFAdd y x := by sorry
+theorem vf_add_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : iVFAdd x iVFZero = x := by sorry
+theorem vf_add_neg {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : iVFAdd x (iVFNeg x) = iVFZero := by sorry
+theorem vf_mul_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M}
+    (hx : iVF x) (hy : iVF y) (hz : iVF z) :
+    iVFMul (iVFMul x y) z = iVFMul x (iVFMul y z) := by sorry
+theorem vf_mul_comm {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M}
+    (hx : iVF x) (hy : iVF y) : iVFMul x y = iVFMul y x := by sorry
+theorem vf_mul_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : iVFMul x iVFOne = x := by sorry
+theorem vf_left_distrib {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M}
+    (hx : iVF x) (hy : iVF y) (hz : iVF z) :
+    iVFMul x (iVFAdd y z) = iVFAdd (iVFMul x y) (iVFMul x z) := by sorry
+/-- `0 ≠ 1` on the `VF` sort. -/ theorem vf_zero_ne_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
+    iVFZero (M := M) ≠ iVFOne := by sorry
+/-- **The invertibility law**: a `VF`-element is `0` or has a multiplicative inverse. The encoding states it this way because the language has no inverse symbol. -/ theorem vf_mul_inv_or_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M}
+    (hx : iVF x) : x = iVFZero ∨ ∃ y : M, iVF y ∧ iVFMul x y = iVFOne := by sorry
 section VFField
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 /-- The `VF` sort of an `ACVF`-model, as a type. -/ def VFType : Type := { x : M // iVF x }
@@ -311,7 +328,7 @@ instance vfInstMul : Mul (VFType (M := M)) := ⟨fun x y => ⟨iVFMul x.1 y.1, v
       ⟨Classical.choose w, (Classical.choose_spec w).1⟩
 noncomputable instance vfInstInv : Inv (VFType (M := M)) := ⟨vfInvFun⟩
 theorem vfInv_zero : (0 : VFType (M := M))⁻¹ = 0 := by sorry
-theorem vfInv_val {x : VFType (M := by sorry
+theorem vfInv_val {x : VFType (M := M)} (hx : x ≠ 0) : iVFMul x.1 ((x⁻¹ : VFType (M := M))).1 = iVFOne := by sorry
 /-- **The `VF` sort is a field.** -/ noncomputable def vfFieldOfModel : Field (VFType (M := M)) := Field.ofMinimalAxioms (VFType (M := M)) (fun a b c => Subtype.ext (vf_add_assoc hM a.2 b.2 c.2))
     (fun a =>
       Subtype.ext
@@ -387,6 +404,15 @@ def relation (r : P.Carrier → Q.Carrier → Prop) : Set (P.Index ⊕ Q.Index �
 def Definable (S : Set M) (A : Set P.Carrier) : Prop := S.Definable L (P.preimage A)
 def RelationDefinable (S : Set M) (r : P.Carrier → Q.Carrier → Prop) : Prop := S.Definable L (P.relation Q r)
 theorem definable_univ (S : Set M) : P.Definable S Set.univ := by sorry
+theorem Definable.inter {S : Set M} {A B : Set P.Carrier} (hA : P.Definable S A) (hB : P.Definable S B) : P.Definable S (A ∩ B) := by sorry
+theorem Definable.sdiff {S : Set M} {A B : Set P.Carrier} (hA : P.Definable S A) (hB : P.Definable S B) : P.Definable S (A \ B) := by sorry
+theorem relation_eq_definable (S : Set M) : P.RelationDefinable P S Eq := by sorry
+theorem RelationDefinable.congr {S : Set M} {r t : P.Carrier → Q.Carrier → Prop} (hr : P.RelationDefinable Q S r) (h : ∀ x y, r x y ↔ t x y) : P.RelationDefinable Q S t := by sorry
+theorem RelationDefinable.inter {S : Set M} {r t : P.Carrier → Q.Carrier → Prop} (hr : P.RelationDefinable Q S r) (ht : P.RelationDefinable Q S t) : P.RelationDefinable Q S (fun x y => r x y ∧ t x y) := by sorry
+theorem RelationDefinable.union {S : Set M} {r t : P.Carrier → Q.Carrier → Prop} (hr : P.RelationDefinable Q S r) (ht : P.RelationDefinable Q S t) : P.RelationDefinable Q S (fun x y => r x y ∨ t x y) := by sorry
+theorem Definable.left_relation {S : Set M} {A : Set P.Carrier} (hA : P.Definable S A) : P.RelationDefinable Q S (fun x _ => x ∈ A) := by sorry
+theorem RelationDefinable.swap {S : Set M} {r : P.Carrier → Q.Carrier → Prop} (hr : P.RelationDefinable Q S r) : Q.RelationDefinable P S (fun y x => r x y) := by sorry
+theorem RelationDefinable.comp {S : Set M} {r : P.Carrier → Q.Carrier → Prop} {t : Q.Carrier → R.Carrier → Prop} (hr : P.RelationDefinable Q S r) (ht : Q.RelationDefinable R S t) : P.RelationDefinable R S (fun x z => ∃ y, r x y ∧ t y z) := by sorry
 end Space
 namespace Space
 variable (P Q : Space L M)
@@ -412,6 +438,7 @@ variable (P Q : Space L M)
       exact ⟨⟨hx.1, hy.1, congrArg Prod.fst he⟩, ⟨hx.2, hy.2, congrArg Prod.snd he⟩⟩
     · rintro ⟨⟨hx, hy, hp⟩, ⟨hx', hy', hq⟩⟩
       exact ⟨⟨hx, hx'⟩, ⟨hy, hy'⟩, Prod.ext hp hq⟩
+theorem Definable.prod {S : Set M} {A : Set P.Carrier} {B : Set Q.Carrier} (hA : P.Definable S A) (hB : Q.Definable S B) : (P.prod Q).Definable S (A ×ˢ B) := by sorry
 end Space
 /-- A definable set retains its actual carrier and original parameter base. -/ structure DefSet (P : Space L M) (S : Set M) where
   carrier : Set P.Carrier
@@ -420,6 +447,7 @@ namespace DefSet
 variable {P Q : Space L M} {S : Set M}
 instance : CoeSort (DefSet P S) Type := ⟨fun A => A.carrier⟩
 def univ (P : Space L M) (S : Set M) : DefSet P S := ⟨Set.univ, P.definable_univ S⟩
+def prod (A : DefSet P S) (B : DefSet Q S) : DefSet (P.prod Q) S := ⟨A.carrier ×ˢ B.carrier, A.definable.prod P Q B.definable⟩
 end DefSet
 /-- A genuine function of subtypes, with its entire graph definable. -/ structure Map {P Q : Space L M} {S : Set M} (A : DefSet P S) (B : DefSet Q S) where
   toFun : A → B
@@ -450,6 +478,16 @@ def comp (g : Map B C) (f : Map A B) : Map A C where
           exact ⟨a, rfl, hg⟩
         · rintro ⟨a, rfl, hg⟩
           exact ⟨(f a).val, ⟨a, rfl, rfl⟩, ⟨f a, rfl, hg⟩⟩)
+def inclusion {A' : DefSet P S} (h : A'.carrier ⊆ A.carrier) : Map A' A where
+  toFun a := ⟨a.val, h a.property⟩
+  graph_definable :=   ((A'.definable.left_relation P P).inter P P (P.relation_eq_definable S)).congr P P
+      (by
+        intro x y
+        constructor
+        · rintro ⟨hx, rfl⟩
+          exact ⟨⟨x, hx⟩, rfl, rfl⟩
+        · rintro ⟨a, rfl, rfl⟩
+          exact ⟨a.property, rfl⟩)
 theorem definable_image (f : Map A B) : Q.Definable S (Set.range (fun a => (f a).val)) := by sorry
 end Map
 end SpecialTransformations.DefinableGeometry
@@ -536,9 +574,25 @@ section
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.DefinableGeometry
 variable {L : Language} {M : Type} [L.Structure M]
+namespace Space
+variable (P Q R : Space L M)
+theorem RelationDefinable.pair {S : Set M} {r : P.Carrier → Q.Carrier → Prop} {t : P.Carrier → R.Carrier → Prop} (hr : P.RelationDefinable Q S r) (ht : P.RelationDefinable R S t) : P.RelationDefinable (Q.prod R) S (fun x yz => r x yz.1 ∧ t x yz.2) := by sorry
+end Space
 namespace Map
 variable {P Q R : Space L M} {S : Set M}
 variable {A : DefSet P S} {B : DefSet Q S} {C : DefSet R S}
+def pair (f : Map A B) (g : Map A C) : Map A (B.prod C) where
+  toFun a := ⟨((f a).val, (g a).val), (f a).property, (g a).property⟩
+  graph_definable :=   (f.graph_definable.pair P Q R g.graph_definable).congr P (Q.prod R)
+      (by
+        intro x yz
+        constructor
+        · rintro ⟨⟨a, rfl, hf⟩, ⟨b, hb, hg⟩⟩
+          have he : b = a := Subtype.ext hb
+          subst b
+          exact ⟨a, rfl, Prod.ext hf hg⟩
+        · rintro ⟨a, rfl, he⟩
+          exact ⟨⟨a, rfl, congrArg Prod.fst he⟩, ⟨a, rfl, congrArg Prod.snd he⟩⟩)
 def image (f : Map A B) : DefSet Q S := ⟨Set.range (fun a => (f a).val), f.definable_image⟩
 def toImage (f : Map A B) : Map A f.image where
   toFun a := ⟨(f a).val, Set.mem_range_self a⟩
@@ -643,25 +697,48 @@ variable {M : Type} [sM : LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 abbrev PresentedSpace := @DefinableGeometry.Space LRV M (CanonicalStructure.normalize (M := M))
 abbrev pointSpace (n m : ℕ) : PresentedSpace (M := M) := @DefinableGeometry.Space.prod LRV M (CanonicalStructure.normalize (M := M)) (Section4.vfSpace n) (Section4.rvSpace m)
 abbrev PresentedSet (P : PresentedSpace (M := M)) (S : Set M) := @DefinableGeometry.DefSet LRV M (CanonicalStructure.normalize (M := M)) P S
+abbrev spaceProd (P Q : PresentedSpace (M := M)) : PresentedSpace (M := M) := @DefinableGeometry.Space.prod LRV M (CanonicalStructure.normalize (M := M)) P Q
 abbrev Carrier (P : PresentedSpace (M := M)) := @DefinableGeometry.Space.Carrier LRV M (CanonicalStructure.normalize (M := M)) P
 abbrev SetDefinable (P : PresentedSpace (M := M)) (S : Set M) (A : Set (Carrier P)) := @DefinableGeometry.Space.Definable LRV M (CanonicalStructure.normalize (M := M)) P S A
 abbrev RelationDefinable (P Q : PresentedSpace (M := M)) (S : Set M) (r : Carrier P → Carrier Q → Prop) := @DefinableGeometry.Space.RelationDefinable LRV M (CanonicalStructure.normalize (M := M)) P Q S r
 abbrev DefSet (S : Set M) (n m : ℕ) := PresentedSet (pointSpace (M := M) n m) S
 abbrev carrier {P : PresentedSpace (M := M)} {S : Set M} (A : PresentedSet P S) := @DefinableGeometry.DefSet.carrier LRV M (CanonicalStructure.normalize (M := M)) P S A
+abbrev setDefinable {P : PresentedSpace (M := M)} {S : Set M} (A : PresentedSet P S) := @DefinableGeometry.DefSet.definable LRV M (CanonicalStructure.normalize (M := M)) P S A
 abbrev Map {P Q : PresentedSpace (M := M)} {S : Set M} (A : PresentedSet P S) (B : PresentedSet Q S) := @DefinableGeometry.Map LRV M (CanonicalStructure.normalize (M := M)) P Q S A B
 namespace PresentedSet
+abbrev mk := @DefinableGeometry.DefSet.mk LRV M (CanonicalStructure.normalize (M := M))
 abbrev univ := @DefinableGeometry.DefSet.univ LRV M (CanonicalStructure.normalize (M := M))
+abbrev prod := @DefinableGeometry.DefSet.prod LRV M (CanonicalStructure.normalize (M := M))
 end PresentedSet
 namespace Map
 abbrev mk := @DefinableGeometry.Map.mk LRV M (CanonicalStructure.normalize (M := M))
 abbrev ofCodes := @DefinableGeometry.Map.ofCodes LRV M (CanonicalStructure.normalize (M := M))
 abbrev id := @DefinableGeometry.Map.id LRV M (CanonicalStructure.normalize (M := M))
 abbrev comp := @DefinableGeometry.Map.comp LRV M (CanonicalStructure.normalize (M := M))
+abbrev pair := @DefinableGeometry.Map.pair LRV M (CanonicalStructure.normalize (M := M))
 abbrev image := @DefinableGeometry.Map.image LRV M (CanonicalStructure.normalize (M := M))
 abbrev toImage := @DefinableGeometry.Map.toImage LRV M (CanonicalStructure.normalize (M := M))
 abbrev inverse := @DefinableGeometry.Map.inverse LRV M (CanonicalStructure.normalize (M := M))
+abbrev inclusion := @DefinableGeometry.Map.inclusion LRV M (CanonicalStructure.normalize (M := M))
+abbrev graph_definable := @DefinableGeometry.Map.graph_definable LRV M (CanonicalStructure.normalize (M := M))
 end Map
+namespace SetDefinable
+abbrev inter := @DefinableGeometry.Space.Definable.inter LRV M (CanonicalStructure.normalize (M := M))
+abbrev sdiff := @DefinableGeometry.Space.Definable.sdiff LRV M (CanonicalStructure.normalize (M := M))
+end SetDefinable
+namespace RelationDefinable
+abbrev congr := @DefinableGeometry.Space.RelationDefinable.congr LRV M (CanonicalStructure.normalize (M := M))
+abbrev union := @DefinableGeometry.Space.RelationDefinable.union LRV M (CanonicalStructure.normalize (M := M))
+end RelationDefinable
+abbrev RawFun (S : Set M) (α : Type) (f : (α → M) → M) := @Set.DefinableFun M LRV (CanonicalStructure.normalize (M := M)) α S f
+theorem rawProj (S : Set M) {α : Type} (i : α) : RawFun S α (fun z => z i) := by sorry
 def rvCode (x : M) : M := @iRv M (CanonicalStructure.normalize (M := M)) x
+def subCode (x y : M) : M := @iVFAdd M (CanonicalStructure.normalize (M := M)) x (@iVFNeg M (CanonicalStructure.normalize (M := M)) y)
+public def vfSub (x y : VF (M := M)) : VF (M := M) := x - y
+theorem rvCode_eq (x : M) (hx : iVF x) : rvCode x = iRv x := by sorry
+theorem subCode_eq (x y : VF (M := M)) : subCode x.val y.val = (x - y).val := by sorry
+theorem rvCode_definable (S : Set M) {α : Type} (i : α) : RawFun S α (fun z => rvCode (z i)) := by sorry
+theorem subCode_definable (S : Set M) {α : Type} (i j : α) : RawFun S α (fun z => subCode (z i) (z j)) := by sorry
 def canonicalCodes {n m : ℕ} (z : Fin n ⊕ Fin m → M) : Fin n ⊕ Fin (n + m) → M := Sum.elim (z ∘ Sum.inl) (Fin.append (fun i => rvCode (z (.inl i))) (z ∘ Sum.inr))
 def canonicalMap {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : Map A (PresentedSet.univ (pointSpace n (n + m)) S) := Map.ofCodes (M := M) (sM := sM) (P := pointSpace n m) (Q := pointSpace n (n + m)) A (@canonical M sM hM n m) (canonicalCodes (M := M) (sM := sM) (n := n) (m := m))
     (by
@@ -705,8 +782,60 @@ variable {S : Set M} {n m : ℕ}
 structure Focus (A : DefSet (M := M) S n m) (j : Fin n) (k : Fin m) extends FocusGeometry (carrier A) j k where
   locus_definable : SetDefinable (pointSpace n m) S locus
   center_graph : RelationDefinable (pointSpace n m) (Section4.vfSpace 1) S (fun p z => p ∈ carrier A ∩ locus ∧ z 0 = center p)
+def subtractCodes (j : Fin n) (z : ((Fin n ⊕ Fin m) ⊕ Fin 1) → M) : Fin n ⊕ Fin m → M := Sum.elim (fun i => if i = j then subCode (z (.inl (.inl j))) (z (.inr 0)) else z (.inl (.inl i))) (fun i => z (.inl (.inr i)))
+def subtractMap (j : Fin n) (A : PresentedSet (spaceProd (pointSpace (M := M) n m) (Section4.vfSpace 1)) S) : Map A (PresentedSet.univ (pointSpace n m) S) := Map.ofCodes (M := M) (P := spaceProd (pointSpace n m) (Section4.vfSpace 1)) (Q := pointSpace n m) A (fun p => replace j p.1 (vfSub (p.1.1 j) (p.2 0))) (subtractCodes j)
+    (by
+      intro i
+      cases i with
+      | inl i =>
+        by_cases hi : i = j
+        · subst i
+          simpa [subtractCodes] using subCode_definable S (Sum.inl (Sum.inl j) : (Fin n ⊕ Fin m) ⊕ Fin 1) (Sum.inr 0)
+        · simpa [subtractCodes, hi] using rawProj S (Sum.inl (Sum.inl i) : (Fin n ⊕ Fin m) ⊕ Fin 1)
+      | inr i => exact rawProj S (Sum.inl (Sum.inr i) : (Fin n ⊕ Fin m) ⊕ Fin 1))
+    (by
+      intro c
+      refine ⟨?_, c.property.1.2⟩
+      intro i
+      by_cases hi : i = j
+      · subst i
+        simp only [subtractCodes, Sum.elim_inl, if_pos rfl, Function.comp_apply]
+        change iVF (subCode (c.val (.inl (.inl j))) (c.val (.inr 0)))
+        let x : VF (M := M) := ⟨c.val (.inl (.inl j)), by simpa [Function.comp_def, sortEval, iVF] using c.property.1.1 j⟩
+        let y : VF (M := M) := ⟨c.val (.inr 0), by simpa [Function.comp_def, sortEval, iVF] using c.property.2 0⟩
+        have hs : subCode (c.val (.inl (.inl j))) (c.val (.inr 0)) = (x - y).val := subCode_eq x y
+        rw [hs]
+        exact (x - y).property
+      · simpa [subtractCodes, hi] using c.property.1.1 i)
+    (by
+      intro c
+      refine Prod.ext ?_ ?_
+      swap
+      · rfl
+      funext i
+      by_cases hi : i = j
+      · subst i
+        apply Subtype.ext
+        simpa [subtractCodes, replace, vfSub] using (subCode_eq (⟨c.val (.inl (.inl j)), c.property.1.1 j⟩ : VF (M := M)) (⟨c.val (.inr 0), c.property.2 0⟩ : VF (M := M)))
+      · simp [subtractCodes, replace, hi])
 namespace Focus
 variable {A : DefSet (M := M) S n m} {j : Fin n} {k : Fin m}
+def active (D : Focus A j k) : DefSet (M := M) S n m := PresentedSet.mk (carrier A ∩ D.locus) (SetDefinable.inter _ (setDefinable A) D.locus_definable)
+def inactive (D : Focus A j k) : DefSet (M := M) S n m := PresentedSet.mk (carrier A \ D.locus) (SetDefinable.sdiff _ (setDefinable A) D.locus_definable)
+def centerMap (D : Focus A j k) : Map D.active (PresentedSet.univ (Section4.vfSpace 1) S) := Map.mk (fun p => ⟨![D.center p.val], Set.mem_univ _⟩)
+    (RelationDefinable.congr _ _ D.center_graph
+      (by
+        intro p z
+        constructor
+        · rintro ⟨hp, hz⟩
+          refine ⟨⟨p, hp⟩, rfl, ?_⟩
+          funext i
+          fin_cases i
+          exact hz.symm
+        · rintro ⟨a, rfl, rfl⟩
+          exact ⟨a.property, rfl⟩))
+def activeMap (D : Focus A j k) : Map D.active (PresentedSet.univ (pointSpace n m) S) := Map.comp (subtractMap j (PresentedSet.prod D.active (PresentedSet.univ (Section4.vfSpace 1) S))) (Map.pair (Map.id D.active) D.centerMap)
+def inactiveMap (D : Focus A j k) : Map D.inactive (PresentedSet.univ (pointSpace n m) S) := Map.inclusion (Set.subset_univ _)
 noncomputable def etaMap (D : Focus A j k) : Map A (PresentedSet.univ (pointSpace n m) S) := Map.mk (fun p => ⟨D.toFocusGeometry.eta p.val, Set.mem_univ _⟩)
     (RelationDefinable.congr _ _ (RelationDefinable.union _ _ (Map.graph_definable D.activeMap) (Map.graph_definable D.inactiveMap))
       (by
