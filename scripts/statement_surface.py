@@ -83,20 +83,20 @@ run_cmd do
         else modName.replace "." "/" ++ ".lean"
         let text ← liftM <| IO.FS.readFile path
         let fileMap := FileMap.ofString text
-        let fragment := text.extract (fileMap.ofPosition ranges.range.pos)
-          (fileMap.ofPosition ranges.range.endPos)
+        let fragment := text.extract (text.pos! (fileMap.ofPosition ranges.range.pos))
+          (text.pos! (fileMap.ofPosition ranges.range.endPos))
         match Parser.runParserCategory env `command fragment path with
         | .ok stx =>
-          let format ← liftM <| PrettyPrinter.ppCategory `command stx
+          let format ← Elab.Command.liftCoreM <| PrettyPrinter.ppCategory `command stx
           formattedSource := toJson (format.pretty 1000)
           if kind == "theorem" then
             let start? := statementProofStart stx
             proofStart := toJson (start?.map (fun p => p.byteIdx))
             if let some start := start? then
-              let hole := fragment.extract 0 start ++ " := by sorry"
+              let hole := fragment.extract (fragment.pos! 0) (fragment.pos! start) ++ " := by sorry"
               match Parser.runParserCategory env `command hole path with
               | .ok holeStx =>
-                let format ← liftM <| PrettyPrinter.ppCategory `command holeStx
+                let format ← Elab.Command.liftCoreM <| PrettyPrinter.ppCategory `command holeStx
                 formattedHole := toJson (format.pretty 1000)
               | .error message => parseError := toJson message
         | .error message => parseError := toJson message
