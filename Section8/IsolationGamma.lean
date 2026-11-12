@@ -102,7 +102,7 @@ theorem isolatedInputs_gamma_definable {B : GammaParameters.Base (M := M)}
   change isolatedInputs {w : Fin n ⊕ Fin m → M | w ∘ e.symm ∈ Q.fibre γ} = _
   rw [he]
 
-private theorem normalizedGraph_definable {S : Set M} {G : Set (Fin n ⊕ Fin m → M)}
+public theorem normalizedGraph_definable {S : Set M} {G : Set (Fin n ⊕ Fin m → M)}
     (hG : DefinableOver S (fun _ : Fin (n + m) => .vf)
       {z | z ∘ (finSumFinEquiv : Fin n ⊕ Fin m ≃ Fin (n + m)) ∈ G}) :
     @Set.Definable M S LRV (@CanonicalStructure.normalize M sM) (Fin n ⊕ Fin m) G := by

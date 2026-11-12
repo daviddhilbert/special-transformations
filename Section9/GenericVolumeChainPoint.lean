@@ -24,7 +24,7 @@ local notation "k" => ModelResidue M
 local notation "V" => Fin n → k
 attribute [local instance] FirstOrder.Ring.compatibleRingOfRing
 
-private def FiniteProjections (R : Set (Fin (n + n) → k)) : Prop :=
+public def FiniteProjections (R : Set (Fin (n + n) → k)) : Prop :=
   (∀ x : V, {y | productTuple x y ∈ R}.Finite) ∧
   (∀ y : V, {x | productTuple x y ∈ R}.Finite)
 

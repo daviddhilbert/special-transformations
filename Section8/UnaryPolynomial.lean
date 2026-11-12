@@ -447,7 +447,7 @@ namespace SpecialTransformations.Section8
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 attribute [local instance] FirstOrder.Ring.compatibleRingOfRing
 
-private def vfTupleSet (ι : Type) : Set (ι → M) := {z | ∀ i, iVF (z i)}
+public def vfTupleSet (ι : Type) : Set (ι → M) := {z | ∀ i, iVF (z i)}
 
 private theorem vfTupleSet_definable (S : Set M) (ι : Type) [Finite ι] :
     S.Definable LRV (vfTupleSet ι) := by
@@ -456,7 +456,7 @@ private theorem vfTupleSet_definable (S : Set M) (ι : Type) [Finite ι] :
   exact Set.definable_iInter_of_finite (fun i => ((definableAt_sort S .vf).raw_definable).preimage_comp
     (fun _ : Fin 1 => i))
 
-private noncomputable def shapeValue (D : Finset (ℕ × ℕ)) (z : ↥D ⊕ Fin 2 → VFType (M := M)) : VFType (M := M) :=
+public noncomputable def shapeValue (D : Finset (ℕ × ℕ)) (z : ↥D ⊕ Fin 2 → VFType (M := M)) : VFType (M := M) :=
   ∑ d : ↥D, (z (.inl d) * z (.inr 0) ^ d.val.1) * z (.inr 1) ^ d.val.2
 
 def shapeZeroSet (D : Finset (ℕ × ℕ)) : Set ((↥D ⊕ Fin 2) → M) :=

@@ -63,7 +63,7 @@ isomorphism given only on the essential parts. -/
 abbrev RVFiniteEssentialIso {n : ℕ} (U V : RVFiniteObject (M := M) S n) :=
   rvFiniteEssentialPart U ≅ rvFiniteEssentialPart V
 
-private theorem rvIso_preserves_essential {U V : RVObject (M := M) S (k + 1)}
+public theorem rvIso_preserves_essential {U V : RVObject (M := M) S (k + 1)}
     (e : U ≅ V) (u : U.domain) :
     u.val ∈ (rvEssentialLabels U).carrier ↔ (e.hom.map u).val ∈ (rvEssentialLabels V).carrier := by
   change (u.val ∈ U.domain.carrier ∧ u.val ∉ (rvLowDomain U).carrier) ↔

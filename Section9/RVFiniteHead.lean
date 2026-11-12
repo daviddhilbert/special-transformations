@@ -81,7 +81,7 @@ variable [M ⊨ Axioms.ACVF] in
     (hv : (rvHeadVolume U.obj v).FiniteFibres) (p : rvLift U.obj) :
     (rvLiftHeadSelect U v hv p).val = (p.val.1 ∘ v, p.val.2) := rfl
 
-private def rvHom_of_finite_source {U V : RVObject (M := M) S k}
+public def rvHom_of_finite_source {U V : RVObject (M := M) S k}
     (hU : U.volume.FiniteFibres) (F : Map U.domain V.domain)
     (hV : ∀ v : V.domain, ∀ i, (V.value v i).val ≠ iRVZero) : RVHom U V where
   map := F

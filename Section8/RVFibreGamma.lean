@@ -85,7 +85,7 @@ theorem rvConstantRaw_gamma_definable {B : GammaParameters.Base (M := M)}
   exact and_iff_right (fun i => ⟨(GammaParameters.representatives γ i).val.property,
     (GammaParameters.representatives γ i).property⟩)
 
-private theorem normalizedRVFamily_definable {S : Set M} {G : Set (Fin n ⊕ Fin m → M)}
+public theorem normalizedRVFamily_definable {S : Set M} {G : Set (Fin n ⊕ Fin m → M)}
     (hG : DefinableOver S (MixedLocal.tupleSort n m)
       {z | z ∘ (finSumFinEquiv : Fin n ⊕ Fin m ≃ Fin (n + m)) ∈ G}) :
     @Set.Definable M S LRV (@CanonicalStructure.normalize M sM) (Fin n ⊕ Fin m) G := by

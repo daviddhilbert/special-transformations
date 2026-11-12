@@ -242,7 +242,7 @@ def rvCode (x : M) : M := @iRv M (CanonicalStructure.normalize (M := M)) x
 def subCode (x y : M) : M := @iVFAdd M (CanonicalStructure.normalize (M := M)) x
   (@iVFNeg M (CanonicalStructure.normalize (M := M)) y)
 
-private def vfSub (x y : VF (M := M)) : VF (M := M) := x - y
+public def vfSub (x y : VF (M := M)) : VF (M := M) := x - y
 
 theorem rvCode_eq (x : M) (hx : iVF x) : rvCode x = iRv x := by
   exact CanonicalStructure.normalize_fun Fn.rvMap ![x]
