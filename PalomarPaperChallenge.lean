@@ -10,8 +10,9 @@ open Lean Elab Command in
 elab "reset_statement_module_caches" : command => do
   let cache : Name := `_private.Lean.Meta.Match.Match ++ .num .anonymous 0 ++ `Lean.Meta.Match.matcherExt
   unless (← getEnv).contains cache do throwError "Pinned Lean matcher cache is unavailable"
-  elabCommand (← `(command| run_cmd Lean.modifyEnv fun env =>
-    ($(mkIdent cache)).modifyState (Lean.Meta.auxLemmasExt.modifyState env fun _ => {}) fun _ => {}))
+  elabCommand (← `(command| run_cmd do
+    Lean.modifyEnv (fun env => Lean.EnvExtension.modifyState $(mkIdent cache)
+      (Lean.Meta.auxLemmasExt.modifyState env (fun _ => {})) (fun _ => {}))))
 /-!
 # Special transformations: core deformation statements
 Author: Yimu Yin. This independent first submission states Theorem 5.5 and
