@@ -32,81 +32,51 @@ namespace Milestone0
   deriving DecidableEq, Repr
 /-- Function symbols of `L_RV`, tagged by arity. -/ inductive Fn : ℕ → Type where/-- `0` of the ring language of the `VF` sort -/ | vfZero : Fn 0/-- `1` of the ring language of the `VF` sort -/ | vfOne : Fn 0/-- `+` of the ring language of the `VF` sort -/ | vfAdd : Fn 2/-- `-` of the ring language of the `VF` sort -/ | vfNeg : Fn 1/-- `×` of the ring language of the `VF` sort -/ | vfMul : Fn 2/-- `1` of the group language of the `RV` sort -/ | rvOne : Fn 0/-- the constant `0` of the `RV` sort: the residue field's zero, which is also `rv(0)` and the absorbing element of `RV`. The paper writes this element both as `0` and as `∞`; it is one element, so the language has one constant. -/ | rvZero : Fn 0/-- `×` of the `RV` sort -/ | rvMul : Fn 2/-- Multiplicative inverse on `RV`, totalized by `0⁻¹ = 0`. Naming this symbol is the author-approved correction to the inverse-free language specification before Convention 2.5, required for the intended QE result. It ensures that language substructures contain RV inverses. See LANGUAGE-ERRATA.md. -/ | rvInv : Fn 1/-- `+ : K² → K` of the `RV` sort -/ | kAdd : Fn 2/-- `- : K → K` of the `RV` sort -/ | kNeg : Fn 1/-- the projection `rv : VF → RV` -/ | rvMap : Fn 1
 /-- Relation symbols of `L_RV`, tagged by arity. The first two are the sort predicates of the encoding (they are not part of the paper's signature); the last two are the paper's unary predicate `Kˣ` and its preorder `≤`. -/ inductive Rel : ℕ → Type where/-- encoding: the `VF` sort -/ | memVF : Rel 1/-- encoding: the `RV` sort -/ | memRV : Rel 1/-- the paper's unary predicate `Kˣ` -/ | memUnits : Rel 1/-- the paper's preorder `≤` on `RV` -/ | rvLe : Rel 2
-/-- The corrected `L_RV`, with named RV inversion, in the tagged one-sorted encoding. -/ def LRV : Language :=
-  ⟨Fn, Rel⟩
+/-- The corrected `L_RV`, with named RV inversion, in the tagged one-sorted encoding. -/ def LRV : Language := ⟨Fn, Rel⟩
 namespace LRV
-/-- Terms of `L_RV` whose (free) variables are indexed by `Fin n`. -/ abbrev Tm (n : ℕ) : Type :=
-  LRV.Term (Empty ⊕ Fin n)
-/-- Bounded formulas of `L_RV` with `n` variables in scope and no free parameters. -/ abbrev Bf (n : ℕ) : Type :=
-  LRV.BoundedFormula Empty n
+/-- Terms of `L_RV` whose (free) variables are indexed by `Fin n`. -/ abbrev Tm (n : ℕ) : Type := LRV.Term (Empty ⊕ Fin n)
+/-- Bounded formulas of `L_RV` with `n` variables in scope and no free parameters. -/ abbrev Bf (n : ℕ) : Type := LRV.BoundedFormula Empty n
 variable {n : ℕ}
-/-- `0` of the `VF` sort -/ def tVFZero : Tm n :=
-  Term.func Fn.vfZero fun i => i.elim0
-/-- `1` of the `VF` sort -/ def tVFOne : Tm n :=
-  Term.func Fn.vfOne fun i => i.elim0
-/-- `+` of the `VF` sort -/ def tVFAdd (t u : Tm n) : Tm n :=
-  Term.func Fn.vfAdd ![t, u]
-/-- `-` of the `VF` sort -/ def tVFNeg (t : Tm n) : Tm n :=
-  Term.func Fn.vfNeg ![t]
-/-- `×` of the `VF` sort -/ def tVFMul (t u : Tm n) : Tm n :=
-  Term.func Fn.vfMul ![t, u]
-/-- `1` of the `RV` sort -/ def tRVOne : Tm n :=
-  Term.func Fn.rvOne fun i => i.elim0
-/-- `0` of the `RV` sort -/ def tRVZero : Tm n :=
-  Term.func Fn.rvZero fun i => i.elim0
-/-- The paper's `∞` is `rv(0)`, i.e. the absorbing element `rvZero` of the `RV` sort: the paper's two symbols `0` and `∞` name one element. Kept as a definition so that the axioms can be read in the paper's notation. -/ def tRVInfty : Tm n :=
-  tRVZero
-/-- `×` of the `RV` sort -/ def tRVMul (t u : Tm n) : Tm n :=
-  Term.func Fn.rvMul ![t, u]
-/-- Multiplicative inverse on the `RV` sort, with `0⁻¹ = 0`. -/ def tRVInv (t : Tm n) : Tm n :=
-  Term.func Fn.rvInv ![t]
-/-- `+ : K² → K` of the `RV` sort -/ def tKAdd (t u : Tm n) : Tm n :=
-  Term.func Fn.kAdd ![t, u]
-/-- `- : K → K` of the `RV` sort -/ def tKNeg (t : Tm n) : Tm n :=
-  Term.func Fn.kNeg ![t]
-/-- the projection `rv : VF → RV` -/ def tRv (t : Tm n) : Tm n :=
-  Term.func Fn.rvMap ![t]
-/-- the bound variable of index `i < n` -/ def tv (i : ℕ) (h : i < n) : Tm n :=
-  Term.var (Sum.inr ⟨i, h⟩)
+/-- `0` of the `VF` sort -/ def tVFZero : Tm n := Term.func Fn.vfZero fun i => i.elim0
+/-- `1` of the `VF` sort -/ def tVFOne : Tm n := Term.func Fn.vfOne fun i => i.elim0
+/-- `+` of the `VF` sort -/ def tVFAdd (t u : Tm n) : Tm n := Term.func Fn.vfAdd ![t, u]
+/-- `-` of the `VF` sort -/ def tVFNeg (t : Tm n) : Tm n := Term.func Fn.vfNeg ![t]
+/-- `×` of the `VF` sort -/ def tVFMul (t u : Tm n) : Tm n := Term.func Fn.vfMul ![t, u]
+/-- `1` of the `RV` sort -/ def tRVOne : Tm n := Term.func Fn.rvOne fun i => i.elim0
+/-- `0` of the `RV` sort -/ def tRVZero : Tm n := Term.func Fn.rvZero fun i => i.elim0
+/-- The paper's `∞` is `rv(0)`, i.e. the absorbing element `rvZero` of the `RV` sort: the paper's two symbols `0` and `∞` name one element. Kept as a definition so that the axioms can be read in the paper's notation. -/ def tRVInfty : Tm n := tRVZero
+/-- `×` of the `RV` sort -/ def tRVMul (t u : Tm n) : Tm n := Term.func Fn.rvMul ![t, u]
+/-- Multiplicative inverse on the `RV` sort, with `0⁻¹ = 0`. -/ def tRVInv (t : Tm n) : Tm n := Term.func Fn.rvInv ![t]
+/-- `+ : K² → K` of the `RV` sort -/ def tKAdd (t u : Tm n) : Tm n := Term.func Fn.kAdd ![t, u]
+/-- `- : K → K` of the `RV` sort -/ def tKNeg (t : Tm n) : Tm n := Term.func Fn.kNeg ![t]
+/-- the projection `rv : VF → RV` -/ def tRv (t : Tm n) : Tm n := Term.func Fn.rvMap ![t]
+/-- the bound variable of index `i < n` -/ def tv (i : ℕ) (h : i < n) : Tm n := Term.var (Sum.inr ⟨i, h⟩)
 /-- the numeral `k · 1` of the `VF` sort -/ def tVFNumeral : ℕ → Tm n
   | 0 => tVFZero
   | k + 1 => tVFAdd (tVFNumeral k) tVFOne
 /-- `t ^ k`, in the `RV` sort -/ def tRVPow (t : Tm n) : ℕ → Tm n
   | 0 => tRVOne
   | k + 1 => tRVMul (tRVPow t k) t
-/-- `t ∈ VF`, the encoding's sort predicate for the `VF` sort -/ def pVF (t : Tm n) : Bf n :=
-  FirstOrder.Language.Relations.boundedFormula₁ Rel.memVF t
-/-- `t ∈ RV`, the encoding's sort predicate for the `RV` sort -/ def pRVsort (t : Tm n) : Bf n :=
-  FirstOrder.Language.Relations.boundedFormula₁ Rel.memRV t
-/-- the paper's unary predicate `Kˣ` -/ def pUnits (t : Tm n) : Bf n :=
-  FirstOrder.Language.Relations.boundedFormula₁ Rel.memUnits t
-/-- the paper's preorder `≤` -/ def pLe (t u : Tm n) : Bf n :=
-  FirstOrder.Language.Relations.boundedFormula₂ Rel.rvLe t u
+/-- `t ∈ VF`, the encoding's sort predicate for the `VF` sort -/ def pVF (t : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₁ Rel.memVF t
+/-- `t ∈ RV`, the encoding's sort predicate for the `RV` sort -/ def pRVsort (t : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₁ Rel.memRV t
+/-- the paper's unary predicate `Kˣ` -/ def pUnits (t : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₁ Rel.memUnits t
+/-- the paper's preorder `≤` -/ def pLe (t u : Tm n) : Bf n := FirstOrder.Language.Relations.boundedFormula₂ Rel.rvLe t u
 /-- `t = u` -/ def pEq (t u : Tm n) : Bf n := t =' u
 /-- the paper's `RV = RV-sort ∖ {0}` -/ def pRV (t : Tm n) : Bf n := ∼(pEq t tRVZero)
 /-- the strict order `t > 1` of the `RV` sort -/ def pGtOne (t : Tm n) : Bf n := pLe tRVOne t ⊓ ∼(pLe t tRVOne)
-/-- `t ∈ K = K^× ∪ {0}`, the residue field inside the `RV` sort. Not the same as `t ≠ 0`: when `Γ` is nontrivial the elements of `RV ∖ {0}` of value `≠ 1` are not in `K`, and the residue-field operations are junk there. Definition 2.1(d) defines `K` as `K^× ∪ {0}`, with `K^×` the predicate, i.e. axiom (4)'s class of `1`. The `0` here is `rv(0)`, the absorbing element of `RV`. -/ def pInK (t : Tm n) : Bf n :=
-  pUnits t ⊔ pEq t tRVZero
+/-- `t ∈ K = K^× ∪ {0}`, the residue field inside the `RV` sort. Not the same as `t ≠ 0`: when `Γ` is nontrivial the elements of `RV ∖ {0}` of value `≠ 1` are not in `K`, and the residue-field operations are junk there. Definition 2.1(d) defines `K` as `K^× ∪ {0}`, with `K^×` the predicate, i.e. axiom (4)'s class of `1`. The `0` here is `rv(0)`, the absorbing element of `RV`. -/ def pInK (t : Tm n) : Bf n := pUnits t ⊔ pEq t tRVZero
 end LRV
 namespace LRV
-/-- the sort predicate of the sort `s`, as a formula -/ def sortPred (s : SortTag) (t : Tm n) : Bf n :=
-  match s with
+/-- the sort predicate of the sort `s`, as a formula -/ def sortPred (s : SortTag) (t : Tm n) : Bf n := match s with
   | .vf => pVF t
   | .rv => pRVsort t
-/-- `⋀ i, x_i ∈ s_i`, for the variables `x_i` of index `i` -/ def sortedHyps {k : ℕ} (ss : Fin k → SortTag) : Bf k :=
-  (List.finRange k).foldr (fun i acc => sortPred (ss i) (tv i.val i.isLt) ⊓ acc) ⊤
-/-- the guarded universal sentence `∀ x̄, (⋀ i, x_i ∈ s_i) → φ` -/ def allSorted {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence :=
-  BoundedFormula.alls (sortedHyps ss ⟹ φ)
-/-- the guarded existential formula `∃ x ∈ s, φ`, where `x` is the variable of index `k` -/ def exSorted {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
-  BoundedFormula.ex (sortPred s (tv k (Nat.lt_succ_self k)) ⊓ φ)
-/-- `⋀ i < k, x_i ∈ K`: the tuple lies in `K = K^× ∪ {0}` -/ def kHyps {k : ℕ} : Bf k :=
-  (List.finRange k).foldr (fun i acc => pInK (tv i.val i.isLt) ⊓ acc) ⊤
-/-- the universal sentence `∀ x̄ ∈ s̄ ∩ K, φ` -/ def allSortedK {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence :=
-  BoundedFormula.alls ((sortedHyps ss ⊓ kHyps) ⟹ φ)
-/-- the guarded existential formula `∃ x ∈ s ∩ K, φ`, with `x` the variable of index `k` -/ def exSortedK {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k :=
-  BoundedFormula.ex (sortPred s (tv k (Nat.lt_succ_self k)) ⊓ pInK (tv k (Nat.lt_succ_self k)) ⊓ φ)
-/-- the universal closure of a formula in a single variable -/ def allOne (φ : Bf 1) : LRV.Sentence :=
-  BoundedFormula.alls φ
+/-- `⋀ i, x_i ∈ s_i`, for the variables `x_i` of index `i` -/ def sortedHyps {k : ℕ} (ss : Fin k → SortTag) : Bf k := (List.finRange k).foldr (fun i acc => sortPred (ss i) (tv i.val i.isLt) ⊓ acc) ⊤
+/-- the guarded universal sentence `∀ x̄, (⋀ i, x_i ∈ s_i) → φ` -/ def allSorted {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence := BoundedFormula.alls (sortedHyps ss ⟹ φ)
+/-- the guarded existential formula `∃ x ∈ s, φ`, where `x` is the variable of index `k` -/ def exSorted {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k := BoundedFormula.ex (sortPred s (tv k (Nat.lt_succ_self k)) ⊓ φ)
+/-- `⋀ i < k, x_i ∈ K`: the tuple lies in `K = K^× ∪ {0}` -/ def kHyps {k : ℕ} : Bf k := (List.finRange k).foldr (fun i acc => pInK (tv i.val i.isLt) ⊓ acc) ⊤
+/-- the universal sentence `∀ x̄ ∈ s̄ ∩ K, φ` -/ def allSortedK {k : ℕ} (ss : Fin k → SortTag) (φ : Bf k) : LRV.Sentence := BoundedFormula.alls ((sortedHyps ss ⊓ kHyps) ⟹ φ)
+/-- the guarded existential formula `∃ x ∈ s ∩ K, φ`, with `x` the variable of index `k` -/ def exSortedK {k : ℕ} (s : SortTag) (φ : Bf (k + 1)) : Bf k := BoundedFormula.ex (sortPred s (tv k (Nat.lt_succ_self k)) ⊓ pInK (tv k (Nat.lt_succ_self k)) ⊓ φ)
+/-- the universal closure of a formula in a single variable -/ def allOne (φ : Bf 1) : LRV.Sentence := BoundedFormula.alls φ
 /-- The result sort of a function symbol of `L_RV`. -/ def Fn.resSort : {l : ℕ} → Fn l → SortTag
   | _, .vfZero => .vf
   | _, .vfOne => .vf
@@ -133,8 +103,7 @@ namespace LRV
   | _, .kAdd => fun _ => .rv
   | _, .kNeg => fun _ => .rv
   | _, .rvMap => fun _ => .vf
-/-- Horner form `x^k + a_{k-1} x^{k-1} + ⋯ + a_0` of the monic polynomial of degree `k` whose coefficients are the variables `0, …, k-1` and whose variable is the variable `k`. The leading term is `x ^ k`, so `acfScheme` quantifies over *all* monic polynomials of degree `k`. (An earlier version started the Horner fold at `x` instead of at `x + a_{k-1}`, which silently produced `x^{k+1} + a_{k-1}x^{k-1} + ⋯ + a_0` — a monic polynomial of degree `k+1` with zero `x^k` coefficient, so the scheme covered only a proper subclass and did not give algebraic closedness.) For `k = 0` the value is immaterial: `acfScheme` is only used with `1 ≤ k`. -/ def hornerPoly {k : ℕ} (add mul : {n : ℕ} → Tm n → Tm n → Tm n) : Tm (k + 1) :=
-  match k with
+/-- Horner form `x^k + a_{k-1} x^{k-1} + ⋯ + a_0` of the monic polynomial of degree `k` whose coefficients are the variables `0, …, k-1` and whose variable is the variable `k`. The leading term is `x ^ k`, so `acfScheme` quantifies over *all* monic polynomials of degree `k`. (An earlier version started the Horner fold at `x` instead of at `x + a_{k-1}`, which silently produced `x^{k+1} + a_{k-1}x^{k-1} + ⋯ + a_0` — a monic polynomial of degree `k+1` with zero `x^k` coefficient, so the scheme covered only a proper subclass and did not give algebraic closedness.) For `k = 0` the value is immaterial: `acfScheme` is only used with `1 ≤ k`. -/ def hornerPoly {k : ℕ} (add mul : {n : ℕ} → Tm n → Tm n → Tm n) : Tm (k + 1) := match k with
   | 0 => tv 0 Nat.zero_lt_one
   | (n + 1) =>
     let x : Tm (n + 1 + 1) := tv (n + 1) (Nat.lt_succ_self (n + 1))
@@ -142,40 +111,29 @@ namespace LRV
 end LRV
 namespace Axioms
 open LRV
-/-- The sentences of a finite list, as a theory. -/ def ofList (l : List LRV.Sentence) : LRV.Theory :=
-  {s | s ∈ l}
+/-- The sentences of a finite list, as a theory. -/ def ofList (l : List LRV.Sentence) : LRV.Theory := {s | s ∈ l}
 /-- the carrier is covered by the two sorts -/ def sdCover : LRV.Sentence := allOne (pVF &0 ⊔ pRVsort &0)
 /-- the two sorts are disjoint -/ def sdDisjoint : LRV.Sentence := allOne (∼(pVF &0 ⊓ pRVsort &0))
-/-- `0` of the ring language lies in the `VF` sort -/ def sdVFZero : LRV.Sentence :=
-  pVF tVFZero
-/-- `1` of the ring language lies in the `VF` sort -/ def sdVFOne : LRV.Sentence :=
-  pVF tVFOne
+/-- `0` of the ring language lies in the `VF` sort -/ def sdVFZero : LRV.Sentence := pVF tVFZero
+/-- `1` of the ring language lies in the `VF` sort -/ def sdVFOne : LRV.Sentence := pVF tVFOne
 /-- the `VF` sort is closed under `+` -/ def sdVFAdd : LRV.Sentence := allSorted ![.vf, .vf] (pVF (tVFAdd &0 &1))
 /-- the `VF` sort is closed under `-` -/ def sdVFNeg : LRV.Sentence := allSorted ![.vf] (pVF (tVFNeg &0))
 /-- the `VF` sort is closed under `×` -/ def sdVFMul : LRV.Sentence := allSorted ![.vf, .vf] (pVF (tVFMul &0 &1))
 /-- `rv` maps the `VF` sort into the `RV` sort -/ def sdRv : LRV.Sentence := allSorted ![.vf] (pRVsort (tRv &0))
-/-- `0` of the `RV` sort lies in the `RV` sort -/ def sdRVZero : LRV.Sentence :=
-  pRVsort tRVZero
-/-- `∞` lies in the `RV` sort -/ def sdRVInfty : LRV.Sentence :=
-  pRVsort tRVInfty
-/-- `1` of the `RV` sort lies in the `RV` sort -/ def sdRVOne : LRV.Sentence :=
-  pRVsort tRVOne
+/-- `0` of the `RV` sort lies in the `RV` sort -/ def sdRVZero : LRV.Sentence := pRVsort tRVZero
+/-- `∞` lies in the `RV` sort -/ def sdRVInfty : LRV.Sentence := pRVsort tRVInfty
+/-- `1` of the `RV` sort lies in the `RV` sort -/ def sdRVOne : LRV.Sentence := pRVsort tRVOne
 /-- the `RV` sort is closed under `×` -/ def sdRVMul : LRV.Sentence := allSorted ![.rv, .rv] (pRVsort (tRVMul &0 &1))
 def sdRVInv : LRV.Sentence := allSorted ![.rv] (pRVsort (tRVInv &0))
 /-- The predicate `Kˣ` holds only of elements of the `RV` sort. Its actual content is axiom (4)'s `leClassOne`, which makes `Kˣ` the class of `1` — a *proper* subgroup of the multiplicative group `RV ∖ {0}` whenever `Γ` is nontrivial. Identifying `Kˣ` with all of `RV ∖ {0}` puts every `x ≠ 0` in the class of `1`, hence `1 ≤ x ≤ 1`, hence makes the preorder trivial and `Γ` trivial — contradicting the paper's standing hypothesis that `Γ(S)` is nontrivial. -/ def sdUnits : LRV.Sentence := allOne (pUnits &0 ⟹ pRVsort &0)
-/-- `K = Kˣ ∪ {0}` is closed under `+` -/ def sdKAdd : LRV.Sentence :=
-  allSorted ![.rv, .rv] (pInK &0 ⟹ (pInK &1 ⟹ pInK (tKAdd &0 &1)))
+/-- `K = Kˣ ∪ {0}` is closed under `+` -/ def sdKAdd : LRV.Sentence := allSorted ![.rv, .rv] (pInK &0 ⟹ (pInK &1 ⟹ pInK (tKAdd &0 &1)))
 /-- `K` is closed under unary `-` -/ def sdKNeg : LRV.Sentence := allSorted ![.rv] (pInK &0 ⟹ pInK (tKNeg &0))
-/-- `K` is closed under `×`: the paper's `K = K^× ∪ {0}` is a field, so the product of two elements of `K` is in `K` and not `∞`. Without this the field axioms of `kField` (which are guarded by `pK`) constrain only the products that happen to land in `K`. -/ def sdKMul : LRV.Sentence :=
-  allSorted ![.rv, .rv] (pInK &0 ⟹ (pInK &1 ⟹ pInK (tRVMul &0 &1)))
-/-- The closure part of the sort discipline: each sort is closed under its own symbols, and the two sorts are related through the symbols that cross them. -/ def sortClosure : LRV.Theory :=
-  ofList [sdVFZero, sdVFOne, sdVFAdd, sdVFNeg, sdVFMul, sdRv, sdRVZero, sdRVInfty, sdRVOne, sdRVMul, sdRVInv, sdUnits, sdKAdd, sdKNeg, sdKMul]
-/-- the sort discipline of the encoding, as a theory -/ def sortAxioms : LRV.Theory :=
-  sortClosure ∪ ofList [sdCover, sdDisjoint]
+/-- `K` is closed under `×`: the paper's `K = K^× ∪ {0}` is a field, so the product of two elements of `K` is in `K` and not `∞`. Without this the field axioms of `kField` (which are guarded by `pK`) constrain only the products that happen to land in `K`. -/ def sdKMul : LRV.Sentence := allSorted ![.rv, .rv] (pInK &0 ⟹ (pInK &1 ⟹ pInK (tRVMul &0 &1)))
+/-- The closure part of the sort discipline: each sort is closed under its own symbols, and the two sorts are related through the symbols that cross them. -/ def sortClosure : LRV.Theory := ofList [sdVFZero, sdVFOne, sdVFAdd, sdVFNeg, sdVFMul, sdRv, sdRVZero, sdRVInfty, sdRVOne, sdRVMul, sdRVInv, sdUnits, sdKAdd, sdKNeg, sdKMul]
+/-- the sort discipline of the encoding, as a theory -/ def sortAxioms : LRV.Theory := sortClosure ∪ ofList [sdCover, sdDisjoint]
 /-- the field axioms for the sort `s`, with that sort's `0`, `1`, `+`, `-`, `×` -/ def fieldAxioms (s : SortTag) (zero one : {n : ℕ} → Tm n)
     (add mul : {n : ℕ} → Tm n → Tm n → Tm n) (neg : {n : ℕ} → Tm n → Tm n) :
-    List LRV.Sentence :=
-  [ /- associativity of `+` -/
+    List LRV.Sentence := [ /- associativity of `+` -/
     allSorted ![s, s, s] (pEq (add (add &0 &1) &2) (add &0 (add &1 &2))),
     /- commutativity of `+` -/
     allSorted ![s, s] (pEq (add &0 &1) (add &1 &0)),
@@ -195,14 +153,10 @@ def sdRVInv : LRV.Sentence := allSorted ![.rv] (pRVsort (tRVInv &0))
     ∼(pEq zero one),
     /- every nonzero element is invertible: the language has no inverse symbol -/
     allSorted ![s] (pEq &0 zero ⊔ exSorted s (pEq (mul &0 &1) one)) ]
-/-- the algebraic-closedness scheme for the sort `s`: `∀ a₀ … a_{k-1} ∃ x, x^k + a_{k-1} x^{k-1} + ⋯ + a₀ = 0` -/ def acfScheme (s : SortTag) (zero : {n : ℕ} → Tm n) (add mul : {n : ℕ} → Tm n → Tm n → Tm n) (k : ℕ) : LRV.Sentence :=
-  allSorted (fun _ : Fin k => s) (exSorted s (pEq (hornerPoly add mul) zero))
-/-- Definition 2.2 item 1: `(VF, 0, 1, +, -, ×)` is an algebraically closed field. -/ def vfField : LRV.Theory :=
-  ofList (fieldAxioms .vf tVFZero tVFOne tVFAdd tVFMul tVFNeg)
-/-- algebraic closedness of the `VF` sort -/ def vfAlgClosed : LRV.Theory :=
-  {s | ∃ k, 1 ≤ k ∧ s = acfScheme .vf tVFZero tVFAdd tVFMul k}
-/-- Definition 2.2 item 3: `(K, 0, 1, +, -, ×)` is an algebraically closed field, where `K = K^× ∪ {0}`, the units of `RV` together with the absorbing element `0 = ∞ = rv 0`. Every quantifier is relativised to `K` (`allSortedK`, `exSortedK`), not merely to the `RV` sort. This is not cosmetic: `RV^×` also contains the elements of value `≠ 1`, where the residue operations are junk, so asserting the field axioms at every element of `RV` (equivalently at every `t ≠ ∞`, since `RV ∖ {0}` *is* the group) would force `Γ` trivial. -/ def kField : LRV.Theory :=
-  ofList
+/-- the algebraic-closedness scheme for the sort `s`: `∀ a₀ … a_{k-1} ∃ x, x^k + a_{k-1} x^{k-1} + ⋯ + a₀ = 0` -/ def acfScheme (s : SortTag) (zero : {n : ℕ} → Tm n) (add mul : {n : ℕ} → Tm n → Tm n → Tm n) (k : ℕ) : LRV.Sentence := allSorted (fun _ : Fin k => s) (exSorted s (pEq (hornerPoly add mul) zero))
+/-- Definition 2.2 item 1: `(VF, 0, 1, +, -, ×)` is an algebraically closed field. -/ def vfField : LRV.Theory := ofList (fieldAxioms .vf tVFZero tVFOne tVFAdd tVFMul tVFNeg)
+/-- algebraic closedness of the `VF` sort -/ def vfAlgClosed : LRV.Theory := {s | ∃ k, 1 ≤ k ∧ s = acfScheme .vf tVFZero tVFAdd tVFMul k}
+/-- Definition 2.2 item 3: `(K, 0, 1, +, -, ×)` is an algebraically closed field, where `K = K^× ∪ {0}`, the units of `RV` together with the absorbing element `0 = ∞ = rv 0`. Every quantifier is relativised to `K` (`allSortedK`, `exSortedK`), not merely to the `RV` sort. This is not cosmetic: `RV^×` also contains the elements of value `≠ 1`, where the residue operations are junk, so asserting the field axioms at every element of `RV` (equivalently at every `t ≠ ∞`, since `RV ∖ {0}` *is* the group) would force `Γ` trivial. -/ def kField : LRV.Theory := ofList
     [ /- associativity of `+` -/
       allSortedK ![.rv, .rv, .rv] (pEq (tKAdd (tKAdd &0 &1) &2) (tKAdd &0 (tKAdd &1 &2))),
       /- commutativity of `+` -/
@@ -224,85 +178,56 @@ def sdRVInv : LRV.Sentence := allSorted ![.rv] (pRVsort (tRVInv &0))
       ∼(pEq tRVZero tRVOne),
       /- every nonzero element of `K` is invertible -/
       allSortedK ![.rv] (pEq &0 tRVZero ⊔ exSortedK .rv (pEq (tRVMul &0 &1) tRVOne)) ]
-/-- the algebraic-closedness scheme for `K = K^× ∪ {0}`: coefficients and root in `K` -/ def acfSchemeK (k : ℕ) : LRV.Sentence :=
-  allSortedK (fun _ : Fin k => .rv) (exSortedK .rv (pEq (hornerPoly tKAdd tRVMul) tRVZero))
-/-- algebraic closedness of `K = K^× ∪ {0}` -/ def kAlgClosed : LRV.Theory :=
-  {s | ∃ k, 1 ≤ k ∧ s = acfSchemeK k}
-/-- `1 ∈ Kˣ` -/ def rvOneMem : LRV.Sentence :=
-  pUnits tRVOne
+/-- the algebraic-closedness scheme for `K = K^× ∪ {0}`: coefficients and root in `K` -/ def acfSchemeK (k : ℕ) : LRV.Sentence := allSortedK (fun _ : Fin k => .rv) (exSortedK .rv (pEq (hornerPoly tKAdd tRVMul) tRVZero))
+/-- algebraic closedness of `K = K^× ∪ {0}` -/ def kAlgClosed : LRV.Theory := {s | ∃ k, 1 ≤ k ∧ s = acfSchemeK k}
+/-- `1 ∈ Kˣ` -/ def rvOneMem : LRV.Sentence := pUnits tRVOne
 /-- `Kˣ` is closed under `×` -/ def rvMulMem : LRV.Sentence := allSorted ![.rv, .rv] (pUnits &0 ⟹ (pUnits &1 ⟹ pUnits (tRVMul &0 &1)))
-/-- `×` is associative on `RV` -/ def rvMulAssoc : LRV.Sentence :=
-  allSorted ![.rv, .rv, .rv] (pEq (tRVMul (tRVMul &0 &1) &2) (tRVMul &0 (tRVMul &1 &2)))
+/-- `×` is associative on `RV` -/ def rvMulAssoc : LRV.Sentence := allSorted ![.rv, .rv, .rv] (pEq (tRVMul (tRVMul &0 &1) &2) (tRVMul &0 (tRVMul &1 &2)))
 /-- `×` is commutative on `RV` -/ def rvMulComm : LRV.Sentence := allSorted ![.rv, .rv] (pEq (tRVMul &0 &1) (tRVMul &1 &0))
 /-- `1` is neutral for `×` on `Kˣ` -/ def rvMulOne : LRV.Sentence := allSorted ![.rv] (pUnits &0 ⟹ pEq (tRVMul tRVOne &0) &0)
-/-- every element of `Kˣ` is invertible in `Kˣ` -/ def rvMulInv : LRV.Sentence :=
-  allSorted ![.rv] (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVMul &1 &0) tRVOne))
-/-- divisibility of `Kˣ`: for every `k ≥ 1`, `∀ x ∈ Kˣ ∃ y ∈ Kˣ, y^k = x` -/ def rvDivisible (k : ℕ) : LRV.Sentence :=
-  allSorted ![.rv] (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVPow &1 k) &0))
+/-- every element of `Kˣ` is invertible in `Kˣ` -/ def rvMulInv : LRV.Sentence := allSorted ![.rv] (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVMul &1 &0) tRVOne))
+/-- divisibility of `Kˣ`: for every `k ≥ 1`, `∀ x ∈ Kˣ ∃ y ∈ Kˣ, y^k = x` -/ def rvDivisible (k : ℕ) : LRV.Sentence := allSorted ![.rv] (pUnits &0 ⟹ exSorted .rv (pUnits &1 ⊓ pEq (tRVPow &1 k) &0))
 /-- `t × 0 = 0` for `t ∈ K` -/ def rvMulZeroK : LRV.Sentence := allSorted ![.rv] (pInK &0 ⟹ pEq (tRVMul &0 tRVZero) tRVZero)
 /-- `t × 0 = 0` for every `t` of the `RV` sort: the absorbing element. (This is the paper's `t × ∞ = ∞`; `∞ = rv 0 = 0`.) -/ def rvMulInfty : LRV.Sentence := allSorted ![.rv] (pEq (tRVMul &0 tRVInfty) tRVInfty)
-/-- Definition 2.2 item 2: `(RV^×, 1, ×)` is a divisible abelian group, with `×` augmented by `t × 0 = 0`, i.e. `0 = ∞ = rv 0` absorbing. -/ def rvGroup : LRV.Theory :=
-  ofList [rvOneMem, rvMulMem, rvMulAssoc, rvMulComm, rvMulOne, rvMulInv, rvMulZeroK, rvMulInfty] ∪ {s | ∃ k, 1 ≤ k ∧ s = rvDivisible k}
+/-- Definition 2.2 item 2: `(RV^×, 1, ×)` is a divisible abelian group, with `×` augmented by `t × 0 = 0`, i.e. `0 = ∞ = rv 0` absorbing. -/ def rvGroup : LRV.Theory := ofList [rvOneMem, rvMulMem, rvMulAssoc, rvMulComm, rvMulOne, rvMulInv, rvMulZeroK, rvMulInfty] ∪ {s | ∃ k, 1 ≤ k ∧ s = rvDivisible k}
 /-- `≤` is reflexive on `RV` -/ def leRefl : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ pLe &0 &0)
-/-- `≤` is transitive on `RV` -/ def leTrans : LRV.Sentence :=
-  allSorted ![.rv, .rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pLe &0 &1 ⟹ (pLe &1 &2 ⟹ pLe &0 &2)))))
+/-- `≤` is transitive on `RV` -/ def leTrans : LRV.Sentence := allSorted ![.rv, .rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pLe &0 &1 ⟹ (pLe &1 &2 ⟹ pLe &0 &2)))))
 /-- `≤` is total on `RV` -/ def leTotal : LRV.Sentence := allSorted ![.rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pLe &0 &1 ⊔ pLe &1 &0)))
 /-- `∞` is the top element of `RV` -/ def leTop : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ pLe &0 tRVInfty)
 /-- `∞ ≤ x` forces `x = ∞`, i.e. `∞` is alone in its class -/ def leInftyEq : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ (pLe tRVInfty &0 ⟹ pEq &0 tRVInfty))
-/-- `Kˣ` is the equivalence class of `1` -/ def leClassOne : LRV.Sentence :=
-  allSorted ![.rv] (pRV &0 ⟹ (pUnits &0 ⇔ (pLe tRVOne &0 ⊓ pLe &0 tRVOne)))
-/-- `≤` is compatible with `×` on the left, i.e. the induced order on `RV/Kˣ` is a translation-invariant order -/ def leMulCompat : LRV.Sentence :=
-  allSorted ![.rv, .rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pUnits &2 ⟹ (pLe &0 &1 ⟹ pLe (tRVMul &0 &2) (tRVMul &1 &2))))))
-/-- Definition 2.2 item 4: `≤` is a preorder on `RV` with `∞` the top element and `Kˣ` the equivalence class of `1`. -/ def preorderRV : LRV.Theory :=
-  ofList [leRefl, leTrans, leTotal, leTop, leInftyEq, leClassOne, leMulCompat]
-/-- `rv(0) = ∞` -/ def rvZeroEq : LRV.Sentence :=
-  pEq (tRv tVFZero) tRVInfty
+/-- `Kˣ` is the equivalence class of `1` -/ def leClassOne : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ (pUnits &0 ⇔ (pLe tRVOne &0 ⊓ pLe &0 tRVOne)))
+/-- `≤` is compatible with `×` on the left, i.e. the induced order on `RV/Kˣ` is a translation-invariant order -/ def leMulCompat : LRV.Sentence := allSorted ![.rv, .rv, .rv] (pRV &0 ⟹ (pRV &1 ⟹ (pRV &2 ⟹ (pUnits &2 ⟹ (pLe &0 &1 ⟹ pLe (tRVMul &0 &2) (tRVMul &1 &2))))))
+/-- Definition 2.2 item 4: `≤` is a preorder on `RV` with `∞` the top element and `Kˣ` the equivalence class of `1`. -/ def preorderRV : LRV.Theory := ofList [leRefl, leTrans, leTotal, leTop, leInftyEq, leClassOne, leMulCompat]
+/-- `rv(0) = ∞` -/ def rvZeroEq : LRV.Sentence := pEq (tRv tVFZero) tRVInfty
 /-- `rv(x) = ∞` forces `x = 0` -/ def rvEqInfty : LRV.Sentence := allSorted ![.vf] (pEq (tRv &0) tRVInfty ⟹ pEq &0 tVFZero)
-/-- `rv` is a group homomorphism on `VF^×` -/ def rvMulHom : LRV.Sentence :=
-  allSorted ![.vf, .vf] (pEq (tRv (tVFMul &0 &1)) (tRVMul (tRv &0) (tRv &1)))
-/-- **`rv` is surjective**: every element of the `RV` sort other than `rv(0)` is `rv(x)` for some `x ∈ VF`. (Definition 2.2(6): `rv : VF^× → RV^×` is surjective, augmented by `rv(0) = ∞ = 0`. With `RV^× = RV ∖ {0}` this says: `RV = rv(VF^×) ∪ {0}`, so there are no `RV`-elements outside the image of `rv`.) -/ def rvSurj : LRV.Sentence :=
-  allSorted ![.rv] (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))
-/-- the ultrametric inequality for `vv = vrv ∘ rv`: `vv(x+y) ≥ min(vv x, vv y)` -/ def rvUltrametric : LRV.Sentence :=
-  allSorted ![.vf, .vf] (pLe (tRv &0) (tRv (tVFAdd &0 &1)) ⊔ pLe (tRv &1) (tRv (tVFAdd &0 &1)))
-/-- Definition 2.2 item 6: `rv : VF^× → RV^×` is a surjective group homomorphism augmented by `rv(0) = ∞`, and `vv = vrv ∘ rv` is a valuation. (The valuation ring `O = rv⁻¹(RV^{≥1})` and the maximal ideal `M = rv⁻¹(RV^{>1})` are *defined* from `rv`, so — exactly as in the paper — they need no symbols of their own.) -/ def rvAxioms : LRV.Theory :=
-  ofList [rvZeroEq, rvEqInfty, rvMulHom, rvSurj, rvUltrametric]
+/-- `rv` is a group homomorphism on `VF^×` -/ def rvMulHom : LRV.Sentence := allSorted ![.vf, .vf] (pEq (tRv (tVFMul &0 &1)) (tRVMul (tRv &0) (tRv &1)))
+/-- **`rv` is surjective**: every element of the `RV` sort other than `rv(0)` is `rv(x)` for some `x ∈ VF`. (Definition 2.2(6): `rv : VF^× → RV^×` is surjective, augmented by `rv(0) = ∞ = 0`. With `RV^× = RV ∖ {0}` this says: `RV = rv(VF^×) ∪ {0}`, so there are no `RV`-elements outside the image of `rv`.) -/ def rvSurj : LRV.Sentence := allSorted ![.rv] (∼(pEq &0 tRVZero) ⟹ exSorted .vf (pEq (tRv &1) &0))
+/-- the ultrametric inequality for `vv = vrv ∘ rv`: `vv(x+y) ≥ min(vv x, vv y)` -/ def rvUltrametric : LRV.Sentence := allSorted ![.vf, .vf] (pLe (tRv &0) (tRv (tVFAdd &0 &1)) ⊔ pLe (tRv &1) (tRv (tVFAdd &0 &1)))
+/-- Definition 2.2 item 6: `rv : VF^× → RV^×` is a surjective group homomorphism augmented by `rv(0) = ∞`, and `vv = vrv ∘ rv` is a valuation. (The valuation ring `O = rv⁻¹(RV^{≥1})` and the maximal ideal `M = rv⁻¹(RV^{>1})` are *defined* from `rv`, so — exactly as in the paper — they need no symbols of their own.) -/ def rvAxioms : LRV.Theory := ofList [rvZeroEq, rvEqInfty, rvMulHom, rvSurj, rvUltrametric]
 /-- `1` is neutral for `×` on every nonzero `RV`-element. -/ def rvMulOneRV : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ pEq (tRVMul tRVOne &0) &0)
-/-- every nonzero `RV`-element is invertible in `RV^×`. -/ def rvMulInvRV : LRV.Sentence :=
-  allSorted ![.rv] (pRV &0 ⟹ exSorted .rv (pRV &1 ⊓ pEq (tRVMul &1 &0) tRVOne))
-/-- the order on `RV` is invariant under scaling by any `c ≠ rv 0`, in both directions. The guards on the first two variables are dropped because `∞ = rv 0` is absorbing and top, so both sides hold there. -/ def leMulCompatFull : LRV.Sentence :=
-  allSorted ![.rv, .rv, .rv] (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))
-/-- `kAdd` is the residue addition at units: `rv (x + y)` if that is a unit, and `0` if `x + y` drops into the maximal ideal. -/ def kAddLink : LRV.Sentence :=
-  allSorted ![.vf, .vf]
+/-- every nonzero `RV`-element is invertible in `RV^×`. -/ def rvMulInvRV : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ exSorted .rv (pRV &1 ⊓ pEq (tRVMul &1 &0) tRVOne))
+/-- the order on `RV` is invariant under scaling by any `c ≠ rv 0`, in both directions. The guards on the first two variables are dropped because `∞ = rv 0` is absorbing and top, so both sides hold there. -/ def leMulCompatFull : LRV.Sentence := allSorted ![.rv, .rv, .rv] (pRV &2 ⟹ (pLe &0 &1 ⇔ pLe (tRVMul &0 &2) (tRVMul &1 &2)))
+/-- `kAdd` is the residue addition at units: `rv (x + y)` if that is a unit, and `0` if `x + y` drops into the maximal ideal. -/ def kAddLink : LRV.Sentence := allSorted ![.vf, .vf]
     (pUnits (tRv &0) ⟹ (pUnits (tRv &1) ⟹
       ((pUnits (tRv (tVFAdd &0 &1)) ⟹
           pEq (tKAdd (tRv &0) (tRv &1)) (tRv (tVFAdd &0 &1))) ⊓
         (∼(pUnits (tRv (tVFAdd &0 &1))) ⟹
           pEq (tKAdd (tRv &0) (tRv &1)) tRVZero))))
-/-- `kNeg` is the residue negation at units. -/ def kNegLink : LRV.Sentence :=
-  allSorted ![.vf] (pUnits (tRv &0) ⟹ pEq (tKNeg (tRv &0)) (tRv (tVFNeg &0)))
-/-- two elements of `VF` have the same residue iff their difference has strictly larger value than the second: `rv a = rv b ↔ ¬ (v (a - b) ≤ v b)`. (The first transcription had the two `pLe` arguments transposed, which made the axiom false at `a = b = 1` and the whole theory inconsistent — see `QE-PLAN.md` and `.ultramath/smw163dd5/m5/Audit.lean`.) -/ def rvEqLink : LRV.Sentence :=
-  allSorted ![.vf, .vf]
+/-- `kNeg` is the residue negation at units. -/ def kNegLink : LRV.Sentence := allSorted ![.vf] (pUnits (tRv &0) ⟹ pEq (tKNeg (tRv &0)) (tRv (tVFNeg &0)))
+/-- two elements of `VF` have the same residue iff their difference has strictly larger value than the second: `rv a = rv b ↔ ¬ (v (a - b) ≤ v b)`. (The first transcription had the two `pLe` arguments transposed, which made the axiom false at `a = b = 1` and the whole theory inconsistent — see `QE-PLAN.md` and `.ultramath/smw163dd5/m5/Audit.lean`.) -/ def rvEqLink : LRV.Sentence := allSorted ![.vf, .vf]
     (∼(pEq &1 tVFZero) ⟹
       (pEq (tRv &0) (tRv &1) ⇔ ∼(pLe (tRv (tVFAdd &0 (tVFNeg &1))) (tRv &1))))
-/-- the junk convention for `kAdd` off `K`: the value is `0`. -/ def kJunkZero : LRV.Sentence :=
-  allSorted ![.rv, .rv] ((∼(pInK &0) ⊔ ∼(pInK &1)) ⟹ pEq (tKAdd &0 &1) tRVZero)
+/-- the junk convention for `kAdd` off `K`: the value is `0`. -/ def kJunkZero : LRV.Sentence := allSorted ![.rv, .rv] ((∼(pInK &0) ⊔ ∼(pInK &1)) ⟹ pEq (tKAdd &0 &1) tRVZero)
 /-- the junk convention for `kNeg` off `K`. -/ def kNegJunkZero : LRV.Sentence := allSorted ![.rv] (∼(pInK &0) ⟹ pEq (tKNeg &0) tRVZero)
-/-- **Nontriviality**: some nonzero element of `VF` has value strictly below the value of `1`, i.e. lies in the maximal ideal. -/ def axNontrivialRV : LRV.Sentence :=
-  exSorted .vf (∼(pEq &0 tVFZero) ⊓ ∼(pLe (tRv &0) (tRv tVFOne)))
-/-- The inverse operation fixes the absorbing element `0 = ∞`. -/ def rvInvZero : LRV.Sentence :=
-  pEq (tRVInv tRVZero) tRVZero
-/-- The named inverse is a multiplicative inverse on the nonzero `RV` group. -/ def rvInvMul : LRV.Sentence :=
-  allSorted ![.rv] (pRV &0 ⟹ pEq (tRVMul (tRVInv &0) &0) tRVOne)
-/-- The added axioms, in one theory. -/ def repairRV : LRV.Theory :=
-  ofList [rvMulOneRV, rvMulInvRV, leMulCompatFull, kAddLink, kNegLink, rvEqLink, kJunkZero, kNegJunkZero, axNontrivialRV, rvInvZero, rvInvMul]
-/-- the paper's own content of `ACVF`: Definition 2.2, items 1–6 -/ def ACVFpaper : LRV.Theory :=
-  vfField ∪ vfAlgClosed ∪ rvGroup ∪ kField ∪ kAlgClosed ∪ preorderRV ∪ rvAxioms ∪ repairRV ∪ repairRV
-/-- **The theory `ACVF` of Definition 2.2**, in the tagged encoding: items 1–6 plus the sort discipline of the encoding. -/ def ACVF : LRV.Theory :=
-  sortAxioms ∪ ACVFpaper
+/-- **Nontriviality**: some nonzero element of `VF` has value strictly below the value of `1`, i.e. lies in the maximal ideal. -/ def axNontrivialRV : LRV.Sentence := exSorted .vf (∼(pEq &0 tVFZero) ⊓ ∼(pLe (tRv &0) (tRv tVFOne)))
+/-- The inverse operation fixes the absorbing element `0 = ∞`. -/ def rvInvZero : LRV.Sentence := pEq (tRVInv tRVZero) tRVZero
+/-- The named inverse is a multiplicative inverse on the nonzero `RV` group. -/ def rvInvMul : LRV.Sentence := allSorted ![.rv] (pRV &0 ⟹ pEq (tRVMul (tRVInv &0) &0) tRVOne)
+/-- The added axioms, in one theory. -/ def repairRV : LRV.Theory := ofList [rvMulOneRV, rvMulInvRV, leMulCompatFull, kAddLink, kNegLink, rvEqLink, kJunkZero, kNegJunkZero, axNontrivialRV, rvInvZero, rvInvMul]
+/-- the paper's own content of `ACVF`: Definition 2.2, items 1–6 -/ def ACVFpaper : LRV.Theory := vfField ∪ vfAlgClosed ∪ rvGroup ∪ kField ∪ kAlgClosed ∪ preorderRV ∪ rvAxioms ∪ repairRV ∪ repairRV
+/-- **The theory `ACVF` of Definition 2.2**, in the tagged encoding: items 1–6 plus the sort discipline of the encoding. -/ def ACVF : LRV.Theory := sortAxioms ∪ ACVFpaper
 /-- characteristic zero of the `VF` sort -/ def charZeroVF (k : ℕ) : LRV.Sentence := ∼(pEq (tVFNumeral (k + 1)) tVFZero)
 /-- residue characteristic zero: for each prime `p`, `p · 1` is a unit of the valuation ring, i.e. `¬ (1 < rv(p·1))` -/ def residueCharZero (p : ℕ) : LRV.Sentence := ∼(pGtOne (tRv (tVFNumeral p)))
-/-- **The theory `ACVF(0,0)`**: `ACVF` with pure characteristic `0`, i.e. characteristic `0` for the valued field and characteristic `0` for its residue field. -/ def ACVF00 : LRV.Theory :=
-  ACVF ∪ {s | ∃ k, s = charZeroVF k} ∪ {s | ∃ p, p.Prime ∧ s = residueCharZero p}
+/-- **The theory `ACVF(0,0)`**: `ACVF` with pure characteristic `0`, i.e. characteristic `0` for the valued field and characteristic `0` for its residue field. -/ def ACVF00 : LRV.Theory := ACVF ∪ {s | ∃ k, s = charZeroVF k} ∪ {s | ∃ p, p.Prime ∧ s = residueCharZero p}
 end Axioms
 open Axioms
 open LRV
@@ -310,20 +235,13 @@ open LRV
   | .vf => fun x => Structure.RelMap (L := LRV) Rel.memVF ![x]
   | .rv => fun x => Structure.RelMap (L := LRV) Rel.memRV ![x]
 variable {M : Type*} [LRV.Structure M]
-/-- `x` lies in the `VF` sort -/ def iVF (x : M) : Prop :=
-  FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memVF ![x]
-/-- `x` lies in the `RV` sort -/ def iRV (x : M) : Prop :=
-  FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memRV ![x]
-/-- the interpretation of `+` of the `VF` sort -/ def iVFAdd (x y : M) : M :=
-  FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfAdd ![x, y]
-/-- the interpretation of `-` of the `VF` sort -/ def iVFNeg (x : M) : M :=
-  FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfNeg ![x]
-/-- the interpretation of `×` of the `VF` sort -/ def iVFMul (x y : M) : M :=
-  FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfMul ![x, y]
-/-- the interpretation of the projection `rv : VF → RV` -/ def iRv (x : M) : M :=
-  FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvMap ![x]
-/-- the interpretation of `0` of the `RV` sort -/ def iRVZero : M :=
-  FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvZero fun i => i.elim0
+/-- `x` lies in the `VF` sort -/ def iVF (x : M) : Prop := FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memVF ![x]
+/-- `x` lies in the `RV` sort -/ def iRV (x : M) : Prop := FirstOrder.Language.Structure.RelMap (L := LRV) Rel.memRV ![x]
+/-- the interpretation of `+` of the `VF` sort -/ def iVFAdd (x y : M) : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfAdd ![x, y]
+/-- the interpretation of `-` of the `VF` sort -/ def iVFNeg (x : M) : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfNeg ![x]
+/-- the interpretation of `×` of the `VF` sort -/ def iVFMul (x y : M) : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfMul ![x, y]
+/-- the interpretation of the projection `rv : VF → RV` -/ def iRv (x : M) : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvMap ![x]
+/-- the interpretation of `0` of the `RV` sort -/ def iRVZero : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.rvZero fun i => i.elim0
 end Milestone0
 end SpecialTransformations
 end
@@ -333,10 +251,8 @@ open FirstOrder FirstOrder.Language
 open scoped FirstOrder
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Milestone0.Transfer
-/-- `0` of the `VF` sort -/ def iVFZero {M : Type} [LRV.Structure M] : M :=
-  FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfZero fun i => i.elim0
-/-- `1` of the `VF` sort -/ def iVFOne {M : Type} [LRV.Structure M] : M :=
-  FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfOne fun i => i.elim0
+/-- `0` of the `VF` sort -/ def iVFZero {M : Type} [LRV.Structure M] : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfZero fun i => i.elim0
+/-- `1` of the `VF` sort -/ def iVFOne {M : Type} [LRV.Structure M] : M := FirstOrder.Language.Structure.funMap (L := LRV) Fn.vfOne fun i => i.elim0
 end SpecialTransformations.Milestone0.Transfer
 set_option linter.unusedSimpArgs false
 open FirstOrder FirstOrder.Language
@@ -349,10 +265,17 @@ open scoped FirstOrder
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Milestone0.Transfer
 variable {M : Type} [LRV.Structure M]
+theorem rv_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iRV (iRv x) := by sorry
+end SpecialTransformations.Milestone0.Transfer
+namespace SpecialTransformations.Milestone0.Transfer
+variable {M : Type} [LRV.Structure M]
 theorem vf_zero_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
     iVF (iVFZero (M := M))  := by sorry
 theorem vf_one_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) :
     iVF (iVFOne (M := M))  := by sorry
+theorem vf_add_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M} (hx : iVF x) (hy : iVF y) : iVF (iVFAdd x y) := by sorry
+theorem vf_neg_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iVF (iVFNeg x) := by sorry
+theorem vf_mul_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M} (hx : iVF x) (hy : iVF y) : iVF (iVFMul x y) := by sorry
 end SpecialTransformations.Milestone0.Transfer
 end
 section
@@ -361,20 +284,24 @@ open SpecialTransformations.Milestone0
 open SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Milestone0
 namespace Transfer
+theorem vf_add_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M} (hx : iVF x) (hy : iVF y) (hz : iVF z) : iVFAdd (iVFAdd x y) z = iVFAdd x (iVFAdd y z) := by sorry
+theorem vf_add_comm {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M} (hx : iVF x) (hy : iVF y) : iVFAdd x y = iVFAdd y x := by sorry
+theorem vf_add_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iVFAdd x iVFZero = x := by sorry
+theorem vf_add_neg {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iVFAdd x (iVFNeg x) = iVFZero := by sorry
+theorem vf_mul_assoc {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M} (hx : iVF x) (hy : iVF y) (hz : iVF z) : iVFMul (iVFMul x y) z = iVFMul x (iVFMul y z) := by sorry
+theorem vf_mul_comm {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : M} (hx : iVF x) (hy : iVF y) : iVFMul x y = iVFMul y x := by sorry
+theorem vf_mul_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : iVFMul x iVFOne = x := by sorry
+theorem vf_left_distrib {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y z : M} (hx : iVF x) (hy : iVF y) (hz : iVF z) : iVFMul x (iVFAdd y z) = iVFAdd (iVFMul x y) (iVFMul x z) := by sorry
+theorem vf_zero_ne_one {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) : iVFZero (M := by sorry
+theorem vf_mul_inv_or_zero {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x : M} (hx : iVF x) : x = iVFZero ∨ ∃ y : M, iVF y ∧ iVFMul x y = iVFOne := by sorry
 section VFField
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
-/-- The `VF` sort of an `ACVF`-model, as a type. -/ def VFType : Type :=
-  { x : M // iVF x }
-instance vfInstZero : Zero (VFType (M := M)) :=
-  ⟨⟨iVFZero, vf_zero_mem hM⟩⟩
-instance vfInstOne : One (VFType (M := M)) :=
-  ⟨⟨iVFOne, vf_one_mem hM⟩⟩
-instance vfInstAdd : Add (VFType (M := M)) :=
-  ⟨fun x y => ⟨iVFAdd x.1 y.1, vf_add_mem hM x.2 y.2⟩⟩
-instance vfInstNeg : Neg (VFType (M := M)) :=
-  ⟨fun x => ⟨iVFNeg x.1, vf_neg_mem hM x.2⟩⟩
-instance vfInstMul : Mul (VFType (M := M)) :=
-  ⟨fun x y => ⟨iVFMul x.1 y.1, vf_mul_mem hM x.2 y.2⟩⟩
+/-- The `VF` sort of an `ACVF`-model, as a type. -/ def VFType : Type := { x : M // iVF x }
+instance vfInstZero : Zero (VFType (M := M)) := ⟨⟨iVFZero, vf_zero_mem hM⟩⟩
+instance vfInstOne : One (VFType (M := M)) := ⟨⟨iVFOne, vf_one_mem hM⟩⟩
+instance vfInstAdd : Add (VFType (M := M)) := ⟨fun x y => ⟨iVFAdd x.1 y.1, vf_add_mem hM x.2 y.2⟩⟩
+instance vfInstNeg : Neg (VFType (M := M)) := ⟨fun x => ⟨iVFNeg x.1, vf_neg_mem hM x.2⟩⟩
+instance vfInstMul : Mul (VFType (M := M)) := ⟨fun x y => ⟨iVFMul x.1 y.1, vf_mul_mem hM x.2 y.2⟩⟩
 /-- The inverse on the `VF` sort: `0⁻¹ = 0`, and a nonzero element inverts by the invertibility law. -/ noncomputable def vfInvFun (x : VFType (M := M)) : VFType (M := M) := by
   classical
     exact
@@ -382,11 +309,10 @@ instance vfInstMul : Mul (VFType (M := M)) :=
     else
       let w := (vf_mul_inv_or_zero hM x.2).resolve_left h
       ⟨Classical.choose w, (Classical.choose_spec w).1⟩
-noncomputable instance vfInstInv : Inv (VFType (M := M)) :=
-  ⟨vfInvFun⟩
+noncomputable instance vfInstInv : Inv (VFType (M := M)) := ⟨vfInvFun⟩
 theorem vfInv_zero : (0 : VFType (M := M))⁻¹ = 0 := by sorry
-/-- **The `VF` sort is a field.** -/ noncomputable def vfFieldOfModel : Field (VFType (M := M)) :=
-  Field.ofMinimalAxioms (VFType (M := M)) (fun a b c => Subtype.ext (vf_add_assoc hM a.2 b.2 c.2))
+theorem vfInv_val {x : VFType (M := by sorry
+/-- **The `VF` sort is a field.** -/ noncomputable def vfFieldOfModel : Field (VFType (M := M)) := Field.ofMinimalAxioms (VFType (M := M)) (fun a b c => Subtype.ext (vf_add_assoc hM a.2 b.2 c.2))
     (fun a =>
       Subtype.ext
         (by
@@ -418,8 +344,7 @@ open SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Milestone0.VFValued
 section Model
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
-/-- The `Field` structure on the `VF` sort, as an instance, so that `IsValPred`'s `CommRing` requirement is discharged by typeclass search. -/ noncomputable instance instFieldVFType : Field (Transfer.VFType (M := M)) :=
-  Transfer.vfFieldOfModel (M := M) (hM := hM)
+/-- The `Field` structure on the `VF` sort, as an instance, so that `IsValPred`'s `CommRing` requirement is discharged by typeclass search. -/ noncomputable instance instFieldVFType : Field (Transfer.VFType (M := M)) := Transfer.vfFieldOfModel (M := M) (hM := hM)
 end Model
 end SpecialTransformations.Milestone0.VFValued
 end
@@ -429,29 +354,17 @@ open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 open SpecialTransformations.Milestone0.Transfer
 namespace SpecialTransformations.Section5
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
-abbrev VF :=
-  VFType (M := M)
-abbrev RV :=
-  { t : M // iRV t }
-abbrev Point (n m : ℕ) :=
-  (Fin n → VF (M := M)) × (Fin m → RV (M := M))
-abbrev Key (n m : ℕ) :=
-  (Fin n → RV (M := M)) × (Fin m → RV (M := M))
-def rv (x : VF (M := M)) : RV (M := M) :=
-  ⟨iRv x.val, rv_mem hM x.property⟩
-def key {n m : ℕ} (p : Point (M := M) n m) : Key (M := M) n m :=
-  (fun i => rv (p.1 i), p.2)
-def SameRV {n m : ℕ} (p q : Point (M := M) n m) : Prop :=
-  key p = key q
-def hull {n m : ℕ} (A : Set (Point (M := M) n m)) : Set (Point (M := M) n m) :=
-  {q | ∃ p ∈ A, SameRV p q}
-def IsRVPullback {n m : ℕ} (A : Set (Point (M := M) n m)) : Prop :=
-  hull A = A
-/-- The canonical bijection appends all current VF leading terms. -/ def canonical {n m : ℕ} (p : Point (M := M) n m) : Point (M := M) n (n + m) :=
-  (p.1, Fin.append (fun i => rv (p.1 i)) p.2)
+abbrev VF := VFType (M := M)
+abbrev RV := { t : M // iRV t }
+abbrev Point (n m : ℕ) := (Fin n → VF (M := M)) × (Fin m → RV (M := M))
+abbrev Key (n m : ℕ) := (Fin n → RV (M := M)) × (Fin m → RV (M := M))
+def rv (x : VF (M := M)) : RV (M := M) := ⟨iRv x.val, rv_mem hM x.property⟩
+def key {n m : ℕ} (p : Point (M := M) n m) : Key (M := M) n m := (fun i => rv (p.1 i), p.2)
+def SameRV {n m : ℕ} (p q : Point (M := M) n m) : Prop := key p = key q
+def hull {n m : ℕ} (A : Set (Point (M := M) n m)) : Set (Point (M := M) n m) := {q | ∃ p ∈ A, SameRV p q}
+def IsRVPullback {n m : ℕ} (A : Set (Point (M := M) n m)) : Prop := hull A = A
+/-- The canonical bijection appends all current VF leading terms. -/ def canonical {n m : ℕ} (p : Point (M := M) n m) : Point (M := M) n (n + m) := (p.1, Fin.append (fun i => rv (p.1 i)) p.2)
 end SpecialTransformations.Section5
-#check @SpecialTransformations.Section5.canonical_image_pullback
-#print axioms SpecialTransformations.Section5.canonical_image_pullback
 end
 section
 open FirstOrder FirstOrder.Language
@@ -469,14 +382,10 @@ structure Space (L : Language) (M : Type) [L.Structure M] where
 attribute [instance] Space.finiteIndex
 namespace Space
 variable (P Q R : Space L M)
-def preimage (A : Set P.Carrier) : Set (P.Index → M) :=
-  {z | ∃ hz : z ∈ P.domain, P.decode ⟨z, hz⟩ ∈ A}
-def relation (r : P.Carrier → Q.Carrier → Prop) : Set (P.Index ⊕ Q.Index → M) :=
-  {z | ∃ hx : z ∘ Sum.inl ∈ P.domain, ∃ hy : z ∘ Sum.inr ∈ Q.domain, r (P.decode ⟨z ∘ Sum.inl, hx⟩) (Q.decode ⟨z ∘ Sum.inr, hy⟩)}
-def Definable (S : Set M) (A : Set P.Carrier) : Prop :=
-  S.Definable L (P.preimage A)
-def RelationDefinable (S : Set M) (r : P.Carrier → Q.Carrier → Prop) : Prop :=
-  S.Definable L (P.relation Q r)
+def preimage (A : Set P.Carrier) : Set (P.Index → M) := {z | ∃ hz : z ∈ P.domain, P.decode ⟨z, hz⟩ ∈ A}
+def relation (r : P.Carrier → Q.Carrier → Prop) : Set (P.Index ⊕ Q.Index → M) := {z | ∃ hx : z ∘ Sum.inl ∈ P.domain, ∃ hy : z ∘ Sum.inr ∈ Q.domain, r (P.decode ⟨z ∘ Sum.inl, hx⟩) (Q.decode ⟨z ∘ Sum.inr, hy⟩)}
+def Definable (S : Set M) (A : Set P.Carrier) : Prop := S.Definable L (P.preimage A)
+def RelationDefinable (S : Set M) (r : P.Carrier → Q.Carrier → Prop) : Prop := S.Definable L (P.relation Q r)
 theorem definable_univ (S : Set M) : P.Definable S Set.univ := by sorry
 end Space
 namespace Space
@@ -509,8 +418,8 @@ end Space
   definable : P.Definable S carrier
 namespace DefSet
 variable {P Q : Space L M} {S : Set M}
-def univ (P : Space L M) (S : Set M) : DefSet P S :=
-  ⟨Set.univ, P.definable_univ S⟩
+instance : CoeSort (DefSet P S) Type := ⟨fun A => A.carrier⟩
+def univ (P : Space L M) (S : Set M) : DefSet P S := ⟨Set.univ, P.definable_univ S⟩
 end DefSet
 /-- A genuine function of subtypes, with its entire graph definable. -/ structure Map {P Q : Space L M} {S : Set M} (A : DefSet P S) (B : DefSet Q S) where
   toFun : A → B
@@ -518,10 +427,10 @@ end DefSet
 namespace Map
 variable {P Q R : Space L M} {S : Set M}
 variable {A : DefSet P S} {B : DefSet Q S} {C : DefSet R S}
+instance : CoeFun (Map A B) (fun _ => A → B) := ⟨Map.toFun⟩
 def id (A : DefSet P S) : Map A A where
   toFun := _root_.id
-  graph_definable :=
-    ((A.definable.left_relation P P).inter P P (P.relation_eq_definable S)).congr P P
+  graph_definable :=   ((A.definable.left_relation P P).inter P P (P.relation_eq_definable S)).congr P P
       (by
         intro x y
         constructor
@@ -531,8 +440,7 @@ def id (A : DefSet P S) : Map A A where
           exact ⟨a.property, rfl⟩)
 def comp (g : Map B C) (f : Map A B) : Map A C where
   toFun a := g (f a)
-  graph_definable :=
-    (f.graph_definable.comp P Q R g.graph_definable).congr P R
+  graph_definable :=   (f.graph_definable.comp P Q R g.graph_definable).congr P R
       (by
         intro x z
         constructor
@@ -552,46 +460,34 @@ open SpecialTransformations.Milestone0
 open SpecialTransformations.Milestone0.LRV
 namespace CanonicalStructure
 variable {M : Type} [sM : LRV.Structure M]
-def sortZero (s : SortTag) : M :=
-  match s with
+def sortZero (s : SortTag) : M := match s with
   | .vf => Transfer.iVFZero
   | .rv => iRVZero
 /-- Correctly sorted applications retain their original interpretation. Wrong-sort applications return the named zero of the result sort. -/ @[instance_reducible]
 noncomputable def normalize : LRV.Structure M where
   funMap f xs := if ∀ i, sortEval (Fn.argSort f i) (xs i) then Structure.funMap (L := LRV) f xs else sortZero (Fn.resSort f)
   RelMap r
-    xs :=
-    match r with
+    xs :=   match r with
     | .memVF => Structure.RelMap (L := LRV) Rel.memVF xs
     | .memRV => Structure.RelMap (L := LRV) Rel.memRV xs
     | .memUnits => Structure.RelMap (L := LRV) Rel.memUnits xs
     | .rvLe => (∀ i, sortEval .rv (xs i)) ∧ Structure.RelMap (L := LRV) Rel.rvLe xs
 end CanonicalStructure
-#print axioms CanonicalStructure.rvInv_mul
-#print axioms CanonicalStructure.rvInv_eq_chosen
-#print axioms CanonicalStructure.term_normalize
-#print axioms CanonicalStructure.realize_normalize
-#print axioms CanonicalStructure.normalized_model
-#print axioms CanonicalStructure.normalize_isCanonical
-#print axioms CanonicalStructure.hasQE_of_canonical
 end
 section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Section3
 variable {M : Type} [LRV.Structure M]
-def FinitelySatisfiable {α : Type} {n : ℕ} (v : α → M) (p : Set (LRV.BoundedFormula α n)) : Prop :=
-  ∀ l : List (LRV.BoundedFormula α n), (∀ φ ∈ l, φ ∈ p) → ∃ x : Fin n → M, ∀ φ ∈ l, φ.Realize v x
-def Saturated (M : Type) [LRV.Structure M] (κ : Cardinal) : Prop :=
-  ∀ (α : Type) (v : α → M), Cardinal.mk α < κ → ∀ {n : ℕ} (p : Set (LRV.BoundedFormula α n)), FinitelySatisfiable v p → ∃ x : Fin n → M, ∀ φ ∈ p, φ.Realize v x
+def FinitelySatisfiable {α : Type} {n : ℕ} (v : α → M) (p : Set (LRV.BoundedFormula α n)) : Prop := ∀ l : List (LRV.BoundedFormula α n), (∀ φ ∈ l, φ ∈ p) → ∃ x : Fin n → M, ∀ φ ∈ l, φ.Realize v x
+def Saturated (M : Type) [LRV.Structure M] (κ : Cardinal) : Prop := ∀ (α : Type) (v : α → M), Cardinal.mk α < κ → ∀ {n : ℕ} (p : Set (LRV.BoundedFormula α n)), FinitelySatisfiable v p → ∃ x : Fin n → M, ∀ φ ∈ p, φ.Realize v x
 end SpecialTransformations.Section3
 end
 section
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.Coordinates
 variable {M : Type} [LRV.Structure M] {ι : Type}
-abbrev Tuple (σ : ι → SortTag) :=
-  ∀ i, { x : M // sortEval (σ i) x }
+abbrev Tuple (σ : ι → SortTag) := ∀ i, { x : M // sortEval (σ i) x }
 end SpecialTransformations.Section3.Coordinates
 end
 section
@@ -602,10 +498,10 @@ open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 open SpecialTransformations.Section3
 namespace SpecialTransformations.Section4
 variable {M : Type} [sM : LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
-abbrev Space :=
-  @DefinableGeometry.Space LRV M (CanonicalStructure.normalize (M := M))
-abbrev RawDefinable (S : Set M) {ι : Type} (A : Set (ι → M)) :=
-  @Set.Definable M S LRV (CanonicalStructure.normalize (M := M)) ι A
+abbrev Space := @DefinableGeometry.Space LRV M (CanonicalStructure.normalize (M := M))
+abbrev RawDefinable (S : Set M) {ι : Type} (A : Set (ι → M)) := @Set.Definable M S LRV (CanonicalStructure.normalize (M := M)) ι A
+theorem coordinate_equality_definable (S : Set M) {ι : Type} (i j : ι) : RawDefinable S {z : ι → M | z i = z j} := by sorry
+theorem tuple_domain_definable (S : Set M) {ι : Type} [Finite ι] (σ : ι → SortTag) : RawDefinable S {z : ι → M | ∀ i, sortEval (σ i) (z i)} := by sorry
 /-- The full finite product of any specified real sorts. -/ def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) := by
   let X := Coordinates.Tuple (M := M) σ
   let D : Set (ι → M) := {z | ∀ i, sortEval (σ i) (z i)}
@@ -632,10 +528,8 @@ abbrev RawDefinable (S : Set M) {ι : Type} (A : Set (ι → M)) :=
           exact ⟨hx, hy, fun i => congrArg Subtype.val (congrFun he i)⟩
         · rintro ⟨hx, hy, he⟩
           exact ⟨hx, hy, funext (fun i => Subtype.ext (he i))⟩ }
-abbrev vfSpace (n : ℕ) : Space (M := M) :=
-  realSpace (fun _ : Fin n => .vf)
-abbrev rvSpace (n : ℕ) : Space (M := M) :=
-  realSpace (fun _ : Fin n => .rv)
+abbrev vfSpace (n : ℕ) : Space (M := M) := realSpace (fun _ : Fin n => .vf)
+abbrev rvSpace (n : ℕ) : Space (M := M) := realSpace (fun _ : Fin n => .rv)
 end SpecialTransformations.Section4
 end
 section
@@ -645,8 +539,7 @@ variable {L : Language} {M : Type} [L.Structure M]
 namespace Map
 variable {P Q R : Space L M} {S : Set M}
 variable {A : DefSet P S} {B : DefSet Q S} {C : DefSet R S}
-def image (f : Map A B) : DefSet Q S :=
-  ⟨Set.range (fun a => (f a).val), f.definable_image⟩
+def image (f : Map A B) : DefSet Q S := ⟨Set.range (fun a => (f a).val), f.definable_image⟩
 def toImage (f : Map A B) : Map A f.image where
   toFun a := ⟨(f a).val, Set.mem_range_self a⟩
   graph_definable := f.graph_definable
@@ -696,8 +589,7 @@ namespace Map
 variable {P Q : Space L M} {S : Set M} {A : DefSet P S} {B : DefSet Q S}
 /-- A definable bijection has a definable inverse over the same base. -/ noncomputable def inverse (f : Map A B) (hf : Function.Bijective f) : Map B A where
   toFun := (Equiv.ofBijective f hf).symm
-  graph_definable :=
-    (f.graph_definable.swap P Q).congr Q P
+  graph_definable :=   (f.graph_definable.swap P Q).congr Q P
       (by
         intro y x
         let e : A ≃ B := Equiv.ofBijective f hf
@@ -724,12 +616,9 @@ open SpecialTransformations.Milestone0.Transfer
 namespace SpecialTransformations.Section5
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 variable {n m : ℕ}
-noncomputable def replace (j : Fin n) (p : Point (M := M) n m) (a : VF (M := M)) : Point (M := M) n m :=
-  (Function.update p.1 j a, p.2)
-noncomputable def erase (j : Fin n) (p : Point (M := M) n m) : Point (M := M) n m :=
-  replace j p 0
-def Tagged (A : Set (Point (M := M) n m)) (j : Fin n) (k : Fin m) : Prop :=
-  ∀ p ∈ A, p.2 k = rv (p.1 j)
+noncomputable def replace (j : Fin n) (p : Point (M := M) n m) (a : VF (M := M)) : Point (M := M) n m := (Function.update p.1 j a, p.2)
+noncomputable def erase (j : Fin n) (p : Point (M := M) n m) : Point (M := M) n m := replace j p 0
+def Tagged (A : Set (Point (M := M) n m)) (j : Fin n) (k : Fin m) : Prop := ∀ p ∈ A, p.2 k = rv (p.1 j)
 structure FocusGeometry (A : Set (Point (M := M) n m)) (j : Fin n) (k : Fin m) where
   tagged : Tagged A j k
   locus : Set (Point (M := M) n m)
@@ -740,8 +629,7 @@ structure FocusGeometry (A : Set (Point (M := M) n m)) (j : Fin n) (k : Fin m) w
   center_mem : ∀ p ∈ A ∩ locus, replace j p (center p) ∈ locus
 namespace FocusGeometry
 variable {A : Set (Point (M := M) n m)} {j : Fin n} {k : Fin m}
-noncomputable def eta (D : FocusGeometry A j k) (p : Point (M := M) n m) : Point (M := M) n m :=
-  if p ∈ D.locus then replace j p (p.1 j - D.center p) else p
+noncomputable def eta (D : FocusGeometry A j k) (p : Point (M := M) n m) : Point (M := M) n m := if p ∈ D.locus then replace j p (p.1 j - D.center p) else p
 end FocusGeometry
 end SpecialTransformations.Section5
 set_option backward.isDefEq.respectTransparency false
@@ -752,50 +640,30 @@ open SpecialTransformations.Milestone0.Transfer
 open SpecialTransformations.DefinableGeometry
 namespace SpecialTransformations.Section5
 variable {M : Type} [sM : LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
-abbrev PresentedSpace :=
-  @DefinableGeometry.Space LRV M (CanonicalStructure.normalize (M := M))
-abbrev pointSpace (n m : ℕ) : PresentedSpace (M := M) :=
-  @DefinableGeometry.Space.prod LRV M (CanonicalStructure.normalize (M := M)) (Section4.vfSpace n) (Section4.rvSpace m)
-abbrev PresentedSet (P : PresentedSpace (M := M)) (S : Set M) :=
-  @DefinableGeometry.DefSet LRV M (CanonicalStructure.normalize (M := M)) P S
-abbrev Carrier (P : PresentedSpace (M := M)) :=
-  @DefinableGeometry.Space.Carrier LRV M (CanonicalStructure.normalize (M := M)) P
-abbrev SetDefinable (P : PresentedSpace (M := M)) (S : Set M) (A : Set (Carrier P)) :=
-  @DefinableGeometry.Space.Definable LRV M (CanonicalStructure.normalize (M := M)) P S A
-abbrev RelationDefinable (P Q : PresentedSpace (M := M)) (S : Set M) (r : Carrier P → Carrier Q → Prop) :=
-  @DefinableGeometry.Space.RelationDefinable LRV M (CanonicalStructure.normalize (M := M)) P Q S r
-abbrev DefSet (S : Set M) (n m : ℕ) :=
-  PresentedSet (pointSpace (M := M) n m) S
-abbrev carrier {P : PresentedSpace (M := M)} {S : Set M} (A : PresentedSet P S) :=
-  @DefinableGeometry.DefSet.carrier LRV M (CanonicalStructure.normalize (M := M)) P S A
-abbrev Map {P Q : PresentedSpace (M := M)} {S : Set M} (A : PresentedSet P S) (B : PresentedSet Q S) :=
-  @DefinableGeometry.Map LRV M (CanonicalStructure.normalize (M := M)) P Q S A B
+abbrev PresentedSpace := @DefinableGeometry.Space LRV M (CanonicalStructure.normalize (M := M))
+abbrev pointSpace (n m : ℕ) : PresentedSpace (M := M) := @DefinableGeometry.Space.prod LRV M (CanonicalStructure.normalize (M := M)) (Section4.vfSpace n) (Section4.rvSpace m)
+abbrev PresentedSet (P : PresentedSpace (M := M)) (S : Set M) := @DefinableGeometry.DefSet LRV M (CanonicalStructure.normalize (M := M)) P S
+abbrev Carrier (P : PresentedSpace (M := M)) := @DefinableGeometry.Space.Carrier LRV M (CanonicalStructure.normalize (M := M)) P
+abbrev SetDefinable (P : PresentedSpace (M := M)) (S : Set M) (A : Set (Carrier P)) := @DefinableGeometry.Space.Definable LRV M (CanonicalStructure.normalize (M := M)) P S A
+abbrev RelationDefinable (P Q : PresentedSpace (M := M)) (S : Set M) (r : Carrier P → Carrier Q → Prop) := @DefinableGeometry.Space.RelationDefinable LRV M (CanonicalStructure.normalize (M := M)) P Q S r
+abbrev DefSet (S : Set M) (n m : ℕ) := PresentedSet (pointSpace (M := M) n m) S
+abbrev carrier {P : PresentedSpace (M := M)} {S : Set M} (A : PresentedSet P S) := @DefinableGeometry.DefSet.carrier LRV M (CanonicalStructure.normalize (M := M)) P S A
+abbrev Map {P Q : PresentedSpace (M := M)} {S : Set M} (A : PresentedSet P S) (B : PresentedSet Q S) := @DefinableGeometry.Map LRV M (CanonicalStructure.normalize (M := M)) P Q S A B
 namespace PresentedSet
-abbrev univ :=
-  @DefinableGeometry.DefSet.univ LRV M (CanonicalStructure.normalize (M := M))
+abbrev univ := @DefinableGeometry.DefSet.univ LRV M (CanonicalStructure.normalize (M := M))
 end PresentedSet
 namespace Map
-abbrev mk :=
-  @DefinableGeometry.Map.mk LRV M (CanonicalStructure.normalize (M := M))
-abbrev ofCodes :=
-  @DefinableGeometry.Map.ofCodes LRV M (CanonicalStructure.normalize (M := M))
-abbrev id :=
-  @DefinableGeometry.Map.id LRV M (CanonicalStructure.normalize (M := M))
-abbrev comp :=
-  @DefinableGeometry.Map.comp LRV M (CanonicalStructure.normalize (M := M))
-abbrev image :=
-  @DefinableGeometry.Map.image LRV M (CanonicalStructure.normalize (M := M))
-abbrev toImage :=
-  @DefinableGeometry.Map.toImage LRV M (CanonicalStructure.normalize (M := M))
-abbrev inverse :=
-  @DefinableGeometry.Map.inverse LRV M (CanonicalStructure.normalize (M := M))
+abbrev mk := @DefinableGeometry.Map.mk LRV M (CanonicalStructure.normalize (M := M))
+abbrev ofCodes := @DefinableGeometry.Map.ofCodes LRV M (CanonicalStructure.normalize (M := M))
+abbrev id := @DefinableGeometry.Map.id LRV M (CanonicalStructure.normalize (M := M))
+abbrev comp := @DefinableGeometry.Map.comp LRV M (CanonicalStructure.normalize (M := M))
+abbrev image := @DefinableGeometry.Map.image LRV M (CanonicalStructure.normalize (M := M))
+abbrev toImage := @DefinableGeometry.Map.toImage LRV M (CanonicalStructure.normalize (M := M))
+abbrev inverse := @DefinableGeometry.Map.inverse LRV M (CanonicalStructure.normalize (M := M))
 end Map
-def rvCode (x : M) : M :=
-  @iRv M (CanonicalStructure.normalize (M := M)) x
-def canonicalCodes {n m : ℕ} (z : Fin n ⊕ Fin m → M) : Fin n ⊕ Fin (n + m) → M :=
-  Sum.elim (z ∘ Sum.inl) (Fin.append (fun i => rvCode (z (.inl i))) (z ∘ Sum.inr))
-def canonicalMap {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : Map A (PresentedSet.univ (pointSpace n (n + m)) S) :=
-  Map.ofCodes (M := M) (sM := sM) (P := pointSpace n m) (Q := pointSpace n (n + m)) A (@canonical M sM hM n m) (canonicalCodes (M := M) (sM := sM) (n := n) (m := m))
+def rvCode (x : M) : M := @iRv M (CanonicalStructure.normalize (M := M)) x
+def canonicalCodes {n m : ℕ} (z : Fin n ⊕ Fin m → M) : Fin n ⊕ Fin (n + m) → M := Sum.elim (z ∘ Sum.inl) (Fin.append (fun i => rvCode (z (.inl i))) (z ∘ Sum.inr))
+def canonicalMap {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : Map A (PresentedSet.univ (pointSpace n (n + m)) S) := Map.ofCodes (M := M) (sM := sM) (P := pointSpace n m) (Q := pointSpace n (n + m)) A (@canonical M sM hM n m) (canonicalCodes (M := M) (sM := sM) (n := n) (m := m))
     (by
       intro i
       cases i with
@@ -823,8 +691,7 @@ def canonicalMap {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : Map A (Pr
       · apply Subtype.ext
         simpa [canonicalCodes, canonical, rv] using rvCode_eq (sM := sM) (c.val (Sum.inl j)) (by simpa [Function.comp_def, sortEval, iVF] using c.property.1 j)
       · simp [canonicalCodes, canonical])
-def canonicalImage {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : DefSet (M := M) S n (n + m) :=
-  Map.image (canonicalMap A)
+def canonicalImage {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : DefSet (M := M) S n (n + m) := Map.image (canonicalMap A)
 end SpecialTransformations.Section5
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
@@ -840,8 +707,7 @@ structure Focus (A : DefSet (M := M) S n m) (j : Fin n) (k : Fin m) extends Focu
   center_graph : RelationDefinable (pointSpace n m) (Section4.vfSpace 1) S (fun p z => p ∈ carrier A ∩ locus ∧ z 0 = center p)
 namespace Focus
 variable {A : DefSet (M := M) S n m} {j : Fin n} {k : Fin m}
-noncomputable def etaMap (D : Focus A j k) : Map A (PresentedSet.univ (pointSpace n m) S) :=
-  Map.mk (fun p => ⟨D.toFocusGeometry.eta p.val, Set.mem_univ _⟩)
+noncomputable def etaMap (D : Focus A j k) : Map A (PresentedSet.univ (pointSpace n m) S) := Map.mk (fun p => ⟨D.toFocusGeometry.eta p.val, Set.mem_univ _⟩)
     (RelationDefinable.congr _ _ (RelationDefinable.union _ _ (Map.graph_definable D.activeMap) (Map.graph_definable D.inactiveMap))
       (by
         intro p q
@@ -859,8 +725,7 @@ noncomputable def etaMap (D : Focus A j k) : Map A (PresentedSet.univ (pointSpac
           · right
             refine ⟨⟨a.val, a.property, hc⟩, rfl, ?_⟩
             simpa [FocusGeometry.eta, hc] using he))
-noncomputable def etaImage (D : Focus A j k) : DefSet (M := M) S n m :=
-  Map.image D.etaMap
+noncomputable def etaImage (D : Focus A j k) : DefSet (M := M) S n m := Map.image D.etaMap
 end Focus
 end SpecialTransformations.Section5
 set_option backward.isDefEq.respectTransparency false
@@ -891,8 +756,7 @@ noncomputable def toMap {m₁ m₂ : ℕ} {X : DefSet (M := M) S n m₁} {Y : De
   | .nil _ => True
   | .cons (.canonical _) tail => previous ≠ some false ∧ tail.Alternating (some false)
   | .cons (.centripetal _) tail => previous ≠ some true ∧ tail.Alternating (some true)
-def append {m₁ m₂ m₃ : ℕ} {X : DefSet (M := M) S n m₁} {Y : DefSet (M := M) S n m₂} {Z : DefSet (M := M) S n m₃} (t : Chain S n X Y) (u : Chain S n Y Z) : Chain S n X Z :=
-  match t with
+def append {m₁ m₂ m₃ : ℕ} {X : DefSet (M := M) S n m₁} {Y : DefSet (M := M) S n m₂} {Z : DefSet (M := M) S n m₃} (t : Chain S n X Y) (u : Chain S n Y Z) : Chain S n X Z := match t with
   | .nil _ => u
   | .cons p tail => .cons p (tail.append u)
 end Chain
@@ -902,14 +766,11 @@ structure SpecialBijection {S : Set M} {n m l : ℕ} (A : DefSet (M := M) S n m)
 namespace SpecialBijection
 variable {S : Set M} {n m l k : ℕ}
 variable {A : DefSet (M := M) S n m} {B : DefSet (M := M) S n l} {C : DefSet (M := M) S n k}
-noncomputable def toMap (T : SpecialBijection A B) : Map A B :=
-  T.chain.toMap
+noncomputable def toMap (T : SpecialBijection A B) : Map A B := T.chain.toMap
 theorem bijective (T : SpecialBijection A B) : Function.Bijective T.toMap := by sorry
-/-- The inverse, including a single centrifugal transformation, has its full graph definable over the original base. -/ noncomputable def inverseMap (T : SpecialBijection A B) : Map B A :=
-  Map.inverse T.toMap T.bijective
+/-- The inverse, including a single centrifugal transformation, has its full graph definable over the original base. -/ noncomputable def inverseMap (T : SpecialBijection A B) : Map B A := Map.inverse T.toMap T.bijective
 end SpecialBijection
-def IsDeformedRVPullback {S : Set M} {n m : ℕ} (A : DefSet (M := M) S n m) : Prop :=
-  ∃ l : ℕ, ∃ B : DefSet (M := M) S n l, Nonempty (SpecialBijection A B) ∧ IsRVPullback (carrier B)
+def IsDeformedRVPullback {S : Set M} {n m : ℕ} (A : DefSet (M := M) S n m) : Prop := ∃ l : ℕ, ∃ B : DefSet (M := M) S n l, Nonempty (SpecialBijection A B) ∧ IsRVPullback (carrier B)
 end SpecialTransformations.Section5
 end
 end
@@ -925,13 +786,8 @@ open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 open SpecialTransformations.Milestone0.Transfer
 namespace SpecialTransformations.Section5
 variable {M : Type} [sM : LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
-/-- A typed coordinate accessor keeps the shared VF field instance visible when a point is carried by a definable presentation. -/ def vfAt {n m : ℕ} (p : Point (M := M) n m) (i : Fin n) : VF (M := M) :=
-  p.1 i
+/-- A typed coordinate accessor keeps the shared VF field instance visible when a point is carried by a definable presentation. -/ def vfAt {n m : ℕ} (p : Point (M := M) n m) (i : Fin n) : VF (M := M) := p.1 i
 end SpecialTransformations.Section5
-#check @SpecialTransformations.Section5.SpecialBijection.preserves_pullback
-#print axioms SpecialTransformations.Section5.SpecialBijection.preserves_pullback
-#check @SpecialTransformations.Section5.SpecialBijection.remark_5_3
-#print axioms SpecialTransformations.Section5.SpecialBijection.remark_5_3
 end
 end
 section
@@ -945,7 +801,6 @@ open SpecialTransformations.DefinableGeometry
 namespace SpecialTransformations.Section5
 variable {M : Type} [sM : LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 local notation "N" => (@CanonicalStructure.normalize M sM)
-local notation "hN" => (@CanonicalStructure.normalized_model M sM hM)
 namespace Paper
 theorem theorem_5_5 {κ : Cardinal} (hs : Saturated M κ) (h00 : M ⊨ Axioms.ACVF00)
     {S : Set M} (hsmall : Cardinal.mk S < κ) {n m : ℕ}
