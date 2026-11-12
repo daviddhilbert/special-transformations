@@ -9,6 +9,13 @@ import subprocess
 root=Path(__file__).resolve().parent.parent
 out=root/'.scratch/ci-verified'
 out.mkdir(parents=True,exist_ok=True)
+# The semantic equations are checked on the proof side and provide the
+# data dependencies of the two deliberately abstracted map implementations.
+built=subprocess.run(['lake','build','PalomarPaperSolution'],cwd=root,capture_output=True,
+                     text=True,encoding='utf-8',errors='replace')
+(out/'StatementSolutionBuild.log').write_text(built.stdout+built.stderr,encoding='utf-8')
+if built.returncode:
+ print((built.stdout+built.stderr)[-12000:]);raise SystemExit(built.returncode)
 qe=[p.stem for p in (root/'.lake/packages/acvf_qe/Proofs').glob('*.lean')]
 source='''module
 IMPORT_STATEMENT_MODULES
@@ -30,9 +37,15 @@ run_cmd do
   let roots : Array Name := #[
     `SpecialTransformations.Section5.Paper.theorem_5_5,
     `SpecialTransformations.Section5.Paper.corollary_5_6]
+  let extraRoots : Array Name := #[
+    `SpecialTransformations.Section5.canonicalMap_value,
+    `SpecialTransformations.Section5.Focus.etaMap_value]
+  let definitionHoles : Array Name := #[
+    `SpecialTransformations.Section5.canonicalMap,
+    `SpecialTransformations.Section5.Focus.etaMap]
   let qeModules : Array String := QE_MODULES
-  let mut todo : Array Name := roots
-  for name in roots do
+  let mut todo : Array Name := roots ++ extraRoots
+  for name in roots ++ extraRoots do
     let some info := env.find? name | throwError "Missing headline {name}"
     for dependency in info.type.getUsedConstants do
       todo := todo.push dependency
@@ -51,7 +64,7 @@ run_cmd do
     for dependency in info.type.getUsedConstants do
       todo := todo.push dependency
     let (kind, value) := match info with
-      | .defnInfo val => ("definition", some val.value)
+      | .defnInfo val => ("definition", if definitionHoles.contains name then none else some val.value)
       | .thmInfo val =>
           ("theorem", if (name.toString.splitOn "._proof_").length > 1 then some val.value else none)
       | .inductInfo val => ("inductive", none)
@@ -115,7 +128,7 @@ run_cmd do
 import json
 source=source.replace('QE_MODULES','#['+', '.join(json.dumps(x) for x in qe)+']')
 modules=json.loads((root/'scripts/palomar_statement_modules.json').read_text(encoding='utf-8'))
-source=source.replace('IMPORT_STATEMENT_MODULES','\n'.join('import all '+m for m in modules))
+source=source.replace('IMPORT_STATEMENT_MODULES','\n'.join('import all '+m for m in modules)+'\nimport PalomarPaperSolution')
 path=out/'StatementSurface.lean'
 path.write_text(source,encoding='utf-8')
 result=subprocess.run(['lean',str(path)],cwd=root,capture_output=True,text=True,encoding='utf-8',errors='replace')

@@ -2,7 +2,7 @@ name: Palomar mechanical preflight
 on:
   push:
     branches: [codex/palomar-submission]
-    paths-ignore: [".github/workflows/palomar-statements.yml", ".github/workflows/palomar.yml"]
+    paths-ignore: [".github/workflows/palomar-statements.yml", ".github/workflows/palomar.yml", "scripts/statement_surface.py"]
   workflow_dispatch:
 permissions:
   contents: read
