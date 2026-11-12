@@ -1,5 +1,5 @@
 module
-public import SpecialTransformations
+public import Section5.Surjectivity
 public section
 /-!
 # Proofs of the independently stated special-transformation results

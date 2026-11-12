@@ -35,7 +35,10 @@ The canonical and focus maps are intentional definition holes with
 unconditional pointwise equations. Their Map types require definability over
 the original parameters. The equations fully determine the maps by function
 extensionality and proof irrelevance. `PalomarPaperSolution.lean` proves both
-equations by reflexivity from the existing implementations.
+equations by reflexivity from the existing implementations. The Solution
+imports only `Section5.Surjectivity`, reducing its project import closure
+from 890 modules to the 132 needed for these two results; later sections
+are not built for the selected proof entry point.
 
 Representation lemmas are additional checked Comparator obligations, not
 assumptions of the two principal results. Original module-local matcher and
