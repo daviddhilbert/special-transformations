@@ -24,10 +24,10 @@ open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.Section5
 set_option backward.isDefEq.respectTransparency false
 variable {M : Type} [sM : Milestone0.LRV.Structure M] [hM : M ⊨ Milestone0.Axioms.ACVF]
-theorem canonicalMap_value {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) (a : A) : ((canonicalMap A).toFun a).val = canonical a.val := rfl
+theorem canonicalMap_value {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) (a : A) : (canonicalMap A a).val = canonical a.val := rfl
 namespace Focus
 variable {S : Set M} {n m : ℕ} {A : DefSet (M := M) S n m} {j : Fin n} {k : Fin m}
-theorem etaMap_value (D : Focus A j k) (a : A) : (D.etaMap.toFun a).val = D.toFocusGeometry.eta a.val := rfl
+theorem etaMap_value (D : Focus A j k) (a : A) : (D.etaMap a).val = D.toFocusGeometry.eta a.val := rfl
 end Focus
 end SpecialTransformations.Section5
 #print axioms SpecialTransformations.Section5.canonicalMap_value

@@ -767,7 +767,7 @@ theorem rvCode_definable (S : Set M) {α : Type} (i : α) : RawFun S α (fun z =
 theorem subCode_definable (S : Set M) {α : Type} (i j : α) : RawFun S α (fun z => subCode (z i) (z j)) := by sorry
 def canonicalCodes {n m : ℕ} (z : Fin n ⊕ Fin m → M) : Fin n ⊕ Fin (n + m) → M := Sum.elim (z ∘ Sum.inl) (Fin.append (fun i => rvCode (z (.inl i))) (z ∘ Sum.inr))
 def canonicalMap {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : Map A (PresentedSet.univ (pointSpace n (n + m)) S) := by sorry
-theorem canonicalMap_value {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) (a : A) : ((canonicalMap A).toFun a).val = canonical a.val := by sorry
+theorem canonicalMap_value {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) (a : A) : (canonicalMap A a).val = canonical a.val := by sorry
 def canonicalImage {n m : ℕ} {S : Set M} (A : DefSet (M := M) S n m) : DefSet (M := M) S n (n + m) := Map.image (canonicalMap A)
 end SpecialTransformations.Section5
 set_option backward.isDefEq.respectTransparency false
@@ -839,7 +839,7 @@ def inactiveMap (D : Focus A j k) : Map D.inactive (PresentedSet.univ (pointSpac
 @[simp] theorem activeMap_apply (D : Focus A j k) (p : D.active) : (D.activeMap p).val = replace j p.val (vfSub (p.val.1 j) (D.center p.val)) := by sorry
 @[simp] theorem inactiveMap_apply (D : Focus A j k) (p : D.inactive) : (D.inactiveMap p).val = p.val := by sorry
 noncomputable def etaMap (D : Focus A j k) : Map A (PresentedSet.univ (pointSpace n m) S) := by sorry
-theorem etaMap_value (D : Focus A j k) (a : A) : (D.etaMap.toFun a).val = D.toFocusGeometry.eta a.val := by sorry
+theorem etaMap_value (D : Focus A j k) (a : A) : (D.etaMap a).val = D.toFocusGeometry.eta a.val := by sorry
 noncomputable def etaImage (D : Focus A j k) : DefSet (M := M) S n m := Map.image D.etaMap
 end Focus
 end SpecialTransformations.Section5
