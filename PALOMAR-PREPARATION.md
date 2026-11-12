@@ -51,3 +51,13 @@ requires fresh compilation against this exact pin.
 The next full build reached the final Section 10 modules. Four additional
 helper declarations used by exposed measured-category constructions are
 now public; their statements and proof bodies are unchanged.
+
+Full library compilation and all headline audits passed at f2fbe2e in
+GitHub Actions run 43274534495. The optional dependency inventory failed
+on the obsolete `liftIO` name and now uses the generic `liftM`. Its log
+and generated source are retained. A GitHub-only compiled cache is keyed
+by production Lean sources, toolchain, manifest and Lake configuration;
+cache reuse is not a new source-compilation receipt. The independent
+statement modules are excluded from that production cache key and are
+compiled separately. Palomar full preflight discards submitted build state
+and remains mandatory for the exact final package.

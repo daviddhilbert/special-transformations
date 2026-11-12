@@ -58,7 +58,7 @@ run_cmd do
         todo := todo.push constructor
     rows := rows.push <| Json.mkObj [
       ("name", toJson name.toString), ("module", toJson modName), ("kind", toJson kind)]
-  liftIO <| IO.FS.writeFile ".scratch/ci-verified/StatementSurface.json"
+  liftM <| IO.FS.writeFile ".scratch/ci-verified/StatementSurface.json"
     (Json.pretty <| Json.mkObj [("declarations", Json.arr rows),
       ("count", toJson rows.size), ("status", toJson "inventory only; not verification")])
 '''
@@ -66,4 +66,7 @@ import json
 source=source.replace('QE_MODULES','#['+', '.join(json.dumps(x) for x in qe)+']')
 path=out/'StatementSurface.lean'
 path.write_text(source,encoding='utf-8')
-raise SystemExit(subprocess.run(['lean',str(path)],cwd=root).returncode)
+result=subprocess.run(['lean',str(path)],cwd=root,capture_output=True,text=True,encoding='utf-8',errors='replace')
+(out/'StatementSurface.log').write_text(result.stdout+result.stderr,encoding='utf-8')
+print(result.stdout+result.stderr,end='')
+raise SystemExit(result.returncode)

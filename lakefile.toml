@@ -785,3 +785,7 @@ globs = [
   "Section10.GradedCategories",
   "Section10.ZeroDegree",
 ]
+
+[[lean_lib]]
+name = "PalomarPaperStatements"
+roots = ["PalomarPaperChallenge", "PalomarPaperSolution"]

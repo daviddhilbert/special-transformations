@@ -78,6 +78,15 @@ jobs:
           MATHLIB_CACHE_GET_URL: https://cache.mathlib.org/mathlib4
         run: lake exe cache get
 
+      - name: Restore exact-source compiled project cache
+        id: project_cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .lake/build
+            .lake/packages/acvf_qe/.lake/build
+          key: paper-compiled-v1-${{ hashFiles('**/*.lean', '!PalomarPaperChallenge.lean', '!PalomarPaperSolution.lean', '!.lake/**', '!.scratch/**', 'lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}
+
       - name: Check the pinned QE package's module registration
         run: python3 scripts/prepare_ci.py
 
@@ -85,7 +94,7 @@ jobs:
         id: provenance
         run: python3 scripts/test_lean_provenance.py
 
-      - name: Build the pinned project from source
+      - name: Build the pinned project with exact-source cache
         id: build
         if: ${{ steps.scope.outputs.mode != 'section10' }}
         env:

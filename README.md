@@ -10,7 +10,7 @@ dependencies. [Live blueprint](https://daviddhilbert.github.io/special-transform
 · [Dependency graph](https://daviddhilbert.github.io/special-transformations/dependency-graph.svg)
 · [Source and build instructions](blueprint/README.md)
 
-The full Lean 4.35.0 library build and all 3,543 headline axiom audits
+At the historical closeout, the full Lean 4.35.0 library build and all 3,543 headline axiom audits
 passed at `285f323`. The audit reports list only `propext`,
 `Classical.choice`, and `Quot.sound`. The two Engler–Prestel hypotheses
 remain explicit in the affected results. The blueprint marks the Stacks
@@ -25,7 +25,7 @@ group-level obstruction checked in Lean. [Retraction](Section3/RETRACTIONS.md)
 
 The completed ACF/ACVF/RV quantifier-elimination proofs
 live in [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE), pinned here at
-`939346b0a99899e22a873479364e3cc5d142731c`.
+`8f90dfd22de9f2c821382830eee326d1f0cf4990` on this Palomar preparation branch.
 
 The RV QE result uses the corrected language with a named RV inverse. The
 author confirmed that the omission of inverse symbols before Convention 2.5
