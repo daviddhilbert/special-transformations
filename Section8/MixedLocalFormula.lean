@@ -1,5 +1,9 @@
-import Section8.MixedLocalTerms
-import Section8.RVFibreLocus
+module
+
+public import Section8.MixedLocalTerms
+public import Section8.RVFibreLocus
+
+@[expose] public section
 
 /-! Released QE gives local constancy of the entire RV fibre near an
 algebraically independent VF tuple. The neighbourhood is uniform in

@@ -1,3 +1,5 @@
+module
+
 /-
 **Variable substitution on `L_RV` terms and formulas** — from swarm `smw1jgnht` m6, verified here
 (compiled: exit 0, 0 errors, no `sorry`).
@@ -56,7 +58,9 @@ does not have; the substitution built here is complete and is exactly what that 
 
 No `sorry`, no `axiom`, no `native_decide`.
 -/
-import Sec4Dim
+public import Sec4Dim
+
+@[expose] public section
 set_option linter.unusedVariables false
 open FirstOrder FirstOrder.Language
 

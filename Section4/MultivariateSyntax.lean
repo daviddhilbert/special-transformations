@@ -1,6 +1,10 @@
-import Section4.RealPresentations
-import Section3.PolynomialSyntax
-import Mathlib.Algebra.MvPolynomial.Basic
+module
+
+public import Section4.RealPresentations
+public import Section3.PolynomialSyntax
+public import Mathlib.Algebra.MvPolynomial.Basic
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

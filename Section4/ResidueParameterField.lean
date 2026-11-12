@@ -1,4 +1,8 @@
-import Section4.ResidueScaledFunctions
+module
+
+public import Section4.ResidueScaledFunctions
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

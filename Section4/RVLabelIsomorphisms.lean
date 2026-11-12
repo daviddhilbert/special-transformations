@@ -1,4 +1,8 @@
-import Section4.RVIsoTools
+module
+
+public import Section4.RVIsoTools
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

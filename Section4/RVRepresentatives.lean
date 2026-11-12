@@ -1,5 +1,9 @@
-import Section4.PositiveAdditiveRepresentatives
-import Section4.RVScissorCoproduct
+module
+
+public import Section4.PositiveAdditiveRepresentatives
+public import Section4.RVScissorCoproduct
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

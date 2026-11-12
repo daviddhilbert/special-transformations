@@ -1,4 +1,8 @@
-import Section6.RVGraphLanguage
+module
+
+public import Section6.RVGraphLanguage
+
+@[expose] public section
 
 /-! A full contraction graph in an arbitrary RV-only expansion, retaining
 only named RV parameters from the original base. The native graph is

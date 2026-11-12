@@ -1,7 +1,11 @@
-import Section6.PolynomialFormulaDescent
-import Section6.NamedLanguage
-import Section6.HenselianInputs
-import Section6.NativeOccurrence
+module
+
+public import Section6.PolynomialFormulaDescent
+public import Section6.NamedLanguage
+public import Section6.HenselianInputs
+public import Section6.NativeOccurrence
+
+@[expose] public section
 
 /-! Apply prepared descent to an explicit earlier polynomial normal form.
 The normal-form premise is pointwise replacement, not existential VF

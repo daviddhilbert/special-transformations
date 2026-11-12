@@ -1,5 +1,9 @@
-import Section9.IntegralDerivativeReduction
-import Section9.ValuedPowerBasis
+module
+
+public import Section9.IntegralDerivativeReduction
+public import Section9.ValuedPowerBasis
+
+@[expose] public section
 
 /-! A simple integral generator whose powers form a residue basis
 preserves a valuation bound on derivations. The generator and power

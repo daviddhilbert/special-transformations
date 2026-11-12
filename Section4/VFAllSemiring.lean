@@ -1,4 +1,8 @@
-import Section4.VFProductDistributivity
+module
+
+public import Section4.VFProductDistributivity
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language CategoryTheory
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

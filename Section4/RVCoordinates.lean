@@ -1,5 +1,9 @@
-import Section4.RealPresentations
-import Section3.AlgebraicFinite
+module
+
+public import Section4.RealPresentations
+public import Section3.AlgebraicFinite
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

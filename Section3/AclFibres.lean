@@ -1,3 +1,5 @@
+module
+
 /-
 **A defect in §3's first lemma as frozen: it needs `A ≠ ∅`.**
 
@@ -20,7 +22,9 @@ This file machine-checks the refutation and states the corrected forms.  It says
 whether the corrected form is provable: over a non-saturated model it is a genuine compactness
 statement, over the monster model it follows from saturation (`Sat.MonsterModel.realizes`).
 -/
-import Sec3Infra
+public import Sec3Infra
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 
 open FirstOrder FirstOrder.Language

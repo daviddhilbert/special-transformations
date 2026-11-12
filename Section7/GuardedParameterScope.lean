@@ -1,5 +1,9 @@
-import Section7.GeneratedRVRepresentatives
-import Section3.GuardedRationalNormalForm
+module
+
+public import Section7.GeneratedRVRepresentatives
+public import Section3.GuardedRationalNormalForm
+
+@[expose] public section
 
 /-!
 # Original-base coefficient assignments for all-RV formulas

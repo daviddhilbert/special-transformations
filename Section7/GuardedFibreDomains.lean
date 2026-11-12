@@ -1,4 +1,8 @@
-import Section3.GuardedRVLiterals
+module
+
+public import Section3.GuardedRVLiterals
+
+@[expose] public section
 
 /-!
 # The constant part of the guarded normal form on a fixed value fibre

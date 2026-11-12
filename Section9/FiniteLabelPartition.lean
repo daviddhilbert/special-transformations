@@ -1,4 +1,8 @@
-import Section4.RVRestrictions
+module
+
+public import Section4.RVRestrictions
+
+@[expose] public section
 
 /-! Turn a finite definable cover into a same-base disjoint cover,
 retaining the original piece that contains each new piece. -/

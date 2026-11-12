@@ -1,8 +1,12 @@
-import Section4.MapAlgebraicity
-import Section4.TupleBasis
-import Section7.PolynomialCoordinateMaps
-import Mathlib.FieldTheory.Separable
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+module
+
+public import Section4.MapAlgebraicity
+public import Section4.TupleBasis
+public import Section7.PolynomialCoordinateMaps
+public import Mathlib.FieldTheory.Separable
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,4 +1,8 @@
-import Section5.Core
+module
+
+public import Section5.Core
+
+@[expose] public section
 
 /-!
 # Special bijections preserve RV-pullbacks

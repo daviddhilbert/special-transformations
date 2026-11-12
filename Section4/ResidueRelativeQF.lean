@@ -1,6 +1,10 @@
-import Section4.ResidueScopedContext
-import Section4.RVCoordinates
-import Section3.SortedTuples
+module
+
+public import Section4.ResidueScopedContext
+public import Section4.RVCoordinates
+public import Section3.SortedTuples
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

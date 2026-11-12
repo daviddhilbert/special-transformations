@@ -1,5 +1,9 @@
-import Section4.RVHomogeneousProducts
-import Mathlib.Algebra.DirectSum.Ring
+module
+
+public import Section4.RVHomogeneousProducts
+public import Mathlib.Algebra.DirectSum.Ring
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

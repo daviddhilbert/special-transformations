@@ -1,5 +1,9 @@
-import Section7.ResidueFibreEvaluation
-import Mathlib.Algebra.CharZero.Infinite
+module
+
+public import Section7.ResidueFibreEvaluation
+public import Mathlib.Algebra.CharZero.Infinite
+
+@[expose] public section
 
 /-!
 # The finite weighted-test reduction for Lemma 7.4

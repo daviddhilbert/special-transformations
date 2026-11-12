@@ -1,7 +1,11 @@
-import Section3.MinimalBallFamilies
-import Section3.SortedTuples
-import Section3.BallGeometry
-import Section3.ClosedBallRoots
+module
+
+public import Section3.MinimalBallFamilies
+public import Section3.SortedTuples
+public import Section3.BallGeometry
+public import Section3.ClosedBallRoots
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

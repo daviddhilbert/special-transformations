@@ -1,6 +1,10 @@
-import Section9.WeightedLiftJacobian
-import Section9.MixedJacobianValue
-import Section9.MixedDifferentiationAE
+module
+
+public import Section9.WeightedLiftJacobian
+public import Section9.MixedJacobianValue
+public import Section9.MixedDifferentiationAE
+
+@[expose] public section
 
 /-! A definable exception for the determinant value of a weighted lift.
 The defining test compares the values of `J * ∏ xᵢ` and `∏ yᵢ` in VF,

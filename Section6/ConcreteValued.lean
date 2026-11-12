@@ -1,6 +1,10 @@
-import Section6.ConcreteRV
-import Section6.HenselianTheory
-import CanonicalTheory
+module
+
+public import Section6.ConcreteRV
+public import Section6.HenselianTheory
+public import CanonicalTheory
+
+@[expose] public section
 
 /-! Tagged leading-term structures on ordinary valued fields. -/
 

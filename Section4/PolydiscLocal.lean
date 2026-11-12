@@ -1,8 +1,12 @@
-import Section4.MultivariateLocal
-import Section3.QuantifierFree
-import Section3.BallGeometry
-import Section3.ValuedNeighbourhood
-import Section3.VFAclField
+module
+
+public import Section4.MultivariateLocal
+public import Section3.QuantifierFree
+public import Section3.BallGeometry
+public import Section3.ValuedNeighbourhood
+public import Section3.VFAclField
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

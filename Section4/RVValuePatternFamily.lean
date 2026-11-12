@@ -1,8 +1,12 @@
-import Section4.RVCoordinates
-import Section4.CanonicalNormalization
-import Section3.GammaProjection
-import Section3.GammaGoodRelations
-import Section3.GammaRVSeparation
+module
+
+public import Section4.RVCoordinates
+public import Section4.CanonicalNormalization
+public import Section3.GammaProjection
+public import Section3.GammaGoodRelations
+public import Section3.GammaRVSeparation
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

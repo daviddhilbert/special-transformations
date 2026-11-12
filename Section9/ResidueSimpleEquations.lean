@@ -1,7 +1,11 @@
-import Section4.ResiduePolynomialCover
-import Section4.PureFieldAlgebraicity
-import Section9.GlobalSimpleRootEquations
-import Section7.TupleCoordinates
+module
+
+public import Section4.ResiduePolynomialCover
+public import Section4.PureFieldAlgebraicity
+public import Section9.GlobalSimpleRootEquations
+public import Section7.TupleCoordinates
+
+@[expose] public section
 
 /-! Residue correspondences admit one global equation for each output
 coordinate. Removing repeated factors gives simple roots over independent

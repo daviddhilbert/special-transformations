@@ -1,4 +1,8 @@
-import Section10.EssentialVFGerms
+module
+
+public import Section10.EssentialVFGerms
+
+@[expose] public section
 
 /-! Measure equations on the actual fixed-label charts of essential maps.
 The chain rule and inverse rule are applied after a definable small cut. -/

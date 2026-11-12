@@ -1,4 +1,8 @@
-import Section9.HenselizedGraphData
+module
+
+public import Section9.HenselizedGraphData
+
+@[expose] public section
 
 namespace SpecialTransformations.Section9
 

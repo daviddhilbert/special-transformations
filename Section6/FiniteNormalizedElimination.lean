@@ -1,5 +1,9 @@
-import Section6.UniformNormalizedElimination
-import Section6.RVFragmentRenaming
+module
+
+public import Section6.UniformNormalizedElimination
+public import Section6.RVFragmentRenaming
+
+@[expose] public section
 
 /-! The uniform normalized-form theorem for arbitrary finite VF and
 RV parameter types. Only the variable indices change; FV parameters

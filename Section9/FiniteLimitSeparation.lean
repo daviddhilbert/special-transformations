@@ -1,4 +1,8 @@
-import Section9.LimitGeometry
+module
+
+public import Section9.LimitGeometry
+
+@[expose] public section
 
 /-! The finite limit-set geometry in Lemma 9.4. The separation argument
 includes the paper's formal infinity coordinate. Minimality then forces

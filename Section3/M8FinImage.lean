@@ -1,3 +1,5 @@
+module
+
 /-
 Legacy partial results for Corollary 3.5 and Lemma 3.9 of Yin,
 Special transformations in algebraically closed valued fields.
@@ -17,9 +19,11 @@ not the parameter discipline of Lemma 3.9. Conjugate VF points can have
 distinct conjugate RV images under a function definable over the original
 base. The paper's Lemma 3.9 is not disproved by conjugacy.
 -/
-import Enc
-import Sec3Frozen
-import RVCalc
+public import Enc
+public import Sec3Frozen
+public import RVCalc
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language

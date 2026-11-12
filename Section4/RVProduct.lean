@@ -1,4 +1,8 @@
-import Section4.RVAppend
+module
+
+public import Section4.RVAppend
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

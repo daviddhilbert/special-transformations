@@ -1,7 +1,11 @@
-import ResidueTransportCore
-import Mathlib.Algebra.Group.Subgroup.Ker
-import Mathlib.Algebra.Group.Units.Hom
-import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+module
+
+public import ResidueTransportCore
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.Algebra.Group.Units.Hom
+public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+
+@[expose] public section
 
 /-!
 The algebraic splitting used in Corollary 6.5. The source is the actual

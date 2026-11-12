@@ -1,5 +1,9 @@
-import Section3.LiftTerms
-import Section3.ValuedDefinability
+module
+
+public import Section3.LiftTerms
+public import Section3.ValuedDefinability
+
+@[expose] public section
 set_option linter.style.haveILetI false
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language

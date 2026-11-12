@@ -1,7 +1,11 @@
-import Section9.FiniteLimitSeparation
-import Section9.LimitBallDefinable
-import Section9.LimitFiniteCandidate
-import Section9.LimitPolynomialCover
+module
+
+public import Section9.FiniteLimitSeparation
+public import Section9.LimitBallDefinable
+public import Section9.LimitFiniteCandidate
+public import Section9.LimitPolynomialCover
+
+@[expose] public section
 
 /-! Existence of the finite minimal limit in Lemma 9.5. The definable
 graph is projected one coordinate at a time, and the candidate sets

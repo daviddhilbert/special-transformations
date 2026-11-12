@@ -1,3 +1,5 @@
+module
+
 /-
 # Section 7, `def:gamma:poly` (paper.tex 1480): `Î³`-polynomials and residue roots
 
@@ -34,7 +36,9 @@ it is what makes `0 < 1` available, and with it `Valuation.zero_iff` (`v x = 0 â
 and `Milestone0/DECISION.md` records that `Mathlib.Valuation`'s order is the opposite of the
 `RV`-order used in the encoding, which is why the comparison reverses sign in the statements).
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 namespace Sec7Gamma
 

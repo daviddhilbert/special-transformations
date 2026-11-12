@@ -1,4 +1,8 @@
-import Section4.RVProductSymmetry
+module
+
+public import Section4.RVProductSymmetry
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

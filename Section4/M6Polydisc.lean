@@ -1,3 +1,5 @@
+module
+
 /-
 **§4 `full:dim:open:poly` at `n = 1` for arbitrary `RV`-arity, coordinate maps, and the correct
 statement of the "only if" direction** — swarm `smw1qqem3` m6 (direction d5: the polydisc /
@@ -53,7 +55,9 @@ Build (the olean for `Sec4Dim` is in `.scratch2/sec3/`):
 `cp M6Polydisc.lean .scratch2/sec3/ && cd .scratch2/sec3 && LEAN_PATH=$PWD:$LEAN_PATH lean M6Polydisc.lean`
 -/
 
-import Sec4Dim
+public import Sec4Dim
+
+@[expose] public section
 
 set_option linter.unusedVariables false
 

@@ -1,7 +1,11 @@
-import Section3.BooleanCombinations
-import Section3.ValuedCMinimal
-import VFValued
-import RVCalc
+module
+
+public import Section3.BooleanCombinations
+public import Section3.ValuedCMinimal
+public import VFValued
+public import RVCalc
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

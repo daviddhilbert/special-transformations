@@ -1,5 +1,9 @@
-import Section3.TupleCompactness
-import Mathlib.Data.Fintype.EquivFin
+module
+
+public import Section3.TupleCompactness
+public import Mathlib.Data.Fintype.EquivFin
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Section3

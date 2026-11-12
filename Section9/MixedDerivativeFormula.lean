@@ -1,5 +1,9 @@
-import Section9.MixedJacobian
-import Section9.PartialDerivativeFormula
+module
+
+public import Section9.MixedJacobian
+public import Section9.PartialDerivativeFormula
+
+@[expose] public section
 
 /-! A formula for full differentiation on a fixed-label mixed fibre.
 The labels stay among the free variables. The quantifiers over small

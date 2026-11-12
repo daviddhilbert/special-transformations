@@ -1,8 +1,12 @@
-import Section4.CoordinateMaps
-import Section4.FiniteGluing
-import Section4.RVFiniteScissors
-import Section4.RVWeightRestriction
-import Section7.LiftedIsomorphism
+module
+
+public import Section4.CoordinateMaps
+public import Section4.FiniteGluing
+public import Section4.RVFiniteScissors
+public import Section4.RVWeightRestriction
+public import Section7.LiftedIsomorphism
+
+@[expose] public section
 
 /-! The essential restriction of Definition 9.13. The positive degree is
 written `k + 1` so the discarded lifts have VF dimension at most `k`. -/

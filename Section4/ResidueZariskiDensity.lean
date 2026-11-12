@@ -1,7 +1,11 @@
-import Section4.ResidueRVSet
-import Section4.RVParameterInvariance
-import Section4.SmallGeneratedBase
-import Mathlib.Algebra.MvPolynomial.Eval
+module
+
+public import Section4.ResidueRVSet
+public import Section4.RVParameterInvariance
+public import Section4.SmallGeneratedBase
+public import Mathlib.Algebra.MvPolynomial.Eval
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

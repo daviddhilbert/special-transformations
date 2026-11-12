@@ -1,3 +1,5 @@
+module
+
 /-
 A transcendence-degree model for Yin, "Special transformations in algebraically closed valued
 fields", §4.1 "Dimensions" (`paper.tex` 803-966) -- swarm `smw1qqem3`, member m4 (direction d7).
@@ -76,7 +78,9 @@ a hypothesis):
 Compile: `LEAN_PATH=$LEAN_PATH lean Sec4DimACFModel.lean` (exit 0, no `sorry`, `#print axioms`
 ⊆ {propext, Classical.choice, Quot.sound}).
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 open MvPolynomial
 

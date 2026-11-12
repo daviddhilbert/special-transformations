@@ -1,7 +1,11 @@
-import Section10.MeasuredVFCategory
-import Section10.MeasuredRVCategory
-import Section4.VFCategories
-import Mathlib.CategoryTheory.Sigma.Basic
+module
+
+public import Section10.MeasuredVFCategory
+public import Section10.MeasuredRVCategory
+public import Section4.VFCategories
+public import Mathlib.CategoryTheory.Sigma.Basic
+
+@[expose] public section
 
 /-! The categories across degrees in Definitions 10.1 and 10.3.
 Take the index type to be `ℕ` for all degrees or `Fin (bound + 1)`

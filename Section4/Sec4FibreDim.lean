@@ -1,3 +1,5 @@
+module
+
 /-
 Section 4 of Yin, "Special transformations in algebraically closed valued fields"
 (arXiv:1006.2467), subsection 4.1 "Dimensions" (`paper.tex` lines 803-966): the **fibre layer**
@@ -62,7 +64,9 @@ Two further honest notes:
   `ACVF`, and this file is stated for an arbitrary `LRV.Structure M`, as `Sec4Dim` is.  This is
   why `exists_fibFun_dimVF_eq` carries `A.Nonempty` (which produces a point of `RV^l`).
 -/
-import Sec4Dim
+public import Sec4Dim
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.unusedVariables false

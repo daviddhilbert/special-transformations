@@ -1,8 +1,12 @@
-import Section4.FullDimension
-import Section4.CoordinateMaps
-import Section4.RVCategories
-import Section4.VFCategories
-import Section4.CanonicalLift
+module
+
+public import Section4.FullDimension
+public import Section4.CoordinateMaps
+public import Section4.RVCategories
+public import Section4.VFCategories
+public import Section4.CanonicalLift
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

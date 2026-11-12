@@ -1,6 +1,10 @@
-import Mathlib.RingTheory.Flat.Basic
-import Mathlib.RingTheory.Unramified.Field
-import Mathlib.RingTheory.Localization.FractionRing
+module
+
+public import Mathlib.RingTheory.Flat.Basic
+public import Mathlib.RingTheory.Unramified.Field
+public import Mathlib.RingTheory.Localization.FractionRing
+
+@[expose] public section
 
 /-! Over a domain, a flat unramified algebra embeds in its reduced
 generic fibre. This is the reducedness input for residue charts. -/

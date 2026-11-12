@@ -1,4 +1,8 @@
-import Section7.PositiveSurjectivity
+module
+
+public import Section7.PositiveSurjectivity
+
+@[expose] public section
 
 /-! In degree zero Definitions 10.1 and 10.3 use the unmeasured
 categories. The fixed-degree lift and its properties specialize directly. -/

@@ -1,4 +1,8 @@
-import Section3.GammaParameters
+module
+
+public import Section3.GammaParameters
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

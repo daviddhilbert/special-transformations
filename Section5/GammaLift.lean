@@ -1,5 +1,9 @@
-import Section5.GammaExistence
-import Section5.CategoryLift
+module
+
+public import Section5.GammaExistence
+public import Section5.CategoryLift
+
+@[expose] public section
 
 /-!
 # Lifting over the original Gamma base

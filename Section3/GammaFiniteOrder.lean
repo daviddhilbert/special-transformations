@@ -1,6 +1,10 @@
-import Mathlib.Data.Finset.Max
-import Section3.GammaClosureLaws
-import Section3.GammaRVSeparation
+module
+
+public import Mathlib.Data.Finset.Max
+public import Section3.GammaClosureLaws
+public import Section3.GammaRVSeparation
+
+@[expose] public section
 
 /- Component: GammaFiniteOrder -/
 set_option backward.isDefEq.respectTransparency false

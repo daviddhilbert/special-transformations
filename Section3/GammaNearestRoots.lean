@@ -1,7 +1,11 @@
-import Section3.GammaProjection
-import Section3.GammaRealRestriction
-import Section3.GammaSupport
-import Section3.NearestPairs
+module
+
+public import Section3.GammaProjection
+public import Section3.GammaRealRestriction
+public import Section3.GammaSupport
+public import Section3.NearestPairs
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

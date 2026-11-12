@@ -1,5 +1,9 @@
-import Section6.Imported.CoprimeFactorLifting
-import Mathlib.Algebra.Polynomial.FieldDivision
+module
+
+public import Section6.Imported.CoprimeFactorLifting
+public import Mathlib.Algebra.Polynomial.FieldDivision
+
+@[expose] public section
 
 /-!
 An irreducible monic polynomial over a henselian valuation ring cannot

@@ -1,6 +1,10 @@
-import Section9.ResidueCoefficientBase
-import Section4.SmallGeneratedBase
-import Section4.CanonicalLift
+module
+
+public import Section9.ResidueCoefficientBase
+public import Section4.SmallGeneratedBase
+public import Section4.CanonicalLift
+
+@[expose] public section
 
 /-! Choose small auxiliary bases for a fixed value fibre. The first
 names the scales. The VF coefficient enlargement contains its residue

@@ -1,7 +1,11 @@
-import Section3.DefinableReduct
-import CanonicalStructure
-import Section3.ParameterBridge
-import Section3.DefinableConstants
+module
+
+public import Section3.DefinableReduct
+public import CanonicalStructure
+public import Section3.ParameterBridge
+public import Section3.DefinableConstants
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

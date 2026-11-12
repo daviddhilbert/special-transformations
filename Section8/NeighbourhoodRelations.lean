@@ -1,4 +1,8 @@
-import Section8.UniformBalls
+module
+
+public import Section8.UniformBalls
+
+@[expose] public section
 
 /-! The uniform ball membership relation needed for Lemma 8.2. Here both
 tuples and the radius representative are variables in a single formula. -/

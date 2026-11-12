@@ -1,9 +1,13 @@
+module
+
 /-
 Notation 3.16: quotient-to-powerset descent, adapted from the generic part
 of Sec3FunIntoPower.lean. No identification of ker(rv) with an additive
 maximal-ideal quotient is made.
 -/
-import Section3.Parameters
+public import Section3.Parameters
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0

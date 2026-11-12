@@ -1,4 +1,8 @@
-import Section6.ConcreteValued
+module
+
+public import Section6.ConcreteValued
+
+@[expose] public section
 
 /-! Addition and negation of ordinary residue classes of valuation-one elements. -/
 

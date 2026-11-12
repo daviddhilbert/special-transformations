@@ -1,4 +1,8 @@
-import Section3.GammaBaseTools
+module
+
+public import Section3.GammaBaseTools
+
+@[expose] public section
 
 /- Component: GammaRealMap -/
 set_option backward.isDefEq.respectTransparency false

@@ -1,5 +1,9 @@
-import Section6.HenselianClosure
-import Section6.ElementaryTransfer
+module
+
+public import Section6.HenselianClosure
+public import Section6.ElementaryTransfer
+
+@[expose] public section
 
 /-! Lemma 6.2 for an actual substructure of the ambient model.
 The elementary algebraic envelope is the accepted earlier-section input,

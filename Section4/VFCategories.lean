@@ -1,6 +1,10 @@
-import Section4.VFDimension
-import Section4.DefinableCategory
-import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
+module
+
+public import Section4.VFDimension
+public import Section4.DefinableCategory
+public import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

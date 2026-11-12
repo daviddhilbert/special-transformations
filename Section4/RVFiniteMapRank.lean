@@ -1,5 +1,9 @@
-import Section4.RVRank
-import Section4.RVCoordinates
+module
+
+public import Section4.RVRank
+public import Section4.RVCoordinates
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

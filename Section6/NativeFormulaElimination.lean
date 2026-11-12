@@ -1,7 +1,11 @@
-import Section6.FiniteNamedSyntax
-import Section6.ParameterNaming
-import Section6.MapFormulaDescent
-import Section6.FVBinding
+module
+
+public import Section6.FiniteNamedSyntax
+public import Section6.ParameterNaming
+public import Section6.MapFormulaDescent
+public import Section6.FVBinding
+
+@[expose] public section
 
 /-! The syntactic prepared-map argument for an actual RV-fragment
 formula with finite original parameter tuples. Earlier FV-literal removal

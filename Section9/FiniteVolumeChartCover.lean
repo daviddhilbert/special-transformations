@@ -1,7 +1,11 @@
-import Section9.VolumeChartCertificates
-import Section9.VolumeChartExistence
-import Section4.FiniteCover
-import Section7.IntegerAvoidance
+module
+
+public import Section9.VolumeChartCertificates
+public import Section9.VolumeChartExistence
+public import Section4.FiniteCover
+public import Section7.IntegerAvoidance
+
+@[expose] public section
 
 /-! Saturation selects finitely many support patterns. Both the scales
 and all polynomial coefficients remain variables in each pattern. -/

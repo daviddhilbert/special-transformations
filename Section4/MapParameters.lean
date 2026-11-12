@@ -1,4 +1,8 @@
-import Section4.FiniteMaps
+module
+
+public import Section4.FiniteMaps
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

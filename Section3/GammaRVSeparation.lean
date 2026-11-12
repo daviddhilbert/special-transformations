@@ -1,9 +1,13 @@
-import Section3.GammaBaseDescent
-import Section3.GammaBaseTools
-import Section3.GammaCodeDefinability
-import Section3.GammaGoodRelations
-import Section3.GammaThresholdGeometry
-import Section3.RVFibreGeometry
+module
+
+public import Section3.GammaBaseDescent
+public import Section3.GammaBaseTools
+public import Section3.GammaCodeDefinability
+public import Section3.GammaGoodRelations
+public import Section3.GammaThresholdGeometry
+public import Section3.RVFibreGeometry
+
+@[expose] public section
 
 /- Component: NoOrderRVMaps -/
 set_option backward.isDefEq.respectTransparency false

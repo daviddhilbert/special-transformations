@@ -1,4 +1,8 @@
-import Section3.Parameters
+module
+
+public import Section3.Parameters
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Section3

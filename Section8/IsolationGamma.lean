@@ -1,7 +1,11 @@
-import Section8.IsolationFamilies
-import Section3.GammaSpecialization
-import Section3.NormalizationSaturation
-import Section3.SmallFiniteParameters
+module
+
+public import Section8.IsolationFamilies
+public import Section3.GammaSpecialization
+public import Section3.NormalizationSaturation
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 /-! The exceptional locus is definable over the original Gamma base.
 The full representative relation is invariant in every Gamma coordinate. -/

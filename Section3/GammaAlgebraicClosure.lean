@@ -1,4 +1,8 @@
-import Section3.GammaFullDescent
+module
+
+public import Section3.GammaFullDescent
+
+@[expose] public section
 
 /- Algebraic closure over genuine real/Gamma parameter bases. Finite
 real support and finite algebraic tuple covers adapt the checked ordinary

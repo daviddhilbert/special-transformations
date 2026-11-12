@@ -1,4 +1,8 @@
-import Section4.MixedProducts
+module
+
+public import Section4.MixedProducts
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

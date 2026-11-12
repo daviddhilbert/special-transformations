@@ -1,8 +1,12 @@
-import Section3.ValueQuotient
-import Section3.SortedBoolean
-import Section3.DefinableConstants
-import Section3.EncodedBallGeometry
-import Section3.TupleRelations
+module
+
+public import Section3.ValueQuotient
+public import Section3.SortedBoolean
+public import Section3.DefinableConstants
+public import Section3.EncodedBallGeometry
+public import Section3.TupleRelations
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

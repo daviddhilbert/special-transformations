@@ -1,4 +1,8 @@
-import Section6.ExpandedLogic
+module
+
+public import Section6.ExpandedLogic
+
+@[expose] public section
 
 /-! Remove auxiliary parameter names by actual RV terms in the original
 free-variable context. This is the syntactic step needed when the base

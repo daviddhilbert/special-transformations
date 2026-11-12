@@ -1,5 +1,9 @@
-import Section5.GammaInvariantLogic
-import Section5.GammaLift
+module
+
+public import Section5.GammaInvariantLogic
+public import Section5.GammaLift
+
+@[expose] public section
 
 /-! Definable graphs and actual RV pullbacks over the original Gamma base. -/
 

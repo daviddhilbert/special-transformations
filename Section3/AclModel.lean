@@ -1,8 +1,12 @@
-import Section3.AclModelGeometry
-import Section3.AlgebraicClosure
-import Section3.CanonicalContext
-import Section3.CanonicalParameters
-import Section3.ModelContext
+module
+
+public import Section3.AclModelGeometry
+public import Section3.AlgebraicClosure
+public import Section3.CanonicalContext
+public import Section3.CanonicalParameters
+public import Section3.ModelContext
+
+@[expose] public section
 
 /- Component: CanonicalAclModel -/
 set_option backward.isDefEq.respectTransparency false

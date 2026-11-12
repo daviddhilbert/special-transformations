@@ -1,6 +1,10 @@
-import Section10.GammaVolumeLift
-import Section10.RVVolumeSurjectivity
-import Section10.RVPreparationData
+module
+
+public import Section10.GammaVolumeLift
+public import Section10.RVVolumeSurjectivity
+public import Section10.RVPreparationData
+
+@[expose] public section
 
 /-! Gamma-valued surjectivity of the lift. Prepare finite RV data for the
 full graph of Gamma codes, then descend the form itself to the lift labels. -/

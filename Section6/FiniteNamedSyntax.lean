@@ -1,5 +1,9 @@
-import Section6.NamedLanguage
-import Section6.NativeOccurrence
+module
+
+public import Section6.NamedLanguage
+public import Section6.NativeOccurrence
+
+@[expose] public section
 
 /-! Finite parameter syntax in the actual named source language. FV
 parameters remain native constants. RV parameters are also original base

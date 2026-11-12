@@ -1,5 +1,9 @@
-import Section4.TupleFamilies
-import CanonicalRV
+module
+
+public import Section4.TupleFamilies
+public import CanonicalRV
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

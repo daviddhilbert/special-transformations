@@ -1,5 +1,9 @@
-import Section4.VFAllScissors
-import Section4.VFProductUniversal
+module
+
+public import Section4.VFAllScissors
+public import Section4.VFProductUniversal
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

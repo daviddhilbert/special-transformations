@@ -1,5 +1,9 @@
-import Section6.FiniteNamedSyntax
-import Section6.RVFormula
+module
+
+public import Section6.FiniteNamedSyntax
+public import Section6.RVFormula
+
+@[expose] public section
 
 /-! Bind the FV tuple in the actual named language, with its native sort
 guards. The semantics is exactly the substructure-point existential used

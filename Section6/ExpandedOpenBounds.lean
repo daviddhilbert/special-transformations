@@ -1,4 +1,8 @@
-import Section6.ExpandedParameterRelabel
+module
+
+public import Section6.ExpandedParameterRelabel
+
+@[expose] public section
 
 /-! Opening the existing bound context as free variables preserves the
 sorted syntax and its VF-free fragment. The actual formula construction

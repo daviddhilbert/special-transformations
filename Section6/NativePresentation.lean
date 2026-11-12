@@ -1,4 +1,8 @@
-import Section6.NativeResidueOperations
+module
+
+public import Section6.NativeResidueOperations
+
+@[expose] public section
 
 /-! The recovered valued field and its leading terms present the original
 tagged henselian model. -/

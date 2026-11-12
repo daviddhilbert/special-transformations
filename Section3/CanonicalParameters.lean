@@ -1,5 +1,9 @@
-import Section3.Parameters
-import CanonicalStructure
+module
+
+public import Section3.Parameters
+public import CanonicalStructure
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

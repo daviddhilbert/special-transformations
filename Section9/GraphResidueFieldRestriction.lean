@@ -1,5 +1,9 @@
-import Section9.GaussFieldRestriction
-import Section9.GaussEvaluation
+module
+
+public import Section9.GaussFieldRestriction
+public import Section9.GaussEvaluation
+
+@[expose] public section
 
 /-! The two copies of the coefficient residue field agree inside the
 ambient residue field when the valuation is restricted to a graph

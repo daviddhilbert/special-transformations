@@ -1,5 +1,9 @@
-import Section3.RingSyntax
-import Mathlib.Algebra.MvPolynomial.Basic
+module
+
+public import Section3.RingSyntax
+public import Mathlib.Algebra.MvPolynomial.Basic
+
+@[expose] public section
 
 /-! The finite expression and proof below are reused from the expression
 block of `Section4/PolynomialZero.lean`. This isolated import boundary avoids

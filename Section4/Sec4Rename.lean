@@ -1,3 +1,5 @@
+module
+
 /-
 Section 4 of Yin, *Special transformations in algebraically closed valued fields*
 (arXiv:1006.2467), §4.1: the **set-algebra and renaming layer** for `Sec4Dim.Definable`.
@@ -35,7 +37,9 @@ equalities — the composition/pairing lemma for `DefinableFun`, which is a diff
 
 No `sorry`, no `axiom`, no `native_decide`.
 -/
-import SubstVar
+public import SubstVar
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 set_option linter.unusedVariables false

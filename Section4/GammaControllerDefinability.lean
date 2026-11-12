@@ -1,6 +1,10 @@
-import Section4.GammaPredicates
-import Section4.OrderControllerTuples
-import Section4.GammaOrderControllers
+module
+
+public import Section4.GammaPredicates
+public import Section4.OrderControllerTuples
+public import Section4.GammaOrderControllers
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

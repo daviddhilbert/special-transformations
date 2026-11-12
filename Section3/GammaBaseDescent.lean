@@ -1,10 +1,14 @@
-import Section3.Counting
-import Section3.GammaBaseTools
-import Section3.GammaCounting
-import Section3.GammaParameters
-import Section3.GammaProjection
-import Section3.GammaSupport
-import Section3.NormalizationSaturation
+module
+
+public import Section3.Counting
+public import Section3.GammaBaseTools
+public import Section3.GammaCounting
+public import Section3.GammaParameters
+public import Section3.GammaProjection
+public import Section3.GammaSupport
+public import Section3.NormalizationSaturation
+
+@[expose] public section
 
 /- Component: TupleFibreCounting -/
 open Classical FirstOrder FirstOrder.Language

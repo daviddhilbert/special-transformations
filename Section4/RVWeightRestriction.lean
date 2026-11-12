@@ -1,4 +1,8 @@
-import Section4.RVCompression
+module
+
+public import Section4.RVCompression
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

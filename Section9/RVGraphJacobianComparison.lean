@@ -1,6 +1,10 @@
-import Section9.RVJacobianNormalization
-import Section9.RVDeterminantReduction
-import Section4.CanonicalLift
+module
+
+public import Section9.RVJacobianNormalization
+public import Section9.RVDeterminantReduction
+public import Section4.CanonicalLift
+
+@[expose] public section
 
 /-! The reduced determinant of the graph matrix, transported from
 fixed scale representatives to the paper's point normalization. -/

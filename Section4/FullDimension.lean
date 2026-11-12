@@ -1,9 +1,13 @@
-import Section4.VFDimensionRank
-import Section4.TupleIndependence
-import Section4.GenericPoints
-import Section4.PolydiscLocal
-import Section4.VFRealFibres
-import ValuedFieldExtension
+module
+
+public import Section4.VFDimensionRank
+public import Section4.TupleIndependence
+public import Section4.GenericPoints
+public import Section4.PolydiscLocal
+public import Section4.VFRealFibres
+public import ValuedFieldExtension
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

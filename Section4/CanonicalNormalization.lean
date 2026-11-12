@@ -1,4 +1,8 @@
-import Section3.CanonicalParameters
+module
+
+public import Section3.CanonicalParameters
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

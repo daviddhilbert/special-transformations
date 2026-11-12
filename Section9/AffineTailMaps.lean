@@ -1,7 +1,11 @@
-import Section9.AffineTailHeadFormula
-import Section4.CodeMaps
-import Section4.FunctionalRelations
-import Section4.VFRealFibres
+module
+
+public import Section9.AffineTailHeadFormula
+public import Section4.CodeMaps
+public import Section4.FunctionalRelations
+public import Section4.VFRealFibres
+
+@[expose] public section
 
 /-! Apply the guarded affine tail to the outputs of existing definable
 maps. The scalar used to correct the determinant stays internal. -/

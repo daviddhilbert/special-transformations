@@ -1,7 +1,11 @@
-import Section8.PairedDifference
-import Section8.GammaRadiusBase
-import Section3.GammaRealMap
-import Section8.BijectionSlope
+module
+
+public import Section8.PairedDifference
+public import Section8.GammaRadiusBase
+public import Section3.GammaRealMap
+public import Section8.BijectionSlope
+
+@[expose] public section
 
 section
 

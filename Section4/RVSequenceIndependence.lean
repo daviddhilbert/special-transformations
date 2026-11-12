@@ -1,5 +1,9 @@
-import Section4.RVRank
-import Mathlib.Data.Fin.Tuple.Basic
+module
+
+public import Section4.RVRank
+public import Mathlib.Data.Fin.Tuple.Basic
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

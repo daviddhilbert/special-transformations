@@ -1,5 +1,9 @@
-import Section4.NonalgebraicTypes
-import Section3.SmallFiniteParameters
+module
+
+public import Section4.NonalgebraicTypes
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

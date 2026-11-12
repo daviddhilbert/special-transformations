@@ -1,5 +1,9 @@
-import Section8.RVLocalConstancy
-import Section8.VFDefinableTopology
+module
+
+public import Section8.RVLocalConstancy
+public import Section8.VFDefinableTopology
+
+@[expose] public section
 
 /-! A single formula defines the locus where the actual RV fibre is
 constant on a VF neighbourhood. -/

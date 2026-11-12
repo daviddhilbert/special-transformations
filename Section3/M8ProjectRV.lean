@@ -1,3 +1,5 @@
+module
+
 /-
 Legacy finite-set coding over named elements, for unary VF input.
 
@@ -11,10 +13,12 @@ not contradicted by conjugate points: their images in RV can themselves
 be conjugate. Naming all elements is a limitation of this legacy proof,
 not a correction to the paper's statement or proof.
 -/
-import M8FinImage
-import Sec3Frozen
-import RVCalc
-import Sec4Dim
+public import M8FinImage
+public import Sec3Frozen
+public import RVCalc
+public import Sec4Dim
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language

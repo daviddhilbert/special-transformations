@@ -1,7 +1,11 @@
-import Section3.MeanInBalls
-import Section3.EncodedBallGeometry
-import Section3.SortedBoolean
-import Section3.SortedFunctionClosure
+module
+
+public import Section3.MeanInBalls
+public import Section3.EncodedBallGeometry
+public import Section3.SortedBoolean
+public import Section3.SortedFunctionClosure
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

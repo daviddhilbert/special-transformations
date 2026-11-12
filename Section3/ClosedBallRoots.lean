@@ -1,5 +1,9 @@
-import Section3.BallGeometry
-import JohnsonGeometry
+module
+
+public import Section3.BallGeometry
+public import JohnsonGeometry
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical
 namespace SpecialTransformations.Section3

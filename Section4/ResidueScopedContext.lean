@@ -1,5 +1,9 @@
-import Section4.ResidueRelativeTerms
-import TypedModelMap
+module
+
+public import Section4.ResidueRelativeTerms
+public import TypedModelMap
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,5 +1,9 @@
-import Section3.OpenBallCenters
-import Section4.PolydiscLocal
+module
+
+public import Section3.OpenBallCenters
+public import Section4.PolydiscLocal
+
+@[expose] public section
 
 /-! The same finite radius in every VF coordinate, using the released VF/RV
 language and the open-ball presentation already used in Section 3. -/

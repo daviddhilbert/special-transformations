@@ -1,4 +1,8 @@
-import Section7.GammaPolynomialAlgebra
+module
+
+public import Section7.GammaPolynomialAlgebra
+
+@[expose] public section
 
 /-!
 # Clearing Laurent exponents over the original coefficient field

@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 /-!
 # The intended `L_RV`-structure of a valued field: the verified fragment of `ACVF`, and `Γ`
 

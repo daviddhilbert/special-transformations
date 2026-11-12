@@ -1,5 +1,9 @@
-import Section6.HenselianModel
-import Section5.Geometry
+module
+
+public import Section6.HenselianModel
+public import Section5.Geometry
+
+@[expose] public section
 
 /-! Package the independent earlier/standard data used by the checked
 Lemma 6.2 for a substructure. The constructor contains an actual

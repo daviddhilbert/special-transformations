@@ -1,6 +1,10 @@
-import Section3.FiniteImage
-import Section3.NormalizationSaturation
-import Section3.CanonicalParameters
+module
+
+public import Section3.FiniteImage
+public import Section3.NormalizationSaturation
+public import Section3.CanonicalParameters
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open FirstOrder FirstOrder.Language

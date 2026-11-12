@@ -1,10 +1,14 @@
-import Section4.RVFibreDimension
-import Section4.RVDimensionRank
-import Section4.MixedRVAlgebraicity
-import Section4.EarlierRVInputs
-import Section3.SmallFiniteParameters
-import Section3.CanonicalContext
-import Section3.NormalizationSaturation
+module
+
+public import Section4.RVFibreDimension
+public import Section4.RVDimensionRank
+public import Section4.MixedRVAlgebraicity
+public import Section4.EarlierRVInputs
+public import Section3.SmallFiniteParameters
+public import Section3.CanonicalContext
+public import Section3.NormalizationSaturation
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

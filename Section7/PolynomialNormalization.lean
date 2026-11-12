@@ -1,4 +1,8 @@
-import Section7.GammaPolynomial
+module
+
+public import Section7.GammaPolynomial
+
+@[expose] public section
 
 /-!
 # The coordinate normalization in the proof of Lemma 7.2

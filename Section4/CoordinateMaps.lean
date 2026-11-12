@@ -1,5 +1,9 @@
-import Section4.MapParameters
-import Section4.FiniteCorrespondence
+module
+
+public import Section4.MapParameters
+public import Section4.FiniteCorrespondence
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

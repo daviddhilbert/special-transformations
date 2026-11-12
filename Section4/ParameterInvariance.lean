@@ -1,6 +1,10 @@
-import Section4.CoordinateRank
-import Section4.CoordinateMaps
-import Section4.FullDimension
+module
+
+public import Section4.CoordinateRank
+public import Section4.CoordinateMaps
+public import Section4.FullDimension
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

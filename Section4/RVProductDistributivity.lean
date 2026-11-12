@@ -1,8 +1,12 @@
-import Section4.RVProductRestrictions
-import Section4.RVProductMorphisms
-import Section4.RVUnionCoproduct
-import Section4.RVIsomorphismClasses
-import Section4.RVEmptyIso
+module
+
+public import Section4.RVProductRestrictions
+public import Section4.RVProductMorphisms
+public import Section4.RVUnionCoproduct
+public import Section4.RVIsomorphismClasses
+public import Section4.RVEmptyIso
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,12 +1,16 @@
-import ACVFQE
-import Section3.Library
-import Section4.Library
-import Section5.Library
-import Section6.Library
-import Section7.Library
-import Section8.Library
-import Section9.Library
-import Section10.Library
+module
+
+public import ACVFQE
+public import Section3.Library
+public import Section4.Library
+public import Section5.Library
+public import Section6.Library
+public import Section7.Library
+public import Section8.Library
+public import Section9.Library
+public import Section10.Library
+
+@[expose] public section
 
 /-!
 # Special transformations through Section 10

@@ -1,7 +1,11 @@
-import RVClassEquality
-import RVValueMap
-import Mathlib.Algebra.MvPolynomial.Eval
-import Mathlib.Tactic.FinCases
+module
+
+public import RVClassEquality
+public import RVValueMap
+public import Mathlib.Algebra.MvPolynomial.Eval
+public import Mathlib.Tactic.FinCases
+
+@[expose] public section
 
 /-!
 # Definition 7.1: finite monomial presentations and residue roots

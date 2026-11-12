@@ -1,5 +1,9 @@
-import Section9.LimitRootBound
-import Mathlib.Algebra.BigOperators.Ring.Finset
+module
+
+public import Section9.LimitRootBound
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+
+@[expose] public section
 
 /-! Removing the least input exponent in the finite monomial form of
 the polynomial from Lemma 9.5. This exposes the specialization and the

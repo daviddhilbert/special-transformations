@@ -1,5 +1,9 @@
-import Section3.VFDefinableClosure
-import Section3.VFAlgebraicity
+module
+
+public import Section3.VFDefinableClosure
+public import Section3.VFAlgebraicity
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,6 +1,10 @@
-import Section9.ValuedEtaleDerivation
-import Mathlib.RingTheory.Valuation.ValuationRing
-import Mathlib.RingTheory.Localization.FractionRing
+module
+
+public import Section9.ValuedEtaleDerivation
+public import Mathlib.RingTheory.Valuation.ValuationRing
+public import Mathlib.RingTheory.Localization.FractionRing
+
+@[expose] public section
 
 open IsLocalRing
 open scoped nonZeroDivisors

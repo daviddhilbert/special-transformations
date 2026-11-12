@@ -1,7 +1,11 @@
-import Section4.CoordinatePieces
-import Section4.FiniteCover
-import Section4.FiniteGluing
-import Section4.VFDimension
+module
+
+public import Section4.CoordinatePieces
+public import Section4.FiniteCover
+public import Section4.FiniteGluing
+public import Section4.VFDimension
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

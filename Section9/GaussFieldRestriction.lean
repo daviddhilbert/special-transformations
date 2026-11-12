@@ -1,4 +1,8 @@
-import Section9.GaussDerivative
+module
+
+public import Section9.GaussDerivative
+
+@[expose] public section
 
 /-! The Gauss bound survives restriction to a graph field containing
 the coefficient field and the chosen tuple. -/

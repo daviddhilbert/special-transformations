@@ -1,10 +1,14 @@
-import Section7.DefinableTupleQuantifiers
-import Section7.TupleCoordinates
-import Section7.LiftRelations
-import Section7.EncodedResidueRoots
-import Section3.TupleCompactness
-import Section3.GammaRealMap
-import Section3.GammaProjection
+module
+
+public import Section7.DefinableTupleQuantifiers
+public import Section7.TupleCoordinates
+public import Section7.LiftRelations
+public import Section7.EncodedResidueRoots
+public import Section3.TupleCompactness
+public import Section3.GammaRealMap
+public import Section3.GammaProjection
+
+@[expose] public section
 
 section DefinableLiftDomainsProof
 

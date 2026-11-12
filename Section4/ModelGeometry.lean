@@ -1,7 +1,11 @@
-import Section4.ParameterInvariance
-import Section4.RVPolydiscBound
-import Section4.LiftBijections
-import VFValued
+module
+
+public import Section4.ParameterInvariance
+public import Section4.RVPolydiscBound
+public import Section4.LiftBijections
+public import VFValued
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

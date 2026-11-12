@@ -61,7 +61,7 @@ def visit(name):
     src = ROOT / (name.replace('.', '/') + '.lean')
     content = src.read_text(encoding='utf-8')
     scanned_sources[name] = sha(src)
-    deps = re.findall(r'^import ((?:Section3|Section4)\.[\w.]+)$', content, re.M)
+    deps = re.findall(r'^(?:public\s+)?import ((?:Section3|Section4)\.[\w.]+)$', content, re.M)
     for dep in deps:
         visit(dep)
     fingerprint = hashlib.sha256((version + pin_key + sha(src) +
@@ -86,7 +86,7 @@ external_imports = set()
 section4_deps = {}
 for name in modules:
     content = code_only((ROOT / (name.replace('.', '/') + '.lean')).read_text(encoding='utf-8'))
-    imports = re.findall(r'^\s*import ([\w.]+)\s*$', content, re.M)
+    imports = re.findall(r'^\s*(?:public\s+)?import ([\w.]+)\s*$', content, re.M)
     section4_deps[name] = [dep for dep in imports if dep.startswith('Section4.')]
     external_imports.update(dep for dep in imports if not dep.startswith('Section4.'))
 

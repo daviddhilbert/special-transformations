@@ -1,5 +1,9 @@
-import Section4.VFAlgebraicCoordinates
-import Section4.TupleTranscendence
+module
+
+public import Section4.VFAlgebraicCoordinates
+public import Section4.TupleTranscendence
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

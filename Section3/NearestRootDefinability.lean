@@ -1,6 +1,10 @@
-import Section3.ParameterBridge
-import Section3.NearestRoots
-import VFValued
+module
+
+public import Section3.ParameterBridge
+public import Section3.NearestRoots
+public import VFValued
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

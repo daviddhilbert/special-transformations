@@ -1,8 +1,12 @@
-import Section4.MixedTagging
-import Section4.VFCategories
-import Section4.UnionMapLaws
-import Mathlib.CategoryTheory.Limits.Shapes.BinaryProducts
-import Mathlib.CategoryTheory.Limits.Shapes.IsTerminal
+module
+
+public import Section4.MixedTagging
+public import Section4.VFCategories
+public import Section4.UnionMapLaws
+public import Mathlib.CategoryTheory.Limits.Shapes.BinaryProducts
+public import Mathlib.CategoryTheory.Limits.Shapes.IsTerminal
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

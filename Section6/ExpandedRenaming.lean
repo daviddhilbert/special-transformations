@@ -1,4 +1,8 @@
-import Section6.ExpandedLogic
+module
+
+public import Section6.ExpandedLogic
+
+@[expose] public section
 
 /-! Bijective free-variable renaming preserves the exact guarded syntax
 and its VF-free fragment. Bound variables are unchanged. -/

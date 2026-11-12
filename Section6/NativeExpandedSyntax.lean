@@ -1,6 +1,10 @@
-import Section6.ExpandedLogic
-import CanonicalQF
-import QESaturatedExtension
+module
+
+public import Section6.ExpandedLogic
+public import CanonicalQF
+public import QESaturatedExtension
+
+@[expose] public section
 
 /-! Reuse the released QF sorting normalization when comparing native
 algebraic envelopes. This embeds only native QF formulas into the RV-only

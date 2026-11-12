@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 namespace SpecialTransformations.Section3.RVMonomial
 
 /-- Uniform estimates use only ordered-group laws, with no Archimedean

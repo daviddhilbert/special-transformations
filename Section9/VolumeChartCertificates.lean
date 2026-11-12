@@ -1,6 +1,10 @@
-import Section9.ResidueChartInterpretation
-import Section9.ResidueChartCertificateLogic
-import Section9.UniformRVScaling
+module
+
+public import Section9.ResidueChartInterpretation
+public import Section9.ResidueChartCertificateLogic
+public import Section9.UniformRVScaling
+
+@[expose] public section
 
 /-! A fixed polynomial support gives a definable family of valid
 charts over all scales. The polynomial coefficients are quantified

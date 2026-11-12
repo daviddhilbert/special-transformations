@@ -1,12 +1,16 @@
-import Section7.TupleCoordinates
-import Section7.PolynomialCoordinateMaps
-import Section7.WeightedPolynomialTests
-import Section7.JacobianNormalization
-import Section7.SimpleRootNormalization
-import Section7.ResidueFibreEvaluation
-import Section7.IntegerAvoidance
-import Section7.GeneralizedHensel
-import Section7.LiftRelations
+module
+
+public import Section7.TupleCoordinates
+public import Section7.PolynomialCoordinateMaps
+public import Section7.WeightedPolynomialTests
+public import Section7.JacobianNormalization
+public import Section7.SimpleRootNormalization
+public import Section7.ResidueFibreEvaluation
+public import Section7.IntegerAvoidance
+public import Section7.GeneralizedHensel
+public import Section7.LiftRelations
+
+@[expose] public section
 
 section WeightedDerivativeProductProof
 

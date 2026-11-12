@@ -1,6 +1,10 @@
-import Section9.ResidueChartSelector
-import Mathlib.RingTheory.Localization.BaseChange
-import Mathlib.RingTheory.Localization.FractionRing
+module
+
+public import Section9.ResidueChartSelector
+public import Mathlib.RingTheory.Localization.BaseChange
+public import Mathlib.RingTheory.Localization.FractionRing
+
+@[expose] public section
 
 /-! A selector on the finite étale generic fibre has a numerator in
 the original algebra. Its vanishing detects the same formula at every

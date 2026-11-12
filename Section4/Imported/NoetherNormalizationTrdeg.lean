@@ -1,3 +1,5 @@
+module
+
 /-
 Attributed excerpt of Nyll/SchemeTheory/NoetherNormalization/Trdeg.lean.
 Upstream n-yamaguchi-0729/NYLL, revision 2e9f92dc5fbeacd17189dcf0cdb499f528dfd77c.
@@ -10,11 +12,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.Algebraic.Integral
-import Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
-import Mathlib.RingTheory.AlgebraicIndependent.Transcendental
-import Mathlib.RingTheory.Localization.FractionRing
-import Mathlib.RingTheory.NoetherNormalization
+public import Mathlib.RingTheory.Algebraic.Integral
+public import Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
+public import Mathlib.RingTheory.AlgebraicIndependent.Transcendental
+public import Mathlib.RingTheory.Localization.FractionRing
+public import Mathlib.RingTheory.NoetherNormalization
+
+@[expose] public section
 
 /-!
 # Field Arithmetic, Proposition 6.2.1: Noether normalization

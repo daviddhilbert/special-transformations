@@ -1,6 +1,10 @@
-import ProvedACFExtension
-import Mathlib.FieldTheory.AlgebraicClosure
-import Section4.ResidueFieldFunctions
+module
+
+public import ProvedACFExtension
+public import Mathlib.FieldTheory.AlgebraicClosure
+public import Section4.ResidueFieldFunctions
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

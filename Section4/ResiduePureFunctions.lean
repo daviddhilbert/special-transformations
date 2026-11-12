@@ -1,6 +1,10 @@
-import Mathlib.ModelTheory.Algebra.Field.Basic
-import Mathlib.ModelTheory.Definability
-import Mathlib.Tactic.FinCases
+module
+
+public import Mathlib.ModelTheory.Algebra.Field.Basic
+public import Mathlib.ModelTheory.Definability
+public import Mathlib.Tactic.FinCases
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

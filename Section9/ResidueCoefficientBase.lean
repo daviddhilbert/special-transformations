@@ -1,7 +1,11 @@
-import Section9.GaussEvaluation
-import Section9.SmallValuedCoefficients
-import Section4.ResidueParameterField
-import Section4.ResidueFieldInterpretation
+module
+
+public import Section9.GaussEvaluation
+public import Section9.SmallValuedCoefficients
+public import Section4.ResidueParameterField
+public import Section4.ResidueFieldInterpretation
+
+@[expose] public section
 
 /-! Place the residue parameters of a small substructure in the
 residue field of a small algebraically closed VF coefficient field. -/

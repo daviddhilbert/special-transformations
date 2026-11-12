@@ -1,4 +1,8 @@
-import Section4.RVMaximumValueFibre
+module
+
+public import Section4.RVMaximumValueFibre
+
+@[expose] public section
 
 /-! Choose a nonempty full-dimensional fixed-value fibre and take
 its own point as the scale tuple. No section of RV to VF is chosen

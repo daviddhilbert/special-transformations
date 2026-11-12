@@ -1,6 +1,10 @@
-import Section8.SeparatedSets
-import Section3.GammaSpecialization
-import Section3.GammaValueLaws
+module
+
+public import Section8.SeparatedSets
+public import Section3.GammaSpecialization
+public import Section3.GammaValueLaws
+
+@[expose] public section
 
 /-! Lemma 8.1 over a genuinely imaginary Gamma base and with a radius
 in the actual value-group quotient. -/

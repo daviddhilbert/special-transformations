@@ -1,5 +1,9 @@
-import Section4.UniformFinite
-import Section3.RawBarycentricCode
+module
+
+public import Section4.UniformFinite
+public import Section3.RawBarycentricCode
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

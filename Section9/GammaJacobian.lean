@@ -1,4 +1,8 @@
-import Section3.GammaValueLaws
+module
+
+public import Section3.GammaValueLaws
+
+@[expose] public section
 
 /-! The Gamma part of Definition 9.14 on nondegenerate RV volume labels.
 The paper writes the value group additively. The released Lean

@@ -1,5 +1,9 @@
-import Section7.JacobianNormalization
-import Section7.Imported.JacobianEtale
+module
+
+public import Section7.JacobianNormalization
+public import Section7.Imported.JacobianEtale
+
+@[expose] public section
 
 /-! The actual etale algebra of a square polynomial system: quotient by the
 equations and invert its Jacobian. No etaleness or root-lifting conclusion

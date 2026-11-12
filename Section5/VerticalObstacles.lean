@@ -1,9 +1,13 @@
-import Section5.GeneralAssembly
-import Section3.ClosedClassCodes
-import Section3.FibrePromotion
-import Section3.NormalizationSaturation
-import Section4.FiniteCover
-import Mathlib.Data.Set.Card.Arithmetic
+module
+
+public import Section5.GeneralAssembly
+public import Section3.ClosedClassCodes
+public import Section3.FibrePromotion
+public import Section3.NormalizationSaturation
+public import Section4.FiniteCover
+public import Mathlib.Data.Set.Card.Arithmetic
+
+@[expose] public section
 
 /-! The uniform obstacle family follows from unary QE and genuine saturation.
 A finite real code for a closed ball makes the root-avoidance criterion first

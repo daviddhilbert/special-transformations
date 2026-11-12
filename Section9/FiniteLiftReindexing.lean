@@ -1,8 +1,12 @@
-import Section4.RVReindexing
-import Section4.RVFiniteScissors
-import Section4.CoordinateMaps
-import Section4.CanonicalLift
-import Section9.MixedGenericDifferentiation
+module
+
+public import Section4.RVReindexing
+public import Section4.RVFiniteScissors
+public import Section4.CoordinateMaps
+public import Section4.CanonicalLift
+public import Section9.MixedGenericDifferentiation
+
+@[expose] public section
 
 /-! Reindex a finite-volume object and its actual lift. The VF
 determinant of the coordinate change is the permutation sign. -/

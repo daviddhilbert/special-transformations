@@ -41,7 +41,7 @@ def code_only(source):
 
 def imports(path):
     code = code_only((ROOT / path).read_text(encoding='utf-8-sig'))
-    return [name for line in re.findall(r'^import\s+([^\n]+)', code, re.M)
+    return [name for line in re.findall(r'^(?:public\s+)?import\s+([^\n]+)', code, re.M)
             for name in line.split()]
 
 

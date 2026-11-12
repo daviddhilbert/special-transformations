@@ -1,6 +1,10 @@
-import Section7.BalancedCorrespondence
-import Section5.GammaLift
-import Section5.GammaInvariantLogic
+module
+
+public import Section7.BalancedCorrespondence
+public import Section5.GammaLift
+public import Section5.GammaInvariantLogic
+
+@[expose] public section
 
 /-! Volume correspondence of a definable RV isomorphism over a named Gamma base. -/
 

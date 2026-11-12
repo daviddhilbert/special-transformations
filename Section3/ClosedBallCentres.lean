@@ -1,8 +1,12 @@
-import Section3.RootFreeConstancy
-import Section3.ClosedBallRoots
-import Section3.MinimalBallFamilies
-import Section3.MeanInBalls
-import Section3.DefinableMeans
+module
+
+public import Section3.RootFreeConstancy
+public import Section3.ClosedBallRoots
+public import Section3.MinimalBallFamilies
+public import Section3.MeanInBalls
+public import Section3.DefinableMeans
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

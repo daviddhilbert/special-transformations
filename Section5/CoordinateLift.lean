@@ -1,4 +1,8 @@
-import Section5.UnarySets
+module
+
+public import Section5.UnarySets
+
+@[expose] public section
 
 /-!
 # Lifting transformations while retaining a VF coordinate

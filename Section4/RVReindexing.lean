@@ -1,6 +1,10 @@
-import Section4.RVLabelIsomorphisms
-import Section4.RVCoordinates
-import Section4.CodeMaps
+module
+
+public import Section4.RVLabelIsomorphisms
+public import Section4.RVCoordinates
+public import Section4.CodeMaps
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

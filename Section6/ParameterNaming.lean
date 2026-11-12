@@ -1,4 +1,8 @@
-import Section6.RVGraphExpansion
+module
+
+public import Section6.RVGraphExpansion
+
+@[expose] public section
 
 /-! Substitute the original finite RV parameter tuple back into the
 auxiliary formula. Pinned Mathlib substitution proves correctness below

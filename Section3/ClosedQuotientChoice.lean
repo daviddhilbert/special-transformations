@@ -1,6 +1,10 @@
-import Section3.ClosedClassGeometry
-import Section3.ProfileComposition
-import Section3.MixedRootFree
+module
+
+public import Section3.ClosedClassGeometry
+public import Section3.ProfileComposition
+public import Section3.MixedRootFree
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

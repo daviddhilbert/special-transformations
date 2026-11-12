@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Semantics of the `RV`-sort of Yin's `L_RV` on a Mathlib valued field

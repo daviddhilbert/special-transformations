@@ -1,5 +1,9 @@
-import Mathlib.Logic.Equiv.Fin.Basic
-import Mathlib.Data.Fin.Tuple.Basic
+module
+
+public import Mathlib.Logic.Equiv.Fin.Basic
+public import Mathlib.Data.Fin.Tuple.Basic
+
+@[expose] public section
 
 /-! Finite coordinate blocks used by the polynomial and definability arguments. -/
 

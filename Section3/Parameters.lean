@@ -1,4 +1,8 @@
-import Enc
+module
+
+public import Enc
+
+@[expose] public section
 
 /-!
 # Parameters and closure over an arbitrary base

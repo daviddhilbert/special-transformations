@@ -1,7 +1,11 @@
-import Section9.GenericDifferentiation
-import Section9.MixedJacobian
-import Section3.SmallFiniteParameters
-import Section4.FiniteCorrespondence
+module
+
+public import Section9.GenericDifferentiation
+public import Section9.MixedJacobian
+public import Section3.SmallFiniteParameters
+public import Section4.FiniteCorrespondence
+
+@[expose] public section
 
 /-! Generic differentiation on a fixed RV fibre. Naming the two RV
 labels leaves the VF parameter field unchanged. The local branch is

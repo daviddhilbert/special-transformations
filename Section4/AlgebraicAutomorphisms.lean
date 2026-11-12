@@ -1,5 +1,9 @@
-import Section4.RVRank
-import Section3.TupleRelations
+module
+
+public import Section4.RVRank
+public import Section3.TupleRelations
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

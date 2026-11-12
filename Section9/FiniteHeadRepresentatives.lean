@@ -1,6 +1,10 @@
-import Section7.GeneratedRVRepresentatives
-import Section7.LiftingDefinability
-import Section3.DefinableLocalChoice
+module
+
+public import Section7.GeneratedRVRepresentatives
+public import Section7.LiftingDefinability
+public import Section3.DefinableLocalChoice
+
+@[expose] public section
 
 /-! Representatives for finitely many RV labels above a fixed VF head.
 Only the VF generators and the finite head are enlarged in the

@@ -1,4 +1,8 @@
-import Section3.Parameters
+module
+
+public import Section3.Parameters
+
+@[expose] public section
 
 /-!
 # Notation 2.10: coordinates, projections and fibres

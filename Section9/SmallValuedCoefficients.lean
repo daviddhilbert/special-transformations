@@ -1,7 +1,11 @@
-import Section3.AclFieldImages
-import Section3.SmallFiniteParameters
-import Mathlib.FieldTheory.Cardinality
-import Mathlib.RingTheory.Algebraic.Cardinality
+module
+
+public import Section3.AclFieldImages
+public import Section3.SmallFiniteParameters
+public import Mathlib.FieldTheory.Cardinality
+public import Mathlib.RingTheory.Algebraic.Cardinality
+
+@[expose] public section
 
 /-! Enlarge the parameter set in the proof by the names of a small
 algebraically closed coefficient field. The final theorem can retain

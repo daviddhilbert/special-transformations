@@ -1,7 +1,11 @@
-import Section9.GammaJacobian
-import Section9.Differentiation
-import Section4.CanonicalLift
-import Section3.RVOperations
+module
+
+public import Section9.GammaJacobian
+public import Section9.Differentiation
+public import Section4.CanonicalLift
+public import Section3.RVOperations
+
+@[expose] public section
 
 /-! The pointwise Gamma compatibility in the paper is the determinant
 value condition used by the affine construction. -/

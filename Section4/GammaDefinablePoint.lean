@@ -1,7 +1,11 @@
-import Section4.GammaControllerDefinability
-import Section4.GammaFiniteDefinablePoints
-import Section4.GammaDefinableClosure
-import Section4.FiniteOrderSamples
+module
+
+public import Section4.GammaControllerDefinability
+public import Section4.GammaFiniteDefinablePoints
+public import Section4.GammaDefinableClosure
+public import Section4.FiniteOrderSamples
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

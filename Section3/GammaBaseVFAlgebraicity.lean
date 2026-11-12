@@ -1,6 +1,10 @@
-import Section3.GammaSpecialization
-import Section3.RVIndependence
-import Section3.VFExchange
+module
+
+public import Section3.GammaSpecialization
+public import Section3.RVIndependence
+public import Section3.VFExchange
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

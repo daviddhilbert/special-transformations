@@ -1,8 +1,12 @@
-import Section9.OpenResidueSelector
-import Section9.ResidueChartCoverage
-import Section9.ResidueJacobianExistence
-import Section9.ResidueFiniteProjection
-import Section9.ResidueChartJacobian
+module
+
+public import Section9.OpenResidueSelector
+public import Section9.ResidueChartCoverage
+public import Section9.ResidueJacobianExistence
+public import Section9.ResidueFiniteProjection
+public import Section9.ResidueChartJacobian
+
+@[expose] public section
 
 /-! A finite residue correspondence admits a square open chart at
 every independent source tuple. The chart equations vanish on the

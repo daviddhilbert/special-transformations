@@ -1,5 +1,9 @@
-import Section3.SortedBoolean
-import Section3.BallFibreConstancy
+module
+
+public import Section3.SortedBoolean
+public import Section3.BallFibreConstancy
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

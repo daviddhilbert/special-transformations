@@ -1,6 +1,10 @@
-import Section10.MeasuredScissors
-import Section10.RVVolumeSurjectivity
-import Section10.GammaVolumeSurjectivity
+module
+
+public import Section10.MeasuredScissors
+public import Section10.RVVolumeSurjectivity
+public import Section10.GammaVolumeSurjectivity
+
+@[expose] public section
 
 /-! Corollary 10.6. Theorems 10.4 and 10.5 give surjectivity on the
 generators and invariance under measured isomorphism, respectively. -/

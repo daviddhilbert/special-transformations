@@ -1,4 +1,8 @@
-import Section4.DefinableGeometry
+module
+
+public import Section4.DefinableGeometry
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

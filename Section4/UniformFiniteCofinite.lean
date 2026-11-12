@@ -1,4 +1,8 @@
-import Section4.UniformFinite
+module
+
+public import Section4.UniformFinite
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0

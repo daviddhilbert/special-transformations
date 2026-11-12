@@ -1,5 +1,9 @@
-import Section9.PartialDerivativeFormula
-import Section9.GenericDifferentiation
+module
+
+public import Section9.PartialDerivativeFormula
+public import Section9.GenericDifferentiation
+
+@[expose] public section
 
 /-! Lemma 9.8 and Corollary 9.9 for a definable VF function. The
 derivative graph is definable over the original parameters. Its

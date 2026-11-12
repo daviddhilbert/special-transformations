@@ -1,4 +1,8 @@
-import Section6.NativeField
+module
+
+public import Section6.NativeField
+
+@[expose] public section
 
 /-! The valuation predicate of a model of the henselian valued-field core.
 The order arguments are adapted from the released ACVF-QE modules

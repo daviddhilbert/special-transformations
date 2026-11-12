@@ -1,5 +1,9 @@
-import Section6.RVAbstraction
-import Section6.ExpandedRenaming
+module
+
+public import Section6.RVAbstraction
+public import Section6.ExpandedRenaming
+
+@[expose] public section
 
 /-! Reindex the VF and RV free contexts of a normalized formula without
 altering any of its inner RV binders or ordinary polynomial leaves. -/

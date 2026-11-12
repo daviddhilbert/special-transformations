@@ -1,5 +1,9 @@
-import CanonicalRV
-import RVKernelResidue
+module
+
+public import CanonicalRV
+public import RVKernelResidue
+
+@[expose] public section
 
 /-! The ordinary residue field in the leading-term quotient. The construction
 uses the value-one subgroup and applies with or without an angular component. -/

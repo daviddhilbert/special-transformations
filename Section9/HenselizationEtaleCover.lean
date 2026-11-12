@@ -1,5 +1,9 @@
-import StacksFrontier.RingTheory.Henselian.Henselization.Existence
-import Section9.EtaleDerivationBound
+module
+
+public import StacksFrontier.RingTheory.Henselian.Henselization.Existence
+public import Section9.EtaleDerivationBound
+
+@[expose] public section
 
 open CategoryTheory CategoryTheory.Limits
 

@@ -1,5 +1,9 @@
-import Section4.RVGradedFiltration
-import Section4.Imported.GrothendieckRing
+module
+
+public import Section4.RVGradedFiltration
+public import Section4.Imported.GrothendieckRing
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language CategoryTheory
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

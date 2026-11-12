@@ -1,4 +1,8 @@
-import Section3.GuardedRVLiterals
+module
+
+public import Section3.GuardedRVLiterals
+
+@[expose] public section
 
 /-!
 # Guarded monomial coefficients in the original VF subfield

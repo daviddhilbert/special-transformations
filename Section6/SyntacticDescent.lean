@@ -1,5 +1,9 @@
-import Section6.PreparedDescent
-import Section6.RVFormula
+module
+
+public import Section6.PreparedDescent
+public import Section6.RVFormula
+
+@[expose] public section
 
 /-!
 Syntactic assembly from the actual prepared maps. The auxiliary formula

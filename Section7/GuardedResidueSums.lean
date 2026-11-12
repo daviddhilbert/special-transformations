@@ -1,5 +1,9 @@
-import Section7.GuardedFibreDomains
-import Section7.WeightedLeadingTerms
+module
+
+public import Section7.GuardedFibreDomains
+public import Section7.WeightedLeadingTerms
+
+@[expose] public section
 
 /-!
 # The value-one leading term of a guarded residue sum

@@ -1,3 +1,5 @@
+module
+
 /-
 # Section 5: `RV`-pullbacks and special bijections (standalone)
 
@@ -22,7 +24,9 @@ rather than maps directly: `T(A)` need not be an `RV`-pullback after one centrip
 Build: `LEAN_PATH=$PWD:$LEAN_PATH lean QE/Sec5.lean` from the repository root.  See
 `MILESTONES.md` (Milestone 3).
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 open Valuation
 

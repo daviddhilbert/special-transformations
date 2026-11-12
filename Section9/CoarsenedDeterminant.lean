@@ -1,5 +1,9 @@
-import Section9.GammaCoarsening
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+module
+
+public import Section9.GammaCoarsening
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+
+@[expose] public section
 
 /-! Integrality of the derivative entries gives one side of Gamma
 descent. The inverse derivative gives the other side. -/

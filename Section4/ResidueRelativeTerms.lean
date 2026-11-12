@@ -1,6 +1,10 @@
-import Section4.ResidueRelativePredicates
-import Section4.ResidueTermInterpretation
-import SubstructureField
+module
+
+public import Section4.ResidueRelativePredicates
+public import Section4.ResidueTermInterpretation
+public import SubstructureField
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

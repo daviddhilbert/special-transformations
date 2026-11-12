@@ -1,6 +1,10 @@
-import Section4.FiniteMaps
-import Mathlib.CategoryTheory.ConcreteCategory.Basic
-import Mathlib.CategoryTheory.Types.Basic
+module
+
+public import Section4.FiniteMaps
+public import Mathlib.CategoryTheory.ConcreteCategory.Basic
+public import Mathlib.CategoryTheory.Types.Basic
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language CategoryTheory
 

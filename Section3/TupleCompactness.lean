@@ -1,4 +1,8 @@
-import Section3.DefinableCompactness
+module
+
+public import Section3.DefinableCompactness
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3

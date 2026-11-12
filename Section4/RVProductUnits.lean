@@ -1,6 +1,10 @@
-import Section4.RVProductSymmetry
-import Section4.RVEmptyIso
-import Section4.RVDimension
+module
+
+public import Section4.RVProductSymmetry
+public import Section4.RVEmptyIso
+public import Section4.RVDimension
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

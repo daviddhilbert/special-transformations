@@ -1,6 +1,10 @@
-import Section6.ConcreteValued
-import Section6.AngularComponent
-import Mathlib.RingTheory.Valuation.Extension
+module
+
+public import Section6.ConcreteValued
+public import Section6.AngularComponent
+public import Mathlib.RingTheory.Valuation.Extension
+
+@[expose] public section
 
 /-! A field embedding compatible with the valuations induces an embedding
 of the tagged leading-term structures. -/

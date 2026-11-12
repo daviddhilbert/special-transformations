@@ -1,5 +1,9 @@
-import Section3.RVTermLocal
-import CanonicalStructure
+module
+
+public import Section3.RVTermLocal
+public import CanonicalStructure
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language Filter Topology
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,5 +1,9 @@
-import Section4.RVGradedRepresentatives
-import Section4.RVFiniteGradedSemiring
+module
+
+public import Section4.RVGradedRepresentatives
+public import Section4.RVFiniteGradedSemiring
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

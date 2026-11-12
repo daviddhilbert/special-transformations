@@ -1,8 +1,12 @@
-import Section6.NativeImageComparison
-import Section6.NativeImageTransport
-import Section6.NativeAmalgamation
-import Section6.CountableEnvelope
-import Section6.NativeExpandedSyntax
+module
+
+public import Section6.NativeImageComparison
+public import Section6.NativeImageTransport
+public import Section6.NativeAmalgamation
+public import Section6.CountableEnvelope
+public import Section6.NativeExpandedSyntax
+
+@[expose] public section
 
 /-! The common-envelope argument combines the accepted earlier
 preparation inputs with actual native algebraic envelopes. The input

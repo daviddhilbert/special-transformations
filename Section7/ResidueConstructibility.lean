@@ -1,7 +1,11 @@
-import Section7.FieldConstructibility
-import Section4.ResidueNormalization
-import Section4.MapParameters
-import VFAlgClosed
+module
+
+public import Section7.FieldConstructibility
+public import Section4.ResidueNormalization
+public import Section4.MapParameters
+public import VFAlgClosed
+
+@[expose] public section
 
 /-! Remark 7.5: actual constructibility over the original residue parameter
 field. The comparison is stated as a pullback from Spec E[X] through the

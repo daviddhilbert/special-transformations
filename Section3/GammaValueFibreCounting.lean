@@ -1,7 +1,11 @@
-import Section3.GammaCodeDefinability
-import Section3.GammaParameters
-import Section3.FiniteValueDefinability
-import Section3.GammaSupport
+module
+
+public import Section3.GammaCodeDefinability
+public import Section3.GammaParameters
+public import Section3.FiniteValueDefinability
+public import Section3.GammaSupport
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

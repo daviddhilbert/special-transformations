@@ -1,8 +1,12 @@
-import Section4.RVValuePatternFamily
-import Section4.GammaDefinableFibres
-import Section4.RVInfiniteIteration
-import Section4.RVSequenceBounds
-import Section4.RVDimensionRank
+module
+
+public import Section4.RVValuePatternFamily
+public import Section4.GammaDefinableFibres
+public import Section4.RVInfiniteIteration
+public import Section4.RVSequenceBounds
+public import Section4.RVDimensionRank
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

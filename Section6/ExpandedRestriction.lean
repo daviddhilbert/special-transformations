@@ -1,4 +1,8 @@
-import Section6.ExpandedLogic
+module
+
+public import Section6.ExpandedLogic
+
+@[expose] public section
 
 /-! Finite free-variable restriction in the actual expanded syntax,
 preserving both the sorted fragment and absence of VF quantifiers. -/

@@ -1,5 +1,9 @@
-import Section4.FiniteOrderControllers
-import Mathlib.Data.Nat.Find
+module
+
+public import Section4.FiniteOrderControllers
+public import Mathlib.Data.Nat.Find
+
+@[expose] public section
 
 open Classical
 

@@ -1,7 +1,11 @@
-import Section4.CanonicalLift
-import Section4.RVPadding
-import Section4.MapCorestrict
-import Mathlib.Data.Fin.Tuple.Basic
+module
+
+public import Section4.CanonicalLift
+public import Section4.RVPadding
+public import Section4.MapCorestrict
+public import Mathlib.Data.Fin.Tuple.Basic
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

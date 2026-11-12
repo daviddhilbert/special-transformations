@@ -1,6 +1,10 @@
-import Section4.VFListUnions
-import Section4.RVGrading
-import Section4.CanonicalLift
+module
+
+public import Section4.VFListUnions
+public import Section4.RVGrading
+public import Section4.CanonicalLift
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

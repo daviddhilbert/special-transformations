@@ -1,4 +1,8 @@
-import SpecialTransformations.Hensel
+module
+
+public import SpecialTransformations.Hensel
+
+@[expose] public section
 
 /-!
 # Differentiation and Jacobians

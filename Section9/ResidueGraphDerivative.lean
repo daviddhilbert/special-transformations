@@ -1,5 +1,9 @@
-import Section9.ResidueDerivation
-import Section9.ResidueJacobianGeneric
+module
+
+public import Section9.ResidueDerivation
+public import Section9.ResidueJacobianGeneric
+
+@[expose] public section
 
 /-! Reduce the actual bounded graph derivations and compare their
 matrix to the residue tangent graph. -/

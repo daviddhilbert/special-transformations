@@ -1,5 +1,9 @@
-import Section7.IntegralNormalization
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+module
+
+public import Section7.IntegralNormalization
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+
+@[expose] public section
 
 /-!
 # Reduction of the Jacobian of an implicit polynomial graph

@@ -1,3 +1,5 @@
+module
+
 /-
 **The rest of Section 3's conclusion** — `fun:bounded:cons` (`paper.tex:764`), `fun:quo:rep`
 (`paper.tex:777`) and `fun:quo:rep:mult` (`paper.tex:797`) — stated, and the parts that are provable
@@ -66,7 +68,9 @@ Check with (`.scratch2/sec3/` holds the compiled `Enc`, `Sec3Frozen`, `Sec3Infra
     cp .ultramath/smw1qqehg/m2/Sec3Tail.lean .scratch2/sec3/
     cd .scratch2/sec3 && LEAN_PATH=$PWD:$LEAN_PATH lean Sec3Tail.lean
 -/
-import Sec3FunIntoPower
+public import Sec3FunIntoPower
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 

@@ -1,5 +1,9 @@
-import VFValued
-import Mathlib.Data.Fin.Tuple.Basic
+module
+
+public import VFValued
+public import Mathlib.Data.Fin.Tuple.Basic
+
+@[expose] public section
 
 /-!
 # RV hulls and canonical maps in the released language

@@ -1,5 +1,9 @@
-import Section3.AngularPattern
-import Section3.InfiniteValueFibres
+module
+
+public import Section3.AngularPattern
+public import Section3.InfiniteValueFibres
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

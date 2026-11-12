@@ -1,8 +1,12 @@
-import Section7.GammaLiftEquivalence
-import Section5.GammaDimensionCriterion
-import Section4.RVRestrictions
-import Section4.PositiveAdditivePresentation
-import Section5.GammaSurjectivity
+module
+
+public import Section7.GammaLiftEquivalence
+public import Section5.GammaDimensionCriterion
+public import Section4.RVRestrictions
+public import Section4.PositiveAdditivePresentation
+public import Section5.GammaSurjectivity
+
+@[expose] public section
 
 /-! The positive additive presentations over a named Gamma base and
 the surjectivity of the canonical lift on both quotients. -/

@@ -1,7 +1,11 @@
-import Section6.ElementaryAmalgam
-import ACVFQE
-import CountableSaturatedExtension
-import CanonicalCountable
+module
+
+public import Section6.ElementaryAmalgam
+public import ACVFQE
+public import CountableSaturatedExtension
+public import CanonicalCountable
+
+@[expose] public section
 
 /-! Amalgamate the ordinary envelopes first, then use the checked
 countable saturation theorem. The earlier preparation is over a finitely

@@ -1,5 +1,9 @@
-import Section9.VFJacobian
-import Section8.ContinuityFormula
+module
+
+public import Section9.VFJacobian
+public import Section8.ContinuityFormula
+
+@[expose] public section
 
 /-! Same-base formula for a partial derivative. The three scalar
 quantifiers range over nonzero VF elements. Their values are the

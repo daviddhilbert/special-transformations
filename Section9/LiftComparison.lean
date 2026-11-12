@@ -1,5 +1,9 @@
-import Section9.RVComparisonGenericLabels
-import Section9.LiftJacobianDiscrepancy
+module
+
+public import Section9.RVComparisonGenericLabels
+public import Section9.LiftJacobianDiscrepancy
+
+@[expose] public section
 
 /-! Compare an arbitrary lift with a definable candidate for the RV
 Jacobian. Once the candidate is known to agree with the residue

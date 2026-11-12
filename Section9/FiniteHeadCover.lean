@@ -1,7 +1,11 @@
-import Section9.RVFiniteHead
-import Section4.EarlierRVInputs
-import Section7.TupleCoordinates
-import Mathlib.Data.Fintype.EquivFin
+module
+
+public import Section9.RVFiniteHead
+public import Section4.EarlierRVInputs
+public import Section7.TupleCoordinates
+public import Mathlib.Data.Fintype.EquivFin
+
+@[expose] public section
 
 /-! A lower-dimensional RV set can be covered by finitely many
 same-base pieces with finite coordinate projections of one arity. The

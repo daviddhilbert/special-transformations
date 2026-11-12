@@ -1,5 +1,9 @@
-import Enc
-import Mathlib.ModelTheory.Semantics
+module
+
+public import Enc
+public import Mathlib.ModelTheory.Semantics
+
+@[expose] public section
 
 /-!
 The occurrence support for the corrected language, also in arbitrary

@@ -1,5 +1,9 @@
-import Section4.RVFiniteGradedSemiring
-import Section4.RVGradedRing
+module
+
+public import Section4.RVFiniteGradedSemiring
+public import Section4.RVGradedRing
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

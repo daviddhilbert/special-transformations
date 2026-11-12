@@ -1,5 +1,9 @@
-import Section9.HenselizedGraphData
-import Mathlib.RingTheory.Etale.Basic
+module
+
+public import Section9.HenselizedGraphData
+public import Mathlib.RingTheory.Etale.Basic
+
+@[expose] public section
 
 namespace SpecialTransformations.Section9
 

@@ -1,5 +1,9 @@
-import Section4.MapParameters
-import Section4.FiniteGluing
+module
+
+public import Section4.MapParameters
+public import Section4.FiniteGluing
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 

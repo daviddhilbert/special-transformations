@@ -1,5 +1,9 @@
-import Section9.MixedInverseJacobian
-import Section9.CoarsenedDeterminant
+module
+
+public import Section9.MixedInverseJacobian
+public import Section9.CoarsenedDeterminant
+
+@[expose] public section
 
 /-! Combine the two coarsened derivative bounds at possibly different
 graph points. The fine Jacobian value of the inverse is obtained from

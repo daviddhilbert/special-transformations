@@ -1,6 +1,10 @@
-import Section4.CodeMaps
-import Section3.ClosureBridge
-import CanonicalRV
+module
+
+public import Section4.CodeMaps
+public import Section3.ClosureBridge
+public import CanonicalRV
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

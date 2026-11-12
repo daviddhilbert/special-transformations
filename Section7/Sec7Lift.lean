@@ -1,3 +1,5 @@
+module
+
 /-
 # Section 7, Theorem \ref{RV:iso:class:lifted}: *isomorphic `RV`-objects have isomorphic lifts*
 
@@ -94,7 +96,9 @@ Build (from this directory):
 
     LEAN_PATH=<repo>/.scratch2/sec3:$LEAN_PATH lean Sec7Lift.lean
 -/
-import Sec4Categories
+public import Sec4Categories
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.unusedSectionVars false

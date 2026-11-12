@@ -1,5 +1,9 @@
-import Section6.ConcreteHenselian
-import Section6.DenefPasInterpretation
+module
+
+public import Section6.ConcreteHenselian
+public import Section6.DenefPasInterpretation
+
+@[expose] public section
 
 /-! The angular-component splitting presents the same native model as the
 ordinary leading-term quotient with its residue-field operations. -/

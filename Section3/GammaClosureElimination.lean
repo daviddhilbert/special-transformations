@@ -1,6 +1,10 @@
-import Section3.CanonicalParameters
-import Section3.DefinableConstants
-import Section3.GammaParameterBridge
+module
+
+public import Section3.CanonicalParameters
+public import Section3.DefinableConstants
+public import Section3.GammaParameterBridge
+
+@[expose] public section
 
 /- Component: GammaRealBaseElimination -/
 set_option backward.isDefEq.respectTransparency false

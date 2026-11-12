@@ -1,3 +1,5 @@
+module
+
 /-
 **Parameter relabelling of the well-sorted fragment** — from swarm `smw1bwjo2` m2, verified here
 (compiled; 0 errors, no `sorry`, axioms within {propext, Classical.choice, Quot.sound}).  The earlier
@@ -20,7 +22,9 @@ Transport of `TmSort`, `InAntecedent`, `GuardTrue` and `WellSorted` along Mathli
 This is the piece that the old compiled `Occurs` could not do; with `Occurs := InAntecedent`
 an inductive family, the guard transports by its own constructors.
 -/
-import ParamBridgeShift
+public import ParamBridgeShift
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder

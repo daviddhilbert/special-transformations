@@ -1,7 +1,11 @@
-import Section8.RVFibreGeneric
-import Section3.GammaSpecialization
-import Section3.NormalizationSaturation
-import Section3.SmallFiniteParameters
+module
+
+public import Section8.RVFibreGeneric
+public import Section3.GammaSpecialization
+public import Section3.NormalizationSaturation
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 /-! The local-constancy locus descends to the original Gamma base.
 The same Gamma parameters remain fixed when the VF centre varies. -/

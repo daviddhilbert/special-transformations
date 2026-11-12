@@ -1,5 +1,9 @@
-import Section6.NativeFormulaElimination
-import Section6.GeneratedDenaming
+module
+
+public import Section6.NativeFormulaElimination
+public import Section6.GeneratedDenaming
+
+@[expose] public section
 
 /-! The type comparison needed for Proposition 6.4 on two henselian
 copies in a common native ACVF envelope. The VF-free comparison formula

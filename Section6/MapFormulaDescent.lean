@@ -1,6 +1,10 @@
-import Section6.NamedLanguage
-import Section6.HenselianInputs
-import Section5.GeneralExistence
+module
+
+public import Section6.NamedLanguage
+public import Section6.HenselianInputs
+public import Section5.GeneralExistence
+
+@[expose] public section
 
 /-! The generic syntactic descent engine, using the accepted general
 definable-map preparation theorem. A complete graph formula is constructed,

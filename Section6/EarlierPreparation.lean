@@ -1,11 +1,15 @@
-import Section3.ModelContext
-import MarkerBridge
+module
 
-import Section6.EnvelopeUniformity
-import Section6.RVReductQE
-import Section5.VerticalObstacles
-import Section3.GammaPresentation
-import CanonicalCountable
+public import Section3.ModelContext
+public import MarkerBridge
+
+public import Section6.EnvelopeUniformity
+public import Section6.RVReductQE
+public import Section5.VerticalObstacles
+public import Section3.GammaPresentation
+public import CanonicalCountable
+
+@[expose] public section
 
 /-! Checked producers for the earlier preparation needed by the native
 comparison, including the finite-tuple form of Marker saturation. -/

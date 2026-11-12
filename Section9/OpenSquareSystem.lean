@@ -1,6 +1,10 @@
-import Section7.PolynomialSystemEtale
-import Section9.EtaleDomainReducedness
-import Mathlib.RingTheory.Smooth.Flat
+module
+
+public import Section7.PolynomialSystemEtale
+public import Section9.EtaleDomainReducedness
+public import Mathlib.RingTheory.Smooth.Flat
+
+@[expose] public section
 
 /-! An open chart cut out by a square system with invertible Jacobian
 has a reduced coordinate ring over a domain. The equation for the

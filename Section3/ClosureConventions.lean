@@ -1,4 +1,8 @@
-import Section3.VFDefinableClosure
+module
+
+public import Section3.VFDefinableClosure
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Section3

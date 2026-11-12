@@ -1,13 +1,17 @@
-import Section3.BallFibreConstancy
-import Section3.ClosedCosetChoice
-import Section3.DefinableCosets
-import Section3.EncodedBallGeometry
-import Section3.GammaBaseFiniteExceptions
-import Section3.GammaBaseTools
-import Section3.GammaProjection
-import Section3.GammaRealMap
-import Section3.GeneralBallCenters
-import Section3.ProfileComposition
+module
+
+public import Section3.BallFibreConstancy
+public import Section3.ClosedCosetChoice
+public import Section3.DefinableCosets
+public import Section3.EncodedBallGeometry
+public import Section3.GammaBaseFiniteExceptions
+public import Section3.GammaBaseTools
+public import Section3.GammaProjection
+public import Section3.GammaRealMap
+public import Section3.GeneralBallCenters
+public import Section3.ProfileComposition
+
+@[expose] public section
 
 /- Full quotient-profile selection over real/Gamma bases. This module
 reuses checked additive-coset exceptions, closed-ball centers and the full

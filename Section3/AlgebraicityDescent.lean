@@ -1,6 +1,10 @@
-import Section3.RawAlgebraicity
-import Section3.DefinableCompactness
-import Section3.FiniteRelations
+module
+
+public import Section3.RawAlgebraicity
+public import Section3.DefinableCompactness
+public import Section3.FiniteRelations
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.RawClosure

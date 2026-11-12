@@ -39,7 +39,7 @@ def visit(module):
         raise RuntimeError('Cyclic import: ' + module)
     visiting.add(module)
     source = ROOT / 'Section3' / (module + '.lean')
-    for dep in re.findall(r'^import Section3\.(\w+)$', source.read_text(encoding='utf-8'), re.M):
+    for dep in re.findall(r'^(?:public\s+)?import Section3\.(\w+)$', source.read_text(encoding='utf-8'), re.M):
         visit(dep)
     visiting.remove(module)
     modules.append(module)
@@ -335,7 +335,7 @@ for module in modules:
     if re.search(r'\b(?:sorry|admit|axiom)\b', code_only(source.read_text(encoding='utf-8'))):
         raise RuntimeError('Placeholder or custom axiom in ' + str(source))
     if not audit_built:
-        deps = re.findall(r'^import Section3\.(\w+)$', source.read_text(encoding='utf-8'), re.M)
+        deps = re.findall(r'^(?:public\s+)?import Section3\.(\w+)$', source.read_text(encoding='utf-8'), re.M)
         fingerprints[module] = hashlib.sha256((version + pin_key + sha(source) +
             ''.join(fingerprints[d] for d in deps)).encode()).hexdigest()
         run(module, source, LIB / 'Section3' / (module + '.olean'), fingerprints[module])

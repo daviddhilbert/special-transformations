@@ -1,7 +1,11 @@
-import Section5.GammaInvariantLogic
-import Section5.GammaLift
-import Section4.VFDimensionRank
-import Section5.Surjectivity
+module
+
+public import Section5.GammaInvariantLogic
+public import Section5.GammaLift
+public import Section4.VFDimensionRank
+public import Section5.Surjectivity
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false

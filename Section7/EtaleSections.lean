@@ -1,5 +1,9 @@
-import Section7.Imported.EtaleLifting
-import Section7.Imported.UnramifiedUniqueness
+module
+
+public import Section7.Imported.EtaleLifting
+public import Section7.Imported.UnramifiedUniqueness
+
+@[expose] public section
 
 namespace SpecialTransformations.Section7
 

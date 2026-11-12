@@ -1,4 +1,8 @@
-import Section7.SimpleResidueExtraction
+module
+
+public import Section7.SimpleResidueExtraction
+
+@[expose] public section
 
 /-!
 # Varying one coordinate inside a fixed value fibre

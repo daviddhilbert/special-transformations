@@ -1,12 +1,16 @@
-import Section8.UnaryGerm
-import Section8.PowerEstimateCore
-import Mathlib.Data.Nat.Factorial.Basic
-import Section8.MixedLocalFormula
-import Section8.GenericOutputBall
-import Section4.GammaDefinablePoint
-import Section8.GammaRadiusBase
-import Section3.GammaRealMap
-import Section3.GammaSpecialization
+module
+
+public import Section8.UnaryGerm
+public import Section8.PowerEstimateCore
+public import Mathlib.Data.Nat.Factorial.Basic
+public import Section8.MixedLocalFormula
+public import Section8.GenericOutputBall
+public import Section4.GammaDefinablePoint
+public import Section8.GammaRadiusBase
+public import Section3.GammaRealMap
+public import Section3.GammaSpecialization
+
+@[expose] public section
 
 section
 

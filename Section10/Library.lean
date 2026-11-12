@@ -1,12 +1,16 @@
-import Section10.RVVolumeRepresentative
-import Section10.GammaVolumeLift
-import Section10.RVVolumeSurjectivity
-import Section10.GammaVolumeSurjectivity
-import Section10.MeasuredPositiveLift
-import Section10.MeasuredRVCategory
-import Section10.UnitVolume
-import Section10.GradedCategories
-import Section10.ZeroDegree
+module
+
+public import Section10.RVVolumeRepresentative
+public import Section10.GammaVolumeLift
+public import Section10.RVVolumeSurjectivity
+public import Section10.GammaVolumeSurjectivity
+public import Section10.MeasuredPositiveLift
+public import Section10.MeasuredRVCategory
+public import Section10.UnitVolume
+public import Section10.GradedCategories
+public import Section10.ZeroDegree
+
+@[expose] public section
 
 /-! The active Section 10 entry point. Its checked scope is recorded in
 `Section10/STATUS.md`. -/

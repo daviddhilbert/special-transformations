@@ -1,5 +1,9 @@
-import Section9.AffineMixedMaps
-import Section9.MixedGenericDifferentiation
+module
+
+public import Section9.AffineMixedMaps
+public import Section9.MixedGenericDifferentiation
+
+@[expose] public section
 
 /-! The fixed-label derivative of the named diagonal affine coordinate
 change, in either direction. -/

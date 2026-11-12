@@ -1,6 +1,10 @@
-import Section9.VolumeResidueCorrespondence
-import Section4.CodeMaps
-import Section4.ResidueRVSet
+module
+
+public import Section9.VolumeResidueCorrespondence
+public import Section4.CodeMaps
+public import Section4.ResidueRVSet
+
+@[expose] public section
 
 /-! Normalizing an RV set is definable jointly in its scale and residue
 coordinates. The scale parameters can therefore be quantified in a

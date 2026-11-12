@@ -1,6 +1,10 @@
-import Section4.RVCoproduct
-import Section4.RVEmptyIso
-import Section4.RVScissorPresentation
+module
+
+public import Section4.RVCoproduct
+public import Section4.RVEmptyIso
+public import Section4.RVScissorPresentation
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

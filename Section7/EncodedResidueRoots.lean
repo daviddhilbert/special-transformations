@@ -1,5 +1,9 @@
-import Section7.GammaPolynomial
-import CanonicalRV
+module
+
+public import Section7.GammaPolynomial
+public import CanonicalRV
+
+@[expose] public section
 
 /-! The Definition 7.1 result on the VF and RV sorts of the released language.
 `CanonicalRV.equiv` is the proved quotient/encoded-sort bridge from ACVF-QE.

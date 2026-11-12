@@ -1,4 +1,8 @@
-import Section9.AffineTail
+module
+
+public import Section9.AffineTail
+
+@[expose] public section
 
 /-! The affine tail is a bijection on every fibre. At a head with the
 correct determinant value its slope product gives the prescribed

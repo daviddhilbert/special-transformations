@@ -1,5 +1,9 @@
-import Section4.EmptyMaps
-import Section4.RVIsoTools
+module
+
+public import Section4.EmptyMaps
+public import Section4.RVIsoTools
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language CategoryTheory
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

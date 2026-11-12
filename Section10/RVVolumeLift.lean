@@ -1,8 +1,12 @@
-import Section9.PrescribedVolumeLift
-import Section9.GaussGraphConstruction
-import Section9.RVFiniteEssential
-import Section9.UniformRVScaling
-import Section4.RVCoordinates
+module
+
+public import Section9.PrescribedVolumeLift
+public import Section9.GaussGraphConstruction
+public import Section9.RVFiniteEssential
+public import Section9.UniformRVScaling
+public import Section4.RVCoordinates
+
+@[expose] public section
 
 /-! Positive-degree RV volume forms and the forward lift of Theorem 10.5.
 The essential isomorphism acts on the nondegenerate parts of finite-volume

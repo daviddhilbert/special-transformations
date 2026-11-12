@@ -1,7 +1,11 @@
-import Section4.MapParameters
-import Section4.RelationFibres
-import Section3.AlgebraicTransitivity
-import Section3.SortedFunctionClosure
+module
+
+public import Section4.MapParameters
+public import Section4.RelationFibres
+public import Section3.AlgebraicTransitivity
+public import Section3.SortedFunctionClosure
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

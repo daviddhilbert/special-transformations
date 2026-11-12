@@ -1,3 +1,5 @@
+module
+
 /-
 # Ball structure in the frozen `L_RV`, and the exact content of "has centers"
 
@@ -19,8 +21,10 @@ realisation toolkit of `QE/MulNormalForm.lean`, and proves:
   the frozen `IsSetOfCenters` strengthens that to "exactly one point of `C` lies in each ball",
   and the strengthening is refuted here from the axioms alone (no model construction).
 -/
-import Enc
-import MulNormalForm
+public import Enc
+public import MulNormalForm
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder

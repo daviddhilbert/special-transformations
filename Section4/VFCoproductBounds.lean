@@ -1,5 +1,9 @@
-import Section4.VFCoproduct
-import Section4.VFUnions
+module
+
+public import Section4.VFCoproduct
+public import Section4.VFUnions
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

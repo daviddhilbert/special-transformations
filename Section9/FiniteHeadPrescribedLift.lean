@@ -1,6 +1,10 @@
-import Section9.WeightedAffineLift
-import Section9.RVJacobianException
-import Section9.GammaCompatibility
+module
+
+public import Section9.WeightedAffineLift
+public import Section9.RVJacobianException
+public import Section9.GammaCompatibility
+
+@[expose] public section
 
 /-! Theorem 9.16 on a piece with finite head projections already in
 first position on both sides. The assumptions on the prescribed form

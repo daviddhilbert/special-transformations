@@ -1,8 +1,12 @@
-import Section6.EarlierPreparation
-import Section6.ExpandedNormalForm
-import Section6.SyntacticLemma63
-import Section6.NamedLogic
-import Section6.DenefPasConclusion
+module
+
+public import Section6.EarlierPreparation
+public import Section6.ExpandedNormalForm
+public import Section6.SyntacticLemma63
+public import Section6.NamedLogic
+public import Section6.DenefPasConclusion
+
+@[expose] public section
 
 /-! Section 6 statements using the proved earlier preparation and the
 normalization obtained from the native envelopes. -/

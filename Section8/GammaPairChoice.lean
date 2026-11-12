@@ -1,4 +1,8 @@
-import Section8.GammaRadiusBase
+module
+
+public import Section8.GammaRadiusBase
+
+@[expose] public section
 
 /-! Definable witnesses with a unique shift and an upper ray of radii. -/
 

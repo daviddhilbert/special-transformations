@@ -1,4 +1,8 @@
-import Section6.HenselianElimination
+module
+
+public import Section6.HenselianElimination
+
+@[expose] public section
 
 /-! Naming an arbitrary sorted base preserves the constructed relative
 QE theorem. Constants are opened as free parameters and then closed by

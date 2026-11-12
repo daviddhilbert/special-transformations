@@ -1,6 +1,10 @@
-import Section6.NativeValuation
-import CanonicalRV
-import RVValueMap
+module
+
+public import Section6.NativeValuation
+public import CanonicalRV
+public import RVValueMap
+
+@[expose] public section
 
 /-! Identification of a native henselian RV sort with the quotient of its
 extracted valuation. Adapted from the released ACVF-QE `CanonicalRV` and

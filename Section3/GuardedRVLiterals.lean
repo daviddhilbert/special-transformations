@@ -1,5 +1,9 @@
-import Section3.GuardedRVArithmetic
-import Section3.GuardedRVTerms
+module
+
+public import Section3.GuardedRVArithmetic
+public import Section3.GuardedRVTerms
+
+@[expose] public section
 
 /-!
 # GuardedRVLiterals

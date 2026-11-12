@@ -1,5 +1,9 @@
-import Section9.UniformResiduePolynomials
-import Section7.TupleCoordinates
+module
+
+public import Section9.UniformResiduePolynomials
+public import Section7.TupleCoordinates
+
+@[expose] public section
 
 /-! Each fixed choice of monomial supports has first-order tests for
 the square equations, the open factor, the input cut, and the

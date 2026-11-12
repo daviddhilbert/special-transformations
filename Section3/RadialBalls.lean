@@ -1,5 +1,9 @@
-import Section3.EncodedBallGeometry
-import Section3.DiscCentres
+module
+
+public import Section3.EncodedBallGeometry
+public import Section3.DiscCentres
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical
 namespace SpecialTransformations.Section3.Balls

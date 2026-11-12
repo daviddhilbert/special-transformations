@@ -1,7 +1,11 @@
-import Section6.HenselianElimination
-import Section6.ExpandedLiterals
-import Section6.ExtraSortSemantics
-import Section6.NativeImageTransport
+module
+
+public import Section6.HenselianElimination
+public import Section6.ExpandedLiterals
+public import Section6.ExtraSortSemantics
+public import Section6.NativeImageTransport
+
+@[expose] public section
 
 /-! Conversion of VF-quantifier-free formulas to the RV fragment in
 models that admit a native ACVF envelope. -/

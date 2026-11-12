@@ -1,6 +1,10 @@
-import Section10.RVVolumeLift
-import Section10.GammaVolumeLift
-import Section9.GenericRVJacobianChain
+module
+
+public import Section10.RVVolumeLift
+public import Section10.GammaVolumeLift
+public import Section9.GenericRVJacobianChain
+
+@[expose] public section
 
 /-! The groupoids on the essential parts of finite-volume RV objects.
 The RV Jacobian is required on a definable RV co-small subset. -/

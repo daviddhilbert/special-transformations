@@ -1,4 +1,8 @@
-import Section7.JacobianNormalization
+module
+
+public import Section7.JacobianNormalization
+
+@[expose] public section
 
 /-!
 # Transport of simple common residue roots to the unit fibre

@@ -1,4 +1,8 @@
-import SpecialTransformations.Differentiation
+module
+
+public import SpecialTransformations.Differentiation
+
+@[expose] public section
 
 /-!
 # Categories with volume forms

@@ -1,3 +1,5 @@
+module
+
 /-
 **"At most `k` solutions" as a first-order formula of `L_RV`.**
 
@@ -23,10 +25,12 @@ lemma is proved, not assumed.
 
 No `sorry`, no `axiom`, no `native_decide`.
 -/
-import Sec3Infra
-import SubstVar
-import ExSortedG
-import UniformCover
+public import Sec3Infra
+public import SubstVar
+public import ExSortedG
+public import UniformCover
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option maxHeartbeats 1000000

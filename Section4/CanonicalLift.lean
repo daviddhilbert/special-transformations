@@ -1,5 +1,9 @@
-import Section4.RVCategories
-import Section4.VFCategories
+module
+
+public import Section4.RVCategories
+public import Section4.VFCategories
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

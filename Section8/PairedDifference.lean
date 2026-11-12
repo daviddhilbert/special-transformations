@@ -1,15 +1,19 @@
-import Section8.UniformBalls
-import Section3.RVOperations
-import Section8.UnarySlope
-import Section3.SmallFamilyConstancy
-import Section8.UnaryPolynomial
-import Section8.BijectionSlope
-import Section8.VFNeighbourhoods
-import Section8.GenericOutputBall
-import Section4.VFFiniteMaps
-import Section8.RVFibreLocus
-import Section8.MixedLocalFormula
-import Section3.SortedParameterElimination
+module
+
+public import Section8.UniformBalls
+public import Section3.RVOperations
+public import Section8.UnarySlope
+public import Section3.SmallFamilyConstancy
+public import Section8.UnaryPolynomial
+public import Section8.BijectionSlope
+public import Section8.VFNeighbourhoods
+public import Section8.GenericOutputBall
+public import Section4.VFFiniteMaps
+public import Section8.RVFibreLocus
+public import Section8.MixedLocalFormula
+public import Section3.SortedParameterElimination
+
+@[expose] public section
 
 section
 

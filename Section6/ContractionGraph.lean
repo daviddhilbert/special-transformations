@@ -1,5 +1,9 @@
-import Section6.SyntacticDescent
-import Section3.QuantifierFree
+module
+
+public import Section6.SyntacticDescent
+public import Section3.QuantifierFree
+
+@[expose] public section
 
 /-! Quantifier-free full contraction graphs over the original base. The
 earlier sorted definability bridge and released ACVF QE are used as given.

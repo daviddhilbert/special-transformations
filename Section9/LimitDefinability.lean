@@ -1,6 +1,10 @@
-import Section9.FiniteFibreLimit
-import Section8.ContinuityFormula
-import Section3.GammaCodeDefinability
+module
+
+public import Section9.FiniteFibreLimit
+public import Section8.ContinuityFormula
+public import Section3.GammaCodeDefinability
+
+@[expose] public section
 
 /-! Same-base definability of the finite minimal limit. A Boolean mask
 indicates which output coordinates are finite. Quantifying over

@@ -1,5 +1,9 @@
-import Section3.Barycentre
-import Section3.BallGeometry
+module
+
+public import Section3.Barycentre
+public import Section3.BallGeometry
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,6 +1,10 @@
-import Section3.ClosedBallCenterCover
-import Section3.ClosedCentersFromFiniteSet
-import Section3.GammaRealRestriction
+module
+
+public import Section3.ClosedBallCenterCover
+public import Section3.ClosedCentersFromFiniteSet
+public import Section3.GammaRealRestriction
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

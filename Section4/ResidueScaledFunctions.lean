@@ -1,5 +1,9 @@
-import Section4.ResiduePureFunctions
-import Section3.RVOperations
+module
+
+public import Section4.ResiduePureFunctions
+public import Section3.RVOperations
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

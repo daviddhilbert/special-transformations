@@ -1,4 +1,8 @@
-import Section5.PullbackLift
+module
+
+public import Section5.PullbackLift
+
+@[expose] public section
 
 /-!
 # Surjectivity of lifting on isomorphism classes

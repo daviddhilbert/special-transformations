@@ -1,5 +1,9 @@
-import Mathlib.Algebra.MvPolynomial.Eval
-import Mathlib.RingTheory.Congruence.Hom
+module
+
+public import Mathlib.Algebra.MvPolynomial.Eval
+public import Mathlib.RingTheory.Congruence.Hom
+
+@[expose] public section
 
 /-!
 # Positive scissor presentations

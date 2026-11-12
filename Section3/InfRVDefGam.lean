@@ -1,3 +1,5 @@
+module
+
 /-
 **`inf:RV:def:gam`** (`paper.tex:746`, Section 3) — from swarm `smw1jgnht` m7, verified here
 (compiled: exit 0, 0 errors, no `sorry`; `#print axioms` on all three theorems within
@@ -61,7 +63,9 @@ Conventions (see `Milestone0/DECISION.md`): the carrier is one-sorted with sort 
 The hypothesis `hRV` below records exactly that (`A ⊆ RV^×`), which is why `V ⊆ Γ` is a provable
 statement here (`Vset_subset_isGamma`).
 -/
-import Enc
+public import Enc
+
+@[expose] public section
 
 set_option linter.unusedSectionVars false
 

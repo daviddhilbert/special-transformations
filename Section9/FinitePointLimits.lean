@@ -1,4 +1,8 @@
-import Section9.LimitGeometry
+module
+
+public import Section9.LimitGeometry
+
+@[expose] public section
 
 /-! Lemmas 9.2 and 9.3 for finite VF limit points. This is the scope
 explicitly stated in 9.2. The auxiliary infinity remains available in

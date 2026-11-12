@@ -1,4 +1,8 @@
-import Section3.ModelContext
+module
+
+public import Section3.ModelContext
+
+@[expose] public section
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3

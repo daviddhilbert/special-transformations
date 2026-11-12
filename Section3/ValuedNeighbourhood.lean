@@ -1,5 +1,9 @@
-import Mathlib
-import Mathlib.Topology.Algebra.Valued.ValuedField
+module
+
+public import Mathlib
+public import Mathlib.Topology.Algebra.Valued.ValuedField
+
+@[expose] public section
 open Filter Topology MonoidWithZeroHom
 namespace SpecialTransformations.Section3
 theorem infinite_valued_neighbourhood {K Γ : Type} [Field K]

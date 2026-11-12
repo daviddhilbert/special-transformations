@@ -1,5 +1,9 @@
-import Section6.ExpandedOpenBounds
-import Section6.FiniteSortContext
+module
+
+public import Section6.ExpandedOpenBounds
+public import Section6.FiniteSortContext
+
+@[expose] public section
 
 /-! The original outer variables become finite coefficient variables;
 the one VF witness remains distinguished. This is an actual reindexing

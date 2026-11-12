@@ -1,3 +1,5 @@
+module
+
 /-
 **Parameter substitution on `L_RV`: `TmSort`/`WellSorted` are preserved.**
 
@@ -19,8 +21,10 @@ parameter-only term does not depend on the variable context — the ingredient t
 Build: `.scratch2/sec3/` holds a compiled `Enc`; copy this file there and
 `LEAN_PATH=$PWD:$LEAN_PATH lean` it.
 -/
-import Enc
-import ParamBridgeRelabel
+public import Enc
+public import ParamBridgeRelabel
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

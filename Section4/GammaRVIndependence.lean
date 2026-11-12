@@ -1,7 +1,11 @@
-import Section4.RVSequenceIndependence
-import Section4.RVDimensionRank
-import Section3.GammaParameters
-import Section3.SmallFiniteParameters
+module
+
+public import Section4.RVSequenceIndependence
+public import Section4.RVDimensionRank
+public import Section3.GammaParameters
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

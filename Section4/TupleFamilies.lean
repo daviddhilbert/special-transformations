@@ -1,4 +1,8 @@
-import Section4.FamilyCoding
+module
+
+public import Section4.FamilyCoding
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

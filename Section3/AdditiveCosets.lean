@@ -1,6 +1,10 @@
-import Section3.AdditiveClassification
-import Section3.BallFibreConstancy
-import Section3.BallTranslation
+module
+
+public import Section3.AdditiveClassification
+public import Section3.BallFibreConstancy
+public import Section3.BallTranslation
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

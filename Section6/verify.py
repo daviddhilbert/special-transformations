@@ -40,7 +40,7 @@ def save(path, value):
 manifest = json.loads((ROOT / 'lake-manifest.json').read_text())
 pins = {p['name']: p['rev'] for p in manifest['packages']}
 assert pins['mathlib'] == '56a005855ea17e0b0958f73ec801ae140b0a1679'
-assert pins['acvf_qe'] == '939346b0a99899e22a873479364e3cc5d142731c'
+assert pins['acvf_qe'] == '1d7396d7e23c34dc23d19214e510e63e1ec1fe03'
 pin_key = sha(ROOT / 'lean-toolchain') + sha(ROOT / 'lake-manifest.json')
 cache_path = BUILD / 'cache.json'
 cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}
@@ -71,7 +71,7 @@ def visit(name):
     content = source.read_text(encoding='utf-8')
     if re.search(r'\b(?:sorry|admit|axiom)\b', code_only(content)):
         raise RuntimeError('Placeholder or custom axiom in ' + name)
-    imports = re.findall(r'^import ([\w.]+)$', content, re.M)
+    imports = re.findall(r'^(?:public\s+)?import ([\w.]+)$', content, re.M)
     deps = [visit(d) if d.startswith('Section6.') else external(d) for d in imports]
     fp = hashlib.sha256((version + pin_key + sha(source) + ''.join(deps)).encode()).hexdigest()
     fingerprints[name] = fp

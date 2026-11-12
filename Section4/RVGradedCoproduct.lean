@@ -1,5 +1,9 @@
-import Section4.RVGrading
-import Section4.RVCoproduct
+module
+
+public import Section4.RVGrading
+public import Section4.RVCoproduct
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

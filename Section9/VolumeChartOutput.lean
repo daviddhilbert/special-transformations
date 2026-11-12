@@ -1,6 +1,10 @@
-import Section9.VolumeChartCertificates
-import Section9.RVScaleRatio
-import Section9.ResidueChartJacobian
+module
+
+public import Section9.VolumeChartCertificates
+public import Section9.RVScaleRatio
+public import Section9.ResidueChartJacobian
+
+@[expose] public section
 
 /-! The residue determinant, corrected by the ratio of scales, is a
 same-base definable graph for each supported chart. -/

@@ -1,4 +1,8 @@
-import Section9.UniformRVScaling
+module
+
+public import Section9.UniformRVScaling
+
+@[expose] public section
 
 /-! The normalization factor in the residue chart is a term in the
 two scale tuples and the residue determinant. -/

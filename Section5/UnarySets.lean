@@ -1,5 +1,9 @@
-import Section5.RootConstruction
-import Section3.MixedRootFree
+module
+
+public import Section5.RootConstruction
+public import Section3.MixedRootFree
+
+@[expose] public section
 
 /-!
 # Restricting special bijections to definable subsets

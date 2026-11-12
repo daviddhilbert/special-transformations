@@ -1,5 +1,9 @@
-import Section3.ClosedBallQuotient
-import Section3.OpenBallHullGeometry
+module
+
+public import Section3.ClosedBallQuotient
+public import Section3.OpenBallHullGeometry
+
+@[expose] public section
 
 /- Component: OpenBallCodes -/
 set_option backward.isDefEq.respectTransparency false

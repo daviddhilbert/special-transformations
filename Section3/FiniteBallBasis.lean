@@ -1,4 +1,8 @@
-import Section3.BooleanCombinations
+module
+
+public import Section3.BooleanCombinations
+
+@[expose] public section
 open Classical
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.BooleanCombinations

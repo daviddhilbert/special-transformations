@@ -1,6 +1,10 @@
-import Section6.PaperPreparation
-import Section6.NativeEnvelopeConstruction
-import Section6.DenefPasRecognition
+module
+
+public import Section6.PaperPreparation
+public import Section6.NativeEnvelopeConstruction
+public import Section6.DenefPasRecognition
+
+@[expose] public section
 
 /-! Relative field-sort quantifier elimination for the native henselian
 theory and for Denef–Pas expansions. -/

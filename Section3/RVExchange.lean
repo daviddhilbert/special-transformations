@@ -1,4 +1,8 @@
-import Section3.RVGammaAlgebraicity
+module
+
+public import Section3.RVGammaAlgebraicity
+
+@[expose] public section
 
 /- Component: RVExchangeGeometry -/
 set_option backward.isDefEq.respectTransparency false

@@ -1,3 +1,5 @@
+module
+
 /-
 **The realisation lemma for the encoding's guarded existential `exSortedG`**, which
 `Milestone0/Encoding.lean` states `WellSorted`-ness for but never realises:
@@ -15,8 +17,10 @@ a *guarded* existential has to be eliminated — in particular the pairing step 
 Check with `.scratch2/sec3/` (compiled `Enc` and `JunkTrue`): copy this file there and
 `LEAN_PATH=$PWD:$LEAN_PATH lean` it.
 -/
-import Enc
-import JunkTrue
+public import Enc
+public import JunkTrue
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

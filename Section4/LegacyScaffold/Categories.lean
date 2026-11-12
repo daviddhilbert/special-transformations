@@ -1,4 +1,8 @@
-import SpecialTransformations.Dimension
+module
+
+public import SpecialTransformations.Dimension
+
+@[expose] public section
 
 /-!
 # Categories of definable subsets and Grothendieck semigroups

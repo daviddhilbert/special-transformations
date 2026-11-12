@@ -1,15 +1,19 @@
-import Section3.GammaThresholdGeometry
-import Section4.FullDimension
-import Mathlib.Topology.Algebra.Valued.ValuedField
-import Section8.IsolationFibres
-import Section8.IsolationFamilies
-import Section4.VFFiniteMaps
-import Section3.SmallFiniteParameters
-import Section4.RealPresentations
-import Section3.GammaCodeDefinability
-import Section8.UnaryPolynomial
-import Section3.RingSyntax
-import Mathlib.Algebra.Order.GroupWithZero.Basic
+module
+
+public import Section3.GammaThresholdGeometry
+public import Section4.FullDimension
+public import Mathlib.Topology.Algebra.Valued.ValuedField
+public import Section8.IsolationFibres
+public import Section8.IsolationFamilies
+public import Section4.VFFiniteMaps
+public import Section3.SmallFiniteParameters
+public import Section4.RealPresentations
+public import Section3.GammaCodeDefinability
+public import Section8.UnaryPolynomial
+public import Section3.RingSyntax
+public import Mathlib.Algebra.Order.GroupWithZero.Basic
+
+@[expose] public section
 
 /-! The good locus and a uniform finite collection of positive slopes. -/
 

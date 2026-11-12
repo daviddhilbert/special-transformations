@@ -1,6 +1,10 @@
-import Section6.ConcreteRVAxioms
-import Section6.ConcreteCharacteristic
-import Section6.HenselianValuationRing
+module
+
+public import Section6.ConcreteRVAxioms
+public import Section6.ConcreteCharacteristic
+public import Section6.HenselianValuationRing
+
+@[expose] public section
 
 /-! The concrete leading-term model of an ordinary henselian valued field. -/
 

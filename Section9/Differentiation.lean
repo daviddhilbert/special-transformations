@@ -1,7 +1,11 @@
-import Section8.PowerEstimateCore
-import Section8.IsolationRadius
-import Section9.LimitGeometry
-import Mathlib.Tactic.Abel
+module
+
+public import Section8.PowerEstimateCore
+public import Section8.IsolationRadius
+public import Section9.LimitGeometry
+public import Mathlib.Tactic.Abel
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

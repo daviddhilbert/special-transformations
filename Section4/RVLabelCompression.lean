@@ -1,6 +1,10 @@
-import Section4.RVZeroDeletion
-import Section4.RVCoordinates
-import Section4.FiniteGluingRelation
+module
+
+public import Section4.RVZeroDeletion
+public import Section4.RVCoordinates
+public import Section4.FiniteGluingRelation
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

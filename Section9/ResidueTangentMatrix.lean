@@ -1,4 +1,8 @@
-import Section9.RVJacobian
+module
+
+public import Section9.RVJacobian
+
+@[expose] public section
 
 /-! Tangent columns determine the residue Jacobian once the simple
 output equations rule out vertical tangent vectors. -/

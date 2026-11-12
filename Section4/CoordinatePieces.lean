@@ -1,6 +1,10 @@
-import Section4.VFPadding
-import Section4.FiniteMaps
-import Section3.TupleRelations
+module
+
+public import Section4.VFPadding
+public import Section4.FiniteMaps
+public import Section3.TupleRelations
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

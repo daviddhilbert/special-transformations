@@ -1,10 +1,14 @@
-import Section9.GenericVolumeChainPoint
-import Section9.GenericVolumePair
-import Section9.VolumeTripleMap
-import Section9.FullRVValueFibre
-import Section9.ResidueCoefficientBase
-import Section4.SmallGeneratedBase
-import Section7.ResidueCharacteristic
+module
+
+public import Section9.GenericVolumeChainPoint
+public import Section9.GenericVolumePair
+public import Section9.VolumeTripleMap
+public import Section9.FullRVValueFibre
+public import Section9.ResidueCoefficientBase
+public import Section4.SmallGeneratedBase
+public import Section7.ResidueCharacteristic
+
+@[expose] public section
 
 /-! A full-dimensional subset of the source labels contains a common
 generic point for the three volume correspondences. -/

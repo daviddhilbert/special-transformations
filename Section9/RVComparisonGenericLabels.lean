@@ -1,10 +1,14 @@
-import Section9.RVComparisonOnResidueFibre
-import Section9.NormalizationBases
-import Section9.FullRVValueFibre
-import Section9.GenericVolumePair
-import Section9.LiftRestriction
-import Section9.LiftLabelRepresentatives
-import Section7.ResidueCharacteristic
+module
+
+public import Section9.RVComparisonOnResidueFibre
+public import Section9.NormalizationBases
+public import Section9.FullRVValueFibre
+public import Section9.GenericVolumePair
+public import Section9.LiftRestriction
+public import Section9.LiftLabelRepresentatives
+public import Section7.ResidueCharacteristic
+
+@[expose] public section
 
 /-! Every full-dimensional definable label set contains a fibre on
 which an arbitrary lift agrees with the RV Jacobian. -/

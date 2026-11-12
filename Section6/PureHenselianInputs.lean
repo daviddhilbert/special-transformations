@@ -1,5 +1,9 @@
-import Section6.HenselianRVClosure
-import Section6.HenselianInputs
+module
+
+public import Section6.HenselianRVClosure
+public import Section6.HenselianInputs
+
+@[expose] public section
 
 /-! The pure characteristic zero algebraic envelope supplies its own RV
 representatives for the henselian closure input. -/

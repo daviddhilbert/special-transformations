@@ -48,7 +48,7 @@ if '4.35.0' not in version or (ROOT / 'lean-toolchain').read_text().strip() != '
 manifest = json.loads((ROOT / 'lake-manifest.json').read_text())
 expected = {
     'mathlib': ('56a005855ea17e0b0958f73ec801ae140b0a1679', 'https://github.com/leanprover-community/mathlib4.git'),
-    'acvf_qe': ('939346b0a99899e22a873479364e3cc5d142731c', 'https://github.com/daviddhilbert/ACVF-QE.git'),
+    'acvf_qe': ('1d7396d7e23c34dc23d19214e510e63e1ec1fe03', 'https://github.com/daviddhilbert/ACVF-QE.git'),
 }
 pin_rows = []
 for name, (revision, url) in expected.items():
@@ -72,7 +72,7 @@ def visit(name):
     content = code_only(source.read_text(encoding='utf-8'))
     if re.search(r'\b(?:sorry|admit|axiom)\b', content):
         raise RuntimeError('Proof placeholder or custom axiom: ' + name)
-    deps = re.findall(r'^\s*import ([\w.]+)\s*$', content, re.M)
+    deps = re.findall(r'^\s*(?:public\s+)?import ([\w.]+)\s*$', content, re.M)
     imports[name] = deps
     source_hashes[str(source)] = sha(source)
     for dep in deps:

@@ -1,6 +1,10 @@
-import Section3.Counting
-import Section3.ParameterBridge
-import Section3.SortedBoolean
+module
+
+public import Section3.Counting
+public import Section3.ParameterBridge
+public import Section3.SortedBoolean
+
+@[expose] public section
 
 /-!
 # Real tuple quantifiers used for local lifts

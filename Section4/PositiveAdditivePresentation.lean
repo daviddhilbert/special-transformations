@@ -1,7 +1,11 @@
-import Mathlib.Algebra.BigOperators.Finsupp.Basic
-import Mathlib.Algebra.Group.Nat.Hom
-import Mathlib.Data.Finsupp.Ext
-import Mathlib.GroupTheory.Congruence.Hom
+module
+
+public import Mathlib.Algebra.BigOperators.Finsupp.Basic
+public import Mathlib.Algebra.Group.Nat.Hom
+public import Mathlib.Data.Finsupp.Ext
+public import Mathlib.GroupTheory.Congruence.Hom
+
+@[expose] public section
 
 /-!+# Positive additive scissor presentations
 

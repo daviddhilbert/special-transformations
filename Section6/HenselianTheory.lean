@@ -1,4 +1,8 @@
-import Section6.RVTermSupport
+module
+
+public import Section6.RVTermSupport
+
+@[expose] public section
 
 /-! The henselian theory in the published native language. The base keeps
 the field, RV group, residue-field and valuation-link axioms, but includes

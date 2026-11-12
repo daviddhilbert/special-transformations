@@ -1,4 +1,8 @@
-import Section9.GaussEvaluation
+module
+
+public import Section9.GaussEvaluation
+
+@[expose] public section
 
 /-! Reduction of a valuation-bounded derivation. The bound preserves the
 maximal ideal, so the induced map is a derivation over the residue field

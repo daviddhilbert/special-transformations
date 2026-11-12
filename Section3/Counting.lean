@@ -1,4 +1,8 @@
-import Section3.Compactness
+module
+
+public import Section3.Compactness
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.RawClosure

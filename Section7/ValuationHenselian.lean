@@ -1,5 +1,9 @@
-import RVHenselLifting
-import Mathlib.RingTheory.Henselian
+module
+
+public import RVHenselLifting
+public import Mathlib.RingTheory.Henselian
+
+@[expose] public section
 
 /-!
 # The ordinary henselian local ring of an algebraically closed valued field

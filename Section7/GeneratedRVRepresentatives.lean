@@ -1,9 +1,13 @@
-import Section3.GeneratedBaseLifting
-import Section3.GammaDefinableClosureField
-import Section3.GeneralBallCenters
-import Section3.GammaFiniteMeans
-import Section3.RVUnaryLift
-import Section3.RVOperations
+module
+
+public import Section3.GeneratedBaseLifting
+public import Section3.GammaDefinableClosureField
+public import Section3.GeneralBallCenters
+public import Section3.GammaFiniteMeans
+public import Section3.RVUnaryLift
+public import Section3.RVOperations
+
+@[expose] public section
 
 /-!
 # Original-base representatives for Lemma 7.4

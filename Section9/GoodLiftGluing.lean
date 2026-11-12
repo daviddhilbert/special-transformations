@@ -1,4 +1,8 @@
-import Section7.LiftingDefinability
+module
+
+public import Section7.LiftingDefinability
+
+@[expose] public section
 
 /-! Glue local lifts on prescribed definable good domains. Restricting
 the VF relations to those domains lets the existing Section 7 gluing

@@ -1,10 +1,14 @@
+module
+
 /-
 Portions adapted from QuantifierElimination.lean, Mathlib PR #40561.
 Copyright (c) 2026 Yağız Kaan Aydoğdu, Yusuf Demir, Salih Erdem Koçak.
 Released under Apache 2.0; the license text is retained in
 Section4/Imported/Mathlib-LICENSE.
 -/
-import Section6.FiniteCover
+public import Section6.FiniteCover
+
+@[expose] public section
 
 /-!
 # Boolean-fragment definability by compactness

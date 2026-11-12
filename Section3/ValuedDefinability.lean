@@ -1,4 +1,8 @@
-import JohnsonLanguagePrime
+module
+
+public import JohnsonLanguagePrime
+
+@[expose] public section
 set_option linter.style.haveILetI false
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.Section3.ValuedDefinability

@@ -1,7 +1,11 @@
-import Section4.RVCoordinates
-import Section4.RVPadding
-import Section4.MapProduct
-import Mathlib.Data.Fin.Tuple.Basic
+module
+
+public import Section4.RVCoordinates
+public import Section4.RVPadding
+public import Section4.MapProduct
+public import Mathlib.Data.Fin.Tuple.Basic
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

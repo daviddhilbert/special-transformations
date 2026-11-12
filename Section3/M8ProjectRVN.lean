@@ -1,3 +1,5 @@
+module
+
 /-
 Legacy finite-set coding over named elements, for arbitrary VF tuple input.
 
@@ -6,7 +8,9 @@ x maps to (rv(x_i-c_ji))_(i,j). The resulting injection is definable over
 an enumeration c of the finite set. Its proof does not establish Lemma 3.9
 over the original parameters of that set. See STATUS.md for current scope.
 -/
-import M8ProjectRV
+public import M8ProjectRV
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language

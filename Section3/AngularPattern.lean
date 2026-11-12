@@ -1,7 +1,11 @@
-import Section3.RVUnaryLift
-import Section3.FiniteBallBasis
-import Section3.RadialBalls
-import Section3.ValueQuotient
+module
+
+public import Section3.RVUnaryLift
+public import Section3.FiniteBallBasis
+public import Section3.RadialBalls
+public import Section3.ValueQuotient
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

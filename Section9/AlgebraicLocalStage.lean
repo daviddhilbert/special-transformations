@@ -1,6 +1,10 @@
-import Mathlib.RingTheory.Unramified.Finite
-import Mathlib.RingTheory.Localization.Integral
-import Mathlib.FieldTheory.Minpoly.Field
+module
+
+public import Mathlib.RingTheory.Unramified.Finite
+public import Mathlib.RingTheory.Localization.Integral
+public import Mathlib.FieldTheory.Minpoly.Field
+
+@[expose] public section
 
 /-! The fraction field of a domain that is an essentially finite
 unramified algebra is finite over the base fraction field. Any map

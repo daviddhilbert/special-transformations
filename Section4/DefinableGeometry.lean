@@ -1,5 +1,9 @@
-import Mathlib.ModelTheory.Definability
-import Mathlib.Data.Finite.Sum
+module
+
+public import Mathlib.ModelTheory.Definability
+public import Mathlib.Data.Finite.Sum
+
+@[expose] public section
 
 /-!
 # Definable sets and maps on real and imaginary presentations

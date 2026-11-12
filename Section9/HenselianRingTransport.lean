@@ -1,5 +1,9 @@
-import Section9.ValuedEtaleDerivation
-import Mathlib.RingTheory.Henselian
+module
+
+public import Section9.ValuedEtaleDerivation
+public import Mathlib.RingTheory.Henselian
+
+@[expose] public section
 
 open Polynomial IsLocalRing
 

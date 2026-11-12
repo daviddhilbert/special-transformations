@@ -1,6 +1,10 @@
-import Section4.RVGradedSemiring
-import Section4.RVGrading
-import Section4.RVGradedCoproduct
+module
+
+public import Section4.RVGradedSemiring
+public import Section4.RVGrading
+public import Section4.RVGradedCoproduct
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

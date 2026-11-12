@@ -1,4 +1,8 @@
-import Section3.BallGeometry
+module
+
+public import Section3.BallGeometry
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical
 namespace SpecialTransformations.Section3.Balls

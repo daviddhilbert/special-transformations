@@ -1,4 +1,8 @@
-import Section6.HenselSchemeSemantics
+module
+
+public import Section6.HenselSchemeSemantics
+
+@[expose] public section
 
 /-! The native scheme expresses simple-root lifting in the valuation ring. -/
 

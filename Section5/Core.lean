@@ -1,9 +1,13 @@
-import Section5.Geometry
-import Section4.Spaces
-import Section4.CodeMaps
-import Section4.DefinableCategory
-import Section3.FiniteBarycentricCode
-import Section3.PolynomialRVConstant
+module
+
+public import Section5.Geometry
+public import Section4.Spaces
+public import Section4.CodeMaps
+public import Section4.DefinableCategory
+public import Section3.FiniteBarycentricCode
+public import Section3.PolynomialRVConstant
+
+@[expose] public section
 
 noncomputable section
 

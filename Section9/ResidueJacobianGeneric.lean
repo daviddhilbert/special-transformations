@@ -1,6 +1,10 @@
-import Section9.ResidueTangentDescent
-import Section9.ResidueTangentMatrix
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+module
+
+public import Section9.ResidueTangentDescent
+public import Section9.ResidueTangentMatrix
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+
+@[expose] public section
 
 /-! The tangent determinant is the determinant of the coordinate
 derivations on the residue field of a graph point. -/

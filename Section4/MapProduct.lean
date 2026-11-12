@@ -1,5 +1,9 @@
-import Section4.MapCorestrict
-import Section4.CodeMaps
+module
+
+public import Section4.MapCorestrict
+public import Section4.CodeMaps
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

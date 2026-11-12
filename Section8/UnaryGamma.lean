@@ -1,8 +1,12 @@
-import Section8.UnarySlope
-import Section3.GammaSpecialization
-import Section3.NormalizationSaturation
-import Section8.GammaPairChoice
-import Section8.PowerEstimateFamily
+module
+
+public import Section8.UnarySlope
+public import Section3.GammaSpecialization
+public import Section3.NormalizationSaturation
+public import Section8.GammaPairChoice
+public import Section8.PowerEstimateFamily
+
+@[expose] public section
 
 section
 

@@ -1,3 +1,5 @@
+module
+
 /-
 **`dim:VF:pullback`, the "trivial" half, made unconditional by `DefinableFun`-composition.**
 
@@ -22,8 +24,10 @@ is the only hypothesis left.
 
 No `sorry`, no `axiom`, no `native_decide`.
 -/
-import Compose
-import Sec4Polydisc
+public import Compose
+public import Sec4Polydisc
+
+@[expose] public section
 
 set_option linter.unusedVariables false
 open FirstOrder FirstOrder.Language

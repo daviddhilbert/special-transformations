@@ -1,5 +1,9 @@
-import Mathlib.RingTheory.Congruence.Defs
-import Mathlib.Algebra.Ring.Subsemiring.Basic
+module
+
+public import Mathlib.RingTheory.Congruence.Defs
+public import Mathlib.Algebra.Ring.Subsemiring.Basic
+
+@[expose] public section
 
 /-!
 # The congruence criterion in Remark 4.23
