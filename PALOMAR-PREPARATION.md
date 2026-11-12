@@ -2,99 +2,62 @@
 
 Author and responsible maintainer: Yimu Yin.
 
+The first submission selects **Theorem 5.5 and Corollary 5.6 only**, at the
+author's request. Later Jacobian and measured-lifting results remain in the
+verified library and are outside this first Comparator claim.
+
+## Source and verification
+
 This isolated candidate starts from released source
-f76d100e07c0a791259244fc7fdf06f4dfaaf8ae. It does not incorporate unrelated
-uncommitted work from the author's original checkout. Existing releases remain
-unchanged.
+f76d100e07c0a791259244fc7fdf06f4dfaaf8ae. Unrelated edits in the author's
+original checkout are not included. Existing releases and archives are unchanged.
 
-The initial module migration follows Lean 4.35.0's documented recipe:
-module headers, public imports, and exposed public definitions. Existing proof
-expressions are retained. Source scanners now recognize public imports.
-ACVF-QE is pinned to its corresponding module migration at
-8f90dfd22de9f2c821382830eee326d1f0cf4990; the old proof release is not compatible
-with importing those sources as Lean modules.
+The module-format production library and all 3,543 full headline type/axiom
+audits passed at f2fbe2eea4083bb21174fa48b720eb80a901fbc0, GitHub Actions run
+43274534495. Production Lean sources have not changed since that baseline;
+subsequent Lean changes are confined to the independent statement/proof pair.
+Only `propext`, `Classical.choice`, and `Quot.sound` are permitted.
 
-The production library compilation and 3,543 headline type/axiom audits
-passed at f2fbe2eea4083bb21174fa48b720eb80a901fbc0 (run 43274534495).
-The independently stated first submission now selects only Theorem 5.5
-and Corollary 5.6, at the author's request. Its exact-snapshot standalone
-compilation and full Palomar preflight are tracked separately below.
-No Special transformations intake has been sent.
+The portable Lake project pins Lean 4.35.0, Mathlib
+56a005855ea17e0b0958f73ec801ae140b0a1679, and ACVF-QE
+8f90dfd22de9f2c821382830eee326d1f0cf4990. The MIT LICENSE and all retained
+upstream license notices accompany the source.
 
-The migration exposes helpers needed by exported definition bodies and adds
-the exact Mathlib imports identified by the compiler. It does not supply new
-mathematical hypotheses or replace the completed arguments.
+## Independent statements
 
-For independent statement packaging, the existing released language remains
-the common source. A November 12 pathname survey of Tau Ceti at
-5b875ab7c67d980ab0da982df4faa8db09a877b4 found general model-theory and
-henselization developments, but no directly identified replacement for this
-VF/RV statement interface. This was a discovery survey, not a compatibility or
-proof audit; no new Tau Ceti dependency was added. Existing attributed ports and
-their licenses/provenance remain in place. Reuse the existing checked results
-rather than restarting their proof campaigns.
+`PalomarPaperChallenge.lean` imports Mathlib and trusted Lean meta modules;
+it imports neither the paper library nor ACVF-QE. Its current pruned form
+has 790 physical lines and about 59 KB. The model, pure characteristic zero,
+genuine saturation, small parameter set, and theorem-specific coefficient
+condition remain explicit. No new paper hypothesis has been added.
 
-Further compiler-directed preparation exposes helpers used by public
-declarations. The ordinary nontriviality formula uses an explicit finite index
-in both statement and library to avoid elaboration-dependent auxiliary proofs.
-Fresh checks are pending for these changes.
+The canonical and focus maps are intentional definition holes with
+unconditional pointwise equations. Their Map types require definability over
+the original parameters. The equations fully determine the maps by function
+extensionality and proof irrelevance. `PalomarPaperSolution.lean` proves both
+equations by reflexivity from the existing implementations.
 
-A conservative lexical dependency survey identified further private helpers
-used in exposed definitions or public declaration types, including transitive
-helper dependencies. Their visibility was promoted without changing bodies,
-hypotheses or theorem statements. This is a preparation aid, not compiler
-evidence; the complete pinned build and headline checks remain required.
+Representation lemmas are additional checked Comparator obligations, not
+assumptions of the two principal results. Original module-local matcher and
+auxiliary-lemma caches are reset between copied source modules to preserve
+compiler-generated declaration names. This changes compiler cache state,
+not mathematical declarations or axioms.
 
-The next compiler pass found the short helper 	erm in the affine-head
-formula interface. Its visibility is now public as well. The dependency
-is updated to the mechanically passing ACVF-QE snapshot above; integration
-requires fresh compilation against this exact pin.
+The pruned dependency inventory follows the two explicit map interfaces,
+excluding their unnecessary graph-construction implementations. Inventory
+and source extraction are authoring tools, not verification evidence.
 
-The next full build reached the final Section 10 modules. Four additional
-helper declarations used by exposed measured-category constructions are
-now public; their statements and proof bodies are unchanged.
+## Intake boundary
 
-Full library compilation and all headline audits passed at f2fbe2e in
-GitHub Actions run 43274534495. The optional dependency inventory failed
-on the obsolete `liftIO` name and now uses the generic `liftM`. Its log
-and generated source are retained. A GitHub-only compiled cache is keyed
-by production Lean sources, toolchain, manifest and Lake configuration;
-cache reuse is not a new source-compilation receipt. The independent
-statement modules are excluded from that production cache key and are
-compiled separately. Palomar full preflight discards submitted build state
-and remains mandatory for the exact final package.
+The exact final package must pass standalone compilation, strict comparison,
+and Palomar's complete pinned reusable workflow before intake. The full
+workflow discards submitted build state. Cached project builds are diagnostic
+only. Source-to-paper fidelity remains self-assessed; no independent human
+review or Palomar acceptance is claimed.
 
-The corrected compiled inventory succeeded at c5d190d (run 43280416384):
-667 custom declarations in the statement dependency closure. Source ranges
-are now recorded to support extraction of exact declaration boundaries,
-including anonymous instances and generated declarations. Inventory data
-are navigation evidence and do not replace independent compilation or
-Comparator checks.
-
-Ordinary module imports omit declaration-range metadata and hide theorem
-implementation information. The read-only inventory now explicitly imports
-all of each needed module to recover source ranges for extraction. This is
-an authoring-tool import mode; the independent Challenge still may import
-only Palomar-approved foundational libraries.
-
-The author chose a smaller first submission: Theorem 5.5 and Corollary 5.6,
-the core deformation results. Theorem 9.16 and both measured versions of
-Theorem 10.5 remain in the verified library but are outside this first
-Comparator claim. No proof files or archived releases are removed.
-
-The bounded core statement retains the existing definition values and lists
-its representation lemmas as additional Comparator proof obligations, not
-assumptions of the two principal results. The Challenge imports only Mathlib;
-the Solution imports the substantive paper library. An MIT LICENSE file now
-makes the repository license explicit, consistently with the published
-archive metadata; the separate upstream notices remain in their original
-locations.
-
-The independent file resets Lean's module-local matcher and auxiliary-lemma
-caches between copied source modules, preserving original helper names.
-The canonical and focus definable maps are named definition holes with
-unconditional pointwise equations; their Map types still require actual
-definability. Function extensionality and proof irrelevance make these
-equations fully determine the maps. The Solution proves both equations by
-reflexivity from the existing implementations; no new paper hypothesis is
-introduced. Exact-snapshot comparison and full preflight remain required.
+No Special transformations intake has been sent. Palomar requires agreement
+on the exact repository, commit, comparator path and the author's responsible
+maintainer relationship before the tag-and-secret-gist authentication.
+Registration separately requires the author to read the actual private review
+and explicitly approve publishing it. Earlier archive/publication instructions
+do not replace that review-specific consent.
