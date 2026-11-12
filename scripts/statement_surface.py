@@ -11,7 +11,7 @@ out=root/'.scratch/ci-verified'
 out.mkdir(parents=True,exist_ok=True)
 qe=[p.stem for p in (root/'.lake/packages/acvf_qe/Proofs').glob('*.lean')]
 source='''module
-import SpecialTransformations
+IMPORT_STATEMENT_MODULES
 import Lean
 import Lean.Util.FoldConsts
 open Lean in
@@ -72,6 +72,8 @@ run_cmd do
 '''
 import json
 source=source.replace('QE_MODULES','#['+', '.join(json.dumps(x) for x in qe)+']')
+modules=json.loads((root/'scripts/palomar_statement_modules.json').read_text(encoding='utf-8'))
+source=source.replace('IMPORT_STATEMENT_MODULES','\n'.join('import all '+m for m in modules))
 path=out/'StatementSurface.lean'
 path.write_text(source,encoding='utf-8')
 result=subprocess.run(['lean',str(path)],cwd=root,capture_output=True,text=True,encoding='utf-8',errors='replace')

@@ -68,3 +68,9 @@ are now recorded to support extraction of exact declaration boundaries,
 including anonymous instances and generated declarations. Inventory data
 are navigation evidence and do not replace independent compilation or
 Comparator checks.
+
+Ordinary module imports omit declaration-range metadata and hide theorem
+implementation information. The read-only inventory now explicitly imports
+all of each needed module to recover source ranges for extraction. This is
+an authoring-tool import mode; the independent Challenge still may import
+only Palomar-approved foundational libraries.
