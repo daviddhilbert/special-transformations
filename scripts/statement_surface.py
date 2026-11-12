@@ -13,8 +13,16 @@ qe=[p.stem for p in (root/'.lake/packages/acvf_qe/Proofs').glob('*.lean')]
 source='''module
 IMPORT_STATEMENT_MODULES
 import Lean
+meta import Lean
 import Lean.Util.FoldConsts
-open Lean in
+open Lean
+private meta partial def statementProofStart (stx : Syntax) : Option Nat :=
+  if stx.isOfKind ``Parser.Command.declValSimple ||
+      stx.isOfKind ``Parser.Command.declValEqns ||
+      stx.isOfKind ``Parser.Command.whereStructInst then
+    stx.getPos?.map (fun p => p.byteIdx)
+  else
+    stx.getArgs.findSome? statementProofStart
 run_cmd do
   let env ← getEnv
   let roots : Array Name := #[
@@ -24,7 +32,7 @@ run_cmd do
     `SpecialTransformations.Section10.theorem_10_5_rv_volume,
     `SpecialTransformations.Section10.theorem_10_5_gamma_volume]
   let qeModules : Array String := QE_MODULES
-  let mut todo : Array Name := #[]
+  let mut todo : Array Name := roots
   for name in roots do
     let some info := env.find? name | throwError "Missing headline {name}"
     for dependency in info.type.getUsedConstants do
@@ -58,14 +66,29 @@ run_cmd do
         todo := todo.push constructor
     let mut sourceRange := Json.null
     let mut selectionRange := Json.null
+    let mut proofStart := Json.null
+    let mut parseError := Json.null
     if let some ranges ← findDeclarationRanges? name then
       sourceRange := toJson #[ranges.range.pos.line, ranges.range.pos.column,
         ranges.range.endPos.line, ranges.range.endPos.column]
       selectionRange := toJson #[ranges.selectionRange.pos.line, ranges.selectionRange.pos.column,
         ranges.selectionRange.endPos.line, ranges.selectionRange.endPos.column]
+      if kind == "theorem" then
+        let path := if qeModules.contains modName then
+          ".lake/packages/acvf_qe/Proofs/" ++ modName ++ ".lean"
+        else modName.replace "." "/" ++ ".lean"
+        let text ← liftM <| IO.FS.readFile path
+        let fileMap := FileMap.ofString text
+        let fragment := text.extract (fileMap.ofPosition ranges.range.pos)
+          (fileMap.ofPosition ranges.range.endPos)
+        match Parser.runParserCategory env `command fragment path with
+        | .ok syntax => proofStart := toJson (statementProofStart syntax)
+        | .error message => parseError := toJson message
     rows := rows.push <| Json.mkObj [
       ("name", toJson name.toString), ("module", toJson modName), ("kind", toJson kind),
-      ("source_range", sourceRange), ("selection_range", selectionRange)]
+      ("source_range", sourceRange), ("selection_range", selectionRange),
+      ("proof_start_byte", proofStart), ("parse_error", parseError),
+      ("headline", toJson (roots.contains name))]
   liftM <| IO.FS.writeFile ".scratch/ci-verified/StatementSurface.json"
     (Json.pretty <| Json.mkObj [("declarations", Json.arr rows),
       ("count", toJson rows.size), ("status", toJson "inventory only; not verification")])
