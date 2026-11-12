@@ -87,8 +87,10 @@ run_cmd do
           (text.pos! (fileMap.ofPosition ranges.range.endPos))
         match Parser.runParserCategory env `command fragment path with
         | .ok stx =>
-          let format ← Elab.Command.liftCoreM <| PrettyPrinter.ppCategory `command stx
-          formattedSource := toJson (format.pretty 1000)
+          try
+            let format ← Elab.Command.liftCoreM <| PrettyPrinter.ppCategory `command stx
+            formattedSource := toJson (format.pretty 1000)
+          catch _ => formattedSource := toJson fragment
           if kind == "theorem" then
             let start? := statementProofStart stx
             proofStart := toJson (start?.map (fun p => p.byteIdx))
@@ -96,8 +98,10 @@ run_cmd do
               let hole := fragment.extract (fragment.pos! 0) (fragment.pos! start) ++ " := by sorry"
               match Parser.runParserCategory env `command hole path with
               | .ok holeStx =>
-                let format ← Elab.Command.liftCoreM <| PrettyPrinter.ppCategory `command holeStx
-                formattedHole := toJson (format.pretty 1000)
+                try
+                  let format ← Elab.Command.liftCoreM <| PrettyPrinter.ppCategory `command holeStx
+                  formattedHole := toJson (format.pretty 1000)
+                catch _ => formattedHole := toJson hole
               | .error message => parseError := toJson message
         | .error message => parseError := toJson message
     rows := rows.push <| Json.mkObj [
