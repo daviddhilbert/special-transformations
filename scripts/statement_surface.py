@@ -56,8 +56,16 @@ run_cmd do
     if let .inductInfo val := info then
       for constructor in val.ctors do
         todo := todo.push constructor
+    let mut sourceRange := Json.null
+    let mut selectionRange := Json.null
+    if let some ranges ← findDeclarationRanges? name then
+      sourceRange := toJson #[ranges.range.pos.line, ranges.range.pos.column,
+        ranges.range.endPos.line, ranges.range.endPos.column]
+      selectionRange := toJson #[ranges.selectionRange.pos.line, ranges.selectionRange.pos.column,
+        ranges.selectionRange.endPos.line, ranges.selectionRange.endPos.column]
     rows := rows.push <| Json.mkObj [
-      ("name", toJson name.toString), ("module", toJson modName), ("kind", toJson kind)]
+      ("name", toJson name.toString), ("module", toJson modName), ("kind", toJson kind),
+      ("source_range", sourceRange), ("selection_range", selectionRange)]
   liftM <| IO.FS.writeFile ".scratch/ci-verified/StatementSurface.json"
     (Json.pretty <| Json.mkObj [("declarations", Json.arr rows),
       ("count", toJson rows.size), ("status", toJson "inventory only; not verification")])

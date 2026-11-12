@@ -61,3 +61,10 @@ cache reuse is not a new source-compilation receipt. The independent
 statement modules are excluded from that production cache key and are
 compiled separately. Palomar full preflight discards submitted build state
 and remains mandatory for the exact final package.
+
+The corrected compiled inventory succeeded at c5d190d (run 43280416384):
+667 custom declarations in the statement dependency closure. Source ranges
+are now recorded to support extraction of exact declaration boundaries,
+including anonymous instances and generated declarations. Inventory data
+are navigation evidence and do not replace independent compilation or
+Comparator checks.
