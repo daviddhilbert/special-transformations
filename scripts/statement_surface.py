@@ -16,11 +16,13 @@ import Lean
 meta import Lean
 import Lean.Util.FoldConsts
 open Lean
-private meta partial def statementProofStart (stx : Syntax) : Option Nat :=
+set_option maxHeartbeats 2000000
+set_option maxRecDepth 4000
+private meta partial def statementProofStart (stx : Syntax) : Option String.Pos.Raw :=
   if stx.isOfKind ``Parser.Command.declValSimple ||
       stx.isOfKind ``Parser.Command.declValEqns ||
       stx.isOfKind ``Parser.Command.whereStructInst then
-    stx.getPos?.map (fun p => p.byteIdx)
+    stx.getPos?
   else
     stx.getArgs.findSome? statementProofStart
 run_cmd do
@@ -68,12 +70,14 @@ run_cmd do
     let mut selectionRange := Json.null
     let mut proofStart := Json.null
     let mut parseError := Json.null
+    let mut formattedSource := Json.null
+    let mut formattedHole := Json.null
     if let some ranges ← findDeclarationRanges? name then
       sourceRange := toJson #[ranges.range.pos.line, ranges.range.pos.column,
         ranges.range.endPos.line, ranges.range.endPos.column]
       selectionRange := toJson #[ranges.selectionRange.pos.line, ranges.selectionRange.pos.column,
         ranges.selectionRange.endPos.line, ranges.selectionRange.endPos.column]
-      if kind == "theorem" then
+      if kind == "theorem" || kind == "definition" || kind == "inductive" then
         let path := if qeModules.contains modName then
           ".lake/packages/acvf_qe/Proofs/" ++ modName ++ ".lean"
         else modName.replace "." "/" ++ ".lean"
@@ -82,13 +86,26 @@ run_cmd do
         let fragment := text.extract (fileMap.ofPosition ranges.range.pos)
           (fileMap.ofPosition ranges.range.endPos)
         match Parser.runParserCategory env `command fragment path with
-        | .ok syntax => proofStart := toJson (statementProofStart syntax)
+        | .ok stx =>
+          let format ← liftM <| PrettyPrinter.ppCategory `command stx
+          formattedSource := toJson (format.pretty 1000)
+          if kind == "theorem" then
+            let start? := statementProofStart stx
+            proofStart := toJson (start?.map (fun p => p.byteIdx))
+            if let some start := start? then
+              let hole := fragment.extract 0 start ++ " := by sorry"
+              match Parser.runParserCategory env `command hole path with
+              | .ok holeStx =>
+                let format ← liftM <| PrettyPrinter.ppCategory `command holeStx
+                formattedHole := toJson (format.pretty 1000)
+              | .error message => parseError := toJson message
         | .error message => parseError := toJson message
     rows := rows.push <| Json.mkObj [
       ("name", toJson name.toString), ("module", toJson modName), ("kind", toJson kind),
       ("source_range", sourceRange), ("selection_range", selectionRange),
       ("proof_start_byte", proofStart), ("parse_error", parseError),
-      ("headline", toJson (roots.contains name))]
+      ("headline", toJson (roots.contains name)),
+      ("formatted_source", formattedSource), ("formatted_hole_source", formattedHole)]
   liftM <| IO.FS.writeFile ".scratch/ci-verified/StatementSurface.json"
     (Json.pretty <| Json.mkObj [("declarations", Json.arr rows),
       ("count", toJson rows.size), ("status", toJson "inventory only; not verification")])
