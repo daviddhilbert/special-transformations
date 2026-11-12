@@ -48,7 +48,7 @@ if '4.35.0' not in version or (ROOT / 'lean-toolchain').read_text().strip() != '
 manifest = json.loads((ROOT / 'lake-manifest.json').read_text())
 expected = {
     'mathlib': ('56a005855ea17e0b0958f73ec801ae140b0a1679', 'https://github.com/leanprover-community/mathlib4.git'),
-    'acvf_qe': ('1d7396d7e23c34dc23d19214e510e63e1ec1fe03', 'https://github.com/daviddhilbert/ACVF-QE.git'),
+    'acvf_qe': ('8f90dfd22de9f2c821382830eee326d1f0cf4990', 'https://github.com/daviddhilbert/ACVF-QE.git'),
 }
 pin_rows = []
 for name, (revision, url) in expected.items():

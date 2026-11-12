@@ -35,7 +35,7 @@ public noncomputable def headDet : FreeCommRing (InputCode m) := FreeCommRing.of
 public noncomputable def desiredDet : FreeCommRing (InputCode m) := FreeCommRing.of (.inl (.inr 1))
 public noncomputable def slopeProduct : FreeCommRing (InputCode m) := FreeCommRing.of (.inr 0)
 
-private noncomputable def term (p : FreeCommRing (InputCode m)) : LRV.Term (InputCode m) :=
+public noncomputable def term (p : FreeCommRing (InputCode m)) : LRV.Term (InputCode m) :=
   RingSyntax.ofRingTerm (FirstOrder.Ring.termOfFreeCommRing p)
 
 public def guard : Set (InputCode m → M) := {z |

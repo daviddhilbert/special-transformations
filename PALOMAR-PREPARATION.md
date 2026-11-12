@@ -11,7 +11,7 @@ The initial module migration follows Lean 4.35.0's documented recipe:
 module headers, public imports, and exposed public definitions. Existing proof
 expressions are retained. Source scanners now recognize public imports.
 ACVF-QE is pinned to its corresponding module migration at
-1d7396d7e23c34dc23d19214e510e63e1ec1fe03; the old proof release is not compatible
+8f90dfd22de9f2c821382830eee326d1f0cf4990; the old proof release is not compatible
 with importing those sources as Lean modules.
 
 Fresh compilation and headline audits remain required. No Palomar submission
@@ -42,3 +42,8 @@ used in exposed definitions or public declaration types, including transitive
 helper dependencies. Their visibility was promoted without changing bodies,
 hypotheses or theorem statements. This is a preparation aid, not compiler
 evidence; the complete pinned build and headline checks remain required.
+
+The next compiler pass found the short helper 	erm in the affine-head
+formula interface. Its visibility is now public as well. The dependency
+is updated to the mechanically passing ACVF-QE snapshot above; integration
+requires fresh compilation against this exact pin.
