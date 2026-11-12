@@ -1,6 +1,17 @@
 module
 public import Mathlib
+meta import all Lean.Meta.Match.Match
+meta import Lean.Meta.Tactic.AuxLemma
 @[expose] public section
+/- Preserve the original module boundaries of two compiler-only caches.
+   Otherwise Lean reuses a matcher from an earlier copied file and changes
+   declaration names. This clears caches, not mathematical declarations. -/
+open Lean Elab Command in
+elab "reset_statement_module_caches" : command => do
+  let cache : Name := `_private.Lean.Meta.Match.Match ++ .num .anonymous 0 ++ `Lean.Meta.Match.matcherExt
+  unless (← getEnv).contains cache do throwError "Pinned Lean matcher cache is unavailable"
+  elabCommand (← `(command| run_cmd Lean.modifyEnv fun env =>
+    ($(mkIdent cache)).modifyState (Lean.Meta.auxLemmasExt.modifyState env fun _ => {}) fun _ => {}))
 /-!
 # Special transformations: core deformation statements
 Author: Yimu Yin. This independent first submission states Theorem 5.5 and
@@ -19,9 +30,10 @@ hypothesis is imposed by these two statements.
 The corrected released RV language has one absorbing element and named RV
 inversion; VF inversion remains unnamed. The Jacobian and measured-lifting
 results remain in the library but are outside this first Comparator claim.
-This draft still requires independent compilation, comparison and full
-Palomar mechanical verification.
+Exact-snapshot independent compilation, comparison and full Palomar
+mechanical verification are required before intake.
 -/
+reset_statement_module_caches
 section
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations
@@ -245,6 +257,7 @@ variable {M : Type*} [LRV.Structure M]
 end Milestone0
 end SpecialTransformations
 end
+reset_statement_module_caches
 section
 open Classical
 open FirstOrder FirstOrder.Language
@@ -282,6 +295,7 @@ theorem vf_mul_mem {M : Type} [LRV.Structure M] (hM : M ⊨ Axioms.ACVF) {x y : 
     (hx : iVF x) (hy : iVF y) : iVF (iVFMul x y)  := by sorry
 end SpecialTransformations.Milestone0.Transfer
 end
+reset_statement_module_caches
 section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
@@ -354,6 +368,7 @@ end VFField
 end Transfer
 end SpecialTransformations.Milestone0
 end
+reset_statement_module_caches
 section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
@@ -365,6 +380,7 @@ variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 end Model
 end SpecialTransformations.Milestone0.VFValued
 end
+reset_statement_module_caches
 section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
@@ -383,6 +399,7 @@ def IsRVPullback {n m : ℕ} (A : Set (Point (M := M) n m)) : Prop := hull A = A
 /-- The canonical bijection appends all current VF leading terms. -/ def canonical {n m : ℕ} (p : Point (M := M) n m) : Point (M := M) n (n + m) := (p.1, Fin.append (fun i => rv (p.1 i)) p.2)
 end SpecialTransformations.Section5
 end
+reset_statement_module_caches
 section
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.DefinableGeometry
@@ -492,6 +509,7 @@ theorem definable_image (f : Map A B) : Q.Definable S (Set.range (fun a => (f a)
 end Map
 end SpecialTransformations.DefinableGeometry
 end
+reset_statement_module_caches
 section
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
@@ -512,6 +530,7 @@ noncomputable def normalize : LRV.Structure M where
     | .rvLe => (∀ i, sortEval .rv (xs i)) ∧ Structure.RelMap (L := LRV) Rel.rvLe xs
 end CanonicalStructure
 end
+reset_statement_module_caches
 section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
@@ -521,6 +540,7 @@ def FinitelySatisfiable {α : Type} {n : ℕ} (v : α → M) (p : Set (LRV.Bound
 def Saturated (M : Type) [LRV.Structure M] (κ : Cardinal) : Prop := ∀ (α : Type) (v : α → M), Cardinal.mk α < κ → ∀ {n : ℕ} (p : Set (LRV.BoundedFormula α n)), FinitelySatisfiable v p → ∃ x : Fin n → M, ∀ φ ∈ p, φ.Realize v x
 end SpecialTransformations.Section3
 end
+reset_statement_module_caches
 section
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.Coordinates
@@ -528,6 +548,7 @@ variable {M : Type} [LRV.Structure M] {ι : Type}
 abbrev Tuple (σ : ι → SortTag) := ∀ i, { x : M // sortEval (σ i) x }
 end SpecialTransformations.Section3.Coordinates
 end
+reset_statement_module_caches
 section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
@@ -570,6 +591,7 @@ abbrev vfSpace (n : ℕ) : Space (M := M) := realSpace (fun _ : Fin n => .vf)
 abbrev rvSpace (n : ℕ) : Space (M := M) := realSpace (fun _ : Fin n => .rv)
 end SpecialTransformations.Section4
 end
+reset_statement_module_caches
 section
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.DefinableGeometry
@@ -600,6 +622,7 @@ def toImage (f : Map A B) : Map A f.image where
 end Map
 end SpecialTransformations.DefinableGeometry
 end
+reset_statement_module_caches
 section
 open Classical FirstOrder FirstOrder.Language
 namespace SpecialTransformations.DefinableGeometry
@@ -635,6 +658,7 @@ variable {P Q : Space L M} {S : Set M}
 end Map
 end SpecialTransformations.DefinableGeometry
 end
+reset_statement_module_caches
 section
 open Classical FirstOrder FirstOrder.Language CategoryTheory
 namespace SpecialTransformations.DefinableGeometry
@@ -659,6 +683,7 @@ variable {P Q : Space L M} {S : Set M} {A : DefSet P S} {B : DefSet Q S}
 end Map
 end SpecialTransformations.DefinableGeometry
 end
+reset_statement_module_caches
 section
 noncomputable section
 set_option allowUnsafeReducibility true in
@@ -905,6 +930,7 @@ def IsDeformedRVPullback {S : Set M} {n m : ℕ} (A : DefSet (M := M) S n m) : P
 end SpecialTransformations.Section5
 end
 end
+reset_statement_module_caches
 section
 noncomputable section
 set_option backward.isDefEq.respectTransparency false
@@ -921,6 +947,7 @@ variable {M : Type} [sM : LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 end SpecialTransformations.Section5
 end
 end
+reset_statement_module_caches
 section
 noncomputable section
 set_option backward.isDefEq.respectTransparency false
