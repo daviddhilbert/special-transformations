@@ -570,15 +570,21 @@ theorem realSpace_diagonal_definable {ι : Type} [Finite ι] (σ : ι → SortTa
   sorry
 
 /-- The full finite product of any specified real sorts. -/
-def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) where
-  Carrier := Coordinates.Tuple (M := M) σ
-  Index := ι
-  finiteIndex := inferInstance
-  domain := {z | ∀ i, sortEval (σ i) (z i)}
-  domain_definable := tuple_domain_definable (M := M) ∅ σ
-  decode := realDecode σ
-  onto x := ⟨⟨fun i => (x i).val, fun i => (x i).property⟩, rfl⟩
-  diagonal_definable := realSpace_diagonal_definable σ
+def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) := by
+  let X := Coordinates.Tuple (M := M) σ
+  let D : Set (ι → M) := {z | ∀ i, sortEval (σ i) (z i)}
+  let decode := realDecode (M := M) σ
+  have hD := tuple_domain_definable (M := M) ∅ σ
+  have hdiag := realSpace_diagonal_definable (M := M) σ
+  letI := CanonicalStructure.normalize (M := M)
+  exact { Carrier := X
+          Index := ι
+          finiteIndex := inferInstance
+          domain := D
+          domain_definable := hD
+          decode := decode
+          onto x := ⟨⟨fun i => (x i).val, fun i => (x i).property⟩, rfl⟩
+          diagonal_definable := hdiag }
 
 abbrev vfSpace (n : ℕ) : Space (M := M) := realSpace (fun _ : Fin n => .vf)
 abbrev rvSpace (n : ℕ) : Space (M := M) := realSpace (fun _ : Fin n => .rv)
