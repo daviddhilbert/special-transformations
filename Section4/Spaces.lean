@@ -54,17 +54,13 @@ theorem tuple_domain_definable (S : Set M) {ι : Type} [Finite ι] (σ : ι → 
   ext z
   simp only [Set.mem_ofPred_eq, Set.mem_iInter]
 
-/-- Decode a sorted tuple without changing any coordinate. -/
-def realDecode {ι : Type} (σ : ι → SortTag)
-    (z : {z : ι → M // ∀ i, sortEval (σ i) (z i)}) : Coordinates.Tuple (M := M) σ :=
-  fun i => ⟨z.val i, z.property i⟩
-
 /-- The equality relation on sorted tuples is definable over the empty base. -/
 theorem realSpace_diagonal_definable {ι : Type} [Finite ι] (σ : ι → SortTag) :
     RawDefinable (∅ : Set M) {z : ι ⊕ ι → M |
       ∃ hx : ∀ i, sortEval (σ i) (z (Sum.inl i)),
       ∃ hy : ∀ i, sortEval (σ i) (z (Sum.inr i)),
-        realDecode σ ⟨z ∘ Sum.inl, hx⟩ = realDecode σ ⟨z ∘ Sum.inr, hy⟩} := by
+        (fun i => (⟨z (Sum.inl i), hx i⟩ : {x : M // sortEval (σ i) x})) =
+          (fun i => (⟨z (Sum.inr i), hy i⟩ : {x : M // sortEval (σ i) x}))} := by
   let D : Set (ι → M) := {z | ∀ i, sortEval (σ i) (z i)}
   have hD := tuple_domain_definable (M := M) ∅ σ
   have hx := @Set.Definable.preimage_comp M ∅ LRV (CanonicalStructure.normalize (M := M))
@@ -88,7 +84,6 @@ theorem realSpace_diagonal_definable {ι : Type} [Finite ι] (σ : ι → SortTa
 def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) := by
   let X := Coordinates.Tuple (M := M) σ
   let D : Set (ι → M) := {z | ∀ i, sortEval (σ i) (z i)}
-  let decode := realDecode (M := M) σ
   have hD := tuple_domain_definable (M := M) ∅ σ
   have hdiag := realSpace_diagonal_definable (M := M) σ
   letI := CanonicalStructure.normalize (M := M)
@@ -97,7 +92,7 @@ def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) := 
           finiteIndex := inferInstance
           domain := D
           domain_definable := hD
-          decode := decode
+          decode z i := ⟨z.val i, z.property i⟩
           onto x := ⟨⟨fun i => (x i).val, fun i => (x i).property⟩, rfl⟩
           diagonal_definable := hdiag }
 
