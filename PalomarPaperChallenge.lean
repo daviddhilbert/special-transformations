@@ -556,32 +556,30 @@ abbrev Space := @DefinableGeometry.Space LRV M (CanonicalStructure.normalize (M 
 abbrev RawDefinable (S : Set M) {ι : Type} (A : Set (ι → M)) := @Set.Definable M S LRV (CanonicalStructure.normalize (M := M)) ι A
 theorem coordinate_equality_definable (S : Set M) {ι : Type} (i j : ι) : RawDefinable S {z : ι → M | z i = z j} := by sorry
 theorem tuple_domain_definable (S : Set M) {ι : Type} [Finite ι] (σ : ι → SortTag) : RawDefinable S {z : ι → M | ∀ i, sortEval (σ i) (z i)} := by sorry
-/-- The full finite product of any specified real sorts. -/ def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) := by
-  let X := Coordinates.Tuple (M := M) σ
-  let D : Set (ι → M) := {z | ∀ i, sortEval (σ i) (z i)}
-  have hD := tuple_domain_definable (M := M) ∅ σ
-  have hx := @Set.Definable.preimage_comp M ∅ LRV (CanonicalStructure.normalize (M := M)) ι (ι ⊕ ι) Sum.inl D hD
-  have hy := @Set.Definable.preimage_comp M ∅ LRV (CanonicalStructure.normalize (M := M)) ι (ι ⊕ ι) Sum.inr D hD
-  have he (i : ι) := coordinate_equality_definable (M := M) ∅ (Sum.inl i : ι ⊕ ι) (Sum.inr i)
-  letI := CanonicalStructure.normalize (M := M)
-  exact
-    { Carrier := X
-      Index := ι
-      finiteIndex := inferInstance
-      domain := D
-      domain_definable := hD
-      decode z i := ⟨z.val i, z.property i⟩
-      onto x := ⟨⟨fun i => (x i).val, fun i => (x i).property⟩, rfl⟩
-      diagonal_definable := by
-        have hall := Set.definable_iInter_of_finite he
-        convert hx.inter (hy.inter hall) using 1
-        ext z
-        simp only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]
-        constructor
-        · rintro ⟨hx, hy, he⟩
-          exact ⟨hx, hy, fun i => congrArg Subtype.val (congrFun he i)⟩
-        · rintro ⟨hx, hy, he⟩
-          exact ⟨hx, hy, funext (fun i => Subtype.ext (he i))⟩ }
+/-- Decode a sorted tuple without changing any coordinate. -/
+def realDecode {ι : Type} (σ : ι → SortTag)
+    (z : {z : ι → M // ∀ i, sortEval (σ i) (z i)}) : Coordinates.Tuple (M := M) σ :=
+  fun i => ⟨z.val i, z.property i⟩
+
+/-- The equality relation on sorted tuples is definable over the empty base. -/
+theorem realSpace_diagonal_definable {ι : Type} [Finite ι] (σ : ι → SortTag) :
+    RawDefinable (∅ : Set M) {z : ι ⊕ ι → M |
+      ∃ hx : ∀ i, sortEval (σ i) (z (Sum.inl i)),
+      ∃ hy : ∀ i, sortEval (σ i) (z (Sum.inr i)),
+        realDecode σ ⟨z ∘ Sum.inl, hx⟩ = realDecode σ ⟨z ∘ Sum.inr, hy⟩} := by
+  sorry
+
+/-- The full finite product of any specified real sorts. -/
+def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) where
+  Carrier := Coordinates.Tuple (M := M) σ
+  Index := ι
+  finiteIndex := inferInstance
+  domain := {z | ∀ i, sortEval (σ i) (z i)}
+  domain_definable := tuple_domain_definable (M := M) ∅ σ
+  decode := realDecode σ
+  onto x := ⟨⟨fun i => (x i).val, fun i => (x i).property⟩, rfl⟩
+  diagonal_definable := realSpace_diagonal_definable σ
+
 abbrev vfSpace (n : ℕ) : Space (M := M) := realSpace (fun _ : Fin n => .vf)
 abbrev rvSpace (n : ℕ) : Space (M := M) := realSpace (fun _ : Fin n => .rv)
 end SpecialTransformations.Section4

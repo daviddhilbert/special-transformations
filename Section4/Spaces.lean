@@ -54,9 +54,17 @@ theorem tuple_domain_definable (S : Set M) {ι : Type} [Finite ι] (σ : ι → 
   ext z
   simp only [Set.mem_ofPred_eq, Set.mem_iInter]
 
-/-- The full finite product of any specified real sorts. -/
-def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) := by
-  let X := Coordinates.Tuple (M := M) σ
+/-- Decode a sorted tuple without changing any coordinate. -/
+def realDecode {ι : Type} (σ : ι → SortTag)
+    (z : {z : ι → M // ∀ i, sortEval (σ i) (z i)}) : Coordinates.Tuple (M := M) σ :=
+  fun i => ⟨z.val i, z.property i⟩
+
+/-- The equality relation on sorted tuples is definable over the empty base. -/
+theorem realSpace_diagonal_definable {ι : Type} [Finite ι] (σ : ι → SortTag) :
+    RawDefinable (∅ : Set M) {z : ι ⊕ ι → M |
+      ∃ hx : ∀ i, sortEval (σ i) (z (Sum.inl i)),
+      ∃ hy : ∀ i, sortEval (σ i) (z (Sum.inr i)),
+        realDecode σ ⟨z ∘ Sum.inl, hx⟩ = realDecode σ ⟨z ∘ Sum.inr, hy⟩} := by
   let D : Set (ι → M) := {z | ∀ i, sortEval (σ i) (z i)}
   have hD := tuple_domain_definable (M := M) ∅ σ
   have hx := @Set.Definable.preimage_comp M ∅ LRV (CanonicalStructure.normalize (M := M))
@@ -66,24 +74,26 @@ def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) := 
   have he (i : ι) := coordinate_equality_definable (M := M) ∅
     (Sum.inl i : ι ⊕ ι) (Sum.inr i)
   letI := CanonicalStructure.normalize (M := M)
-  exact {
-  Carrier := X
+  have hall := Set.definable_iInter_of_finite he
+  convert hx.inter (hy.inter hall) using 1
+  ext z
+  simp only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]
+  constructor
+  · rintro ⟨hx, hy, he⟩
+    exact ⟨hx, hy, fun i => congrArg Subtype.val (congrFun he i)⟩
+  · rintro ⟨hx, hy, he⟩
+    exact ⟨hx, hy, funext (fun i => Subtype.ext (he i))⟩
+
+/-- The full finite product of any specified real sorts. -/
+def realSpace {ι : Type} [Finite ι] (σ : ι → SortTag) : Space (M := M) where
+  Carrier := Coordinates.Tuple (M := M) σ
   Index := ι
   finiteIndex := inferInstance
-  domain := D
-  domain_definable := hD
-  decode z i := ⟨z.val i, z.property i⟩
+  domain := {z | ∀ i, sortEval (σ i) (z i)}
+  domain_definable := tuple_domain_definable (M := M) ∅ σ
+  decode := realDecode σ
   onto x := ⟨⟨fun i => (x i).val, fun i => (x i).property⟩, rfl⟩
-  diagonal_definable := by
-    have hall := Set.definable_iInter_of_finite he
-    convert hx.inter (hy.inter hall) using 1
-    ext z
-    simp only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]
-    constructor
-    · rintro ⟨hx, hy, he⟩
-      exact ⟨hx, hy, fun i => congrArg Subtype.val (congrFun he i)⟩
-    · rintro ⟨hx, hy, he⟩
-      exact ⟨hx, hy, funext (fun i => Subtype.ext (he i))⟩ }
+  diagonal_definable := realSpace_diagonal_definable σ
 
 abbrev vfSpace (n : ℕ) : Space (M := M) := realSpace (fun _ : Fin n => .vf)
 

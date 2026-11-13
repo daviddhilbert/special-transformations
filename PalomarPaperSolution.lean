@@ -32,3 +32,7 @@ end Focus
 end SpecialTransformations.Section5
 #print axioms SpecialTransformations.Section5.canonicalMap_value
 #print axioms SpecialTransformations.Section5.Focus.etaMap_value
+
+set_option pp.all true in
+#check @SpecialTransformations.Section4.realSpace_diagonal_definable
+#print axioms SpecialTransformations.Section4.realSpace_diagonal_definable

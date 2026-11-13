@@ -35,14 +35,7 @@
     "SpecialTransformations.DefinableGeometry.Space.RelationDefinable.swap",
     "SpecialTransformations.Section5.canonicalMap_value",
     "SpecialTransformations.Section5.Focus.etaMap_value",
-    "SpecialTransformations.Section4.realSpace._proof_1",
-    "SpecialTransformations.Section4.realSpace._proof_2",
-    "SpecialTransformations.Section4.realSpace._proof_3",
-    "SpecialTransformations.Section4.realSpace._proof_4",
-    "SpecialTransformations.Section4.realSpace._proof_5",
-    "SpecialTransformations.Section4.realSpace._proof_6",
-    "SpecialTransformations.Section4.realSpace._proof_7",
-    "SpecialTransformations.Section4.realSpace._proof_8"
+    "SpecialTransformations.Section4.realSpace_diagonal_definable"
   ],
   "permitted_axioms": [
     "propext",
