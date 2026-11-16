@@ -57,7 +57,10 @@ The positive RV lift retains its existing explicit reference input.
 Do not change the sequel's pin here. No new Section 2–9 mathematics,
 RES, pure Gamma categories, tensor decomposition, integration kernel,
 normalization, or general coarsening package is a remaining task.
-No push has been made; further publication requires explicit authorization.
+The proof checkpoint is included in the authorized v1.1 publication. See
+[the release verification record](../docs/RELEASE-v1.1.md) for the full
+project audit and blueprint scope. Subsequent publication requires its own
+authorization.
 
 Both positive-degree cases of Theorem 10.5 are checked and integrated
 through [Library.lean](Library.lean). See [STATUS.md](STATUS.md) for the

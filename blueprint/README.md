@@ -6,8 +6,15 @@ Each node gives the paper numbering, links to the Lean declarations, and
 records the mathematical dependencies. The section status files linked
 throughout give the detailed coverage and hypotheses.
 
-The linked declarations were checked against the full build and axiom audit
-at `a19e25f` with Lean 4.35.0. [GitHub Actions run 28](https://github.com/daviddhilbert/special-transformations/actions/runs/42813315566)
+The Lean source links are pinned to checked proof commit
+`d7d74197031665b4c1e9ea4486c1898ff32f2d50` with Lean 4.35.0. The updated
+blueprint contains 57 nodes and links 136 distinct Lean declarations. Each
+linked declaration passes a fresh type/axiom audit; its source line is
+checked in `src/source-links.tsv`. The zero-degree nodes retain the actual
+RV/Gamma weights and remain separate from the positive-degree reference
+hypotheses. See the [release verification record](../docs/RELEASE-v1.1.md)
+and [errata and deviations](../docs/ERRATA-AND-DEVIATIONS.md).
+Repository documentation links resolve through release tag `v1.1`.
 
 ## Build
 

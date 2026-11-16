@@ -9,12 +9,15 @@ give the finer statement-by-statement coverage and hypotheses.
 
 The graph follows mathematical dependencies at the level of the selected
 results. The web version links each Lean declaration to its source.
-The checked checkpoint is \texttt{a19e25f} on Lean 4.35.0.
-\href{https://github.com/daviddhilbert/special-transformations/actions/runs/42813315566}{GitHub Actions run 28}
-built the full library and passed 3,543 headline and axiom reports.
-The reports allow \texttt{propext}, \texttt{Classical.choice}, and
-\texttt{Quot.sound}. A verified theorem retains the hypotheses displayed
-in its Lean type.
+The weighted-zero proof checkpoint is \texttt{d7d7419}, with Lean 4.35.0
+and unchanged pinned Mathlib and ACVF-QE revisions. The release's full
+verification record is linked from the repository README. It distinguishes
+the complete root build, all section type/axiom audits and the available
+independent source verifiers. Permitted axioms are \texttt{propext},
+\texttt{Classical.choice}, and \texttt{Quot.sound}. Explicit mathematical
+hypotheses remain visible in theorem types. The
+\repoFile{docs/ERRATA-AND-DEVIATIONS.md}{errata and deviations record}
+separates corrections, adopted conventions and scope restrictions.
 
 For the later sections, work in the paper's pure-characteristic-zero
 setting over a small parameter base in a sufficiently saturated model.
@@ -724,9 +727,26 @@ VF tuples outside the exceptional set.
 \leanok
 In the finite-volume setting the VF and RV groupoids carry
 definable RV-valued or Gamma-valued forms. VF morphisms are
-measured germs. The graded constructions include degree zero
-and the positive constant-volume cases.
-\uses{def:lift-categories,def:rv-jacobian}
+measured germs in positive degree. In degree zero, arrows are total
+definable bijections preserving the exact supplied weight. The graded
+constructions retain forms in every degree, including the neutral-form
+subcategories.
+\uses{def:lift-categories,def:rv-jacobian,def:weighted-zero}
+\end{definition}
+
+\begin{definition}[10.1 and 10.3. Corrected weighted degree zero]
+\label{def:weighted-zero}
+\lean{SpecialTransformations.Section10.MeasuredRVZero,SpecialTransformations.Section10.MeasuredVFZero,SpecialTransformations.Section10.WeightedZero.iso_iff,SpecialTransformations.Section10.MeasuredRVZero.lift_weight,SpecialTransformations.Section10.MeasuredRVZero.liftMap_labels,SpecialTransformations.Section10.MeasuredRVZero.liftMap_measure}
+\leanok
+A zero object retains an actual same-base definable nonzero RV form,
+or an actual Gamma form. Its underlying ordinary VF object may use
+any mixed presentation of dimension zero. Arrows preserve the exact
+weight at every point; no nonempty zero locus is discarded. The zero
+lift keeps the supplied label map and form and has empty-coordinate
+determinant one everywhere. Equal RV valuation alone is insufficient.
+This adopts the measured convention of HK Definitions 8.10 and 8.13
+within the finite-volume scope, without importing an HK theorem.
+\uses{def:lift-categories}
 \end{definition}
 
 \begin{remark}[10.2. Almost-everywhere agreement]
@@ -749,12 +769,12 @@ apply the Jacobian rules on the actual fixed-label charts.
 
 \begin{theorem}[10.4. Surjectivity on measured objects]
 \label{thm:measured-objects}
-\lean{SpecialTransformations.Section10.theorem_10_4_rv_volume,SpecialTransformations.Section10.theorem_10_4_gamma_volume,SpecialTransformations.Section10.theorem_10_4_zero}
+\lean{SpecialTransformations.Section10.theorem_10_4_rv_volume,SpecialTransformations.Section10.theorem_10_4_gamma_volume}
 \leanok
 In the original-base finite-volume scope, a measured VF object has
 an essential measured isomorphism to an RV lift. This holds in
-both RV-valued and Gamma-valued cases, with the unmeasured
-specialization in degree zero.
+both RV-valued and Gamma-valued cases in positive degree. The corrected
+weighted zero case is stated separately below.
 \uses{def:volume-categories}
 \end{theorem}
 \begin{proof}
@@ -783,22 +803,21 @@ from the closure of the exceptional VF projection. The restriction
 preserves the determinant on the resulting chart.
 \end{proof}
 
-\begin{theorem}[10.5. Lifting Gamma-valued and degree-zero isomorphisms]
+\begin{theorem}[10.5. Lifting Gamma-valued measured isomorphisms]
 \label{thm:measured-isomorphisms-gamma}
-\lean{SpecialTransformations.Section10.theorem_10_5_gamma_volume,SpecialTransformations.Section10.theorem_10_5_zero}
+\lean{SpecialTransformations.Section10.theorem_10_5_gamma_volume}
 \leanok
 In positive degree the Gamma-valued form gives a same-base VF
 representative with the given label map and the Gamma measure
 equation, with source and target complements of dimension below the
-degree. Degree zero uses the unmeasured isomorphism.
+degree.
 \uses{def:volume-categories,rem:measured-germs}
 \end{theorem}
 \begin{proof}
 \leanok
 \uses{thm:correspondence-lift,lem:vf-jacobian-rules}
 Use the checked weighted lift and the pointwise Gamma condition,
-then transfer the determinant to the restricted chart. The
-degree-zero statement lifts the unmeasured label map.
+then transfer the determinant to the restricted chart.
 \end{proof}
 
 \begin{corollary}[10.6. Surjectivity for RV-valued volume]
@@ -817,14 +836,13 @@ and respects the empty object and cutting relations. Apply 10.4
 to each target generator.
 \end{proof}
 
-\begin{corollary}[10.6. Surjectivity for Gamma-valued volume and degree zero]
+\begin{corollary}[10.6. Surjectivity for Gamma-valued volume]
 \label{cor:measured-scissors-gamma}
-\lean{SpecialTransformations.Section10.corollary_10_6_gamma,SpecialTransformations.Section10.corollary_10_6_gamma_unit,SpecialTransformations.Section10.corollary_10_6_zero}
+\lean{SpecialTransformations.Section10.corollary_10_6_gamma,SpecialTransformations.Section10.corollary_10_6_gamma_unit}
 \leanok
 Canonical measured lift is a surjective additive homomorphism on
 the positive scissor presentations for Gamma-valued volume and its
-constant-volume specialization, and on the unmeasured degree-zero
-presentations.
+constant-volume specialization in positive degree.
 \end{corollary}
 \begin{proof}
 \leanok
@@ -832,6 +850,70 @@ presentations.
 Use the corresponding isomorphism lifts to pass to scissor classes.
 Apply object surjectivity to the target generators.
 \end{proof}
+
+\begin{theorem}[10.4. Weighted zero objects are lifts]
+\label{thm:measured-zero-objects}
+\lean{SpecialTransformations.Section10.theorem_10_4_rv_zero,SpecialTransformations.Section10.theorem_10_4_gamma_zero}
+\leanok
+Every weighted finite-volume VF zero object is isomorphic to an RV
+zero lift with its actual form. Both form scales retain the original
+small base and the pure-characteristic-zero saturated-model scope.
+\uses{def:weighted-zero}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{cor:object-surjectivity}
+Transport the supplied form through the ordinary finite lift
+presentation. The degree-zero label projection is a definable
+bijection, so its inverse descends the form without any choice of
+Gamma representatives.
+\end{proof}
+
+\begin{theorem}[10.5. Exact weighted zero lifts]
+\label{thm:measured-zero-isomorphisms}
+\lean{SpecialTransformations.Section10.theorem_10_5_rv_zero,SpecialTransformations.Section10.theorem_10_5_gamma_zero}
+\leanok
+An exact weight-preserving isomorphism of zero RV objects has a total
+weight-preserving zero VF lift with the same labels. The chart
+determinant is one at every point. These zero results introduce no
+finite-extension reference hypothesis.
+\uses{def:weighted-zero}
+\end{theorem}
+\begin{proof}
+\leanok
+Conjugate the supplied label bijection by the two zero label
+projections. Pullback retains its weight, and the empty determinant
+is one.
+\end{proof}
+
+\begin{corollary}[10.6. Weighted zero additive lifts]
+\label{cor:measured-zero-scissors}
+\lean{SpecialTransformations.Section10.corollary_10_6_rv_zero,SpecialTransformations.Section10.corollary_10_6_gamma_zero,SpecialTransformations.Section10.MeasuredRVZero.liftHom_generator,SpecialTransformations.Section10.MeasuredRVZero.lift_scissor}
+\leanok
+The zero lift induces a surjective additive map for either form scale,
+with every generator sent to its actual weighted lift. Restrictions
+retain the same form, and the lift respects weighted isomorphism,
+empty objects and scissors. Neutral-form specializations are included.
+\end{corollary}
+\begin{proof}
+\leanok
+\uses{thm:measured-zero-objects,thm:measured-zero-isomorphisms,prop:grothendieck}
+Descend the lift through the three relations and use weighted zero
+object surjectivity on each target generator.
+\end{proof}
+
+\begin{proposition}[Neutral zero forms and products]
+\label{prop:measured-zero-neutral-products}
+\lean{SpecialTransformations.Section10.rvZeroNeutral_iso_iff,SpecialTransformations.Section10.gammaZeroNeutral_iso_iff,SpecialTransformations.Section10.vfRVZeroNeutral_iso_iff,SpecialTransformations.Section10.vfGammaZeroNeutral_iso_iff,SpecialTransformations.Section10.rvZeroNeutral_complete,SpecialTransformations.Section10.gammaZeroNeutral_complete,SpecialTransformations.Section10.ZeroForm.rvProduct_weight,SpecialTransformations.Section10.ZeroForm.gammaProduct_weight}
+\leanok
+Neutral forms recover the ordinary zero isomorphisms; ordinary
+noninvertible maps remain separate. Every neutral zero object is
+isomorphic to its own underlying object's neutral embedding. Product
+forms multiply both pointwise densities, including zero-degree
+factors. The neutral Gamma density is multiplicative one, corresponding
+to additive zero in the paper. No Gamma-to-RV section is assumed.
+\uses{def:weighted-zero}
+\end{proposition}
 
 The \repoFile{Section10/STATUS.md}{Section 10 status} records the
 finite-to-one volume maps, the original generated-base conditions

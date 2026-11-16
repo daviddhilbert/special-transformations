@@ -10,11 +10,15 @@ dependencies. [Live blueprint](https://daviddhilbert.github.io/special-transform
 · [Dependency graph](https://daviddhilbert.github.io/special-transformations/dependency-graph.svg)
 · [Source and build instructions](blueprint/README.md)
 
-The full Lean 4.35.0 library build and all 3,543 headline axiom audits
-passed at `285f323`. The audit reports list only `propext`,
-`Classical.choice`, and `Quot.sound`. The two Engler–Prestel hypotheses
-remain explicit in the affected results. The blueprint marks the Stacks
-proofs as checked Lean imports. [GitHub Actions verification](https://github.com/daviddhilbert/special-transformations/actions/runs/42867152699)
+The v1.1 audit passes the full Lean 4.35.0 library build and all nine
+configured suites, with 3,582 headline axiom reports. The available
+independent source verifiers for Sections 3, 4, 5 and 7 also pass.
+The audit reports list only `propext`, `Classical.choice`, and `Quot.sound`.
+The two Engler–Prestel reference packages remain explicit in the affected
+results. The blueprint marks the Stacks proofs as checked Lean imports.
+See the [verification record](docs/verification/v1.1.json) and
+[release scope](docs/RELEASE-v1.1.md). The earlier 3,543-report checkpoint
+at `285f323` remains in [GitHub Actions](https://github.com/daviddhilbert/special-transformations/actions/runs/42867152699).
 
 The agreed scope excludes C-minimality for trivial valuations, the
 whole-field ball case of Lemma 8.4, and the broader ambient categories
@@ -33,6 +37,23 @@ requires this correction to the paper's language specification; it was not
 only a Lean transcription error. See [language erratum](LANGUAGE-ERRATA.md).
 This affects the QE formulation, not the later definable-set theory: inverse
 is already definable, so naming it does not change the definable sets.
+
+## Errata and deviations
+
+The [consolidated record](docs/ERRATA-AND-DEVIATIONS.md) lists **6 grouped
+errata and 7 deviations** from Yin, arXiv:1006.2467v1. It distinguishes
+false-assertion/language corrections from adopted conventions, scope and
+proof supplements. The RV inverse and kernel conditions, retracted Remark
+3.19, and corrected Jacobian assertions remain documented individually.
+
+The measured-zero convention now retains actual RV or Gamma weights,
+exact weight-preserving isomorphisms and both product densities in degree
+zero. Theorems 10.4–10.6 cover those corrected categories; ordinary zero
+results remain separate. This adopts HK Definitions 8.10/8.13 within the
+existing finite-volume scope and assumes no HK theorem or Gamma-to-RV
+section. See the [measured-zero record](Section10/WEIGHTED-ZERO-ERRATUM.md),
+[exported interfaces](Section10/HANDOFF.md), and
+[v1.1 verification and release scope](docs/RELEASE-v1.1.md).
 
 ## Library map
 

@@ -42,8 +42,10 @@ sets; the separate full explicit-type check also exited 0. The old
 29-headline receipt certifies the old convention only. The current receipt
 is in `.scratch/weighted-zero/verification.json`, with the full type log
 and `.scratch/section10-verified/` headline audit. The complete project-root
-`lake -R build` also exited 0 (10,042 jobs). These are local checks of the
-corrected source; no new GitHub Actions run or remote publication is claimed.
+`lake -R build` also exited 0 (10,042 jobs). These are the local checks of
+the proof checkpoint. The broader v1.1
+publication and full project audit are recorded in
+[RELEASE-v1.1.md](../docs/RELEASE-v1.1.md).
 
 RES, pure value-group categories, tensor decompositions, and the sequel's
 Section 7 integration/kernel work are outside this task. No change to the

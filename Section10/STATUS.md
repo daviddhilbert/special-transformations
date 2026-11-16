@@ -1,5 +1,7 @@
 # Section 10 status
 
+The weighted-zero proof checkpoint is included in the [v1.1 release audit](../docs/RELEASE-v1.1.md), which extends the local evidence below to all configured project suites.
+
 The target is [Section 10 of arXiv:1006.2467v1](https://arxiv.org/pdf/1006.2467v1#page=27),
 with the author's finite-volume `RV[n]` and `VF[n]` scope. The two legacy
 proof files and the scaffold remain historical material.

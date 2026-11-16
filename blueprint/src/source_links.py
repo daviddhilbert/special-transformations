@@ -3,7 +3,7 @@
 from pathlib import Path
 
 
-PAPER = "https://github.com/daviddhilbert/special-transformations/blob/a19e25fe90e2e02034e499db62df4c7b8ef0eb19/"
+PAPER = "https://github.com/daviddhilbert/special-transformations/blob/d7d74197031665b4c1e9ea4486c1898ff32f2d50/"
 QE = "https://github.com/daviddhilbert/ACVF-QE/blob/939346b0a99899e22a873479364e3cc5d142731c/"
 
 
