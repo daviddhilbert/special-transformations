@@ -6,11 +6,11 @@ proof files and the scaffold remain historical material.
 
 | Paper target | Current scope |
 | --- | --- |
-| Definitions 10.1 and 10.3 | The [VF](MeasuredVFCategory.lean) and [RV](MeasuredRVCategory.lean) groupoids are implemented in positive degree. The [graded categories](GradedCategories.lean) include the unmeasured categories in degree zero and the constant-volume subcategories in positive degree. |
+| Definitions 10.1 and 10.3 | The [VF](MeasuredVFCategory.lean) and [RV](MeasuredRVCategory.lean) groupoids are implemented in positive degree. The [graded categories](GradedCategories.lean) now retain actual forms in degree zero for both scales, including neutral forms. [WeightedZero](WeightedZero.lean) keeps the full ordinary VF zero presentations and exact form-preserving bijections. |
 | Remark 10.2 | [Almost-everywhere agreement](EssentialVFGerms.lean) is equivalent to equality on independent VF tuples. [The quotient](MeasuredVFCategory.lean) is equivalent to the type of measured germs. Identity, composition and inversion use [actual chart Jacobians](EssentialVFMeasure.lean). |
-| Theorem 10.4 | Both positive-degree cases, [RV-valued](RVVolumeSurjectivity.lean) and [Gamma-valued](GammaVolumeSurjectivity.lean), pass the pinned checks. The [constant-volume](UnitVolume.lean) and [unmeasured degree-zero](ZeroDegree.lean) specializations are also verified. |
-| Theorem 10.5 | Both positive-degree cases, [RV-valued](RVVolumeRepresentative.lean) and [Gamma-valued](GammaVolumeLift.lean), pass the pinned checks. They preserve the given label map and satisfy the measure equation on the actual restricted VF chart. They apply to the constant-volume subcategories, and the [degree-zero specialization](ZeroDegree.lean) uses the unmeasured lift. |
-| Corollary 10.6 | The [RV-valued and Gamma-valued additive lifts](MeasuredPositiveLift.lean) preserve the class of every generator and are surjective. The [constant-volume](UnitVolume.lean) and [unmeasured degree-zero](ZeroDegree.lean) variants are also verified. |
+| Theorem 10.4 | Both positive-degree cases, [RV-valued](RVVolumeSurjectivity.lean) and [Gamma-valued](GammaVolumeSurjectivity.lean), pass the pinned checks. The positive [constant-volume](UnitVolume.lean) specializations and both [weighted degree-zero](WeightedZeroResults.lean) variants are checked; [ordinary zero](ZeroDegree.lean) remains separate. |
+| Theorem 10.5 | Both positive-degree cases, [RV-valued](RVVolumeRepresentative.lean) and [Gamma-valued](GammaVolumeLift.lean), pass the pinned checks. They preserve the given label map and satisfy the measure equation on the actual restricted VF chart. They apply to the constant-volume subcategories. Both [weighted zero cases](WeightedZeroResults.lean) retain exact weights and the supplied label map; the old [ordinary zero](ZeroDegree.lean) result is preserved. |
+| Corollary 10.6 | The [RV-valued and Gamma-valued additive lifts](MeasuredPositiveLift.lean) preserve the class of every generator and are surjective. The positive [constant-volume](UnitVolume.lean) variants and both [weighted zero](WeightedZeroResults.lean) additive lifts are checked; [ordinary zero](ZeroDegree.lean) remains separate. |
 
 Both cases of 10.5 use the released ACVF language, the paper's
 pure-characteristic-zero setting through `BaseContext`, and the explicit
@@ -55,7 +55,77 @@ lift retains `FiniteHenselianExtensionReference` from 10.5. The Gamma
 lift has no external mathematical premise. The constant-volume proofs
 restrict the forms to their neutral values and reuse the same lift.
 
+## Corrected measured degree zero
+
+The author-approved [erratum](WEIGHTED-ZERO-ERRATUM.md) replaces the
+unweighted exceptions in Definitions 10.1 and 10.3. The six new modules
+retain actual same-base RV or Gamma forms and total exact weight-preserving
+bijections. VF zero objects retain arbitrary mixed presentations of the
+ordinary dimension-zero category. No nonempty locus is discarded. The
+existing positive-degree APIs and their hypotheses are preserved.
+
+`theorem_10_4_rv_zero` and `theorem_10_4_gamma_zero` transport the actual
+form through the checked ordinary finite lift presentation. Their concrete
+wrappers retain `BaseContext`, including pure characteristic zero, genuine
+saturation and smallness. The generic `theorem_10_4_weighted_zero` states
+these assumptions explicitly for an arbitrary form scale and small real
+base. It introduces no paper-specific reference premise.
+
+`theorem_10_5_rv_zero` and `theorem_10_5_gamma_zero` use the total lifted
+bijection `MeasuredRVZero.liftMap`. `liftMap_labels` preserves the supplied
+label map and `liftMap_measure` checks determinant one at every point.
+These elementary zero results require only the canonical ACVF structure
+and the supplied same-base objects/isomorphism. They need no saturation,
+generation or finite-extension reference beyond those already in an input
+object. The positive RV results retain `FiniteHenselianExtensionReference`.
+
+`MeasuredRVZero.liftHom_generator` identifies every actual weighted
+lift generator. `corollary_10_6_rv_zero` and `corollary_10_6_gamma_zero`
+prove surjectivity after weighted isomorphism, empty and same-form scissors
+relations. The generic result also applies to `VolumeScale.unit`.
+Neutral embeddings recover ordinary **isomorphisms**; ordinary
+noninvertible maps are not made into measured arrows. Every neutral-form
+zero object is isomorphic to the neutral embedding of its own underlying
+object. Gamma neutral weight is multiplicative one.
+
+`ZeroForm.rvProduct_weight` and `ZeroForm.gammaProduct_weight` retain both
+pointwise factors on arbitrary definable domains, including zero-degree
+factors. `gammaZeroForm_weight_eq_iff` identifies represented-weight
+equality with exact Gamma equality. No Gamma-to-RV section is assumed.
+
 ## Verification
+
+The weighted-zero change was checked locally on November 15, 2026,
+starting at published main `f76d100e07c0a791259244fc7fdf06f4dfaaf8ae`,
+with its exact Lean 4.35.0, Mathlib
+`56a005855ea17e0b0958f73ec801ae140b0a1679` and ACVF-QE
+`939346b0a99899e22a873479364e3cc5d142731c` pins. The complete
+`lake -R build Section10` exited 0. The Section 10 verifier exited 0
+for all **68** paired headline types and axiom reports. Every axiom set
+is contained in `{propext, Classical.choice, Quot.sound}`. The parser now
+accepts Lean's omission of `@` for declarations without implicit parameters;
+it still requires every selected type and exact axiom coverage.
+
+The additional `.scratch/weighted-zero/FullTypes.lean` check exited 0.
+Its log expands the actual object/arrow definitions and fully explicit
+weighted theorem types, including the concrete RV/Gamma additive maps.
+Source/hypothesis review confirms the full ordinary zero VF family,
+nonzero RV forms, exact Gamma equality, total zero isomorphisms, actual
+label preservation and both product densities. No open mathematical
+obligation is supplied as a theorem hypothesis.
+
+Evidence: `.scratch/weighted-zero/verification.json`,
+`section10-build.log`, `FullTypes.log`, and
+`.scratch/section10-verified/{HeadlineAudit.log,headlines.json,status.txt}`.
+The project-root `lake -R build` also exited 0 (10,042 jobs), including
+`Section10.Library` and `SpecialTransformations`. It reuses the just-built
+Section 10 artifacts with matching sources; uncached earlier modules were
+compiled in this root build. This is an integration build, not a new full
+mathematical audit of unchanged earlier sections. Existing import/module
+style, tactic and deprecation warnings remain; no compiler error or proof
+placeholder occurs in the passing checks. The historical evidence below
+concerns earlier types.
+
 
 The standalone `lake -R build Section10` and headline audit passed with
 Lean 4.35.0 on November 9, 2026. All 29 printed types match the Lean

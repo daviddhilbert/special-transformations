@@ -19,6 +19,9 @@ See `../Archive/MOVE-INDEX.json` for old paths and initial content hashes.
 
 The active library includes Remark 10.2, Theorems 10.4 and 10.5, and
 Corollary 10.6 for the finite-volume RV and Gamma categories. It includes
-the constant-volume subcategories and the unmeasured degree-zero cases.
+the constant-volume subcategories, corrected weighted degree-zero cases for
+both form scales, and the separately retained ordinary degree-zero results.
+The [measured-zero erratum](WEIGHTED-ZERO-ERRATUM.md) records the accepted
+convention and scope.
 See [status](STATUS.md), [handoff](HANDOFF.md), and the
 [reuse survey](REUSE-SURVEY.md).

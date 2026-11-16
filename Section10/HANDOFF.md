@@ -6,6 +6,59 @@ in the approved finite-volume `RV[n]` and `VF[n]` scope for both
 RV-valued and Gamma-valued forms. The [Section 9 handoff](../Section9/HANDOFF.md)
 records the prescribed lift and the explicit Engler–Prestel input.
 
+The corrected measured-zero convention is implemented in
+[WeightedZero.lean](WeightedZero.lean),
+[WeightedZeroRepresentation.lean](WeightedZeroRepresentation.lean),
+[WeightedZeroScissors.lean](WeightedZeroScissors.lean),
+[WeightedZeroUnit.lean](WeightedZeroUnit.lean),
+[WeightedFormProducts.lean](WeightedFormProducts.lean) and
+[WeightedZeroResults.lean](WeightedZeroResults.lean). See the
+[erratum](WEIGHTED-ZERO-ERRATUM.md) and current status for the scope and
+verification. The local branch starts at published main `f76d100`; the
+migrated original checkout and all its pre-existing edits are preserved.
+
+Downstream interfaces (namespace `SpecialTransformations.Section10`):
+
+- `MeasuredRVZero S d`, `MeasuredVFZero hc S d`, and the underlying
+  `WeightedZero.underlying`, `form`, `domain`, `weight`. Take `d` to be
+  `rvVolumeScale` or `gammaVolumeScale hc`. `WeightedZero.ExactMap` and
+  `WeightedZero.iso_iff` describe total exact weight-preserving arrows.
+- `ZeroForm.pullback`, `pullback_weight`, `restrict`, `restrict_weight`;
+  `MeasuredRVZero.restrict` and `MeasuredVFZero.restrict` retain the same
+  form. `rvZeroNeutral`, `gammaZeroNeutral`, `vfRVZeroNeutral`,
+  `vfGammaZeroNeutral` supply the ordinary neutral embeddings. Their
+  `_iso_iff` and `_complete` lemmas identify the neutral subcategories.
+  `WeightedZero.asUnit`/`forgetUnit` retain the actual form map.
+- `MeasuredRVZero.lift`, `lift_weight`, `liftMap`, `liftMap_labels`,
+  `liftMap_measure`; `theorem_10_4_rv_zero`, `theorem_10_4_gamma_zero`,
+  `theorem_10_5_rv_zero`, `theorem_10_5_gamma_zero`;
+  `MeasuredRVZero.liftHom`, `liftHom_generator`, `lift_scissor`;
+  `corollary_10_6_rv_zero`, `corollary_10_6_gamma_zero`.
+- `ZeroForm.rvProduct`/`rvProduct_weight`,
+  `gammaProduct`/`gammaProduct_weight` work on arbitrary definable domains,
+  so a zero factor retains its actual density in mixed products.
+  `gammaZeroForm_weight_eq_iff` distinguishes exact Gamma equality.
+- `VFInDegree` now uses weighted zero objects; generic `RVInDegree` and
+  `RVDegreeCoproduct` take an explicit zero object family. Concrete RV,
+  Gamma and unit-volume coproducts supply the corresponding weighted
+  zero category. `vfZeroDegreeEquiv`, `vfPositiveDegreeEquiv`,
+  `rvZeroDegreeEquiv`, `rvPositiveDegreeEquiv` are the case adapters.
+
+The complete Section 10 build and 68 headline type/axiom audits passed
+under published Lean 4.35.0 pins. A separate full explicit-type check also
+passed. Evidence is under `.scratch/weighted-zero/` and
+`.scratch/section10-verified/`. The complete project-root `lake -R build`
+also exited 0 (10,042 jobs), with `SpecialTransformations` compiled. There
+is no remaining mathematical or verification obligation in this handoff
+scope; downstream pin adaptation and its compatibility build belong to
+the sequel session.
+The zero lift introduces no finite-extension or Gamma-section premise.
+The positive RV lift retains its existing explicit reference input.
+Do not change the sequel's pin here. No new Section 2–9 mathematics,
+RES, pure Gamma categories, tensor decomposition, integration kernel,
+normalization, or general coarsening package is a remaining task.
+No push has been made; further publication requires explicit authorization.
+
 Both positive-degree cases of Theorem 10.5 are checked and integrated
 through [Library.lean](Library.lean). See [STATUS.md](STATUS.md) for the
 proof types, explicit hypotheses and verification receipts.
@@ -37,10 +90,9 @@ and [WeightedJacobianLocus.lean](WeightedJacobianLocus.lean). It starts with
 It supplies the quotient of target and source total coordinate values
 at every independent source point. The proof uses the definable mixed
 determinant to compare the values of `J * ∏ xᵢ` and `∏ yᵢ`, then applies
-the pointwise Gamma rule on the restricted lift. At degree zero,
-[ZeroDegree.lean](ZeroDegree.lean) uses the unmeasured categories of
-Definitions 10.1 and 10.3 and specializes the lift results from Sections
-5 and 7.
+the pointwise Gamma rule on the restricted lift. The separately retained ordinary degree-zero results in
+[ZeroDegree.lean](ZeroDegree.lean) specialize Sections 5 and 7. The corrected
+measured-zero results are in the six modules listed above.
 
 The fresh checks and full headline audit ran in the isolated Windows
 Lake environment after Linux resumed intermittently. The pins and

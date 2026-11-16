@@ -784,4 +784,10 @@ globs = [
   "Section10.UnitVolume",
   "Section10.GradedCategories",
   "Section10.ZeroDegree",
+  "Section10.WeightedZero",
+  "Section10.WeightedZeroRepresentation",
+  "Section10.WeightedZeroScissors",
+  "Section10.WeightedZeroUnit",
+  "Section10.WeightedFormProducts",
+  "Section10.WeightedZeroResults",
 ]

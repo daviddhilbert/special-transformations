@@ -1,7 +1,8 @@
 import Section7.PositiveSurjectivity
 
-/-! In degree zero Definitions 10.1 and 10.3 use the unmeasured
-categories. The fixed-degree lift and its properties specialize directly. -/
+/-! Ordinary degree-zero specializations, retained independently of the
+corrected measured convention. Weighted statements are in `WeightedZero`,
+`WeightedZeroRepresentation` and `WeightedZeroScissors`. -/
 
 open FirstOrder FirstOrder.Language CategoryTheory
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

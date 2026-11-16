@@ -175,7 +175,10 @@ def main():
         print(output, end='')
         if result.returncode or re.search(r'\berror\b|\bsorry(?:Ax)?\b', output, re.I):
             raise RuntimeError('Headline compilation or diagnostics failed')
-        if args.scope == 'section10' and any(f'@{name} :' not in output for name in headlines):
+        # Lean omits `@` for declarations with no implicit parameters.
+        if args.scope == 'section10' and any(
+                not re.search(r'(?m)^@?' + re.escape(name) + r'\s*:', output)
+                for name in headlines):
             raise RuntimeError('Incomplete Section 10 headline type output')
         audits = re.findall(
             r"'([^'\n]+)' depends on axioms:\s*\[([^]]*)\]", output)

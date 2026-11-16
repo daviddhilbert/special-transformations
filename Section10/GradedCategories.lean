@@ -1,4 +1,5 @@
-import Section10.MeasuredVFCategory
+import Section10.WeightedZero
+import Section10.UnitVolume
 import Section10.MeasuredRVCategory
 import Section4.VFCategories
 import Mathlib.CategoryTheory.Sigma.Basic
@@ -22,21 +23,35 @@ local notation "VF" => VFType (M := M)
 
 abbrev VFInDegree (hc : CanonicalStructure.IsCanonical (M := M))
     (C : BaseContext M) (d : VolumeScale M G) : ℕ → Type
-  | 0 => VFFiniteObject (volumeGammaSpace hc) (C.base : Set M) 0
+  | 0 => MeasuredVFZero hc (C.base : Set M) d
   | k + 1 => MeasuredVF C hc d k
 
 instance vfInDegreeCategory [CharZero VF] (hc : CanonicalStructure.IsCanonical (M := M))
     (C : BaseContext M) (d : VolumeScale M G) : ∀ n, Category (VFInDegree hc C d n)
-  | 0 => inferInstanceAs (Category (VFFiniteObject (volumeGammaSpace hc) (C.base : Set M) 0))
+  | 0 => inferInstanceAs (Category (MeasuredVFZero hc (C.base : Set M) d))
   | k + 1 => inferInstanceAs (Category (MeasuredVF C hc d k))
 
-abbrev RVInDegree (S : Set M) (positive : ℕ → Type) : ℕ → Type
-  | 0 => RVFiniteObject S 0
+abbrev RVInDegree (zero : Type) (positive : ℕ → Type) : ℕ → Type
+  | 0 => zero
   | k + 1 => positive k
 
-@[instance_reducible] def rvInDegreeCategory (S : Set M) (positive : ℕ → Type)
-    (cat : ∀ k, Category (positive k)) : ∀ n, Category (RVInDegree S positive n)
-  | 0 => inferInstanceAs (Category (RVFiniteObject S 0))
+def vfZeroDegreeEquiv (hc : CanonicalStructure.IsCanonical (M := M))
+    (C : BaseContext M) (d : VolumeScale M G) :
+    VFInDegree hc C d 0 ≃ MeasuredVFZero hc (C.base : Set M) d := Equiv.refl _
+
+def vfPositiveDegreeEquiv (hc : CanonicalStructure.IsCanonical (M := M))
+    (C : BaseContext M) (d : VolumeScale M G) (k : ℕ) :
+    VFInDegree hc C d (k + 1) ≃ MeasuredVF C hc d k := Equiv.refl _
+
+def rvZeroDegreeEquiv (zero : Type) (positive : ℕ → Type) :
+    RVInDegree zero positive 0 ≃ zero := Equiv.refl _
+
+def rvPositiveDegreeEquiv (zero : Type) (positive : ℕ → Type) (k : ℕ) :
+    RVInDegree zero positive (k + 1) ≃ positive k := Equiv.refl _
+
+@[instance_reducible] def rvInDegreeCategory (zero : Type) [Category zero] (positive : ℕ → Type)
+    (cat : ∀ k, Category (positive k)) : ∀ n, Category (RVInDegree zero positive n)
+  | 0 => inferInstanceAs (Category zero)
   | k + 1 => cat k
 
 abbrev VFDegreeCoproduct {I : Type} (degree : I → ℕ)
@@ -47,23 +62,23 @@ instance vfDegreeCoproductCategory [CharZero VF] {I : Type} (degree : I → ℕ)
     (hc : CanonicalStructure.IsCanonical (M := M)) (C : BaseContext M) (d : VolumeScale M G) :
     Category (VFDegreeCoproduct degree hc C d) := CategoryTheory.Sigma.sigma
 
-abbrev RVDegreeCoproduct {I : Type} (degree : I → ℕ) (S : Set M) (positive : ℕ → Type) :=
-  Σ i : I, RVInDegree S positive (degree i)
+abbrev RVDegreeCoproduct {I : Type} (degree : I → ℕ) (zero : Type) (positive : ℕ → Type) :=
+  Σ i : I, RVInDegree zero positive (degree i)
 
-@[instance_reducible] def rvDegreeCoproductCategory {I : Type} (degree : I → ℕ) (S : Set M) (positive : ℕ → Type)
-    (cat : ∀ k, Category (positive k)) : Category (RVDegreeCoproduct degree S positive) :=
-  letI : ∀ i, Category (RVInDegree S positive (degree i)) := fun i => rvInDegreeCategory S positive cat (degree i)
+@[instance_reducible] def rvDegreeCoproductCategory {I : Type} (degree : I → ℕ) (zero : Type) [Category zero] (positive : ℕ → Type)
+    (cat : ∀ k, Category (positive k)) : Category (RVDegreeCoproduct degree zero positive) :=
+  letI : ∀ i, Category (RVInDegree zero positive (degree i)) := fun i => rvInDegreeCategory zero positive cat (degree i)
   CategoryTheory.Sigma.sigma
 
 @[instance_reducible] def rvVolumeDegreeCoproductCategory {I : Type} (degree : I → ℕ)
     (hc : CanonicalStructure.IsCanonical (M := M)) (C : BaseContext M) :
-    Category (RVDegreeCoproduct degree (C.base : Set M) (RVVolumeObject (C.base : Set M))) :=
-  rvDegreeCoproductCategory degree (C.base : Set M) _ (fun _ => (rvVolumeGroupoid hc C).toCategory)
+    Category (RVDegreeCoproduct degree (MeasuredRVZero (C.base : Set M) rvVolumeScale) (RVVolumeObject (C.base : Set M))) :=
+  rvDegreeCoproductCategory degree (MeasuredRVZero (C.base : Set M) rvVolumeScale) _ (fun _ => (rvVolumeGroupoid hc C).toCategory)
 
 @[instance_reducible] def gammaVolumeDegreeCoproductCategory {I : Type} (degree : I → ℕ)
     (hc : CanonicalStructure.IsCanonical (M := M)) (S : Set M) :
-    Category (RVDegreeCoproduct degree S (GammaVolumeObject hc S)) :=
-  rvDegreeCoproductCategory degree S _ (fun _ => (gammaVolumeGroupoid hc).toCategory)
+    Category (RVDegreeCoproduct degree (MeasuredRVZero S (gammaVolumeScale hc)) (GammaVolumeObject hc S)) :=
+  rvDegreeCoproductCategory degree (MeasuredRVZero S (gammaVolumeScale hc)) _ (fun _ => (gammaVolumeGroupoid hc).toCategory)
 
 def rvUnitVolumeProperty (S : Set M) (k : ℕ) [Category (RVVolumeObject S k)] :
     ObjectProperty (RVVolumeObject S k) :=
@@ -83,15 +98,15 @@ abbrev GammaUnitVolumeObject (hc : CanonicalStructure.IsCanonical (M := M)) (S :
 
 @[instance_reducible] def rvUnitVolumeDegreeCoproductCategory {I : Type} (degree : I → ℕ)
     (hc : CanonicalStructure.IsCanonical (M := M)) (C : BaseContext M) :
-    Category (RVDegreeCoproduct degree (C.base : Set M) (RVUnitVolumeObject hc C)) :=
-  rvDegreeCoproductCategory degree (C.base : Set M) _ (fun k => by
+    Category (RVDegreeCoproduct degree (MeasuredRVZero (C.base : Set M) (VolumeScale.unit rvVolumeScale)) (RVUnitVolumeObject hc C)) :=
+  rvDegreeCoproductCategory degree (MeasuredRVZero (C.base : Set M) (VolumeScale.unit rvVolumeScale)) _ (fun k => by
     letI := (rvVolumeGroupoid (k := k) hc C).toCategory
     infer_instance)
 
 @[instance_reducible] def gammaUnitVolumeDegreeCoproductCategory {I : Type} (degree : I → ℕ)
     (hc : CanonicalStructure.IsCanonical (M := M)) (S : Set M) :
-    Category (RVDegreeCoproduct degree S (GammaUnitVolumeObject hc S)) :=
-  rvDegreeCoproductCategory degree S _ (fun k => by
+    Category (RVDegreeCoproduct degree (MeasuredRVZero S (VolumeScale.unit (gammaVolumeScale hc))) (GammaUnitVolumeObject hc S)) :=
+  rvDegreeCoproductCategory degree (MeasuredRVZero S (VolumeScale.unit (gammaVolumeScale hc))) _ (fun k => by
     letI := (gammaVolumeGroupoid (k := k) (S := S) hc).toCategory
     infer_instance)
 

@@ -1,5 +1,45 @@
 # Section 10 reuse survey
 
+## Weighted degree-zero correction (November 15, 2026)
+
+The implementation starts from published main
+`f76d100e07c0a791259244fc7fdf06f4dfaaf8ae`, not the older migrated local
+checkout. Pins: Lean 4.35.0, Mathlib
+`56a005855ea17e0b0958f73ec801ae140b0a1679`, ACVF-QE
+`939346b0a99899e22a873479364e3cc5d142731c`. Existing positive results are
+retained. Their published standalone Section 10 build and headline audit
+passed in Actions run 42738182685; that receipt does not certify new zero
+results.
+
+Specification: the author's accepted handoff adopts actual same-base
+definable nonzero RV forms, and actual Gamma forms, in degree zero.
+The comparison sources are Yin, arXiv:1006.2467v1, Definitions 10.1/10.3
+and 10.4–10.6, and HK, arXiv:math/0510133v3, Definitions 8.10/8.13.
+HK is a convention reference, not an assumed theorem. RES, pure Gamma
+categories and tensor decompositions are outside this task.
+
+Direct local reuse (repository MIT): `VolumeScale` and its two instances,
+`Map.inverse`, ordinary `RVFiniteObject` and `VFFiniteObject`,
+`Section5.corollary_5_7_finite_of_rvCoded`, `Section9.liftLabelMap`,
+`hasMixedVFJacobianAt_zero_arity`, and the additive scissor universal
+property. Zero label projection is itself bijective, so no new valued-field
+lifting theorem or Gamma-to-RV section is needed. The VF zero family keeps
+the full ordinary zero-dimensional mixed presentations, not only arity zero.
+Neutral-form comparison concerns ordinary **isomorphisms**: ordinary
+categories also have noninvertible maps, unlike measured groupoids.
+
+Focused external searches used “Lean Hrushovski volume forms”, “Lean
+measured RV degree zero”, and “weighted FullSubcategory” in Mathlib/GitHub,
+plus HK/Lean queries naming Reservoir, Lean Pool, Palomar, Tau Ceti,
+the Lean projects registry, TheoremSearch and Formalpedia. No compatible
+independent weighted-zero implementation was found in these indexed
+searches. Catalog coverage is incomplete. The existing source and prior
+survey supply the least costly route; no external proof is imported or
+ported. Fresh `lake -R build Section10` and the 68-headline audit exited 0 under
+the published pins. A separate explicit-type/definition audit exited 0;
+all selected axioms are allowed. See `STATUS.md` and scratch receipts.
+The project-root integration build also exited 0 (10,042 jobs).
+
 Surveyed November 8, 2026 for the positive-degree RV forward lift in
 [arXiv:1006.2467v1, §10](https://arxiv.org/pdf/1006.2467v1#page=28).
 
@@ -119,9 +159,11 @@ For Corollary 10.6 use the existing
 [positive additive presentation](../Section4/PositiveAdditivePresentation.lean).
 The [Section 7 lift and restriction identities](../Section7/LiftedIsomorphism.lean)
 handle the underlying sets. The remaining check compares the two
-pullbacks of the same weight along the original label map. In degree zero,
-the paper uses the unmeasured categories. Reuse
-[Corollary 7.7](../Section7/PositiveSurjectivity.lean) in that degree.
+pullbacks of the same weight along the original label map. Under the
+printed, now superseded zero convention, the paper uses unmeasured
+categories. [Corollary 7.7](../Section7/PositiveSurjectivity.lean) remains
+the source for the separately retained ordinary zero result. The corrected
+weighted-zero construction is recorded at the top of this survey.
 The constant-volume versions use the same determinant-one representation
 as Theorem 10.4, including its preservation of the range of the form.
 

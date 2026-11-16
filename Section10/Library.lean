@@ -7,6 +7,9 @@ import Section10.MeasuredRVCategory
 import Section10.UnitVolume
 import Section10.GradedCategories
 import Section10.ZeroDegree
+import Section10.WeightedFormProducts
+import Section10.WeightedZeroScissors
+import Section10.WeightedZeroResults
 
 /-! The active Section 10 entry point. Its checked scope is recorded in
 `Section10/STATUS.md`. -/
@@ -78,3 +81,106 @@ import Section10.ZeroDegree
 #print axioms SpecialTransformations.Section10.theorem_10_5_zero
 #check @SpecialTransformations.Section10.corollary_10_6_zero
 #print axioms SpecialTransformations.Section10.corollary_10_6_zero
+
+#check @SpecialTransformations.Section10.ZeroForm
+#print axioms SpecialTransformations.Section10.ZeroForm
+#check @SpecialTransformations.Section10.MeasuredRVZero
+#print axioms SpecialTransformations.Section10.MeasuredRVZero
+#check @SpecialTransformations.Section10.MeasuredVFZero
+#print axioms SpecialTransformations.Section10.MeasuredVFZero
+#check @SpecialTransformations.Section10.WeightedZero.iso_iff
+#print axioms SpecialTransformations.Section10.WeightedZero.iso_iff
+#check @SpecialTransformations.Section10.ZeroForm.pullback_weight
+#print axioms SpecialTransformations.Section10.ZeroForm.pullback_weight
+#check @SpecialTransformations.Section10.ZeroForm.restrict_weight
+#print axioms SpecialTransformations.Section10.ZeroForm.restrict_weight
+#check @SpecialTransformations.Section10.liftLabelMap_zero_bijective
+#print axioms SpecialTransformations.Section10.liftLabelMap_zero_bijective
+#check @SpecialTransformations.Section10.MeasuredRVZero.lift_weight
+#print axioms SpecialTransformations.Section10.MeasuredRVZero.lift_weight
+#check @SpecialTransformations.Section10.MeasuredRVZero.liftMap_labels
+#print axioms SpecialTransformations.Section10.MeasuredRVZero.liftMap_labels
+#check @SpecialTransformations.Section10.MeasuredRVZero.liftMap_measure
+#print axioms SpecialTransformations.Section10.MeasuredRVZero.liftMap_measure
+#check @SpecialTransformations.Section10.theorem_10_4_weighted_zero
+#print axioms SpecialTransformations.Section10.theorem_10_4_weighted_zero
+#check @SpecialTransformations.Section10.MeasuredRVZero.theorem_10_5_weighted_zero
+#print axioms SpecialTransformations.Section10.MeasuredRVZero.theorem_10_5_weighted_zero
+#check @SpecialTransformations.Section10.MeasuredRVZero.lift_scissor
+#print axioms SpecialTransformations.Section10.MeasuredRVZero.lift_scissor
+#check @SpecialTransformations.Section10.MeasuredRVZero.liftHom_generator
+#print axioms SpecialTransformations.Section10.MeasuredRVZero.liftHom_generator
+#check @SpecialTransformations.Section10.MeasuredRVZero.corollary_10_6_weighted_zero
+#print axioms SpecialTransformations.Section10.MeasuredRVZero.corollary_10_6_weighted_zero
+
+#check @SpecialTransformations.Section10.rvZeroNeutralForm_weight
+#print axioms SpecialTransformations.Section10.rvZeroNeutralForm_weight
+
+#check @SpecialTransformations.Section10.gammaZeroNeutralForm_weight
+#print axioms SpecialTransformations.Section10.gammaZeroNeutralForm_weight
+
+#check @SpecialTransformations.Section10.rvZeroNeutral_iso_iff
+#print axioms SpecialTransformations.Section10.rvZeroNeutral_iso_iff
+
+#check @SpecialTransformations.Section10.gammaZeroNeutral_iso_iff
+#print axioms SpecialTransformations.Section10.gammaZeroNeutral_iso_iff
+
+#check @SpecialTransformations.Section10.vfRVZeroNeutral_iso_iff
+#print axioms SpecialTransformations.Section10.vfRVZeroNeutral_iso_iff
+
+#check @SpecialTransformations.Section10.vfGammaZeroNeutral_iso_iff
+#print axioms SpecialTransformations.Section10.vfGammaZeroNeutral_iso_iff
+
+#check @SpecialTransformations.Section10.ZeroForm.rvProduct_weight
+#print axioms SpecialTransformations.Section10.ZeroForm.rvProduct_weight
+
+#check @SpecialTransformations.Section10.ZeroForm.gammaProduct_weight
+#print axioms SpecialTransformations.Section10.ZeroForm.gammaProduct_weight
+
+#check @SpecialTransformations.Section10.WeightedZero.asUnit_forgetUnit
+#print axioms SpecialTransformations.Section10.WeightedZero.asUnit_forgetUnit
+
+#check @SpecialTransformations.Section10.rvZeroNeutral_complete
+#print axioms SpecialTransformations.Section10.rvZeroNeutral_complete
+
+#check @SpecialTransformations.Section10.gammaZeroNeutral_complete
+#print axioms SpecialTransformations.Section10.gammaZeroNeutral_complete
+
+#check @SpecialTransformations.Section10.vfRVZeroNeutral_complete
+#print axioms SpecialTransformations.Section10.vfRVZeroNeutral_complete
+
+#check @SpecialTransformations.Section10.vfGammaZeroNeutral_complete
+#print axioms SpecialTransformations.Section10.vfGammaZeroNeutral_complete
+
+#check @SpecialTransformations.Section10.vfZeroDegreeEquiv
+#print axioms SpecialTransformations.Section10.vfZeroDegreeEquiv
+
+#check @SpecialTransformations.Section10.vfPositiveDegreeEquiv
+#print axioms SpecialTransformations.Section10.vfPositiveDegreeEquiv
+
+#check @SpecialTransformations.Section10.rvZeroDegreeEquiv
+#print axioms SpecialTransformations.Section10.rvZeroDegreeEquiv
+
+#check @SpecialTransformations.Section10.rvPositiveDegreeEquiv
+#print axioms SpecialTransformations.Section10.rvPositiveDegreeEquiv
+
+#check @SpecialTransformations.Section10.theorem_10_4_rv_zero
+#print axioms SpecialTransformations.Section10.theorem_10_4_rv_zero
+
+#check @SpecialTransformations.Section10.theorem_10_4_gamma_zero
+#print axioms SpecialTransformations.Section10.theorem_10_4_gamma_zero
+
+#check @SpecialTransformations.Section10.theorem_10_5_rv_zero
+#print axioms SpecialTransformations.Section10.theorem_10_5_rv_zero
+
+#check @SpecialTransformations.Section10.theorem_10_5_gamma_zero
+#print axioms SpecialTransformations.Section10.theorem_10_5_gamma_zero
+
+#check @SpecialTransformations.Section10.corollary_10_6_rv_zero
+#print axioms SpecialTransformations.Section10.corollary_10_6_rv_zero
+
+#check @SpecialTransformations.Section10.corollary_10_6_gamma_zero
+#print axioms SpecialTransformations.Section10.corollary_10_6_gamma_zero
+
+#check @SpecialTransformations.Section10.gammaZeroForm_weight_eq_iff
+#print axioms SpecialTransformations.Section10.gammaZeroForm_weight_eq_iff
