@@ -1,4 +1,8 @@
-import Section6.RVSubstructure
+module
+
+public import Section6.RVSubstructure
+
+@[expose] public section
 
 /-! The finite syntactic replacement φ ↦ φ*. The occurrence list and body
 are selected before the ambient model, substructure or assignment. The

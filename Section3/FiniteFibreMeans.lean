@@ -1,6 +1,10 @@
-import Section3.FibreEnumerations
-import Section3.BarycentreSyntax
-import Section3.Barycentre
+module
+
+public import Section3.FibreEnumerations
+public import Section3.BarycentreSyntax
+public import Section3.Barycentre
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

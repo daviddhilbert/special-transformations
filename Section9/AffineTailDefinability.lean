@@ -1,7 +1,11 @@
-import Section9.AffineTail
-import Section3.RingSyntax
-import Section3.DefinableConstants
-import Section3.SortedTuples
+module
+
+public import Section9.AffineTail
+public import Section3.RingSyntax
+public import Section3.DefinableConstants
+public import Section3.SortedTuples
+
+@[expose] public section
 
 /-! The affine correction is definable by polynomial equations for
 its slopes, including the required product. -/
@@ -38,7 +42,7 @@ private noncomputable def outputEquation (i : Fin m) : FreeCommRing (SlopeCode m
 private noncomputable def productEquation : FreeCommRing (SlopeCode m) :=
   (∏ i, slopeVar i) - FreeCommRing.of (.inl (.inr 0))
 
-private def affineTailArithmetic (j : Fin m) : Set (SlopeCode m → M) := {z |
+public def affineTailArithmetic (j : Fin m) : Set (SlopeCode m → M) := {z |
   (∀ i, iVF (z i)) ∧ (∀ i ≠ j, (zeroTerm (slopeEquation i)).realize z = iVFZero) ∧
   (∀ i, (zeroTerm (outputEquation i)).realize z = iVFZero) ∧
   (zeroTerm productEquation).realize z = iVFZero}

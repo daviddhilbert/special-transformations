@@ -1,4 +1,8 @@
-import CanonicalRV
+module
+
+public import CanonicalRV
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

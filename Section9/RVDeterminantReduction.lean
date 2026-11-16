@@ -1,5 +1,9 @@
-import Section7.GuardedResidueSums
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+module
+
+public import Section7.GuardedResidueSums
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+
+@[expose] public section
 
 /-! When the reduced derivative is nonsingular, the RV class of the
 VF determinant is the residue determinant. -/

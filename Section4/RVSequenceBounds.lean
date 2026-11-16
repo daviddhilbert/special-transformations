@@ -1,5 +1,9 @@
-import Section4.RVSequenceIndependence
-import Section3.SortedFunctionClosure
+module
+
+public import Section4.RVSequenceIndependence
+public import Section3.SortedFunctionClosure
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

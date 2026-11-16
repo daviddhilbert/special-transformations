@@ -1,5 +1,9 @@
-import Section6.RVTermSupport
-import ResidueTransportCore
+module
+
+public import Section6.RVTermSupport
+public import ResidueTransportCore
+
+@[expose] public section
 
 /-! The author's Definition 2.4 clarification in the released quotient
 presentation: rv preserves totalized inversion and division. The ordinary

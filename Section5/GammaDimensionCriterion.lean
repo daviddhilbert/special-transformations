@@ -1,5 +1,9 @@
-import Section5.GammaDimension
-import Section5.GammaDimensionalPresentation
+module
+
+public import Section5.GammaDimension
+public import Section5.GammaDimensionalPresentation
+
+@[expose] public section
 
 /-! Actual finite-map dimension and the pointwise VF rank criterion. -/
 

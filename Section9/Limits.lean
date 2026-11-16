@@ -1,4 +1,8 @@
-import Section8.GammaBalls
+module
+
+public import Section8.GammaBalls
+
+@[expose] public section
 
 /-! Definition 9.1 in the released VF/RV language. The point at infinity
 belongs to the auxiliary limit space only. -/

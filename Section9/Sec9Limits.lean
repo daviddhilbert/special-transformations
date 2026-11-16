@@ -1,3 +1,5 @@
+module
+
 /-
 # Section 9 of Yin, "Special transformations in algebraically closed valued fields"
 (arXiv:1006.2467): the two limit lemmas of the differentiation section.
@@ -54,7 +56,9 @@ radii `δ₁`, `δ₂` are combined one takes `max δ₁ δ₂`.
    paper's proofs never unfold "definable".  It is used in `fin_lim_bounded` only where the paper
    uses it, in the C-minimality step, which is a statement about definable sets.
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 set_option autoImplicit false
 set_option linter.unusedVariables false

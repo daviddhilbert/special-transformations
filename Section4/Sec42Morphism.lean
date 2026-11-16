@@ -1,3 +1,5 @@
+module
+
 /-
 # §4.2 of Yin, *Special transformations in algebraically closed valued fields*
 
@@ -68,7 +70,9 @@ formalized here (see `LiftCommutes.polydisc_rvImage` for the diagram half of it)
 Compiled with `lean M5Sec42.lean` against `.scratch2/sec3`'s oleans: exit 0, no `sorry`, and every
 `#print axioms` in the audit at the end is within `{propext, Classical.choice, Quot.sound}`.
 -/
-import Sec4Categories
+public import Sec4Categories
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 set_option backward.isDefEq.respectTransparency false

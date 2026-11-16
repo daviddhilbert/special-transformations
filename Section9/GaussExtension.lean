@@ -1,6 +1,10 @@
-import Section9.AlgebraicValueGroup
-import Section9.GaussEvaluation
-import Mathlib.FieldTheory.IsAlgClosed.Basic
+module
+
+public import Section9.AlgebraicValueGroup
+public import Section9.GaussEvaluation
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+
+@[expose] public section
 
 /-! The Gauss field has the coefficient field's divisible value group.
 An algebraic extension of it therefore realizes the same values. -/

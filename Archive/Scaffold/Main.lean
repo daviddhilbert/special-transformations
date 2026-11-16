@@ -1,4 +1,8 @@
-import SpecialTransformations.VolumeForms
+module
+
+public import SpecialTransformations.VolumeForms
+
+@[expose] public section
 
 /-!
 # Main statements

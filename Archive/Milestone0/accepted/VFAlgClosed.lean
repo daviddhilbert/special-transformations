@@ -1,3 +1,5 @@
+module
+
 /-
 Milestone 0 for: Yimu Yin, "Special transformations in algebraically closed valued fields",
 Annals of Pure and Applied Logic (2010), arXiv:1006.2467.
@@ -17,7 +19,9 @@ m6: **`vfAlgClosed` at the intended structure on `K ⊕ RV₀ v`** for an algebr
 field `K` and any valuation `v : Valuation K Γ₀`.  There is no `sorry` and no new axiom in
 this file; the axiom footprint of every headline theorem is printed at the end.
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 /-!
 ## Reading guide

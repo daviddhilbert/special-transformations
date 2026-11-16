@@ -1,3 +1,5 @@
+module
+
 /-
 # Yin, *Special transformations in algebraically closed valued fields* — Section 7:
 `def:gamma:poly` and `hensel:lemma` (generalized Hensel's lemma)
@@ -58,7 +60,9 @@ so the paper's ultrametric inequality `\vv(x+y) \ge \min(\vv x, \vv y)` is Mathl
 
 No `axiom`, no `sorry`, no `native_decide`.
 -/
-import Mathlib
+public import Mathlib
+
+@[expose] public section
 
 open MvPolynomial
 

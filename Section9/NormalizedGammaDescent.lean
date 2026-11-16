@@ -1,7 +1,11 @@
-import Section9.CoarsenedGaussTuple
-import Section9.GammaJacobianBounds
-import Section9.GraphJacobianIdentification
-import Section9.HenselizedGraphData
+module
+
+public import Section9.CoarsenedGaussTuple
+public import Section9.GammaJacobianBounds
+public import Section9.GraphJacobianIdentification
+public import Section9.HenselizedGraphData
+
+@[expose] public section
 
 /-! Intrinsic Gamma descent on the normalized polydiscs. The input
 about henselization concerns algebraic graph fields for the coarsening.

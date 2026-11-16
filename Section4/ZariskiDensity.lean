@@ -1,6 +1,10 @@
-import Section4.ModelGeometry
-import Section4.ZariskiPrimeBound
-import Section3.SmallFiniteParameters
+module
+
+public import Section4.ModelGeometry
+public import Section4.ZariskiPrimeBound
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

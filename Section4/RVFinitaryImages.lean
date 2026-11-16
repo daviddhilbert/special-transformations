@@ -1,5 +1,9 @@
-import Section4.RVDimensionRank
-import Section4.RelationFibres
+module
+
+public import Section4.RVDimensionRank
+public import Section4.RelationFibres
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

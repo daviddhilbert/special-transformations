@@ -1,7 +1,11 @@
-import Section3.AlgebraicRVLifting
-import Section3.CMinimal
-import Section3.GammaDensity
-import Section3.RVFibreGeometry
+module
+
+public import Section3.AlgebraicRVLifting
+public import Section3.CMinimal
+public import Section3.GammaDensity
+public import Section3.RVFibreGeometry
+
+@[expose] public section
 
 /- Component: GammaThresholdGeometry -/
 set_option backward.isDefEq.respectTransparency false

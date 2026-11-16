@@ -1,9 +1,13 @@
-import Section4.RVClassReindexing
-import Section4.RVProductSymmetry
-import Section4.RVProductAssociativity
-import Section4.RVProductUnits
-import Section4.RVProductDistributivity
-import Mathlib.Algebra.GradedMonoid
+module
+
+public import Section4.RVClassReindexing
+public import Section4.RVProductSymmetry
+public import Section4.RVProductAssociativity
+public import Section4.RVProductUnits
+public import Section4.RVProductDistributivity
+public import Mathlib.Algebra.GradedMonoid
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

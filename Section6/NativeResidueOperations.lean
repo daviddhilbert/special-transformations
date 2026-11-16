@@ -1,6 +1,10 @@
-import Section6.NativeRVOperations
-import Section6.ConcreteLogic
-import Section6.ConcreteResidueOps
+module
+
+public import Section6.NativeRVOperations
+public import Section6.ConcreteLogic
+public import Section6.ConcreteResidueOps
+
+@[expose] public section
 
 /-! Transport of residue addition and negation through the quotient
 identification. The axiom-realization steps adapt the corresponding

@@ -1,3 +1,5 @@
+module
+
 /-
 # Lemma 3.8: the zero-average lemma
 
@@ -7,8 +9,10 @@ nonconstancy conclusion a slip. Same valuation does not mean same RV class.
 The exported result includes both conclusions and derives the integer
 unit condition from ACVF(0,0). Source: arXiv:1006.2467v1, Lemma 3.8.
 -/
-import VFValued
-import CanonicalRV
+public import VFValued
+public import CanonicalRV
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option maxHeartbeats 1600000

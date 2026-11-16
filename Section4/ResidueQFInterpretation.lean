@@ -1,7 +1,11 @@
-import Section4.ResidueTermInterpretation
-import Section4.RealPresentations
-import Section4.RVCoordinates
-import Section3.SortedTuples
+module
+
+public import Section4.ResidueTermInterpretation
+public import Section4.RealPresentations
+public import Section4.RVCoordinates
+public import Section3.SortedTuples
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,4 +1,8 @@
-import Section3.TuplePromotion
+module
+
+public import Section3.TuplePromotion
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0

@@ -1,11 +1,15 @@
-import Section7.GuardedLaurentSide
-import Section7.LaurentClearing
-import Section7.GuardedFibreDomains
-import Section7.WeightedPolynomialTests
-import Section7.AlgebraicRowWitness
-import Section7.FiniteRVPolynomialPattern
-import Section7.GuardedParameterScope
-import Section7.ResidueCharacteristic
+module
+
+public import Section7.GuardedLaurentSide
+public import Section7.LaurentClearing
+public import Section7.GuardedFibreDomains
+public import Section7.WeightedPolynomialTests
+public import Section7.AlgebraicRowWitness
+public import Section7.FiniteRVPolynomialPattern
+public import Section7.GuardedParameterScope
+public import Section7.ResidueCharacteristic
+
+@[expose] public section
 
 section GuardedPolynomialSideProof
 

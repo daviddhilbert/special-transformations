@@ -1,8 +1,12 @@
-import ACVFQE
-import Section3.ParameterBridge
-import Section3.DefinableCompactness
-import Section3.AlgebraicityDescent
-import Section3.TupleDescent
+module
+
+public import ACVFQE
+public import Section3.ParameterBridge
+public import Section3.DefinableCompactness
+public import Section3.AlgebraicityDescent
+public import Section3.TupleDescent
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Section3

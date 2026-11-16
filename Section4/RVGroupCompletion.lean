@@ -1,5 +1,9 @@
-import Section4.RVRepresentatives
-import Section4.Imported.GrothendieckRing
+module
+
+public import Section4.RVRepresentatives
+public import Section4.Imported.GrothendieckRing
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

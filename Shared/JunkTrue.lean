@@ -1,3 +1,5 @@
+module
+
 /-
 **Junk-truth of the repaired guard** — merged from swarm `smw1bwjo2` m5 (direction d2), accepted
 after compiling and reading it here.  `import Enc` only; 0 errors, no `sorry`, axioms within
@@ -77,7 +79,9 @@ Check with `.scratch2/sec3/` (a compiled `Enc`): copy this file there and
 
   (`.scratch2/sec3/Enc.olean` is a build of `Milestone0/Encoding.lean` at sha `86d7ea7e…`).
 -/
-import Enc
+public import Enc
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder

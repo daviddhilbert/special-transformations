@@ -1,7 +1,11 @@
-import Section3.MinimalBallFamilies
-import Section3.SortedTuples
-import Section3.BallGeometry
-import Section3.ClosedBallRoots
+module
+
+public import Section3.MinimalBallFamilies
+public import Section3.SortedTuples
+public import Section3.BallGeometry
+public import Section3.ClosedBallRoots
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
@@ -9,7 +13,7 @@ open SpecialTransformations.Milestone0.Transfer
 namespace SpecialTransformations.Section3.ClosedBallCodes
 variable {M : Type} [LRV.Structure M]
 
-private def variableTerm (i : Fin 4) : LRV.Term (Fin 0 ⊕ Fin 4) := .var (.inr i)
+public def variableTerm (i : Fin 4) : LRV.Term (Fin 0 ⊕ Fin 4) := .var (.inr i)
 
 /-- The first coordinates are a center, a radius representative and a flag.
 Flag zero codes the whole field; any other flag codes the closed ball. -/

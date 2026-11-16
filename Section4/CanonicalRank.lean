@@ -1,5 +1,9 @@
-import Section4.VFDimensionRank
-import Section3.NormalizationSaturation
+module
+
+public import Section4.VFDimensionRank
+public import Section3.NormalizationSaturation
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false

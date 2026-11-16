@@ -1,6 +1,10 @@
-import Section3.PolynomialSyntax
-import CanonicalRV
-import CanonicalStructure
+module
+
+public import Section3.PolynomialSyntax
+public import CanonicalRV
+public import CanonicalStructure
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

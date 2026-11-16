@@ -1,8 +1,12 @@
-import Section9.RVJacobian
-import Section9.RVJacobianDerivations
-import Mathlib.LinearAlgebra.Basis.VectorSpace
-import Section4.ResidueMultivariateFunctions
-import ProvedACFExtension
+module
+
+public import Section9.RVJacobian
+public import Section9.RVJacobianDerivations
+public import Mathlib.LinearAlgebra.Basis.VectorSpace
+public import Section4.ResidueMultivariateFunctions
+public import ProvedACFExtension
+
+@[expose] public section
 
 /-! Descend the equations used to test a residue tangent to a coefficient
 field. Over an elementary coefficient field the definable set's points

@@ -1,4 +1,8 @@
-import Section6.ConcreteValued
+module
+
+public import Section6.ConcreteValued
+
+@[expose] public section
 
 /-! Realization of the three guarded contexts in the ordinary tagged model. -/
 

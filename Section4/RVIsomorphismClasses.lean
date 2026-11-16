@@ -1,7 +1,11 @@
-import Section4.RVCoproduct
-import Mathlib.CategoryTheory.Monoidal.OfHasFiniteProducts
-import Mathlib.CategoryTheory.Monoidal.Skeleton
-import Mathlib.Algebra.Group.TypeTags.Basic
+module
+
+public import Section4.RVCoproduct
+public import Mathlib.CategoryTheory.Monoidal.OfHasFiniteProducts
+public import Mathlib.CategoryTheory.Monoidal.Skeleton
+public import Mathlib.Algebra.Group.TypeTags.Basic
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

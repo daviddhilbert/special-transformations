@@ -1,6 +1,10 @@
-import Section4.PolynomialZero
-import Section4.FiniteCover
-import Section4.VFDimensionRank
+module
+
+public import Section4.PolynomialZero
+public import Section4.FiniteCover
+public import Section4.VFDimensionRank
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

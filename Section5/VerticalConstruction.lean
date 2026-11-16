@@ -1,4 +1,8 @@
-import Section5.CoordinateLift
+module
+
+public import Section5.CoordinateLift
+
+@[expose] public section
 
 /-!
 # Finite root families with complementary VF coordinates

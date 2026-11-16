@@ -1,7 +1,11 @@
-import Section3.VFDefinableClosure
-import Section3.VFAlgebraicity
-import Section3.FieldBase
-import Section3.SubfieldTrdeg
+module
+
+public import Section3.VFDefinableClosure
+public import Section3.VFAlgebraicity
+public import Section3.FieldBase
+public import Section3.SubfieldTrdeg
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

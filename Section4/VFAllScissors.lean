@@ -1,8 +1,12 @@
-import Section4.VFAllIsomorphismClasses
-import Section4.PositiveAdditiveRepresentatives
-import Section4.EmptyMaps
-import Section4.RVRestrictions
-import Mathlib.Tactic.Tauto
+module
+
+public import Section4.VFAllIsomorphismClasses
+public import Section4.PositiveAdditiveRepresentatives
+public import Section4.EmptyMaps
+public import Section4.RVRestrictions
+public import Mathlib.Tactic.Tauto
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

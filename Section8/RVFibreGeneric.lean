@@ -1,4 +1,8 @@
-import Section8.MixedLocalFormula
+module
+
+public import Section8.MixedLocalFormula
+
+@[expose] public section
 
 /-! Lemma 8.9 in the canonical presentation. The full local-constancy
 locus is definable and open, and its complement has smaller VF dimension. -/

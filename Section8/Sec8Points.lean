@@ -1,3 +1,5 @@
+module
+
 /-
 **§4 `full:dim:open:poly`, its base case, and two corollaries — plus one negative result that is
 worth more than the positives** — from swarm `smw1jgnht` m2, verified here (compiled: exit 0, 0 errors,
@@ -88,7 +90,9 @@ Purely internal (no mathematics assumed; hypotheses only where marked):
 
 No `axiom`, no `sorry`, no `native_decide`.
 -/
-import Sec4Dim
+public import Sec4Dim
+
+@[expose] public section
 
 set_option linter.unusedVariables false
 

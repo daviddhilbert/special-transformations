@@ -1,6 +1,10 @@
-import Section3.GammaBaseVFAlgebraicity
-import Section3.GammaClosureLaws
-import Section3.TranscendenceDegrees
+module
+
+public import Section3.GammaBaseVFAlgebraicity
+public import Section3.GammaClosureLaws
+public import Section3.TranscendenceDegrees
+
+@[expose] public section
 
 /- Component: GammaDefinableClosureField -/
 set_option backward.isDefEq.respectTransparency false

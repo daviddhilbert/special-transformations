@@ -1,5 +1,9 @@
-import Section4.ResidueParameterField
-import Section4.ResidueFieldFunctions
+module
+
+public import Section4.ResidueParameterField
+public import Section4.ResidueFieldFunctions
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

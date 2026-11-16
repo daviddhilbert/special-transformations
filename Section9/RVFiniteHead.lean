@@ -1,8 +1,12 @@
-import Section4.RVFiniteScissors
-import Section4.RVWeightRestriction
-import Section4.RVDimensionRank
-import Section4.CoordinateMaps
-import Section4.CanonicalLift
+module
+
+public import Section4.RVFiniteScissors
+public import Section4.RVWeightRestriction
+public import Section4.RVDimensionRank
+public import Section4.CoordinateMaps
+public import Section4.CanonicalLift
+
+@[expose] public section
 
 /-! Coordinate head maps for the lower-RV-dimensional step of Theorem
 9.16. A head is taken from actual volume coordinates and keeps the original
@@ -77,7 +81,7 @@ variable [M ⊨ Axioms.ACVF] in
     (hv : (rvHeadVolume U.obj v).FiniteFibres) (p : rvLift U.obj) :
     (rvLiftHeadSelect U v hv p).val = (p.val.1 ∘ v, p.val.2) := rfl
 
-private def rvHom_of_finite_source {U V : RVObject (M := M) S k}
+public def rvHom_of_finite_source {U V : RVObject (M := M) S k}
     (hU : U.volume.FiniteFibres) (F : Map U.domain V.domain)
     (hV : ∀ v : V.domain, ∀ i, (V.value v i).val ≠ iRVZero) : RVHom U V where
   map := F

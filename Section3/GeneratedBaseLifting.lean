@@ -1,7 +1,11 @@
-import Section3.AclFieldImages
-import Section3.GammaBaseVFAlgebraicity
-import Section3.GammaClosureLaws
-import Section3.RVGammaAlgebraicity
+module
+
+public import Section3.AclFieldImages
+public import Section3.GammaBaseVFAlgebraicity
+public import Section3.GammaClosureLaws
+public import Section3.RVGammaAlgebraicity
+
+@[expose] public section
 
 /- Component: GeneratedBaseLifting -/
 set_option backward.isDefEq.respectTransparency false

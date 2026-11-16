@@ -1,5 +1,9 @@
-import Section4.ResidueRVSet
-import Section9.ResidueChartArithmetic
+module
+
+public import Section4.ResidueRVSet
+public import Section9.ResidueChartArithmetic
+
+@[expose] public section
 
 /-! Interpret the arithmetic tests on arbitrary finite index types in
 the actual residue field of the VF/RV structure. -/

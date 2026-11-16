@@ -1,5 +1,9 @@
-import Section5.ParameterExtension
-import Section3.GammaParameters
+module
+
+public import Section5.ParameterExtension
+public import Section3.GammaParameters
+
+@[expose] public section
 
 /-!
 # Original-base Gamma graph certificates

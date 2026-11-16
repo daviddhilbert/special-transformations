@@ -1,4 +1,8 @@
-import Section3.GuardedRVArithmetic
+module
+
+public import Section3.GuardedRVArithmetic
+
+@[expose] public section
 
 /-!
 # GuardedRVTerms

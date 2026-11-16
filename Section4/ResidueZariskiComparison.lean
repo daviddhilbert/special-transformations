@@ -1,8 +1,12 @@
-import Section4.ResidueZariskiPrimeBound
-import Section4.ResidueZariskiDensity
-import Section4.CoordinateRank
-import Section4.ZariskiDimensionUpper
-import Section4.PolynomialSubringDimension
+module
+
+public import Section4.ResidueZariskiPrimeBound
+public import Section4.ResidueZariskiDensity
+public import Section4.CoordinateRank
+public import Section4.ZariskiDimensionUpper
+public import Section4.PolynomialSubringDimension
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,7 +1,11 @@
-import Section9.AffineTailMaps
-import Section9.AppendTailMap
-import Section9.LiftHeadDecomposition
-import Section4.CoordinateMaps
+module
+
+public import Section9.AffineTailMaps
+public import Section9.AppendTailMap
+public import Section9.LiftHeadDecomposition
+public import Section4.CoordinateMaps
+
+@[expose] public section
 
 /-! Extend the actual same-base head lift by the guarded affine tail.
 The construction retains the labels and is a bijection on the whole

@@ -1,5 +1,9 @@
-import Section4.ResidueScaledPredicates
-import Section3.Parameters
+module
+
+public import Section4.ResidueScaledPredicates
+public import Section3.Parameters
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

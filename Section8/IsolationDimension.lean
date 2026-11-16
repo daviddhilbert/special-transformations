@@ -1,5 +1,9 @@
-import Section8.IsolationGeometry
-import Section4.VFAlgebraicCoordinates
+module
+
+public import Section8.IsolationGeometry
+public import Section4.VFAlgebraicCoordinates
+
+@[expose] public section
 
 /-! Lemma 8.2 on the actual VF sorts of the canonical presentation.
 The exceptional set is formed over the original base. -/

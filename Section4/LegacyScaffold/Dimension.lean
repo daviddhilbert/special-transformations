@@ -1,4 +1,8 @@
-import SpecialTransformations.Definable
+module
+
+public import SpecialTransformations.Definable
+
+@[expose] public section
 
 /-!
 # Dimensions

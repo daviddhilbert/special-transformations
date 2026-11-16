@@ -1,5 +1,9 @@
-import Section9.ResidueTangentMatrix
-import Section9.RVJacobianDerivations
+module
+
+public import Section9.ResidueTangentMatrix
+public import Section9.RVJacobianDerivations
+
+@[expose] public section
 
 /-! Coordinatewise normalization transports the polynomial tangent.
 The calculation uses the algebraic derivation chain rule. -/

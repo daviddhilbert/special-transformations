@@ -1,6 +1,10 @@
-import Section4.ResidueDefinableField
-import Section4.ResiduePolynomialFunctions
-import Section4.ResidueAlgebraicityForward
+module
+
+public import Section4.ResidueDefinableField
+public import Section4.ResiduePolynomialFunctions
+public import Section4.ResidueAlgebraicityForward
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

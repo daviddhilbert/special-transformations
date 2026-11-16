@@ -1,6 +1,10 @@
-import Section5.CategoryLift
-import Section4.VFDimensionRank
-import Section3.NormalizationSaturation
+module
+
+public import Section5.CategoryLift
+public import Section4.VFDimensionRank
+public import Section3.NormalizationSaturation
+
+@[expose] public section
 
 /-! Real mixed presentations in the paper's VF categories. Pointwise VF
 rank is unchanged by allowing auxiliary Gamma coordinates in the dimension

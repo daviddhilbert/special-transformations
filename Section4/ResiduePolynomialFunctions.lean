@@ -1,5 +1,9 @@
-import Section4.ResidueFieldFunctions
-import Mathlib.Algebra.Polynomial.Roots
+module
+
+public import Section4.ResidueFieldFunctions
+public import Mathlib.Algebra.Polynomial.Roots
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

@@ -1,5 +1,9 @@
-import Section5.GeneralExistence
-import Section5.PolynomialExpression
+module
+
+public import Section5.GeneralExistence
+public import Section5.PolynomialExpression
+
+@[expose] public section
 
 /-! Polynomial instances of the definable-map preparation theorem. The
 existing Section 4 finite ring expression is reused in the released LRV

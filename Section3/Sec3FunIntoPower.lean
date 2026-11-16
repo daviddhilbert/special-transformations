@@ -1,3 +1,5 @@
+module
+
 /-
 **`fun:into:power`** (`paper.tex:755`, Section 3, Notation) — formalized.
 
@@ -44,7 +46,9 @@ Check with (`.scratch2/sec3/` holds the compiled `Enc`, `Sec3Frozen`, `Sec3Infra
     cp .ultramath/smw1qqehg/m2/Sec3FunIntoPower.lean .scratch2/sec3/
     cd .scratch2/sec3 && LEAN_PATH=$PWD:$LEAN_PATH lean Sec3FunIntoPower.lean
 -/
-import Sec3Infra
+public import Sec3Infra
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 

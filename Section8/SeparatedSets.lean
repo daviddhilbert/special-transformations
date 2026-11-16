@@ -1,4 +1,8 @@
-import Section8.UnaryBalls
+module
+
+public import Section8.UnaryBalls
+
+@[expose] public section
 
 /-! Lemma 8.1: a uniformly separated definable subset of a finite VF power
 is finite. This follows the paper's induction, using definable coordinate

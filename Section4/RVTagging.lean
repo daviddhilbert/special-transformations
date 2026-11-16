@@ -1,5 +1,9 @@
-import Section4.RVAppend
-import Section4.FiniteGluing
+module
+
+public import Section4.RVAppend
+public import Section4.FiniteGluing
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,4 +1,8 @@
-import Section5.GammaExistence
+module
+
+public import Section5.GammaExistence
+
+@[expose] public section
 
 /-! The contraction paragraph over the original named-Gamma base. -/
 

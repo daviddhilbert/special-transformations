@@ -1,7 +1,11 @@
-import Section3.PolynomialSupport
-import Section3.PolynomialObstacles
-import Section3.PolynomialRVConstant
-import Section3.QuantifierFree
+module
+
+public import Section3.PolynomialSupport
+public import Section3.PolynomialObstacles
+public import Section3.PolynomialRVConstant
+public import Section3.QuantifierFree
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,4 +1,8 @@
-import Section10.MeasuredPositiveLift
+module
+
+public import Section10.MeasuredPositiveLift
+
+@[expose] public section
 
 /-! The constant-volume subcategories. The neutral Gamma value is the
 paper's additive zero. -/

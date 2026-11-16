@@ -1,6 +1,10 @@
-import Section9.VolumeResidueCorrespondence
-import Section9.RVFiniteHead
-import Section4.RVAppend
+module
+
+public import Section9.VolumeResidueCorrespondence
+public import Section9.RVFiniteHead
+public import Section4.RVAppend
+
+@[expose] public section
 
 /-! The volume-pair set is the image of the label map. The label map
 and the projections of the pair set have finite fibres in RV[n]. -/
@@ -17,7 +21,7 @@ namespace SpecialTransformations.Section9
 variable {M : Type} [LRV.Structure M] [M ⊨ Axioms.ACVF] {S : Set M} {n : ℕ}
 variable {U V : RVObject (M := M) S n}
 
-private theorem rvAppend_eq_productTuple (x y : Fin n → CanonicalRV.RVSort M) :
+public theorem rvAppend_eq_productTuple (x y : Fin n → CanonicalRV.RVSort M) :
     rvAppend x y = productTuple x y := by
   apply productTuple_ext
   · intro i

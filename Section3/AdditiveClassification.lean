@@ -1,6 +1,10 @@
-import Section3.AdditiveRadial
-import Section3.BallInitial
-import Section3.InitialSegments
+module
+
+public import Section3.AdditiveRadial
+public import Section3.BallInitial
+public import Section3.InitialSegments
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

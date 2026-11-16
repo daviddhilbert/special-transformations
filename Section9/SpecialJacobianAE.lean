@@ -1,5 +1,9 @@
-import Section9.SpecialJacobianGeneric
-import Section9.MixedDifferentiationAE
+module
+
+public import Section9.SpecialJacobianGeneric
+public import Section9.MixedDifferentiationAE
+
+@[expose] public section
 
 /-! The approved almost-everywhere form of Lemma 9.11, for the actual
 Section 5 special bijections and their inverses. -/

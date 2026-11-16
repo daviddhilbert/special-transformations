@@ -1,3 +1,5 @@
+module
+
 /-
 Section 3 of the paper over a **monster model**: the statements that need saturation, frozen.
 
@@ -47,8 +49,10 @@ The `sorry`s are deliberate: these are *frozen targets*.  The paper cites `avera
 QE:ACVF:min 4.9 and `ball:proper:sub:center` from 4.16, so their proofs are external unless
 re-proved here; `alg:ind:imag` has a printed proof (from exchange) and should be proved.
 -/
-import Sat
-import Sec3Frozen
+public import Sat
+public import Sec3Frozen
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder

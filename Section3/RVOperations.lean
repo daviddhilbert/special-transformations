@@ -1,7 +1,11 @@
-import Section3.GammaPresentation
-import Section3.GammaValueLaws
-import SubstructureRVGroup
-import CanonicalResidueOperations
+module
+
+public import Section3.GammaPresentation
+public import Section3.GammaValueLaws
+public import SubstructureRVGroup
+public import CanonicalResidueOperations
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

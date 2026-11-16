@@ -1,6 +1,10 @@
-import Section9.ResidueSimpleEquations
-import Section4.FiniteCorrespondence
-import Section4.TupleIndependence
+module
+
+public import Section9.ResidueSimpleEquations
+public import Section4.FiniteCorrespondence
+public import Section4.TupleIndependence
+
+@[expose] public section
 
 /-! A point of a finite-to-finite residue correspondence has
 independent target coordinates whenever its source coordinates

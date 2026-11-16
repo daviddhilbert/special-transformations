@@ -1,9 +1,13 @@
-import QESaturatedExtension
-import Section3.AlgebraicBaseGeometry
-import Section3.AngularPattern
-import Section3.FieldBase
-import Section3.InfiniteValueFibres
-import Section3.QFInterpretation
+module
+
+public import QESaturatedExtension
+public import Section3.AlgebraicBaseGeometry
+public import Section3.AngularPattern
+public import Section3.FieldBase
+public import Section3.InfiniteValueFibres
+public import Section3.QFInterpretation
+
+@[expose] public section
 
 /- Component: CoefficientInterpretation -/
 /-!

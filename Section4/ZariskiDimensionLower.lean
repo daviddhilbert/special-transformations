@@ -1,5 +1,9 @@
-import Section4.ZariskiDensity
-import Section4.PolynomialSubringDimension
+module
+
+public import Section4.ZariskiDensity
+public import Section4.PolynomialSubringDimension
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

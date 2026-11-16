@@ -1,4 +1,8 @@
-import Section9.VolumePairMap
+module
+
+public import Section9.VolumePairMap
+
+@[expose] public section
 
 /-! The two composable volume correspondences must be evaluated at
 the same label. The joint volume map records this compatibility. -/

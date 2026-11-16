@@ -1,6 +1,10 @@
-import Section9.ResidueChartInterpretation
-import Section9.ResidueChartCertificateLogic
-import Section9.UniformRVScaling
+module
+
+public import Section9.ResidueChartInterpretation
+public import Section9.ResidueChartCertificateLogic
+public import Section9.UniformRVScaling
+
+@[expose] public section
 
 /-! A fixed polynomial support gives a definable family of valid
 charts over all scales. The polynomial coefficients are quantified
@@ -71,17 +75,17 @@ theorem mem_rawVolumeNormalized (C : DefSet (rawRVSpace (M := M) (n + n)) S)
 
 variable (σ : VolumeChartSupport n)
 
-private def chartEquationsTest : Set (σ.Index ⊕ Fin (n + n) → k) :=
+public def chartEquationsTest : Set (σ.Index ⊕ Fin (n + n) → k) :=
   {w | ∀ i, (chartEquation σ.equations (w ∘ Sum.inl) i).eval (w ∘ Sum.inr) = 0}
 
-private def chartOpenTest : Set (σ.Index ⊕ Fin (n + n) → k) :=
+public def chartOpenTest : Set (σ.Index ⊕ Fin (n + n) → k) :=
   {w | (chartDerivativeBlock σ.equations (productRight n n) w).det *
     (chartExtraOpen σ.extraOpen (w ∘ Sum.inl)).eval (w ∘ Sum.inr) ≠ 0}
 
-private def chartCutTest : Set (σ.Index ⊕ Fin (n + n) → k) :=
+public def chartCutTest : Set (σ.Index ⊕ Fin (n + n) → k) :=
   {w | (chartInputCut σ.inputCut (w ∘ Sum.inl)).eval (w ∘ Sum.inr ∘ productLeft n n) ≠ 0}
 
-private def chartInputDerivativeTest : Set (σ.Index ⊕ Fin (n + n) → k) :=
+public def chartInputDerivativeTest : Set (σ.Index ⊕ Fin (n + n) → k) :=
   {w | (chartDerivativeBlock σ.equations (productLeft n n) w).det ≠ 0}
 
 def rawVolumeChart (C : DefSet (rawRVSpace (M := M) (n + n)) S) :

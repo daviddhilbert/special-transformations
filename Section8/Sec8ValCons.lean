@@ -1,3 +1,5 @@
+module
+
 /-
 Section 8 of Yin, "Special transformations in algebraically closed valued fields"
 (arXiv:1006.2467): `fun:dim:1:val:cons` (`paper.tex:1746`) and `rad:equal:1` (`paper.tex:1772`).
@@ -72,7 +74,9 @@ turns `1 vv(·)` into `vv(·)`; hence `vv(f(a)) = ε + vv(a)` on `⦰(0, γ)` wi
   `fun:dim:1:val:cons`'s proof and the two sentences of `rad:equal:1`'s proof, quoted verbatim in
   their docstrings.
 -/
-import Sec4Dim
+public import Sec4Dim
+
+@[expose] public section
 set_option maxHeartbeats 1000000
 set_option backward.isDefEq.respectTransparency false
 set_option linter.unusedVariables false

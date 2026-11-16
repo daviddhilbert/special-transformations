@@ -1,5 +1,9 @@
-import Section9.GaussDerivative
-import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+module
+
+public import Section9.GaussDerivative
+public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+
+@[expose] public section
 
 /-! A tuple of integral elements with algebraically independent residues
 gives Gauss evaluation over a valued subfield. No rank condition enters

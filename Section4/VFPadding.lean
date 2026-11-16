@@ -1,4 +1,8 @@
-import Section4.RealPresentations
+module
+
+public import Section4.RealPresentations
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

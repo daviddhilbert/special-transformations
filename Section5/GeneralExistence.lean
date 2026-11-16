@@ -1,4 +1,8 @@
-import Section5.GeneralAssembly
+module
+
+public import Section5.GeneralAssembly
+
+@[expose] public section
 
 /-!
 # Definable-map preparation in every finite mixed arity

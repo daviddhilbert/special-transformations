@@ -1,5 +1,9 @@
-import Section7.GammaPolynomialAlgebra
-import Mathlib.RingTheory.Valuation.ValuationSubring
+module
+
+public import Section7.GammaPolynomialAlgebra
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+
+@[expose] public section
 
 /-!
 # The residue polynomial projection in Definition 7.1

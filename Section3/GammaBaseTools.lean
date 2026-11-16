@@ -1,10 +1,14 @@
-import Section3.FibrePromotion
-import Section3.GammaCodeDefinability
-import Section3.GammaParameters
-import Section3.GammaRealRestriction
-import Section3.GammaSpecialization
-import Section3.GammaSupport
-import Section3.SmallFiniteParameters
+module
+
+public import Section3.FibrePromotion
+public import Section3.GammaCodeDefinability
+public import Section3.GammaParameters
+public import Section3.GammaRealRestriction
+public import Section3.GammaSpecialization
+public import Section3.GammaSupport
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 /- Component: TupleParameterPromotion -/
 

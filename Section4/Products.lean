@@ -1,5 +1,9 @@
-import Section4.DefinableGeometry
-import Mathlib.Data.Finite.Prod
+module
+
+public import Section4.DefinableGeometry
+public import Mathlib.Data.Finite.Prod
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 

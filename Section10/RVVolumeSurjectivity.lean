@@ -1,7 +1,11 @@
-import Section10.RVVolumeRepresentative
-import Section5.VerticalObstacles
-import Section9.SpecialJacobianGeneric
-import Section4.VFFiniteMaps
+module
+
+public import Section10.RVVolumeRepresentative
+public import Section5.VerticalObstacles
+public import Section9.SpecialJacobianGeneric
+public import Section4.VFFiniteMaps
+
+@[expose] public section
 
 /-! RV-valued surjectivity of the lift. Section 5 prepares the volume map
 on the same RV fibres used to form the lift. Relabelling preserves the VF

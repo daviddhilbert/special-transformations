@@ -1,16 +1,20 @@
-import Mathlib.Algebra.Polynomial.Eval.Coeff
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
-import Mathlib.RingTheory.Valuation.Basic
-import Section3.AlgebraicSubfieldModel
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.RingTheory.Henselian
-import Section8.UniformBalls
-import Section3.DefinableCompactness
-import Section3.VFDefinableClosure
-import Section4.FullDimension
-import Section8.UnaryPolynomial
-import Section3.SortedTuples
-import Section3.SmallFiniteParameters
+module
+
+public import Mathlib.Algebra.Polynomial.Eval.Coeff
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.RingTheory.Valuation.Basic
+public import Section3.AlgebraicSubfieldModel
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.RingTheory.Henselian
+public import Section8.UniformBalls
+public import Section3.DefinableCompactness
+public import Section3.VFDefinableClosure
+public import Section4.FullDimension
+public import Section8.UnaryPolynomial
+public import Section3.SortedTuples
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 section
 

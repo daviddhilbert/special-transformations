@@ -1,6 +1,10 @@
-import Section9.AffineLift
-import Section9.AffineLiftJacobian
-import Section9.MixedGenericDifferentiation
+module
+
+public import Section9.AffineLift
+public import Section9.AffineLiftJacobian
+public import Section9.MixedGenericDifferentiation
+
+@[expose] public section
 
 /-! An affine lift realizes the prescribed determinant at generic
 points as soon as the head determinant has the required value. -/

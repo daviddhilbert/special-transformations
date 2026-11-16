@@ -1,5 +1,9 @@
-import Section4.PolynomialCover
-import Section8.VFDefinableTopology
+module
+
+public import Section4.PolynomialCover
+public import Section8.VFDefinableTopology
+
+@[expose] public section
 
 /-! The polynomial cover for the unary-output case of Lemma 9.5.
 A finite VF fibre cannot contain the side of an open polydisc.

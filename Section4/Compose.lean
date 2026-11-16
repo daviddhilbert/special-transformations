@@ -1,3 +1,5 @@
+module
+
 /-
 **Composition of `Sec4Dim.DefinableFun`** — the wall that blocked six items across §4, §7, §8, §9,
 §10 of the project.
@@ -28,8 +30,10 @@ bookkeeping: `Fin.append_snoc` is exactly one step of the iteration.
 
 No `sorry`, no `axiom`, no `native_decide`.
 -/
-import SubstVar
-import ExSortedG
+public import SubstVar
+public import ExSortedG
+
+@[expose] public section
 
 set_option linter.unusedVariables false
 open FirstOrder FirstOrder.Language

@@ -1,5 +1,9 @@
-import StacksFrontier.RingTheory.Henselian.Henselization.Existence
-import StacksFrontier.RingTheory.Henselian.HenselizationUniversalProperty
+module
+
+public import StacksFrontier.RingTheory.Henselian.Henselization.Existence
+public import StacksFrontier.RingTheory.Henselian.HenselizationUniversalProperty
+
+@[expose] public section
 
 open CategoryTheory IsLocalRing
 

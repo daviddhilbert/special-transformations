@@ -1,6 +1,10 @@
-import Section9.SimpleRootEquations
-import Mathlib.FieldTheory.Perfect
-import Mathlib.RingTheory.Polynomial.Radical
+module
+
+public import Section9.SimpleRootEquations
+public import Mathlib.FieldTheory.Perfect
+public import Mathlib.RingTheory.Polynomial.Radical
+
+@[expose] public section
 
 /-! Squarefree equations for finite correspondences over independent inputs. -/
 

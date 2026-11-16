@@ -1,4 +1,8 @@
-import Section5.Surjectivity
+module
+
+public import Section5.Surjectivity
+
+@[expose] public section
 
 /-! Compatibility exports for the presentation lemmas now supplied by Section 5. -/
 

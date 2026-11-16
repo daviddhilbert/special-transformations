@@ -1,4 +1,8 @@
-import Section3.SortedTuples
+module
+
+public import Section3.SortedTuples
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open FirstOrder FirstOrder.Language

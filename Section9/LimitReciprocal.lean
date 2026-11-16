@@ -1,6 +1,10 @@
-import Mathlib.RingTheory.Valuation.ValuationSubring
-import Mathlib.Tactic.FieldSimp
-import Mathlib.Tactic.Ring
+module
+
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Tactic.Ring
+
+@[expose] public section
 
 /-! Bounds for returning from the reciprocal chart in Lemma 9.5.
 The value order here is the multiplicative valuation order. -/

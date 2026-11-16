@@ -1,6 +1,10 @@
-import Section4.RVPadding
-import Mathlib.Data.Fin.Tuple.Basic
-import Mathlib.Data.Set.Finite.Range
+module
+
+public import Section4.RVPadding
+public import Mathlib.Data.Fin.Tuple.Basic
+public import Mathlib.Data.Set.Finite.Range
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

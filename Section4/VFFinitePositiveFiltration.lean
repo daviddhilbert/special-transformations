@@ -1,5 +1,9 @@
-import Section4.VFPositiveFiltration
-import Section4.VFFiniteSemiring
+module
+
+public import Section4.VFPositiveFiltration
+public import Section4.VFFiniteSemiring
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

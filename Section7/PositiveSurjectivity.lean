@@ -1,5 +1,9 @@
-import Section7.PositiveLift
-import Section5.Surjectivity
+module
+
+public import Section7.PositiveLift
+public import Section5.Surjectivity
+
+@[expose] public section
 
 /-!
 # Corollary 7.7 on the fixed-degree positive quotients

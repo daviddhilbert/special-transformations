@@ -1,238 +1,242 @@
-import Section4.DefinableGeometry
-import Section4.Products
-import Section4.CodeMaps
-import Section4.FiniteMaps
-import Section4.DefinableCategory
-import Section4.Dimension
-import Section4.Spaces
-import Section4.UniformFinite
-import Section4.FamilyCoding
-import Section4.TupleFamilies
-import Section4.RealPresentations
-import Section4.FiniteRefinement
-import Section4.InjectionRefinement
-import Section4.VFPadding
-import Section4.VFDimension
-import Section4.CanonicalDimension
-import Section4.Congruences
-import Section4.AdditiveCongruences
-import Section4.RVCategories
-import Section4.RVPadding
-import Section4.RVFinitePadding
-import Section4.VFCategories
-import Section4.PositivePresentation
-import Section4.PositiveCompletion
-import Section4.CanonicalLift
-import Section4.Fibres
-import Section4.Imported.GrothendieckRing
+module
 
-import Section4.VFAlgebraicCoordinates
-import Section4.TupleTranscendence
-import Section4.FiniteGluing
-import Section4.TupleBasis
-import Section4.VFTranscendence
-import Section4.FiniteCover
-import Section4.CoordinatePieces
-import Section4.CoordinateDimension
-import Section4.VFDimensionRank
-import Section4.VFDimensionFibres
-import Section4.RelationFibres
-import Section4.FiniteCorrespondence
-import Section4.CanonicalRank
+public import Section4.DefinableGeometry
+public import Section4.Products
+public import Section4.CodeMaps
+public import Section4.FiniteMaps
+public import Section4.DefinableCategory
+public import Section4.Dimension
+public import Section4.Spaces
+public import Section4.UniformFinite
+public import Section4.FamilyCoding
+public import Section4.TupleFamilies
+public import Section4.RealPresentations
+public import Section4.FiniteRefinement
+public import Section4.InjectionRefinement
+public import Section4.VFPadding
+public import Section4.VFDimension
+public import Section4.CanonicalDimension
+public import Section4.Congruences
+public import Section4.AdditiveCongruences
+public import Section4.RVCategories
+public import Section4.RVPadding
+public import Section4.RVFinitePadding
+public import Section4.VFCategories
+public import Section4.PositivePresentation
+public import Section4.PositiveCompletion
+public import Section4.CanonicalLift
+public import Section4.Fibres
+public import Section4.Imported.GrothendieckRing
 
-import Section4.AffineKrullDimension
-import Section4.AlgebraicAutomorphisms
-import Section4.CanonicalNormalization
-import Section4.CanonicalOrderController
-import Section4.CoordinateMaps
-import Section4.CoordinateRank
-import Section4.DefinableUnionCoproduct
-import Section4.EarlierRVInputs
-import Section4.EmptyMaps
-import Section4.FinitaryClosure
-import Section4.FiniteGluingRelation
-import Section4.FiniteOrderControllers
-import Section4.FiniteOrderSamples
-import Section4.FullDimension
-import Section4.GammaControllerDefinability
-import Section4.GammaDefinableClosure
-import Section4.GammaDefinableFibres
-import Section4.GammaDefinablePoint
-import Section4.GammaFiniteDefinablePoints
-import Section4.GammaMultiplicationSyntax
-import Section4.GammaNamedValue
-import Section4.GammaOrderControllers
-import Section4.GammaPredicates
-import Section4.GammaRVIndependence
-import Section4.GammaRVInfiniteProjection
-import Section4.GammaRVLastRow
-import Section4.GammaRVRowAvoidance
-import Section4.GenericPoints
-import Section4.GradedLiftBounds
-import Section4.GradedLifts
-import Section4.HomogeneousAvoidance
-import Section4.Imported.IntegralKrullDimension
-import Section4.Imported.NoetherNormalizationTrdeg
-import Section4.Imported.PolynomialCoordinateBasis
-import Section4.LiftBijections
-import Section4.LiftFibres
-import Section4.LiftMorphism
-import Section4.LiftPadding
-import Section4.MapAlgebraicity
-import Section4.MapCorestrict
-import Section4.MapParameters
-import Section4.MapProduct
-import Section4.MixedProducts
-import Section4.MixedRVAlgebraicity
-import Section4.MixedTagging
-import Section4.ModelGeometry
-import Section4.MultivariateLocal
-import Section4.MultivariateSyntax
-import Section4.NonalgebraicTypes
-import Section4.OrderControllerTuples
-import Section4.ParameterInvariance
-import Section4.PolydiscLocal
-import Section4.PolynomialCover
-import Section4.PolynomialSubringDimension
-import Section4.PolynomialZero
-import Section4.PositiveAdditivePresentation
-import Section4.PositiveAdditiveRepresentatives
-import Section4.ProductBijections
-import Section4.ProductRearrangement
-import Section4.PureFieldAlgebraicity
-import Section4.RVAlgebraicMatroid
-import Section4.RVAppend
-import Section4.RVBaseAlgebraicity
-import Section4.RVBoundedGroups
-import Section4.RVClassReindexing
-import Section4.RVCompression
-import Section4.RVCoordinatePieces
-import Section4.RVCoordinates
-import Section4.RVCoproduct
-import Section4.RVDimension
-import Section4.RVDimensionRank
-import Section4.RVEmptyIso
-import Section4.RVFibreDimension
-import Section4.RVFibreInvariance
-import Section4.RVFinitaryImages
-import Section4.RVFiniteGradedRepresentatives
-import Section4.RVFiniteGradedRing
-import Section4.RVFiniteGradedSemiring
-import Section4.RVFiniteHomogeneousProducts
-import Section4.RVFiniteMapRank
-import Section4.RVFinitePaddingScissors
-import Section4.RVFinitePositiveComparison
-import Section4.RVFiniteScissors
-import Section4.RVGradedCoproduct
-import Section4.RVGradedFiltration
-import Section4.RVGradedRepresentatives
-import Section4.RVGradedRing
-import Section4.RVGradedRingFamilies
-import Section4.RVGradedSemiring
-import Section4.RVGrading
-import Section4.RVGroupCompletion
-import Section4.RVHomogeneousProducts
-import Section4.RVInfiniteIteration
-import Section4.RVInfiniteValueDefinability
-import Section4.RVIsoClassScissors
-import Section4.RVIsoTools
-import Section4.RVIsomorphismClasses
-import Section4.RVLabelCompression
-import Section4.RVLabelIsomorphisms
-import Section4.RVMaximumValueFibre
-import Section4.RVNamedDivision
-import Section4.RVPaddingSplit
-import Section4.RVParameterInvariance
-import Section4.RVPatternProjection
-import Section4.RVPolydiscBound
-import Section4.RVPositiveIsoComparison
-import Section4.RVProduct
-import Section4.RVProductAssociativity
-import Section4.RVProductDistributivity
-import Section4.RVProductMorphisms
-import Section4.RVProductRestrictions
-import Section4.RVProductSymmetry
-import Section4.RVProductUnits
-import Section4.RVProjectionScissors
-import Section4.RVRank
-import Section4.RVReindexing
-import Section4.RVRelabelIso
-import Section4.RVRepresentatives
-import Section4.RVRestrictions
-import Section4.RVScissorCoproduct
-import Section4.RVScissorPresentation
-import Section4.RVSequenceBounds
-import Section4.RVSequenceIndependence
-import Section4.RVSequenceMovement
-import Section4.RVTagging
-import Section4.RVTupleFibres
-import Section4.RVUnionCoproduct
-import Section4.RVValueCofiniteness
-import Section4.RVValueFibres
-import Section4.RVValuePatternFamily
-import Section4.RVWeightDimension
-import Section4.RVWeightRestriction
-import Section4.RVZeroDegreeProduct
-import Section4.RVZeroDeletion
-import Section4.ResidueAlgebraicityForward
-import Section4.ResidueAlgebraicityReverse
-import Section4.ResidueCoefficientContext
-import Section4.ResidueComparison
-import Section4.ResidueDefinableField
-import Section4.ResidueFieldFunctions
-import Section4.ResidueFieldInterpretation
-import Section4.ResidueMultivariateFunctions
-import Section4.ResidueNormalization
-import Section4.ResidueParameterField
-import Section4.ResiduePolynomialCover
-import Section4.ResiduePolynomialFunctions
-import Section4.ResiduePureFunctions
-import Section4.ResidueQFInterpretation
-import Section4.ResidueRVSet
-import Section4.ResidueRelativePredicates
-import Section4.ResidueRelativeQF
-import Section4.ResidueRelativeScaled
-import Section4.ResidueRelativeTerms
-import Section4.ResidueScaledFunctions
-import Section4.ResidueScaledPredicates
-import Section4.ResidueScopedContext
-import Section4.ResidueTermInterpretation
-import Section4.ResidueTupleRank
-import Section4.ResidueZariskiComparison
-import Section4.ResidueZariskiDensity
-import Section4.ResidueZariskiPrimeBound
-import Section4.SmallGeneratedBase
-import Section4.TupleIndependence
-import Section4.UniformFiniteCofinite
-import Section4.UnionMapLaws
-import Section4.VFAllIsomorphismClasses
-import Section4.VFAllRing
-import Section4.VFAllScissors
-import Section4.VFAllSemiring
-import Section4.VFAppend
-import Section4.VFBoundedGroups
-import Section4.VFCoproduct
-import Section4.VFCoproductBounds
-import Section4.VFFibreFiniteness
-import Section4.VFFiniteMaps
-import Section4.VFFinitePositiveComparison
-import Section4.VFFinitePositiveFiltration
-import Section4.VFFiniteRing
-import Section4.VFFiniteScissors
-import Section4.VFFiniteSemiring
-import Section4.VFListUnions
-import Section4.VFPositiveFiltration
-import Section4.VFProductDistributivity
-import Section4.VFProductUniversal
-import Section4.VFProducts
-import Section4.VFRealFibres
-import Section4.VFSingletonUnits
-import Section4.VFUnions
-import Section4.ZariskiComparison
-import Section4.ZariskiDensity
-import Section4.ZariskiDimensionLower
-import Section4.ZariskiDimensionUpper
-import Section4.ZariskiPrimeBound
+public import Section4.VFAlgebraicCoordinates
+public import Section4.TupleTranscendence
+public import Section4.FiniteGluing
+public import Section4.TupleBasis
+public import Section4.VFTranscendence
+public import Section4.FiniteCover
+public import Section4.CoordinatePieces
+public import Section4.CoordinateDimension
+public import Section4.VFDimensionRank
+public import Section4.VFDimensionFibres
+public import Section4.RelationFibres
+public import Section4.FiniteCorrespondence
+public import Section4.CanonicalRank
+
+public import Section4.AffineKrullDimension
+public import Section4.AlgebraicAutomorphisms
+public import Section4.CanonicalNormalization
+public import Section4.CanonicalOrderController
+public import Section4.CoordinateMaps
+public import Section4.CoordinateRank
+public import Section4.DefinableUnionCoproduct
+public import Section4.EarlierRVInputs
+public import Section4.EmptyMaps
+public import Section4.FinitaryClosure
+public import Section4.FiniteGluingRelation
+public import Section4.FiniteOrderControllers
+public import Section4.FiniteOrderSamples
+public import Section4.FullDimension
+public import Section4.GammaControllerDefinability
+public import Section4.GammaDefinableClosure
+public import Section4.GammaDefinableFibres
+public import Section4.GammaDefinablePoint
+public import Section4.GammaFiniteDefinablePoints
+public import Section4.GammaMultiplicationSyntax
+public import Section4.GammaNamedValue
+public import Section4.GammaOrderControllers
+public import Section4.GammaPredicates
+public import Section4.GammaRVIndependence
+public import Section4.GammaRVInfiniteProjection
+public import Section4.GammaRVLastRow
+public import Section4.GammaRVRowAvoidance
+public import Section4.GenericPoints
+public import Section4.GradedLiftBounds
+public import Section4.GradedLifts
+public import Section4.HomogeneousAvoidance
+public import Section4.Imported.IntegralKrullDimension
+public import Section4.Imported.NoetherNormalizationTrdeg
+public import Section4.Imported.PolynomialCoordinateBasis
+public import Section4.LiftBijections
+public import Section4.LiftFibres
+public import Section4.LiftMorphism
+public import Section4.LiftPadding
+public import Section4.MapAlgebraicity
+public import Section4.MapCorestrict
+public import Section4.MapParameters
+public import Section4.MapProduct
+public import Section4.MixedProducts
+public import Section4.MixedRVAlgebraicity
+public import Section4.MixedTagging
+public import Section4.ModelGeometry
+public import Section4.MultivariateLocal
+public import Section4.MultivariateSyntax
+public import Section4.NonalgebraicTypes
+public import Section4.OrderControllerTuples
+public import Section4.ParameterInvariance
+public import Section4.PolydiscLocal
+public import Section4.PolynomialCover
+public import Section4.PolynomialSubringDimension
+public import Section4.PolynomialZero
+public import Section4.PositiveAdditivePresentation
+public import Section4.PositiveAdditiveRepresentatives
+public import Section4.ProductBijections
+public import Section4.ProductRearrangement
+public import Section4.PureFieldAlgebraicity
+public import Section4.RVAlgebraicMatroid
+public import Section4.RVAppend
+public import Section4.RVBaseAlgebraicity
+public import Section4.RVBoundedGroups
+public import Section4.RVClassReindexing
+public import Section4.RVCompression
+public import Section4.RVCoordinatePieces
+public import Section4.RVCoordinates
+public import Section4.RVCoproduct
+public import Section4.RVDimension
+public import Section4.RVDimensionRank
+public import Section4.RVEmptyIso
+public import Section4.RVFibreDimension
+public import Section4.RVFibreInvariance
+public import Section4.RVFinitaryImages
+public import Section4.RVFiniteGradedRepresentatives
+public import Section4.RVFiniteGradedRing
+public import Section4.RVFiniteGradedSemiring
+public import Section4.RVFiniteHomogeneousProducts
+public import Section4.RVFiniteMapRank
+public import Section4.RVFinitePaddingScissors
+public import Section4.RVFinitePositiveComparison
+public import Section4.RVFiniteScissors
+public import Section4.RVGradedCoproduct
+public import Section4.RVGradedFiltration
+public import Section4.RVGradedRepresentatives
+public import Section4.RVGradedRing
+public import Section4.RVGradedRingFamilies
+public import Section4.RVGradedSemiring
+public import Section4.RVGrading
+public import Section4.RVGroupCompletion
+public import Section4.RVHomogeneousProducts
+public import Section4.RVInfiniteIteration
+public import Section4.RVInfiniteValueDefinability
+public import Section4.RVIsoClassScissors
+public import Section4.RVIsoTools
+public import Section4.RVIsomorphismClasses
+public import Section4.RVLabelCompression
+public import Section4.RVLabelIsomorphisms
+public import Section4.RVMaximumValueFibre
+public import Section4.RVNamedDivision
+public import Section4.RVPaddingSplit
+public import Section4.RVParameterInvariance
+public import Section4.RVPatternProjection
+public import Section4.RVPolydiscBound
+public import Section4.RVPositiveIsoComparison
+public import Section4.RVProduct
+public import Section4.RVProductAssociativity
+public import Section4.RVProductDistributivity
+public import Section4.RVProductMorphisms
+public import Section4.RVProductRestrictions
+public import Section4.RVProductSymmetry
+public import Section4.RVProductUnits
+public import Section4.RVProjectionScissors
+public import Section4.RVRank
+public import Section4.RVReindexing
+public import Section4.RVRelabelIso
+public import Section4.RVRepresentatives
+public import Section4.RVRestrictions
+public import Section4.RVScissorCoproduct
+public import Section4.RVScissorPresentation
+public import Section4.RVSequenceBounds
+public import Section4.RVSequenceIndependence
+public import Section4.RVSequenceMovement
+public import Section4.RVTagging
+public import Section4.RVTupleFibres
+public import Section4.RVUnionCoproduct
+public import Section4.RVValueCofiniteness
+public import Section4.RVValueFibres
+public import Section4.RVValuePatternFamily
+public import Section4.RVWeightDimension
+public import Section4.RVWeightRestriction
+public import Section4.RVZeroDegreeProduct
+public import Section4.RVZeroDeletion
+public import Section4.ResidueAlgebraicityForward
+public import Section4.ResidueAlgebraicityReverse
+public import Section4.ResidueCoefficientContext
+public import Section4.ResidueComparison
+public import Section4.ResidueDefinableField
+public import Section4.ResidueFieldFunctions
+public import Section4.ResidueFieldInterpretation
+public import Section4.ResidueMultivariateFunctions
+public import Section4.ResidueNormalization
+public import Section4.ResidueParameterField
+public import Section4.ResiduePolynomialCover
+public import Section4.ResiduePolynomialFunctions
+public import Section4.ResiduePureFunctions
+public import Section4.ResidueQFInterpretation
+public import Section4.ResidueRVSet
+public import Section4.ResidueRelativePredicates
+public import Section4.ResidueRelativeQF
+public import Section4.ResidueRelativeScaled
+public import Section4.ResidueRelativeTerms
+public import Section4.ResidueScaledFunctions
+public import Section4.ResidueScaledPredicates
+public import Section4.ResidueScopedContext
+public import Section4.ResidueTermInterpretation
+public import Section4.ResidueTupleRank
+public import Section4.ResidueZariskiComparison
+public import Section4.ResidueZariskiDensity
+public import Section4.ResidueZariskiPrimeBound
+public import Section4.SmallGeneratedBase
+public import Section4.TupleIndependence
+public import Section4.UniformFiniteCofinite
+public import Section4.UnionMapLaws
+public import Section4.VFAllIsomorphismClasses
+public import Section4.VFAllRing
+public import Section4.VFAllScissors
+public import Section4.VFAllSemiring
+public import Section4.VFAppend
+public import Section4.VFBoundedGroups
+public import Section4.VFCoproduct
+public import Section4.VFCoproductBounds
+public import Section4.VFFibreFiniteness
+public import Section4.VFFiniteMaps
+public import Section4.VFFinitePositiveComparison
+public import Section4.VFFinitePositiveFiltration
+public import Section4.VFFiniteRing
+public import Section4.VFFiniteScissors
+public import Section4.VFFiniteSemiring
+public import Section4.VFListUnions
+public import Section4.VFPositiveFiltration
+public import Section4.VFProductDistributivity
+public import Section4.VFProductUniversal
+public import Section4.VFProducts
+public import Section4.VFRealFibres
+public import Section4.VFSingletonUnits
+public import Section4.VFUnions
+public import Section4.ZariskiComparison
+public import Section4.ZariskiDensity
+public import Section4.ZariskiDimensionLower
+public import Section4.ZariskiDimensionUpper
+public import Section4.ZariskiPrimeBound
+
+@[expose] public section
 
 /-!
 # Section 4 library

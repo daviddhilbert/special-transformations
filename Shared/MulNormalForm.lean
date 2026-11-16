@@ -1,3 +1,5 @@
+module
+
 /-
 **The `mul`-cancellation normal form off `Kˣ`** — from swarm `smw1bwjo2` m3, verified here
 (compiled, 0 errors, no `sorry`; `#print axioms` on `rv_mul_eq_mul_iff`, `rv_mul_solution_unique`,
@@ -61,7 +63,9 @@ Main results (namespace `SpecialTransformations.Milestone0.MulNormalForm`, all u
   *formulas*: a common `rvMul` factor can be cancelled inside a quantifier-free atom, which is the
   form the QF-cover argument consumes.
 -/
-import Enc
+public import Enc
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder

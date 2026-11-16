@@ -1,4 +1,8 @@
-import Section9.RVGraphJacobianComparison
+module
+
+public import Section9.RVGraphJacobianComparison
+
+@[expose] public section
 
 /-! Dividing a VF representative by a representative of its value
 gives an integral unit. Its residue is determined by the RV label. -/

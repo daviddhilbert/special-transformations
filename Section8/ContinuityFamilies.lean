@@ -1,4 +1,8 @@
-import Section8.ContinuityFormula
+module
+
+public import Section8.ContinuityFormula
+
+@[expose] public section
 
 /-! The topology formulas work in families with an unchanged parameter
 prefix. This lets continuity and topological closure descend from the

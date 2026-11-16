@@ -1,5 +1,9 @@
-import Section3.FiniteGluing
-import VFField
+module
+
+public import Section3.FiniteGluing
+public import VFField
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

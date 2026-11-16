@@ -1,6 +1,10 @@
-import Section6.EarlierPreparation
-import Section6.ExpandedNormalForm
-import Section6.NativeEnvelopeConstruction
+module
+
+public import Section6.EarlierPreparation
+public import Section6.ExpandedNormalForm
+public import Section6.NativeEnvelopeConstruction
+
+@[expose] public section
 
 /-! Standalone finite-tuple elimination in the expanded henselian theory. -/
 

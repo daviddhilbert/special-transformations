@@ -1,8 +1,12 @@
-import Section4.ResidueRelativeQF
-import Section4.PureFieldAlgebraicity
-import Section4.TupleTranscendence
-import ProvedResidueClosure
-import VFAlgClosed
+module
+
+public import Section4.ResidueRelativeQF
+public import Section4.PureFieldAlgebraicity
+public import Section4.TupleTranscendence
+public import ProvedResidueClosure
+public import VFAlgClosed
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

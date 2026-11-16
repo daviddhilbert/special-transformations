@@ -1,7 +1,11 @@
-import Section3.AngularPattern
-import Section3.InfiniteValueFibres
-import Section3.FiniteValueFibres
-import Section4.UniformFiniteCofinite
+module
+
+public import Section3.AngularPattern
+public import Section3.InfiniteValueFibres
+public import Section3.FiniteValueFibres
+public import Section4.UniformFiniteCofinite
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

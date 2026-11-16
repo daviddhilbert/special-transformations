@@ -1,9 +1,13 @@
-import Section4.DefinableGeometry
-import Section3.SortedBoolean
-import Section3.Coordinates
-import Section3.GammaDefinability
-import Section3.SortedFunctionClosure
-import Mathlib.Data.Finite.Prod
+module
+
+public import Section4.DefinableGeometry
+public import Section3.SortedBoolean
+public import Section3.Coordinates
+public import Section3.GammaDefinability
+public import Section3.SortedFunctionClosure
+public import Mathlib.Data.Finite.Prod
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
@@ -115,7 +119,7 @@ theorem realSpace_definable_iff (S : Set M) {n : ℕ} (σ : Fin n → SortTag)
   rw [realSpace_preimage]
   exact ⟨fun h => ⟨h, hsort⟩, And.left⟩
 
-private theorem nonzero_rv_domain_definable (S : Set M) :
+public theorem nonzero_rv_domain_definable (S : Set M) :
     RawDefinable S {z : Fin 1 → M | iRV (z 0) ∧ z 0 ≠ iRVZero} := by
   have hr := sort_coordinate_definable (M := M) S .rv (0 : Fin 1)
   have hz : DefinableClosureAt S .rv (iRVZero : M) :=
@@ -125,7 +129,7 @@ private theorem nonzero_rv_domain_definable (S : Set M) :
   letI := CanonicalStructure.normalize (M := M)
   exact hr.inter hzraw.1.compl
 
-private theorem rv_comparison_definable (S : Set M) :
+public theorem rv_comparison_definable (S : Set M) :
     RawDefinable S {z : Fin 2 → M | iRV (z 0) ∧ iRV (z 1) ∧ iLe (z 0) (z 1)} := by
   have h0 := sort_coordinate_definable (M := M) S .rv (0 : Fin 2)
   have h1 := sort_coordinate_definable (M := M) S .rv (1 : Fin 2)

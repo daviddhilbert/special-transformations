@@ -1,4 +1,8 @@
-import Section3.BallTranslation
+module
+
+public import Section3.BallTranslation
+
+@[expose] public section
 
 /- Component: OpenBallHullGeometry -/
 set_option backward.isDefEq.respectTransparency false

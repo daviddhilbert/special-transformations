@@ -1,5 +1,9 @@
-import Section7.LiftingAlgebra
-import Section9.RVJacobianReduction
+module
+
+public import Section7.LiftingAlgebra
+public import Section9.RVJacobianReduction
+
+@[expose] public section
 
 /-! The determinant calculation for the weighted polynomial lift in
 Theorem 9.16. The values of the two blocks come from the simplicity

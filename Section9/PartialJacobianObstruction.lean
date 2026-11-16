@@ -1,6 +1,10 @@
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.Tactic.FinCases
-import Mathlib.Tactic.NormNum
+module
+
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.Tactic.FinCases
+public import Mathlib.Tactic.NormNum
+
+@[expose] public section
 
 /-! The coordinate-axis computation for the counterexample to the
 pointwise partial Jacobian chain rule in Lemma 9.12. Each displayed axis

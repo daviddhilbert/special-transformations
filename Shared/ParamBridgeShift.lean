@@ -1,3 +1,5 @@
+module
+
 /-
 **Parameter relabelling of the well-sorted fragment** — from swarm `smw1bwjo2` m2, verified here
 (compiled; 0 errors, no `sorry`, axioms within {propext, Classical.choice, Quot.sound}).  The earlier
@@ -19,7 +21,9 @@ The forward half of the parameter bridge: the "shift" that turns the first `n` f
 variables into parameters, landing at the empty context `Fin 0` with parameter type
 `α ⊕ Fin n`.
 -/
-import Enc
+public import Enc
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder

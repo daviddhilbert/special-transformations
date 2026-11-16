@@ -1,9 +1,13 @@
-import Section9.HenselizedGraphData
-import Section9.GraphResidueFieldRestriction
-import Section9.GraphJacobianIdentification
-import Section9.ResidueGraphDerivative
-import Section9.RVDeterminantReduction
-import Section9.ResidueCoefficientBase
+module
+
+public import Section9.HenselizedGraphData
+public import Section9.GraphResidueFieldRestriction
+public import Section9.GraphJacobianIdentification
+public import Section9.ResidueGraphDerivative
+public import Section9.RVDeterminantReduction
+public import Section9.ResidueCoefficientBase
+
+@[expose] public section
 
 /-! The pointwise comparison for an actual normalized lift. The
 derivative is computed on the graph field in VF and reduces to the

@@ -1,6 +1,10 @@
-import Section4.RVFinitePositiveComparison
-import Section4.RVFinitePadding
-import Section4.RVPaddingSplit
+module
+
+public import Section4.RVFinitePositiveComparison
+public import Section4.RVFinitePadding
+public import Section4.RVPaddingSplit
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

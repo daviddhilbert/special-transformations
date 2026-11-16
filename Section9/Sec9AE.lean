@@ -1,3 +1,5 @@
+module
+
 /-
 # Yin, "Special transformations in algebraically closed valued fields" — Sections 9 (`diff:almost:every`,
 `special:tran:vol:pre`) and the almost-everywhere terminology of `paper.tex:1744`.
@@ -23,7 +25,9 @@ What is defined here:
 * `SpecialSteps`, `jacobian_one_of_steps`, `special_tran_vol_pre` — Lemma `special:tran:vol:pre`
   (`paper.tex:2042`).
 -/
-import Sec4Dim
+public import Sec4Dim
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.unusedVariables false
 open FirstOrder FirstOrder.Language

@@ -1,7 +1,11 @@
-import Section9.LimitGeometry
-import Section8.PowerEstimateCore
-import Section8.IsolationRadius
-import Section3.ClosedClassCodes
+module
+
+public import Section9.LimitGeometry
+public import Section8.PowerEstimateCore
+public import Section8.IsolationRadius
+public import Section3.ClosedClassCodes
+
+@[expose] public section
 
 /-! Parameter definability of the extended balls in Definition 9.1 and
 of the unary hit sets in Lemma 9.4. A centre and a radius may be named in

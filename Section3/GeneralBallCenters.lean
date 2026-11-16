@@ -1,5 +1,9 @@
-import Section3.GammaFiniteMeans
-import Section3.OpenBallCenters
+module
+
+public import Section3.GammaFiniteMeans
+public import Section3.OpenBallCenters
+
+@[expose] public section
 
 /- Component: BallImaginaries -/
 set_option backward.isDefEq.respectTransparency false

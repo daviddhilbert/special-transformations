@@ -1,4 +1,8 @@
-import Section3.GammaRVSeparation
+module
+
+public import Section3.GammaRVSeparation
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

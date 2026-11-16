@@ -1,3 +1,5 @@
+module
+
 /-
 **`exchange`** — `paper.tex:694`, §3 of Yin, *Special transformations in algebraically closed
 valued fields*, and its proof `qe.tex` Lemma 4.3 (line 918, §4 "Minimality in ACVF").
@@ -60,12 +62,14 @@ polynomial in the coefficient `b`, since every other disjunct defines an infinit
 
 No `axiom`, no `sorry`, no `native_decide`.
 -/
-import Sat
-import Sec3Frozen
-import AlgIndImag
-import SubstVar
-import ParamBridgeRelabel
-import ExSortedG
+public import Sat
+public import Sec3Frozen
+public import AlgIndImag
+public import SubstVar
+public import ParamBridgeRelabel
+public import ExSortedG
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder

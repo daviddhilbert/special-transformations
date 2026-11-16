@@ -1,7 +1,11 @@
-import Mathlib.ModelTheory.Semantics
-import Mathlib.ModelTheory.Complexity
-import Mathlib.Data.Fintype.EquivFin
-import Mathlib.Data.Finset.Sum
+module
+
+public import Mathlib.ModelTheory.Semantics
+public import Mathlib.ModelTheory.Complexity
+public import Mathlib.Data.Fintype.EquivFin
+public import Mathlib.Data.Finset.Sum
+
+@[expose] public section
 
 /-!
 Finite abstraction and existential assembly in an arbitrary auxiliary

@@ -1,7 +1,11 @@
-import Section4.VFDimension
-import Section4.Spaces
-import Section3.NormalizationSaturation
-import Section3.CanonicalContext
+module
+
+public import Section4.VFDimension
+public import Section4.Spaces
+public import Section3.NormalizationSaturation
+public import Section3.CanonicalContext
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false

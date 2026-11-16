@@ -1,5 +1,9 @@
-import Section9.LiftRestriction
-import Section9.LiftLabelRepresentatives
+module
+
+public import Section9.LiftRestriction
+public import Section9.LiftLabelRepresentatives
+
+@[expose] public section
 
 /-! A bijection lifting an RV isomorphism restricts to a bijection
 between the corresponding label cuts. -/

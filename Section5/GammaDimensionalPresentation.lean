@@ -1,7 +1,11 @@
-import Section5.GammaInvariantLogic
-import Section5.GammaLift
-import Section5.CategoryPresentations
-import Section4.VFDimensionRank
+module
+
+public import Section5.GammaInvariantLogic
+public import Section5.GammaLift
+public import Section5.CategoryPresentations
+public import Section4.VFDimensionRank
+
+@[expose] public section
 
 /-! A dimension-controlled real envelope and its restriction to a set
 with named Gamma parameters. The restriction uses the full invariant

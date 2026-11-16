@@ -1,6 +1,10 @@
-import Section4.RVDimension
-import Section4.VFRealFibres
-import Section4.VFCategories
+module
+
+public import Section4.RVDimension
+public import Section4.VFRealFibres
+public import Section4.VFCategories
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

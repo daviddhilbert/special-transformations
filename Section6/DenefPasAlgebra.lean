@@ -1,11 +1,15 @@
-import Mathlib.Algebra.Field.Defs
-import Mathlib.Algebra.Order.GroupWithZero.Basic
-import Mathlib.Algebra.Order.GroupWithZero.Canonical
-import Mathlib.ModelTheory.Semantics
-import Mathlib.Tactic.FinCases
-import Section6.AngularOrderCodes
-import Section6.RVGraphLanguage
-import Section6.RVTermSupport
+module
+
+public import Mathlib.Algebra.Field.Defs
+public import Mathlib.Algebra.Order.GroupWithZero.Basic
+public import Mathlib.Algebra.Order.GroupWithZero.Canonical
+public import Mathlib.ModelTheory.Semantics
+public import Mathlib.Tactic.FinCases
+public import Section6.AngularOrderCodes
+public import Section6.RVGraphLanguage
+public import Section6.RVTermSupport
+
+@[expose] public section
 
 /-! Coherent Section 6 module. The source bodies below are retained
 from the individually developed fragments; only imports and file scope

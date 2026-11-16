@@ -1,110 +1,114 @@
-import Section6.AlignedComparison
-import Section6.AngularCodes
-import Section6.AngularComponent
-import Section6.AngularOrderCodes
-import Section6.AuxiliaryDenaming
-import Section6.CanonicalEmbedding
-import Section6.CommonEnvelopeComparison
-import Section6.ContractionGraph
-import Section6.ConcreteLogic
-import Section6.ConcreteACVF
-import Section6.ConcreteHenselian
-import Section6.ConcreteRVAxioms
-import Section6.DenefPasRecognition
-import Section6.NativeEnvelopeConstruction
-import Section6.HenselianAlgebraicClosure
-import Section6.HenselianOneStep
-import Section6.NativePresentation
-import Section6.NativeResidueOperations
-import Section6.PaperResults
-import Section6.ConcreteCharacteristic
-import Section6.ConcreteExtension
-import Section6.ConcreteFieldAxioms
-import Section6.ConcreteResidueOps
-import Section6.HenselianFactorization
-import Section6.HenselianInvariance
-import Section6.HenselianValuationRing
-import Section6.Imported.CoprimeFactorLifting
-import Section6.IntegralConjugates
-import Section6.NativeHenselian
-import Section6.NativeRVOperations
-import Section6.CountableEnvelope
-import Section6.DefinableMaps
-import Section6.DenefPasAlgebra
-import Section6.DenefPasConclusion
-import Section6.DenefPasInterpretation
-import Section6.DenefPasTrivialBranch
-import Section6.ElementaryTestFamily
-import Section6.ElementaryTransfer
-import Section6.EnvelopeUniformity
-import Section6.EarlierPreparation
-import Section6.HenselianRVClosure
-import Section6.PureHenselianInputs
-import Section6.ExpandedNormalForm
-import Section6.PaperPreparation
-import Section6.ExpandedImages
-import Section6.ExpandedLiterals
-import Section6.ExpandedLogic
-import Section6.ExpandedOpenBounds
-import Section6.ExpandedParameterRelabel
-import Section6.ExpandedRenaming
-import Section6.ExpandedRestriction
-import Section6.ExtraSortSemantics
-import Section6.FVBinding
-import Section6.FiniteAbstraction
-import Section6.FiniteCover
-import Section6.FiniteNamedSyntax
-import Section6.FiniteNormalizedElimination
-import Section6.FiniteParameterSyntax
-import Section6.FiniteSortContext
-import Section6.FragmentCompactness
-import Section6.FunctionalClosure
-import Section6.GeneratedDenaming
-import Section6.GeneratedParameters
-import Section6.HenselianClosure
-import Section6.HenselianElimination
-import Section6.HenselianImages
-import Section6.HenselianInputs
-import Section6.HenselianModel
-import Section6.HenselianTheory
-import Section6.HenselScheme
-import Section6.MapFormulaDescent
-import Section6.NamedLanguage
-import Section6.NamedLogic
-import Section6.NativeAmalgamation
-import Section6.NativeExpandedSyntax
-import Section6.NativeFormulaElimination
-import Section6.NativeImageComparison
-import Section6.NativeImageTransport
-import Section6.NativeOccurrence
-import Section6.NativeRV
-import Section6.NativeTermMap
-import Section6.NativeTerms
-import Section6.NormalizedQuery
-import Section6.OneStepPresentation
-import Section6.PairInterpretation
-import Section6.PairSyntax
-import Section6.ParameterNaming
-import Section6.PolynomialDescent
-import Section6.PolynomialFormulaDescent
-import Section6.PreparedDescent
-import Section6.RVAbstraction
-import Section6.RVExpansionTransport
-import Section6.RVFormula
-import Section6.RVFragmentRenaming
-import Section6.RVGraphExpansion
-import Section6.RVGraphLanguage
-import Section6.RVQuotients
-import Section6.RVSourceFormula
-import Section6.RVSubstructure
-import Section6.RVTermSupport
-import Section6.RelativeSyntax
-import Section6.SentenceDenaming
-import Section6.SortedFragment
-import Section6.SyntacticDescent
-import Section6.SyntacticLemma63
-import Section6.TypedNativeTerms
-import Section6.UniformNormalizedElimination
+module
+
+public import Section6.AlignedComparison
+public import Section6.AngularCodes
+public import Section6.AngularComponent
+public import Section6.AngularOrderCodes
+public import Section6.AuxiliaryDenaming
+public import Section6.CanonicalEmbedding
+public import Section6.CommonEnvelopeComparison
+public import Section6.ContractionGraph
+public import Section6.ConcreteLogic
+public import Section6.ConcreteACVF
+public import Section6.ConcreteHenselian
+public import Section6.ConcreteRVAxioms
+public import Section6.DenefPasRecognition
+public import Section6.NativeEnvelopeConstruction
+public import Section6.HenselianAlgebraicClosure
+public import Section6.HenselianOneStep
+public import Section6.NativePresentation
+public import Section6.NativeResidueOperations
+public import Section6.PaperResults
+public import Section6.ConcreteCharacteristic
+public import Section6.ConcreteExtension
+public import Section6.ConcreteFieldAxioms
+public import Section6.ConcreteResidueOps
+public import Section6.HenselianFactorization
+public import Section6.HenselianInvariance
+public import Section6.HenselianValuationRing
+public import Section6.Imported.CoprimeFactorLifting
+public import Section6.IntegralConjugates
+public import Section6.NativeHenselian
+public import Section6.NativeRVOperations
+public import Section6.CountableEnvelope
+public import Section6.DefinableMaps
+public import Section6.DenefPasAlgebra
+public import Section6.DenefPasConclusion
+public import Section6.DenefPasInterpretation
+public import Section6.DenefPasTrivialBranch
+public import Section6.ElementaryTestFamily
+public import Section6.ElementaryTransfer
+public import Section6.EnvelopeUniformity
+public import Section6.EarlierPreparation
+public import Section6.HenselianRVClosure
+public import Section6.PureHenselianInputs
+public import Section6.ExpandedNormalForm
+public import Section6.PaperPreparation
+public import Section6.ExpandedImages
+public import Section6.ExpandedLiterals
+public import Section6.ExpandedLogic
+public import Section6.ExpandedOpenBounds
+public import Section6.ExpandedParameterRelabel
+public import Section6.ExpandedRenaming
+public import Section6.ExpandedRestriction
+public import Section6.ExtraSortSemantics
+public import Section6.FVBinding
+public import Section6.FiniteAbstraction
+public import Section6.FiniteCover
+public import Section6.FiniteNamedSyntax
+public import Section6.FiniteNormalizedElimination
+public import Section6.FiniteParameterSyntax
+public import Section6.FiniteSortContext
+public import Section6.FragmentCompactness
+public import Section6.FunctionalClosure
+public import Section6.GeneratedDenaming
+public import Section6.GeneratedParameters
+public import Section6.HenselianClosure
+public import Section6.HenselianElimination
+public import Section6.HenselianImages
+public import Section6.HenselianInputs
+public import Section6.HenselianModel
+public import Section6.HenselianTheory
+public import Section6.HenselScheme
+public import Section6.MapFormulaDescent
+public import Section6.NamedLanguage
+public import Section6.NamedLogic
+public import Section6.NativeAmalgamation
+public import Section6.NativeExpandedSyntax
+public import Section6.NativeFormulaElimination
+public import Section6.NativeImageComparison
+public import Section6.NativeImageTransport
+public import Section6.NativeOccurrence
+public import Section6.NativeRV
+public import Section6.NativeTermMap
+public import Section6.NativeTerms
+public import Section6.NormalizedQuery
+public import Section6.OneStepPresentation
+public import Section6.PairInterpretation
+public import Section6.PairSyntax
+public import Section6.ParameterNaming
+public import Section6.PolynomialDescent
+public import Section6.PolynomialFormulaDescent
+public import Section6.PreparedDescent
+public import Section6.RVAbstraction
+public import Section6.RVExpansionTransport
+public import Section6.RVFormula
+public import Section6.RVFragmentRenaming
+public import Section6.RVGraphExpansion
+public import Section6.RVGraphLanguage
+public import Section6.RVQuotients
+public import Section6.RVSourceFormula
+public import Section6.RVSubstructure
+public import Section6.RVTermSupport
+public import Section6.RelativeSyntax
+public import Section6.SentenceDenaming
+public import Section6.SortedFragment
+public import Section6.SyntacticDescent
+public import Section6.SyntacticLemma63
+public import Section6.TypedNativeTerms
+public import Section6.UniformNormalizedElimination
+
+@[expose] public section
 
 
 /-! Section 6's new shared-language library. Legacy snapshots are excluded.

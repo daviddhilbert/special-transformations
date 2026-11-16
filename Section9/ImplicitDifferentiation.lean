@@ -1,5 +1,9 @@
-import Section9.Differentiation
-import Section9.ValuedImplicitDerivative
+module
+
+public import Section9.Differentiation
+public import Section9.ValuedImplicitDerivative
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,4 +1,8 @@
-import Section4.RVPadding
+module
+
+public import Section4.RVPadding
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

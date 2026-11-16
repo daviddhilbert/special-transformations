@@ -1,3 +1,5 @@
+module
+
 /-
 Attributed excerpt from DongzheZheng/Kiraly-Tanigawa-Body-Pin-Rigidity-Conjecture.
 Fixed revision: e457fde9100c9b7226bd4d81af6860f210a531ab.
@@ -7,9 +9,11 @@ Apache-2.0; see BodyPin-LICENSE. The upstream file has no separate author header
 The coordinate definitions and two basis proofs below are retained unchanged;
 only imports are narrowed. The remaining prime-height code is not needed here.
 -/
-import Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
-import Mathlib.RingTheory.MvPolynomial.Ideal
-import Mathlib.RingTheory.Polynomial.Quotient
+public import Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
+public import Mathlib.RingTheory.MvPolynomial.Ideal
+public import Mathlib.RingTheory.Polynomial.Quotient
+
+@[expose] public section
 
 noncomputable section
 namespace RB31E2E.PolynomialPrimeTrdegHeight

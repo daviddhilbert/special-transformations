@@ -1,6 +1,10 @@
-import Section8.GenericContinuity
-import Section3.SmallFiniteParameters
-import Mathlib.RingTheory.AlgebraicIndependent.AlgebraicClosure
+module
+
+public import Section8.GenericContinuity
+public import Section3.SmallFiniteParameters
+public import Mathlib.RingTheory.AlgebraicIndependent.AlgebraicClosure
+
+@[expose] public section
 
 /-! Choose a generic centre inside a prescribed output ball.
 Naming the new centre and an RV radius preserves independence of the

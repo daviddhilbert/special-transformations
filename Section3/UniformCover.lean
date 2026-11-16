@@ -1,3 +1,5 @@
+module
+
 /-
 **§3's first lemma, the step that is not compactness**: from a *uniform* family of algebraic sets to
 algebraicity over `S` alone.
@@ -24,9 +26,11 @@ parameter slot of `φ` becomes a bound variable (`BoundedFormula.relabel`), and 
 and that new variable are exchanged into the shape `BoundedFormula.all` expects
 (`Sec4Compose.BoundedFormula.substVar`).
 -/
-import Sec3Infra
-import SubstVar
-import ParamBridgeRelabel
+public import Sec3Infra
+public import SubstVar
+public import ParamBridgeRelabel
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option maxHeartbeats 1000000
 

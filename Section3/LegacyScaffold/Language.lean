@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # The language `L_RV` and the theory `ACVF_S(0, 0)`

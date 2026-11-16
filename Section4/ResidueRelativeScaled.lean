@@ -1,4 +1,8 @@
-import Section4.ResidueCoefficientContext
+module
+
+public import Section4.ResidueCoefficientContext
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,4 +1,8 @@
-import Section8.VFNeighbourhoods
+module
+
+public import Section8.VFNeighbourhoods
+
+@[expose] public section
 
 /-! Definition 8.8 on actual VF and RV tuples. Equality of the fibres
 is equality of sets of RV tuples. -/

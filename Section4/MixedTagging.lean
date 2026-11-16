@@ -1,5 +1,9 @@
-import Section4.VFAppend
-import Section4.RVTagging
+module
+
+public import Section4.VFAppend
+public import Section4.RVTagging
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,3 +1,5 @@
+module
+
 /-
 **§4 `dim:RV:fibers` proved, with Yin 4.10 + compactness as the only mathematical hypothesis** —
 from swarm `smw1jgnht` m6, verified here (compiled: exit 0, 0 errors, no `sorry`; `#print axioms` on
@@ -60,7 +62,9 @@ iteration appears).
 
 No `sorry`, no `axiom`, no `native_decide`.
 -/
-import SubstVar
+public import SubstVar
+
+@[expose] public section
 set_option linter.unusedVariables false
 open FirstOrder FirstOrder.Language
 

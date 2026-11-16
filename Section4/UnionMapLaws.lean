@@ -1,5 +1,9 @@
-import Section4.FiniteGluing
-import Section4.DefinableCategory
+module
+
+public import Section4.FiniteGluing
+public import Section4.DefinableCategory
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

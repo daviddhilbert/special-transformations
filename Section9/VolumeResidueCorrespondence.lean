@@ -1,6 +1,10 @@
-import Section9.RVJacobian
-import Section4.ResidueComparison
-import Section7.LiftedIsomorphism
+module
+
+public import Section9.RVJacobian
+public import Section4.ResidueComparison
+public import Section7.LiftedIsomorphism
+
+@[expose] public section
 
 /-! The pairwise volume correspondence in Definition 9.14 is a
 definable RV set. Normalizing one value fibre gives a definable

@@ -1,6 +1,10 @@
-import Section10.WeightedZeroRepresentation
-import Section4.RVFiniteScissors
-import Section7.LiftedIsomorphism
+module
+
+public import Section10.WeightedZeroRepresentation
+public import Section4.RVFiniteScissors
+public import Section7.LiftedIsomorphism
+
+@[expose] public section
 
 /-! Weighted zero scissors use restrictions of the same actual form.
 The zero lift respects these relations and therefore descends to the

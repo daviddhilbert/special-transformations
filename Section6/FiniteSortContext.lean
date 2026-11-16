@@ -1,5 +1,9 @@
-import Section6.AlignedComparison
-import Mathlib.Data.Fintype.EquivFin
+module
+
+public import Section6.AlignedComparison
+public import Mathlib.Data.Fintype.EquivFin
+
+@[expose] public section
 
 /-! Reindex a finite sorted context by its VF and RV coordinates,
 including empty sorts. This is syntax-only and preserves the sort of

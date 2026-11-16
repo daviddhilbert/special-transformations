@@ -1,5 +1,9 @@
-import Section6.RVTermSupport
-import Section6.RVFormula
+module
+
+public import Section6.RVTermSupport
+public import Section6.RVFormula
+
+@[expose] public section
 
 /-!
 The auxiliary reduct of an RV-only expansion, and abstraction of the VF

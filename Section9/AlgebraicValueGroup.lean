@@ -1,6 +1,10 @@
-import Mathlib.RingTheory.Valuation.Basic
-import Mathlib.RingTheory.Algebraic.Basic
-import Mathlib.Algebra.Polynomial.Eval.Defs
+module
+
+public import Mathlib.RingTheory.Valuation.Basic
+public import Mathlib.RingTheory.Algebraic.Basic
+public import Mathlib.Algebra.Polynomial.Eval.Defs
+
+@[expose] public section
 
 /-! No new values in an algebraic extension of a field with divisible
 value group. The proof uses two maximal terms of an equation, and

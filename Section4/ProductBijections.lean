@@ -1,4 +1,8 @@
-import Section4.MapProduct
+module
+
+public import Section4.MapProduct
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

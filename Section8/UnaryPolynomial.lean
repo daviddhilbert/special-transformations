@@ -1,15 +1,19 @@
-import Mathlib.Algebra.Polynomial.Div
-import Section3.PolynomialLocal
-import Mathlib.Algebra.Polynomial.Eval.Coeff
-import Mathlib.Algebra.MvPolynomial.Eval
-import Mathlib.Algebra.Polynomial.Degree.Domain
-import Mathlib.Algebra.Polynomial.Degree.Lemmas
-import Section4.FullDimension
-import Section4.PolynomialCover
-import Section3.RingSyntax
-import Section3.DefinableConstants
-import Section3.TupleCompactness
-import Section3.SmallFiniteParameters
+module
+
+public import Mathlib.Algebra.Polynomial.Div
+public import Section3.PolynomialLocal
+public import Mathlib.Algebra.Polynomial.Eval.Coeff
+public import Mathlib.Algebra.MvPolynomial.Eval
+public import Mathlib.Algebra.Polynomial.Degree.Domain
+public import Mathlib.Algebra.Polynomial.Degree.Lemmas
+public import Section4.FullDimension
+public import Section4.PolynomialCover
+public import Section3.RingSyntax
+public import Section3.DefinableConstants
+public import Section3.TupleCompactness
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 /-! Polynomial relations, finite coefficient shapes, and ties of dominant terms. -/
 
@@ -443,7 +447,7 @@ namespace SpecialTransformations.Section8
 variable {M : Type} [LRV.Structure M] [hM : M ⊨ Axioms.ACVF]
 attribute [local instance] FirstOrder.Ring.compatibleRingOfRing
 
-private def vfTupleSet (ι : Type) : Set (ι → M) := {z | ∀ i, iVF (z i)}
+public def vfTupleSet (ι : Type) : Set (ι → M) := {z | ∀ i, iVF (z i)}
 
 private theorem vfTupleSet_definable (S : Set M) (ι : Type) [Finite ι] :
     S.Definable LRV (vfTupleSet ι) := by
@@ -452,7 +456,7 @@ private theorem vfTupleSet_definable (S : Set M) (ι : Type) [Finite ι] :
   exact Set.definable_iInter_of_finite (fun i => ((definableAt_sort S .vf).raw_definable).preimage_comp
     (fun _ : Fin 1 => i))
 
-private noncomputable def shapeValue (D : Finset (ℕ × ℕ)) (z : ↥D ⊕ Fin 2 → VFType (M := M)) : VFType (M := M) :=
+public noncomputable def shapeValue (D : Finset (ℕ × ℕ)) (z : ↥D ⊕ Fin 2 → VFType (M := M)) : VFType (M := M) :=
   ∑ d : ↥D, (z (.inl d) * z (.inr 0) ^ d.val.1) * z (.inr 1) ^ d.val.2
 
 def shapeZeroSet (D : Finset (ℕ × ℕ)) : Set ((↥D ⊕ Fin 2) → M) :=

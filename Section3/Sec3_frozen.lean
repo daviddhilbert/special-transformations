@@ -1,3 +1,5 @@
+module
+
 /-
 Section 3 of the paper, frozen statements over sorted parameter pairs (`SP`), with `acl`/`dcl`.
 
@@ -38,7 +40,9 @@ The five `sorry`s are deliberate: these are *frozen targets*, and the paper cite
 (`exchange`, `average:...`, `function:rv:to:vf:finite:image`) from QE:ACVF:min, so they are quoted
 theorems unless re-proved here.
 -/
-import Enc
+public import Enc
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.Milestone0

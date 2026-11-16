@@ -1,4 +1,8 @@
-import Section4.MapParameters
+module
+
+public import Section4.MapParameters
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 

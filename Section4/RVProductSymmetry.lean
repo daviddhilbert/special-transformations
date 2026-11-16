@@ -1,7 +1,11 @@
-import Section4.RVProduct
-import Section4.RVReindexing
-import Section4.ProductBijections
-import Mathlib.Logic.Equiv.Fin.Basic
+module
+
+public import Section4.RVProduct
+public import Section4.RVReindexing
+public import Section4.ProductBijections
+public import Mathlib.Logic.Equiv.Fin.Basic
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

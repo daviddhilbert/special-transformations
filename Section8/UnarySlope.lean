@@ -1,12 +1,16 @@
-import Section4.GammaMultiplicationSyntax
-import Section3.GammaSpecialization
-import Section3.GammaThresholdGeometry
-import Section8.IsolationRadius
-import Mathlib.Algebra.Order.Group.Basic
-import Section8.UniformBalls
-import Section4.GammaPredicates
-import Section3.SortedTuples
-import Section8.UnaryGerm
+module
+
+public import Section4.GammaMultiplicationSyntax
+public import Section3.GammaSpecialization
+public import Section3.GammaThresholdGeometry
+public import Section8.IsolationRadius
+public import Mathlib.Algebra.Order.Group.Basic
+public import Section8.UniformBalls
+public import Section4.GammaPredicates
+public import Section3.SortedTuples
+public import Section8.UnaryGerm
+
+@[expose] public section
 
 /-! Lemma 8.3 and its definable constants in the actual Gamma quotient. -/
 

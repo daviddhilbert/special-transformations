@@ -1,7 +1,11 @@
-import Section5.GammaInvariantLogic
-import Section5.PullbackLift
-import Section4.VFDimensionRank
-import Section4.RelationFibres
+module
+
+public import Section5.GammaInvariantLogic
+public import Section5.PullbackLift
+public import Section4.VFDimensionRank
+public import Section4.RelationFibres
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option maxHeartbeats 800000

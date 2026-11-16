@@ -1,7 +1,11 @@
-import CanonicalResidueOperations
-import Mathlib
-import Section3.RVOperations
-import Section3.RingSyntax
+module
+
+public import CanonicalResidueOperations
+public import Mathlib
+public import Section3.RVOperations
+public import Section3.RingSyntax
+
+@[expose] public section
 
 /-!
 # GuardedRVArithmetic

@@ -1,6 +1,10 @@
-import Section4.ResidueFieldInterpretation
-import Section4.ResidueMultivariateFunctions
-import Section4.FiniteCover
+module
+
+public import Section4.ResidueFieldInterpretation
+public import Section4.ResidueMultivariateFunctions
+public import Section4.FiniteCover
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

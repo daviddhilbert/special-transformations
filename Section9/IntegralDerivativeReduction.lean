@@ -1,5 +1,9 @@
-import Section9.GaussDerivative
-import Mathlib.Algebra.Polynomial.Derivative
+module
+
+public import Section9.GaussDerivative
+public import Mathlib.Algebra.Polynomial.Derivative
+
+@[expose] public section
 
 /-! Extending the Gauss bound to an integral power basis. The simple
 root computation uses the actual derivation and the valuation of the

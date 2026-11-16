@@ -1,6 +1,10 @@
-import Section4.PolynomialZero
-import Section4.FiniteCover
-import Mathlib.Algebra.MvPolynomial.Funext
+module
+
+public import Section4.PolynomialZero
+public import Section4.FiniteCover
+public import Mathlib.Algebra.MvPolynomial.Funext
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

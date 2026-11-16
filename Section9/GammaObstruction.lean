@@ -1,7 +1,11 @@
-import Mathlib.Algebra.Order.Group.Defs
-import Mathlib.Algebra.Group.TypeTags.Basic
-import Mathlib.Algebra.Order.Group.Unbundled.Basic
-import Mathlib.Tactic
+module
+
+public import Mathlib.Algebra.Order.Group.Defs
+public import Mathlib.Algebra.Group.TypeTags.Basic
+public import Mathlib.Algebra.Order.Group.Unbundled.Basic
+public import Mathlib.Tactic
+
+@[expose] public section
 
 /-! The monomial permutation underlying the arity-two obstruction to the
 Gamma comparison in Lemma 9.15. The order here is the paper's additive order. -/

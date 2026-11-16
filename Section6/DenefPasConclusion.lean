@@ -1,4 +1,8 @@
-import Section6.DenefPasTrivialBranch
+module
+
+public import Section6.DenefPasTrivialBranch
+
+@[expose] public section
 
 /-! Coherent Section 6 module. The source bodies below are retained
 from the individually developed fragments; only imports and file scope

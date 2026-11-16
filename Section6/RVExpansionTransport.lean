@@ -1,4 +1,8 @@
-import Section6.RVSubstructure
+module
+
+public import Section6.RVSubstructure
+
+@[expose] public section
 
 /-! Transport an arbitrary RV expansion along an actual native
 isomorphism of substructures. Its interpretation is transported only on

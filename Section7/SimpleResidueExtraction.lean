@@ -1,5 +1,9 @@
-import Section7.PolynomialFibreExtraction
-import Section7.ResidueDerivativeNormalization
+module
+
+public import Section7.PolynomialFibreExtraction
+public import Section7.ResidueDerivativeNormalization
+
+@[expose] public section
 
 /-!
 # Extract a simple last-coordinate residue root

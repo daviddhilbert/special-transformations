@@ -1,4 +1,8 @@
-import Section3.AlgebraicRVLifting
+module
+
+public import Section3.AlgebraicRVLifting
+
+@[expose] public section
 
 /- Component: ValuedSubfieldWitness -/
 set_option backward.isDefEq.respectTransparency false

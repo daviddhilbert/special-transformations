@@ -1,5 +1,9 @@
-import Section9.FiniteHeadCover
-import Section7.LiftedIsomorphism
+module
+
+public import Section9.FiniteHeadCover
+public import Section7.LiftedIsomorphism
+
+@[expose] public section
 
 /-! Refine the source labels by a finite head cover on each volume
 image. The heads on the two sides may select different coordinates. -/

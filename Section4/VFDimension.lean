@@ -1,6 +1,10 @@
-import Section4.InjectionRefinement
-import Section4.Dimension
-import Section4.VFPadding
+module
+
+public import Section4.InjectionRefinement
+public import Section4.Dimension
+public import Section4.VFPadding
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

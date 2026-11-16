@@ -1,7 +1,11 @@
-import Section9.GoodLiftGluing
-import Section9.WeightedJacobian
-import Section9.PartialDerivativeFormula
-import Section7.CorrespondenceLifting
+module
+
+public import Section9.GoodLiftGluing
+public import Section9.WeightedJacobian
+public import Section9.PartialDerivativeFormula
+public import Section7.CorrespondenceLifting
+
+@[expose] public section
 
 /-! Definable domains for weighted polynomial lifts. On such a domain
 the two Jacobian blocks are nonsingular and have the required ratio

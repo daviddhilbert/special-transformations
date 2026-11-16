@@ -1,5 +1,9 @@
-import Section4.PositivePresentation
-import Section4.Imported.GrothendieckRing
+module
+
+public import Section4.PositivePresentation
+public import Section4.Imported.GrothendieckRing
+
+@[expose] public section
 
 /-! Groupification of a positive scissor presentation. This uses the
 attributed ring-completion port and imposes no cancellation assumption. -/

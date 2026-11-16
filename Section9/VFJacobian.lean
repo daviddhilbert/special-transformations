@@ -1,7 +1,11 @@
-import Section9.Differentiation
-import Mathlib.LinearAlgebra.Matrix.ToLin
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.Tactic.Ring
+module
+
+public import Section9.Differentiation
+public import Mathlib.LinearAlgebra.Matrix.ToLin
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.Tactic.Ring
+
+@[expose] public section
 
 /-! The VF part of Definition 9.10 and the pointwise chain rule under
 full differentiability. For a function with RV labels, the VF function

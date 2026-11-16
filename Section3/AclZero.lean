@@ -1,3 +1,5 @@
+module
+
 /-
 **The `t = rv 0` case of §3's `alg:ind:imag`.**
 
@@ -16,8 +18,10 @@ transparency, so a term of that type cannot be fed to a map whose domain is the 
 `Fin 0 ⊕ Fin 1`.  Restating the hypothesis at the literal type (a single definitional type ascription)
 fixes it; `backward.isDefEq.respectTransparency false` does not.
 -/
-import AlgIndImag
-import SubstParam
+public import AlgIndImag
+public import SubstParam
+
+@[expose] public section
 
 /- The `acl` predicate is stated at the parameter type `Fin S.n ⊕ Fin S.m`, and `SP.base` /
 `SP.singleRV` are `def`s, so `SP.base.n` does not unfold at the transparency that elaboration uses

@@ -1,3 +1,5 @@
+module
+
 /-
 Draft, not part of the build: this file is the Section 3 statement draft and imports a compiled
 `Milestone0/Encoding.lean`.  To check it:
@@ -6,7 +8,9 @@ Draft, not part of the build: this file is the Section 3 statement draft and imp
   cd .scratch2/sec3 && lean -o Enc.olean Enc.lean
   cp ../../QE/Sec3_draft.lean Sec3.lean && LEAN_PATH=$PWD:$LEAN_PATH lean Sec3.lean
 -/
-import Enc
+public import Enc
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.Milestone0
 -- `WellSorted` lives in `namespace LRV` since the recursive predicate was adopted; the draft

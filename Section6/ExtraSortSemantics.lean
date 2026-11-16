@@ -1,5 +1,9 @@
-import Section6.HenselianTheory
-import Section6.ExpandedLogic
+module
+
+public import Section6.HenselianTheory
+public import Section6.ExpandedLogic
+
+@[expose] public section
 
 /-! The added-symbol typing and off-sort conventions are consequences
 of the actual first-order axiom scheme. These laws only describe the

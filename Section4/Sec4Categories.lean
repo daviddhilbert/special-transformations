@@ -1,3 +1,5 @@
+module
+
 /-
 **Section 4, the categories `VF[k,·]` and `RV[k,·]`** — from swarm `smw1jgnht` m8, verified here
 (compiled: exit 0, 0 errors, no `sorry`; the member's `axcheck.lean` — 38 `#print axioms` — rebuilt
@@ -112,7 +114,9 @@ subobject — a pullback along a definable predicate: `VFObj.restrict` (with `de
 * `SP.Volumetric` (+ `refl`, `trans`) and `SP.RVObj.RVHom` — morphisms of `RV[k,·]` with the
   volumetric and finite-fibre conditions of Definition \ref{defn:RV:cat}.
 -/
-import Sec3Frozen
+public import Sec3Frozen
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.unusedSectionVars false

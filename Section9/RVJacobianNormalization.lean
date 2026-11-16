@@ -1,4 +1,8 @@
-import Section9.ResidueTangentScaling
+module
+
+public import Section9.ResidueTangentScaling
+
+@[expose] public section
 
 /-! The point normalization of Definition 9.14 agrees with a
 normalization using any nonzero representatives of the value fibre. -/

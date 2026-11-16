@@ -1,6 +1,10 @@
-import Section5.GammaDimensionalPresentation
-import Section5.GammaDimension
-import Section5.GammaFiniteFibres
+module
+
+public import Section5.GammaDimensionalPresentation
+public import Section5.GammaDimension
+public import Section5.GammaFiniteFibres
+
+@[expose] public section
 
 /-! Corollary 5.7 for sets and isomorphisms definable over a base
 with named Gamma values. The VF coefficient field is the convention

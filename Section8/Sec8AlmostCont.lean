@@ -1,3 +1,5 @@
+module
+
 /-
 # Yin, "Special transformations in algebraically closed valued fields": §8,
   Lemma `fun:almost:cont` (`paper.tex:1864`) and Lemma `fun:almost:loc:con` (`paper.tex:1883`)
@@ -50,7 +52,9 @@ Both are quoted verbatim in the docstrings of the corresponding definitions and 
 No `sorry`, no `axiom`, no `native_decide`; every reported theorem's `#print axioms` is a subset of
 {`propext`, `Classical.choice`, `Quot.sound`}.
 -/
-import Sec4Dim
+public import Sec4Dim
+
+@[expose] public section
 
 set_option linter.unusedVariables false
 set_option linter.style.haveILetI false

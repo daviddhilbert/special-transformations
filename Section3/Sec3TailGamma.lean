@@ -1,3 +1,5 @@
+module
+
 /-
 **`fun:bounded:cons` in the language that has `Γ`** (`paper.tex:764`).
 
@@ -20,7 +22,9 @@ case `funBoundedConsΓ_of_const`.  No `sorry`, no `axiom`.
     cp .ultramath/smw1qqehg/m2/Sec3TailGamma.lean .scratch2/sec3/
     cd .scratch2/sec3 && LEAN_PATH=$PWD:$LEAN_PATH lean Sec3TailGamma.lean
 -/
-import Sec3Tail
+public import Sec3Tail
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 

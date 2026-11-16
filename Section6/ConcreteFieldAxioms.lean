@@ -1,4 +1,8 @@
-import Section6.ConcreteLogic
+module
+
+public import Section6.ConcreteLogic
+
+@[expose] public section
 
 /-! The field and residue-field sentences in the ordinary tagged structure. -/
 

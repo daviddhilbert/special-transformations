@@ -1,8 +1,12 @@
-import Section9.ImplicitDifferentiation
-import Section9.SimpleRootEquations
-import Section9.DerivativeCoordinates
-import Section8.GenericOutputBall
-import Section4.PolynomialZero
+module
+
+public import Section9.ImplicitDifferentiation
+public import Section9.SimpleRootEquations
+public import Section9.DerivativeCoordinates
+public import Section8.GenericOutputBall
+public import Section4.PolynomialZero
+
+@[expose] public section
 
 /-! Differentiation on the generic VF locus. The local equation uses only
 coefficients in the original parameter field, and its simple-root

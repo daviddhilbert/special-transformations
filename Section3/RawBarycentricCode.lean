@@ -1,5 +1,9 @@
-import Section3.DefinableMeans
-import Section3.FiniteBarycentricCode
+module
+
+public import Section3.DefinableMeans
+public import Section3.FiniteBarycentricCode
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,6 +1,10 @@
-import Section9.GraphCoordinateDerivations
-import Section9.ResidueJacobianGeneric
-import Section9.ResidueSimpleEquations
+module
+
+public import Section9.GraphCoordinateDerivations
+public import Section9.ResidueJacobianGeneric
+public import Section9.ResidueSimpleEquations
+
+@[expose] public section
 
 /-! Existence of the residue Jacobian at a point whose two projections
 are independent over the coefficient field. -/

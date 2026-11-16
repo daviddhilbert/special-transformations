@@ -1,6 +1,10 @@
-import Section4.VFDimensionRank
-import Section4.VFCategories
-import Section4.FiniteGluing
+module
+
+public import Section4.VFDimensionRank
+public import Section4.VFCategories
+public import Section4.FiniteGluing
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

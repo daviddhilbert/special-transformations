@@ -1,4 +1,8 @@
-import Section5.GammaRestriction
+module
+
+public import Section5.GammaRestriction
+
+@[expose] public section
 
 /-!
 # Nonzero active loci for Definition 5.1

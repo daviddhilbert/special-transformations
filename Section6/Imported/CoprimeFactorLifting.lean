@@ -1,11 +1,15 @@
+module
+
 /-
 Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
 Released under Apache 2.0 license as described in NYLL-LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Section7.Imported.EtaleLifting
-import Mathlib.RingTheory.Polynomial.UniversalFactorizationRing
+public import Section7.Imported.EtaleLifting
+public import Mathlib.RingTheory.Polynomial.UniversalFactorizationRing
+
+@[expose] public section
 
 /-!
 # Coprime factor lifting from the simple-root Hensel property

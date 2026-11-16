@@ -1,11 +1,15 @@
-import Section7.AlgebraicResidueRoot
-import Section7.LiftingDefinability
-import Section7.LiftingAlgebra
-import Section7.EncodedHensel
-import Section7.ResidueCharacteristic
-import Section4.PolynomialZero
-import Section3.GammaSpecialization
-import Section3.SmallFiniteParameters
+module
+
+public import Section7.AlgebraicResidueRoot
+public import Section7.LiftingDefinability
+public import Section7.LiftingAlgebra
+public import Section7.EncodedHensel
+public import Section7.ResidueCharacteristic
+public import Section4.PolynomialZero
+public import Section3.GammaSpecialization
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 section LocalLiftingPointProof
 

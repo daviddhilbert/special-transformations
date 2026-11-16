@@ -1,3 +1,5 @@
+module
+
 /-
 **Section 10, "Categories with volume forms"** — the `RV`-side: Definition \ref{defn:RV:cat:vol}
 (`paper.tex` line 2245), the lift `𝕃(U,ω)` (`paper.tex` line 2262), Theorem \ref{L:measure:surjective}
@@ -94,8 +96,10 @@ what Theorem 10.5 asserts about `F^↑`.
    (`RVVolObj.liftUnit`) — the paper's own reduction, *"since the parts `f(U) ∖ A` and `g(V) ∖ B` will
    not concern us, we may assume `f^{-1}(A) = U`"* (`paper.tex` line 2079).
 -/
-import Sec4Categories
-import Sec4Dim
+public import Sec4Categories
+public import Sec4Dim
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.unusedSectionVars false

@@ -1,3 +1,5 @@
+module
+
 /-
 # Yin §8: the valuation topology as a `TopologicalSpace`, and Lemma `fun:almost:cont`
 
@@ -25,7 +27,9 @@ connected to Mathlib's topology and the lemma is proved.
 The two extra ball facts on top of `BallFacts` (`BallFactsTop`: an admissible radius exists, and a
 polydisc is open) are `Prop`-valued hypotheses, not axioms.
 -/
-import Sec8AlmostCont
+public import Sec8AlmostCont
+
+@[expose] public section
 
 set_option linter.unusedVariables false
 set_option linter.style.haveILetI false

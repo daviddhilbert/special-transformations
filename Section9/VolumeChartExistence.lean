@@ -1,7 +1,11 @@
-import Section9.ResidueOpenCharts
-import Section9.VolumeResidueCorrespondence
-import Section4.SmallGeneratedBase
-import Section7.ResidueCharacteristic
+module
+
+public import Section9.ResidueOpenCharts
+public import Section9.VolumeResidueCorrespondence
+public import Section4.SmallGeneratedBase
+public import Section7.ResidueCharacteristic
+
+@[expose] public section
 
 /-! Every tuple of nonzero scales admits an open residue chart with
 an input cut for the finite-volume correspondence. The coefficients

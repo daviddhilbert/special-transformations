@@ -1,10 +1,14 @@
-import Section3.AngularPattern
-import Section3.FiniteValueFibres
-import Section3.GammaBaseTools
-import Section3.GammaCounting
-import Section3.InfiniteValueFibres
-import Section3.TupleCompactness
-import Section3.TupleRelations
+module
+
+public import Section3.AngularPattern
+public import Section3.FiniteValueFibres
+public import Section3.GammaBaseTools
+public import Section3.GammaCounting
+public import Section3.InfiniteValueFibres
+public import Section3.TupleCompactness
+public import Section3.TupleRelations
+
+@[expose] public section
 
 /- Component: AngularMinimality -/
 open Classical FirstOrder FirstOrder.Language

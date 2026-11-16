@@ -1,6 +1,10 @@
-import Section6.HenselianClosure
-import Section6.DefinableMaps
-import Section5.GeneralExistence
+module
+
+public import Section6.HenselianClosure
+public import Section6.DefinableMaps
+public import Section5.GeneralExistence
+
+@[expose] public section
 
 /-!
 # Descent of a prepared RV-pullback to a functionally closed substructure

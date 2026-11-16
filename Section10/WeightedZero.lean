@@ -1,5 +1,9 @@
-import Section10.MeasuredVFCategory
-import Section4.VFFinitePositiveFiltration
+module
+
+public import Section10.MeasuredVFCategory
+public import Section4.VFFinitePositiveFiltration
+
+@[expose] public section
 
 /-! The corrected measured degree-zero categories. Objects retain an actual
 same-base definable form. Arrows are total definable bijections preserving

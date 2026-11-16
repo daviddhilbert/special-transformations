@@ -1,8 +1,12 @@
-import Section3.GuardedRationalNormalForm
-import Section3.FieldBase
-import Section3.GeneratedBaseLifting
-import Section3.GammaDefinableClosureField
-import Section5.GammaBaseInputs
+module
+
+public import Section3.GuardedRationalNormalForm
+public import Section3.FieldBase
+public import Section3.GeneratedBaseLifting
+public import Section3.GammaDefinableClosureField
+public import Section5.GammaBaseInputs
+
+@[expose] public section
 
 /-! Finite VF polynomial support for graphs over a genuine Gamma-named
 base. A real representative is used only to read the formula. Every

@@ -1,4 +1,8 @@
-import Section4.PositiveAdditivePresentation
+module
+
+public import Section4.PositiveAdditivePresentation
+
+@[expose] public section
 
 noncomputable section
 

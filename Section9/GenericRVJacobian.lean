@@ -1,9 +1,13 @@
-import Section9.VolumeChartOutput
-import Section9.FiniteVolumeChartCover
-import Section9.GenericVolumePair
-import Section9.FullRVValueFibre
-import Section4.FunctionalRelations
-import Section4.RVLabelCompression
+module
+
+public import Section9.VolumeChartOutput
+public import Section9.FiniteVolumeChartCover
+public import Section9.GenericVolumePair
+public import Section9.FullRVValueFibre
+public import Section4.FunctionalRelations
+public import Section4.RVLabelCompression
+
+@[expose] public section
 
 /-! The supported chart graphs agree wherever they overlap. Their
 definable union covers the volume pairs off an RV-small locus. -/

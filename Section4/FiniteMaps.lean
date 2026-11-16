@@ -1,5 +1,9 @@
-import Section4.Products
-import Mathlib.Data.Set.Finite.Lattice
+module
+
+public import Section4.Products
+public import Mathlib.Data.Set.Finite.Lattice
+
+@[expose] public section
 set_option linter.style.haveILetI false
 
 open Classical FirstOrder FirstOrder.Language

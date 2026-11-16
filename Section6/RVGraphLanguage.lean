@@ -1,5 +1,9 @@
-import Section6.RVSubstructure
-import Section6.ContractionGraph
+module
+
+public import Section6.RVSubstructure
+public import Section6.ContractionGraph
+
+@[expose] public section
 
 /-! The genuine RV reduct and QF graph definitions over RV(S). The
 input RVQFDefinitions is the earlier ACVF QE/RV-literal normal-form

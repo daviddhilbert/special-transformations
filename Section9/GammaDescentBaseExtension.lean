@@ -1,9 +1,13 @@
-import Section9.NormalizedGammaDescent
-import Section9.SmallValuedCoefficients
-import Section9.CoarsenedResidueCharacteristic
-import Section7.ResidueCharacteristic
-import Section4.MapParameters
-import Section4.FullDimension
+module
+
+public import Section9.NormalizedGammaDescent
+public import Section9.SmallValuedCoefficients
+public import Section9.CoarsenedResidueCharacteristic
+public import Section7.ResidueCharacteristic
+public import Section4.MapParameters
+public import Section4.FullDimension
+
+@[expose] public section
 
 /-! The auxiliary algebraically closed coefficient field of the
 intrinsic Gamma argument is chosen inside the monster. In the

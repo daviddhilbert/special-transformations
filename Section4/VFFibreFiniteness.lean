@@ -1,6 +1,10 @@
-import Section4.VFRealFibres
-import Section4.Fibres
-import Section3.AlgebraicFinite
+module
+
+public import Section4.VFRealFibres
+public import Section4.Fibres
+public import Section3.AlgebraicFinite
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

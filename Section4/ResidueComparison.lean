@@ -1,6 +1,10 @@
-import Section4.ResidueZariskiComparison
-import Section4.RVNamedDivision
-import Section4.EarlierRVInputs
+module
+
+public import Section4.ResidueZariskiComparison
+public import Section4.RVNamedDivision
+public import Section4.EarlierRVInputs
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

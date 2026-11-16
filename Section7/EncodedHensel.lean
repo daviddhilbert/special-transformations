@@ -1,6 +1,10 @@
-import Section7.GeneralizedHensel
-import Section7.EncodedResidueRoots
-import VFAlgClosed
+module
+
+public import Section7.GeneralizedHensel
+public import Section7.EncodedResidueRoots
+public import VFAlgClosed
+
+@[expose] public section
 
 /-! Lemma 7.2 on the actual VF/RV sorts of the pinned ACVF language.
 The compatible valuation and the quotient equivalence are the published

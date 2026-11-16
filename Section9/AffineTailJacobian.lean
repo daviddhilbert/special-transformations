@@ -1,7 +1,11 @@
-import Section9.AffineTail
-import Section9.VFJacobian
-import Section7.TupleCoordinates
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+module
+
+public import Section9.AffineTail
+public import Section9.VFJacobian
+public import Section7.TupleCoordinates
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+
+@[expose] public section
 
 /-! For the lift with an affine tail, only three blocks of the full
 derivative enter the determinant. The tail can depend on the head. -/

@@ -1,6 +1,10 @@
-import Section4.ResidueMultivariateFunctions
-import Mathlib.Algebra.MvPolynomial.PDeriv
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+module
+
+public import Section4.ResidueMultivariateFunctions
+public import Mathlib.Algebra.MvPolynomial.PDeriv
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+
+@[expose] public section
 
 /-! Evaluation and partial differentiation for a fixed finite list of
 monomials, with the coefficients supplied as residue-field variables.

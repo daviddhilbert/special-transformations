@@ -1,6 +1,10 @@
-import Section4.FinitaryClosure
-import Section3.AlgebraicClosure
-import Mathlib.Combinatorics.Matroid.Rank.Finite
+module
+
+public import Section4.FinitaryClosure
+public import Section3.AlgebraicClosure
+public import Mathlib.Combinatorics.Matroid.Rank.Finite
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

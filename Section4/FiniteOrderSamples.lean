@@ -1,5 +1,9 @@
-import Section4.CanonicalOrderController
-import Mathlib.Data.Finset.Max
+module
+
+public import Section4.CanonicalOrderController
+public import Mathlib.Data.Finset.Max
+
+@[expose] public section
 
 open Classical
 

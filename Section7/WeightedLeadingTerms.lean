@@ -1,4 +1,8 @@
-import Section7.GammaPolynomial
+module
+
+public import Section7.GammaPolynomial
+
+@[expose] public section
 
 /-!
 # Leading terms at a prescribed value

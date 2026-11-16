@@ -1,6 +1,10 @@
-import Section9.FiniteLimitSeparation
-import Section9.LimitBallDefinable
-import Section8.UnaryGerm
+module
+
+public import Section9.FiniteLimitSeparation
+public import Section9.LimitBallDefinable
+public import Section8.UnaryGerm
+
+@[expose] public section
 
 /-! Lemma 9.4. A finite minimal limit set injects into an actual nearby
 fibre. The unary definable germ theorem makes the hits of all of its

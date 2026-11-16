@@ -1,13 +1,17 @@
-import Section3.GammaSpecialization
-import Section8.ValuedSlopeIntegrality
-import Mathlib.Topology.Algebra.Valued.ValuedField
-import Mathlib.Algebra.Order.Group.Basic
-import Mathlib.Algebra.Order.GroupWithZero.Basic
-import Mathlib.Algebra.Group.Subgroup.Basic
-import Mathlib.Tactic.Abel
-import Section8.UnaryGerm
-import Section8.UnaryPolynomial
-import Section3.DefinableConstants
+module
+
+public import Section3.GammaSpecialization
+public import Section8.ValuedSlopeIntegrality
+public import Mathlib.Topology.Algebra.Valued.ValuedField
+public import Mathlib.Algebra.Order.Group.Basic
+public import Mathlib.Algebra.Order.GroupWithZero.Basic
+public import Mathlib.Algebra.Group.Subgroup.Basic
+public import Mathlib.Tactic.Abel
+public import Section8.UnaryGerm
+public import Section8.UnaryPolynomial
+public import Section3.DefinableConstants
+
+@[expose] public section
 
 section
 

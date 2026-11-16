@@ -1,4 +1,8 @@
-import Section4.Products
+module
+
+public import Section4.Products
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

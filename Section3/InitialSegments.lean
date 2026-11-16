@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 open Classical
 namespace SpecialTransformations.Section3.InitialSegments
 variable {α β : Type} [LinearOrder β] (f : α → β)

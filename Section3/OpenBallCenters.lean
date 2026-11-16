@@ -1,16 +1,20 @@
-import Section3.BallTranslation
-import Section3.ClosedBallCentres
-import Section3.EncodedBallGeometry
-import Section3.FiniteAlgebraicCover
-import Section3.GammaBaseVFAlgebraicity
-import Section3.GammaClosedBallCenters
-import Section3.GammaProjection
-import Section3.GammaRealMap
-import Section3.GammaRealRestriction
-import Section3.GeneratedBaseLifting
-import Section3.OpenBallCodes
-import Section3.OpenBallFamilyHulls
-import Section3.OpenBallHullGeometry
+module
+
+public import Section3.BallTranslation
+public import Section3.ClosedBallCentres
+public import Section3.EncodedBallGeometry
+public import Section3.FiniteAlgebraicCover
+public import Section3.GammaBaseVFAlgebraicity
+public import Section3.GammaClosedBallCenters
+public import Section3.GammaProjection
+public import Section3.GammaRealMap
+public import Section3.GammaRealRestriction
+public import Section3.GeneratedBaseLifting
+public import Section3.OpenBallCodes
+public import Section3.OpenBallFamilyHulls
+public import Section3.OpenBallHullGeometry
+
+@[expose] public section
 
 /- The proper-open-ball center construction, with its Gamma-base lifting
 and full-code graph prerequisites, is kept in one checked module. -/

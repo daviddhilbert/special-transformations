@@ -1,4 +1,8 @@
-import Mathlib.RingTheory.Valuation.ValuationSubring
+module
+
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+
+@[expose] public section
 
 /-! The valuation estimate for a scalar simple-root equation. Once
 the nonzero output derivative has been divided out, the output

@@ -1,5 +1,9 @@
-import Section7.PolynomialSystemEtale
-import Section7.EtaleSections
+module
+
+public import Section7.PolynomialSystemEtale
+public import Section7.EtaleSections
+
+@[expose] public section
 
 /-! Ordinary multivariate simple-root lifting over a genuine Mathlib
 henselian local ring. Existence comes from the proved etale presentation

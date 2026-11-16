@@ -1,4 +1,8 @@
-import Section5.VerticalConstruction
+module
+
+public import Section5.VerticalConstruction
+
+@[expose] public section
 
 /-!
 # Definable indicators for geometric assembly

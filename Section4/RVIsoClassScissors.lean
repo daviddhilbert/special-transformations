@@ -1,7 +1,11 @@
-import Section4.RVIsomorphismClasses
-import Section4.RVUnionCoproduct
-import Section4.RVScissorPresentation
-import Mathlib.Tactic.Tauto
+module
+
+public import Section4.RVIsomorphismClasses
+public import Section4.RVUnionCoproduct
+public import Section4.RVScissorPresentation
+public import Mathlib.Tactic.Tauto
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

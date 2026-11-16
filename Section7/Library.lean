@@ -1,56 +1,60 @@
-import Section7.GammaPolynomial
-import Section7.PolynomialNormalization
-import Section7.EncodedResidueRoots
-import Section7.LiftRelations
-import Section7.ValuationHenselian
-import Section7.Imported.EtaleLifting
-import Section7.GammaPolynomialAlgebra
-import Section7.JacobianNormalization
-import Section7.SimpleRootNormalization
-import Section7.IntegralNormalization
-import Section7.Imported.JacobianEtale
-import Section7.PolynomialSystemEtale
-import Section7.Imported.UnramifiedUniqueness
-import Section7.EtaleSections
-import Section7.MultivariateHensel
-import Section7.GeneralizedHensel
-import Section7.EncodedHensel
-import Section7.ResiduePolynomialProjection
-import Section7.FieldConstructibility
-import Section7.ResidueConstructibility
-import Section7.GeneratedRVRepresentatives
-import Section7.PolynomialFibreExtraction
-import Section7.IntegerAvoidance
-import Section7.WeightedLeadingTerms
-import Section7.LaurentClearing
-import Section7.GuardedFibreDomains
-import Section7.GuardedResidueSums
-import Section7.GuardedBaseMonomials
-import Section7.AlgebraicRowWitness
-import Section7.FiniteRVPolynomialPattern
-import Section7.GuardedParameterScope
-import Section7.GuardedLaurentSide
-import Section7.WeightedPolynomialTests
-import Section7.AlgebraicResidueRoot
-import Section7.PullbackLiftRelations
-import Section7.TupleCoordinates
-import Section7.PolynomialCoordinateMaps
-import Section7.DefinableTupleQuantifiers
-import Section7.LiftingAlgebra
-import Section7.LiftingDefinability
-import Section7.CorrespondenceLifting
-import Section7.BalancedCorrespondence
-import Section7.LiftedIsomorphism
-import Section7.PositiveLift
-import Section7.LiftingPresentations
-import Section7.PositiveSurjectivity
-import Section7.GammaLiftEquivalence
-import Section7.GammaScissors
-import Section7.WeightedLeadingOperations
-import Section7.ResidueCharacteristic
-import Section7.ResidueDerivativeNormalization
-import Section7.SimpleResidueExtraction
-import Section7.ResidueFibreEvaluation
+module
+
+public import Section7.GammaPolynomial
+public import Section7.PolynomialNormalization
+public import Section7.EncodedResidueRoots
+public import Section7.LiftRelations
+public import Section7.ValuationHenselian
+public import Section7.Imported.EtaleLifting
+public import Section7.GammaPolynomialAlgebra
+public import Section7.JacobianNormalization
+public import Section7.SimpleRootNormalization
+public import Section7.IntegralNormalization
+public import Section7.Imported.JacobianEtale
+public import Section7.PolynomialSystemEtale
+public import Section7.Imported.UnramifiedUniqueness
+public import Section7.EtaleSections
+public import Section7.MultivariateHensel
+public import Section7.GeneralizedHensel
+public import Section7.EncodedHensel
+public import Section7.ResiduePolynomialProjection
+public import Section7.FieldConstructibility
+public import Section7.ResidueConstructibility
+public import Section7.GeneratedRVRepresentatives
+public import Section7.PolynomialFibreExtraction
+public import Section7.IntegerAvoidance
+public import Section7.WeightedLeadingTerms
+public import Section7.LaurentClearing
+public import Section7.GuardedFibreDomains
+public import Section7.GuardedResidueSums
+public import Section7.GuardedBaseMonomials
+public import Section7.AlgebraicRowWitness
+public import Section7.FiniteRVPolynomialPattern
+public import Section7.GuardedParameterScope
+public import Section7.GuardedLaurentSide
+public import Section7.WeightedPolynomialTests
+public import Section7.AlgebraicResidueRoot
+public import Section7.PullbackLiftRelations
+public import Section7.TupleCoordinates
+public import Section7.PolynomialCoordinateMaps
+public import Section7.DefinableTupleQuantifiers
+public import Section7.LiftingAlgebra
+public import Section7.LiftingDefinability
+public import Section7.CorrespondenceLifting
+public import Section7.BalancedCorrespondence
+public import Section7.LiftedIsomorphism
+public import Section7.PositiveLift
+public import Section7.LiftingPresentations
+public import Section7.PositiveSurjectivity
+public import Section7.GammaLiftEquivalence
+public import Section7.GammaScissors
+public import Section7.WeightedLeadingOperations
+public import Section7.ResidueCharacteristic
+public import Section7.ResidueDerivativeNormalization
+public import Section7.SimpleResidueExtraction
+public import Section7.ResidueFibreEvaluation
+
+@[expose] public section
 
 /-! Active Section 7 library. The relocated legacy snapshots are excluded.
 See STATUS.md for exact proved scope and remaining paper obligations. -/

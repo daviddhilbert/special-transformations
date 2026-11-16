@@ -1,5 +1,9 @@
-import ACVFQE
-import Section3.Parameters
+module
+
+public import ACVFQE
+public import Section3.Parameters
+
+@[expose] public section
 
 /-!
 # The completed QE dependency over the original base

@@ -1,5 +1,9 @@
-import Section6.AlignedComparison
-import Section6.ExpandedImages
+module
+
+public import Section6.AlignedComparison
+public import Section6.ExpandedImages
+
+@[expose] public section
 
 /-! Transfer the constructed common-envelope comparison back to the
 original expanded henselian structures. Their arbitrary RV operations

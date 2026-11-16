@@ -1,4 +1,8 @@
-import Section3.GammaValueLaws
+module
+
+public import Section3.GammaValueLaws
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0

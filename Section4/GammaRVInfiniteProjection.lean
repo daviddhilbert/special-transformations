@@ -1,6 +1,10 @@
-import Section4.RVInfiniteValueDefinability
-import Section4.CanonicalNormalization
-import Section3.GammaGoodRelations
+module
+
+public import Section4.RVInfiniteValueDefinability
+public import Section4.CanonicalNormalization
+public import Section3.GammaGoodRelations
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

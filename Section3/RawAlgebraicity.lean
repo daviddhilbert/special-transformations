@@ -1,4 +1,8 @@
-import Section3.Counting
+module
+
+public import Section3.Counting
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.RawClosure

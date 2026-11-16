@@ -1,9 +1,13 @@
-import Section6.ConcreteACVF
-import Section6.HenselianInvariance
-import Section6.HenselianRVClosure
-import Section6.HenselianValuationRing
-import Section6.NativeAmalgamation
-import Mathlib.FieldTheory.AlgebraicClosure
+module
+
+public import Section6.ConcreteACVF
+public import Section6.HenselianInvariance
+public import Section6.HenselianRVClosure
+public import Section6.HenselianValuationRing
+public import Section6.NativeAmalgamation
+public import Mathlib.FieldTheory.AlgebraicClosure
+
+@[expose] public section
 
 /-! Lemma 6.2 for a henselian substructure of a given ACVF model. -/
 

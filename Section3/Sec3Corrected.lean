@@ -1,3 +1,5 @@
+module
+
 /-
 **The §3 corollary `acl:VF:transfer:acl:RV` in the corrected form.**
 
@@ -11,8 +13,10 @@ For the `RV`-sorted use of the corollary, `A.Nonempty` is automatic (an `rv`-fib
 `t = rv 0` and otherwise contains `VF`-elements of value `t`), which is why the paper does not state
 it.
 -/
-import Sec3Infra
-import AclFibres
+public import Sec3Infra
+public import AclFibres
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 
 open FirstOrder FirstOrder.Language

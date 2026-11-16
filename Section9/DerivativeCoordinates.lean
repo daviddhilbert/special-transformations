@@ -1,4 +1,8 @@
-import Section9.Differentiation
+module
+
+public import Section9.Differentiation
+
+@[expose] public section
 
 /-! Locality and componentwise assembly for the VF derivative. -/
 

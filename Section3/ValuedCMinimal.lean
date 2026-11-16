@@ -1,5 +1,9 @@
-import ACVFQE
-import JohnsonValuedBridge
+module
+
+public import ACVFQE
+public import JohnsonValuedBridge
+
+@[expose] public section
 
 set_option linter.style.haveILetI false
 

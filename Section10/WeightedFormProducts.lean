@@ -1,5 +1,9 @@
-import Section10.WeightedZeroUnit
-import Section4.MapProduct
+module
+
+public import Section10.WeightedZeroUnit
+public import Section4.MapProduct
+
+@[expose] public section
 
 /-! Products of the actual forms, on arbitrary definable domains. In
 particular a factor of degree zero contributes its supplied density. These

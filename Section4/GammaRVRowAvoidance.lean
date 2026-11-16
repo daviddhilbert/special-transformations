@@ -1,7 +1,11 @@
-import Section4.GammaRVLastRow
-import Section3.AlgebraicFinite
-import Section3.SmallFiniteParameters
-import Section3.GammaSpecialization
+module
+
+public import Section4.GammaRVLastRow
+public import Section3.AlgebraicFinite
+public import Section3.SmallFiniteParameters
+public import Section3.GammaSpecialization
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

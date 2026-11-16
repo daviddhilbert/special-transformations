@@ -1,4 +1,8 @@
-import SpecialTransformations.Categories
+module
+
+public import SpecialTransformations.Categories
+
+@[expose] public section
 
 /-!
 # RV-pullbacks and special bijections

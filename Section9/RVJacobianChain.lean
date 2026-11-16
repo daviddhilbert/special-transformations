@@ -1,5 +1,9 @@
-import Section9.GenericResidueChain
-import Section9.RVJacobianNormalization
+module
+
+public import Section9.GenericResidueChain
+public import Section9.RVJacobianNormalization
+
+@[expose] public section
 
 /-! The residue chain rule over one graph field gives the RV chain
 rule after cancelling the intermediate volume scale. -/

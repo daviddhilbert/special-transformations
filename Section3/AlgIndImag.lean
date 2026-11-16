@@ -1,3 +1,5 @@
+module
+
 /-
 **`alg:ind:imag`** (`paper.tex:702`, §3) — from swarm `smw1jgnht` m5, verified here (compiled:
 exit 0, 0 errors, no `sorry`; `#print axioms` on every reported theorem within
@@ -29,8 +31,10 @@ substitution.  No variable substitution is involved, so it is a bounded piece of
 Check with `.scratch2/sec3/` (compiled `Enc`, `Sat`, `Sec3Frozen`): copy this file there and
 `LEAN_PATH=$PWD:$LEAN_PATH lean` it.
 -/
-import Sat
-import Sec3Frozen
+public import Sat
+public import Sec3Frozen
+
+@[expose] public section
 
 /-!
 Compile with (from `<repo>/.ultramath/smw1jgnht/m5/`):

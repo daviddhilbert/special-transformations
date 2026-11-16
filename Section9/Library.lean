@@ -1,126 +1,130 @@
-import Section9.FiniteLimitSeparation
-import Section9.LimitTopology
-import Section9.LimitCardinality
-import Section9.LimitDefinability
-import Section9.MixedJacobian
-import Section9.DerivativeCoordinates
-import Section9.PartialJacobianObstruction
-import Section9.SimpleRootEquations
-import Section9.ImplicitDifferentiation
-import Section9.GenericDifferentiation
-import Section9.PartialDerivativeFormula
-import Section9.PartialDerivativesAE
-import Section9.MixedDifferentiationAE
-import Section9.SpecialJacobianAE
-import Section9.GammaObstruction
-import Section9.GammaJacobian
-import Section9.GammaCompatibility
-import Section9.GammaCoarsening
-import Section9.GammaInfinitesimals
-import Section9.NestedGammaInfinitesimals
-import Section9.CoarsenedGaussTuple
-import Section9.CoarsenedDeterminant
-import Section9.CoarsenedResidueCharacteristic
-import Section9.GammaJacobianBounds
-import Section9.NormalizedGammaDescent
-import Section9.GammaPolydiscDescent
-import Section9.RVJacobian
-import Section9.RVJacobianDerivations
-import Section9.RVJacobianReduction
-import Section9.RVDeterminantReduction
-import Section9.RVJacobianNormalization
-import Section9.RVGraphJacobianComparison
-import Section9.VolumeResidueCorrespondence
-import Section9.NormalizedRVComparison
-import Section9.RVComparisonOnResidueFibre
-import Section9.LiftComparison
-import Section9.PaperLiftComparison
-import Section9.VolumePairMap
-import Section9.GenericVolumePair
-import Section9.UniformRVScaling
-import Section9.RVFiniteEssential
-import Section9.RVFiniteHead
-import Section9.FiniteHeadCover
-import Section9.SimultaneousHeadCover
-import Section9.FullRVValueFibre
-import Section9.ResidueIndependentFibre
-import Section9.FiniteLabelPartition
-import Section9.FiniteVolumeDimension
-import Section9.GlueLabelLifts
-import Section9.LiftJacobianDiscrepancy
-import Section9.WeightedJacobian
-import Section9.WeightedLiftDomains
-import Section9.ImplicitJacobianIdentification
-import Section9.WeightedLiftJacobian
-import Section9.AffineTail
-import Section9.AffineTailJacobian
-import Section9.AffineTailDefinability
-import Section9.AffineTailCorrection
-import Section9.AffineTailHeadFormula
-import Section9.AffineTailMaps
-import Section9.AppendTailMap
-import Section9.LiftHeadDecomposition
-import Section9.AffineLiftJacobian
-import Section9.AffineLiftPrescribedJacobian
-import Section9.WeightedAffineLift
-import Section9.FiniteHeadPrescribedLift
-import Section9.PrescribedVolumeLift
-import Section9.FiniteLiftReindexing
-import Section9.LiftRestriction
-import Section9.RestrictActualLift
-import Section9.ZeroArityVolumeJacobian
-import Section9.MixedJacobianValue
-import Section9.RVJacobianException
-import Section9.GoodLiftGluing
-import Section9.FiniteHeadRepresentatives
-import Section9.LiftLabelRepresentatives
-import Section9.VFCoordinateAssembly
-import Section9.GaussDerivative
-import Section9.GaussEvaluation
-import Section9.GaussFieldRestriction
-import Section9.GraphResidueFieldRestriction
-import Section9.CoarsenedGauss
-import Section9.ValuedPowerBasis
-import Section9.ResidueDerivation
-import Section9.ResidueGraphDerivative
-import Section9.GlobalSimpleRootEquations
-import Section9.ResidueTangentMatrix
-import Section9.ResidueTangentDescent
-import Section9.ResidueSimpleEquations
-import Section9.ResidueJacobianGeneric
-import Section9.ResidueTangentScaling
-import Section9.ResidueTangentChart
-import Section9.RadicalResidueChart
-import Section9.OpenSquareSystem
-import Section9.ResidueChartCoverage
-import Section9.ResidueChartDenominators
-import Section9.ResidueJacobianExistence
-import Section9.ResidueJacobianChain
-import Section9.GenericResidueChain
-import Section9.RVJacobianChain
-import Section9.GenericRVJacobianChain
-import Section9.ResidueFiniteProjection
-import Section9.UniformResiduePolynomials
-import Section9.AffineMixedMaps
-import Section9.AffineMixedDerivative
-import Section9.PolydiscNormalization
-import Section9.EtaleDerivationBound
-import Section9.ValuedEtaleDerivation
-import Section9.UnramifiedDerivation
-import Section9.UnramifiedGenerator
-import Section9.BoundedGraphDerivations
-import Section9.BoundedCoordinateDerivations
-import Section9.HenselizedGraphData
-import Section9.GaussGraphConstruction
-import Section9.SmallValuedCoefficients
-import Section9.NormalizationBases
-import Section9.AlgebraicValueGroup
-import Section9.CoordinateDerivations
-import Section9.AlgebraicCoordinateDerivations
-import Section9.GraphCoordinateDerivations
-import Section9.IntegralDerivativeReduction
-import Section9.ImplicitScalarDerivations
-import Section9.GraphJacobianIdentification
+module
+
+public import Section9.FiniteLimitSeparation
+public import Section9.LimitTopology
+public import Section9.LimitCardinality
+public import Section9.LimitDefinability
+public import Section9.MixedJacobian
+public import Section9.DerivativeCoordinates
+public import Section9.PartialJacobianObstruction
+public import Section9.SimpleRootEquations
+public import Section9.ImplicitDifferentiation
+public import Section9.GenericDifferentiation
+public import Section9.PartialDerivativeFormula
+public import Section9.PartialDerivativesAE
+public import Section9.MixedDifferentiationAE
+public import Section9.SpecialJacobianAE
+public import Section9.GammaObstruction
+public import Section9.GammaJacobian
+public import Section9.GammaCompatibility
+public import Section9.GammaCoarsening
+public import Section9.GammaInfinitesimals
+public import Section9.NestedGammaInfinitesimals
+public import Section9.CoarsenedGaussTuple
+public import Section9.CoarsenedDeterminant
+public import Section9.CoarsenedResidueCharacteristic
+public import Section9.GammaJacobianBounds
+public import Section9.NormalizedGammaDescent
+public import Section9.GammaPolydiscDescent
+public import Section9.RVJacobian
+public import Section9.RVJacobianDerivations
+public import Section9.RVJacobianReduction
+public import Section9.RVDeterminantReduction
+public import Section9.RVJacobianNormalization
+public import Section9.RVGraphJacobianComparison
+public import Section9.VolumeResidueCorrespondence
+public import Section9.NormalizedRVComparison
+public import Section9.RVComparisonOnResidueFibre
+public import Section9.LiftComparison
+public import Section9.PaperLiftComparison
+public import Section9.VolumePairMap
+public import Section9.GenericVolumePair
+public import Section9.UniformRVScaling
+public import Section9.RVFiniteEssential
+public import Section9.RVFiniteHead
+public import Section9.FiniteHeadCover
+public import Section9.SimultaneousHeadCover
+public import Section9.FullRVValueFibre
+public import Section9.ResidueIndependentFibre
+public import Section9.FiniteLabelPartition
+public import Section9.FiniteVolumeDimension
+public import Section9.GlueLabelLifts
+public import Section9.LiftJacobianDiscrepancy
+public import Section9.WeightedJacobian
+public import Section9.WeightedLiftDomains
+public import Section9.ImplicitJacobianIdentification
+public import Section9.WeightedLiftJacobian
+public import Section9.AffineTail
+public import Section9.AffineTailJacobian
+public import Section9.AffineTailDefinability
+public import Section9.AffineTailCorrection
+public import Section9.AffineTailHeadFormula
+public import Section9.AffineTailMaps
+public import Section9.AppendTailMap
+public import Section9.LiftHeadDecomposition
+public import Section9.AffineLiftJacobian
+public import Section9.AffineLiftPrescribedJacobian
+public import Section9.WeightedAffineLift
+public import Section9.FiniteHeadPrescribedLift
+public import Section9.PrescribedVolumeLift
+public import Section9.FiniteLiftReindexing
+public import Section9.LiftRestriction
+public import Section9.RestrictActualLift
+public import Section9.ZeroArityVolumeJacobian
+public import Section9.MixedJacobianValue
+public import Section9.RVJacobianException
+public import Section9.GoodLiftGluing
+public import Section9.FiniteHeadRepresentatives
+public import Section9.LiftLabelRepresentatives
+public import Section9.VFCoordinateAssembly
+public import Section9.GaussDerivative
+public import Section9.GaussEvaluation
+public import Section9.GaussFieldRestriction
+public import Section9.GraphResidueFieldRestriction
+public import Section9.CoarsenedGauss
+public import Section9.ValuedPowerBasis
+public import Section9.ResidueDerivation
+public import Section9.ResidueGraphDerivative
+public import Section9.GlobalSimpleRootEquations
+public import Section9.ResidueTangentMatrix
+public import Section9.ResidueTangentDescent
+public import Section9.ResidueSimpleEquations
+public import Section9.ResidueJacobianGeneric
+public import Section9.ResidueTangentScaling
+public import Section9.ResidueTangentChart
+public import Section9.RadicalResidueChart
+public import Section9.OpenSquareSystem
+public import Section9.ResidueChartCoverage
+public import Section9.ResidueChartDenominators
+public import Section9.ResidueJacobianExistence
+public import Section9.ResidueJacobianChain
+public import Section9.GenericResidueChain
+public import Section9.RVJacobianChain
+public import Section9.GenericRVJacobianChain
+public import Section9.ResidueFiniteProjection
+public import Section9.UniformResiduePolynomials
+public import Section9.AffineMixedMaps
+public import Section9.AffineMixedDerivative
+public import Section9.PolydiscNormalization
+public import Section9.EtaleDerivationBound
+public import Section9.ValuedEtaleDerivation
+public import Section9.UnramifiedDerivation
+public import Section9.UnramifiedGenerator
+public import Section9.BoundedGraphDerivations
+public import Section9.BoundedCoordinateDerivations
+public import Section9.HenselizedGraphData
+public import Section9.GaussGraphConstruction
+public import Section9.SmallValuedCoefficients
+public import Section9.NormalizationBases
+public import Section9.AlgebraicValueGroup
+public import Section9.CoordinateDerivations
+public import Section9.AlgebraicCoordinateDerivations
+public import Section9.GraphCoordinateDerivations
+public import Section9.IntegralDerivativeReduction
+public import Section9.ImplicitScalarDerivations
+public import Section9.GraphJacobianIdentification
+
+@[expose] public section
 
 /-! Section 9 modules in the pinned VF/RV presentation. Remaining
 proof obligations and verification evidence are tracked in `STATUS.md`. -/

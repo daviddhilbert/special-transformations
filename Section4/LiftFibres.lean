@@ -1,6 +1,10 @@
-import Section4.LiftMorphism
-import Section4.Fibres
-import Section4.RVCoordinates
+module
+
+public import Section4.LiftMorphism
+public import Section4.Fibres
+public import Section4.RVCoordinates
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

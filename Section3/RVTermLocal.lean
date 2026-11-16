@@ -1,5 +1,9 @@
-import Section3.PolynomialSyntax
-import Section3.PolynomialLocal
+module
+
+public import Section3.PolynomialSyntax
+public import Section3.PolynomialLocal
+
+@[expose] public section
 open FirstOrder FirstOrder.Language Filter Topology
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 open SpecialTransformations.Milestone0.Transfer

@@ -1,5 +1,9 @@
-import Section3.InfiniteValueFibres
-import Section3.AngularPattern
+module
+
+public import Section3.InfiniteValueFibres
+public import Section3.AngularPattern
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

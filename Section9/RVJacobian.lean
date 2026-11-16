@@ -1,10 +1,14 @@
-import Section4.ResidueNormalization
-import Section4.ResidueScaledPredicates
-import Section9.GammaJacobian
-import Section7.TupleCoordinates
-import Mathlib.Algebra.MvPolynomial.PDeriv
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.LinearAlgebra.Matrix.ToLin
+module
+
+public import Section4.ResidueNormalization
+public import Section4.ResidueScaledPredicates
+public import Section9.GammaJacobian
+public import Section7.TupleCoordinates
+public import Mathlib.Algebra.MvPolynomial.PDeriv
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.LinearAlgebra.Matrix.ToLin
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

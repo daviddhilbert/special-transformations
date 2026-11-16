@@ -1,5 +1,9 @@
-import Section6.ExpandedRestriction
-import ParamBridgeRelabel
+module
+
+public import Section6.ExpandedRestriction
+public import ParamBridgeRelabel
+
+@[expose] public section
 
 /-! Parameter promotion in arbitrary RV expansions. The index arithmetic
 and sort assembly are reused from the retained Shared/ParamBridgeRelabel

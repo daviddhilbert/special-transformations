@@ -1,5 +1,9 @@
-import Section4.ResidueNormalization
-import Section4.RVCoordinates
+module
+
+public import Section4.ResidueNormalization
+public import Section4.RVCoordinates
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

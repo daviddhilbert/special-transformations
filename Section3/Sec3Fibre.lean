@@ -1,3 +1,5 @@
+module
+
 /-
 **The `rv`-fibres are infinite** — the geometric input of `alg:ind:imag` (paper `paper.tex`:702),
 over the frozen `L_RV` encoding of `Milestone0/Encoding.lean`.
@@ -33,11 +35,13 @@ Nothing here is a hypothesis in disguise: every ingredient is either an axiom of
 `ACVF` (read off through the tree's own realisation lemmas) or the saturation data of
 `Sat.MonsterACVF`.
 -/
-import AclZero
-import MulNormalForm
-import RVCalc
-import VFField
-import Sat
+public import AclZero
+public import MulNormalForm
+public import RVCalc
+public import VFField
+public import Sat
+
+@[expose] public section
 
 set_option maxHeartbeats 2000000
 set_option backward.isDefEq.respectTransparency false

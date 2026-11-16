@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open FirstOrder.Ring Polynomial
 open scoped FirstOrder

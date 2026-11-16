@@ -1,6 +1,10 @@
-import Section9.GammaCoarsening
-import Section8.UnaryGerm
-import Section7.DefinableTupleQuantifiers
+module
+
+public import Section9.GammaCoarsening
+public import Section8.UnaryGerm
+public import Section7.DefinableTupleQuantifiers
+
+@[expose] public section
 
 /-! Realize an infinitesimally positive additive value over a small
 parameter field. In Mathlib's order it is below one and above every

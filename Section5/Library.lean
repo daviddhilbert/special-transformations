@@ -1,31 +1,35 @@
-import Section5.Geometry
-import Section5.Core
-import Section5.TransformGeometry
-import Section5.RootConstruction
-import Section5.UnarySets
-import Section5.UnaryUniform
-import Section5.CoordinateLift
-import Section5.UnaryRelations
-import Section5.VerticalConstruction
-import Section5.UnaryMaps
-import Section5.Assembly
-import Section5.Centering
-import Section5.GeneralAssembly
-import Section5.GeneralExistence
-import Section5.PolynomialPreparation
-import Section5.CategoryLift
-import Section5.TaggedAmbient
-import Section5.GammaLift
-import Section5.GammaContraction
-import Section5.ZeroNormalization
-import Section5.Surjectivity
-import Section5.GammaBaseInputs
-import Section5.GammaPolynomialSupport
-import Section5.GammaInvariantLogic
-import Section5.GammaDimensionalPresentation
-import Section5.GammaSurjectivity
-import Section5.GammaLiftRelation
-import Section5.GammaDimensionCriterion
+module
+
+public import Section5.Geometry
+public import Section5.Core
+public import Section5.TransformGeometry
+public import Section5.RootConstruction
+public import Section5.UnarySets
+public import Section5.UnaryUniform
+public import Section5.CoordinateLift
+public import Section5.UnaryRelations
+public import Section5.VerticalConstruction
+public import Section5.UnaryMaps
+public import Section5.Assembly
+public import Section5.Centering
+public import Section5.GeneralAssembly
+public import Section5.GeneralExistence
+public import Section5.PolynomialPreparation
+public import Section5.CategoryLift
+public import Section5.TaggedAmbient
+public import Section5.GammaLift
+public import Section5.GammaContraction
+public import Section5.ZeroNormalization
+public import Section5.Surjectivity
+public import Section5.GammaBaseInputs
+public import Section5.GammaPolynomialSupport
+public import Section5.GammaInvariantLogic
+public import Section5.GammaDimensionalPresentation
+public import Section5.GammaSurjectivity
+public import Section5.GammaLiftRelation
+public import Section5.GammaDimensionCriterion
+
+@[expose] public section
 
 /-!
 # Section 5 library

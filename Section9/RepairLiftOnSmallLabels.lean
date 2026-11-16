@@ -1,6 +1,10 @@
-import Section9.LowerDimensionalPrescribedLift
-import Section9.FiniteVolumeDimension
-import Section9.RestrictActualLift
+module
+
+public import Section9.LowerDimensionalPrescribedLift
+public import Section9.FiniteVolumeDimension
+public import Section9.RestrictActualLift
+
+@[expose] public section
 
 /-! Repair a chosen lift on a lower-dimensional definable set of
 labels. Its prescribed determinant on the other labels is retained

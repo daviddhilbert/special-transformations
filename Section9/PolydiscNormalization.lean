@@ -1,4 +1,8 @@
-import Section9.AffineTail
+module
+
+public import Section9.AffineTail
+
+@[expose] public section
 
 /-! A product of nonzero RV balls becomes the maximal-ideal polydisc
 under an explicit affine bijection. -/

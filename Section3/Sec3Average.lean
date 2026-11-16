@@ -1,3 +1,5 @@
+module
+
 /-
 Section 3 of Yin, *Special transformations in algebraically closed valued fields*
 (arXiv:1006.2467), Lemma `average:0:rv:not:constant` (`paper.tex:709`), quoted there from
@@ -60,7 +62,9 @@ No `sorry`, no `axiom`, no `native_decide`.  The encoding's order `iLe` on `RV` 
 not a partial order, so all equalities of values below are stated as the two `iLe` directions,
 which is what the ball predicates of the encoding consume.
 -/
-import VFValued
+public import VFValued
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option maxHeartbeats 1600000

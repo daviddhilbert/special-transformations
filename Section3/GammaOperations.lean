@@ -1,4 +1,8 @@
-import Section3.GammaPresentation
+module
+
+public import Section3.GammaPresentation
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

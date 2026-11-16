@@ -1,5 +1,9 @@
-import Section4.GammaPredicates
-import Section3.GammaOperations
+module
+
+public import Section4.GammaPredicates
+public import Section3.GammaOperations
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

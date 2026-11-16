@@ -1,7 +1,11 @@
-import ProvedACFExtension
-import Mathlib.ModelTheory.Definability
-import Mathlib.ModelTheory.Algebra.Ring.Basic
-import Mathlib.RingTheory.Spectrum.Prime.ConstructibleSet
+module
+
+public import ProvedACFExtension
+public import Mathlib.ModelTheory.Definability
+public import Mathlib.ModelTheory.Algebra.Ring.Basic
+public import Mathlib.RingTheory.Spectrum.Prime.ConstructibleSet
+
+@[expose] public section
 
 /-!
 # Constructible sets over the original coefficient field

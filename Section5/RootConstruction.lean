@@ -1,8 +1,12 @@
-import Section5.TransformGeometry
-import Section3.DefinableMeans
-import Section3.MeanInBalls
-import Section3.CanonicalContext
-import Section3.PolynomialRoots
+module
+
+public import Section5.TransformGeometry
+public import Section3.DefinableMeans
+public import Section3.MeanInBalls
+public import Section3.CanonicalContext
+public import Section3.PolynomialRoots
+
+@[expose] public section
 
 /-!
 # Reusing finite definable means in the normalized presentations

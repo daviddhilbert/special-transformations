@@ -1,6 +1,10 @@
-import Section3.ClosureBridge
-import Section3.CanonicalParameters
-import Section3.DefinableConstants
+module
+
+public import Section3.ClosureBridge
+public import Section3.CanonicalParameters
+public import Section3.DefinableConstants
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open FirstOrder FirstOrder.Language

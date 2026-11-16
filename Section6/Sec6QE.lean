@@ -1,3 +1,5 @@
+module
+
 /-
 Section 6 of Yin, "Special transformations in algebraically closed valued fields"
 (arXiv:1006.2467): the interlude on quantifier elimination for henselian fields
@@ -28,7 +30,9 @@ Conventions follow `Milestone0/DECISION.md`: `rv 0 = ∞` is one absorbing eleme
 paper's value-group order, and a formula is a formula of the paper's two-sorted language only if
 it is `WellSorted`.
 -/
-import Enc
+public import Enc
+
+@[expose] public section
 
 set_option linter.unusedSimpArgs false
 

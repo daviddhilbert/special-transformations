@@ -1,7 +1,11 @@
-import Section4.RVWeightRestriction
-import Section4.RVIsoTools
-import Section4.RVScissorPresentation
-import Mathlib.Tactic.Tauto
+module
+
+public import Section4.RVWeightRestriction
+public import Section4.RVIsoTools
+public import Section4.RVScissorPresentation
+public import Mathlib.Tactic.Tauto
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

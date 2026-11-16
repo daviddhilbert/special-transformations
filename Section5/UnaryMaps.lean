@@ -1,4 +1,8 @@
-import Section5.UnaryRelations
+module
+
+public import Section5.UnaryRelations
+
+@[expose] public section
 
 /-!
 # Unary definable maps with RV targets

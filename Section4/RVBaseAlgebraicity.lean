@@ -1,4 +1,8 @@
-import Section4.RVRank
+module
+
+public import Section4.RVRank
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

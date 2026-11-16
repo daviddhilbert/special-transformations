@@ -1,5 +1,9 @@
-import ACVFQE
-import Mathlib.ModelTheory.ElementaryMaps
+module
+
+public import ACVFQE
+public import Mathlib.ModelTheory.ElementaryMaps
+
+@[expose] public section
 
 /-! A common native ACVF envelope from the completed QE dependency.
 The standard-reference input is generic saturated elementary-extension

@@ -1,4 +1,8 @@
-import Section4.RVFiniteHomogeneousProducts
+module
+
+public import Section4.RVFiniteHomogeneousProducts
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

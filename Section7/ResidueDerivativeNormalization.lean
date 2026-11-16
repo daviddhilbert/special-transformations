@@ -1,4 +1,8 @@
-import Section7.IntegralNormalization
+module
+
+public import Section7.IntegralNormalization
+
+@[expose] public section
 
 /-!
 # Iterated partial derivatives and normalized residue evaluation

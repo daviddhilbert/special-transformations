@@ -1,6 +1,10 @@
-import Section4.VFFinitePositiveComparison
-import Section4.VFAllSemiring
-import Section4.VFProducts
+module
+
+public import Section4.VFFinitePositiveComparison
+public import Section4.VFAllSemiring
+public import Section4.VFProducts
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language CategoryTheory
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

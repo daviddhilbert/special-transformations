@@ -1,6 +1,10 @@
-import Section9.FiniteHeadPrescribedLift
-import Section9.FiniteHeadCover
-import Section9.PermutationVolumeSigns
+module
+
+public import Section9.FiniteHeadPrescribedLift
+public import Section9.FiniteHeadCover
+public import Section9.PermutationVolumeSigns
+
+@[expose] public section
 
 /-! The finite-head construction can use different coordinate
 selections on the source and target. The two permutation signs are

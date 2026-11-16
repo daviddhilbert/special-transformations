@@ -1,7 +1,11 @@
-import Section3.GammaBaseDescent
-import Section3.GammaParameterBridge
-import Section3.RVGammaAlgebraicity
-import Section3.SmallFiniteParameters
+module
+
+public import Section3.GammaBaseDescent
+public import Section3.GammaParameterBridge
+public import Section3.RVGammaAlgebraicity
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 
 /-!
 # A finite original-real-base witness for Lemma 7.4

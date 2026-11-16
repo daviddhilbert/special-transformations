@@ -38,7 +38,7 @@ cancellativity hypothesis is used.
 * [*Grothendieck group*, Wikipedia](https://en.wikipedia.org/wiki/Grothendieck_group)
 -/
 
-public section
+@[expose] public section
 
 namespace Algebra.GrothendieckAddGroup
 

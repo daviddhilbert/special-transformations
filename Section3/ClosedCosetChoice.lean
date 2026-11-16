@@ -1,6 +1,10 @@
-import Section3.ClosedQuotientChoice
-import Section3.DefinableCosets
-import Section3.ClosedBallQuotient
+module
+
+public import Section3.ClosedQuotientChoice
+public import Section3.DefinableCosets
+public import Section3.ClosedBallQuotient
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

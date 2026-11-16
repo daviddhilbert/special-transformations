@@ -1,4 +1,8 @@
-import Section3.Parameters
+module
+
+public import Section3.Parameters
+
+@[expose] public section
 
 /-!
 # The standing model and base context after Definition 2.4

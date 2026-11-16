@@ -1,6 +1,10 @@
-import Section7.IntegralNormalization
-import Section7.MultivariateHensel
-import Section7.ValuationHenselian
+module
+
+public import Section7.IntegralNormalization
+public import Section7.MultivariateHensel
+public import Section7.ValuationHenselian
+
+@[expose] public section
 
 /-! Lemma 7.2 over an algebraically closed valued field, using the actual
 valuation ring, proved ordinary multivariate Hensel lifting, and the proved

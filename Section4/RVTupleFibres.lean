@@ -1,6 +1,10 @@
-import Section4.CanonicalLift
-import Section3.FibreDescent
-import Section3.SortedTuples
+module
+
+public import Section4.CanonicalLift
+public import Section3.FibreDescent
+public import Section3.SortedTuples
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

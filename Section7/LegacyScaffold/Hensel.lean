@@ -1,4 +1,8 @@
-import SpecialTransformations.SpecialBijection
+module
+
+public import SpecialTransformations.SpecialBijection
+
+@[expose] public section
 
 /-!
 # Quantifier elimination for henselian fields and lifting functions

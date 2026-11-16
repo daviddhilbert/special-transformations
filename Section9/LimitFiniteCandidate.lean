@@ -1,8 +1,12 @@
-import Section9.LimitProjectiveRoots
-import Section9.LimitGeometry
-import Section8.PowerEstimateCore
-import Section8.IsolationRadius
-import VFAlgClosed
+module
+
+public import Section9.LimitProjectiveRoots
+public import Section9.LimitGeometry
+public import Section8.PowerEstimateCore
+public import Section8.IsolationRadius
+public import VFAlgClosed
+
+@[expose] public section
 
 /-! Transport the finite projective root candidate set into the actual
 limit-set definition on the VF and Gamma sorts of the pinned ACVF model. -/

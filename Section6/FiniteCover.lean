@@ -1,5 +1,9 @@
-import Mathlib.ModelTheory.Satisfiability
-import Mathlib.Tactic.Push
+module
+
+public import Mathlib.ModelTheory.Satisfiability
+public import Mathlib.Tactic.Push
+
+@[expose] public section
 
 /-! The compactness step needed to turn local syntactic preparation
 certificates into a model-uniform finite disjunction. This is an ordinary

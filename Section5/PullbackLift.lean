@@ -1,5 +1,9 @@
-import Section5.GeneralExistence
-import Section4.CanonicalLift
+module
+
+public import Section5.GeneralExistence
+public import Section4.CanonicalLift
+
+@[expose] public section
 
 /-!
 # RV data of a pullback

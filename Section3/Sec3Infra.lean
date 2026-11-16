@@ -1,3 +1,5 @@
+module
+
 /-
 **Section 3 infrastructure** — from swarm `smw1jgnht` m1, verified here (compiled: exit 0, 0 errors,
 no `sorry`; `#print axioms` on `rvFibre_definable`, `iUnion_rvFibre`, `isBoolComb_rvFibre`,
@@ -76,7 +78,9 @@ inputs are explicit hypotheses of the theorems that use them, named in their doc
 against the `L_RV` encoding of `Milestone0/Encoding.lean`; the sort tags are `SortTag.vf`/`.rv` and
 `sortEval` is definitionally the encoding's `iVF`/`iRV`.
 -/
-import Sec3Frozen
+public import Sec3Frozen
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 
 open FirstOrder FirstOrder.Language

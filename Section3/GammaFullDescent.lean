@@ -1,7 +1,11 @@
-import Section3.FibreDescent
-import Section3.GammaBaseDescent
-import Section3.GammaFiniteOrder
-import Section3.GeneralCosetChoice
+module
+
+public import Section3.FibreDescent
+public import Section3.GammaBaseDescent
+public import Section3.GammaFiniteOrder
+public import Section3.GeneralCosetChoice
+
+@[expose] public section
 
 /- Full ambient-Gamma descent. Parameter promotion adapts the checked
 GammaBaseDescent construction; finite-cover and intersection arguments retain

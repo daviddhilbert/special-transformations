@@ -1,7 +1,11 @@
-import Section8.UniformBalls
-import Section3.RootFreeConstancy
-import Section3.ClosureBridge
-import ValuedFieldExtension
+module
+
+public import Section8.UniformBalls
+public import Section3.RootFreeConstancy
+public import Section3.ClosureBridge
+public import ValuedFieldExtension
+
+@[expose] public section
 
 /-! An infinite definable unary VF set contains an arbitrarily small open
 ball. We use the stronger checked finite-obstacle form of unary locality. -/

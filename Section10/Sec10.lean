@@ -1,3 +1,5 @@
+module
+
 /-
 **Section 10, part 1: `defn:mVF:cat:vol` and `mor:equi` — the `VF`-categories with volume forms.**
 
@@ -24,7 +26,9 @@ morphism is again measure-preserving) — is proved here, with `#print axioms` f
 Remark `mor:equi` (that morphisms agreeing almost everywhere may be identified) is **not** in this
 file: it is recorded as open in the report.
 -/
-import Sec4Dim
+public import Sec4Dim
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.unusedSectionVars false

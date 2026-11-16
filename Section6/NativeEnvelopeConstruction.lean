@@ -1,12 +1,16 @@
-import Section6.ConcreteACVF
-import Section6.ConcreteExtension
-import Section6.NativeHenselian
-import Section6.NativePresentation
-import Section6.PureHenselianInputs
-import Section6.UniformNormalizedElimination
-import Section6.HenselianInvariance
-import JohnsonAmalgamation
-import Mathlib.FieldTheory.AlgebraicClosure
+module
+
+public import Section6.ConcreteACVF
+public import Section6.ConcreteExtension
+public import Section6.NativeHenselian
+public import Section6.NativePresentation
+public import Section6.PureHenselianInputs
+public import Section6.UniformNormalizedElimination
+public import Section6.HenselianInvariance
+public import JohnsonAmalgamation
+public import Mathlib.FieldTheory.AlgebraicClosure
+
+@[expose] public section
 
 /-! Construction of the algebraic envelope from the native henselian
 axioms, using the proved pure-characteristic-zero invariance. -/

@@ -1,5 +1,9 @@
-import Section3.TuplePromotion
-import Section3.Counting
+module
+
+public import Section3.TuplePromotion
+public import Section3.Counting
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0

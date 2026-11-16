@@ -1,6 +1,10 @@
-import Section9.MixedDerivativeFormula
-import Section9.MixedGenericDifferentiation
-import Section4.Products
+module
+
+public import Section9.MixedDerivativeFormula
+public import Section9.MixedGenericDifferentiation
+public import Section4.Products
+
+@[expose] public section
 
 /-! The almost-everywhere form of the mixed chain rule. Full
 differentiability on the two fixed-label charts is a same-base

@@ -1,5 +1,9 @@
-import Section3.GammaValueFibreCounting
-import Section3.GammaSpecialization
+module
+
+public import Section3.GammaValueFibreCounting
+public import Section3.GammaSpecialization
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

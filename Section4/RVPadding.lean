@@ -1,5 +1,9 @@
-import Section4.RVCategories
-import Mathlib.Algebra.BigOperators.Fin
+module
+
+public import Section4.RVCategories
+public import Mathlib.Algebra.BigOperators.Fin
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

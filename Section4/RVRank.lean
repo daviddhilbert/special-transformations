@@ -1,6 +1,10 @@
-import Section4.RVAlgebraicMatroid
-import Section4.RVDimension
-import Mathlib.Combinatorics.Matroid.Rank.ENat
+module
+
+public import Section4.RVAlgebraicMatroid
+public import Section4.RVDimension
+public import Mathlib.Combinatorics.Matroid.Rank.ENat
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

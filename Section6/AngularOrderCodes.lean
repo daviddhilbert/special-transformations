@@ -1,5 +1,9 @@
-import Section6.AngularCodes
-import CanonicalRVOrder
+module
+
+public import Section6.AngularCodes
+public import CanonicalRVOrder
+
+@[expose] public section
 
 /-! Value and residue-domain predicates on the single-zero angular
 codes. The final native comparison explicitly reverses the Mathlib

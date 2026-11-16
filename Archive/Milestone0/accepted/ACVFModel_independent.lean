@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 /-!
 ## A model of the theory `ACVF` of `Milestone0/Encoding.lean` at the trivial valuation
 

@@ -1,5 +1,9 @@
-import Section6.ExtraSortSemantics
-import Section6.CommonEnvelopeComparison
+module
+
+public import Section6.ExtraSortSemantics
+public import Section6.CommonEnvelopeComparison
+
+@[expose] public section
 
 /-! An actual native embedding carries the arbitrary RV expansion to
 its image. The source added-symbol laws are derived from the henselian

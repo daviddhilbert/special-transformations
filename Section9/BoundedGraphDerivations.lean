@@ -1,9 +1,13 @@
-import Section9.GaussDerivative
-import Section9.AlgebraicValueGroup
-import Section9.ValuedEtaleDerivation
-import Section9.UnramifiedDerivation
-import Section9.UnramifiedGenerator
-import Mathlib.FieldTheory.IsAlgClosed.Basic
+module
+
+public import Section9.GaussDerivative
+public import Section9.AlgebraicValueGroup
+public import Section9.ValuedEtaleDerivation
+public import Section9.UnramifiedDerivation
+public import Section9.UnramifiedGenerator
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+
+@[expose] public section
 
 /-! From the Gauss field to the finite graph field, the derivative
 bound passes through the immediate étale extension and then the

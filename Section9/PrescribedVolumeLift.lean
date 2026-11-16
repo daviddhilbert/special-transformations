@@ -1,5 +1,9 @@
-import Section9.RepairLiftOnSmallLabels
-import Section9.LiftComparison
+module
+
+public import Section9.RepairLiftOnSmallLabels
+public import Section9.LiftComparison
+
+@[expose] public section
 
 /-! The finite-volume statement of Theorem 9.16 in positive arity.
 Use the arbitrary-lift comparison only on a full-dimensional

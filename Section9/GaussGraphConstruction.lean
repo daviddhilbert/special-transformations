@@ -1,9 +1,13 @@
-import Section9.EmbeddedHenselization
-import Section9.GaussExtension
-import Section9.NestedGaussField
-import Section9.EtaleCoverTransport
-import Section9.HenselizedGraphData
-import VFAlgClosed
+module
+
+public import Section9.EmbeddedHenselization
+public import Section9.GaussExtension
+public import Section9.NestedGaussField
+public import Section9.EtaleCoverTransport
+public import Section9.HenselizedGraphData
+public import VFAlgClosed
+
+@[expose] public section
 
 open FirstOrder FirstOrder.Language IsLocalRing
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,6 +1,10 @@
-import Section9.GammaInfinitesimals
-import Mathlib.FieldTheory.AlgebraicClosure
-import Mathlib.RingTheory.Algebraic.Cardinality
+module
+
+public import Section9.GammaInfinitesimals
+public import Mathlib.FieldTheory.AlgebraicClosure
+public import Mathlib.RingTheory.Algebraic.Cardinality
+
+@[expose] public section
 
 /-! Enlarge the small coefficient field after choosing each positive
 infinitesimal. Closing the enlarged field algebraically makes all

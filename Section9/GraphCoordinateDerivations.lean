@@ -1,5 +1,9 @@
-import Section9.CoordinateDerivations
-import Mathlib.FieldTheory.Perfect
+module
+
+public import Section9.CoordinateDerivations
+public import Mathlib.FieldTheory.Perfect
+
+@[expose] public section
 
 /-! Independent input coordinates and algebraic output coordinates
 give a separable graph field with coordinate derivations. -/

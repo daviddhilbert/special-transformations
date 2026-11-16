@@ -1,6 +1,10 @@
-import Section4.RVPadding
-import Section4.MapCorestrict
-import Section4.VFFibreFiniteness
+module
+
+public import Section4.RVPadding
+public import Section4.MapCorestrict
+public import Section4.VFFibreFiniteness
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,5 +1,9 @@
-import Mathlib.GroupTheory.Congruence.Defs
-import Mathlib.Algebra.Group.Subsemigroup.Basic
+module
+
+public import Mathlib.GroupTheory.Congruence.Defs
+public import Mathlib.Algebra.Group.Subsemigroup.Basic
+
+@[expose] public section
 
 /-! The additive part of Definition 4.22, with precisely the paper's
 subsemigroup-of-pairs convention. Quotient structures come from AddCon. -/

@@ -1,6 +1,10 @@
-import Section9.OpenSquareSystem
-import Section9.RadicalResidueChart
-import Mathlib.Algebra.MvPolynomial.Equiv
+module
+
+public import Section9.OpenSquareSystem
+public import Section9.RadicalResidueChart
+public import Mathlib.Algebra.MvPolynomial.Equiv
+
+@[expose] public section
 
 /-! In an open residue chart, separate the input variables from the
 output variables and the inverse of the open factor. This transfers
@@ -26,10 +30,10 @@ theorem eval_residueOutputJacobian (P : Fin n → MvPolynomial (Fin (n + n)) K)
   change f (residueOutputJacobian P) = _
   rw [residueOutputJacobian, RingHom.map_det] <;> rfl
 
-private def outputFirst (n : ℕ) : Fin (n + n) ≃ Fin n ⊕ Fin n :=
+public def outputFirst (n : ℕ) : Fin (n + n) ≃ Fin n ⊕ Fin n :=
   finSumFinEquiv.symm.trans (Equiv.sumComm _ _)
 
-private def outputWithInverseFirst (n : ℕ) : Fin (n + n) ⊕ Unit ≃ (Fin n ⊕ Unit) ⊕ Fin n :=
+public def outputWithInverseFirst (n : ℕ) : Fin (n + n) ⊕ Unit ≃ (Fin n ⊕ Unit) ⊕ Fin n :=
   (Equiv.sumCongr (outputFirst n) (Equiv.refl Unit)).trans
     ((Equiv.sumAssoc (Fin n) (Fin n) Unit).trans
       ((Equiv.sumCongr (Equiv.refl (Fin n)) (Equiv.sumComm (Fin n) Unit)).trans

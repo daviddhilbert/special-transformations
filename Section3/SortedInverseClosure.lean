@@ -1,5 +1,9 @@
-import Section3.SortedFunctionClosure
-import VFValued
+module
+
+public import Section3.SortedFunctionClosure
+public import VFValued
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

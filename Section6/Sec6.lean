@@ -1,3 +1,5 @@
+module
+
 /-
 # Section 6 of Yin, *Special transformations in algebraically closed valued fields*
 (arXiv:1006.2467), paper.tex line 1419 ff.: the interlude on henselian fields.
@@ -67,8 +69,10 @@ carrier, and `functionallyClosed_of_dclClosed` reconstructs `f a` from the graph
 Compile: `LEAN_PATH=<repo>/.scratch2/sec3:$LEAN_PATH lean Sec6.lean`; no `sorry`, no `axiom`, no
 `native_decide`.
 -/
-import SubstVar
-import SubstParam
+public import SubstVar
+public import SubstParam
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language

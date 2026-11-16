@@ -1,5 +1,9 @@
-import Section3.TupleRelations
-import Section3.TupleCompactness
+module
+
+public import Section3.TupleRelations
+public import Section3.TupleCompactness
+
+@[expose] public section
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.RawClosure.Tuple

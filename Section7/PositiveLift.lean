@@ -1,6 +1,10 @@
-import Section7.LiftedIsomorphism
-import Section4.RVFiniteScissors
-import Section4.VFFinitePositiveFiltration
+module
+
+public import Section7.LiftedIsomorphism
+public import Section4.RVFiniteScissors
+public import Section4.VFFinitePositiveFiltration
+
+@[expose] public section
 
 /-!
 # Lifting on the two actual positive scissors quotients

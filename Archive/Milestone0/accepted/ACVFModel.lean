@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 /-!
 ## A model of `ACVF` at the trivial valuation, for the current encoding
 

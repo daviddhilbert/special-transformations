@@ -1,8 +1,12 @@
-import Section4.CoordinateMaps
-import Section4.FiniteGluing
-import Section4.RVFiniteScissors
-import Section4.RVWeightRestriction
-import Section7.LiftedIsomorphism
+module
+
+public import Section4.CoordinateMaps
+public import Section4.FiniteGluing
+public import Section4.RVFiniteScissors
+public import Section4.RVWeightRestriction
+public import Section7.LiftedIsomorphism
+
+@[expose] public section
 
 /-! The essential restriction of Definition 9.13. The positive degree is
 written `k + 1` so the discarded lifts have VF dimension at most `k`. -/
@@ -59,7 +63,7 @@ isomorphism given only on the essential parts. -/
 abbrev RVFiniteEssentialIso {n : ℕ} (U V : RVFiniteObject (M := M) S n) :=
   rvFiniteEssentialPart U ≅ rvFiniteEssentialPart V
 
-private theorem rvIso_preserves_essential {U V : RVObject (M := M) S (k + 1)}
+public theorem rvIso_preserves_essential {U V : RVObject (M := M) S (k + 1)}
     (e : U ≅ V) (u : U.domain) :
     u.val ∈ (rvEssentialLabels U).carrier ↔ (e.hom.map u).val ∈ (rvEssentialLabels V).carrier := by
   change (u.val ∈ U.domain.carrier ∧ u.val ∉ (rvLowDomain U).carrier) ↔

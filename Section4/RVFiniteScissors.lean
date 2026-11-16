@@ -1,4 +1,8 @@
-import Section4.RVPositiveIsoComparison
+module
+
+public import Section4.RVPositiveIsoComparison
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

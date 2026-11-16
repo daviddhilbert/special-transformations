@@ -1,5 +1,9 @@
-import Section6.ConcreteLogic
-import Section6.HenselSchemeSemantics
+module
+
+public import Section6.ConcreteLogic
+public import Section6.HenselSchemeSemantics
+
+@[expose] public section
 
 /-! Field operations, characteristic zero, and canonical sorting for the concrete model. -/
 

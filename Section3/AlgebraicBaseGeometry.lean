@@ -1,4 +1,8 @@
-import Section3.ValuedCMinimal
+module
+
+public import Section3.ValuedCMinimal
+
+@[expose] public section
 open Classical FirstOrder FirstOrder.Language
 namespace SpecialTransformations.Section3
 

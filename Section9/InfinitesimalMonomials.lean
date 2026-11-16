@@ -1,6 +1,10 @@
-import Section9.CoarsenedGauss
-import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.Algebra.BigOperators.Fin
+module
+
+public import Section9.CoarsenedGauss
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.Algebra.BigOperators.Fin
+
+@[expose] public section
 
 /-! Nested positive infinitesimals have distinct fine values on
 distinct monomials. At each step the coefficient field contains the

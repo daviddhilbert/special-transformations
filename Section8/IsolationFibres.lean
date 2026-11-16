@@ -1,5 +1,9 @@
-import Section8.IsolatedGraph
-import Section3.SortedTuples
+module
+
+public import Section8.IsolatedGraph
+public import Section3.SortedTuples
+
+@[expose] public section
 
 /-! Fixing the RV radius codes in the graph isolation relation leaves a
 definable VF set. Its field of VF parameters is the original one. -/

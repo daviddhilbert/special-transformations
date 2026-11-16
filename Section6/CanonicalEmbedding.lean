@@ -1,5 +1,9 @@
-import CanonicalQF
-import Mathlib.ModelTheory.ElementaryMaps
+module
+
+public import CanonicalQF
+public import Mathlib.ModelTheory.ElementaryMaps
+
+@[expose] public section
 
 /-! Canonical native models are fixed by the released normalization.
 This adapter lets actual elementary maps be used by the earlier envelope

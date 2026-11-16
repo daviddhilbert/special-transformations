@@ -1,4 +1,8 @@
-import Section4.VFCoproductBounds
+module
+
+public import Section4.VFCoproductBounds
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

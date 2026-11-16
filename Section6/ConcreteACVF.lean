@@ -1,7 +1,11 @@
-import Section6.ConcreteRVAxioms
-import Section6.ConcreteCharacteristic
-import VFAlgClosed
-import JohnsonGeometry
+module
+
+public import Section6.ConcreteRVAxioms
+public import Section6.ConcreteCharacteristic
+public import VFAlgClosed
+public import JohnsonGeometry
+
+@[expose] public section
 
 /-! Realization of the ACVF axioms by the ordinary algebraically closed
 valued field used as an algebraic envelope. -/

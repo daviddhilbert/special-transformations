@@ -1,5 +1,9 @@
-import Section4.ResidueFieldFunctions
-import Mathlib.Algebra.MvPolynomial.Eval
+module
+
+public import Section4.ResidueFieldFunctions
+public import Mathlib.Algebra.MvPolynomial.Eval
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

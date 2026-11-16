@@ -1,10 +1,14 @@
+module
+
 /-
 Copyright (c) 2026 The Tau Ceti contributors. All rights reserved.
 Released under Apache 2.0 license as described in TauCeti-LICENSE.
 Authors: The Tau Ceti contributors
 -/
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Unramified.LocalStructure
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.Unramified.LocalStructure
+
+@[expose] public section
 
 /-!
 # Existence of lifts of residue points of etale algebras

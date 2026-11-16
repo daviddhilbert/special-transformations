@@ -1,4 +1,8 @@
-import Section10.WeightedZeroScissors
+module
+
+public import Section10.WeightedZeroScissors
+
+@[expose] public section
 
 /-! Concrete RV- and Gamma-valued zero-degree forms of 10.4–10.6. -/
 

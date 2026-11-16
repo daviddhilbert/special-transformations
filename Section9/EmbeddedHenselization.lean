@@ -1,10 +1,14 @@
-import Section9.OrdinaryHenselization
-import Section9.FilteredValuation
-import Section9.HenselianRingTransport
-import Section9.HenselizedValuationImage
-import Section9.HenselizationEtaleCover
-import Section9.GaussEvaluation
-import Section7.ValuationHenselian
+module
+
+public import Section9.OrdinaryHenselization
+public import Section9.FilteredValuation
+public import Section9.HenselianRingTransport
+public import Section9.HenselizedValuationImage
+public import Section9.HenselizationEtaleCover
+public import Section9.GaussEvaluation
+public import Section7.ValuationHenselian
+
+@[expose] public section
 
 open CategoryTheory IsLocalRing
 

@@ -1,4 +1,8 @@
-import Enc
+module
+
+public import Enc
+
+@[expose] public section
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.BooleanCombinations
 variable {M : Type} {B : Set (Set M)}

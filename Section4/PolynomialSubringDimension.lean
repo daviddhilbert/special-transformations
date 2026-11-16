@@ -1,5 +1,9 @@
-import Section4.AffineKrullDimension
-import Mathlib.RingTheory.Ideal.Maximal
+module
+
+public import Section4.AffineKrullDimension
+public import Mathlib.RingTheory.Ideal.Maximal
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

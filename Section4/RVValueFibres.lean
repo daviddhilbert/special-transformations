@@ -1,5 +1,9 @@
-import Section4.RVMaximumValueFibre
-import Section4.MapParameters
+module
+
+public import Section4.RVMaximumValueFibre
+public import Section4.MapParameters
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,7 +1,11 @@
-import Section3.FiniteGluing
-import Section3.FibrePromotion
-import Section3.TupleRelations
-import Section3.TupleCompactness
+module
+
+public import Section3.FiniteGluing
+public import Section3.FibrePromotion
+public import Section3.TupleRelations
+public import Section3.TupleCompactness
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open FirstOrder FirstOrder.Language

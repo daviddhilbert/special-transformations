@@ -1,15 +1,19 @@
-import Section8.GammaBalls
-import Section8.IsolationGamma
-import Section8.IsolationRadius
-import Section8.UnarySlope
-import Section8.AlmostEverywhere
-import Section8.RVLocalConstancy
-import Section8.VFDefinableTopology
-import Section8.RVFibreGamma
-import Section8.ContinuityGamma
-import Section8.UnaryGamma
-import Section8.CenteredGammaSlope
-import Section8.PairwiseGamma
+module
+
+public import Section8.GammaBalls
+public import Section8.IsolationGamma
+public import Section8.IsolationRadius
+public import Section8.UnarySlope
+public import Section8.AlmostEverywhere
+public import Section8.RVLocalConstancy
+public import Section8.VFDefinableTopology
+public import Section8.RVFibreGamma
+public import Section8.ContinuityGamma
+public import Section8.UnaryGamma
+public import Section8.CenteredGammaSlope
+public import Section8.PairwiseGamma
+
+@[expose] public section
 
 /-! Active Section 8 library. The relocated Sec8* files are historical
 snapshots; the active modules use the pinned ACVF-QE language. -/

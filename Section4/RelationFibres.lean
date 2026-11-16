@@ -1,5 +1,9 @@
-import Section4.Fibres
-import Section4.VFTranscendence
+module
+
+public import Section4.Fibres
+public import Section4.VFTranscendence
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

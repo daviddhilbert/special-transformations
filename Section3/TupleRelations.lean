@@ -1,4 +1,8 @@
-import Section3.TuplePromotion
+module
+
+public import Section3.TuplePromotion
+
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.RawClosure.Tuple

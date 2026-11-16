@@ -1,4 +1,8 @@
-import Section7.PositiveSurjectivity
+module
+
+public import Section7.PositiveSurjectivity
+
+@[expose] public section
 
 /-! Ordinary degree-zero specializations, retained independently of the
 corrected measured convention. Weighted statements are in `WeightedZero`,

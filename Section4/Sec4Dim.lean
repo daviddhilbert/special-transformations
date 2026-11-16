@@ -1,3 +1,5 @@
+module
+
 /-
 **Section 4, "Dimensions", part 1: the layer and the easy direction** — from swarm `smw1jgnht` m6,
 verified here (compiled: exit 0, 0 errors, no `sorry`).
@@ -108,7 +110,9 @@ is not a sort of `L_RV` but the definable quotient `RV^×/K^×` — so the targe
 `Tup M k l` = `VF^k × RV^l`.  This does not change the dimension: `l` is existentially
 quantified, and a `Γ`-tuple is coded, definably, by an `RV`-tuple.
 -/
-import Sec3Frozen
+public import Sec3Frozen
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.unusedVariables false
 open FirstOrder FirstOrder.Language

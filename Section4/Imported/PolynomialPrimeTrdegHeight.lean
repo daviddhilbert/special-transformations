@@ -1,3 +1,5 @@
+module
+
 /-
 Attributed port from DongzheZheng/Kiraly-Tanigawa-Body-Pin-Rigidity-Conjecture.
 Revision: e457fde9100c9b7226bd4d81af6860f210a531ab.
@@ -8,14 +10,16 @@ The original file had no separate author header. Its namespace is retained.
 This is a general algebraic prerequisite; it does not itself prove Yin 4.8.
 Compatibility edits and compiler/axiom status are recorded separately.
 -/
-import Mathlib.RingTheory.Jacobson.Ring
-import Mathlib.RingTheory.KrullDimension.Polynomial
-import Mathlib.RingTheory.Algebraic.Integral
-import Mathlib.RingTheory.AlgebraicIndependent.Transcendental
-import Mathlib.RingTheory.MvPolynomial.Localization
-import Mathlib.RingTheory.Polynomial.Quotient
-import Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
-import Mathlib.RingTheory.MvPolynomial.Ideal
+public import Mathlib.RingTheory.Jacobson.Ring
+public import Mathlib.RingTheory.KrullDimension.Polynomial
+public import Mathlib.RingTheory.Algebraic.Integral
+public import Mathlib.RingTheory.AlgebraicIndependent.Transcendental
+public import Mathlib.RingTheory.MvPolynomial.Localization
+public import Mathlib.RingTheory.Polynomial.Quotient
+public import Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
+public import Mathlib.RingTheory.MvPolynomial.Ideal
+
+@[expose] public section
 
 /-!
 # Heights of primes in finite polynomial rings

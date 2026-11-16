@@ -1,7 +1,11 @@
-import Section9.ReindexedHeadPrescribedLift
-import Section9.SimultaneousHeadCover
-import Section9.FiniteLabelPartition
-import Section9.GlueLabelLifts
+module
+
+public import Section9.ReindexedHeadPrescribedLift
+public import Section9.SimultaneousHeadCover
+public import Section9.FiniteLabelPartition
+public import Section9.GlueLabelLifts
+
+@[expose] public section
 
 /-! The lower RV-dimensional branch of the prescribed lift. Finite
 heads, their reindexing, and the label partition are all chosen over

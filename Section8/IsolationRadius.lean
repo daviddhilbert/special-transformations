@@ -1,5 +1,9 @@
-import Section8.IsolationDimension
-import Section8.GammaBalls
+module
+
+public import Section8.IsolationDimension
+public import Section8.GammaBalls
+
+@[expose] public section
 
 /-! The isolation predicate uses the paper's actual Gamma radii. -/
 

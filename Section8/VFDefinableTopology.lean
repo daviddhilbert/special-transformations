@@ -1,6 +1,10 @@
-import Section8.VFNeighbourhoods
-import Section8.NeighbourhoodRelations
-import Section4.FullDimension
+module
+
+public import Section8.VFNeighbourhoods
+public import Section8.NeighbourhoodRelations
+public import Section4.FullDimension
+
+@[expose] public section
 
 /-! Closure in the valuation topology is definable over the same base.
 In positive VF arity, closure preserves the strict dimension drop. -/

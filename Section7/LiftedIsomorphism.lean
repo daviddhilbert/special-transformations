@@ -1,12 +1,16 @@
-import Section7.BalancedCorrespondence
-import Section7.PullbackLiftRelations
-import Section4.LiftMorphism
-import Section4.CanonicalNormalization
-import Section4.FunctionalRelations
-import Section4.VFAllScissors
-import Section4.VFFiniteScissors
-import Section4.RVScissorPresentation
-import Section4.GradedLifts
+module
+
+public import Section7.BalancedCorrespondence
+public import Section7.PullbackLiftRelations
+public import Section4.LiftMorphism
+public import Section4.CanonicalNormalization
+public import Section4.FunctionalRelations
+public import Section4.VFAllScissors
+public import Section4.VFFiniteScissors
+public import Section4.RVScissorPresentation
+public import Section4.GradedLifts
+
+@[expose] public section
 
 section VolumeCorrespondenceProof
 

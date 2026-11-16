@@ -1,7 +1,11 @@
-import Section10.EssentialVFMeasure
-import Section10.GammaVolumeLift
-import Section10.RVVolumeRepresentative
-import Mathlib.CategoryTheory.Groupoid
+module
+
+public import Section10.EssentialVFMeasure
+public import Section10.GammaVolumeLift
+public import Section10.RVVolumeRepresentative
+public import Mathlib.CategoryTheory.Groupoid
+
+@[expose] public section
 
 /-! Remark 10.2 for the two positive-degree finite-volume VF categories.
 An arrow is its bijection on independent points together with the

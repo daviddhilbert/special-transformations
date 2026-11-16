@@ -1,6 +1,10 @@
-import Section6.ConcreteFieldAxioms
-import Section6.ConcreteResidueOps
-import Section6.ConcreteExtension
+module
+
+public import Section6.ConcreteFieldAxioms
+public import Section6.ConcreteResidueOps
+public import Section6.ConcreteExtension
+
+@[expose] public section
 
 /-! Sort, group, order, and valuation-link axioms on ordinary leading terms. -/
 

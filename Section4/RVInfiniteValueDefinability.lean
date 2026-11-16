@@ -1,6 +1,10 @@
-import Section4.RVValueCofiniteness
-import Section3.GammaCodeDefinability
-import Section3.ClosureBridge
+module
+
+public import Section4.RVValueCofiniteness
+public import Section3.GammaCodeDefinability
+public import Section3.ClosureBridge
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

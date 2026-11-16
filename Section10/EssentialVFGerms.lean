@@ -1,5 +1,9 @@
-import Section10.EssentialVFMap
-import Section4.MapCorestrict
+module
+
+public import Section10.EssentialVFMap
+public import Section4.MapCorestrict
+
+@[expose] public section
 
 /-! Cofull definable domains and the induced bijections on independent VF
 tuples. Independence is relative to the original parameter set. -/

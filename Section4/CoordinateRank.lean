@@ -1,5 +1,9 @@
-import Section4.TupleBasis
-import Section4.TupleIndependence
+module
+
+public import Section4.TupleBasis
+public import Section4.TupleIndependence
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false

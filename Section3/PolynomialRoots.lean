@@ -1,5 +1,9 @@
-import Section3.RingSyntax
-import Section3.Parameters
+module
+
+public import Section3.RingSyntax
+public import Section3.Parameters
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

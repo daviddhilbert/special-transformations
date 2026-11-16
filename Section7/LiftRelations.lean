@@ -1,4 +1,8 @@
-import Section7.GammaPolynomial
+module
+
+public import Section7.GammaPolynomial
+
+@[expose] public section
 
 /-!
 # Definition 7.3 on products of VF powers

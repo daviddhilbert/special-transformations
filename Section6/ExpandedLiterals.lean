@@ -1,5 +1,9 @@
-import Section6.RVSubstructure
-import Section6.CommonEnvelopeComparison
+module
+
+public import Section6.RVSubstructure
+public import Section6.CommonEnvelopeComparison
+
+@[expose] public section
 
 /-! The earlier equality-at-the-difference identity in an actual RV-only
 expansion of a native substructure. RV quantifiers and RV parameters

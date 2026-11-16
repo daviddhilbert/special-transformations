@@ -1,6 +1,10 @@
-import Section4.DefinableCategory
-import Section4.UnionMapLaws
-import Mathlib.CategoryTheory.Limits.Shapes.BinaryProducts
+module
+
+public import Section4.DefinableCategory
+public import Section4.UnionMapLaws
+public import Mathlib.CategoryTheory.Limits.Shapes.BinaryProducts
+
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language CategoryTheory CategoryTheory.Limits
 

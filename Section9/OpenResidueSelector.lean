@@ -1,7 +1,11 @@
-import Section9.ResidueChartReducedness
-import Section9.GenericChartSelector
-import Section9.ResidueChartDenominators
-import Section9.ResidueChartFormula
+module
+
+public import Section9.ResidueChartReducedness
+public import Section9.GenericChartSelector
+public import Section9.ResidueChartDenominators
+public import Section9.ResidueChartFormula
+
+@[expose] public section
 
 /-! On the generically étale square system, a single extra open
 factor selects exactly the given constructible residue correspondence.

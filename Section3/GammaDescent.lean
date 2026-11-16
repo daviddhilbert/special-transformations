@@ -1,8 +1,12 @@
-import Section3.GammaFamilyIntersection
-import Section3.GammaSpecialization
-import Section3.AlgebraicUniformCover
-import Section3.NormalizationSaturation
-import Section3.SmallFiniteParameters
+module
+
+public import Section3.GammaFamilyIntersection
+public import Section3.GammaSpecialization
+public import Section3.AlgebraicUniformCover
+public import Section3.NormalizationSaturation
+public import Section3.SmallFiniteParameters
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

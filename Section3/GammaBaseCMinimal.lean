@@ -1,5 +1,9 @@
-import Section3.GammaSpecialization
-import Section3.RVUnaryLift
+module
+
+public import Section3.GammaSpecialization
+public import Section3.RVUnaryLift
+
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

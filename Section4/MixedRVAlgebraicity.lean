@@ -1,7 +1,11 @@
-import Section4.RVBaseAlgebraicity
-import Section4.RVFiniteMapRank
-import Section4.MapAlgebraicity
-import Section4.LiftFibres
+module
+
+public import Section4.RVBaseAlgebraicity
+public import Section4.RVFiniteMapRank
+public import Section4.MapAlgebraicity
+public import Section4.LiftFibres
+
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,7 +1,11 @@
-import Section3.AlgebraicRVLifting
-import Section3.AlgebraicTransitivity
-import Section3.SortedFunctionClosure
-import Section3.TranscendenceDegrees
+module
+
+public import Section3.AlgebraicRVLifting
+public import Section3.AlgebraicTransitivity
+public import Section3.SortedFunctionClosure
+public import Section3.TranscendenceDegrees
+
+@[expose] public section
 
 /- Component: AclRVImage -/
 set_option backward.isDefEq.respectTransparency false
