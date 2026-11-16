@@ -71,7 +71,7 @@ def visit(name):
     content = source.read_text(encoding='utf-8')
     if re.search(r'\b(?:sorry|admit|axiom)\b', code_only(content)):
         raise RuntimeError('Placeholder or custom axiom in ' + name)
-    imports = re.findall(r'^import ([\w.]+)$', content, re.M)
+    imports = re.findall(r'^(?:(?:public|private)\s+)?import ([\w.]+)$', content, re.M)
     deps = [visit(d) if d.startswith('Section6.') else external(d) for d in imports]
     fp = hashlib.sha256((version + pin_key + sha(source) + ''.join(deps)).encode()).hexdigest()
     fingerprints[name] = fp

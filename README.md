@@ -29,7 +29,15 @@ group-level obstruction checked in Lean. [Retraction](Section3/RETRACTIONS.md)
 
 The completed ACF/ACVF/RV quantifier-elimination proofs
 live in [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE), pinned here at
-`939346b0a99899e22a873479364e3cc5d142731c`.
+`a4138c3a7899330d1c77d1ec01f8f29395b5805c`.
+
+Twenty-two reusable definability, presentation and completion modules are
+provided by the pinned [hilbert-mathlib](https://github.com/daviddhilbert/hilbert-mathlib)
+dependency. Their original module paths remain compatibility imports and
+their declaration names and mathematical statements are unchanged.
+[SHARED-FOUNDATION.json](SHARED-FOUNDATION.json) records the exact proof
+providers and source fingerprints; `scripts/check_shared_foundation.py`
+checks them before the CI build.
 
 The RV QE result uses the corrected language with a named RV inverse. The
 author confirmed that the omission of inverse symbols before Convention 2.5

@@ -81,6 +81,22 @@ jobs:
       - name: Check the pinned QE package's module registration
         run: python3 scripts/prepare_ci.py
 
+      - name: Check shared proof ownership and provenance
+        run: python3 scripts/check_shared_foundation.py
+
+      - name: Restore compiled proof modules
+        id: proof-cache
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            .lake/build
+            .lake/packages/acvf_qe/.lake/build
+            .lake/packages/hilbert-mathlib/.lake/build
+          key: proofs-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            proofs-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            proofs-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-
+
       - name: Check compiled import cache provenance
         id: provenance
         run: python3 scripts/test_lean_provenance.py
@@ -97,6 +113,16 @@ jobs:
           if grep -F "declaration uses 'sorry'" .scratch/ci-verified/Build.log; then
             exit 1
           fi
+
+      - name: Save compiled proof modules
+        if: ${{ steps.build.outcome == 'success' && steps.proof-cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            .lake/build
+            .lake/packages/acvf_qe/.lake/build
+            .lake/packages/hilbert-mathlib/.lake/build
+          key: ${{ steps.proof-cache.outputs.cache-primary-key }}
 
       - name: Run the headline audits concurrently
         id: audits
@@ -179,6 +205,7 @@ jobs:
           path: |
             lean-toolchain
             lake-manifest.json
+            .scratch/shared-foundation.json
             .scratch/ci-verified/**
             .scratch/section3-verified/*.log
             .scratch/section3-verified/*.json

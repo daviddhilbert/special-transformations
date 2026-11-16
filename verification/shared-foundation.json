@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "source_build": "lake build SpecialTransformations (10071 jobs)",
+  "audit_command": "lake env python3 scripts/verify_ci.py built",
+  "audit_groups": {
+    "foundation": "success",
+    "section5": "success",
+    "section3": "success",
+    "section6": "success",
+    "section4": "success",
+    "section8": "success",
+    "section7": "success",
+    "section9": "success",
+    "section10": "success"
+  },
+  "shared_modules": 22,
+  "shared_provider": "a26c12d71f83356ad48442b782be67ff01bd3f18",
+  "qe_provider": "a4138c3a7899330d1c77d1ec01f8f29395b5805c",
+  "provenance_tests": "4 passed",
+  "scope": "Full coordination-root source build and all existing CI headline audit groups; original theorem types and standing hypotheses retained."
+}

@@ -1,0 +1,205 @@
+{
+  "provider": "daviddhilbert/hilbert-mathlib",
+  "revision": "a26c12d71f83356ad48442b782be67ff01bd3f18",
+  "public_names": "unchanged",
+  "modules": [
+    {
+      "path": "Section3/DefinableConstants.lean",
+      "module": "Section3.DefinableConstants",
+      "target_module": "HilbertMathlib.Foundation.Definability.DefinableConstants",
+      "target_path": "HilbertMathlib/Foundation/Definability/DefinableConstants.lean",
+      "extracted_sha256": "21b258041348d51a50113065818a1232f3b37b94c532c03e3a13a6b137283cb8",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section3/DefinableConstants.lean",
+      "compatibility_sha256": "a31715b1c4860aa6e2d60886f26bd34d6512ce2cce5b24b9a31320ed9a3357f9"
+    },
+    {
+      "path": "Section3/DefinableReduct.lean",
+      "module": "Section3.DefinableReduct",
+      "target_module": "HilbertMathlib.Foundation.Definability.DefinableReduct",
+      "target_path": "HilbertMathlib/Foundation/Definability/DefinableReduct.lean",
+      "extracted_sha256": "9fe5efff864c7c5af88f7d73d2d5bd309bc65edd9d7047fd7bf850af18d0a1db",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section3/DefinableReduct.lean",
+      "compatibility_sha256": "c617602cea293ec3c93629e61e752d112b2bba8cc7514ea2e3ff8532b0f0bfa7"
+    },
+    {
+      "path": "Section4/AdditiveCongruences.lean",
+      "module": "Section4.AdditiveCongruences",
+      "target_module": "HilbertMathlib.Foundation.Grothendieck.AdditiveCongruences",
+      "target_path": "HilbertMathlib/Foundation/Grothendieck/AdditiveCongruences.lean",
+      "extracted_sha256": "1288b3aa607c90dff6725750d4e1703d5f95e700d5d123dc7859a1c9680486a9",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/AdditiveCongruences.lean",
+      "compatibility_sha256": "1334fc1fb8d99c73311f43a0c9259dcc840231795746529efe7d0c940ee52f25"
+    },
+    {
+      "path": "Section4/CodeMaps.lean",
+      "module": "Section4.CodeMaps",
+      "target_module": "HilbertMathlib.Foundation.Definability.CodeMaps",
+      "target_path": "HilbertMathlib/Foundation/Definability/CodeMaps.lean",
+      "extracted_sha256": "9d0b54090a00b19a6d065153404c5cf54fd076ba42e4c00dc4df51caa6e583e4",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/CodeMaps.lean",
+      "compatibility_sha256": "7c2adb93141a0dc3ce8177e9f184a9e25af690539a7e30becd6c92d1ef67e5c8"
+    },
+    {
+      "path": "Section4/Congruences.lean",
+      "module": "Section4.Congruences",
+      "target_module": "HilbertMathlib.Foundation.Grothendieck.Congruences",
+      "target_path": "HilbertMathlib/Foundation/Grothendieck/Congruences.lean",
+      "extracted_sha256": "743245943513d8cc2ca10e19ff1a70074b7350f7164c0c3f4d08896835b1f147",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/Congruences.lean",
+      "compatibility_sha256": "5b042a05bb0aabb9ecff89868e38a41b3b90f58f70dcb0deafdbf4de0d386e46"
+    },
+    {
+      "path": "Section4/DefinableCategory.lean",
+      "module": "Section4.DefinableCategory",
+      "target_module": "HilbertMathlib.Foundation.Definability.DefinableCategory",
+      "target_path": "HilbertMathlib/Foundation/Definability/DefinableCategory.lean",
+      "extracted_sha256": "5740fab86d613ac48881737e9dcec687e1c0a16454ba2dea1277fbecbfa5e0d5",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/DefinableCategory.lean",
+      "compatibility_sha256": "c36ab6766c165b7cbf5b98cd27f301e6487a72987e4ade7bd35cc307cd141bee"
+    },
+    {
+      "path": "Section4/DefinableGeometry.lean",
+      "module": "Section4.DefinableGeometry",
+      "target_module": "HilbertMathlib.Foundation.Definability.DefinableGeometry",
+      "target_path": "HilbertMathlib/Foundation/Definability/DefinableGeometry.lean",
+      "extracted_sha256": "a0a501f89ca5974fb0f5d84187d6947a7a251cc158704c2c51eacd93103568c4",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/DefinableGeometry.lean",
+      "compatibility_sha256": "0f7a9cd51c9ca4b8397dba88130ad2a326d4d86e66f8a933d61d74c43c506ee5"
+    },
+    {
+      "path": "Section4/DefinableUnionCoproduct.lean",
+      "module": "Section4.DefinableUnionCoproduct",
+      "target_module": "HilbertMathlib.Foundation.Definability.DefinableUnionCoproduct",
+      "target_path": "HilbertMathlib/Foundation/Definability/DefinableUnionCoproduct.lean",
+      "extracted_sha256": "2f30dd11b0e8586a1d909b3fbc31a77ba22c7ce488a58c1c46aba5aa4c84fd82",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/DefinableUnionCoproduct.lean",
+      "compatibility_sha256": "5e6ed282badc6533d94deec17debab663572b8d303751aab7a3544e06f25b516"
+    },
+    {
+      "path": "Section4/FiniteGluing.lean",
+      "module": "Section4.FiniteGluing",
+      "target_module": "HilbertMathlib.Foundation.Definability.FiniteGluing",
+      "target_path": "HilbertMathlib/Foundation/Definability/FiniteGluing.lean",
+      "extracted_sha256": "a9650aef43245003b6ee3c8c9ae0f7107c9d33653dba17aa6046154d9773bb24",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/FiniteGluing.lean",
+      "compatibility_sha256": "2cf3e3c41405f3cc8503650c765774057fabf4bfbfb349f2b34ec8b5e1f43cc2"
+    },
+    {
+      "path": "Section4/FiniteGluingRelation.lean",
+      "module": "Section4.FiniteGluingRelation",
+      "target_module": "HilbertMathlib.Foundation.Definability.FiniteGluingRelation",
+      "target_path": "HilbertMathlib/Foundation/Definability/FiniteGluingRelation.lean",
+      "extracted_sha256": "5a80fddd690af9fab5245748dc40d9a183c61613e4aa1b2dbdd58dd178596353",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/FiniteGluingRelation.lean",
+      "compatibility_sha256": "55bfc797cd648d1c7b6296cd095f869df2f979cd7fb0f8955d676ad871151b36"
+    },
+    {
+      "path": "Section4/FiniteMaps.lean",
+      "module": "Section4.FiniteMaps",
+      "target_module": "HilbertMathlib.Foundation.Definability.FiniteMaps",
+      "target_path": "HilbertMathlib/Foundation/Definability/FiniteMaps.lean",
+      "extracted_sha256": "6239935cf71a32ce35b57c19a7baa315aaf25cfc990ac831ce627d3b7cf3047e",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/FiniteMaps.lean",
+      "compatibility_sha256": "2ea7e0bc3c65f70ab7e2689a80475145c1ed1279051bbf3e113fff904eafc988"
+    },
+    {
+      "path": "Section4/Imported/GrothendieckRing.lean",
+      "module": "Section4.Imported.GrothendieckRing",
+      "target_module": "HilbertMathlib.Foundation.Grothendieck.GrothendieckRing",
+      "target_path": "HilbertMathlib/Foundation/Grothendieck/GrothendieckRing.lean",
+      "extracted_sha256": "3e556151b66c7c6e39f4eab7f11007d172d6b796691be0cd4dcec7c55afae603",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/Imported/GrothendieckRing.lean",
+      "compatibility_sha256": "99f62610709abd036041fae6f2fd147722ccf38561b46d309e52fb5506f4488e"
+    },
+    {
+      "path": "Section4/MapCorestrict.lean",
+      "module": "Section4.MapCorestrict",
+      "target_module": "HilbertMathlib.Foundation.Definability.MapCorestrict",
+      "target_path": "HilbertMathlib/Foundation/Definability/MapCorestrict.lean",
+      "extracted_sha256": "226eb95323149193b0545ed2a5f37446ef21256381f7a8ede0c3b53383223f08",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/MapCorestrict.lean",
+      "compatibility_sha256": "b8163faab74f747905d847fe5cde36d088837fe1060c54b4390b86c747cb3b10"
+    },
+    {
+      "path": "Section4/MapParameters.lean",
+      "module": "Section4.MapParameters",
+      "target_module": "HilbertMathlib.Foundation.Definability.MapParameters",
+      "target_path": "HilbertMathlib/Foundation/Definability/MapParameters.lean",
+      "extracted_sha256": "259237f3871ef433987330a9d9eb5bf6ac294ca2927f39cfd72914812668bec3",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/MapParameters.lean",
+      "compatibility_sha256": "534d321199a35d88d0b70fae857106305c6d9f674f8aa71065470ef077af1d8f"
+    },
+    {
+      "path": "Section4/MapProduct.lean",
+      "module": "Section4.MapProduct",
+      "target_module": "HilbertMathlib.Foundation.Definability.MapProduct",
+      "target_path": "HilbertMathlib/Foundation/Definability/MapProduct.lean",
+      "extracted_sha256": "432d52452f6c9f89675b6200f53934701442303e4ce48b78cd4ff7b9c98b41e8",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/MapProduct.lean",
+      "compatibility_sha256": "ca7005a840db10101b5efafe6bc968d7168ad796c9e6502f7a2bd0d7782481e8"
+    },
+    {
+      "path": "Section4/PositiveAdditivePresentation.lean",
+      "module": "Section4.PositiveAdditivePresentation",
+      "target_module": "HilbertMathlib.Foundation.Grothendieck.PositiveAdditivePresentation",
+      "target_path": "HilbertMathlib/Foundation/Grothendieck/PositiveAdditivePresentation.lean",
+      "extracted_sha256": "3670d3b85afebca1963ed37da15032f059e53cfac2d5a18d54ed26866d0bbd32",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/PositiveAdditivePresentation.lean",
+      "compatibility_sha256": "0b59510f78ecc016d22d126484a929f330cbecfb627474759146bc3f2a52bb77"
+    },
+    {
+      "path": "Section4/PositiveAdditiveRepresentatives.lean",
+      "module": "Section4.PositiveAdditiveRepresentatives",
+      "target_module": "HilbertMathlib.Foundation.Grothendieck.PositiveAdditiveRepresentatives",
+      "target_path": "HilbertMathlib/Foundation/Grothendieck/PositiveAdditiveRepresentatives.lean",
+      "extracted_sha256": "a168c3dc8f22845ee1f6fb09cd5d8de89e149cecd1550d1478ec100b477f3f46",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/PositiveAdditiveRepresentatives.lean",
+      "compatibility_sha256": "d3e8e12ff57610d85e70cb8d17e73823164d7250ef4b5eb59fb8d70a3d9ab729"
+    },
+    {
+      "path": "Section4/PositiveCompletion.lean",
+      "module": "Section4.PositiveCompletion",
+      "target_module": "HilbertMathlib.Foundation.Grothendieck.PositiveCompletion",
+      "target_path": "HilbertMathlib/Foundation/Grothendieck/PositiveCompletion.lean",
+      "extracted_sha256": "9953010609e54b52e9d4565b20498ee69c3ae663cd8bcd1aa1ca6719cff27b4c",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/PositiveCompletion.lean",
+      "compatibility_sha256": "f182ae709ddc29345045d44e61345c22ee54ce898099626c57eedfcfdc9a0c6c"
+    },
+    {
+      "path": "Section4/PositivePresentation.lean",
+      "module": "Section4.PositivePresentation",
+      "target_module": "HilbertMathlib.Foundation.Grothendieck.PositivePresentation",
+      "target_path": "HilbertMathlib/Foundation/Grothendieck/PositivePresentation.lean",
+      "extracted_sha256": "f5721e89044c6c291dbfe0851c96c9d0e3ed46df8e54ad11931e22b01239bab9",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/PositivePresentation.lean",
+      "compatibility_sha256": "0091bc2464dbd549d6c613370976c366d2b5917cd8637abfec6a1345fdf942cf"
+    },
+    {
+      "path": "Section4/ProductRearrangement.lean",
+      "module": "Section4.ProductRearrangement",
+      "target_module": "HilbertMathlib.Foundation.Definability.ProductRearrangement",
+      "target_path": "HilbertMathlib/Foundation/Definability/ProductRearrangement.lean",
+      "extracted_sha256": "fef449fb9fcc85fb51e154f31439001cc2955c96a0f43f07fc99ea97eff55e84",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/ProductRearrangement.lean",
+      "compatibility_sha256": "d7d7e58c38fc7cb917a354c0cda99acbc82ae177bd8834736690adf92868e8ee"
+    },
+    {
+      "path": "Section4/Products.lean",
+      "module": "Section4.Products",
+      "target_module": "HilbertMathlib.Foundation.Definability.Products",
+      "target_path": "HilbertMathlib/Foundation/Definability/Products.lean",
+      "extracted_sha256": "5df94dac3f6be0457f1ddecf69e06127213b232caee3ef014efdeb0a459cdb55",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/Products.lean",
+      "compatibility_sha256": "4f9616b5a176aefac8d1e4b978d7eee81224380129be86b9eac274515b0a02bd"
+    },
+    {
+      "path": "Section4/UnionMapLaws.lean",
+      "module": "Section4.UnionMapLaws",
+      "target_module": "HilbertMathlib.Foundation.Definability.UnionMapLaws",
+      "target_path": "HilbertMathlib/Foundation/Definability/UnionMapLaws.lean",
+      "extracted_sha256": "cee70b73f16f2fb39da0e6c6bd19da739a28e547acf35042694943352daa1a3e",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/UnionMapLaws.lean",
+      "compatibility_sha256": "ae70747e433eeb426c6c1cfe079d325720070d2dffa86c163841100f30ec52e2"
+    }
+  ]
+}

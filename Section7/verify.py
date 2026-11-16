@@ -72,7 +72,7 @@ def visit(name):
     content = code_only(source.read_text(encoding='utf-8'))
     if re.search(r'\b(?:sorry|admit|axiom)\b', content):
         raise RuntimeError('Proof placeholder or custom axiom: ' + name)
-    deps = re.findall(r'^\s*import ([\w.]+)\s*$', content, re.M)
+    deps = re.findall(r'^\s*(?:(?:public|private)\s+)?import ([\w.]+)\s*$', content, re.M)
     imports[name] = deps
     source_hashes[str(source)] = sha(source)
     for dep in deps:
