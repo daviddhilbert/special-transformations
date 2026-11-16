@@ -18,3 +18,12 @@ only propext, Classical.choice and Quot.sound. This checks the dependency
 closure consumed by that entry, not a new audit of every predecessor module.
 Full Palomar preflight and registration belong to the downstream submission
 and have not occurred at this preparation stage.
+
+The downstream selection is now Proposition 3.19 (finite open-to-open
+partitions) and Lemma 4.8 (definable two-cell decomposition). Both actual
+module-format theorems and their Solution compiled; their full types were
+inspected and both axiom audits use only the same three logical axioms.
+The additional change exposes the existing `var` and `difference` syntax
+helpers in Section3.NearestRootDefinability. Their types and bodies are
+unchanged. This is a selected dependency-closure check, not a whole-project
+Palomar submission or registration.
