@@ -1,0 +1,996 @@
+{
+  "scope": "Approved Fubini prerequisites; source proof text and public statements retained.",
+  "modules": [
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQEFiniteLaws.lean",
+      "module": "\u00absection 5\u00bb.GammaQEFiniteLaws",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "Fubini theorems",
+      "action": "split-core-from-consumer-adapter",
+      "family": "Fubini prerequisite and result API",
+      "reason": "Generic finite_laws_of_flat_graph should join the post-QE Gamma API; exact GammaPiecewiseRationalAffineInput instantiation remains a Fubini adapter",
+      "sha256": "91dfbc8b9d78a05f2e2489d02a251b8fa9de592e56decef859f5b8dc8e09e98d",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEFiniteLaws.lean",
+      "promotion": "Split finite_laws_of_flat_graph unchanged to Section3.GammaQEFiniteLaws; retain gamma_piecewise_rational_affine wrapper in Fubini.",
+      "target_module": "Section3.GammaQEFiniteLaws",
+      "target_path": "Section3/GammaQEFiniteLaws.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.finite_laws_of_flat_graph"
+        }
+      ],
+      "extracted_sha256": "708792398a172d0fc7da01a853b559dc38aa4277e5e1e030d66f32755136fbae",
+      "compatibility_sha256": "9759b058736f834bc33cd496b1d3ad48cd4aff5e50f3a2c4ac23fee983f52793",
+      "split": true
+    },
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQEFlatLiterals.lean",
+      "module": "\u00absection 5\u00bb.GammaQEFlatLiterals",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "special-transformations",
+      "action": "upstream-Gamma-QE-core",
+      "family": "Post-QE Gamma rational-affine preparation",
+      "reason": "Uses guarded RV normal form and Gamma predicates already owned here",
+      "sha256": "1ffe0cb030c148de29cbc764d79f70401df2fac61253c4fe31321b000536436b",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEFlatLiterals.lean",
+      "target_module": "Section3.GammaQEFlatLiterals",
+      "target_path": "Section3/GammaQEFlatLiterals.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.literalMonomials"
+        },
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.ValueComparisonsPreserved"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_value_equality_preserved"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_literal_preserved"
+        }
+      ],
+      "extracted_sha256": "a3ecde4ad6681bb73873abe3fca93b982c90358fcad46d7bc66b1a0ee8975663",
+      "compatibility_sha256": "064298e2ebf8a2d7def1707e6b32edb8dd96045c7340e0426977657d84aafe08",
+      "split": false
+    },
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQEFlatMonomials.lean",
+      "module": "\u00absection 5\u00bb.GammaQEFlatMonomials",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "special-transformations",
+      "action": "upstream-Gamma-QE-core",
+      "family": "Post-QE Gamma rational-affine preparation",
+      "reason": "Uses guarded RV normal form and Gamma predicates already owned here",
+      "sha256": "5b4f92105afae819909a1aa265654d87731c1aac14df8dfd988461e5f7c61aae",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEFlatMonomials.lean",
+      "target_module": "Section3.GammaQEFlatMonomials",
+      "target_path": "Section3/GammaQEFlatMonomials.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.perturbRV"
+        },
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.flatCoefficient"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_rawEval"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_rawEval_perturb"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_rawEval_ne_zero"
+        },
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.flatValue"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_value"
+        }
+      ],
+      "extracted_sha256": "8e02503ca7c07dff95e330ee5429a6e7cdc83507212bd2226e77b4e5671273ff",
+      "compatibility_sha256": "d73821a1c05d857bc4f545ca66383c48772a0b68323f2ac27e4ecc075f6ae93d",
+      "split": false
+    },
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQEFlatPerturbation.lean",
+      "module": "\u00absection 5\u00bb.GammaQEFlatPerturbation",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "special-transformations",
+      "action": "upstream-Gamma-QE-core",
+      "family": "Post-QE Gamma rational-affine preparation",
+      "reason": "Uses guarded RV normal form and Gamma predicates already owned here",
+      "sha256": "49132b209e8f47805f710c30f0a59ccdf207faba686bc0b4c3733d72e7d58e45",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEFlatPerturbation.lean",
+      "target_module": "Section3.GammaQEFlatPerturbation",
+      "target_path": "Section3/GammaQEFlatPerturbation.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_finite_perturbation"
+        }
+      ],
+      "extracted_sha256": "79e872a285b09f15e02f8efedaac676d1f82f11eb084d8186bd0076b3b9b5a1d",
+      "compatibility_sha256": "8f9b8bc588438c929906e39cfbbf4d3d04be8315e975f6a8937434a485caea33",
+      "split": false
+    },
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQEFlatResidue.lean",
+      "module": "\u00absection 5\u00bb.GammaQEFlatResidue",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "special-transformations",
+      "action": "upstream-Gamma-QE-core",
+      "family": "Post-QE Gamma rational-affine preparation",
+      "reason": "Uses guarded RV normal form and Gamma predicates already owned here",
+      "sha256": "f0ac803aa303a3739487b8c76154df0af5f9cc9a5de3680e978723e07d7093ae",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEFlatResidue.lean",
+      "target_module": "Section3.GammaQEFlatResidue",
+      "target_path": "Section3/GammaQEFlatResidue.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.SlopesSeparated"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_residue_term_fixed"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_residue_polynomial_fixed"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.raw_residue_sum_inK"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.flat_polynomial_inK"
+        }
+      ],
+      "extracted_sha256": "d9e3178e40f32ff771bdae03ce0f8dbe7ce2db27de2b5fbb082648a7232c5814",
+      "compatibility_sha256": "019de1d697027e7cc73c323fdca4873586a655c894a9ff734955be0fc464b9b5",
+      "split": false
+    },
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQEGraphCritical.lean",
+      "module": "\u00absection 5\u00bb.GammaQEGraphCritical",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "special-transformations",
+      "action": "upstream-Gamma-QE-core",
+      "family": "Post-QE Gamma rational-affine preparation",
+      "reason": "Uses guarded RV normal form and Gamma predicates already owned here",
+      "sha256": "e102a54d6d03609c5ae618b0dd7e7e3240f9ea27850b7cbd38d234959b06bc9a",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEGraphCritical.lean",
+      "target_module": "Section3.GammaQEGraphCritical",
+      "target_path": "Section3/GammaQEGraphCritical.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.dnfMonomials"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.graph_has_critical_pair"
+        }
+      ],
+      "extracted_sha256": "4284c8c5868073acd6cbbb78b4727c8537b758c216c83871852d0184a6d30103",
+      "compatibility_sha256": "56854949663a752d8db9b035540ad920e3fbaadfe0f92b5a38472a511a7a89bf",
+      "split": false
+    },
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQEParser.lean",
+      "module": "\u00absection 5\u00bb.GammaQEParser",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "special-transformations",
+      "action": "upstream-Gamma-QE-core",
+      "family": "Post-QE Gamma rational-affine preparation",
+      "reason": "Uses guarded RV normal form and Gamma predicates already owned here",
+      "sha256": "e6ec99ecfc3c8ac83af3a56d51b95c7566ca00cd996b31f660410f523a3ae784",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEParser.lean",
+      "target_module": "Section3.GammaQEParser",
+      "target_path": "Section3/GammaQEParser.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.gamma_flat_normal_form"
+        }
+      ],
+      "extracted_sha256": "0961574735a36cf2596d4ffcbf88972b701dd4af8932fee32a0c03c93772ecf1",
+      "compatibility_sha256": "879b12db837d42669ddbdc2f2d5fd7afc79cee6d31b207b4e64c9a919ea8d133",
+      "split": false
+    },
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQERVBasics.lean",
+      "module": "\u00absection 5\u00bb.GammaQERVBasics",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "special-transformations",
+      "action": "upstream-Gamma-QE-core",
+      "family": "Post-QE Gamma rational-affine preparation",
+      "reason": "Uses guarded RV normal form and Gamma predicates already owned here",
+      "sha256": "d4892f5f77d75a80791ff523d540e5265d3f3d2d26a041d9dde723299b1100d7",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQERVBasics.lean",
+      "target_module": "Section3.GammaQERVBasics",
+      "target_path": "Section3/GammaQERVBasics.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.rvGamma"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rvGamma_val"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rv_inK_iff"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.gamma_val_zpow"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rv_value_zpow"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rvGamma_one"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rvGamma_mul"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rvGamma_inv"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rvGamma_zpow"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rvGamma_eq_iff"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rvGamma_surjective"
+        }
+      ],
+      "extracted_sha256": "eceabcb28f54b254cfae51e0bf0743af4b38d3e2f0772831c6cc1bff234494ac",
+      "compatibility_sha256": "285a5fbddc65e05b1270d3ab3c6efb5f76240cfcefe3486c8a656f1527b86cd9",
+      "split": false
+    },
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQERVVariableMaps.lean",
+      "module": "\u00absection 5\u00bb.GammaQERVVariableMaps",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "special-transformations",
+      "action": "upstream-Gamma-QE-core",
+      "family": "Post-QE Gamma rational-affine preparation",
+      "reason": "Uses guarded RV normal form and Gamma predicates already owned here",
+      "sha256": "3d1af2adeb3a6fb37f007b640fdb5398e8e07639a46116fdc7ef3c8dd07f80d9",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQERVVariableMaps.lean",
+      "target_module": "Section3.GammaQERVVariableMaps",
+      "target_path": "Section3/GammaQERVVariableMaps.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.mapRVVariables"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.mapRVVariables_eval"
+        },
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.mapRVAtomVariables"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.mapRVAtomVariables_eval"
+        },
+        {
+          "kind": "def",
+          "name": "DiamondIntegral.Section5.GammaQE.mapRVBooleanVariables"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.mapRVBooleanVariables_eval"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.sourceVFValues_allRV"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rvGamma_codeValue"
+        }
+      ],
+      "extracted_sha256": "68507ed95d9b95341ce623d2ad34e01f336ac473c9ebfe4d9a47d63254125cf1",
+      "compatibility_sha256": "14b36b4886cb0f06ad2762d1a1a036b009984ad325febdfd323848edf2562123",
+      "split": false
+    },
+    {
+      "repo": "diamond-integral",
+      "source_commit": "ba6249a11b39e8e71fd0130ab0087e7185b95433",
+      "path": "section 5/GammaQEValueAlgebra.lean",
+      "module": "\u00absection 5\u00bb.GammaQEValueAlgebra",
+      "active": "True",
+      "fubini": "True",
+      "fubini_headlines": "True",
+      "proposed_owner": "special-transformations",
+      "action": "upstream-Gamma-QE-core",
+      "family": "Post-QE Gamma rational-affine preparation",
+      "reason": "Uses guarded RV normal form and Gamma predicates already owned here",
+      "sha256": "76a830bed6a707f47c959378967de57ecb9cdb0ffaa1d34117dcedc239166f00",
+      "source_url": "https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEValueAlgebra.lean",
+      "target_module": "Section3.GammaQEValueAlgebra",
+      "target_path": "Section3/GammaQEValueAlgebra.lean",
+      "target_repo": "special-transformations",
+      "declarations": [
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.gammaTop_mul_le_mul_iff"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rv_value_ne_zero"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.rv_residue_value_one"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.scaled_residue_zero"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.scaled_residue_equality"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.gammaTop_le_zero"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.gammaTop_zero_le"
+        },
+        {
+          "kind": "theorem",
+          "name": "DiamondIntegral.Section5.GammaQE.scaled_value_order_zero"
+        }
+      ],
+      "extracted_sha256": "a4ce9fd5748981404a00b7e2b138e4e4ebebe1f3dd1edb4df5a8de46ab64483e",
+      "compatibility_sha256": "296780a8f6a35be08ec9fe8cf544bc52150ed556b00c6247a89c376196ed7cc6",
+      "split": false
+    }
+  ],
+  "declarations": [
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.finite_laws_of_flat_graph",
+      "provider": "Section3.GammaQEFiniteLaws",
+      "owner": "special-transformations",
+      "signature_sha256": "ea78cd7a7101930955225b49f26530bfedcd5f5b656978aac5c35c3c59c4e3a2",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.literalMonomials",
+      "provider": "Section3.GammaQEFlatLiterals",
+      "owner": "special-transformations",
+      "signature_sha256": "feb5bd44bd0210acdf0b377d987dae353b118fc0983d47cf042776a5ab203193",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.ValueComparisonsPreserved",
+      "provider": "Section3.GammaQEFlatLiterals",
+      "owner": "special-transformations",
+      "signature_sha256": "ca9db97421fbdef511f169f9f928e916393b936188edb8fd30ea8a164bb1f860",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_value_equality_preserved",
+      "provider": "Section3.GammaQEFlatLiterals",
+      "owner": "special-transformations",
+      "signature_sha256": "adf085611160d79c2b336b0608ba9f3db01e02a50ff6b14321060de0e4beb5cf",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_literal_preserved",
+      "provider": "Section3.GammaQEFlatLiterals",
+      "owner": "special-transformations",
+      "signature_sha256": "8fbf760376fdbb25930395c0ed312454daa9fb4fedd134f6268b0cb824ef97b8",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.perturbRV",
+      "provider": "Section3.GammaQEFlatMonomials",
+      "owner": "special-transformations",
+      "signature_sha256": "7e6f22a4e45c4b537c62e7edace05bf51518c547cef6bc0219a1d35c52c6a997",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.flatCoefficient",
+      "provider": "Section3.GammaQEFlatMonomials",
+      "owner": "special-transformations",
+      "signature_sha256": "ce4ddb653f1a57e50e501dabc69e81719922889312e2f797b4250583403f6ece",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_rawEval",
+      "provider": "Section3.GammaQEFlatMonomials",
+      "owner": "special-transformations",
+      "signature_sha256": "433c56144666b9fae55daefedd397b0e3e6487af091f0619c7409e58ff6386a0",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_rawEval_perturb",
+      "provider": "Section3.GammaQEFlatMonomials",
+      "owner": "special-transformations",
+      "signature_sha256": "96e13a3f264f62f1244a53919b49a789991486df91567ba94e7b857de9088049",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_rawEval_ne_zero",
+      "provider": "Section3.GammaQEFlatMonomials",
+      "owner": "special-transformations",
+      "signature_sha256": "f89dbd2c910b9356ff3c0fdb58f192cb5fa384fc8ab66ebbd992c871355be452",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.flatValue",
+      "provider": "Section3.GammaQEFlatMonomials",
+      "owner": "special-transformations",
+      "signature_sha256": "f2a6077255ddc6f4e2419640c71ccda7d0c011c9ca34da0801b54e9e186abbef",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_value",
+      "provider": "Section3.GammaQEFlatMonomials",
+      "owner": "special-transformations",
+      "signature_sha256": "66d4caa79c31fdfe97c2affaf3782a5665d101a5130c61e5c6f811956ce0c66a",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_finite_perturbation",
+      "provider": "Section3.GammaQEFlatPerturbation",
+      "owner": "special-transformations",
+      "signature_sha256": "0686b1194fe4d2f98f40b1db4a7dbb06fa2cc01298cfdf5e6e8bd6574caefbf5",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.SlopesSeparated",
+      "provider": "Section3.GammaQEFlatResidue",
+      "owner": "special-transformations",
+      "signature_sha256": "e2d646781a218aa5bde3be71b304821370d94c7976f58f3c81455b003e56ee59",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_residue_term_fixed",
+      "provider": "Section3.GammaQEFlatResidue",
+      "owner": "special-transformations",
+      "signature_sha256": "e189ecb1920d9ca06f6258b0aae9bb645ebd29e362d445757bb479d96092c9f5",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_residue_polynomial_fixed",
+      "provider": "Section3.GammaQEFlatResidue",
+      "owner": "special-transformations",
+      "signature_sha256": "9b9cc17491037024b70f26ded00c6cc363f560bab86ef85184843e9f45c9129b",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.raw_residue_sum_inK",
+      "provider": "Section3.GammaQEFlatResidue",
+      "owner": "special-transformations",
+      "signature_sha256": "2eb23345b8b0731eaac01bc6cccdf29e7e1751878c0293256db4df22fa97ffab",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.flat_polynomial_inK",
+      "provider": "Section3.GammaQEFlatResidue",
+      "owner": "special-transformations",
+      "signature_sha256": "6e2987ed349be21252a2066ab8e37644f064836cd7c4460ce72efa0ed71778c7",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.dnfMonomials",
+      "provider": "Section3.GammaQEGraphCritical",
+      "owner": "special-transformations",
+      "signature_sha256": "58c9197bbb782e7562aca06b1ac9c5aaf4cef6679a15bf52e675603db29c3488",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.graph_has_critical_pair",
+      "provider": "Section3.GammaQEGraphCritical",
+      "owner": "special-transformations",
+      "signature_sha256": "0f27391a70157951263d21a5bebe006e921ba034f87d3c272e9ba13fb76acf3a",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.gamma_flat_normal_form",
+      "provider": "Section3.GammaQEParser",
+      "owner": "special-transformations",
+      "signature_sha256": "50df31f08efc99d523083ba0c44faa50a9e024bcd40814546f545424f39aa31f",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.rvGamma",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "7e984a04996a2558ce056a57845b33c8518af5945faf569747b35fbcf6d05aa7",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rvGamma_val",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "b0ff0dae29770dcf21a4f06118a82ffc4fae3464defa14afacd235491eda8cb5",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rv_inK_iff",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "36241493dcdcfa2513e23ffd10f5315f0048be69a059fcbb6365e00fa589c726",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.gamma_val_zpow",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "b37736c36f5fb53600ec6434506924bf19cdb910814c14e6e49efb26406a502c",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rv_value_zpow",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "3353498f3768b80bf178f31f93e98e05131dea6015f03455e3f703bd0b0a6ec6",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rvGamma_one",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "7f1e354a2be44edff2130e4a513aa1cf6a2984bcac412df521c81035be009e8b",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rvGamma_mul",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "6ef9a4f9194edf4860e69a8e39da959acffc901ac4a79331a008208eff1f96f5",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rvGamma_inv",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "21e78736a0687c496c00d0d6a52a6fbe31fe72cd43d69906ff81ee2e8b54260f",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rvGamma_zpow",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "5320e7574070d6b52ea57ed8dc0abe57e967297a00005b97fe511ec3eeab61d7",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rvGamma_eq_iff",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "278922d13fc9c5bb1535bce283d7346eceff5da1bee73fff286798edceae9b13",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rvGamma_surjective",
+      "provider": "Section3.GammaQERVBasics",
+      "owner": "special-transformations",
+      "signature_sha256": "f46eae552c8f750076cca2072e5583545363e3d4f0edd08166778255a3f4f74f",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.mapRVVariables",
+      "provider": "Section3.GammaQERVVariableMaps",
+      "owner": "special-transformations",
+      "signature_sha256": "93c0301726c288c7f9dee9978040ecb11c4c51c3d7a3de4b650420685554836e",
+      "axioms": []
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.mapRVVariables_eval",
+      "provider": "Section3.GammaQERVVariableMaps",
+      "owner": "special-transformations",
+      "signature_sha256": "3d580265e83b3e2ca7c8305e057683b7103c5a14d063e0820d84b1cc73954d10",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.mapRVAtomVariables",
+      "provider": "Section3.GammaQERVVariableMaps",
+      "owner": "special-transformations",
+      "signature_sha256": "c878af882ffdb5699bd2900b926d6bd0bd66feb50cd5476b4212b125a971c698",
+      "axioms": []
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.mapRVAtomVariables_eval",
+      "provider": "Section3.GammaQERVVariableMaps",
+      "owner": "special-transformations",
+      "signature_sha256": "8ba72583749dea753d154142f72ba2d08a4886d4f49867ad4034f595f4aaba9f",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "def",
+      "name": "DiamondIntegral.Section5.GammaQE.mapRVBooleanVariables",
+      "provider": "Section3.GammaQERVVariableMaps",
+      "owner": "special-transformations",
+      "signature_sha256": "f46d967d860049cdf5ecec6ea2a8013cd7d5dde0bf7a043ccfb14cca19561a10",
+      "axioms": []
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.mapRVBooleanVariables_eval",
+      "provider": "Section3.GammaQERVVariableMaps",
+      "owner": "special-transformations",
+      "signature_sha256": "2b6119914e6b221061dd19c9ba80e212e7a59fc3f43b023e14cf237a05a31487",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.sourceVFValues_allRV",
+      "provider": "Section3.GammaQERVVariableMaps",
+      "owner": "special-transformations",
+      "signature_sha256": "8ba1cf1b2e7452098f65ebbcd4ea47d9ec800b7663422cdb6437e60b713d6de9",
+      "axioms": [
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rvGamma_codeValue",
+      "provider": "Section3.GammaQERVVariableMaps",
+      "owner": "special-transformations",
+      "signature_sha256": "0df1f257890d4b0d4a9ad9f83061313c31d82c52109569ba0aff305f8711b984",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.gammaTop_mul_le_mul_iff",
+      "provider": "Section3.GammaQEValueAlgebra",
+      "owner": "special-transformations",
+      "signature_sha256": "c30a9f2bb8f906f1966c7716673daa98ae371eb8d461666dc0aeffc5c02cc8a4",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rv_value_ne_zero",
+      "provider": "Section3.GammaQEValueAlgebra",
+      "owner": "special-transformations",
+      "signature_sha256": "4e0e361b56f2b273e7e0cfbeffdbcf2a58fd3f2b6c8bf2429c41c67c94f06345",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.rv_residue_value_one",
+      "provider": "Section3.GammaQEValueAlgebra",
+      "owner": "special-transformations",
+      "signature_sha256": "260d6a01b06f749c957c62904169e91397999bf306611fd606933dd531c067c7",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.scaled_residue_zero",
+      "provider": "Section3.GammaQEValueAlgebra",
+      "owner": "special-transformations",
+      "signature_sha256": "9dea1045816f1410e87842a6ceddcce11d6ec12c731969af2cad850c9fe3db54",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.scaled_residue_equality",
+      "provider": "Section3.GammaQEValueAlgebra",
+      "owner": "special-transformations",
+      "signature_sha256": "f9151221a942cb008c48d1e24e461a40973d68e2686afec94086d316683dc36c",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.gammaTop_le_zero",
+      "provider": "Section3.GammaQEValueAlgebra",
+      "owner": "special-transformations",
+      "signature_sha256": "9526034bae89ab36dd53c7ab804a08bb73881f9225bb75141abb46a08d9fb589",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.gammaTop_zero_le",
+      "provider": "Section3.GammaQEValueAlgebra",
+      "owner": "special-transformations",
+      "signature_sha256": "e42fd66ff2c1f1c5503e6af357155df5483b5bcbb8ef82d897f0ee47e9e576fb",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "theorem",
+      "name": "DiamondIntegral.Section5.GammaQE.scaled_value_order_zero",
+      "provider": "Section3.GammaQEValueAlgebra",
+      "owner": "special-transformations",
+      "signature_sha256": "d9b5010565d2d400df69ffaff003798bfc7537bb759d3ef2a313a5b014ed83da",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    }
+  ],
+  "entry_points": {
+    "SpecialTransformationsGammaQE.lean": "13be32c1d40442f1f6f4a697348e283803131e1ef287db3db6e9c5c3385f5807"
+  }
+}

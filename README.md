@@ -156,3 +156,9 @@ their obsolete QE files are not part of the current source tree.
 Project code retains the MIT license declared by the original project.
 External code retains its own notices; ACVF-QE includes an attributed
 Apache-2.0 ultrapower adaptation. Preserve those notices when reusing it.
+
+Additional proved Fubini prerequisites are available through `SpecialTransformationsGammaQE`.
+This separate default build target retains the existing paper entry points.
+[PROMOTED-FOUNDATIONS.json](PROMOTED-FOUNDATIONS.json) records the original
+proof sources, exact statements and axiom inventories. CI builds the added
+target and checks every promoted public type against its original baseline.
