@@ -59,11 +59,15 @@ jobs:
             exit 1
           fi
           archive="$RUNNER_TEMP/lean-4.35.0-linux.tar.zst"
-          # The release API serves the official archive when the release-page
-          # download route times out.
-          curl --fail --silent --show-error --location --retry 4 --connect-timeout 15 \
-            --max-time 600 --header 'Accept: application/octet-stream' \
-            --output "$archive" https://api.github.com/repos/leanprover/lean4/releases/assets/634574462
+          # Prefer the official release URL to avoid shared-runner anonymous
+          # API rate limits. Retain the API fallback and the pinned checksum.
+          if ! curl --fail --silent --show-error --location --retry 4 --connect-timeout 15 \
+            --max-time 600 --output "$archive" \
+            https://github.com/leanprover/lean4/releases/download/v4.35.0/lean-4.35.0-linux.tar.zst; then
+            curl --fail --silent --show-error --location --retry 4 --connect-timeout 15 \
+              --max-time 600 --header 'Accept: application/octet-stream' \
+              --output "$archive" https://api.github.com/repos/leanprover/lean4/releases/assets/634574462
+          fi
           printf '%s  %s\n' 7289597a44543246c9227b8cae501767e095ce17f6d448b95fc4a8dc97268f6d "$archive" |
             sha256sum --check --strict
           tar --zstd -xf "$archive" -C "$RUNNER_TEMP"
