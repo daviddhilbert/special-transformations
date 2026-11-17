@@ -1,5 +1,11 @@
-import Section6.HenselianValuationRing
-import Section6.NativeRV
+module
+
+public import Section6.HenselianValuationRing
+public import Section6.NativeRV
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Ordinary characteristic zero and henselianity of the valued field
 extracted from a model of the native theory. -/

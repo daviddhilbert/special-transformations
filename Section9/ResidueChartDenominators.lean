@@ -1,4 +1,10 @@
-import Mathlib.Algebra.MvPolynomial.Eval
+module
+
+public import Mathlib.Algebra.MvPolynomial.Eval
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A polynomial on the chart with an inverse variable has a numerator
 in the original variables. Its nonvanishing is unchanged on the chart. -/

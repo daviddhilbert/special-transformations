@@ -1,10 +1,16 @@
-import Section10.EssentialVFMap
-import Section10.WeightedJacobianLocus
-import Section9.RVFiniteEssential
-import Section9.GammaCompatibility
-import Section9.LiftLabelRepresentatives
-import Section8.GammaRadiusBase
-import Section4.Spaces
+module
+
+public import Section10.EssentialVFMap
+public import Section10.WeightedJacobianLocus
+public import Section9.RVFiniteEssential
+public import Section9.GammaCompatibility
+public import Section9.LiftLabelRepresentatives
+public import Section8.GammaRadiusBase
+public import Section4.Spaces
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Forward lifting for finite-volume Gamma forms in positive degree. -/
 

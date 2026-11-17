@@ -1,5 +1,11 @@
-import Section4.GammaPredicates
-import Mathlib.Data.Finset.Max
+module
+
+public import Section4.GammaPredicates
+public import Mathlib.Data.Finset.Max
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

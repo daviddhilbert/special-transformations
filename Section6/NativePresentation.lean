@@ -1,4 +1,10 @@
-import Section6.NativeResidueOperations
+module
+
+public import Section6.NativeResidueOperations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The recovered valued field and its leading terms present the original
 tagged henselian model. -/

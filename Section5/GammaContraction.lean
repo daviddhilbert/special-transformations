@@ -1,4 +1,10 @@
-import Section5.GammaExistence
+module
+
+public import Section5.GammaExistence
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The contraction paragraph over the original named-Gamma base. -/
 

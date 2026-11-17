@@ -1,8 +1,14 @@
-import Section4.VFFibreFiniteness
-import Section4.MapAlgebraicity
-import Section4.VFCategories
-import Section4.RVDimension
-import Section3.SmallFiniteParameters
+module
+
+public import Section4.VFFibreFiniteness
+public import Section4.MapAlgebraicity
+public import Section4.VFCategories
+public import Section4.RVDimension
+public import Section3.SmallFiniteParameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

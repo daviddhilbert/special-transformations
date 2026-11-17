@@ -1,5 +1,11 @@
-import Section3.GammaFiniteMeans
-import Section3.OpenBallCenters
+module
+
+public import Section3.GammaFiniteMeans
+public import Section3.OpenBallCenters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: BallImaginaries -/
 set_option backward.isDefEq.respectTransparency false

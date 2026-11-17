@@ -1,4 +1,10 @@
-import Section5.GammaLogic
+module
+
+public import Section5.GammaLogic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Restriction preserves complete invariant-Gamma focus graphs. The
 geometric primitives and alternating chains are the existing Section 5

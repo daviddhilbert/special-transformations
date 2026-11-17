@@ -1,3 +1,5 @@
+module
+
 /-
 Section 4, §4.2 "Categories of definable subsets": the paper's `𝔼_k`, the weight, and the
 `RV[k,·]`-categorical consequences of Definition \ref{defn:RV:cat} that the item table of the
@@ -57,7 +59,11 @@ restatement of anything proved here:
   function composition.  It is carried per object, as `PadGraph X`, so that every statement below
   says exactly what it uses.
 -/
-import Sec4Categories
+public import Sec4Categories
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option linter.unusedSectionVars false
 set_option linter.unusedVariables false

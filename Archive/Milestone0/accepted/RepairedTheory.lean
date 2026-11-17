@@ -1,3 +1,5 @@
+module
+
 /-
 Milestone 0 for: Yimu Yin, "Special transformations in algebraically closed valued fields",
 Annals of Pure and Applied Logic (2010), arXiv:1006.2467.
@@ -19,7 +21,11 @@ of the `RV` sort are ONE element (`rv(0) = 0` is the absorbing element, `∞` is
 name for it): the language has the single constant `rvZero`, and `tRVInfty` is a
 definition of `tRVZero`.
 -/
-import Mathlib
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 ## Reading guide

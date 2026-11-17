@@ -1,5 +1,11 @@
-import Section3.RVOperations
-import Section3.PolynomialLocal
+module
+
+public import Section3.RVOperations
+public import Section3.PolynomialLocal
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language Filter Topology
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

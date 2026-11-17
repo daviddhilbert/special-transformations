@@ -1,5 +1,11 @@
-import Section4.ResidueComparison
-import Section4.RVMaximumValueFibre
+module
+
+public import Section4.ResidueComparison
+public import Section4.RVMaximumValueFibre
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Full-dimensional RV loci contain an independent residue tuple on
 a fixed value fibre. The auxiliary names for its normalization do

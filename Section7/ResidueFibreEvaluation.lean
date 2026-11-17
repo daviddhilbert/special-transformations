@@ -1,4 +1,10 @@
-import Section7.SimpleResidueExtraction
+module
+
+public import Section7.SimpleResidueExtraction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Varying one coordinate inside a fixed value fibre

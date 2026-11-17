@@ -1,6 +1,12 @@
-import Mathlib.ModelTheory.Definability
-import Mathlib.ModelTheory.ElementaryMaps
-import Mathlib.Data.Finite.Sum
+module
+
+public import Mathlib.ModelTheory.Definability
+public import Mathlib.ModelTheory.ElementaryMaps
+public import Mathlib.Data.Finite.Sum
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Functional closedness and definable closure

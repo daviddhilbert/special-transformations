@@ -1,5 +1,11 @@
-import Section5.Assembly
-import Section5.UnaryUniform
+module
+
+public import Section5.Assembly
+public import Section5.UnaryUniform
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Preparing a vertical root locus by a lower-dimensional transformation

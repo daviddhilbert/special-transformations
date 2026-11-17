@@ -1,2 +1,8 @@
+module
+
 /- Compatibility import. The implementation is owned by hilbert-mathlib. -/
-import HilbertMathlib.Foundation.Definability.DefinableUnionCoproduct
+public import HilbertMathlib.Foundation.Definability.DefinableUnionCoproduct
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section

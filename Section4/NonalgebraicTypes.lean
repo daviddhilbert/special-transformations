@@ -1,6 +1,12 @@
-import Section3.DefinableCompactness
-import Section3.RawAlgebraicity
-import Mathlib.Data.Set.Finite.Lattice
+module
+
+public import Section3.DefinableCompactness
+public import Section3.RawAlgebraicity
+public import Mathlib.Data.Set.Finite.Lattice
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

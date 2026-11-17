@@ -1,9 +1,15 @@
-import Section3.AclFieldImages
-import Section3.AlgebraicClosure
-import Section3.AlgebraicRVLifting
-import Section3.AlgebraicSubfieldModel
-import Section3.GammaCodeDefinability
-import Section3.TranscendenceDegrees
+module
+
+public import Section3.AclFieldImages
+public import Section3.AlgebraicClosure
+public import Section3.AlgebraicRVLifting
+public import Section3.AlgebraicSubfieldModel
+public import Section3.GammaCodeDefinability
+public import Section3.TranscendenceDegrees
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: AclModelGeometry -/
 set_option backward.isDefEq.respectTransparency false

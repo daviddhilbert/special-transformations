@@ -1,4 +1,10 @@
-import Section5.UnarySets
+module
+
+public import Section5.UnarySets
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Transporting bounded unary obstacle families

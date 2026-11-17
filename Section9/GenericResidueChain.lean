@@ -1,5 +1,11 @@
-import Section9.ResidueJacobianChain
-import Section9.GraphCoordinateDerivations
+module
+
+public import Section9.ResidueJacobianChain
+public import Section9.GraphCoordinateDerivations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A single graph field gives compatible derivatives for the three
 pairs at a residue-generic point. The middle point is kept fixed

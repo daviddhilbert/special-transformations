@@ -1,5 +1,11 @@
-import Section9.ResidueTangentDescent
-import Section9.RVJacobian
+module
+
+public import Section9.ResidueTangentDescent
+public import Section9.RVJacobian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The chain rule for a residue correspondence at a graph point
 with coordinate derivations. All three maps are on the same

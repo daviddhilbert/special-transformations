@@ -1,5 +1,11 @@
-import Mathlib.Logic.Equiv.Fin.Basic
-import Mathlib.Data.Fin.Tuple.Basic
+module
+
+public import Mathlib.Logic.Equiv.Fin.Basic
+public import Mathlib.Data.Fin.Tuple.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Finite coordinate blocks used by the polynomial and definability arguments. -/
 

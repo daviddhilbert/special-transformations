@@ -1,5 +1,11 @@
-import Section9.EtaleDerivationBound
-import Section9.IntegralDerivativeReduction
+module
+
+public import Section9.EtaleDerivationBound
+public import Section9.IntegralDerivativeReduction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The elementwise étale presentation and preservation of values
 give a pointwise bound on derivations across an immediate extension. -/

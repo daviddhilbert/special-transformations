@@ -1,5 +1,11 @@
-import Section5.GammaInvariantLogic
-import Section5.GammaLift
+module
+
+public import Section5.GammaInvariantLogic
+public import Section5.GammaLift
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Definable graphs and actual RV pullbacks over the original Gamma base. -/
 

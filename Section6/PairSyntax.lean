@@ -1,5 +1,11 @@
-import Section6.PairInterpretation
-import Section6.RVFormula
+module
+
+public import Section6.PairInterpretation
+public import Section6.RVFormula
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Uniform two-coordinate interpretation syntax. Atomic formulas are
 chosen before the structures. This strengthens the per-model definability

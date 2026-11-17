@@ -1,5 +1,11 @@
-import Section7.WeightedLeadingTerms
-import ResidueTranscendentalTransport
+module
+
+public import Section7.WeightedLeadingTerms
+public import ResidueTranscendentalTransport
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Multiplication and unequal degrees for weighted leading terms

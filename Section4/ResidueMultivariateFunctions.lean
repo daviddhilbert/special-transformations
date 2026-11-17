@@ -1,5 +1,11 @@
-import Section4.ResidueFieldFunctions
-import Mathlib.Algebra.MvPolynomial.Eval
+module
+
+public import Section4.ResidueFieldFunctions
+public import Mathlib.Algebra.MvPolynomial.Eval
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

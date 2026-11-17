@@ -1,5 +1,11 @@
-import Section4.ResiduePureFunctions
-import Section3.RVOperations
+module
+
+public import Section4.ResiduePureFunctions
+public import Section3.RVOperations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

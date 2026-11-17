@@ -1,4 +1,10 @@
-import Section4.RVRestrictions
+module
+
+public import Section4.RVRestrictions
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Turn a finite definable cover into a same-base disjoint cover,
 retaining the original piece that contains each new piece. -/

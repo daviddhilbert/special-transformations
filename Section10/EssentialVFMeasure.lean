@@ -1,4 +1,10 @@
-import Section10.EssentialVFGerms
+module
+
+public import Section10.EssentialVFGerms
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Measure equations on the actual fixed-label charts of essential maps.
 The chain rule and inverse rule are applied after a definable small cut. -/

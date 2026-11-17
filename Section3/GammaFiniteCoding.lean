@@ -1,5 +1,11 @@
-import Section3.FiniteVFRealCover
-import Section3.GammaRealRestriction
+module
+
+public import Section3.FiniteVFRealCover
+public import Section3.GammaRealRestriction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,5 +1,11 @@
-import Section3.VFAclField
-import Section3.RootDefinability
+module
+
+public import Section3.VFAclField
+public import Section3.RootDefinability
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,9 +1,15 @@
+module
+
 /-
 Extracted from https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEGraphCritical.lean
 Original declaration namespaces and notices are retained.
 -/
-import Section3.GammaQEFlatPerturbation
-import Section3.GammaQEParser
+public import Section3.GammaQEFlatPerturbation
+public import Section3.GammaQEParser
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A Gamma function graph must meet one of finitely many equal-value
 loci with different output slopes. Otherwise a true RV clause survives

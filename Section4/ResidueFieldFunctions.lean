@@ -1,5 +1,11 @@
-import Section4.ResiduePureFunctions
-import Mathlib.Algebra.Field.Subfield.Basic
+module
+
+public import Section4.ResiduePureFunctions
+public import Mathlib.Algebra.Field.Subfield.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

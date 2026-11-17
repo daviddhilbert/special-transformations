@@ -1,6 +1,12 @@
-import Section4.Fibres
-import Section4.DefinableCategory
-import Mathlib.Order.Lattice.Nat
+module
+
+public import Section4.Fibres
+public import Section4.DefinableCategory
+public import Mathlib.Order.Lattice.Nat
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

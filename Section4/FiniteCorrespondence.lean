@@ -1,5 +1,11 @@
-import Section4.RelationFibres
-import Section4.VFDimensionRank
+module
+
+public import Section4.RelationFibres
+public import Section4.VFDimensionRank
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

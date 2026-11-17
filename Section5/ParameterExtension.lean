@@ -1,5 +1,11 @@
-import Section5.Assembly
-import Section4.MapParameters
+module
+
+public import Section5.Assembly
+public import Section4.MapParameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Parameter extension changes the definability certificate, while keeping
 the actual primitive geometries and maps. This is used internally when a

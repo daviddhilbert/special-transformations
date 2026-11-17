@@ -1,6 +1,12 @@
-import Mathlib.Algebra.Polynomial.FieldDivision
-import Mathlib.Algebra.MvPolynomial.PDeriv
-import Mathlib.Data.Set.Finite.Lattice
+module
+
+public import Mathlib.Algebra.Polynomial.FieldDivision
+public import Mathlib.Algebra.MvPolynomial.PDeriv
+public import Mathlib.Data.Set.Finite.Lattice
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Extracting a genuine polynomial equation from a finite fibre

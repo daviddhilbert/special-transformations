@@ -1,5 +1,11 @@
-import Section4.MapParameters
-import Section4.FiniteGluing
+module
+
+public import Section4.MapParameters
+public import Section4.FiniteGluing
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 

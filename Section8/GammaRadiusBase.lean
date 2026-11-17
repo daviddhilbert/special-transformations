@@ -1,5 +1,11 @@
-import Section8.UnarySlope
-import Section3.GammaFiniteOrder
+module
+
+public import Section8.UnarySlope
+public import Section3.GammaFiniteOrder
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! An upper ray of valid open-ball radii contains its finite endpoint,
 which is definable over the original Gamma base. -/

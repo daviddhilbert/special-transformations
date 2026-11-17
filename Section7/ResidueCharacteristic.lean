@@ -1,5 +1,11 @@
-import Section3.MeanInBalls
-import CanonicalResidue
+module
+
+public import Section3.MeanInBalls
+public import CanonicalResidue
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Residue characteristic zero in the actual ACVF model

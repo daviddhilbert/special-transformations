@@ -1,4 +1,10 @@
-import Section5.VerticalConstruction
+module
+
+public import Section5.VerticalConstruction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Definable indicators for geometric assembly

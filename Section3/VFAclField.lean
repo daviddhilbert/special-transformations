@@ -1,7 +1,13 @@
-import ACVFQE
-import Section3.QFLocal
-import Section3.ValuedNeighbourhood
-import ValuedFieldExtension
+module
+
+public import ACVFQE
+public import Section3.QFLocal
+public import Section3.ValuedNeighbourhood
+public import ValuedFieldExtension
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language Filter Topology
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

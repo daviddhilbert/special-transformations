@@ -1,6 +1,12 @@
-import Section7.GammaVolumeCorrespondence
-import Section5.GammaLiftRelation
-import Section7.LiftedIsomorphism
+module
+
+public import Section7.GammaVolumeCorrespondence
+public import Section5.GammaLiftRelation
+public import Section7.LiftedIsomorphism
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Lift invariance for isomorphisms definable over the original named Gamma base. -/
 

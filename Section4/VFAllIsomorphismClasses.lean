@@ -1,8 +1,14 @@
-import Section4.VFCoproduct
-import Section4.DefinableUnionCoproduct
-import Mathlib.CategoryTheory.Monoidal.OfHasFiniteProducts
-import Mathlib.CategoryTheory.Monoidal.Skeleton
-import Mathlib.Algebra.Group.TypeTags.Basic
+module
+
+public import Section4.VFCoproduct
+public import Section4.DefinableUnionCoproduct
+public import Mathlib.CategoryTheory.Monoidal.OfHasFiniteProducts
+public import Mathlib.CategoryTheory.Monoidal.Skeleton
+public import Mathlib.Algebra.Group.TypeTags.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

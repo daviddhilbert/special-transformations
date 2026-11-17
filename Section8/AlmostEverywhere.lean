@@ -1,5 +1,11 @@
-import Section4.VFDimension
-import Section4.RVDimension
+module
+
+public import Section4.VFDimension
+public import Section4.RVDimension
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The dimension in the exceptional-set condition is the dimension of
 the indicated sort. -/

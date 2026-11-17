@@ -1,5 +1,11 @@
-import Section4.RVRestrictions
-import Mathlib.CategoryTheory.Pi.Basic
+module
+
+public import Section4.RVRestrictions
+public import Mathlib.CategoryTheory.Pi.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Finite graded RV families

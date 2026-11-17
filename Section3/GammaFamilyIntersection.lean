@@ -1,6 +1,12 @@
-import Section3.GammaParameters
-import Section3.GammaCodeDefinability
-import Section3.TupleRelations
+module
+
+public import Section3.GammaParameters
+public import Section3.GammaCodeDefinability
+public import Section3.TupleRelations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

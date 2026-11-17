@@ -1,4 +1,10 @@
-import Mathlib
+module
+
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 /-!
 ## A model of `ACVF` at the trivial valuation, for the current encoding
 

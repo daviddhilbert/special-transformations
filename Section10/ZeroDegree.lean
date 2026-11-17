@@ -1,4 +1,10 @@
-import Section7.PositiveSurjectivity
+module
+
+public import Section7.PositiveSurjectivity
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Ordinary degree-zero specializations, retained independently of the
 corrected measured convention. Weighted statements are in `WeightedZero`,

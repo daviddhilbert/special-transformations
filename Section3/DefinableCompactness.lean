@@ -1,4 +1,10 @@
-import Section3.Compactness
+module
+
+public import Section3.Compactness
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3

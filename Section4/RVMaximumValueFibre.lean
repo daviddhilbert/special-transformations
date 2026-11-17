@@ -1,6 +1,12 @@
-import Section4.RVPatternProjection
-import Section4.EarlierRVInputs
-import Section4.GammaNamedValue
+module
+
+public import Section4.RVPatternProjection
+public import Section4.EarlierRVInputs
+public import Section4.GammaNamedValue
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

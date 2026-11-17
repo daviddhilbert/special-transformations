@@ -1,6 +1,12 @@
-import CanonicalRV
-import Mathlib.Topology.Algebra.Valued.ValuedField
-import Mathlib.Topology.Algebra.Polynomial
+module
+
+public import CanonicalRV
+public import Mathlib.Topology.Algebra.Valued.ValuedField
+public import Mathlib.Topology.Algebra.Polynomial
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open FirstOrder FirstOrder.Language Filter Topology
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 open SpecialTransformations.Milestone0.Transfer

@@ -1,5 +1,11 @@
-import Section6.FiniteAbstraction
-import Section6.NativeTermMap
+module
+
+public import Section6.FiniteAbstraction
+public import Section6.NativeTermMap
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The finite abstraction coefficients are the values of the actual
 native term map. The chosen native terms depend only on syntax. Unused

@@ -1,5 +1,11 @@
-import Section4.RVMaximumValueFibre
-import Section4.MapParameters
+module
+
+public import Section4.RVMaximumValueFibre
+public import Section4.MapParameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

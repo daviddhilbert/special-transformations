@@ -1,5 +1,11 @@
-import Section3.TupleCompactness
-import Section3.TupleRelations
+module
+
+public import Section3.TupleCompactness
+public import Section3.TupleRelations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option linter.style.haveILetI false
 
 /-!

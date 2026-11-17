@@ -1,5 +1,11 @@
-import Section4.GammaDefinablePoint
-import Section3.FiniteValueDefinability
+module
+
+public import Section4.GammaDefinablePoint
+public import Section3.FiniteValueDefinability
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

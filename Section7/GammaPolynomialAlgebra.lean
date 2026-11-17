@@ -1,7 +1,13 @@
-import Section7.GammaPolynomial
-import Mathlib.Algebra.MvPolynomial.PDeriv
-import Mathlib.Data.Fintype.EquivFin
-import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+module
+
+public import Section7.GammaPolynomial
+public import Mathlib.Algebra.MvPolynomial.PDeriv
+public import Mathlib.Data.Fintype.EquivFin
+public import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Algebra of finite gamma-polynomial presentations

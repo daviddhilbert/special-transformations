@@ -1,8 +1,14 @@
+module
+
 /-
 Extracted from https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEFlatResidue.lean
 Original declaration namespaces and notices are retained.
 -/
-import Section3.GammaQEFlatMonomials
+public import Section3.GammaQEFlatMonomials
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! At a point where distinct output slopes do not meet, every active
 flat residue summand has output slope zero. It is therefore unchanged

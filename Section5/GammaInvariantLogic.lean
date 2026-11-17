@@ -1,8 +1,14 @@
-import Section5.GammaBaseInputs
-import Section5.GammaPolynomialSupport
-import Section5.VerticalObstacles
-import Section3.GammaRealMap
-import Section3.GammaProjection
+module
+
+public import Section5.GammaBaseInputs
+public import Section5.GammaPolynomialSupport
+public import Section5.VerticalObstacles
+public import Section3.GammaRealMap
+public import Section3.GammaProjection
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Complete graph operations over named Gamma parameters. Finite real
 coordinates are flattened explicitly; projection quantifies over all

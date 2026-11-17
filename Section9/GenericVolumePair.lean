@@ -1,6 +1,12 @@
-import Section9.ResidueIndependentFibre
-import Section9.FiniteVolumeDimension
-import Section9.VolumePairMap
+module
+
+public import Section9.ResidueIndependentFibre
+public import Section9.FiniteVolumeDimension
+public import Section9.VolumePairMap
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A full-dimensional fixed-value family of volume pairs contains
 a point with independent normalized source residue coordinates over

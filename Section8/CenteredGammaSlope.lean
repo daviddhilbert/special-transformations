@@ -1,6 +1,12 @@
-import Section8.BijectionSlope
-import Section8.GammaPairChoice
-import Section3.RVOperations
+module
+
+public import Section8.BijectionSlope
+public import Section8.GammaPairChoice
+public import Section3.RVOperations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Name the slope-one intercept and the ball radius over the original
 base. The witness formula works on the partial graph itself. -/

@@ -1,4 +1,10 @@
-import Section6.RVAbstraction
+module
+
+public import Section6.RVAbstraction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Finite extraction of the original parameter names in a normalized
 RV-fragment formula. The two finite lists contain VF and RV parameters

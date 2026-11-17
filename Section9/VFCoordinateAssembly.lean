@@ -1,6 +1,12 @@
-import Section4.CodeMaps
-import Section4.FunctionalRelations
-import Section4.VFRealFibres
+module
+
+public import Section4.CodeMaps
+public import Section4.FunctionalRelations
+public import Section4.VFRealFibres
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A finite tuple of scalar VF maps is a definable VF tuple map. -/
 

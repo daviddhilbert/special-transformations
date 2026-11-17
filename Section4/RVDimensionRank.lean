@@ -1,7 +1,13 @@
-import Section4.RVCoordinatePieces
-import Section4.RVFiniteMapRank
-import Section4.FiniteCover
-import Section4.FiniteGluing
+module
+
+public import Section4.RVCoordinatePieces
+public import Section4.RVFiniteMapRank
+public import Section4.FiniteCover
+public import Section4.FiniteGluing
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

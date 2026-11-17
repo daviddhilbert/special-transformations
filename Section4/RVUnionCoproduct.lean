@@ -1,4 +1,10 @@
-import Section4.RVCoproduct
+module
+
+public import Section4.RVCoproduct
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

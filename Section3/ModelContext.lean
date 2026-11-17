@@ -1,4 +1,10 @@
-import Section3.Parameters
+module
+
+public import Section3.Parameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # The standing model and base context after Definition 2.4

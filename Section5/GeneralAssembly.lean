@@ -1,5 +1,11 @@
-import Section5.Centering
-import Section5.UnaryMaps
+module
+
+public import Section5.Centering
+public import Section5.UnaryMaps
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Assembly of higher-dimensional graph preparation

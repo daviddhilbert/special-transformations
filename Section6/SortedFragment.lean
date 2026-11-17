@@ -1,5 +1,11 @@
-import Section6.FragmentCompactness
-import Section6.ExpandedLogic
+module
+
+public import Section6.FragmentCompactness
+public import Section6.ExpandedLogic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Apply ordinary fragment compactness to the genuinely sorted expanded
 language. Free-variable guards are finite and belong to the same Boolean

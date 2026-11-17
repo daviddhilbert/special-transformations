@@ -1,4 +1,10 @@
-import Section7.IntegralNormalization
+module
+
+public import Section7.IntegralNormalization
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Iterated partial derivatives and normalized residue evaluation

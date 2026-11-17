@@ -1,4 +1,10 @@
-import Section3.RVGammaAlgebraicity
+module
+
+public import Section3.RVGammaAlgebraicity
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: RVExchangeGeometry -/
 set_option backward.isDefEq.respectTransparency false

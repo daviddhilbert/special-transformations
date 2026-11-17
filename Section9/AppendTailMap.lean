@@ -1,6 +1,12 @@
-import Section4.CodeMaps
-import Section4.VFRealFibres
-import Section7.TupleCoordinates
+module
+
+public import Section4.CodeMaps
+public import Section4.VFRealFibres
+public import Section7.TupleCoordinates
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Append a VF tail to the VF output of a mixed map and retain its RV
 label. This operation is definable by a coordinate reindexing. -/

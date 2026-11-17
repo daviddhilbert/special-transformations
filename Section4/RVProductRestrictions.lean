@@ -1,6 +1,12 @@
-import Section4.RVProductAssociativity
-import Section4.RVRestrictions
-import Section4.FiniteGluing
+module
+
+public import Section4.RVProductAssociativity
+public import Section4.RVRestrictions
+public import Section4.FiniteGluing
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

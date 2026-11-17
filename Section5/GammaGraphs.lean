@@ -1,5 +1,11 @@
-import Section5.ParameterExtension
-import Section3.GammaParameters
+module
+
+public import Section5.ParameterExtension
+public import Section3.GammaParameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Original-base Gamma graph certificates

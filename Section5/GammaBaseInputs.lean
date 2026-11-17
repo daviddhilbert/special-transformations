@@ -1,5 +1,11 @@
-import Section5.GammaExistence
-import Section3.GammaSpecialization
+module
+
+public import Section5.GammaExistence
+public import Section3.GammaSpecialization
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Internal real presentations for genuinely Gamma-named definable sets.
 All conclusions about the original set continue to use its invariant full

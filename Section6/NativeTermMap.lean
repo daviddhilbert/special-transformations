@@ -1,5 +1,11 @@
-import Section6.NativeTerms
-import Section6.ContractionGraph
+module
+
+public import Section6.NativeTerms
+public import Section6.ContractionGraph
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Prepare the finite native RV-leaf map directly. Original FV parameters
 are retained in S; native FV syntax is not converted to a second copy of

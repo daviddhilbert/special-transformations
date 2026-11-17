@@ -1,6 +1,12 @@
-import Section6.TypedNativeTerms
-import Section6.ExpandedLogic
-import Mathlib.ModelTheory.Substructures
+module
+
+public import Section6.TypedNativeTerms
+public import Section6.ExpandedLogic
+public import Mathlib.ModelTheory.Substructures
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Every RV parameter in the native term-generated base has a typed
 native term in the original parameter context. This justifies denaming

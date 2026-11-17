@@ -1,5 +1,11 @@
-import Section9.RVFiniteHead
-import Section9.LiftLabelRepresentatives
+module
+
+public import Section9.RVFiniteHead
+public import Section9.LiftLabelRepresentatives
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The lift over a fixed head point is precisely the polydisc
 specified by the complementary coordinates of the same RV label. -/

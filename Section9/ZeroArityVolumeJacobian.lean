@@ -1,6 +1,12 @@
-import Section9.WeightedLiftJacobian
-import Section9.VolumeResidueCorrespondence
-import Section9.LiftLabelRepresentatives
+module
+
+public import Section9.WeightedLiftJacobian
+public import Section9.VolumeResidueCorrespondence
+public import Section9.LiftLabelRepresentatives
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! At arity zero, the empty determinant is one, including for actual
 lifts. This treats the case separately from the positive-arity

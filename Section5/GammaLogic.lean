@@ -1,5 +1,11 @@
-import Section5.GammaGraphs
-import Section5.UnaryMaps
+module
+
+public import Section5.GammaGraphs
+public import Section5.UnaryMaps
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Given invariant-Gamma logic and its geometric consequences

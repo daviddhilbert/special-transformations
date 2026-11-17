@@ -1,6 +1,12 @@
-import Section9.DerivativeCoordinates
-import Section9.ValuedPolynomialTaylor
-import Section9.VFJacobian
+module
+
+public import Section9.DerivativeCoordinates
+public import Section9.ValuedPolynomialTaylor
+public import Section9.VFJacobian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The VF derivative of an evaluated polynomial system. This is the
 analytic bridge needed when differentiating the equations satisfied by

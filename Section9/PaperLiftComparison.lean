@@ -1,6 +1,12 @@
-import Section9.GenericRVJacobian
-import Section9.LiftComparison
-import Section9.ZeroArityVolumeJacobian
+module
+
+public import Section9.GenericRVJacobian
+public import Section9.LiftComparison
+public import Section9.ZeroArityVolumeJacobian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The RV comparison for arbitrary lifts in the finite-volume
 categories. The exceptional set lies in the source volume image. -/

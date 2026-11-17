@@ -1,5 +1,11 @@
-import Section9.CoordinateDerivations
-import Mathlib.FieldTheory.Perfect
+module
+
+public import Section9.CoordinateDerivations
+public import Mathlib.FieldTheory.Perfect
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Coordinate derivations extend to an algebraic graph field in
 characteristic zero and preserve its rational function subfield. -/

@@ -1,5 +1,11 @@
-import Section6.HenselianModel
-import Section3.MeanInBalls
+module
+
+public import Section6.HenselianModel
+public import Section3.MeanInBalls
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A definable RV singleton descends by averaging the finite Galois
 orbit of any nonzero representative in the algebraic envelope. -/

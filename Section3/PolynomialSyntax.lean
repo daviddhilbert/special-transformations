@@ -1,5 +1,11 @@
-import Section3.Parameters
-import VFValued
+module
+
+public import Section3.Parameters
+public import VFValued
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 open SpecialTransformations.Milestone0.Transfer

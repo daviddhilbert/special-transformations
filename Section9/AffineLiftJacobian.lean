@@ -1,6 +1,12 @@
-import Section9.AffineTailJacobian
-import Section9.LiftHeadDecomposition
-import Section9.MixedJacobian
+module
+
+public import Section9.AffineTailJacobian
+public import Section9.LiftHeadDecomposition
+public import Section9.MixedJacobian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Pass from the chart determinant calculation to the affine lift
 with fixed RV labels. The tail parameters need only depend on the

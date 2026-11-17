@@ -1,5 +1,11 @@
-import Section4.RVGradedSemiring
-import Section4.RVFinitePositiveComparison
+module
+
+public import Section4.RVGradedSemiring
+public import Section4.RVFinitePositiveComparison
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,6 +1,12 @@
-import Section8.IsolationFibres
-import Section8.SeparatedSets
-import Section4.FullDimension
+module
+
+public import Section8.IsolationFibres
+public import Section8.SeparatedSets
+public import Section4.FullDimension
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A generic VF input cannot be isolated in a product of two balls
 on a definable graph. The fixed-radius image of a neighbourhood

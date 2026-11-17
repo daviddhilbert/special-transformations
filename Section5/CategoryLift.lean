@@ -1,4 +1,10 @@
-import Section5.PullbackLift
+module
+
+public import Section5.PullbackLift
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Surjectivity of lifting on isomorphism classes

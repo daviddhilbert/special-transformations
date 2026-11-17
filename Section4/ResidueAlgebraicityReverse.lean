@@ -1,6 +1,12 @@
-import Section4.ResidueDefinableField
-import Section4.ResiduePolynomialFunctions
-import Section4.ResidueAlgebraicityForward
+module
+
+public import Section4.ResidueDefinableField
+public import Section4.ResiduePolynomialFunctions
+public import Section4.ResidueAlgebraicityForward
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,6 +1,12 @@
-import Section4.RVGradedSemiring
-import Section4.RVGrading
-import Section4.RVGradedCoproduct
+module
+
+public import Section4.RVGradedSemiring
+public import Section4.RVGrading
+public import Section4.RVGradedCoproduct
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

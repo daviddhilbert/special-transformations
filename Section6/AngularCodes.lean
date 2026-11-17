@@ -1,4 +1,10 @@
-import Section6.AngularComponent
+module
+
+public import Section6.AngularComponent
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Residue/value codes for the actual RV quotient. Zero has one RV image;
 its value coordinate is ignored. These codes are onto, and RV quantifiers

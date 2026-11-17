@@ -1,3 +1,5 @@
+module
+
 /-
 Milestone 0 for: Yimu Yin, "Special transformations in algebraically closed valued fields",
 Annals of Pure and Applied Logic (2010), arXiv:1006.2467.
@@ -27,7 +29,11 @@ whose hypotheses put `0` and `∞` on two distinct carrier elements, are now **v
 hypotheses contradict `iRVInfty = iRVZero`); the three-layer `Valued.RV0` they mention is kept
 as a legacy alias only.
 -/
-import Mathlib
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 ## Reading guide

@@ -1,5 +1,11 @@
-import ACVFQE
-import JohnsonValuedBridge
+module
+
+public import ACVFQE
+public import JohnsonValuedBridge
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option linter.style.haveILetI false
 

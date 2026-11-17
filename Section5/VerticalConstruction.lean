@@ -1,4 +1,10 @@
-import Section5.CoordinateLift
+module
+
+public import Section5.CoordinateLift
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Finite root families with complementary VF coordinates

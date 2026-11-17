@@ -1,5 +1,11 @@
-import Section4.GammaPredicates
-import Section3.GammaOperations
+module
+
+public import Section4.GammaPredicates
+public import Section3.GammaOperations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

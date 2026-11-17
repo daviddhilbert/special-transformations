@@ -1,5 +1,11 @@
-import Mathlib.RingTheory.Etale.Field
-import Section7.GuardedBaseMonomials
+module
+
+public import Mathlib.RingTheory.Etale.Field
+public import Section7.GuardedBaseMonomials
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! In a reduced finite algebra, a Boolean combination of polynomial
 zero tests is selected by one element that takes only values zero and

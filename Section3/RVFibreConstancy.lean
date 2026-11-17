@@ -1,5 +1,11 @@
-import Section3.MixedRootFree
-import Section3.BallGeometry
+module
+
+public import Section3.MixedRootFree
+public import Section3.BallGeometry
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

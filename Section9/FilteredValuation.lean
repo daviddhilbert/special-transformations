@@ -1,7 +1,13 @@
-import StacksFrontier.RingTheory.Henselian.Henselization.Existence
-import Mathlib.RingTheory.Etale.Basic
-import Section9.LocalFlatValuation
-import Section9.AlgebraicLocalStage
+module
+
+public import StacksFrontier.RingTheory.Henselian.Henselization.Existence
+public import Mathlib.RingTheory.Etale.Basic
+public import Section9.LocalFlatValuation
+public import Section9.AlgebraicLocalStage
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open CategoryTheory CategoryTheory.Limits IsLocalRing
 
 namespace SpecialTransformations.Section9

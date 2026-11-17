@@ -1,4 +1,10 @@
-import Section3.GammaValueLaws
+module
+
+public import Section3.GammaValueLaws
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0

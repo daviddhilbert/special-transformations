@@ -1,4 +1,10 @@
-import Section4.DefinableGeometry
+module
+
+public import Section4.DefinableGeometry
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 

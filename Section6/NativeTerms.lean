@@ -1,4 +1,10 @@
-import Section6.RVTermSupport
+module
+
+public import Section6.RVTermSupport
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A well-sorted FV term in an RV-only expansion is literally the image
 of a native LRV FV term. This is syntax, before any model or assignment.

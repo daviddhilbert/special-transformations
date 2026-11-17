@@ -1,8 +1,14 @@
-import Section4.DefinableCategory
-import Section4.RealPresentations
-import Section4.FiniteMaps
-import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+module
+
+public import Section4.DefinableCategory
+public import Section4.RealPresentations
+public import Section4.FiniteMaps
+public import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
+public import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

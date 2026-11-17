@@ -1,4 +1,10 @@
-import Mathlib
+module
+
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Semantics of the `RV`-sort of Yin's `L_RV` on a Mathlib valued field

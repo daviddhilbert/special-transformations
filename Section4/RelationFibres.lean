@@ -1,5 +1,11 @@
-import Section4.Fibres
-import Section4.VFTranscendence
+module
+
+public import Section4.Fibres
+public import Section4.VFTranscendence
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

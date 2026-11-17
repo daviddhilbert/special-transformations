@@ -1,6 +1,12 @@
-import Section4.FiniteRefinement
-import Section4.RealPresentations
-import Section4.FiniteMaps
+module
+
+public import Section4.FiniteRefinement
+public import Section4.RealPresentations
+public import Section4.FiniteMaps
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false

@@ -1,6 +1,12 @@
-import Section9.AlgebraicCoordinateDerivations
-import Section9.BoundedGraphDerivations
-import Section9.CoarsenedGauss
+module
+
+public import Section9.AlgebraicCoordinateDerivations
+public import Section9.BoundedGraphDerivations
+public import Section9.CoarsenedGauss
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The graph field supplied by henselization and residue degree has
 coordinate derivations that preserve the valuation bound. -/

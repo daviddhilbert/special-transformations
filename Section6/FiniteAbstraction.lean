@@ -1,4 +1,10 @@
-import Section6.RVSubstructure
+module
+
+public import Section6.RVSubstructure
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The finite syntactic replacement φ ↦ φ*. The occurrence list and body
 are selected before the ambient model, substructure or assignment. The

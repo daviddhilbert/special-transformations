@@ -1,5 +1,11 @@
-import Section3.BallGeometry
-import JohnsonGeometry
+module
+
+public import Section3.BallGeometry
+public import JohnsonGeometry
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical
 namespace SpecialTransformations.Section3

@@ -1,2 +1,8 @@
+module
+
 /- Compatibility import. The implementation is owned by hilbert-mathlib. -/
-import HilbertMathlib.Foundation.Grothendieck.PositiveCompletion
+public import HilbertMathlib.Foundation.Grothendieck.PositiveCompletion
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section

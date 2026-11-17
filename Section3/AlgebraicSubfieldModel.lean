@@ -1,4 +1,10 @@
-import Section3.AlgebraicRVLifting
+module
+
+public import Section3.AlgebraicRVLifting
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: ValuedSubfieldWitness -/
 set_option backward.isDefEq.respectTransparency false

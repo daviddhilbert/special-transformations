@@ -1,5 +1,11 @@
-import Section3.GuardedRationalNormalForm
-import Section8.GammaRadiusBase
+module
+
+public import Section3.GuardedRationalNormalForm
+public import Section8.GammaRadiusBase
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Finite RV data for a relation with a block of RV variables. The
 published QE and the sorted Boolean syntax isolate VF dependence in

@@ -1,5 +1,11 @@
-import Section6.HenselianImages
-import Section6.ExpandedImages
+module
+
+public import Section6.HenselianImages
+public import Section6.ExpandedImages
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Native image and sort identities for postcomposition into a common
 ACVF envelope. These are encoding bridges, with no elimination premise. -/

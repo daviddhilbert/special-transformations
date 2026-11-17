@@ -1,10 +1,16 @@
-import Section3.RootFreeConstancy
-import Section3.NearestRootDefinability
-import Section3.EncodedBallGeometry
-import Section3.MeanInBalls
-import Section3.DefinableMeans
-import Section3.ClosureBridge
-import Section3.CanonicalContext
+module
+
+public import Section3.RootFreeConstancy
+public import Section3.NearestRootDefinability
+public import Section3.EncodedBallGeometry
+public import Section3.MeanInBalls
+public import Section3.DefinableMeans
+public import Section3.ClosureBridge
+public import Section3.CanonicalContext
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false

@@ -1,7 +1,13 @@
-import Section3.AngularPattern
-import Section3.InfiniteValueFibres
-import Section3.FiniteValueFibres
-import Section4.UniformFiniteCofinite
+module
+
+public import Section3.AngularPattern
+public import Section3.InfiniteValueFibres
+public import Section3.FiniteValueFibres
+public import Section4.UniformFiniteCofinite
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

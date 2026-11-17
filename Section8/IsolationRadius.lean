@@ -1,5 +1,11 @@
-import Section8.IsolationDimension
-import Section8.GammaBalls
+module
+
+public import Section8.IsolationDimension
+public import Section8.GammaBalls
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The isolation predicate uses the paper's actual Gamma radii. -/
 

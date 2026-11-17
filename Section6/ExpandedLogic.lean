@@ -1,5 +1,11 @@
-import Section6.RVTermSupport
-import Section6.RVAbstraction
+module
+
+public import Section6.RVTermSupport
+public import Section6.RVAbstraction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The logical induction of RelativeSyntax in an arbitrary RV-only
 expansion. Formulas are the actual Mathlib formulas in LRV.sum E, using

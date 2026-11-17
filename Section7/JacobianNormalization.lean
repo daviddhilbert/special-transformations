@@ -1,6 +1,12 @@
-import Section7.GammaPolynomialAlgebra
-import Section7.PolynomialNormalization
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+module
+
+public import Section7.GammaPolynomialAlgebra
+public import Section7.PolynomialNormalization
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # The RV/Jacobian normalization bridge in Lemma 7.2

@@ -1,6 +1,12 @@
-import Section10.MeasuredVFCategory
-import Section4.RVFiniteScissors
-import Section7.LiftedIsomorphism
+module
+
+public import Section10.MeasuredVFCategory
+public import Section4.RVFiniteScissors
+public import Section7.LiftedIsomorphism
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Positive additive presentations for weighted scissors. Every piece
 inherits its form by restriction, and lift commutes with these restrictions. -/

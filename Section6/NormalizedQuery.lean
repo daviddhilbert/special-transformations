@@ -1,5 +1,11 @@
-import Section6.NativeFormulaElimination
-import Section6.SortedFragment
+module
+
+public import Section6.NativeFormulaElimination
+public import Section6.SortedFragment
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! An actual formula for the normalized existential query, with the
 remaining VF parameters still free. Its named-parameter interpretation

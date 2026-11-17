@@ -1,4 +1,10 @@
-import Mathlib.RingTheory.Valuation.ValuationSubring
+module
+
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The uniform root bound for the bounded chart in Lemma 9.5. After
 dividing out the common input power, the nonzero specialization factors

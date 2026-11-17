@@ -1,6 +1,12 @@
-import Mathlib.Order.Closure
-import Mathlib.Combinatorics.Matroid.IndepAxioms
-import Mathlib.Combinatorics.Matroid.Closure
+module
+
+public import Mathlib.Order.Closure
+public import Mathlib.Combinatorics.Matroid.IndepAxioms
+public import Mathlib.Combinatorics.Matroid.Closure
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Finitary exchange closures and Mathlib matroids

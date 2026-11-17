@@ -1,4 +1,10 @@
-import Section8.ContinuityFormula
+module
+
+public import Section8.ContinuityFormula
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A generic-point continuity result gives the closed exceptional set
 in 8.7 by closing the definable discontinuity locus. -/

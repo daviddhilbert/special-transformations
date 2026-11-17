@@ -1,4 +1,10 @@
-import Section4.UniformFinite
+module
+
+public import Section4.UniformFinite
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0

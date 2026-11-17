@@ -1,5 +1,11 @@
-import Section6.HenselianTheory
-import VFValued
+module
+
+public import Section6.HenselianTheory
+public import VFValued
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The field extracted from the valued-field core of the henselian axioms.
 The realization arguments and field constructor are adapted from

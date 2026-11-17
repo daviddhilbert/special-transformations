@@ -1,5 +1,11 @@
-import Section6.GeneratedDenaming
-import Section6.ExpandedRenaming
+module
+
+public import Section6.GeneratedDenaming
+public import Section6.ExpandedRenaming
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The sentence case of generated-base denaming returns precisely the
 original free context, with no repeated RV coordinates. -/

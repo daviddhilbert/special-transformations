@@ -1,3 +1,5 @@
+module
+
 /-
 **Projection of a definable set along a coordinate** — the same job as `Compose.lean`'s
 `DefinableFun`-composition, and the second half of what the project's brief names as the wall.
@@ -18,7 +20,11 @@ is appending the coordinate to the tuple.  `finAppend` is `Fin.addCases` with it
 
 No `sorry`, no `axiom`, no `native_decide`.
 -/
-import Compose
+public import Compose
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option linter.unusedVariables false
 open FirstOrder FirstOrder.Language

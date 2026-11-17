@@ -1,6 +1,12 @@
-import Section3.GammaCodeDefinability
-import Section3.FibrePromotion
-import Section3.Counting
+module
+
+public import Section3.GammaCodeDefinability
+public import Section3.FibrePromotion
+public import Section3.Counting
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

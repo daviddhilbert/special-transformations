@@ -1,6 +1,12 @@
-import Section9.ResidueTangentChart
-import Section9.RVJacobianDerivations
-import Mathlib.RingTheory.Nullstellensatz
+module
+
+public import Section9.ResidueTangentChart
+public import Section9.RVJacobianDerivations
+public import Mathlib.RingTheory.Nullstellensatz
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The Nullstellensatz proves tangent soundness for an open polynomial
 chart. One extra variable presents the localization as an affine

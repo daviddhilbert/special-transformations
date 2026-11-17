@@ -1,4 +1,10 @@
-import Section5.Core
+module
+
+public import Section5.Core
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Special bijections preserve RV-pullbacks

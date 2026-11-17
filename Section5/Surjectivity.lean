@@ -1,8 +1,14 @@
-import Section5.CategoryPresentations
-import Section5.VerticalObstacles
-import Section5.PolynomialPreparation
-import Section4.VFFiniteMaps
-import Section3.GammaPresentation
+module
+
+public import Section5.CategoryPresentations
+public import Section5.VerticalObstacles
+public import Section5.PolynomialPreparation
+public import Section4.VFFiniteMaps
+public import Section3.GammaPresentation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Surjectivity of the canonical RV lift on the isomorphism classes of
 both VF categories. Saturation and smallness are the paper's standing

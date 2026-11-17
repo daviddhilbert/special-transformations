@@ -1,6 +1,12 @@
-import Section5.GammaRestriction
-import Section5.TaggedAmbient
-import Section5.PolynomialPreparation
+module
+
+public import Section5.GammaRestriction
+public import Section5.TaggedAmbient
+public import Section5.PolynomialPreparation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Preparation over an actual named-Gamma base

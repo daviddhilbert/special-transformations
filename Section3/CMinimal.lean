@@ -1,7 +1,13 @@
-import Section3.QFInterpretation
-import Section3.GeometryBridge
-import VFAlgClosed
-import ValuedFieldExtension
+module
+
+public import Section3.QFInterpretation
+public import Section3.GeometryBridge
+public import VFAlgClosed
+public import ValuedFieldExtension
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

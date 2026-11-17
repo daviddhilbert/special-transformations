@@ -1,5 +1,11 @@
-import Section4.GammaRVRowAvoidance
-import Section4.GammaPredicates
+module
+
+public import Section4.GammaRVRowAvoidance
+public import Section4.GammaPredicates
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

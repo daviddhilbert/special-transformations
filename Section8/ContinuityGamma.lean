@@ -1,8 +1,14 @@
-import Section8.ContinuityFamilies
-import Section8.GenericOutputBall
-import Section3.GammaSpecialization
-import Section3.NormalizationSaturation
-import Section3.SmallFiniteParameters
+module
+
+public import Section8.ContinuityFamilies
+public import Section8.GenericOutputBall
+public import Section3.GammaSpecialization
+public import Section3.NormalizationSaturation
+public import Section3.SmallFiniteParameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The closed exception in Lemma 8.7 is defined over the original
 Gamma base. Dimension and continuity use the released normalized model. -/

@@ -1,5 +1,11 @@
-import Section6.HenselianInputs
-import Section6.CanonicalEmbedding
+module
+
+public import Section6.HenselianInputs
+public import Section6.CanonicalEmbedding
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Transport the independent henselian/envelope data into a common
 native ACVF model. The algebraic field, its actual henselian valuation

@@ -1,4 +1,10 @@
-import Mathlib
+module
+
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # The language `L_RV` and the theory `ACVF_S(0, 0)`

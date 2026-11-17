@@ -1,5 +1,11 @@
-import Section3.RawAlgebraicity
-import Section3.DefinableCompactness
+module
+
+public import Section3.RawAlgebraicity
+public import Section3.DefinableCompactness
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.RawClosure

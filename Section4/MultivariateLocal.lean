@@ -1,7 +1,13 @@
-import Section4.MultivariateSyntax
-import Section3.PolynomialLocal
-import CanonicalStructure
-import Mathlib.Topology.Algebra.MvPolynomial
+module
+
+public import Section4.MultivariateSyntax
+public import Section3.PolynomialLocal
+public import CanonicalStructure
+public import Mathlib.Topology.Algebra.MvPolynomial
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,5 +1,11 @@
-import Mathlib.Data.Finset.Card
-import Mathlib.Order.Interval.Set.Basic
+module
+
+public import Mathlib.Data.Finset.Card
+public import Mathlib.Order.Interval.Set.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical
 

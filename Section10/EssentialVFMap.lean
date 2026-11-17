@@ -1,9 +1,15 @@
-import Section8.VFDefinableTopology
-import Section9.LimitTopology
-import Section9.MixedDifferentiationAE
-import Section4.CoordinateMaps
-import Section4.RVRestrictions
-import Section4.VFUnions
+module
+
+public import Section8.VFDefinableTopology
+public import Section9.LimitTopology
+public import Section9.MixedDifferentiationAE
+public import Section4.CoordinateMaps
+public import Section4.RVRestrictions
+public import Section4.VFUnions
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Representatives of essential VF bijections and preservation of
 fixed-label Jacobians when a small exceptional set is removed. -/

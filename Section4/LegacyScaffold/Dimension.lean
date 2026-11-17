@@ -1,4 +1,10 @@
-import SpecialTransformations.Definable
+module
+
+public import SpecialTransformations.Definable
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Dimensions

@@ -1,5 +1,11 @@
-import Section5.GammaExistence
-import Section5.CategoryLift
+module
+
+public import Section5.GammaExistence
+public import Section5.CategoryLift
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Lifting over the original Gamma base

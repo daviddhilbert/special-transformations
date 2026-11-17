@@ -1,4 +1,10 @@
-import Section3.SortedParameterElimination
+module
+
+public import Section3.SortedParameterElimination
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

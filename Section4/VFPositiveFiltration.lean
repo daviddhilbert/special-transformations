@@ -1,6 +1,12 @@
-import Section4.VFAllSemiring
-import Section4.VFCoproductBounds
-import Section4.VFProducts
+module
+
+public import Section4.VFAllSemiring
+public import Section4.VFCoproductBounds
+public import Section4.VFProducts
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

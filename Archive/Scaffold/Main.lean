@@ -1,4 +1,10 @@
-import SpecialTransformations.VolumeForms
+module
+
+public import SpecialTransformations.VolumeForms
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Main statements

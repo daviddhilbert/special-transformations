@@ -1,5 +1,11 @@
-import Section3.GammaBaseTools
-import Section3.GammaProjection
+module
+
+public import Section3.GammaBaseTools
+public import Section3.GammaProjection
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: BaseTupleOperations -/
 set_option backward.isDefEq.respectTransparency false

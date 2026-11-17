@@ -1,5 +1,11 @@
-import Section6.RVGraphExpansion
-import Section6.RVSourceFormula
+module
+
+public import Section6.RVGraphExpansion
+public import Section6.RVSourceFormula
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Name the original base in the source language. FV constants stay in
 the native parameter expansion; only RV constants are introduced into the

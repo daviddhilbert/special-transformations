@@ -1,7 +1,13 @@
-import Section4.ProductRearrangement
-import Section4.RealPresentations
-import Section4.VFRealFibres
-import Mathlib.Data.Fin.Tuple.Basic
+module
+
+public import Section4.ProductRearrangement
+public import Section4.RealPresentations
+public import Section4.VFRealFibres
+public import Mathlib.Data.Fin.Tuple.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

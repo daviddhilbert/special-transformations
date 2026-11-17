@@ -1,7 +1,13 @@
-import Section9.AffineTail
-import Section3.RingSyntax
-import Section3.DefinableConstants
-import Section3.SortedTuples
+module
+
+public import Section9.AffineTail
+public import Section3.RingSyntax
+public import Section3.DefinableConstants
+public import Section3.SortedTuples
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The affine correction is definable by polynomial equations for
 its slopes, including the required product. -/

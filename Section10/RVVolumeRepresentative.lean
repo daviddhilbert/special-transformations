@@ -1,5 +1,11 @@
-import Section10.EssentialVFMap
-import Section10.RVVolumeLift
+module
+
+public import Section10.EssentialVFMap
+public import Section10.RVVolumeLift
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The pointwise RV-valued representative in Theorem 10.5. -/
 

@@ -1,8 +1,14 @@
-import Section3.SortedInverseClosure
-import Section3.DefinableConstants
-import Section3.ClosureBridge
-import Section3.RootDefinability
-import Section3.VFAlgebraicity
+module
+
+public import Section3.SortedInverseClosure
+public import Section3.DefinableConstants
+public import Section3.ClosureBridge
+public import Section3.RootDefinability
+public import Section3.VFAlgebraicity
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

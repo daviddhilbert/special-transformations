@@ -1,5 +1,11 @@
-import Section9.LiftRestriction
-import Section9.LiftLabelRepresentatives
+module
+
+public import Section9.LiftRestriction
+public import Section9.LiftLabelRepresentatives
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Glue a finite family of lifts along a disjoint partition of the
 source labels. The target partition is the image under the given

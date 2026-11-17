@@ -1,4 +1,10 @@
-import Section9.RVJacobianReduction
+module
+
+public import Section9.RVJacobianReduction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Algebraic derivations of an implicit polynomial graph

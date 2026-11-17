@@ -1,6 +1,12 @@
-import Section4.MixedProducts
-import Section4.UnionMapLaws
-import Mathlib.CategoryTheory.Limits.Shapes.BinaryProducts
+module
+
+public import Section4.MixedProducts
+public import Section4.UnionMapLaws
+public import Mathlib.CategoryTheory.Limits.Shapes.BinaryProducts
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

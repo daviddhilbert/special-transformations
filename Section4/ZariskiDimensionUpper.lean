@@ -1,6 +1,12 @@
-import Section4.AffineKrullDimension
-import Section4.ZariskiPrimeBound
-import Mathlib.RingTheory.KrullDimension.NonZeroDivisors
+module
+
+public import Section4.AffineKrullDimension
+public import Section4.ZariskiPrimeBound
+public import Mathlib.RingTheory.KrullDimension.NonZeroDivisors
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

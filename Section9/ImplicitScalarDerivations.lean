@@ -1,5 +1,11 @@
-import Section9.ValuedImplicitDerivative
-import Section9.RVJacobianDerivations
+module
+
+public import Section9.ValuedImplicitDerivative
+public import Section9.RVJacobianDerivations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Identify the derivative of an arbitrary definable branch with
 coordinate derivations using its simple-root equations. This step uses

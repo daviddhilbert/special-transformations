@@ -1,6 +1,12 @@
-import Section4.RVCoordinates
-import Section4.RVPadding
-import Section3.TupleRelations
+module
+
+public import Section4.RVCoordinates
+public import Section4.RVPadding
+public import Section3.TupleRelations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,4 +1,10 @@
-import Section9.GammaCoarsening
+module
+
+public import Section9.GammaCoarsening
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Residue characteristic zero passes to any valuation whose order
 comparisons respect those of the original valuation. -/

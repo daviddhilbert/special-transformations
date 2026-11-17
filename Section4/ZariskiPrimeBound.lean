@@ -1,8 +1,14 @@
-import Section4.PolynomialCover
-import Section4.TupleIndependence
-import Section4.Imported.PolynomialCoordinateBasis
-import Section4.Imported.NoetherNormalizationTrdeg
-import Mathlib.RingTheory.Nullstellensatz
+module
+
+public import Section4.PolynomialCover
+public import Section4.TupleIndependence
+public import Section4.Imported.PolynomialCoordinateBasis
+public import Section4.Imported.NoetherNormalizationTrdeg
+public import Mathlib.RingTheory.Nullstellensatz
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

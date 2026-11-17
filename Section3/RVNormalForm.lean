@@ -1,4 +1,10 @@
-import Section3.RVLiteralReduction
+module
+
+public import Section3.RVLiteralReduction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 namespace SpecialTransformations.Section3

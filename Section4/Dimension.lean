@@ -1,5 +1,11 @@
-import Section4.FiniteMaps
-import Mathlib.Order.Lattice.Nat
+module
+
+public import Section4.FiniteMaps
+public import Mathlib.Order.Lattice.Nat
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # The minimum of definable finite-to-one dimension witnesses

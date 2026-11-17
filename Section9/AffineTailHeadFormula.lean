@@ -1,6 +1,12 @@
-import Section9.AffineTailDefinability
-import Section9.AffineTailCorrection
-import Section8.UnaryGerm
+module
+
+public import Section9.AffineTailDefinability
+public import Section9.AffineTailCorrection
+public import Section8.UnaryGerm
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The guarded affine map is definable over the parameters of the
 head map and of the representatives. Its extra scalar is eliminated. -/

@@ -1,6 +1,12 @@
-import Section9.ValuedPolynomialTaylor
-import Section9.ImplicitEstimate
-import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+module
+
+public import Section9.ValuedPolynomialTaylor
+public import Section9.ImplicitEstimate
+public import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The implicit linear approximation of a continuous scalar branch.
 The scalar equation with nonzero output derivative gives the error

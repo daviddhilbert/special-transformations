@@ -1,7 +1,13 @@
-import Section6.RVGraphLanguage
-import Section3.QuantifierFree
-import Section3.ParameterBridge
-import Section3.SortedBoolean
+module
+
+public import Section6.RVGraphLanguage
+public import Section3.QuantifierFree
+public import Section3.ParameterBridge
+public import Section3.SortedBoolean
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Stable embeddedness in the form needed here: a definable subset of
 RV has a quantifier-free definition using only RV symbols and the RV

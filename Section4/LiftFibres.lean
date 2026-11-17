@@ -1,6 +1,12 @@
-import Section4.LiftMorphism
-import Section4.Fibres
-import Section4.RVCoordinates
+module
+
+public import Section4.LiftMorphism
+public import Section4.Fibres
+public import Section4.RVCoordinates
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

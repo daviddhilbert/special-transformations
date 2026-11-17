@@ -1,5 +1,11 @@
-import Section7.GammaPolynomialAlgebra
-import Mathlib.Algebra.MvPolynomial.Rename
+module
+
+public import Section7.GammaPolynomialAlgebra
+public import Mathlib.Algebra.MvPolynomial.Rename
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Weighted substitution of polynomial coordinates

@@ -1,5 +1,11 @@
-import Section6.HenselScheme
-import Section7.MultivariateHensel
+module
+
+public import Section6.HenselScheme
+public import Section7.MultivariateHensel
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Identification of the simple-root scheme with the ordinary henselian
 condition on the valuation ring. The arbitrary-polynomial direction uses

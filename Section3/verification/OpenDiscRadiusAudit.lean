@@ -1,5 +1,11 @@
-import Section3.Library
-import Section5.Library
+module
+
+public import Section3.Library
+public import Section5.Library
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option pp.universes true
 set_option pp.fullNames true
 set_option format.width 120

@@ -1,4 +1,10 @@
-import SpecialTransformations.Differentiation
+module
+
+public import SpecialTransformations.Differentiation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Categories with volume forms

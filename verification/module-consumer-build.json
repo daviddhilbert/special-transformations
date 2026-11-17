@@ -1,0 +1,13 @@
+{
+  "scope": "Lean module compatibility; mathematical bodies unchanged",
+  "baseline": "39f369f0a15440465cbd12a4484779c034f278b7",
+  "consumer_build": "lake build FubiniTheorems",
+  "consumer_build_exit_code": 0,
+  "consumer_build_jobs": 13021,
+  "source_audit": "verification/module-migration.json",
+  "provider_full_library_build": "Not certified by this consumer-only receipt",
+  "dependencies": {
+    "hilbert-mathlib": "89972dda28566ae669329c67b6cd224998a11601",
+    "acvf_qe": "1d158a9ef5cbe5ac2cb52707144b1da127ef8dbf"
+  }
+}

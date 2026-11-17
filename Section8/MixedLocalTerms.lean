@@ -1,4 +1,10 @@
-import Section4.MultivariateLocal
+module
+
+public import Section4.MultivariateLocal
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! At an independent VF tuple, the local constancy of an RV term is
 uniform in every free RV coordinate. A well-sorted VF subterm uses

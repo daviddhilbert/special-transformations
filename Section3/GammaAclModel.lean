@@ -1,8 +1,14 @@
-import Section3.AclModel
-import Section3.CanonicalParameters
-import Section3.GammaClosureElimination
-import Section3.GammaParameterBridge
-import Section3.GammaSupport
+module
+
+public import Section3.AclModel
+public import Section3.CanonicalParameters
+public import Section3.GammaClosureElimination
+public import Section3.GammaParameterBridge
+public import Section3.GammaSupport
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: GammaAclModel -/
 set_option backward.isDefEq.respectTransparency false

@@ -1,6 +1,12 @@
-import Section4.RVFiniteScissors
-import Section7.LiftedIsomorphism
-import Section9.MixedJacobian
+module
+
+public import Section4.RVFiniteScissors
+public import Section7.LiftedIsomorphism
+public import Section9.MixedJacobian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Restrict an RV isomorphism along a source-label cut and its image.
 The fixed-label Jacobian of a map on the restricted lift is unchanged

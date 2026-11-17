@@ -1,5 +1,11 @@
-import Section9.PolynomialDifferentiation
-import Section9.WeightedJacobian
+module
+
+public import Section9.PolynomialDifferentiation
+public import Section9.WeightedJacobian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Identification of the VF derivative of a local branch with the
 implicit matrix of its equations. The branch is differentiable on the

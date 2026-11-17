@@ -1,4 +1,10 @@
-import Section4.DefinableGeometry
+module
+
+public import Section4.DefinableGeometry
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Logical closure for an open-chart certificate with scale and
 coefficient variables. The arithmetic tests are interpreted in the

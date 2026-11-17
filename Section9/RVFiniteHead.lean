@@ -1,8 +1,14 @@
-import Section4.RVFiniteScissors
-import Section4.RVWeightRestriction
-import Section4.RVDimensionRank
-import Section4.CoordinateMaps
-import Section4.CanonicalLift
+module
+
+public import Section4.RVFiniteScissors
+public import Section4.RVWeightRestriction
+public import Section4.RVDimensionRank
+public import Section4.CoordinateMaps
+public import Section4.CanonicalLift
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Coordinate head maps for the lower-RV-dimensional step of Theorem
 9.16. A head is taken from actual volume coordinates and keeps the original

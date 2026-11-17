@@ -1,6 +1,12 @@
-import Mathlib.Algebra.MvPolynomial.PDeriv
-import Mathlib.RingTheory.Valuation.ValuationSubring
-import Mathlib.Tactic.Ring
+module
+
+public import Mathlib.Algebra.MvPolynomial.PDeriv
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Mathlib.Tactic.Ring
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A quadratic first-order error bound for polynomials with integral
 coefficients, in arbitrary valuation rank. This is the estimate used

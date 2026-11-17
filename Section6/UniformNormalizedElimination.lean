@@ -1,5 +1,11 @@
-import Section6.EnvelopeUniformity
-import Section6.SortedFragment
+module
+
+public import Section6.EnvelopeUniformity
+public import Section6.SortedFragment
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Compactness turns the proved common-envelope comparison into one
 formula for all models. NativeEnvelopes records the ordinary algebraic

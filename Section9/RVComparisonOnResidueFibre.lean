@@ -1,9 +1,15 @@
-import Section9.NormalizedRVComparison
-import Section9.RVGraphJacobianComparison
-import Section9.AffineMixedDerivative
-import Section9.NormalizedVFRepresentatives
-import Section9.ResidueFiniteProjection
-import Section9.ResidueJacobianExistence
+module
+
+public import Section9.NormalizedRVComparison
+public import Section9.RVGraphJacobianComparison
+public import Section9.AffineMixedDerivative
+public import Section9.NormalizedVFRepresentatives
+public import Section9.ResidueFiniteProjection
+public import Section9.ResidueJacobianExistence
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Pointwise comparison for an arbitrary definable lift, in the
 original VF coordinates. The residue chart and genericity conditions

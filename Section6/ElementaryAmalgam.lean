@@ -1,6 +1,12 @@
-import Mathlib.ModelTheory.Ultraproducts
-import Mathlib.ModelTheory.ElementaryMaps
-import Mathlib.Order.Filter.AtTopBot.Finset
+module
+
+public import Mathlib.ModelTheory.Ultraproducts
+public import Mathlib.ModelTheory.ElementaryMaps
+public import Mathlib.Order.Filter.AtTopBot.Finset
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Elementary amalgamation over tuples of the same complete type. Only
 countable saturation is needed after amalgamating the two structures. -/

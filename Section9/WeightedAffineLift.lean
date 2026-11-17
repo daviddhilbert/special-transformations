@@ -1,7 +1,13 @@
-import Section9.AffineLiftPrescribedJacobian
-import Section9.WeightedLiftJacobian
-import Section9.MixedJacobianValue
-import Section9.VFCoordinateAssembly
+module
+
+public import Section9.AffineLiftPrescribedJacobian
+public import Section9.WeightedLiftJacobian
+public import Section9.MixedJacobianValue
+public import Section9.VFCoordinateAssembly
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The lower-dimensional construction with both finite heads already
 placed first. All maps, representatives and the final lift are over

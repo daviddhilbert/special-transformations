@@ -1,5 +1,11 @@
-import Section3.VFAclField
-import CanonicalStructure
+module
+
+public import Section3.VFAclField
+public import CanonicalStructure
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV
 open SpecialTransformations.Milestone0.Transfer

@@ -1,5 +1,11 @@
-import Section9.GaussDerivative
-import Mathlib.RingTheory.AlgebraicIndependent.Basic
+module
+
+public import Section9.GaussDerivative
+public import Mathlib.RingTheory.AlgebraicIndependent.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A finer valuation can certify the Gauss bound for a coarsening.
 Distinct fine monomial values rule out cancellation even when several

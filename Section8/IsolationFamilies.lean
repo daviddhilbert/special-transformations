@@ -1,4 +1,10 @@
-import Section8.IsolationDimension
+module
+
+public import Section8.IsolationDimension
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The isolation construction works in a definable family. The same
 parameters are held fixed at both graph points. -/

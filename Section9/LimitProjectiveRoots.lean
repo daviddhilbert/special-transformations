@@ -1,5 +1,11 @@
-import Section9.LimitPolynomialRoots
-import Section9.LimitReciprocal
+module
+
+public import Section9.LimitPolynomialRoots
+public import Section9.LimitReciprocal
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Combine the bounded chart and the reciprocal chart for a polynomial
 relation with one input and one output. The radii are realized in the

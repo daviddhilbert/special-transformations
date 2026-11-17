@@ -1,4 +1,10 @@
-import Section7.FieldConstructibility
+module
+
+public import Section7.FieldConstructibility
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Use the published ACF elimination theorem to obtain a single
 quantifier-free ring formula for a residue correspondence. -/

@@ -1,5 +1,11 @@
-import Section3.GammaBaseDescent
-import Section3.GammaRVSeparation
+module
+
+public import Section3.GammaBaseDescent
+public import Section3.GammaRVSeparation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: GammaLastProjection -/
 set_option backward.isDefEq.respectTransparency false

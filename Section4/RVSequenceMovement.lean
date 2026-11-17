@@ -1,6 +1,12 @@
-import Section4.RVSequenceIndependence
-import Section4.AlgebraicAutomorphisms
-import Section4.HomogeneousAvoidance
+module
+
+public import Section4.RVSequenceIndependence
+public import Section4.AlgebraicAutomorphisms
+public import Section4.HomogeneousAvoidance
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

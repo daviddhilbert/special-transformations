@@ -1,6 +1,12 @@
-import Section9.FinitePointLimits
-import Section8.VFNeighbourhoods
-import Section8.IsolationRadius
+module
+
+public import Section9.FinitePointLimits
+public import Section8.VFNeighbourhoods
+public import Section8.IsolationRadius
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The closure used in Lemma 9.2 agrees with topological closure for
 every compatible presentation of the valuation. -/

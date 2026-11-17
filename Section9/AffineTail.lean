@@ -1,5 +1,11 @@
-import Section7.GeneralizedHensel
-import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+module
+
+public import Section7.GeneralizedHensel
+public import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The affine correction on the tail of the lift in Theorem 9.16.
 Centres are supplied by the finite-family centre theorem in the eventual

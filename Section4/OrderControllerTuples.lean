@@ -1,5 +1,11 @@
-import Section4.CanonicalOrderController
-import Mathlib.Data.Fintype.EquivFin
+module
+
+public import Section4.CanonicalOrderController
+public import Mathlib.Data.Fintype.EquivFin
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical
 

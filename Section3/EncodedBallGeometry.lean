@@ -1,6 +1,12 @@
-import Section3.CanonicalParameters
-import Section3.BallGeometry
-import VFValued
+module
+
+public import Section3.CanonicalParameters
+public import Section3.BallGeometry
+public import VFValued
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

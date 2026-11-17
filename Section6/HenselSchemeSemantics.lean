@@ -1,6 +1,12 @@
-import Section6.HenselianTheory
-import Mathlib.Algebra.Polynomial.Derivative
-import VFValued
+module
+
+public import Section6.HenselianTheory
+public import Mathlib.Algebra.Polynomial.Derivative
+public import VFValued
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Semantic polynomial and derivative calculations for the native
 simple-root scheme. The same calculation is used in both directions of

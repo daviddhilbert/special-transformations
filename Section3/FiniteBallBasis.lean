@@ -1,4 +1,10 @@
-import Section3.BooleanCombinations
+module
+
+public import Section3.BooleanCombinations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open Classical
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.BooleanCombinations

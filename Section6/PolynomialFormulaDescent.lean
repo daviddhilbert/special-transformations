@@ -1,6 +1,12 @@
-import Section6.PolynomialDescent
-import Section6.RVGraphExpansion
-import Section6.RVSourceFormula
+module
+
+public import Section6.PolynomialDescent
+public import Section6.RVGraphExpansion
+public import Section6.RVSourceFormula
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! One actual RV formula for a finite polynomial tuple and an arbitrary
 RV body. Preparation and the complete graph are selected before the

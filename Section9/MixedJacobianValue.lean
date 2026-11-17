@@ -1,6 +1,12 @@
-import Section9.MixedDerivativeFormula
-import Section4.FunctionalRelations
-import Section4.VFRealFibres
+module
+
+public import Section9.MixedDerivativeFormula
+public import Section4.FunctionalRelations
+public import Section4.VFRealFibres
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The full mixed Jacobian as a definable VF value, with zero on the
 locus where a full derivative is absent. -/

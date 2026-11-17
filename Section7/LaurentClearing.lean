@@ -1,4 +1,10 @@
-import Section7.GammaPolynomialAlgebra
+module
+
+public import Section7.GammaPolynomialAlgebra
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Clearing Laurent exponents over the original coefficient field

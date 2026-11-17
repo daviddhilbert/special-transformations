@@ -1,5 +1,11 @@
-import Section6.NativeFormulaElimination
-import Section6.FiniteParameterSyntax
+module
+
+public import Section6.NativeFormulaElimination
+public import Section6.FiniteParameterSyntax
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The syntactic part of Lemma 6.3, with arbitrary original parameter
 names rather than an assumed finite presentation. The input is the

@@ -1,7 +1,13 @@
-import Section3.ClosedClassCodes
-import Section3.GammaBaseTools
-import Section3.GammaProjection
-import Section3.OpenBallCodes
+module
+
+public import Section3.ClosedClassCodes
+public import Section3.GammaBaseTools
+public import Section3.GammaProjection
+public import Section3.OpenBallCodes
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: OpenBallFamilyHulls -/
 set_option backward.isDefEq.respectTransparency false

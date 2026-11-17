@@ -1,4 +1,10 @@
-import Section7.GammaPolynomial
+module
+
+public import Section7.GammaPolynomial
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # The coordinate normalization in the proof of Lemma 7.2

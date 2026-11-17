@@ -1,4 +1,10 @@
-import Section3.GammaBaseTools
+module
+
+public import Section3.GammaBaseTools
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: GammaRealMap -/
 set_option backward.isDefEq.respectTransparency false

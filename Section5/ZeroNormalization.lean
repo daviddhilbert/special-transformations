@@ -1,4 +1,10 @@
-import Section5.GammaRestriction
+module
+
+public import Section5.GammaRestriction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Nonzero active loci for Definition 5.1

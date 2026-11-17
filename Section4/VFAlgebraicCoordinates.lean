@@ -1,7 +1,13 @@
-import Section4.Fibres
-import Section4.VFDimension
-import Section4.Spaces
-import Section3.VFAlgebraicity
+module
+
+public import Section4.Fibres
+public import Section4.VFDimension
+public import Section4.Spaces
+public import Section3.VFAlgebraicity
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

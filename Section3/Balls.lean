@@ -1,3 +1,5 @@
+module
+
 /-
 Self-contained `import Mathlib` file, milestone 0 of formalizing
 Yimu Yin, "Special transformations in algebraically closed valued fields"
@@ -21,7 +23,11 @@ paper's open ball `{b | v (b-a) > γ}` (with `γ` in the paper's order) is
 `rad` (Definition 2.6) is *not* a function of a ball: a ball has many radii
 (`openBall_eq_of_mem`), so we state everything about radii relationally.
 -/
-import Mathlib
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Valuation
 

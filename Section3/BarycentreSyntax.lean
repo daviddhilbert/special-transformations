@@ -1,5 +1,11 @@
-import Section3.RingSyntax
-import Section3.DefinableConstants
+module
+
+public import Section3.RingSyntax
+public import Section3.DefinableConstants
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,4 +1,10 @@
-import Section6.ConcreteValued
+module
+
+public import Section6.ConcreteValued
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Realization of the three guarded contexts in the ordinary tagged model. -/
 

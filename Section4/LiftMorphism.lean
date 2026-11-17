@@ -1,7 +1,13 @@
-import Section4.MapAlgebraicity
-import Section4.RVCoordinates
-import Section4.RVTupleFibres
-import Section3.SmallFiniteParameters
+module
+
+public import Section4.MapAlgebraicity
+public import Section4.RVCoordinates
+public import Section4.RVTupleFibres
+public import Section3.SmallFiniteParameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

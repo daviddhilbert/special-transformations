@@ -1,4 +1,10 @@
-import Section3.GuardedRVLiterals
+module
+
+public import Section3.GuardedRVLiterals
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # The constant part of the guarded normal form on a fixed value fibre

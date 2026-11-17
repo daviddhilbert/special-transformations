@@ -1,6 +1,12 @@
-import Section9.OpenSquareSystem
-import Section9.RadicalResidueChart
-import Mathlib.Algebra.MvPolynomial.Equiv
+module
+
+public import Section9.OpenSquareSystem
+public import Section9.RadicalResidueChart
+public import Mathlib.Algebra.MvPolynomial.Equiv
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! In an open residue chart, separate the input variables from the
 output variables and the inverse of the open factor. This transfers

@@ -1,9 +1,15 @@
-import Section9.FiniteHeadRepresentatives
-import Section4.CanonicalLift
-import Section4.CodeMaps
-import Section4.FunctionalRelations
-import Section4.MapCorestrict
-import Section4.VFRealFibres
+module
+
+public import Section9.FiniteHeadRepresentatives
+public import Section4.CanonicalLift
+public import Section4.CodeMaps
+public import Section4.FunctionalRelations
+public import Section4.MapCorestrict
+public import Section4.VFRealFibres
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! RV labels in a finite-volume head lift admit uniform VF
 representatives. The input to a representative is the VF head and

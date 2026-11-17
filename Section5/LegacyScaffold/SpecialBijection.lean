@@ -1,4 +1,10 @@
-import SpecialTransformations.Categories
+module
+
+public import SpecialTransformations.Categories
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # RV-pullbacks and special bijections

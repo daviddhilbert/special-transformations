@@ -1,3 +1,5 @@
+module
+
 /-
 Legacy centre-selection geometry and an obstruction to the old uniqueness encoding.
 
@@ -14,8 +16,12 @@ Pairwise disjointness removes this geometric obstruction but does not by
 itself prove definability of the choices. The paper's root-averaging argument
 and parameter discipline remain required; see STATUS.md.
 -/
-import Sec3Sat
-import BallSec3
+public import Sec3Sat
+public import BallSec3
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder

@@ -1,5 +1,11 @@
-import Section6.ContractionGraph
-import Section5.PolynomialPreparation
+module
+
+public import Section6.ContractionGraph
+public import Section5.PolynomialPreparation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A concrete polynomial certificate for Lemma 6.3. The finite tuple map
 and its preparation are supplied by the accepted earlier section. The

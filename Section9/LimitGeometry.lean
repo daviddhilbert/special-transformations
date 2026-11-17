@@ -1,4 +1,10 @@
-import Section9.Limits
+module
+
+public import Section9.Limits
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Neighbourhood geometry for Definition 9.1, including the auxiliary
 point at infinity. All radii belong to the released value-group quotient.

@@ -1,6 +1,12 @@
-import Section9.RVJacobianChain
-import Section9.ResidueFiniteProjection
-import Section9.ResidueJacobianExistence
+module
+
+public import Section9.RVJacobianChain
+public import Section9.ResidueFiniteProjection
+public import Section9.ResidueJacobianExistence
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! At one residue-generic point, all three finite volume
 correspondences admit compatible Jacobians over common scales. -/

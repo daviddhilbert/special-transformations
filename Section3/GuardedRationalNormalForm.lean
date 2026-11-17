@@ -1,8 +1,14 @@
-import Section3.GuardedRVArithmetic
-import Section3.GuardedRVLiterals
-import Section3.GuardedRVTerms
-import Section3.QuantifierFree
-import Section3.RVNormalForm
+module
+
+public import Section3.GuardedRVArithmetic
+public import Section3.GuardedRVLiterals
+public import Section3.GuardedRVTerms
+public import Section3.QuantifierFree
+public import Section3.RVNormalForm
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # GuardedRationalNormalForm

@@ -1,4 +1,10 @@
-import Mathlib
+module
+
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 namespace SpecialTransformations.Section3

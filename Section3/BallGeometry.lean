@@ -1,5 +1,11 @@
-import VFValued
-import CanonicalRV
+module
+
+public import VFValued
+public import CanonicalRV
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Definitions 2.6 and Notation 2.9

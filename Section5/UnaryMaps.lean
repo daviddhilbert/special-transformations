@@ -1,4 +1,10 @@
-import Section5.UnaryRelations
+module
+
+public import Section5.UnaryRelations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Unary definable maps with RV targets

@@ -1,4 +1,10 @@
-import Section9.Differentiation
+module
+
+public import Section9.Differentiation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Locality and componentwise assembly for the VF derivative. -/
 

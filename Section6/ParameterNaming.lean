@@ -1,4 +1,10 @@
-import Section6.RVGraphExpansion
+module
+
+public import Section6.RVGraphExpansion
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Substitute the original finite RV parameter tuple back into the
 auxiliary formula. Pinned Mathlib substitution proves correctness below

@@ -1,4 +1,10 @@
-import Section3.GuardedRVArithmetic
+module
+
+public import Section3.GuardedRVArithmetic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # GuardedRVTerms

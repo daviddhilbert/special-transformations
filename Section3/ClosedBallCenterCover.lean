@@ -1,7 +1,13 @@
-import Section3.ClosedBallQuotient
-import Section3.FiniteAlgebraicCover
-import Section3.RVIndependence
-import Section3.GammaSpecialization
+module
+
+public import Section3.ClosedBallQuotient
+public import Section3.FiniteAlgebraicCover
+public import Section3.RVIndependence
+public import Section3.GammaSpecialization
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

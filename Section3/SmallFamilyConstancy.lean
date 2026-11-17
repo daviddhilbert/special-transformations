@@ -1,10 +1,16 @@
-import ACVFQE
-import Mathlib
-import Section3.GammaSpecialization
-import Section3.MixedPolynomialSyntax
-import Section3.PolynomialRVMonomial
-import Section3.RVLiteralReduction
-import Section3.RVSmallPowers
+module
+
+public import ACVFQE
+public import Mathlib
+public import Section3.GammaSpecialization
+public import Section3.MixedPolynomialSyntax
+public import Section3.PolynomialRVMonomial
+public import Section3.RVLiteralReduction
+public import Section3.RVSmallPowers
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /- Component: MonomialCoefficients -/
 

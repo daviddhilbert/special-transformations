@@ -1,7 +1,13 @@
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.Minpoly.Field
-import Mathlib.Algebra.Polynomial.Lifts
-import Mathlib.RingTheory.Valuation.ValuationSubring
+module
+
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.FieldTheory.Minpoly.Field
+public import Mathlib.Algebra.Polynomial.Lifts
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! An algebraic element is integral over the base valuation ring when its
 entire Galois orbit lies in the ambient valuation ring. -/

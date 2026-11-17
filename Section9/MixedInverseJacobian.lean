@@ -1,4 +1,10 @@
-import Section9.MixedJacobian
+module
+
+public import Section9.MixedJacobian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! On fixed-label charts the derivative of an inverse has reciprocal
 determinant. This is the inverse step for intrinsic Gamma descent. -/

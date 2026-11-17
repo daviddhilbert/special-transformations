@@ -1,6 +1,12 @@
-import Section3.RawBarycentricCode
-import Section3.SortedTuples
-import Section3.CanonicalContext
+module
+
+public import Section3.RawBarycentricCode
+public import Section3.SortedTuples
+public import Section3.CanonicalContext
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

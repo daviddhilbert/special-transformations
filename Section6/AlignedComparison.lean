@@ -1,6 +1,12 @@
-import Section6.CommonEnvelopeComparison
-import Section6.NormalizedQuery
-import Section6.SentenceDenaming
+module
+
+public import Section6.CommonEnvelopeComparison
+public import Section6.NormalizedQuery
+public import Section6.SentenceDenaming
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Compare a normalized existential formula on two henselian images
 after all of its original parameters have been aligned. The auxiliary

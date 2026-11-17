@@ -1,5 +1,11 @@
-import Section8.VFDefinableTopology
-import Section8.IsolationFibres
+module
+
+public import Section8.VFDefinableTopology
+public import Section8.IsolationFibres
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The discontinuity set of a definable VF map is definable over the
 graph's parameter base, using the valuation topology on both tuples. -/

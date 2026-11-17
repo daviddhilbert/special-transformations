@@ -1,5 +1,11 @@
-import Section3.VFDefinableClosure
-import Section3.FieldBase
+module
+
+public import Section3.VFDefinableClosure
+public import Section3.FieldBase
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

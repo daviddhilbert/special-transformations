@@ -1,5 +1,11 @@
-import Section5.RootConstruction
-import Section3.MixedRootFree
+module
+
+public import Section5.RootConstruction
+public import Section3.MixedRootFree
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Restricting special bijections to definable subsets

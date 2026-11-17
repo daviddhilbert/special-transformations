@@ -1,5 +1,11 @@
-import Section9.BoundedCoordinateDerivations
-import Section9.GaussFieldRestriction
+module
+
+public import Section9.BoundedCoordinateDerivations
+public import Section9.GaussFieldRestriction
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The data used from the henselization and the finite extension of
 the Gauss field. The reference facts are kept separate from the

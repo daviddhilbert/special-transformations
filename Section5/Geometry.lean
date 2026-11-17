@@ -1,5 +1,11 @@
-import VFValued
-import Mathlib.Data.Fin.Tuple.Basic
+module
+
+public import VFValued
+public import Mathlib.Data.Fin.Tuple.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # RV hulls and canonical maps in the released language

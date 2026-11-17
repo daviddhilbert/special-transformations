@@ -1,9 +1,15 @@
+module
+
 /-
 Extracted from https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEFiniteLaws.lean
 Original declaration namespaces and notices are retained.
 -/
-import Section3.GammaQEGraphCritical
-import HilbertMathlib.Foundation.Euler.GammaQEPositiveLaw
+public import Section3.GammaQEGraphCritical
+public import HilbertMathlib.Foundation.Euler.GammaQEPositiveLaw
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The exact unary Gamma rational-affine input is proved from original
 RV quantifier elimination. No saturation or additional parameters occur. -/

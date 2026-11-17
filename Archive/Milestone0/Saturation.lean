@@ -1,3 +1,5 @@
+module
+
 /-
 Saturation and monster models, in the shape of Marker's *Model Theory: An Introduction*
 (GTM 217): types over a parameter set, `κ`-saturation ("every type over fewer than `κ`
@@ -23,7 +25,11 @@ Check this file with
 the encoding is 115 kB of definitions and copying it again as a standalone snapshot would add a
 third divergent copy of the frozen statements.)
 -/
-import Enc
+public import Enc
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open scoped FirstOrder

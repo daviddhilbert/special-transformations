@@ -1,4 +1,10 @@
-import Section6.FunctionalClosure
+module
+
+public import Section6.FunctionalClosure
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Definable closure can be checked in an elementary algebraic envelope.
 This is the passage from the accepted Corollary 3.14 model to the ambient

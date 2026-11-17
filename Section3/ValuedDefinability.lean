@@ -1,4 +1,10 @@
-import JohnsonLanguagePrime
+module
+
+public import JohnsonLanguagePrime
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option linter.style.haveILetI false
 open FirstOrder FirstOrder.Language
 namespace SpecialTransformations.Section3.ValuedDefinability

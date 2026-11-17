@@ -1,6 +1,12 @@
-import Section3.Counting
-import Section3.ParameterBridge
-import Section3.SortedBoolean
+module
+
+public import Section3.Counting
+public import Section3.ParameterBridge
+public import Section3.SortedBoolean
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Real tuple quantifiers used for local lifts

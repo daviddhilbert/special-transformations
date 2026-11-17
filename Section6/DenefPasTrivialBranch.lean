@@ -1,4 +1,10 @@
-import Section6.DenefPasInterpretation
+module
+
+public import Section6.DenefPasInterpretation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Coherent Section 6 module. The source bodies below are retained
 from the individually developed fragments; only imports and file scope

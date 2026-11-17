@@ -1,5 +1,11 @@
-import Section9.Differentiation
-import Section9.ValuedImplicitDerivative
+module
+
+public import Section9.Differentiation
+public import Section9.ValuedImplicitDerivative
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

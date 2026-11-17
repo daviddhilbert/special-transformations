@@ -1,5 +1,11 @@
-import Section9.MixedGenericDifferentiation
-import Section9.ImplicitScalarDerivations
+module
+
+public import Section9.MixedGenericDifferentiation
+public import Section9.ImplicitScalarDerivations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The entries of the VF Jacobian of a definable map can be computed
 by coordinate derivations in any field containing the graph point and

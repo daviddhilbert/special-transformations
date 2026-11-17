@@ -1,4 +1,10 @@
-import SpecialTransformations.Dimension
+module
+
+public import SpecialTransformations.Dimension
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Categories of definable subsets and Grothendieck semigroups

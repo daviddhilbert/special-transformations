@@ -1,4 +1,10 @@
-import Section9.HenselizedGraphData
+module
+
+public import Section9.HenselizedGraphData
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 namespace SpecialTransformations.Section9
 

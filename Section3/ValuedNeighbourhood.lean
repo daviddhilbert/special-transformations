@@ -1,5 +1,11 @@
-import Mathlib
-import Mathlib.Topology.Algebra.Valued.ValuedField
+module
+
+public import Mathlib
+public import Mathlib.Topology.Algebra.Valued.ValuedField
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open Filter Topology MonoidWithZeroHom
 namespace SpecialTransformations.Section3
 theorem infinite_valued_neighbourhood {K Γ : Type} [Field K]

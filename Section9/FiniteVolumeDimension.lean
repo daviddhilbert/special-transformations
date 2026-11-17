@@ -1,5 +1,11 @@
-import Section4.RVFinitaryImages
-import Section4.RVRestrictions
+module
+
+public import Section4.RVFinitaryImages
+public import Section4.RVRestrictions
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A finite-to-one map to its volume image preserves RV dimension.
 Use the checked finitary-image inequality for the reverse bound. -/

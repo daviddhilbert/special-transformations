@@ -1,6 +1,12 @@
-import Section4.RVGradedRing
-import Section4.RVFiniteGradedRing
-import Section4.RVFiniteGradedRepresentatives
+module
+
+public import Section4.RVGradedRing
+public import Section4.RVFiniteGradedRing
+public import Section4.RVFiniteGradedRepresentatives
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

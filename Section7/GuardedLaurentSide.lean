@@ -1,6 +1,12 @@
-import Section7.GuardedBaseMonomials
-import Section7.GuardedResidueSums
-import Section7.WeightedLeadingOperations
+module
+
+public import Section7.GuardedBaseMonomials
+public import Section7.GuardedResidueSums
+public import Section7.WeightedLeadingOperations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Field evaluations of the sides of a guarded RV equality

@@ -1,5 +1,11 @@
-import Enc
-import Mathlib.ModelTheory.Semantics
+module
+
+public import Enc
+public import Mathlib.ModelTheory.Semantics
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 The occurrence support for the corrected language, also in arbitrary

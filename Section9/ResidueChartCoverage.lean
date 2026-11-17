@@ -1,5 +1,11 @@
-import Section4.ResiduePolynomialCover
-import Section7.TupleCoordinates
+module
+
+public import Section4.ResiduePolynomialCover
+public import Section7.TupleCoordinates
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A generic selector for a square residue system extends to a
 chart above the complement of one proper input polynomial locus. -/

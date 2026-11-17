@@ -1,6 +1,12 @@
-import Section9.GenericRVJacobian
-import Section9.GenericVolumeChain
-import Section9.ZeroArityVolumeJacobian
+module
+
+public import Section9.GenericRVJacobian
+public import Section9.GenericVolumeChain
+public import Section9.ZeroArityVolumeJacobian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The same-base exceptional sets for the three Jacobians and the
 failure set of their product have RV dimension less than the arity. -/

@@ -1,5 +1,11 @@
-import Section4.ResidueScaledFunctions
-import Mathlib.Tactic.Tauto
+module
+
+public import Section4.ResidueScaledFunctions
+public import Mathlib.Tactic.Tauto
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

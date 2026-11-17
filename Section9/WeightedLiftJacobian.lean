@@ -1,7 +1,13 @@
-import Section9.WeightedLiftDomains
-import Section9.ImplicitJacobianIdentification
-import Section9.MixedGenericDifferentiation
-import Section7.LiftedIsomorphism
+module
+
+public import Section9.WeightedLiftDomains
+public import Section9.ImplicitJacobianIdentification
+public import Section9.MixedGenericDifferentiation
+public import Section7.LiftedIsomorphism
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The weighted lift of an essential RV isomorphism has the required
 Gamma Jacobian at independent VF points. In the lower-dimensional case

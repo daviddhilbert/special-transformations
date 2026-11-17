@@ -1,7 +1,13 @@
-import Section9.SpecialJacobian
-import Section9.MixedGenericDifferentiation
-import Section5.PullbackLift
-import Section8.GammaRadiusBase
+module
+
+public import Section9.SpecialJacobian
+public import Section9.MixedGenericDifferentiation
+public import Section5.PullbackLift
+public import Section8.GammaRadiusBase
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The derivative calculation along an actual Section 5 special chain.
 The map is recoded on the raw mixed presentation to apply the

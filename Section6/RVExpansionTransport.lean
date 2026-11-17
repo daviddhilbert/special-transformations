@@ -1,4 +1,10 @@
-import Section6.RVSubstructure
+module
+
+public import Section6.RVSubstructure
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Transport an arbitrary RV expansion along an actual native
 isomorphism of substructures. Its interpretation is transported only on

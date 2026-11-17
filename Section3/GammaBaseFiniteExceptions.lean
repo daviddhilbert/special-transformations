@@ -1,6 +1,12 @@
-import Section3.GammaSpecialization
-import Section3.RVFibreConstancy
-import Section3.AdditiveCosets
+module
+
+public import Section3.GammaSpecialization
+public import Section3.RVFibreConstancy
+public import Section3.AdditiveCosets
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

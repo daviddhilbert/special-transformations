@@ -1,5 +1,11 @@
-import Section6.FunctionalClosure
-import Section4.DefinableGeometry
+module
+
+public import Section6.FunctionalClosure
+public import Section4.DefinableGeometry
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Functional closure for the actual full-graph maps of Section 4.
 The target presentation must have unique real codes; the assertion is not

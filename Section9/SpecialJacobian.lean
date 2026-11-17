@@ -1,5 +1,11 @@
-import Section9.MixedJacobian
-import Section5.Core
+module
+
+public import Section9.MixedJacobian
+public import Section5.Core
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The determinant of a centripetal transformation at a point with
 a full derivative in its fixed-label chart. The active coordinate is

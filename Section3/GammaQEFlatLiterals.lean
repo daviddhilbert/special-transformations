@@ -1,9 +1,15 @@
+module
+
 /-
 Extracted from https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEFlatLiterals.lean
 Original declaration namespaces and notices are retained.
 -/
-import Section3.GammaQEFlatResidue
-import Section3.GammaQEValueAlgebra
+public import Section3.GammaQEFlatResidue
+public import Section3.GammaQEValueAlgebra
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Preservation of a true flat literal under a slope-separated RV
 perturbation. Residue summands are fixed and value comparisons are retained. -/

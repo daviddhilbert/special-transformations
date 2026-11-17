@@ -1,7 +1,13 @@
-import Section3.GammaOperations
-import Section3.GammaDefinability
-import ValuedFieldExtension
-import VFAlgClosed
+module
+
+public import Section3.GammaOperations
+public import Section3.GammaDefinability
+public import ValuedFieldExtension
+public import VFAlgClosed
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

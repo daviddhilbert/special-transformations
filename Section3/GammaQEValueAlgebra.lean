@@ -1,8 +1,14 @@
+module
+
 /-
 Extracted from https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEValueAlgebra.lean
 Original declaration namespaces and notices are retained.
 -/
-import Section3.GammaQERVBasics
+public import Section3.GammaQERVBasics
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Cancellation and residue-factor calculations for the actual RV
 valuation. The reversed GammaTop order is retained throughout. -/

@@ -1,6 +1,12 @@
-import Section4.CodeMaps
-import Section4.RealPresentations
-import Section3.DefinableConstants
+module
+
+public import Section4.CodeMaps
+public import Section4.RealPresentations
+public import Section3.DefinableConstants
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Diagonal affine coordinate changes on a mixed set keep its RV
 label. Named scales and translations suffice for definability. -/

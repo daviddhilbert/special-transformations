@@ -1,4 +1,10 @@
-import Section7.JacobianNormalization
+module
+
+public import Section7.JacobianNormalization
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Transport of simple common residue roots to the unit fibre

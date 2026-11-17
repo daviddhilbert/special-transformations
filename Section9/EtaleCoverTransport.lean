@@ -1,5 +1,11 @@
-import Section9.HenselizedGraphData
-import Mathlib.RingTheory.Etale.Basic
+module
+
+public import Section9.HenselizedGraphData
+public import Mathlib.RingTheory.Etale.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 namespace SpecialTransformations.Section9
 

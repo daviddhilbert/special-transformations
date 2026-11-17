@@ -1,9 +1,15 @@
-import Section4.PolydiscLocal
-import Section8.UnarySlope
-import Section8.VFNeighbourhoods
-import Mathlib.Algebra.Order.Monoid.Unbundled.Pow
-import Section8.UnaryGerm
-import Section8.NeighbourhoodRelations
+module
+
+public import Section4.PolydiscLocal
+public import Section8.UnarySlope
+public import Section8.VFNeighbourhoods
+public import Mathlib.Algebra.Order.Monoid.Unbundled.Pow
+public import Section8.UnaryGerm
+public import Section8.NeighbourhoodRelations
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 section
 

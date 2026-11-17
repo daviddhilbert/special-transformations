@@ -1,4 +1,10 @@
-import Mathlib
+module
+
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 namespace SpecialTransformations.Section3.RVMonomial
 
 /-- Uniform estimates use only ordered-group laws, with no Archimedean

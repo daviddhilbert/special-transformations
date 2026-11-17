@@ -1,3 +1,5 @@
+module
+
 /-
 Milestone 0 for: Yimu Yin, "Special transformations in algebraically closed valued fields",
 Annals of Pure and Applied Logic (2010), arXiv:1006.2467.
@@ -14,7 +16,11 @@ This file is self-contained: its only import is `Mathlib`.  Check it with
 The last part of the file (Part 6) contains the two target theorems.  They are stated
 with `sorry`, which is the only `sorry` in the file; all definitions are complete.
 -/
-import Mathlib
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 ## Reading guide

@@ -1,4 +1,10 @@
-import Section8.GammaRadiusBase
+module
+
+public import Section8.GammaRadiusBase
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Definable witnesses with a unique shift and an upper ray of radii. -/
 

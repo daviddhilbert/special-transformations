@@ -1,8 +1,14 @@
-import Section3.GammaNearestRoots
-import Section3.GammaFiniteMeans
-import Section3.BallDefinablePoint
-import Section3.RVIndependence
-import Section3.FiniteAlgebraicCover
+module
+
+public import Section3.GammaNearestRoots
+public import Section3.GammaFiniteMeans
+public import Section3.BallDefinablePoint
+public import Section3.RVIndependence
+public import Section3.FiniteAlgebraicCover
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

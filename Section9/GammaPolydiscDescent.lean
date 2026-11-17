@@ -1,7 +1,13 @@
-import Section9.GammaDescentBaseExtension
-import Section9.AffineMixedDerivative
-import Section9.PolydiscNormalization
-import Section3.SmallFiniteParameters
+module
+
+public import Section9.GammaDescentBaseExtension
+public import Section9.AffineMixedDerivative
+public import Section9.PolydiscNormalization
+public import Section3.SmallFiniteParameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Affine transport of intrinsic Gamma descent back to arbitrary
 nonzero RV polydiscs. The scales and the translation are named only in

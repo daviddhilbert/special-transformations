@@ -1,8 +1,14 @@
+module
+
 /-
 Extracted from https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEParser.lean
 Original declaration namespaces and notices are retained.
 -/
-import Section3.GammaQERVVariableMaps
+public import Section3.GammaQERVVariableMaps
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Actual Gamma predicates have a finite flat RV normal form with fixed
 VF and RV coefficients. All nonzero representatives are retained. -/

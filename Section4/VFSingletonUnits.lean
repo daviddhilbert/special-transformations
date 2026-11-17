@@ -1,4 +1,10 @@
-import Section4.VFFiniteSemiring
+module
+
+public import Section4.VFFiniteSemiring
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

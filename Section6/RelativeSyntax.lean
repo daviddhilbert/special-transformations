@@ -1,5 +1,11 @@
-import Enc
-import Mathlib.Data.Finite.Sum
+module
+
+public import Enc
+public import Mathlib.Data.Finite.Sum
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Generic logical reduction from one-step VF elimination. Adapted from the local
 legacy Section6/Sec6QE.lean; this proves no henselian elimination step. -/

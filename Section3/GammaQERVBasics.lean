@@ -1,9 +1,15 @@
+module
+
 /-
 Extracted from https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQERVBasics.lean
 Original declaration namespaces and notices are retained.
 -/
-import Section3.GuardedRationalNormalForm
-import Section3.GammaDensity
+public import Section3.GuardedRationalNormalForm
+public import Section3.GammaDensity
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Actual RV arithmetic used in the Gamma graph perturbation argument.
 All values and residue guards are those of the original language. -/

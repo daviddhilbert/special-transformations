@@ -1,5 +1,11 @@
-import Mathlib.ModelTheory.ElementaryMaps
-import Mathlib.ModelTheory.Bundled
+module
+
+public import Mathlib.ModelTheory.ElementaryMaps
+public import Mathlib.ModelTheory.Bundled
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The precise generic model-theoretic test-family bridge. An elementary
 cover contains an actual elementary copy of a test model through every

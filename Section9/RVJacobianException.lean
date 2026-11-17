@@ -1,7 +1,13 @@
-import Section9.MixedDifferentiationAE
-import Section9.MixedJacobianValue
-import Section4.CodeMaps
-import Section4.RVRestrictions
+module
+
+public import Section9.MixedDifferentiationAE
+public import Section9.MixedJacobianValue
+public import Section4.CodeMaps
+public import Section4.RVRestrictions
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A generic prescribed RV determinant yields one same-base VF-small
 exception, using the definable graph of the full mixed determinant. -/

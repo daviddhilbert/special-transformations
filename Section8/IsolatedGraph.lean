@@ -1,5 +1,11 @@
-import Section8.NeighbourhoodRelations
-import Section3.GammaCodeDefinability
+module
+
+public import Section8.NeighbourhoodRelations
+public import Section3.GammaCodeDefinability
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A uniform first-order isolation condition for Lemma 8.2. Radius
 parameters are in RV, so fixing them preserves the VF parameter field. -/

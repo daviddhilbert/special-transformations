@@ -1,7 +1,13 @@
-import Section4.Imported.NoetherNormalizationTrdeg
-import Section4.Imported.IntegralKrullDimension
-import Mathlib.RingTheory.KrullDimension.Polynomial
-import Mathlib.RingTheory.KrullDimension.Field
+module
+
+public import Section4.Imported.NoetherNormalizationTrdeg
+public import Section4.Imported.IntegralKrullDimension
+public import Mathlib.RingTheory.KrullDimension.Polynomial
+public import Mathlib.RingTheory.KrullDimension.Field
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 noncomputable section
 

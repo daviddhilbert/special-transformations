@@ -1,5 +1,11 @@
-import Section4.FiniteOrderControllers
-import Mathlib.Data.Nat.Find
+module
+
+public import Section4.FiniteOrderControllers
+public import Mathlib.Data.Nat.Find
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical
 

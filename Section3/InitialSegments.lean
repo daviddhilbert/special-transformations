@@ -1,4 +1,10 @@
-import Mathlib
+module
+
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open Classical
 namespace SpecialTransformations.Section3.InitialSegments
 variable {α β : Type} [LinearOrder β] (f : α → β)

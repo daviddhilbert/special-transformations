@@ -1,4 +1,10 @@
-import Section5.Assembly
+module
+
+public import Section5.Assembly
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Real-base ambient tag equalities for restricting transformations to
 domains with named imaginary parameters. The ambient domain uses only

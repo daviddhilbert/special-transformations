@@ -1,5 +1,11 @@
-import Section10.WeightedZero
-import Section5.Surjectivity
+module
+
+public import Section10.WeightedZero
+public import Section5.Surjectivity
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Transport the actual supplied form through the ordinary finite lift
 presentation. The zero label projection has a definable inverse, so this

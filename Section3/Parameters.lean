@@ -1,4 +1,10 @@
-import Enc
+module
+
+public import Enc
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Parameters and closure over an arbitrary base

@@ -1,5 +1,11 @@
-import Section5.GeneralExistence
-import Section4.CanonicalLift
+module
+
+public import Section5.GeneralExistence
+public import Section4.CanonicalLift
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # RV data of a pullback

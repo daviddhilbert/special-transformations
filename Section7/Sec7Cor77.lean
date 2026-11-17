@@ -1,3 +1,5 @@
+module
+
 /-
 # Section 7, Corollary `L:semigroup:hom` (`paper.tex` 1705): `ùïÉ` induces surjective homomorphisms of
 Grothendieck semigroups
@@ -81,8 +83,12 @@ Two documented approximations, both recorded because they are where the tree's ¬
 
 Build: `LEAN_PATH=<repo>/.scratch2/sec3:$LEAN_PATH lean Sec7Cor77.lean`.
 -/
-import Sec4Categories
-import Sec4Dim
+public import Sec4Categories
+public import Sec4Dim
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option linter.unusedSectionVars false
 set_option linter.unusedVariables false

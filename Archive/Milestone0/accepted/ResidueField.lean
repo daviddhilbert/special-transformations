@@ -1,3 +1,5 @@
+module
+
 /-
 The residue-field block of the intended model of `ACVF`.
 
@@ -16,7 +18,11 @@ valuation `v : Valuation K Γ₀` and proves the two facts about it that the axi
 
 Only `import Mathlib`.  No `sorry`.
 -/
-import Mathlib
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Polynomial
 

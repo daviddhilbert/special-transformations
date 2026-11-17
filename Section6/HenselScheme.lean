@@ -1,4 +1,10 @@
-import Section6.HenselSchemeSemantics
+module
+
+public import Section6.HenselSchemeSemantics
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The native scheme expresses simple-root lifting in the valuation ring. -/
 

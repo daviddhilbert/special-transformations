@@ -1,4 +1,10 @@
-import Mathlib.ModelTheory.Definability
+module
+
+public import Mathlib.ModelTheory.Definability
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A finite-product interpretation compiler in the pinned first-order
 syntax. A source element is represented by two auxiliary coordinates.

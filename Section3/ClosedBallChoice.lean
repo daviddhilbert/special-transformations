@@ -1,7 +1,13 @@
-import Section3.ClosedBallCentres
-import Section3.ClosedBallCodes
-import Section3.CanonicalContext
-import ValuedFieldExtension
+module
+
+public import Section3.ClosedBallCentres
+public import Section3.ClosedBallCodes
+public import Section3.CanonicalContext
+public import ValuedFieldExtension
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 set_option linter.style.haveILetI false
 open Classical FirstOrder FirstOrder.Language

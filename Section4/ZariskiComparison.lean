@@ -1,5 +1,11 @@
-import Section4.ZariskiDimensionUpper
-import Section4.ZariskiDimensionLower
+module
+
+public import Section4.ZariskiDimensionUpper
+public import Section4.ZariskiDimensionLower
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

@@ -1,5 +1,11 @@
-import Section4.RVIsoClassScissors
-import Section4.RVRepresentatives
+module
+
+public import Section4.RVIsoClassScissors
+public import Section4.RVRepresentatives
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language CategoryTheory
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

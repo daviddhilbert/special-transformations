@@ -1,6 +1,12 @@
-import Section4.GammaRVInfiniteProjection
-import Section4.GammaRVIndependence
-import Section3.GammaSupport
+module
+
+public import Section4.GammaRVInfiniteProjection
+public import Section4.GammaRVIndependence
+public import Section3.GammaSupport
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

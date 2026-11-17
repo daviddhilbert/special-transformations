@@ -1,6 +1,12 @@
-import Section4.RVDimensionRank
-import Section4.RVSequenceMovement
-import Section4.MapParameters
+module
+
+public import Section4.RVDimensionRank
+public import Section4.RVSequenceMovement
+public import Section4.MapParameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

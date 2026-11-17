@@ -1,8 +1,14 @@
-import Section9.ValuedPowerBasis
-import Mathlib.Algebra.Polynomial.Lifts
-import Mathlib.FieldTheory.PrimitiveElement
-import Mathlib.FieldTheory.Perfect
-import Mathlib.RingTheory.Henselian
+module
+
+public import Section9.ValuedPowerBasis
+public import Mathlib.Algebra.Polynomial.Lifts
+public import Mathlib.FieldTheory.PrimitiveElement
+public import Mathlib.FieldTheory.Perfect
+public import Mathlib.RingTheory.Henselian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! When the residue degree equals the field degree, a primitive
 residue generator lifts to a simple integral root. Its powers give

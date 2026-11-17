@@ -1,7 +1,13 @@
-import Section4.VFTranscendence
-import Section4.TupleBasis
-import Section4.CoordinateDimension
-import Section3.VFDefinableClosure
+module
+
+public import Section4.VFTranscendence
+public import Section4.TupleBasis
+public import Section4.CoordinateDimension
+public import Section3.VFDefinableClosure
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

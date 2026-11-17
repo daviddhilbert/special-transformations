@@ -1,6 +1,12 @@
-import Section4.ResidueRelativeQF
-import Section4.RVDimension
-import Section4.CodeMaps
+module
+
+public import Section4.ResidueRelativeQF
+public import Section4.RVDimension
+public import Section4.CodeMaps
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

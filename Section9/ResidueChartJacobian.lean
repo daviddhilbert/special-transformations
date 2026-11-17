@@ -1,6 +1,12 @@
-import Section9.ResidueChartReducedness
-import Section9.RVJacobianNormalization
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+module
+
+public import Section9.ResidueChartReducedness
+public import Section9.RVJacobianNormalization
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! On a certified open residue chart the Jacobian is the implicit
 matrix obtained from the two square derivative blocks. -/

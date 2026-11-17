@@ -1,4 +1,10 @@
-import Section9.RVJacobian
+module
+
+public import Section9.RVJacobian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A polynomial chart for a residue correspondence computes its
 tangent space when the equations generate the localized vanishing

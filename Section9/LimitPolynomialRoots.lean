@@ -1,7 +1,13 @@
-import Section9.LimitPolynomialNormalization
-import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.Algebra.BigOperators.Fin
-import Mathlib.Data.List.OfFn
+module
+
+public import Section9.LimitPolynomialNormalization
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.Algebra.BigOperators.Fin
+public import Mathlib.Data.List.OfFn
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The bounded output chart for a nonzero bivariate polynomial. The
 candidate centres are the roots of the first nonzero input row. -/

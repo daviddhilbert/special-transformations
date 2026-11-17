@@ -1,4 +1,10 @@
-import Section8.UniformBalls
+module
+
+public import Section8.UniformBalls
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A single realized radius gives a neighbourhood basis for finite VF
 tuples in the valuation topology. -/

@@ -1,6 +1,12 @@
-import CanonicalCountable
-import Section3.SmallFiniteParameters
-import Mathlib.ModelTheory.Substructures
+module
+
+public import CanonicalCountable
+public import Section3.SmallFiniteParameters
+public import Mathlib.ModelTheory.Substructures
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

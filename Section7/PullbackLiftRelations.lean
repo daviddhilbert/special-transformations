@@ -1,5 +1,11 @@
-import Section7.LiftRelations
-import Section4.CanonicalLift
+module
+
+public import Section7.LiftRelations
+public import Section4.CanonicalLift
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Definition 7.3 on arbitrary ambient RV-pullbacks

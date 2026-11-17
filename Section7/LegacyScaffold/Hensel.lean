@@ -1,4 +1,10 @@
-import SpecialTransformations.SpecialBijection
+module
+
+public import SpecialTransformations.SpecialBijection
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Quantifier elimination for henselian fields and lifting functions

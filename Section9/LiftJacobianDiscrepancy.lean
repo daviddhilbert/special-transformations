@@ -1,5 +1,11 @@
-import Section9.RVJacobianException
-import Section9.LiftLabelRepresentatives
+module
+
+public import Section9.RVJacobianException
+public import Section9.LiftLabelRepresentatives
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Project the actual derivative discrepancy to the original labels.
 This projection is definable even when the RV Jacobian itself is only

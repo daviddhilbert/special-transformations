@@ -1,5 +1,11 @@
-import Section4.ResidueTupleRank
-import Section4.RVDimensionRank
+module
+
+public import Section4.ResidueTupleRank
+public import Section4.RVDimensionRank
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

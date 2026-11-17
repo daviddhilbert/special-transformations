@@ -1,7 +1,13 @@
-import Section4.RVLabelCompression
-import Section4.RVRestrictions
-import Section4.MapParameters
-import Section4.Fibres
+module
+
+public import Section4.RVLabelCompression
+public import Section4.RVRestrictions
+public import Section4.MapParameters
+public import Section4.Fibres
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

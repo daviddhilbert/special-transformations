@@ -1,5 +1,11 @@
-import Section6.ExpandedLogic
-import Section6.RVSubstructure
+module
+
+public import Section6.ExpandedLogic
+public import Section6.RVSubstructure
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Return an auxiliary RV formula to the actual expanded language. Every
 binder is guarded by the native RV predicate. Semantic correctness uses

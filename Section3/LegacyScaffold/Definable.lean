@@ -1,5 +1,11 @@
-import SpecialTransformations.Basic
-import SpecialTransformations.Language
+module
+
+public import SpecialTransformations.Basic
+public import SpecialTransformations.Language
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Definable sets, balls, and `C`-minimality

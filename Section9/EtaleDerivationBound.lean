@@ -1,5 +1,11 @@
-import Section9.DerivationExtension
-import Mathlib.Algebra.Ring.Subring.Basic
+module
+
+public import Section9.DerivationExtension
+public import Mathlib.Algebra.Ring.Subring.Basic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A derivation preserving a subring also preserves the image of its
 étale neighbourhoods in an intermediate subring. This is the

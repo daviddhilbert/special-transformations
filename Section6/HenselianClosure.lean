@@ -1,7 +1,13 @@
-import Section6.FunctionalClosure
-import ValuedModelMap
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.RingTheory.Henselian
+module
+
+public import Section6.FunctionalClosure
+public import ValuedModelMap
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.RingTheory.Henselian
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # The henselian fixed-field argument in Lemma 6.2

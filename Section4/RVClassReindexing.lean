@@ -1,5 +1,11 @@
-import Section4.RVReindexing
-import Section4.RVPositiveIsoComparison
+module
+
+public import Section4.RVReindexing
+public import Section4.RVPositiveIsoComparison
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 open Classical FirstOrder FirstOrder.Language CategoryTheory
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

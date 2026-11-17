@@ -1,4 +1,10 @@
-import Section6.ExpandedLogic
+module
+
+public import Section6.ExpandedLogic
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Finite free-variable restriction in the actual expanded syntax,
 preserving both the sorted fragment and absence of VF quantifiers. -/

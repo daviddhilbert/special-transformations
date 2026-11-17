@@ -1,4 +1,10 @@
-import Mathlib.RingTheory.Valuation.ValuationSubring
+module
+
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The prime ideal for the coarsening used in Gamma descent. In Mathlib's
 multiplicative order, a positive additive threshold is strictly below one.

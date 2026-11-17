@@ -1,6 +1,12 @@
-import Section9.FiniteLiftReindexing
-import Section9.GammaCompatibility
-import Section4.CodeMaps
+module
+
+public import Section9.FiniteLiftReindexing
+public import Section9.GammaCompatibility
+public import Section4.CodeMaps
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Coordinate permutations preserve the total Gamma volume. Their
 signs change the RV determinant through a parameter-free definable

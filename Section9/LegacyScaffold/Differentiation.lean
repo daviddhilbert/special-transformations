@@ -1,4 +1,10 @@
-import SpecialTransformations.Hensel
+module
+
+public import SpecialTransformations.Hensel
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Differentiation and Jacobians

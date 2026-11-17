@@ -1,6 +1,12 @@
-import Section4.RVDimension
-import Section4.VFRealFibres
-import Section4.VFCategories
+module
+
+public import Section4.RVDimension
+public import Section4.VFRealFibres
+public import Section4.VFCategories
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

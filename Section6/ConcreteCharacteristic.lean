@@ -1,5 +1,11 @@
-import Section6.ConcreteLogic
-import Section6.HenselSchemeSemantics
+module
+
+public import Section6.ConcreteLogic
+public import Section6.HenselSchemeSemantics
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Field operations, characteristic zero, and canonical sorting for the concrete model. -/
 

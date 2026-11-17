@@ -1,5 +1,11 @@
-import Section7.PolynomialFibreExtraction
-import Section7.ResidueDerivativeNormalization
+module
+
+public import Section7.PolynomialFibreExtraction
+public import Section7.ResidueDerivativeNormalization
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Extract a simple last-coordinate residue root

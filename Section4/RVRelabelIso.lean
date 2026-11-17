@@ -1,5 +1,11 @@
-import Section4.RVCategories
-import Section4.Fibres
+module
+
+public import Section4.RVCategories
+public import Section4.Fibres
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

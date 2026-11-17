@@ -1,5 +1,11 @@
-import Section7.SimpleRootNormalization
-import Mathlib.RingTheory.Valuation.ValuationSubring
+module
+
+public import Section7.SimpleRootNormalization
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # The ordinary valuation-ring input supplied by the RV/Jacobian bridge

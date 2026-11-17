@@ -1,9 +1,15 @@
+module
+
 /-
 Copyright (c) 2026 The Tau Ceti contributors. All rights reserved.
 Released under Apache 2.0 license as described in TauCeti-LICENSE.
 Authors: The Tau Ceti contributors
 -/
-import Mathlib.RingTheory.Smooth.StandardSmoothCotangent
+public import Mathlib.RingTheory.Smooth.StandardSmoothCotangent
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Smoothness after inverting a presentation's Jacobian

@@ -1,4 +1,10 @@
-import CanonicalQF
+module
+
+public import CanonicalQF
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Parameter-only adapters for the released native term normalization.
 The normalization proof is reused from CanonicalQF; Section 6 only removes

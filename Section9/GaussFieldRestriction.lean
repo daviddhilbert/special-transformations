@@ -1,4 +1,10 @@
-import Section9.GaussDerivative
+module
+
+public import Section9.GaussDerivative
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The Gauss bound survives restriction to a graph field containing
 the coefficient field and the chosen tuple. -/

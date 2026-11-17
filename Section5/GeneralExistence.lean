@@ -1,4 +1,10 @@
-import Section5.GeneralAssembly
+module
+
+public import Section5.GeneralAssembly
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Definable-map preparation in every finite mixed arity

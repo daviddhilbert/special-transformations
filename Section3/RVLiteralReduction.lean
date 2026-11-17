@@ -1,5 +1,11 @@
-import CanonicalStructure
-import CanonicalRV
+module
+
+public import CanonicalStructure
+public import CanonicalRV
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # The paragraph immediately after Theorem 2.3

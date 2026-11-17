@@ -1,5 +1,11 @@
-import Section6.RVAbstraction
-import Section6.SyntacticDescent
+module
+
+public import Section6.RVAbstraction
+public import Section6.SyntacticDescent
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Interpret the auxiliary language on the actual RV part of a
 substructure. Extra RV structure is lifted only to that substructure,

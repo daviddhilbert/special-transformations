@@ -1,6 +1,12 @@
-import Section6.NativeRV
-import ResidueTranscendentalTransport
-import CanonicalStructure
+module
+
+public import Section6.NativeRV
+public import ResidueTranscendentalTransport
+public import CanonicalStructure
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The quotient identification respects all the operations and predicates
 on the native RV sort. -/

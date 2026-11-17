@@ -1,6 +1,12 @@
-import Mathlib.Algebra.MvPolynomial.Funext
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.Data.Int.Cast.Field
+module
+
+public import Mathlib.Algebra.MvPolynomial.Funext
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.Data.Int.Cast.Field
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # Integer choices for the two Jacobians in Theorem 7.6

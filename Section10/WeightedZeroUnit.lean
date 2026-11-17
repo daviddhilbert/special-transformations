@@ -1,7 +1,13 @@
-import Section10.WeightedZero
-import Section10.UnitVolume
-import Section4.GammaMultiplicationSyntax
-import Section4.RVTagging
+module
+
+public import Section10.WeightedZero
+public import Section10.UnitVolume
+public import Section4.GammaMultiplicationSyntax
+public import Section4.RVTagging
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Neutral forms at degree zero recover the ordinary isomorphisms.
 The ordinary categories themselves retain all their original morphisms. -/

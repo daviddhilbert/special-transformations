@@ -1,6 +1,12 @@
-import Section4.RVRestrictions
-import Section4.FiniteGluing
-import Section4.PositiveAdditivePresentation
+module
+
+public import Section4.RVRestrictions
+public import Section4.FiniteGluing
+public import Section4.PositiveAdditivePresentation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

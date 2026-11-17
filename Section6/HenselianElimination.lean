@@ -1,5 +1,11 @@
-import Section6.OneStepPresentation
-import Section6.FiniteNormalizedElimination
+module
+
+public import Section6.OneStepPresentation
+public import Section6.FiniteNormalizedElimination
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Join the constructed normalized existential theorem to the full
 logical QE interface. Earlier RV-literal normalization is taken as given,

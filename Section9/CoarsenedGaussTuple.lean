@@ -1,5 +1,11 @@
-import Section9.InfinitesimalMonomials
-import Section9.NestedGammaInfinitesimals
+module
+
+public import Section9.InfinitesimalMonomials
+public import Section9.NestedGammaInfinitesimals
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Positive infinitesimal coordinates give a Gauss tuple for the
 coarsening determined by the coefficient field's values. -/

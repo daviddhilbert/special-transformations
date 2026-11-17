@@ -1,6 +1,12 @@
-import Section3.FiniteFibreMeans
-import Section3.FiniteGluing
-import Section3.ParameterBridge
+module
+
+public import Section3.FiniteFibreMeans
+public import Section3.FiniteGluing
+public import Section3.ParameterBridge
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option backward.isDefEq.respectTransparency false
 open Classical FirstOrder FirstOrder.Language
 open SpecialTransformations.Milestone0 SpecialTransformations.Milestone0.LRV

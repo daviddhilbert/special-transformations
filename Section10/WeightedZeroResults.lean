@@ -1,4 +1,10 @@
-import Section10.WeightedZeroScissors
+module
+
+public import Section10.WeightedZeroScissors
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Concrete RV- and Gamma-valued zero-degree forms of 10.4–10.6. -/
 

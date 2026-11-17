@@ -1,4 +1,10 @@
-import Section5.Surjectivity
+module
+
+public import Section5.Surjectivity
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Compatibility exports for the presentation lemmas now supplied by Section 5. -/
 

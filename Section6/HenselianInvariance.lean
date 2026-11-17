@@ -1,8 +1,14 @@
-import Section6.HenselianFactorization
-import Section6.IntegralConjugates
-import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
-import Mathlib.RingTheory.Valuation.Extension
-import Mathlib.RingTheory.Valuation.LocalSubring
+module
+
+public import Section6.HenselianFactorization
+public import Section6.IntegralConjugates
+public import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
+public import Mathlib.RingTheory.Valuation.Extension
+public import Mathlib.RingTheory.Valuation.LocalSubring
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! In residue characteristic zero, choose a natural-number translate
 whose inverse is integral at every conjugate. If the original valuation

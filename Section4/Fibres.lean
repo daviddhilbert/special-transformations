@@ -1,6 +1,12 @@
-import Section4.RealPresentations
-import Section4.FiniteMaps
-import Section3.RawAlgebraicity
+module
+
+public import Section4.RealPresentations
+public import Section4.FiniteMaps
+public import Section3.RawAlgebraicity
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

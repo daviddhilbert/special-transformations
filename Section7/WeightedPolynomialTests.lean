@@ -1,5 +1,11 @@
-import Section7.WeightedLeadingOperations
-import Section7.GammaPolynomialAlgebra
+module
+
+public import Section7.WeightedLeadingOperations
+public import Section7.GammaPolynomialAlgebra
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-!
 # A weighted equality is at most two original-field polynomial tests

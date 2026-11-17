@@ -1,5 +1,11 @@
-import SpecialTransformations
-import Section4.PolydiscLocal
+module
+
+public import SpecialTransformations
+public import Section4.PolydiscLocal
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 set_option pp.universes true
 set_option pp.fullNames true
 set_option format.width 120

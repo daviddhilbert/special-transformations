@@ -1,4 +1,10 @@
-import Section9.GaussEvaluation
+module
+
+public import Section9.GaussEvaluation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! Residue-independent powers form an orthogonal family for the
 valuation. In a finite extension of the same degree as its residue

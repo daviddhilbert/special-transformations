@@ -1,3 +1,5 @@
+module
+
 /-
 Copied verbatim from `.ultramath/smw06c8tw/m2/kFieldModel.lean` (member m2, swarm smw06c8tw,
 direction d3) at 05:15 UTC, for independent verification by m6; the section marked
@@ -13,7 +15,11 @@ an algebraically closed field.  m6 verified: `lean general_model.lean` exits 0, 
 and every `#print axioms` is `[propext, Classical.choice, Quot.sound]`.
 -/
 
-import Mathlib
+public import Mathlib
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 /-!
 ## Reading guide
 

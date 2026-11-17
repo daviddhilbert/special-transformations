@@ -1,7 +1,13 @@
-import Section4.LiftFibres
-import Section4.RVWeightDimension
-import Section4.MapCorestrict
-import Section3.SmallFiniteParameters
+module
+
+public import Section4.LiftFibres
+public import Section4.RVWeightDimension
+public import Section4.MapCorestrict
+public import Section3.SmallFiniteParameters
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

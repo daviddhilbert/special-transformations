@@ -1,4 +1,10 @@
-import Enc
+module
+
+public import Enc
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 open SpecialTransformations.Milestone0
 namespace SpecialTransformations.Section3.BooleanCombinations
 variable {M : Type} {B : Set (Set M)}

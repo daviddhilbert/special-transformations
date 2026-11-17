@@ -1,6 +1,12 @@
-import Section4.ResidueFieldInterpretation
-import Section4.TupleTranscendence
-import Section3.SortedFunctionClosure
+module
+
+public import Section4.ResidueFieldInterpretation
+public import Section4.TupleTranscendence
+public import Section3.SortedFunctionClosure
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

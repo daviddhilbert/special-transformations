@@ -1,6 +1,12 @@
-import Section4.ResidueAlgebraicityReverse
-import Section4.RVRank
-import Section4.TupleIndependence
+module
+
+public import Section4.ResidueAlgebraicityReverse
+public import Section4.RVRank
+public import Section4.TupleIndependence
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

@@ -1,7 +1,13 @@
-import Section7.LiftingDefinability
-import Section4.RVZeroDeletion
-import Section7.CorrespondenceLifting
-import Section4.RVLabelCompression
+module
+
+public import Section7.LiftingDefinability
+public import Section4.RVZeroDeletion
+public import Section7.CorrespondenceLifting
+public import Section4.RVLabelCompression
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 section ZeroFibreDeletionProof
 

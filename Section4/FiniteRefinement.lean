@@ -1,5 +1,11 @@
-import Section4.TupleFamilies
-import CanonicalRV
+module
+
+public import Section4.TupleFamilies
+public import CanonicalRV
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

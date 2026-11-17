@@ -1,7 +1,13 @@
-import Mathlib.RingTheory.Flat.TorsionFree
-import Mathlib.RingTheory.LocalRing.Module
-import Mathlib.RingTheory.Unramified.Finite
-import Mathlib.RingTheory.Valuation.ValuationRing
+module
+
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.LocalRing.Module
+public import Mathlib.RingTheory.Unramified.Finite
+public import Mathlib.RingTheory.Valuation.ValuationRing
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! The local flat-ideals argument in the Stacks 0ASK port can also
 establish the domain condition, using freeness of principal ideals. -/

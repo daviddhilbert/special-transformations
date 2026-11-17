@@ -1,9 +1,15 @@
-import Section4.ResiduePolynomialCover
-import Section4.ResidueRVSet
-import Section4.RVSequenceBounds
-import Section4.Imported.PolynomialCoordinateBasis
-import Section4.Imported.NoetherNormalizationTrdeg
-import Mathlib.RingTheory.Nullstellensatz
+module
+
+public import Section4.ResiduePolynomialCover
+public import Section4.ResidueRVSet
+public import Section4.RVSequenceBounds
+public import Section4.Imported.PolynomialCoordinateBasis
+public import Section4.Imported.NoetherNormalizationTrdeg
+public import Mathlib.RingTheory.Nullstellensatz
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 

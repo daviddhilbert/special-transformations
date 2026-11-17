@@ -1,9 +1,15 @@
+module
+
 /-
 Extracted from https://github.com/daviddhilbert/diamond-integral/blob/ba6249a11b39e8e71fd0130ab0087e7185b95433/section%205/GammaQEFlatPerturbation.lean
 Original declaration namespaces and notices are retained.
 -/
-import Section3.GammaQEFlatLiterals
-import HilbertMathlib.Foundation.Euler.GammaFinitePerturbation
+public import Section3.GammaQEFlatLiterals
+public import HilbertMathlib.Foundation.Euler.GammaFinitePerturbation
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 /-! A finite slope-separated flat clause admits a nontrivial perturbation
 preserving every valuation comparison. -/

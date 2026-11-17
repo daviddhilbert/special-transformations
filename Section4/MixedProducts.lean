@@ -1,6 +1,12 @@
-import Section4.VFAppend
-import Section4.RVAppend
-import Section4.VFCategories
+module
+
+public import Section4.VFAppend
+public import Section4.RVAppend
+public import Section4.VFCategories
+
+set_option backward.privateInPublic true
+set_option backward.proofsInPublic true
+@[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
 
