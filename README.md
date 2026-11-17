@@ -162,3 +162,8 @@ This separate default build target retains the existing paper entry points.
 [PROMOTED-FOUNDATIONS.json](PROMOTED-FOUNDATIONS.json) records the original
 proof sources, exact statements and axiom inventories. CI builds the added
 target and checks every promoted public type against its original baseline.
+
+The approved126-file foundation migration places35 additional generic
+helpers in hilbert-mathlib, retaining57 original compatibility paths here.
+Public names, universes and mathematical hypotheses are preserved.
+`SHARED-FOUNDATION.json` records the implementation owners and exact hashes.

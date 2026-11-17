@@ -1,6 +1,6 @@
 {
   "provider": "daviddhilbert/hilbert-mathlib",
-  "revision": "a26c12d71f83356ad48442b782be67ff01bd3f18",
+  "revision": "88bb3386f616779bfd87eb453d8a7c899ad63961",
   "public_names": "unchanged",
   "modules": [
     {
@@ -200,6 +200,356 @@
       "extracted_sha256": "cee70b73f16f2fb39da0e6c6bd19da739a28e547acf35042694943352daa1a3e",
       "source_url": "https://github.com/daviddhilbert/special-transformations/blob/25852c85a31c67069b148bd31348128318303510/Section4/UnionMapLaws.lean",
       "compatibility_sha256": "ae70747e433eeb426c6c1cfe079d325720070d2dffa86c163841100f30ec52e2"
+    },
+    {
+      "path": "Section6/PairInterpretation.lean",
+      "module": "Section6.PairInterpretation",
+      "target_module": "HilbertMathlib.Foundation.ModelTheory.PairInterpretation",
+      "target_path": "HilbertMathlib/Foundation/ModelTheory/PairInterpretation.lean",
+      "extracted_sha256": "a403d04a5c05e97b0f751cf01f3a7cf3e2a2c984af4f09769ab5f6e5ba162471",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section6/PairInterpretation.lean",
+      "compatibility_sha256": "2dd23ed6620f5ea5899be74b2708067966e84b8bd8fa3736443faaad7ddb3d48",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section6/RVFormula.lean",
+      "module": "Section6.RVFormula",
+      "target_module": "HilbertMathlib.Foundation.ModelTheory.RVFormula",
+      "target_path": "HilbertMathlib/Foundation/ModelTheory/RVFormula.lean",
+      "extracted_sha256": "8855ab130155bdd701b157b0cdd2d70187f0b2c6d835f77b61a5f591309bed55",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section6/RVFormula.lean",
+      "compatibility_sha256": "cb160515d1375abf7cd6309f008af7c7492f8138140ba010530ac28a1ec94e2d",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section6/FunctionalClosure.lean",
+      "module": "Section6.FunctionalClosure",
+      "target_module": "HilbertMathlib.Foundation.ModelTheory.FunctionalClosure",
+      "target_path": "HilbertMathlib/Foundation/ModelTheory/FunctionalClosure.lean",
+      "extracted_sha256": "32ae90ff9fdc7d122be6c1af050c9f68168db587c4462c90f8a6b900e4c26ca2",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section6/FunctionalClosure.lean",
+      "compatibility_sha256": "1808f8877dccdf0f2bfd038ca0673dc210f03889c7a9ee6377f8ec24ae89d288",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section6/FiniteCover.lean",
+      "module": "Section6.FiniteCover",
+      "target_module": "HilbertMathlib.Foundation.ModelTheory.FiniteCover",
+      "target_path": "HilbertMathlib/Foundation/ModelTheory/FiniteCover.lean",
+      "extracted_sha256": "7b8584586dc608f64ccf1ba32a373bef204a9024d92b40becb8fd3c5d3d95bd5",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section6/FiniteCover.lean",
+      "compatibility_sha256": "92d66f2f866eae0b67397ed6a1ecef7e5a62d9cfdc1c1a398db042848cdc96a4",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section6/ElementaryAmalgam.lean",
+      "module": "Section6.ElementaryAmalgam",
+      "target_module": "HilbertMathlib.Foundation.ModelTheory.ElementaryAmalgam",
+      "target_path": "HilbertMathlib/Foundation/ModelTheory/ElementaryAmalgam.lean",
+      "extracted_sha256": "6ecbdb87e98a1fc5267a0214f2c6cb8f27749c1744994ea0036f92dd751d44ec",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section6/ElementaryAmalgam.lean",
+      "compatibility_sha256": "3cf3cb88d99f0620e2498bdf06a6b717dd53ec928cea496f6ab0b6819c0e7f26",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section6/ElementaryTestFamily.lean",
+      "module": "Section6.ElementaryTestFamily",
+      "target_module": "HilbertMathlib.Foundation.ModelTheory.ElementaryTestFamily",
+      "target_path": "HilbertMathlib/Foundation/ModelTheory/ElementaryTestFamily.lean",
+      "extracted_sha256": "f1e0b9f25883365af9b87e40c957f16136f4f9af7985b18b85424c99ddbc910a",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section6/ElementaryTestFamily.lean",
+      "compatibility_sha256": "fc1c0de7aead9b4528ff50165d4ada4e9e5d514fc6b05cbd9699e85335291fd1",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section7/TupleCoordinates.lean",
+      "module": "Section7.TupleCoordinates",
+      "target_module": "HilbertMathlib.Foundation.FiniteCoordinates.TupleCoordinates",
+      "target_path": "HilbertMathlib/Foundation/FiniteCoordinates/TupleCoordinates.lean",
+      "extracted_sha256": "bf5061fa58a93e1ca8a2a13ac6fe17bea908987a6adba1b3c39009ab978922b8",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section7/TupleCoordinates.lean",
+      "compatibility_sha256": "3ce13a46adca9ab9ebe0b84a11dae243e79d627634f76524e73c2fb9bc42ccb0",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section3/InitialSegments.lean",
+      "module": "Section3.InitialSegments",
+      "target_module": "HilbertMathlib.Foundation.Order.InitialSegments",
+      "target_path": "HilbertMathlib/Foundation/Order/InitialSegments.lean",
+      "extracted_sha256": "da417b7b76904941104843d619d172fc6db78af66c11f3c38fb062cf3c092238",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section3/InitialSegments.lean",
+      "compatibility_sha256": "88c70d0d86fc101b482116e27b7411187c05c77c9c08466f512e5fe5cb510213",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section4/FiniteOrderControllers.lean",
+      "module": "Section4.FiniteOrderControllers",
+      "target_module": "HilbertMathlib.Foundation.Order.FiniteOrderControllers",
+      "target_path": "HilbertMathlib/Foundation/Order/FiniteOrderControllers.lean",
+      "extracted_sha256": "32c817b78f80f24cd601586409a2c71a7b21d2f2a1ecfe5f65f84181f810f349",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section4/FiniteOrderControllers.lean",
+      "compatibility_sha256": "2424563ad9b80b926b856272b3cf8dc3350ac7f987304599a60e11beb4b633ea",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section4/FinitaryClosure.lean",
+      "module": "Section4.FinitaryClosure",
+      "target_module": "HilbertMathlib.Foundation.ModelTheory.FinitaryClosure",
+      "target_path": "HilbertMathlib/Foundation/ModelTheory/FinitaryClosure.lean",
+      "extracted_sha256": "d917dd8bd2ef3db832d341173034dc8007e321a3e6964e2240ef201c76f10894",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section4/FinitaryClosure.lean",
+      "compatibility_sha256": "d9254ba225311f587d5b4bd3077d7c1545b32e6574086c61be92ac215237a060",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section6/PairSyntax.lean",
+      "module": "Section6.PairSyntax",
+      "target_module": "HilbertMathlib.Foundation.ModelTheory.PairSyntax",
+      "target_path": "HilbertMathlib/Foundation/ModelTheory/PairSyntax.lean",
+      "extracted_sha256": "98ca69dc816fb8e5c9734eb4a3024a4bb6c5bd3fcd417d8d5b5f8b20a330004e",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section6/PairSyntax.lean",
+      "compatibility_sha256": "874d3facb1e1e3286f96b11275c969dd450b195a8ff7fade6d1a3f22b19f93f9",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section3/RVSmallPowers.lean",
+      "module": "Section3.RVSmallPowers",
+      "target_module": "HilbertMathlib.Foundation.Algebra.RVSmallPowers",
+      "target_path": "HilbertMathlib/Foundation/Algebra/RVSmallPowers.lean",
+      "extracted_sha256": "49264b4148fa1a3ef67b65891a841ec8ffa7eeb7567bd08bb7cc0708a87ebd89",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section3/RVSmallPowers.lean",
+      "compatibility_sha256": "b8e4c976c5b2d1d51bd36d747816082dd66221cee5944a9a77d2b498d6e5e280",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section3/SubfieldTrdeg.lean",
+      "module": "Section3.SubfieldTrdeg",
+      "target_module": "HilbertMathlib.Foundation.FieldTheory.SubfieldTrdeg",
+      "target_path": "HilbertMathlib/Foundation/FieldTheory/SubfieldTrdeg.lean",
+      "extracted_sha256": "f6947b42f580813b12e5ace4431df76072a41bc4e2b5e17515cc7d983f794b5c",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section3/SubfieldTrdeg.lean",
+      "compatibility_sha256": "7772e5d92f73a2fcc136b85a67a8afad112114bba8d88cd6a6b1ff97b6797b69",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section3/ValuedNeighbourhood.lean",
+      "module": "Section3.ValuedNeighbourhood",
+      "target_module": "HilbertMathlib.Foundation.Valuation.ValuedNeighbourhood",
+      "target_path": "HilbertMathlib/Foundation/Valuation/ValuedNeighbourhood.lean",
+      "extracted_sha256": "feeaaac996e045dccc7b576dfdbc211efe74f6481d59fc2c1a6b08032fefabf2",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section3/ValuedNeighbourhood.lean",
+      "compatibility_sha256": "6a35f1fcb1b92516c9118f81ccecf16008f8e907a98b57c52b2a5720c19b0f3f",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section4/Imported/IntegralKrullDimension.lean",
+      "module": "Section4.Imported.IntegralKrullDimension",
+      "target_module": "HilbertMathlib.Foundation.AlgebraicGeometry.IntegralKrullDimension",
+      "target_path": "HilbertMathlib/Foundation/AlgebraicGeometry/IntegralKrullDimension.lean",
+      "extracted_sha256": "435e77304c4ab7070f23f93259d21ee67a21b341e84a9ab8d217fa43a6c1d506",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section4/Imported/IntegralKrullDimension.lean",
+      "compatibility_sha256": "5b3a182c85a12d72b30fd68947006c391117ca63292bb256d1dcaea92119e3d1",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section4/Imported/NoetherNormalizationTrdeg.lean",
+      "module": "Section4.Imported.NoetherNormalizationTrdeg",
+      "target_module": "HilbertMathlib.Foundation.FieldTheory.NoetherNormalizationTrdeg",
+      "target_path": "HilbertMathlib/Foundation/FieldTheory/NoetherNormalizationTrdeg.lean",
+      "extracted_sha256": "fd6288424f022270e59c75d1c864ad8a0109c3f0639f81dc74a8586c122c5e36",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section4/Imported/NoetherNormalizationTrdeg.lean",
+      "compatibility_sha256": "ed5069690a03c6f67c714bf130026ea869db2ad897a30fa12c24abedff9ee4aa",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section4/Imported/PolynomialCoordinateBasis.lean",
+      "module": "Section4.Imported.PolynomialCoordinateBasis",
+      "target_module": "HilbertMathlib.Foundation.AlgebraicGeometry.PolynomialCoordinateBasis",
+      "target_path": "HilbertMathlib/Foundation/AlgebraicGeometry/PolynomialCoordinateBasis.lean",
+      "extracted_sha256": "2361ff5d0af5ff6b51c8687135a7bd72b1fb1587593181abd8bbe0c1553a7e28",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section4/Imported/PolynomialCoordinateBasis.lean",
+      "compatibility_sha256": "4c50af16f8b35eddf2bda7591727434c78d6406e6f3d4a099223abbdbbeffe09",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section4/ResiduePureFunctions.lean",
+      "module": "Section4.ResiduePureFunctions",
+      "target_module": "HilbertMathlib.Foundation.ModelTheory.ResiduePureFunctions",
+      "target_path": "HilbertMathlib/Foundation/ModelTheory/ResiduePureFunctions.lean",
+      "extracted_sha256": "916f0aa5930f9ee8c34da17e7f6e971a0fd7702fe8f4c4055801e40a04145508",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section4/ResiduePureFunctions.lean",
+      "compatibility_sha256": "411c30cb6db164ce8f4c55e9f9b20f865490564d9da0c5b0025335952e3dd21a",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section6/IntegralConjugates.lean",
+      "module": "Section6.IntegralConjugates",
+      "target_module": "HilbertMathlib.Foundation.FieldTheory.IntegralConjugates",
+      "target_path": "HilbertMathlib/Foundation/FieldTheory/IntegralConjugates.lean",
+      "extracted_sha256": "d7af1f24568456544b0e5b74ef6336fa7938a1e6b1f30affed8e84782b1bbc3f",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section6/IntegralConjugates.lean",
+      "compatibility_sha256": "0bd58f735a4ecef4e37eb7c4efae05c27735ab0f78cddc133db4f2315998dc59",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section7/Imported/EtaleLifting.lean",
+      "module": "Section7.Imported.EtaleLifting",
+      "target_module": "HilbertMathlib.Foundation.AlgebraicGeometry.EtaleLifting",
+      "target_path": "HilbertMathlib/Foundation/AlgebraicGeometry/EtaleLifting.lean",
+      "extracted_sha256": "f67f09e4629a109269ec9e2a40843783789522e4defca6c2f3b46683c2491537",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section7/Imported/EtaleLifting.lean",
+      "compatibility_sha256": "73a574ee9ec8c2562e8327541a909242450ebd1ae0847a85530c5167a8aa7a6b",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section7/Imported/JacobianEtale.lean",
+      "module": "Section7.Imported.JacobianEtale",
+      "target_module": "HilbertMathlib.Foundation.AlgebraicGeometry.JacobianEtale",
+      "target_path": "HilbertMathlib/Foundation/AlgebraicGeometry/JacobianEtale.lean",
+      "extracted_sha256": "c23e0155db5ab3ab461a935ba2e553ad0d284c668f53ae60cc12f896caa541f4",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section7/Imported/JacobianEtale.lean",
+      "compatibility_sha256": "87aa15313ba9c3264d03c2f43d614a3f9e981011095f3d7ea993cbc7af97557e",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section7/Imported/UnramifiedUniqueness.lean",
+      "module": "Section7.Imported.UnramifiedUniqueness",
+      "target_module": "HilbertMathlib.Foundation.AlgebraicGeometry.UnramifiedUniqueness",
+      "target_path": "HilbertMathlib/Foundation/AlgebraicGeometry/UnramifiedUniqueness.lean",
+      "extracted_sha256": "cba948671baea5bdc535491c4a63cb4d9e1d6e9dfe20bec5fda2dc0bde73ed20",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section7/Imported/UnramifiedUniqueness.lean",
+      "compatibility_sha256": "102834c5bee52675a81a1e2d882127259ed7643682426e56aa8b604ebe523036",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section7/IntegerAvoidance.lean",
+      "module": "Section7.IntegerAvoidance",
+      "target_module": "HilbertMathlib.Foundation.Algebra.IntegerAvoidance",
+      "target_path": "HilbertMathlib/Foundation/Algebra/IntegerAvoidance.lean",
+      "extracted_sha256": "720236aa6ee4af3f0365460b7d23fb2947eae68a1d89b46455f1bd63ce2e44b7",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section7/IntegerAvoidance.lean",
+      "compatibility_sha256": "68ea139b9a5c8d2e358bb3388e3f69e08eb7981c6da6d47a71ea0fc4a36b3dcc",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section7/PolynomialFibreExtraction.lean",
+      "module": "Section7.PolynomialFibreExtraction",
+      "target_module": "HilbertMathlib.Foundation.Algebra.PolynomialFibreExtraction",
+      "target_path": "HilbertMathlib/Foundation/Algebra/PolynomialFibreExtraction.lean",
+      "extracted_sha256": "3923df0ce2934bb1b6c607769ce207d61cbb3bf7b3fe8fb257a3e376623372f6",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section7/PolynomialFibreExtraction.lean",
+      "compatibility_sha256": "82a89c4ae056634f3da37bdb1e5e663ed0d54f031441fcae1db77c2939c6ce7c",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/AlgebraicLocalStage.lean",
+      "module": "Section9.AlgebraicLocalStage",
+      "target_module": "HilbertMathlib.Foundation.AlgebraicGeometry.AlgebraicLocalStage",
+      "target_path": "HilbertMathlib/Foundation/AlgebraicGeometry/AlgebraicLocalStage.lean",
+      "extracted_sha256": "0ba2d9340c7950353791e0fb48cbcadd73a70779acd91af93f52a1b6c29ab9a0",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/AlgebraicLocalStage.lean",
+      "compatibility_sha256": "2f8e1ad359f57694d872b2d3b51e92bb4ae35244f833c94ab723fe469db2144a",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/AlgebraicValueGroup.lean",
+      "module": "Section9.AlgebraicValueGroup",
+      "target_module": "HilbertMathlib.Foundation.Valuation.AlgebraicValueGroup",
+      "target_path": "HilbertMathlib/Foundation/Valuation/AlgebraicValueGroup.lean",
+      "extracted_sha256": "f0fdca7cdd5c83eb148027559af1c3adc22ab721a430dd37091c5b5b8a800aec",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/AlgebraicValueGroup.lean",
+      "compatibility_sha256": "653dfd2e07c90b487625040a2e8856c36a7893ee43de205dcd8369fe253938ca",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/DerivationExtension.lean",
+      "module": "Section9.DerivationExtension",
+      "target_module": "HilbertMathlib.Foundation.FieldTheory.DerivationExtension",
+      "target_path": "HilbertMathlib/Foundation/FieldTheory/DerivationExtension.lean",
+      "extracted_sha256": "3d97db21a8d1100db28a8736d5bcf11e7efb851949f0322d9eb17ea21e1b2efd",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/DerivationExtension.lean",
+      "compatibility_sha256": "8b74fa8ad8c1cb15f5b52822b248a1268d3fb8494d27d3086e6d515d1f8ab5d3",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/EtaleDomainReducedness.lean",
+      "module": "Section9.EtaleDomainReducedness",
+      "target_module": "HilbertMathlib.Foundation.AlgebraicGeometry.EtaleDomainReducedness",
+      "target_path": "HilbertMathlib/Foundation/AlgebraicGeometry/EtaleDomainReducedness.lean",
+      "extracted_sha256": "1591f1400ecdfda967d1a491712ae9c11b159cf076c4434c7a7906a23fbd757e",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/EtaleDomainReducedness.lean",
+      "compatibility_sha256": "e98f94527e7f6ec1feecb91111381a7ce141d650717561dea6343a5d60194a2e",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/GammaCoarsening.lean",
+      "module": "Section9.GammaCoarsening",
+      "target_module": "HilbertMathlib.Foundation.Valuation.GammaCoarsening",
+      "target_path": "HilbertMathlib/Foundation/Valuation/GammaCoarsening.lean",
+      "extracted_sha256": "abbe17966ac72ead460028b35a6bf242f9b303a764773953bb2f5a7f48a8d297",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/GammaCoarsening.lean",
+      "compatibility_sha256": "d5f7bacb12dc251fe12accc55573fed3ecca83a82abd38ab506af15606784db7",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/ImplicitEstimate.lean",
+      "module": "Section9.ImplicitEstimate",
+      "target_module": "HilbertMathlib.Foundation.Valuation.ImplicitEstimate",
+      "target_path": "HilbertMathlib/Foundation/Valuation/ImplicitEstimate.lean",
+      "extracted_sha256": "d9c55631f5418deb3f8704e0ec41784d575c5619c5c2c100f14c7858952ec5a1",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/ImplicitEstimate.lean",
+      "compatibility_sha256": "cf79d72d931f2cb3797ecd7b304bf6f117b17b186c627c73cf82b27a6fa3e271",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/LimitReciprocal.lean",
+      "module": "Section9.LimitReciprocal",
+      "target_module": "HilbertMathlib.Foundation.Valuation.LimitReciprocal",
+      "target_path": "HilbertMathlib/Foundation/Valuation/LimitReciprocal.lean",
+      "extracted_sha256": "1a368a86d177e1b0caf186825bdb89116c7bbb8110a7ee6a360d1e15c63ac431",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/LimitReciprocal.lean",
+      "compatibility_sha256": "f059134bb143f31e3b57f9fd662fcf5d2c45de39c5751ba0fdf808face36ac98",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/LimitRootBound.lean",
+      "module": "Section9.LimitRootBound",
+      "target_module": "HilbertMathlib.Foundation.Valuation.LimitRootBound",
+      "target_path": "HilbertMathlib/Foundation/Valuation/LimitRootBound.lean",
+      "extracted_sha256": "9e44ec382c5f1c853e6bb1ffd496a146c22388e69ab87bb9880aa4bb03ed6590",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/LimitRootBound.lean",
+      "compatibility_sha256": "32e6d9c7669861788d3bb3fac33e8b94935615adea71faec28597c7a47ae1a4a",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/LocalFlatValuation.lean",
+      "module": "Section9.LocalFlatValuation",
+      "target_module": "HilbertMathlib.Foundation.AlgebraicGeometry.LocalFlatValuation",
+      "target_path": "HilbertMathlib/Foundation/AlgebraicGeometry/LocalFlatValuation.lean",
+      "extracted_sha256": "a157a4ed8ee2ceb8e12747a356d8365155f4eb608af794b4b4259df609033f6e",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/LocalFlatValuation.lean",
+      "compatibility_sha256": "51d1b4085696fd02f0ba3f2c41ff7826600b7eb1a43919d26213e30d9728c81d",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/ResidueChartDenominators.lean",
+      "module": "Section9.ResidueChartDenominators",
+      "target_module": "HilbertMathlib.Foundation.Algebra.ResidueChartDenominators",
+      "target_path": "HilbertMathlib/Foundation/Algebra/ResidueChartDenominators.lean",
+      "extracted_sha256": "77c578d36928d2162840a3021a7037bebefe0ab28d4074d587aa09b3575682da",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/ResidueChartDenominators.lean",
+      "compatibility_sha256": "274aaa15fea8748807de396616e8f1e025cf0916983954f82b8a4c6905a65db8",
+      "split_generic_core": false
+    },
+    {
+      "path": "Section9/ValuedPolynomialTaylor.lean",
+      "module": "Section9.ValuedPolynomialTaylor",
+      "target_module": "HilbertMathlib.Foundation.Valuation.ValuedPolynomialTaylor",
+      "target_path": "HilbertMathlib/Foundation/Valuation/ValuedPolynomialTaylor.lean",
+      "extracted_sha256": "0ad21f9201d2d155d0da5e18e07cbc7138fcb9fb0bb86abac0b67c2cd0a815a0",
+      "source_url": "https://github.com/daviddhilbert/special-transformations/blob/39f369f0a15440465cbd12a4484779c034f278b7/Section9/ValuedPolynomialTaylor.lean",
+      "compatibility_sha256": "5fe8722d2d61132280d082147ae42cbf1c06afe64eae96aab93afe36e4f248ac",
+      "split_generic_core": false
     }
   ]
 }
