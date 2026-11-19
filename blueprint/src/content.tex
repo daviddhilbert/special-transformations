@@ -9,8 +9,10 @@ give the finer statement-by-statement coverage and hypotheses.
 
 The graph follows mathematical dependencies at the level of the selected
 results. The web version links each Lean declaration to its source.
-The weighted-zero proof checkpoint is \texttt{d7d7419}, with Lean 4.35.0
-and unchanged pinned Mathlib and ACVF-QE revisions. The release's full
+The checked proof revision is \texttt{932a507}, with Lean 4.35.0,
+the pinned Mathlib revision, ACVF-QE \texttt{1737082} and hilbert-mathlib
+\texttt{88bb338}. Declarations whose implementation moved to
+hilbert-mathlib keep their names and link to that provider. The release's full
 verification record is linked from the repository README. It distinguishes
 the complete root build, all section type/axiom audits and the available
 independent source verifiers. Permitted axioms are \texttt{propext},
@@ -38,7 +40,7 @@ admits quantifier elimination in the released VF/RV language.
 \end{theorem}
 \begin{proof}
 \leanok
-The \href{https://github.com/daviddhilbert/ACVF-QE/tree/939346b0a99899e22a873479364e3cc5d142731c}{pinned ACVF-QE library}
+The \href{https://github.com/daviddhilbert/ACVF-QE/tree/173708265d7959e031bf9552ee884501fc21f2cb}{pinned ACVF-QE library}
 supplies the sorted elimination theorem and its model-transfer
 arguments. The \repoFile{LANGUAGE-ERRATA.md}{language erratum}
 records the named RV inverse used by the theorem.
@@ -276,7 +278,7 @@ give the initial geometry for the induction.
 
 \begin{theorem}[5.4. Polynomial preparation]
 \label{thm:polynomial-preparation}
-\lean{SpecialTransformations.Section5.Paper.theorem_5_4,SpecialTransformations.Section5.theorem_5_4_gamma}
+\lean{SpecialTransformations.Section5.Paper.theorem_5_4}
 \leanok
 A special bijection extending the initial chain can prepare the RV
 of a VF polynomial on the specified RV polydisc. Finite families
@@ -304,6 +306,25 @@ same-base special bijection to an RV-pullback.
 Prepare the finite list of occurring VF polynomials in the defining
 relations. Use the resulting RV keys to control membership and the
 full graph of the map.
+\end{proof}
+
+\begin{theorem}[5.4--5.5. Input-free forms over a Gamma-named base]
+\label{thm:gamma-preparation}
+\lean{SpecialTransformations.Section5.Paper.theorem_5_4_gamma,SpecialTransformations.Section5.Paper.theorem_5_5_gamma,SpecialTransformations.Section5.Paper.theorem_5_5_finite_gamma,SpecialTransformations.Section5.Paper.theorem_5_4_gamma_of_fieldBase,SpecialTransformations.Section5.Paper.theorem_5_5_gamma_of_fieldBase,SpecialTransformations.Section5.Paper.theorem_5_5_finite_gamma_of_fieldBase}
+\leanok
+Over a base with named Gamma parameters, polynomial preparation and
+deformation to an RV-pullback hold with Gamma-definable special
+bijections. The hypotheses are saturation, a small real base and
+either the paper's VF/Gamma-generated base or, in the
+\texttt{\_of\_fieldBase} forms, a real base whose VF part is a field.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:polynomial-preparation,thm:deformation}
+Discharge the three inputs of the conditional named-Gamma forms: the
+Gamma logic closure holds for every base, uniform vertical obstacles
+follow from saturation and the small real base, and polynomial support
+follows from either base convention.
 \end{proof}
 
 \begin{corollary}[5.7. Every VF object has an RV lift presentation]
@@ -700,6 +721,101 @@ isomorphism lifts in VF.
 \uses{thm:correspondence-lift}
 Lift the label map using the empty VF coordinate tuple. Its
 determinant is the empty product.
+\end{proof}
+
+\begin{lemma}[Section 9 support. Gamma-definable total mixed Jacobians]
+\label{lem:gamma-total-jacobian}
+\lean{SpecialTransformations.Section9.gamma_total_mixed_jacobian_graph,SpecialTransformations.Section9.gamma_exists_totalMixedJacobianMap}
+\leanok
+In positive VF dimension, the total mixed Jacobian of a mixed map with
+a Gamma graph has a Gamma graph over the same base. There is a total
+Jacobian map with a Gamma graph that equals the Jacobian determinant
+wherever the mixed derivative exists.
+\uses{lem:vf-differentiation}
+\end{lemma}
+\begin{proof}
+\leanok
+Mixed derivatives depend only on the fixed-label fibre. Carry the
+Gamma codes of a code-invariant relation as additional RV labels and
+apply the real-parameter total-Jacobian definability to the resulting
+mixed map; its fibre at the representatives is the original Jacobian.
+\end{proof}
+
+\begin{lemma}[Section 9 support. Gamma-definable lift Jacobian discrepancy]
+\label{lem:gamma-lift-discrepancy}
+\lean{SpecialTransformations.Section9.GammaLift.gamma_liftJacobian_discrepancy}
+\leanok
+For a lift with a Gamma graph and a nonzero prescribed form with a
+Gamma graph, the set of source labels at which some lifted point has
+no mixed derivative of the prescribed RV determinant is
+Gamma-definable.
+\uses{lem:gamma-total-jacobian}
+\end{lemma}
+\begin{proof}
+\leanok
+Compare the Gamma total Jacobian, which is zero off the derivative
+locus, with the prescribed form, and project the bad locus to the
+labels using the closure properties of Gamma graphs.
+\end{proof}
+
+\begin{lemma}[Section 9 support. Gamma weighted lift, restriction and gluing]
+\label{lem:gamma-weighted-lift}
+\lean{SpecialTransformations.Section9.GammaLift.gamma_exists_weighted_liftMap_of_rvIso,SpecialTransformations.Section9.GammaLift.gamma_restricted_actual_lift,SpecialTransformations.Section9.GammaLift.gamma_glued_label_lift,SpecialTransformations.Section9.GammaLift.gamma_exists_liftLabelRepresentative,SpecialTransformations.Section9.GammaLift.gamma_affineLift_of_headLift}
+\leanok
+Over a VF/Gamma-generated base, an RV isomorphism whose volume maps and
+graph are Gamma-definable has a bijective lift with a Gamma graph and
+the weighted Jacobian at independent points. Restriction, gluing,
+label representatives and affine lifts preserve Gamma graphs.
+\uses{thm:correspondence-lift,lem:vf-differentiation}
+\end{lemma}
+\begin{proof}
+\leanok
+Follow the real-parameter constructions and certify each canonical
+lift, lifted graph and raw volume correspondence as Gamma-definable;
+relations whose code set is a trace over the real base are
+Gamma-definable.
+\end{proof}
+
+\begin{lemma}[Section 9 support. Gamma rank bound, head covers and prescribed lifts]
+\label{lem:gamma-head-lifts}
+\lean{SpecialTransformations.Section9.GammaLift.gamma_rank_le_rvDim,SpecialTransformations.Section9.GammaLift.gamma_exists_finite_head_cover,SpecialTransformations.Section9.GammaLift.gamma_exists_disjoint_definable_refinement,SpecialTransformations.Section9.GammaLift.gamma_prescribed_lift_of_finite_heads,SpecialTransformations.Section9.GammaLift.gamma_prescribed_lift_with_reindexed_heads,SpecialTransformations.Section9.GammaLift.gamma_prescribed_lift_of_lower_rvDim,SpecialTransformations.Section9.GammaLift.gamma_repaired_lift_on_small_labels}
+\leanok
+A point of a Gamma-definable RV set has rank over the real base at most
+the RV dimension of the set over the code set. Finite head covers and disjoint
+refinements have Gamma-definable pieces. The finite-head,
+reindexed-head and lower-dimensional prescribed lifts, and the repair
+on small label sets, can be chosen with Gamma graphs.
+\uses{lem:rv-rank,lem:gamma-total-jacobian,lem:gamma-weighted-lift}
+\end{lemma}
+\begin{proof}
+\leanok
+For the rank bound, take generic codes for the Gamma parameters,
+keep a real basis independent over them by exchange, and use strong
+homogeneity. The coordinate pieces of the covers are cut out by good
+relations over the real base; the lifts follow the real-parameter
+proofs with the Gamma certificates above.
+\end{proof}
+
+\begin{theorem}[9.16. A lift with prescribed Jacobian and a Gamma graph]
+\label{thm:gamma-prescribed-lift}
+\lean{SpecialTransformations.Section9.GammaLift.gamma_theorem_9_16_finite_volume}
+\leanok
+In positive arity, for finite-volume RV objects whose volume maps,
+isomorphism and prescribed form have Gamma graphs over a
+VF/Gamma-generated base, and under the same two compatibility
+conditions as the real-parameter form, the lift with the prescribed RV Jacobian away
+from a VF-small exception can be chosen with a Gamma graph over that
+base. Like the real-parameter form, the proof takes the henselized
+graph-field data as input.
+\uses{def:rv-jacobian,prop:henselized-graph-field}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:prescribed-lift,lem:gamma-weighted-lift,lem:gamma-lift-discrepancy,lem:gamma-head-lifts}
+Start from the Gamma weighted lift. Its Gamma-definable discrepancy
+locus lies in the RV-small discrepancy candidate of the real-parameter
+comparison, so it is RV-small; repair the lift there with a Gamma
+graph.
 \end{proof}
 
 \begin{proposition}[Section 9 support. Gamma descent on RV polydiscs]

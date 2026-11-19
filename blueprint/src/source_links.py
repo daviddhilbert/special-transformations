@@ -3,8 +3,9 @@
 from pathlib import Path
 
 
-PAPER = "https://github.com/daviddhilbert/special-transformations/blob/d7d74197031665b4c1e9ea4486c1898ff32f2d50/"
-QE = "https://github.com/daviddhilbert/ACVF-QE/blob/939346b0a99899e22a873479364e3cc5d142731c/"
+PAPER = "https://github.com/daviddhilbert/special-transformations/blob/932a5075ad91a825d4b8c1bf1396b2063e44fe40/"
+QE = "https://github.com/daviddhilbert/ACVF-QE/blob/173708265d7959e031bf9552ee884501fc21f2cb/"
+HILBERT = "https://github.com/daviddhilbert/hilbert-mathlib/blob/88bb3386f616779bfd87eb453d8a7c899ad63961/"
 
 
 def ProcessOptions(options, document):
@@ -12,7 +13,7 @@ def ProcessOptions(options, document):
     links = {}
     for entry in entries.splitlines():
         name, repo, path = entry.split("\t")
-        links[name] = {"paper": PAPER, "qe": QE}[repo] + path
+        links[name] = {"paper": PAPER, "qe": QE, "hilbert": HILBERT}[repo] + path
 
     def set_source_links():
         for graph in document.userdata["dep_graph"]["graphs"].values():
