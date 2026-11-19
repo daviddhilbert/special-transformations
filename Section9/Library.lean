@@ -74,6 +74,8 @@ import Section9.MixedJacobianFibreTransfer
 import Section9.GammaMixedJacobianValue
 import Section9.GammaPointMaps
 import Section9.GammaLiftDiscrepancy
+import Section9.GammaLiftObjects
+import Section9.GammaWeightedLift
 import Section9.RVJacobianException
 import Section9.GoodLiftGluing
 import Section9.FiniteHeadRepresentatives

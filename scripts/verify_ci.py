@@ -27,6 +27,7 @@ SECTION9_HEADLINES = [
     'gamma_total_mixed_jacobian_graph',
     'gamma_exists_totalMixedJacobianMap',
     'GammaLift.gamma_liftJacobian_discrepancy',
+    'GammaLift.gamma_exists_weighted_liftMap_of_rvIso',
     'lemma_9_2',
     'lemma_9_3',
     'lemma_9_4',
