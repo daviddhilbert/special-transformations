@@ -72,7 +72,8 @@ These points, from the provider audit of November 18, 2026, are worth knowing
 when citing the Lean statements:
 
 - `Section3.theorem_2_8_c_minimal` is proved for nontrivially valued models
-  (via Theorem 2.3); the trivially valued case is outside the agreed scope.
+  (via Theorem 2.3). The author confirmed on November 18, 2026 that the
+  trivially valued case is out of scope and will not be formalized.
 - Theorems 5.4/5.5 with named Gamma parameters exist in
   `Section5/GammaExistence.lean` with `UniformVerticalObstacles`,
   `GammaLogicInput` and `GammaPolynomialSupportInput` as parameters. Each is
