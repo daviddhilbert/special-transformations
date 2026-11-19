@@ -26,6 +26,7 @@ import Section5.GammaDimensionalPresentation
 import Section5.GammaSurjectivity
 import Section5.GammaLiftRelation
 import Section5.GammaDimensionCriterion
+import Section5.GammaPaper
 
 /-!
 # Section 5 library
@@ -381,6 +382,18 @@ set_option pp.fullNames true
 #print axioms SpecialTransformations.Section5.theorem_5_5_finite
 #check @SpecialTransformations.Section5.theorem_5_5
 #print axioms SpecialTransformations.Section5.theorem_5_5
+#check @SpecialTransformations.Section5.Paper.theorem_5_4_gamma
+#print axioms SpecialTransformations.Section5.Paper.theorem_5_4_gamma
+#check @SpecialTransformations.Section5.Paper.theorem_5_4_gamma_of_fieldBase
+#print axioms SpecialTransformations.Section5.Paper.theorem_5_4_gamma_of_fieldBase
+#check @SpecialTransformations.Section5.Paper.theorem_5_5_gamma
+#print axioms SpecialTransformations.Section5.Paper.theorem_5_5_gamma
+#check @SpecialTransformations.Section5.Paper.theorem_5_5_gamma_of_fieldBase
+#print axioms SpecialTransformations.Section5.Paper.theorem_5_5_gamma_of_fieldBase
+#check @SpecialTransformations.Section5.Paper.theorem_5_5_finite_gamma
+#print axioms SpecialTransformations.Section5.Paper.theorem_5_5_finite_gamma
+#check @SpecialTransformations.Section5.Paper.theorem_5_5_finite_gamma_of_fieldBase
+#print axioms SpecialTransformations.Section5.Paper.theorem_5_5_finite_gamma_of_fieldBase
 #check @SpecialTransformations.Section5.theorem_5_4
 #print axioms SpecialTransformations.Section5.theorem_5_4
 #check @SpecialTransformations.Section5.rawPointMap

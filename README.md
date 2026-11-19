@@ -74,11 +74,12 @@ when citing the Lean statements:
 - `Section3.theorem_2_8_c_minimal` is proved for nontrivially valued models
   (via Theorem 2.3). The author confirmed on November 18, 2026 that the
   trivially valued case is out of scope and will not be formalized.
-- Theorems 5.4/5.5 with named Gamma parameters exist in
-  `Section5/GammaExistence.lean` with `UniformVerticalObstacles`,
-  `GammaLogicInput` and `GammaPolynomialSupportInput` as parameters. Each is
-  proved separately (`VerticalObstacles`, `GammaInvariantLogic`,
-  `GammaPolynomialSupport`), but there is no input-free `Paper` wrapper yet.
+- Theorems 5.4/5.5 with named Gamma parameters: `Section5.Paper.theorem_5_4_gamma`,
+  `theorem_5_5_gamma` and `theorem_5_5_finite_gamma` (`Section5/GammaPaper.lean`)
+  take no inputs beyond saturation, a small real base and the paper's
+  VF-Gamma-generated base; the `*_of_fieldBase` forms assume only that the VF
+  part of the real base is a field. They discharge the three inputs of the
+  conditional forms in `Section5/GammaExistence.lean`.
 - The blueprint links the discharged `Section4.Paper.lemma_4_13`; the
   `RVExchangeInput` form remains for general structures.
 - `theorem_10_4_*` takes `_hB : VFGammaGeneratedBase`, which the proof does

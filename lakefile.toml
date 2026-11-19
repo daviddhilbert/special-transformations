@@ -259,7 +259,7 @@ globs = [
   "Section5.GammaDimension", "Section5.GammaFiniteFibres", "Section5.GammaSurjectivity",
   "Section5.GammaLiftRelation", "Section5.GammaDimensionCriterion",
   "Section5.TaggedAmbient", "Section5.ParameterExtension", "Section5.GammaGraphs",
-  "Section5.GammaLogic", "Section5.GammaRestriction", "Section5.GammaExistence",
+  "Section5.GammaLogic", "Section5.GammaRestriction", "Section5.GammaExistence", "Section5.GammaPaper",
   "Section5.GammaLift", "Section5.GammaContraction", "Section5.ZeroNormalization", "Section5.Library",
 ]
 
