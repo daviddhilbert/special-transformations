@@ -23,6 +23,9 @@ QE_HEADLINES = [
     'SpecialTransformations.TrivialRV.hasQE',
 ]
 SECTION9_HEADLINES = [
+    'FibreMatch.derivative_iff',
+    'gamma_total_mixed_jacobian_graph',
+    'gamma_exists_totalMixedJacobianMap',
     'lemma_9_2',
     'lemma_9_3',
     'lemma_9_4',

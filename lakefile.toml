@@ -664,7 +664,7 @@ globs = [
   "Section9.MixedGenericDifferentiation",
   "Section9.MixedInverseJacobian",
   "Section9.MixedJacobian",
-  "Section9.MixedJacobianValue",
+  "Section9.MixedJacobianValue", "Section9.MixedJacobianFibreTransfer", "Section9.GammaMixedJacobianValue",
   "Section9.NestedGammaInfinitesimals",
   "Section9.NormalizationBases",
   "Section9.NormalizedGammaDescent",

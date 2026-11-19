@@ -70,6 +70,8 @@ import Section9.LiftRestriction
 import Section9.RestrictActualLift
 import Section9.ZeroArityVolumeJacobian
 import Section9.MixedJacobianValue
+import Section9.MixedJacobianFibreTransfer
+import Section9.GammaMixedJacobianValue
 import Section9.RVJacobianException
 import Section9.GoodLiftGluing
 import Section9.FiniteHeadRepresentatives
