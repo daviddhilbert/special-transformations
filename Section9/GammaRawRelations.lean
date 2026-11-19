@@ -74,6 +74,36 @@ theorem gamma_graph_of_raw (hcan : CanonicalStructure.IsCanonical (M := M)) {n m
       cases i using Fin.addCases <;> simp
     exact ⟨p, q, (hr p q).mpr (he ▸ hz), he⟩
 
+theorem gamma_set_of_raw (hcan : CanonicalStructure.IsCanonical (M := M)) {n m : ℕ}
+    (X : Set (Point (M := M) n m)) (Z : Set (Fin (n + m) → M)) (hZ : B.real.Definable LRV Z)
+    (hX : ∀ p, p ∈ X ↔ gammaPointCode p ∈ Z) : GammaSetDefinable B X := by
+  let σ := gammaPointSort n m
+  let Z' : Set (Fin (n + m) → M) := {z | z ∈ Z ∧ ∀ i, sortEval (σ i) (z i)}
+  have hZ' : B.real.Definable LRV Z' := hZ.inter (sortedUniverse_definable B.real σ).raw_definable
+  have h := real_definableOverBase B σ Z' (raw_definableOver_sorted hcan B.real σ Z' hZ' (fun _ hz => hz.2))
+  unfold GammaSetDefinable
+  convert h using 1
+  ext z
+  constructor
+  · rintro ⟨p, hp, rfl⟩
+    exact ⟨(hX p).mp hp, gammaPointCode_sorted p⟩
+  · rintro ⟨hz, hs⟩
+    obtain ⟨p, hp⟩ := exists_gammaPointCode z hs
+    exact ⟨p, (hX p).mpr (hp ▸ hz), hp⟩
+
+/-- An RV set over the real base, as a set of points, is Gamma-definable. -/
+theorem rv_set_gamma_of_raw (hcan : CanonicalStructure.IsCanonical (M := M)) {n : ℕ}
+    (Z : Set (Fin n → M)) (hZ : B.real.Definable LRV Z) :
+    GammaSetDefinable B {q : Point (M := M) 0 n | rvValues q.2 ∈ Z} := by
+  apply gamma_set_of_raw hcan _ ((fun w => w ∘ Fin.natAdd 0) ⁻¹' Z) (hZ.preimage_comp (Fin.natAdd 0))
+  intro q
+  have : gammaPointCode q ∘ Fin.natAdd 0 = rvValues q.2 := by
+    funext i
+    simp only [Function.comp_apply, gammaPointCode, Fin.append_right, rvValues]
+  change _ ↔ gammaPointCode q ∘ Fin.natAdd 0 ∈ Z
+  rw [this]
+  rfl
+
 /-- A real RV map between full RV spaces over `B.real` has a Gamma graph. -/
 theorem rv_univ_map_gamma (hcan : CanonicalStructure.IsCanonical (M := M)) {a b : ℕ}
     (f : DefinableGeometry.Map (DefinableGeometry.DefSet.univ (rawRVSpace (M := M) a) B.real)

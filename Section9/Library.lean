@@ -83,6 +83,8 @@ import Section9.GammaAffineLift
 import Section9.GammaFiniteHeadLift
 import Section9.GammaReindexedLift
 import Section9.GammaRankBound
+import Section9.GammaHeadCover
+import Section9.GammaSimultaneousCover
 import Section9.RVJacobianException
 import Section9.GoodLiftGluing
 import Section9.FiniteHeadRepresentatives
