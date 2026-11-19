@@ -86,7 +86,7 @@ retains the compiler and audit logs.
 The local publication audit compiled `Section9.Library` with exit zero.
 It rebuilt ten active modules and reused checked artifacts for the other
 imports. The 596 local sources in this import closure match the staged Git
-blobs. `CompleteSection9Audit.log` exited zero and records 25 Section 9
+blobs. `CompleteSection9Audit.log` exited zero and records, at that checkpoint, 25 Section 9
 headlines and ten supporting headlines, including both versions of each
 earlier helper interface. A scan of all 2,151 declarations in the 189
 Section 9 modules and eleven vendored Stacks modules found only the

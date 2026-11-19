@@ -27,8 +27,8 @@ STATUS.md records the hypotheses and verification for each form.
 | Corollary 5.7, general | `Paper.corollary_5_7`, `Paper.corollary_5_7_gamma` | Actual same-base isomorphism to a canonical lift, starting from the finite-map dimension bound. The proofs construct the obstacles and dimensional presentations. |
 | Corollary 5.7, finite | `Paper.corollary_5_7_finite`, `Paper.corollary_5_7_finite_gamma` | Both proofs transport finite RV fibres and construct an RV object with finite volume fibres. |
 
-The final checkpoint verifies 28 modules and 282 headline types and axiom
-lists. Twenty-six unchanged source-compiled modules were re-certified by a
+The final checkpoint verified 28 modules and 282 headline types and axiom
+lists; `Section5/Library.lean` now audits 301 headlines. Twenty-six unchanged source-compiled modules were re-certified by a
 fresh ordered kernel replay against the current given boundary, covering 1,186
 declarations; the normalization and combined library were compiled freshly.
 The original compiler receipts and exact source/artifact identities are retained.

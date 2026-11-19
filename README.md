@@ -17,7 +17,10 @@ The audit reports list only `propext`, `Classical.choice`, and `Quot.sound`.
 The two Engler–Prestel reference packages remain explicit in the affected
 results. The blueprint marks the Stacks proofs as checked Lean imports.
 See the [verification record](docs/verification/v1.1.json) and
-[release scope](docs/RELEASE-v1.1.md). The earlier 3,543-report checkpoint
+[release scope](docs/RELEASE-v1.1.md). That record certifies `d7d7419`, with
+ACVF-QE `939346b0`; it predates the hilbert-mathlib migration and two
+provider updates. The current commit passes the same CI build and audit
+suites ([run 44161300223](https://github.com/daviddhilbert/special-transformations/actions/runs/44161300223)). The earlier 3,543-report checkpoint
 at `285f323` remains in [GitHub Actions](https://github.com/daviddhilbert/special-transformations/actions/runs/42867152699).
 
 The agreed scope excludes C-minimality for trivial valuations, the
@@ -29,10 +32,10 @@ group-level obstruction checked in Lean. [Retraction](Section3/RETRACTIONS.md)
 
 The completed ACF/ACVF/RV quantifier-elimination proofs
 live in [ACVF-QE](https://github.com/daviddhilbert/ACVF-QE), pinned here at
-`a4138c3a7899330d1c77d1ec01f8f29395b5805c`.
+`173708265d7959e031bf9552ee884501fc21f2cb`.
 
-Twenty-two reusable definability, presentation and completion modules are
-provided by the pinned [hilbert-mathlib](https://github.com/daviddhilbert/hilbert-mathlib)
+Fifty-seven reusable definability, presentation, completion and generic helper
+modules are provided by the pinned [hilbert-mathlib](https://github.com/daviddhilbert/hilbert-mathlib)
 dependency. Their original module paths remain compatibility imports and
 their declaration names and mathematical statements are unchanged.
 [SHARED-FOUNDATION.json](SHARED-FOUNDATION.json) records the exact proof
@@ -62,6 +65,34 @@ existing finite-volume scope and assumes no HK theorem or Gamma-to-RV
 section. See the [measured-zero record](Section10/WEIGHTED-ZERO-ERRATUM.md),
 [exported interfaces](Section10/HANDOFF.md), and
 [v1.1 verification and release scope](docs/RELEASE-v1.1.md).
+
+## Notes on statements
+
+These points, from the provider audit of November 18, 2026, are worth knowing
+when citing the Lean statements:
+
+- `Section3.theorem_2_8_c_minimal` is proved for nontrivially valued models
+  (via Theorem 2.3); the trivially valued case is outside the agreed scope.
+- Theorems 5.4/5.5 with named Gamma parameters exist in
+  `Section5/GammaExistence.lean` with `UniformVerticalObstacles`,
+  `GammaLogicInput` and `GammaPolynomialSupportInput` as parameters. Each is
+  proved separately (`VerticalObstacles`, `GammaInvariantLogic`,
+  `GammaPolynomialSupport`), but there is no input-free `Paper` wrapper yet.
+- The blueprint links the discharged `Section4.Paper.lemma_4_13`; the
+  `RVExchangeInput` form remains for general structures.
+- `theorem_10_4_*` takes `_hB : VFGammaGeneratedBase`, which the proof does
+  not use. `lemma_8_4_partial` omits the definability of `c` and `r` (the
+  named-Gamma form, linked from the blueprint, has it); 8.6 takes a named
+  `δ > 1`; `theorem_7_6` assumes `VFGammaGeneratedBase`.
+- The `SpecialTransformationsGammaQE` target declares names in
+  `DiamondIntegral.Section5.GammaQE`, kept for the consumer's compatibility.
+- `Section3.GammaParameters.commonRealNames` and `GammaCodes.representative`
+  choose RV representatives and are for use inside proofs only; no theorem
+  here assumes them to lie in a base.
+- Files outside the lakefile targets, such as `Section3/Sec3_*.lean`,
+  `Section3/M3AclField.lean`, `Section3/M7Centres.lean`, `Section3/M8*.lean`
+  and `Section6/Sec6.lean`, are historical drafts. They
+  are not built, and some still contain `sorry`.
 
 ## Library map
 
@@ -163,7 +194,7 @@ This separate default build target retains the existing paper entry points.
 proof sources, exact statements and axiom inventories. CI builds the added
 target and checks every promoted public type against its original baseline.
 
-The approved126-file foundation migration places35 additional generic
-helpers in hilbert-mathlib, retaining57 original compatibility paths here.
+The approved 126-file foundation migration placed 35 of these generic
+helpers in hilbert-mathlib, for 57 original compatibility paths here.
 Public names, universes and mathematical hypotheses are preserved.
 `SHARED-FOUNDATION.json` records the implementation owners and exact hashes.

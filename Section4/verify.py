@@ -329,6 +329,7 @@ headlines += [
     'SpecialTransformations.Section4.mixed_bijection_point_rv_rank',
     'SpecialTransformations.Section4.rvFibreDim_le_of_bijective',
     'SpecialTransformations.Section4.lemma_4_13',
+    'SpecialTransformations.Section4.Paper.lemma_4_13',
     'SpecialTransformations.Section4.realize_unary_definable_fip',
     'SpecialTransformations.Section4.nonalgebraic_type_extension',
     'SpecialTransformations.Section4.SameUnaryType.partialElementary',

@@ -1,11 +1,16 @@
 # Current handoff
 
-Continue with [Section3/HANDOFF.md](Section3/HANDOFF.md).
+The formalization is closed out for the agreed scope of Sections 2–10; see
+[README.md](README.md) and the [blueprint](blueprint/README.md). The open items are
+recorded in the provider audit of November 18, 2026:
 
-The next session formalizes Section 3 and all of Section 2 after the statement
-of Theorem 2.3. QE is complete in the independent ACVF-QE repository.
+- Theorems 5.4/5.5 with named Gamma parameters exist only with their three
+  discharged inputs as parameters (`Section5/GammaExistence.lean`); `Paper`
+  wrappers await the author's choice of base convention.
+- The trivial-valuation case of Theorem 2.8 is outside the agreed scope.
+- Downstream, integration-in-ACVF's `hNames` hypothesis uses
+  `Section3.GammaParameters.commonRealNames`; its removal may touch the
+  Section 3 Gamma-parameter helpers.
 
-The obsolete QE campaign and its old planning notes have been removed at the
-author's request. Required shared helpers remain in `Shared/`; completed QE
-proofs and their encoding come from the pinned ACVF-QE dependency. Read the
-new section handoff first.
+The earlier per-section handoffs (for example `Section3/HANDOFF.md`) are
+historical records of the proof campaign.

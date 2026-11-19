@@ -20,8 +20,9 @@ Remark 3.19 is retracted by the author and excluded.
 `Library.lean` deliberately excludes the legacy target files.
 QE is imported from the unchanged ACVF-QE pin.
 
-The last published combined certificate covers **197 modules, 1393 headline type/axiom
-checks and a fresh root import**. The certificate records source and dependency fingerprints at that checkpoint; only the three permitted standard axioms occur.
+A historical combined certificate (Lean 4.33.1) covers **197 modules, 1393 headline type/axiom
+checks and a fresh root import**; the section has since grown. Current results come from
+`Section3/verify.py` in CI ([run 44161300223](https://github.com/daviddhilbert/special-transformations/actions/runs/44161300223)). The certificate records source and dependency fingerprints at that checkpoint; only the three permitted standard axioms occur.
 The pinned compiler and dependencies are unchanged. QE uses the released
 language with named RV inversion.
 

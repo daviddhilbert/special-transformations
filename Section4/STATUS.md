@@ -51,9 +51,11 @@ reproduction commands in [verification/README.md](verification/README.md).
 Raw logs, provider manifests and generated harnesses remain under `.scratch/`.
 The static inventory and dependency planner are separate from compiler evidence.
 
-The unchanged pins are Lean 4.33.1, Mathlib
-`0df444a360eaa60ab8c11dca51a86af692955474`, and ACVF-QE
-`f3ef4ee679f921079aa8f742a2807a9cc724d2d6`.
+The current pins are Lean 4.35.0, Mathlib
+`56a005855ea17e0b0958f73ec801ae140b0a1679`, ACVF-QE
+`173708265d7959e031bf9552ee884501fc21f2cb` and hilbert-mathlib
+`88bb3386f616779bfd87eb453d8a7c899ad63961` (see `lake-manifest.json`).
+The 4.33.1 results below are historical checkpoints.
 
 ### Passing GitHub verification
 

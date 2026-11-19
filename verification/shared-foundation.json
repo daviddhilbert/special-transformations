@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "source_build": "lake build SpecialTransformations (10071 jobs)",
+  "source_build": "lake build SpecialTransformations SpecialTransformationsGammaQE (10121 jobs, GitHub Actions)",
   "audit_command": "lake env python3 scripts/verify_ci.py built",
   "audit_groups": {
     "foundation": "success",
@@ -13,9 +13,11 @@
     "section9": "success",
     "section10": "success"
   },
-  "shared_modules": 22,
-  "shared_provider": "a26c12d71f83356ad48442b782be67ff01bd3f18",
-  "qe_provider": "a4138c3a7899330d1c77d1ec01f8f29395b5805c",
+  "shared_modules": 57,
+  "shared_provider": "88bb3386f616779bfd87eb453d8a7c899ad63961",
+  "qe_provider": "173708265d7959e031bf9552ee884501fc21f2cb",
   "provenance_tests": "4 passed",
-  "scope": "Full coordination-root source build and all existing CI headline audit groups; original theorem types and standing hypotheses retained."
+  "scope": "Full coordination-root source build and all existing CI headline audit groups; original theorem types and standing hypotheses retained.",
+  "ci_run": "https://github.com/daviddhilbert/special-transformations/actions/runs/44161300223",
+  "tested_commit": "423c767a84b709487da7e798f70f0639545db1ac"
 }
