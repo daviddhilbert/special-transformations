@@ -85,6 +85,9 @@ import Section9.GammaReindexedLift
 import Section9.GammaRankBound
 import Section9.GammaHeadCover
 import Section9.GammaSimultaneousCover
+import Section9.GammaLowerDimensionalLift
+import Section9.GammaRepairLift
+import Section9.GammaPrescribedVolumeLift
 import Section9.RVJacobianException
 import Section9.GoodLiftGluing
 import Section9.FiniteHeadRepresentatives
