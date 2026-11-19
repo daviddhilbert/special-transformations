@@ -10,18 +10,18 @@ dependencies. [Live blueprint](https://daviddhilbert.github.io/special-transform
 · [Dependency graph](https://daviddhilbert.github.io/special-transformations/dependency-graph.svg)
 · [Source and build instructions](blueprint/README.md)
 
-The v1.1 audit passes the full Lean 4.35.0 library build and all nine
-configured suites, with 3,582 headline axiom reports. The available
+The v1.2 audit passes the full Lean 4.35.0 library build and all nine
+configured suites, with 3,607 headline axiom reports. The available
 independent source verifiers for Sections 3, 4, 5 and 7 also pass.
 The audit reports list only `propext`, `Classical.choice`, and `Quot.sound`.
 The two Engler–Prestel reference packages remain explicit in the affected
 results. The blueprint marks the Stacks proofs as checked Lean imports.
-See the [verification record](docs/verification/v1.1.json) and
-[release scope](docs/RELEASE-v1.1.md). That record certifies `d7d7419`, with
-ACVF-QE `939346b0`; it predates the hilbert-mathlib migration and two
-provider updates. The current commit passes the same CI build and audit
-suites ([run 44161300223](https://github.com/daviddhilbert/special-transformations/actions/runs/44161300223)). The earlier 3,543-report checkpoint
-at `285f323` remains in [GitHub Actions](https://github.com/daviddhilbert/special-transformations/actions/runs/42867152699).
+See the [verification record](docs/verification/v1.2.json) and
+[release scope](docs/RELEASE-v1.2.md). That record certifies proof commit
+`932a507`, with ACVF-QE `1737082` and hilbert-mathlib `88bb338`; GitHub
+Actions passed the same build and CI audits there
+([run 44603383165](https://github.com/daviddhilbert/special-transformations/actions/runs/44603383165)).
+The [v1.1 record](docs/verification/v1.1.json) certifies `d7d7419`.
 
 The agreed scope excludes C-minimality for trivial valuations, the
 whole-field ball case of Lemma 8.4, and the broader ambient categories
@@ -65,6 +65,12 @@ existing finite-volume scope and assumes no HK theorem or Gamma-to-RV
 section. See the [measured-zero record](Section10/WEIGHTED-ZERO-ERRATUM.md),
 [exported interfaces](Section10/HANDOFF.md), and
 [v1.1 verification and release scope](docs/RELEASE-v1.1.md).
+
+Release v1.2 adds input-free named-Gamma Theorems 5.4/5.5
+([GammaPaper.lean](Section5/GammaPaper.lean)) and an additive Gamma lift layer
+in Section 9 through Gamma Theorem 9.16
+(`GammaLift.gamma_theorem_9_16_finite_volume`), where the prescribed-Jacobian
+lift has a Gamma graph. See the [v1.2 release record](docs/RELEASE-v1.2.md).
 
 ## Notes on statements
 

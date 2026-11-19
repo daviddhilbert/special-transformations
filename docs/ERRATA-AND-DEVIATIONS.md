@@ -33,7 +33,7 @@ for the measured-zero convention; its theorems are not assumed as Lean inputs.
    characteristic zero gives a larger kernel. The released theory's
    `Axioms.rvEqLink` imposes the leading-term equality, including its kernel
    instance. See the [kernel record](../LANGUAGE-ERRATA.md#kernel-of-the-rv-map-in-definition-22)
-   and [pinned language source](https://github.com/daviddhilbert/ACVF-QE/blob/939346b0a99899e22a873479364e3cc5d142731c/Proofs/Enc.lean).
+   and [pinned language source](https://github.com/daviddhilbert/ACVF-QE/blob/173708265d7959e031bf9552ee884501fc21f2cb/Proofs/Enc.lean).
    The squaring counterexample is a mathematical explanation, not a separately
    claimed Lean counterexample theorem.
 
@@ -137,7 +137,10 @@ for the measured-zero convention; its theorems are not assumed as Lean inputs.
 
 5. **Theorem-specific scope.** The agreed library excludes C-minimality for
    trivial valuations, the whole-field ball case of Lemma 8.4, and the broader
-   ambient categories in Sections 9–10. The later results use finite-volume
+   ambient categories in Sections 9–10. `Section3.theorem_2_8_c_minimal` is
+   proved for nontrivially valued models, via Theorem 2.3; the author
+   confirmed on November 18, 2026 that the trivially valued case of
+   Theorem 2.8 is out of scope and will not be formalized. The later results use finite-volume
    `RV[n]`/`VF[n]`, retaining their actual parameter, characteristic,
    saturation, homogeneity and generation assumptions. The implementation
    retains one absorbing RV element, `rv(0)`, and reverses the paper's
@@ -146,6 +149,34 @@ for the measured-zero convention; its theorems are not assumed as Lean inputs.
    [Section 3 status](../Section3/STATUS.md),
    [Section 8 status](../Section8/STATUS.md), and
    [RV-CATEGORY-AUDIT.md](../Section9/RV-CATEGORY-AUDIT.md).
+
+   The provider audit of November 18, 2026 recorded these statement-level
+   scope points. They change no Lean statement and assert no new defect in
+   the paper:
+   - Theorems 5.4/5.5 with named Gamma parameters were previously stated
+     only with three discharged inputs as parameters
+     (`Section5/GammaExistence.lean`). The input-free
+     `Section5.Paper.theorem_5_4_gamma`, `theorem_5_5_gamma` and
+     `theorem_5_5_finite_gamma` in
+     [GammaPaper.lean](../Section5/GammaPaper.lean) assume saturation, a
+     small real base and the paper's VF/Gamma-generated base; the
+     `*_of_fieldBase` forms assume instead that the VF part of the real base
+     is a field.
+   - `Section4.Paper.lemma_4_13` is the discharged form of Lemma 4.13 in
+     the released model; the `RVExchangeInput` form remains for general
+     structures.
+   - Some statements carry hypotheses that are stronger than, or unused
+     by, the proof: `theorem_10_4_*` takes `VFGammaGeneratedBase`, which its
+     proof does not use; `theorem_7_6` assumes `VFGammaGeneratedBase`; the
+     Lemma 8.6 forms take a named `δ > 1`. `lemma_8_4_partial` omits the
+     definability of `c` and `r`; the named-Gamma form linked from the
+     blueprint retains it.
+   - `Section3.GammaParameters.commonRealNames` and
+     `GammaCodes.representative` choose RV representatives for use inside
+     proofs only; no theorem here assumes them to lie in a base. The
+     `SpecialTransformationsGammaQE` target keeps the
+     `DiamondIntegral.Section5.GammaQE` names for its consumer.
+   See the [README notes on statements](../README.md#notes-on-statements).
 
 6. **Theorem 2.3: separate valuation cases.** The nontrivial RV theory and
    the canonical trivially valued theory have separate QE statements. No
@@ -159,7 +190,11 @@ for the measured-zero convention; its theorems are not assumed as Lean inputs.
    positive-degree Section 9/10 results. Attributed Stacks results are
    supplied by checked imports rather than additional asserted axioms.
    The new zero-degree results introduce no such reference input and assume
-   no definable Gamma-to-RV section. See
+   no definable Gamma-to-RV section. Gamma Theorem 9.16
+   (`GammaLift.gamma_theorem_9_16_finite_volume` in
+   [GammaPrescribedVolumeLift.lean](../Section9/GammaPrescribedVolumeLift.lean))
+   takes the same henselized graph-field data as the real-parameter
+   positive-arity Theorem 9.16; it adds no further reference input. See
    [Section 8 status](../Section8/STATUS.md),
    [Section 9 status](../Section9/STATUS.md), and
    [Section 10 status](../Section10/STATUS.md).

@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "release_tag": "v1.2",
+  "checked_proof_commit": "932a5075ad91a825d4b8c1bf1396b2063e44fe40",
+  "previous_release": {
+    "tag": "v1.1",
+    "checked_proof_commit": "d7d74197031665b4c1e9ea4486c1898ff32f2d50"
+  },
+  "audit_completed_utc": "2026-11-19",
+  "scope": "Complete active library root build (both default targets) and all configured integrity/audit suites; inactive legacy files and an exhaustive semantic paper review are excluded.",
+  "toolchain": {
+    "lean": "4.35.0",
+    "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc"
+  },
+  "dependency_checkouts": [
+    {
+      "package": "hilbert-mathlib",
+      "revision": "88bb3386f616779bfd87eb453d8a7c899ad63961",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "acvf_qe",
+      "revision": "173708265d7959e031bf9552ee884501fc21f2cb",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "mathlib",
+      "revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "plausible",
+      "revision": "dfa4f38190d07c37e315953e08b90fe2d95b3c24",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "LeanSearchClient",
+      "revision": "d6b4c7be5be75ec4917c873ac50c756dc1436372",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "importGraph",
+      "revision": "a41f0e9a4dea23188ea9cc1c41ac9f8bbafe0b93",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "proofwidgets",
+      "revision": "df72b022e558978a1c50264cfc4d7fec86fa8e04",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "aesop",
+      "revision": "4a174c490d8707121c4a9290800489f105d85e07",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "Qq",
+      "revision": "dce0ad79c486cb1fb504af04f953c3466b0c6db8",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "batteries",
+      "revision": "66e469188fe07963e5cf666c7d4433f45b8131c5",
+      "tracked_sources_clean": true
+    },
+    {
+      "package": "Cli",
+      "revision": "c24fe6078c630e89b489bffe59b3e20ac30d12c8",
+      "tracked_sources_clean": true
+    }
+  ],
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "checks": [
+    {
+      "command": "lake -R build",
+      "exit_code": 0,
+      "completed_jobs": 10140,
+      "note": "Up-to-date verification build: every reported job was replayed from existing local artifacts whose traces match the checked sources (598 Replayed).",
+      "sorry_warnings": 0
+    },
+    {
+      "command": "lake env python3 scripts/verify_ci.py all",
+      "exit_code": 0,
+      "suites": 9,
+      "headline_axiom_reports": 3607
+    },
+    {
+      "command": "lake env python3 scripts/verify_ci.py section7",
+      "exit_code": 0,
+      "scope": "Additional Section 7 headline audit against the Lake build (the CI built mode).",
+      "headline_axiom_reports": 279
+    },
+    {
+      "command": "python3 scripts/verify_promoted_foundations.py",
+      "exit_code": 0,
+      "modules": 10,
+      "unchanged_public_types": 48
+    },
+    {
+      "command": "lake env lean .scratch/release-v1.2/BlueprintAudit.lean",
+      "exit_code": 0,
+      "headline_axiom_reports": 158
+    },
+    {
+      "command": "python3 scripts/prepare_ci.py",
+      "exit_code": 0,
+      "registered_qe_proof_modules": 85
+    },
+    {
+      "command": "python3 scripts/check_shared_foundation.py",
+      "exit_code": 0,
+      "compatibility_imports": 57
+    },
+    {
+      "command": "python3 scripts/test_lean_provenance.py",
+      "exit_code": 0,
+      "tests": 4
+    },
+    {
+      "command": "python3 Archive/inspect_legacy.py --check-moves",
+      "exit_code": 0,
+      "unchanged_originals": 85,
+      "documented_comment_only_revisions": 8,
+      "obsolete_entries_absent": 243
+    }
+  ],
+  "suites": {
+    "foundation": {
+      "status": "PASS",
+      "headline_axiom_reports": 8
+    },
+    "section3": {
+      "status": "PASS",
+      "headline_axiom_reports": 1393,
+      "fresh_compilation_receipts": 199,
+      "reused_compilation_receipts": 0
+    },
+    "section4": {
+      "status": "PASS",
+      "headline_axiom_reports": 968,
+      "fresh_compilation_receipts": 237,
+      "reused_compilation_receipts": 0
+    },
+    "section5": {
+      "status": "PASS",
+      "headline_axiom_reports": 307,
+      "fresh_compilation_receipts": 41,
+      "reused_compilation_receipts": 0
+    },
+    "section6": {
+      "status": "PASS",
+      "headline_axiom_reports": 483
+    },
+    "section7": {
+      "status": "PASS",
+      "headline_axiom_reports": 279,
+      "fresh_compilation_receipts": 55,
+      "reused_compilation_receipts": 0
+    },
+    "section8": {
+      "status": "PASS",
+      "headline_axiom_reports": 47
+    },
+    "section9": {
+      "status": "PASS",
+      "headline_axiom_reports": 54
+    },
+    "section10": {
+      "status": "PASS",
+      "headline_axiom_reports": 68
+    }
+  },
+  "headline_axiom_reports_total": 3607,
+  "active_source_integrity": {
+    "modules": 932,
+    "modules_by_root": {
+      "SpecialTransformations": 921,
+      "SpecialTransformations+SpecialTransformationsGammaQE": 932
+    },
+    "matches_checked_proof_commit": true,
+    "acyclic": true,
+    "no_sorry_admit_or_custom_axiom_declarations": true,
+    "manifest": "source-manifest-v1.2.json",
+    "scope": "Project-owned modules reachable from the default roots SpecialTransformations and SpecialTransformationsGammaQE; dependencies (including hilbert-mathlib) are separately pinned."
+  },
+  "blueprint": {
+    "nodes": 63,
+    "distinct_linked_lean_declarations": 158,
+    "links_by_repository": {
+      "qe": 1,
+      "paper": 156,
+      "hilbert": 1
+    },
+    "type_and_axiom_audit_exit_code": 0,
+    "graph_acyclic": true,
+    "source_anchors_refreshed_against": {
+      "special-transformations": "932a5075ad91a825d4b8c1bf1396b2063e44fe40",
+      "acvf_qe": "173708265d7959e031bf9552ee884501fc21f2cb",
+      "hilbert-mathlib": "88bb3386f616779bfd87eb453d8a7c899ad63961"
+    },
+    "source_anchors_verified_on_declaration_line": 158,
+    "web_render_exit_code": null,
+    "web_render_note": "leanblueprint, plasTeX and Graphviz are not installed on the release machine; the web build was not run locally. The blueprint workflow builds it on push to main.",
+    "pdf_build_certified": false
+  },
+  "independent_automated_review": {
+    "new_review_for_this_release": false,
+    "previous_report": "independent-review-v1.1.md",
+    "previous_record_sha256": "2e1d177a28b3d6f2f54a43f1e2b084a7840869dc53480b7448a3b16a2a5e8004",
+    "current_record_sha256": "b55f16367e3c2904f61a2cb2f1d86204dec0db2e7ccaf24cb0ac21599ae26657",
+    "note": "The v1.1 review was an ad hoc automated agent review with no scripted procedure in the repository. The v1.2 record keeps the six errata and seven deviations and adds scope notes; it has not been independently re-reviewed."
+  },
+  "trust_boundary": "Explicit mathematical reference hypotheses and parameter/saturation conditions remain in theorem types. Gamma Theorem 9.16 takes the same HenselizedGaussGraphInput as the real-parameter positive-arity theorem. No HK theorem or definable Gamma-to-RV section is added.",
+  "release_evidence_asset": "v1.2-verification.zip"
+}
