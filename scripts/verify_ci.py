@@ -34,6 +34,7 @@ SECTION9_HEADLINES = [
     'GammaLift.gamma_affineLift_of_headLift',
     'GammaLift.gamma_prescribed_lift_of_finite_heads',
     'GammaLift.gamma_prescribed_lift_with_reindexed_heads',
+    'GammaLift.gamma_rank_le_rvDim',
     'lemma_9_2',
     'lemma_9_3',
     'lemma_9_4',
