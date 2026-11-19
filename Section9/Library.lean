@@ -76,6 +76,10 @@ import Section9.GammaPointMaps
 import Section9.GammaLiftDiscrepancy
 import Section9.GammaLiftObjects
 import Section9.GammaWeightedLift
+import Section9.GammaLiftGluing
+import Section9.GammaRawRelations
+import Section9.GammaLiftRepresentatives
+import Section9.GammaAffineLift
 import Section9.RVJacobianException
 import Section9.GoodLiftGluing
 import Section9.FiniteHeadRepresentatives

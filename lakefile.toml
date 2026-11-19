@@ -665,7 +665,7 @@ globs = [
   "Section9.MixedInverseJacobian",
   "Section9.MixedJacobian",
   "Section9.MixedJacobianValue", "Section9.MixedJacobianFibreTransfer", "Section9.GammaMixedJacobianValue",
-  "Section9.GammaPointMaps", "Section9.GammaLiftDiscrepancy", "Section9.GammaLiftObjects", "Section9.GammaWeightedLift",
+  "Section9.GammaPointMaps", "Section9.GammaLiftDiscrepancy", "Section9.GammaLiftObjects", "Section9.GammaWeightedLift", "Section9.GammaLiftGluing", "Section9.GammaRawRelations", "Section9.GammaLiftRepresentatives", "Section9.GammaAffineLift",
   "Section9.NestedGammaInfinitesimals",
   "Section9.NormalizationBases",
   "Section9.NormalizedGammaDescent",
