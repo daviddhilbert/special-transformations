@@ -74,4 +74,48 @@ theorem gamma_graph_of_raw (hcan : CanonicalStructure.IsCanonical (M := M)) {n m
       cases i using Fin.addCases <;> simp
     exact ⟨p, q, (hr p q).mpr (he ▸ hz), he⟩
 
+/-- A real RV map between full RV spaces over `B.real` has a Gamma graph. -/
+theorem rv_univ_map_gamma (hcan : CanonicalStructure.IsCanonical (M := M)) {a b : ℕ}
+    (f : DefinableGeometry.Map (DefinableGeometry.DefSet.univ (rawRVSpace (M := M) a) B.real)
+      (DefinableGeometry.DefSet.univ (rawRVSpace (M := M) b) B.real)) :
+    GammaGraphDefinable B (fun (p : Point (M := M) 0 a) (q : Point (M := M) 0 b) =>
+      (f ⟨p.2, Set.mem_univ _⟩).val = q.2) := by
+  let P := rawRVSpace (M := M) a
+  let Q := rawRVSpace (M := M) b
+  let ι : Fin a ⊕ Fin b → Fin ((0 + a) + (0 + b)) :=
+    Sum.elim (fun i => Fin.castAdd (0 + b) (Fin.natAdd 0 i)) (fun i => Fin.natAdd (0 + a) (Fin.natAdd 0 i))
+  apply gamma_graph_of_raw hcan _ ((fun w => w ∘ ι) ⁻¹' P.relation Q f.graph)
+    (f.graph_definable.preimage_comp ι)
+  intro p q
+  have h1 : (Fin.append (gammaPointCode p) (gammaPointCode q) ∘ ι) ∘ Sum.inl = rvValues p.2 := by
+    funext i
+    show Fin.append (gammaPointCode p) (gammaPointCode q) (Fin.castAdd (0 + b) (Fin.natAdd 0 i)) = (p.2 i).val
+    rw [Fin.append_left]
+    unfold gammaPointCode
+    rw [Fin.append_right]
+  have h2 : (Fin.append (gammaPointCode p) (gammaPointCode q) ∘ ι) ∘ Sum.inr = rvValues q.2 := by
+    funext i
+    show Fin.append (gammaPointCode p) (gammaPointCode q) (Fin.natAdd (0 + a) (Fin.natAdd 0 i)) = (q.2 i).val
+    rw [Fin.append_right]
+    unfold gammaPointCode
+    rw [Fin.append_right]
+  change _ ↔ ∃ hx : (Fin.append (gammaPointCode p) (gammaPointCode q) ∘ ι) ∘ Sum.inl ∈ P.domain,
+    ∃ hy : (Fin.append (gammaPointCode p) (gammaPointCode q) ∘ ι) ∘ Sum.inr ∈ Q.domain,
+      f.graph (P.decode ⟨_, hx⟩) (Q.decode ⟨_, hy⟩)
+  have hd1 (hx : (Fin.append (gammaPointCode p) (gammaPointCode q) ∘ ι) ∘ Sum.inl ∈ P.domain) :
+      P.decode ⟨_, hx⟩ = p.2 := rvValues_injective ((rvValues_decode _).trans h1)
+  have hd2 (hy : (Fin.append (gammaPointCode p) (gammaPointCode q) ∘ ι) ∘ Sum.inr ∈ Q.domain) :
+      Q.decode ⟨_, hy⟩ = q.2 := rvValues_injective ((rvValues_decode _).trans h2)
+  constructor
+  · intro h
+    refine ⟨h1 ▸ ⟨p.2, rfl⟩, h2 ▸ ⟨q.2, rfl⟩, ?_⟩
+    rw [hd1, hd2]
+    exact ⟨⟨p.2, Set.mem_univ _⟩, rfl, h⟩
+  · rintro ⟨hx, hy, u, hu, hf⟩
+    rw [hd1] at hu
+    rw [hd2] at hf
+    have : u = ⟨p.2, Set.mem_univ _⟩ := Subtype.ext hu
+    rw [← this]
+    exact hf
+
 end SpecialTransformations.Section9.GammaLift

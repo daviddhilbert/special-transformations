@@ -80,6 +80,8 @@ import Section9.GammaLiftGluing
 import Section9.GammaRawRelations
 import Section9.GammaLiftRepresentatives
 import Section9.GammaAffineLift
+import Section9.GammaFiniteHeadLift
+import Section9.GammaReindexedLift
 import Section9.RVJacobianException
 import Section9.GoodLiftGluing
 import Section9.FiniteHeadRepresentatives
