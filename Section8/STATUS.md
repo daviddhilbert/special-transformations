@@ -1,5 +1,27 @@
 # Section 8 status
 
+## Committed evidence and local certificates
+
+The committed verification record for the current library is the v1.2
+record [`docs/verification/v1.2.json`](../docs/verification/v1.2.json):
+at proof commit `932a5075ad91a825d4b8c1bf1396b2063e44fe40` (Lean 4.35.0,
+ACVF-QE `173708265d7959e031bf9552ee884501fc21f2cb`, hilbert-mathlib
+`88bb3386f616779bfd87eb453d8a7c899ad63961`) the complete root build passed
+and the `section8` suite (`lake env python3 scripts/verify_ci.py section8`)
+passed with 47 headline axiom reports, all within `propext`,
+`Classical.choice` and `Quot.sound`. The source hashes of every active
+module are in
+[`docs/verification/source-manifest-v1.2.json`](../docs/verification/source-manifest-v1.2.json),
+and the reviewed headline statements are in
+[`verification/headline-types/section8.txt`](../verification/headline-types/section8.txt).
+
+Paths below under `.scratch/` or `/workspace/`, and bare certificate or
+log names such as `certificate-8.3-8.4-8.6.json`, name **local, uncommitted
+historical certificates** from the development sessions. They were never
+committed, are not part of the repository, and cannot be checked from it;
+they record earlier checkpoints, some under older pins. Where a claim below
+concerns the current Section 8 headlines, the v1.2 record covers it.
+
 ## Finite-open-radius consumer verification
 
 The author-approved finite-open-radius correction also reaches
@@ -19,9 +41,11 @@ axioms of `rawOpenBall_infinite` and
 and `Quot.sound` occur. The source agrees with the dependency copy, and the
 portable finite-radius patch now includes this caller.
 
-Evidence in `/workspace/diamond-integral/section 2/`: `.scratch/r036-verification.log`,
-`verification/headline-audit.txt`, `verification/status.json` and
-`reuse/manifest.json`. This is a selected consumer import/build and caller
+Local, uncommitted historical evidence was kept in the diamond-integral
+consumer checkout (`/workspace/diamond-integral/section 2/`):
+`.scratch/r036-verification.log`, `verification/headline-audit.txt`,
+`verification/status.json` and `reuse/manifest.json`; none of it is in this
+repository. This is a selected consumer import/build and caller
 audit, not a fresh verification of the complete Section 8 library. The older
 complete-library checkpoint below has its own source and toolchain scope.
 
@@ -32,10 +56,11 @@ On November 7, 2026, all 40 active modules and the combined import of
 `ACVFQE` and `Section8.Library` compiled with exit 0. The audit checked
 the full headline types, explicit hypotheses, and resolved import
 fingerprints. The 47 axiom reports use only `propext`,
-`Classical.choice`, and `Quot.sound`. The certificate is
-`.scratch/section8-development/certificate-section8.json`. The exact
-checked source, receipts, and compiler output are preserved under
-`.scratch/section8-verified-section8/`.
+`Classical.choice`, and `Quot.sound`. The local, uncommitted historical certificate is
+`.scratch/section8-development/certificate-section8.json`, with the
+checked source, receipts and compiler output under
+`.scratch/section8-verified-section8/`. The same 47 headline axiom reports
+pass in the committed v1.2 record (see the top of this file).
 
 The complete library covers Lemmas 8.1–8.7 and 8.9, Definition 8.8,
 and both almost-everywhere definitions. The dimension-drop statements
@@ -60,8 +85,10 @@ case from Lemma 8.4 on November 9, 2026.
 The library audit replayed all 40 Section 8 modules and 595 declarations
 in the pinned Lean kernel against the current earlier imports. This
 checks the artifacts against the two updated Section 4 providers,
-`CoordinateDimension` and `VFDimensionRank`. The replay exited zero
-in `.scratch/section-through8-section8-kernel.log`.
+`CoordinateDimension` and `VFDimensionRank`. The replay exited zero; its log
+`.scratch/section-through8-section8-kernel.log` is a local, uncommitted
+historical record. The committed v1.2 root build covers the current
+library.
 
 ## Lemma 8.1
 
@@ -81,7 +108,9 @@ The hypotheses of the finiteness theorem are ACVF and definability.
 `lake env` and Lean 4.33.1 (compiler commit `819816b2e0a3bf405af45ae5c7af2491d8f5bee6`).
 Its source SHA-256 is
 `d3f978c92f875cf1600d51ca57429fcce75bf9c2beea6d249c3afad10401db20`;
-the compiler receipt is in `.scratch/section8-development/UniformBalls.json`.
+the compiler receipt is in `.scratch/section8-development/UniformBalls.json`
+(local, uncommitted and historical, as are the other `.scratch/` paths in this
+section).
 The Mathlib and ACVF-QE pins are unchanged. `UnaryBalls`, `SeparatedSets`,
 `GammaBalls`, and `Library` also compiled with exit 0. The five full types
 in `.scratch/section8-development/Library.log` were reviewed against
@@ -124,13 +153,13 @@ Its source SHA-256 is
 The combined `ACVFQE` and `IsolationDimension` import passed with exit 0.
 The full types of `isolatedInputs_definable`, `mem_isolatedInputs_iff`,
 `independent_not_isolated`, and `lemma_8_2` were reviewed in
-`.scratch/section8-development/Core-8.2.log`. All four axiom reports list
+`.scratch/section8-development/Core-8.2.log` (local, uncommitted). All four axiom reports list
 only `propext`, `Classical.choice`, and `Quot.sound`. The dimension theorem
 uses ACVF, canonical presentation, genuine small-parameter saturation,
 and the RV code condition on the auxiliary Gamma presentation. Its graph
 and exceptional set use the same real parameter base.
 The compiler receipts and resolved providers match the current sources
-and compiled modules. The record is
+and compiled modules. The local, uncommitted historical record is
 `.scratch/section8-development/certificate-8.2-core.json`.
 The checked core modules are registered in the `Section8` Lake target.
 
@@ -148,7 +177,8 @@ auxiliary RV code condition. `mem_isolatedInputs_iff_gamma` identifies
 the locus with the singleton intersection in the paper. The 13 axiom
 reports list only `propext`, `Classical.choice`, and `Quot.sound`.
 The combined ACVF-QE and Section 8 import passed with exit 0, and the
-imported module identities match the successful source checks. See
+imported module identities match the successful source checks. The local,
+uncommitted historical records are
 `.scratch/section8-development/certificate-8.2.json`, `Library.log`,
 and `Integration-8.2.log` in the same directory. The complete 8.2
 checkpoint is registered in the `Section8` Lake target.
@@ -178,7 +208,7 @@ quantifies the VF representatives of the two Gamma variables and
 uses the actual graph for the value comparison and power equality.
 `UnarySlope` assembles the canonical real-base proof with both
 definable constants. The combined development file compiled with exit 0
-using the pinned toolchain. Its compiler receipt is
+using the pinned toolchain. Its local, uncommitted compiler receipt is
 `.scratch/section8-development/Drafts-8.3.json`. The grouped source
 modules `UnaryPolynomial`, `UnaryGerm`, and `UnarySlope` compiled
 with exit 0. The full `Section8.Library` audit compiled with exit 0.
@@ -191,8 +221,9 @@ The local law is constant or the exact powered equality.
 The combined ACVF-QE and Section 8 import passed with exit 0 and
 matched the compiled module fingerprints. All 24 headline reports
 contain only `propext`, `Classical.choice`, and `Quot.sound`.
-See `.scratch/section8-development/certificate-8.3-canonical.json`
-and the checkpoint under `.scratch/section8-verified-8.3-canonical/`.
+The local, uncommitted historical certificate is
+`.scratch/section8-development/certificate-8.3-canonical.json`, with the
+checkpoint under `.scratch/section8-verified-8.3-canonical/`.
 `lemma_8_3_gamma_base` in `UnaryGamma` keeps the full invariant
 preimages of the graph and the
 constant and exact-power witnesses. The good locus is the same
@@ -206,7 +237,7 @@ integration passed in `certificate-8.3-8.4-8.6.json`.
 ### Lemma 8.4 verified
 
 `ValuedSlopeIntegrality` and `BijectionSlope` compiled with exit 0 in
-the pinned environment. Their receipts are in
+the pinned environment. Their local, uncommitted receipts are in
 `.scratch/section8-development/`. For the integrality step, genuine
 saturation gives a nonzero value below the old nonzero multiplicative
 values. The least supported monomial determines the value of a
@@ -256,10 +287,11 @@ and integration audit passed in `certificate-8.3-8.4-8.6.json`.
 
 `VFNeighbourhoods` compiled with exit 0 and no diagnostics. Its source
 and dependency receipt is in
-`.scratch/section8-development/VFNeighbourhoods.json`. The headline
+`.scratch/section8-development/VFNeighbourhoods.json` (local, uncommitted). The headline
 audit and integration passed as part of the canonical 8.3 checkpoint.
 `VFDefinableTopology` also compiled
-with exit 0 after fixing the transcendence-degree type. Its receipt is
+with exit 0 after fixing the transcendence-degree type. Its local,
+uncommitted receipt is
 `.scratch/section8-development/VFDefinableTopology.json`.
 ### Lemma 8.7 verified
 
@@ -283,9 +315,9 @@ The five continuity modules and the `ACVFQE` and `Section8.Library`
 integration compiled with exit 0. The full headline audit reviewed
 both versions of 8.7, `continuousAt_of_independent`, and
 `normalizedContinuityException_gamma_definable`. All four use only
-`propext`, `Classical.choice`, and `Quot.sound`. The certificate is
+`propext`, `Classical.choice`, and `Quot.sound`. The local, uncommitted historical certificate is
 `.scratch/section8-development/certificate-8.7.json`, with checked
-source and receipts preserved under `.scratch/section8-verified-8.7/`.
+source and receipts under `.scratch/section8-verified-8.7/`.
 
 `AlmostEverywhere` defines the separate VF and RV exceptional-set
 conditions. `RVLocalConstancy` implements Definition 8.8. Both compiled
@@ -315,6 +347,6 @@ The pinned compiler exited 0 for all five 8.9 modules and the
 reviewed both lemmas, `rvFibre_locallyConstant_of_independent`, and
 `rvConstantRaw_gamma_definable`. All four depend only on `propext`,
 `Classical.choice`, and `Quot.sound`. The verified import paths and
-fingerprints are in `.scratch/section8-development/certificate-8.9.json`.
-The checked source and receipts are preserved under
-`.scratch/section8-verified-8.9/`.
+fingerprints are in the local, uncommitted historical certificate
+`.scratch/section8-development/certificate-8.9.json`. The checked source
+and receipts were kept under `.scratch/section8-verified-8.9/`.

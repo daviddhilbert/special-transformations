@@ -91,15 +91,27 @@ blobs. `CompleteSection9Audit.log` exited zero and records, at that checkpoint, 
 headlines and ten supporting headlines, including both versions of each
 earlier helper interface. A scan of all 2,151 declarations in the 189
 Section 9 modules and eleven vendored Stacks modules found only the
-permitted axioms. The logs and source and artifact hashes are in
-`.scratch/section9/publication/`. The clean repository-wide build is a
+permitted axioms. The logs and source and artifact hashes are local,
+uncommitted historical certificates in `.scratch/section9/publication/`;
+they are not in the repository. The clean repository-wide build is a
 separate GitHub Actions check.
+
+The committed record for the current headline set is
+[`docs/verification/v1.2.json`](../docs/verification/v1.2.json): at proof
+commit `932a5075ad91a825d4b8c1bf1396b2063e44fe40` the complete root build
+passed and the `section9` suite passed with 54 headline axiom reports (44
+Section 9 and ten supporting headlines), all within `propext`,
+`Classical.choice` and `Quot.sound`. Active module hashes are in
+[`docs/verification/source-manifest-v1.2.json`](../docs/verification/source-manifest-v1.2.json)
+and the reviewed statements in
+[`verification/headline-types/section9.txt`](../verification/headline-types/section9.txt).
 
 The original Section 9 publication used Lean 4.33.1 at `819816b2e0a3bf405af45ae5c7af2491d8f5bee6`,
 Mathlib at `0df444a360eaa60ab8c11dca51a86af692955474`, and ACVF-QE at
 `f3ef4ee679f921079aa8f742a2807a9cc724d2d6`. The library import and
-headline checks passed on November 8 under these pins. The local
-development receipts are in `.scratch/section9/post-restart/`.
+headline checks passed on November 8 under these pins. The development
+receipts named below are local, uncommitted historical certificates in
+`.scratch/section9/post-restart/`; they are not in the repository.
 `FinalSection9Audit.log` checks the generic RV Jacobian and chain rule,
 corrected 9.15, 9.16, Gamma descent, and the ACVF graph adapter.
 `GraphReferenceAudit.log` prints the finite-extension reference.
