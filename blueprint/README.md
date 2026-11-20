@@ -7,17 +7,19 @@ records the mathematical dependencies. The section status files linked
 throughout give the detailed coverage and hypotheses.
 
 The Lean source links are pinned to checked proof commit
-`932a5075ad91a825d4b8c1bf1396b2063e44fe40` with Lean 4.35.0, ACVF-QE
+`097b3c13a82e0b0a1af3f782e6a16b4216d36616` with Lean 4.35.0, ACVF-QE
 `173708265d7959e031bf9552ee884501fc21f2cb` and hilbert-mathlib
 `88bb3386f616779bfd87eb453d8a7c899ad63961`. A declaration whose
 implementation moved to hilbert-mathlib keeps its name and links to that
-provider. The blueprint contains 63 nodes and links 158 distinct Lean
+provider. The blueprint contains 63 nodes and links 159 distinct Lean
 declarations. Each linked declaration passes a fresh type/axiom audit; its
 source line is checked in `src/source-links.tsv`. The zero-degree nodes
 retain the actual RV/Gamma weights and remain separate from the
 positive-degree reference hypotheses. The v1.2 nodes add the input-free
 named-Gamma Theorems 5.4/5.5 and the Gamma lift layer through Gamma
-Theorem 9.16. See the [release verification record](../docs/RELEASE-v1.2.md)
+Theorem 9.16. After v1.2 the 4.9 node also links the discharged
+`Section4.Paper.lemma_4_9`, and the links moved to the commit that adds it.
+See the [release verification record](../docs/RELEASE-v1.2.md)
 and [errata and deviations](../docs/ERRATA-AND-DEVIATIONS.md).
 Repository documentation links resolve through release tag `v1.2`.
 
@@ -46,3 +48,10 @@ there, record its source file and line at the checked revision in
 `src/source-links.tsv`. The second column names the repository: `paper`
 (this repository), `qe` (ACVF-QE) or `hilbert` (hilbert-mathlib), each
 pinned in `src/source_links.py`. Lines are the declaration keyword lines.
+
+Check the registry, anchors, pins, counts and dependency graph with
+`python3 scripts/check_blueprint.py`. After a Lean change to a linked file,
+commit it and run `python3 scripts/check_blueprint.py --write --pin <commit>`
+to move the repository pin and regenerate the anchors; then update the pin
+quoted here and in `src/content.tex`. Add `--audit` (with `lake env python3`,
+after `lake build`) for the type/axiom audit of every linked declaration.

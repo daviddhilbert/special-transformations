@@ -32,6 +32,7 @@ SpecialTransformations.Section4.corollary_4_5	paper	Section4/FiniteCorrespondenc
 SpecialTransformations.Section4.lemma_4_6	paper	Section4/FullDimension.lean#L72
 SpecialTransformations.Section4.corollary_4_7	paper	Section4/RVPolydiscBound.lean#L31
 SpecialTransformations.Section4.proposition_4_8_closure	paper	Section4/ZariskiComparison.lean#L54
+SpecialTransformations.Section4.Paper.lemma_4_9	paper	Section4/RVFibreInvariance.lean#L90
 SpecialTransformations.Section4.rvTupleRank_le_rvDim	paper	Section4/RVFiniteMapRank.lean#L55
 SpecialTransformations.Section4.ResiduePurity.lemma_4_10_closure	paper	Section4/ResidueComparison.lean#L73
 SpecialTransformations.Section4.lemma_4_11	paper	Section4/RVValueFibres.lean#L108

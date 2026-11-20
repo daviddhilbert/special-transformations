@@ -86,8 +86,9 @@ when citing the Lean statements:
   VF-Gamma-generated base; the `*_of_fieldBase` forms assume only that the VF
   part of the real base is a field. They discharge the three inputs of the
   conditional forms in `Section5/GammaExistence.lean`.
-- The blueprint links the discharged `Section4.Paper.lemma_4_13`; the
-  `RVExchangeInput` form remains for general structures.
+- The blueprint links the discharged `Section4.Paper.lemma_4_9` and
+  `Section4.Paper.lemma_4_13`; the `RVExchangeInput` forms remain for
+  general structures.
 - `theorem_10_4_*` takes `_hB : VFGammaGeneratedBase`, which the proof does
   not use. `lemma_8_4_partial` omits the definability of `c` and `r` (the
   named-Gamma form, linked from the blueprint, has it); 8.6 takes a named
