@@ -79,6 +79,33 @@ theorem lemma_4_13 {κ : Cardinal} (hκ : Cardinal.aleph0 ≤ κ)
   exact @Section4.lemma_4_13 M N hN S n r m s hc
     (@rvExchangeInput_of_earlier M N hN κ hκ hs' hn) κ hκ hs' hsmall A B f hf
 
+/-- Lemma 4.9 in the canonical presentation of the released model: the RV
+dimension of an `S`-definable RV set is the maximum rank of its points in
+genuine RV algebraic closure over `S`. This discharges the RV exchange
+premise of `Section4.rvDim_eq_point_rank_maximum` (whose lower half is
+`Section4.rvTupleRank_le_rvDim`) by the Section 3 theorem
+`rvExchangeInput_of_earlier`. That proof term appears in the statement
+only as the argument fixing the rank matroid; the type is a proposition,
+so any exchange proof gives the same rank. -/
+theorem lemma_4_9 {κ : Cardinal} (hκ : Cardinal.aleph0 ≤ κ)
+    (hs : Saturated M κ) (h00 : M ⊨ Axioms.ACVF00)
+    (hsmall : Cardinal.mk S < κ)
+    (A : @DefSet LRV M (CanonicalStructure.normalize (M := M))
+      (@rawRVSpace M (CanonicalStructure.normalize (M := M)) n) S) :
+    @rvDim M (CanonicalStructure.normalize (M := M)) S n A =
+      @rvPointRankMaximum M (CanonicalStructure.normalize (M := M))
+        (CanonicalStructure.normalized_model hM)
+        (CanonicalStructure.normalize_isCanonical (M := M))
+        (@rvExchangeInput_of_earlier M (CanonicalStructure.normalize (M := M))
+          (CanonicalStructure.normalized_model hM) κ hκ hs.normalize
+          (normalized_model00 h00)) S n A :=
+  @rvDim_eq_point_rank_maximum M (CanonicalStructure.normalize (M := M))
+    (CanonicalStructure.normalized_model hM)
+    (CanonicalStructure.normalize_isCanonical (M := M))
+    (@rvExchangeInput_of_earlier M (CanonicalStructure.normalize (M := M))
+      (CanonicalStructure.normalized_model hM) κ hκ hs.normalize
+      (normalized_model00 h00)) κ hs.normalize S hsmall n A
+
 end Paper
 
 end SpecialTransformations.Section4

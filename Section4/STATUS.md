@@ -154,6 +154,17 @@ theorem internally and works in the canonical presentation of the
 released model. The source and consumer checks exited zero. Its full
 type and axiom report were inspected in
 `.scratch/section5-repair-paper-4-13-audit.log`.
+
+## November 19 paper form of Lemma 4.9
+
+`Section4.Paper.lemma_4_9` (`RVFibreInvariance.lean`) states, in the same
+canonical presentation, that the RV dimension of a definable RV set equals
+the maximum RV algebraic-closure rank of its points. It discharges the
+`RVExchangeInput` premise of `rvDim_eq_point_rank_maximum` with
+`rvExchangeInput_of_earlier`; the conditional forms, including
+`rvTupleRank_le_rvDim`, remain for general structures. It is in the
+Section 4 headline audit and linked from the blueprint; only `propext`,
+`Classical.choice` and `Quot.sound` occur.
 # November 9 finite-open-radius compatibility update
 
 The author-approved finite-open-radius convention has been propagated to the
