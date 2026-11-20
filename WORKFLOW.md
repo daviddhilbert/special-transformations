@@ -123,6 +123,15 @@ headline lists and runs the Section 5, 6, 7, 8 and 10 library directives
 directly. The Section 9 audit imports the integrated library and prints
 the selected definitions and headline types.
 
+Every suite, in both modes, then compares its full headline statements with
+the committed baseline `verification/headline-types/<suite>.txt` (see
+`scripts/headline_baseline.py`). For each audited headline the baseline holds
+the SHA-256 of the type printed with `pp.explicit` and the readable type, so
+a changed statement or a headline dropped from the audited set fails even when
+the axioms stay clean. After reviewing an intended statement change, rerun the
+suite with `UPDATE_HEADLINE_BASELINE=1` and commit the updated baseline with
+the change.
+
 Pull requests whose changes are confined to `Section10/` build the standalone
 Section 10 target and run `lake env python3 scripts/verify_ci.py section10`.
 The scope is selected within the verification job. Changes to shared

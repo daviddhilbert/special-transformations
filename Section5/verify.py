@@ -382,5 +382,7 @@ for name in modules:
     if sha(ROOT / (name.replace('.', '/') + '.lean')) != next(
             r['source_sha256'] for r in rows if r['module'] == name):
         raise RuntimeError('Source changed after check: ' + name)
+import headline_baseline
+headline_baseline.check('section5', declared_audits, ['Section5.Library'], env=env, scratch=BUILD)
 (BUILD / 'status.txt').write_text('PASS\n')
 print('PASS: Section 5 modules, fresh library import, headline types and allowed axioms.', flush=True)

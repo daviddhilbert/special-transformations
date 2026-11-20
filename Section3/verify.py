@@ -355,6 +355,10 @@ for name, block in audits:
         raise RuntimeError('Unexpected axiom: ' + name)
 if not audit_built:
     run('Root', ROOT / 'SpecialTransformations.lean')
+sys.path.insert(0, str(ROOT / 'scripts'))
+import headline_baseline
+headline_baseline.check('section3', [qualify(h) for h in headlines], ['Section3.Library'],
+                        env=env, scratch=BUILD)
 (BUILD / 'status.txt').write_text('PASS\n')
 if audit_built:
     print('PASS: Section 3 headline types and allowed axioms from the Lake build.')

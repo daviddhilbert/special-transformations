@@ -1,0 +1,1066 @@
+== SpecialTransformations.Section8.AlmostEverywhereRV explicit-sha256:474a72a87c40ad1837606c4e860f677a467575a2410b47cf3bcf7fecc4f968a6
+@SpecialTransformations.Section8.AlmostEverywhereRV : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    {S : Set M} →
+      {m : ℕ} →
+        SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawRVSpace m) S →
+          ((SpecialTransformations.Section4.rawRVSpace m).Carrier → Prop) → Prop
+== SpecialTransformations.Section8.AlmostEverywhereVF explicit-sha256:26b3f45fc0c7c3305470d473cba61c50b6848a7fbccd9cbab093f242cacb5a3a
+@SpecialTransformations.Section8.AlmostEverywhereVF : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    {S : Set M} →
+      SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M →
+        {Q : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} →
+          SpecialTransformations.DefinableGeometry.DefSet Q S → (Q.Carrier → Prop) → Prop
+== SpecialTransformations.Section8.continuousAt_of_independent explicit-sha256:78db9c75dcbe4fbd0e4272d4f2b1cd1a3499dde8e06dd1e86c5fbf50e17defe5
+@SpecialTransformations.Section8.continuousAt_of_independent : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n m : ℕ} {Γ : Type}
+  [inst_2 : LinearOrderedCommGroupWithZero Γ] [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {S : Set M},
+            Cardinal.mk ↑S < κ →
+              (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                ∀
+                  (f :
+                    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                      Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                  S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section8.vfGraph f) →
+                    ∀ (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                      AlgebraicIndependent (↥(SpecialTransformations.Section3.vfParameterField S)) a → ContinuousAt f a
+== SpecialTransformations.Section8.definable_power_germ_slope_integral explicit-sha256:7033162fe8032af8099e47b10316c87119be5141d17c7022312070db31a2fadf
+@SpecialTransformations.Section8.definable_power_germ_slope_integral : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {Γ : Type} [inst_2 : LinearOrderedCommGroupWithZero Γ]
+  [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ]
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+              SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+            (∀ (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType),
+                ∃ H, E ≤ H ∧ SpecialTransformations.Section8.ImmediateHenselianExtension Valued.v E H) →
+              ∀ {S : Set M}
+                {f :
+                  SpecialTransformations.Milestone0.Transfer.VFType →
+                    SpecialTransformations.Milestone0.Transfer.VFType},
+                S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section8.unaryScalarGraph f) →
+                  ∀ (c r : SpecialTransformations.Milestone0.Transfer.VFType),
+                    c ≠ 0 →
+                      r ≠ 0 →
+                        ∀ {p q : ℕ},
+                          0 < q →
+                            (∀ (x : SpecialTransformations.Milestone0.Transfer.VFType),
+                                x ≠ 0 →
+                                  Valued.v x < Valued.v r → Valued.v (f x) ^ q = Valued.v c ^ q * Valued.v x ^ p) →
+                              ∃ j, ↑p = ↑q * j
+== SpecialTransformations.Section8.definable_singleton_value_of_immediate_henselian explicit-sha256:338b8c1bc5f5895d84a135f6d9a1ccaa580939604a9e94bd98576aa1c5a4101b
+@SpecialTransformations.Section8.definable_singleton_value_of_immediate_henselian : ∀ {K Γ : Type} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] [IsAlgClosed K] [CharZero K] (v : Valuation K Γ) (F H : Subfield K),
+  F ≤ H →
+    (∃ c, c ≠ 0 ∧ v ↑c ≠ 1) →
+      SpecialTransformations.Section8.ImmediateHenselianExtension v F H →
+        ∀ (a : K), (↑F).Definable₁ FirstOrder.Language.val {a} → ∃ d, v a = v ↑d
+== SpecialTransformations.Section8.estimateRVCodes_gamma_base_definable explicit-sha256:21b16702ebe893212339eb9bd82c2e983dbf2e091a9f7e3792bb2f84e252eb45
+@SpecialTransformations.Section8.estimateRVCodes_gamma_base_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [inst : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {k n m : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ {B : SpecialTransformations.Section3.GammaParameters.Base} {G : Set (Fin k ⊕ Fin n ⊕ Fin m → M)},
+      SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+          (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+          {z | z ∘ ⇑(SpecialTransformations.Section8.vfFamilyIndexEquiv k n m) ∈ G} →
+        ∀ (p q : ℕ)
+          (mode :
+            optParam SpecialTransformations.Section8.PowerComparison
+              SpecialTransformations.Section8.PowerComparison.lowerBound),
+          SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+            (SpecialTransformations.Section8.estimateWitnessSort k n)
+            {z |
+              z ∈
+                  SpecialTransformations.Section3.GammaParameters.sortedUniverse
+                    (SpecialTransformations.Section8.estimateWitnessSort k n) ∧
+                z ∘ ⇑(SpecialTransformations.Section8.estimateWitnessIndexEquiv k n) ∈
+                  SpecialTransformations.Section8.estimateRVCodes G p q mode}
+== SpecialTransformations.Section8.gammaUniformBall_eq_uniformBall explicit-sha256:afeeaf6340961024f80bc962c5653a947e595bbe91193a523a6c2a51dfddfe36
+@SpecialTransformations.Section8.gammaUniformBall_eq_uniformBall : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n : ℕ} (a : Fin n → M) (γ : SpecialTransformations.Section3.Values.Gamma)
+  (r : SpecialTransformations.Milestone0.Transfer.VFType),
+  r ≠ 0 →
+    SpecialTransformations.Section3.Values.vfValueHom r = ↑γ →
+      SpecialTransformations.Section8.gammaUniformBall a γ = SpecialTransformations.Section8.uniformBall a ↑r
+== SpecialTransformations.Section8.gamma_named_unique_shift_radius explicit-sha256:f7bf9b68d90add5d35b74a01f2facc22f483f97b5338132335c24dc50cf16ecd
+@SpecialTransformations.Section8.gamma_named_unique_shift_radius : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (B : SpecialTransformations.Section3.GammaParameters.Base)
+      (L : SpecialTransformations.Section3.Values.Gamma → SpecialTransformations.Section3.Values.Gamma → Prop)
+      (P : Set (Fin 2 → M)),
+      SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+          (fun x => SpecialTransformations.Milestone0.SortTag.rv) P →
+        P.Nonempty →
+          (∀ z ∈ P, SpecialTransformations.Section3.GammaParameters.Proper z) →
+            (∀ (z : Fin 2 → M),
+                SpecialTransformations.Section3.GammaParameters.Proper z →
+                  (z ∈ P ↔
+                    L (SpecialTransformations.Section3.GammaParameters.codeValue (z 0))
+                      (SpecialTransformations.Section3.GammaParameters.codeValue (z 1)))) →
+              (∀ (c r d s : SpecialTransformations.Section3.Values.Gamma), L c r → L d s → c = d) →
+                (∀ (c r : SpecialTransformations.Section3.Values.Gamma),
+                    L c r → ∀ (s : SpecialTransformations.Section3.Values.Gamma), r ≤ s → L c s) →
+                  (∀ (c r : SpecialTransformations.Section3.Values.Gamma),
+                      (∀ (s : SpecialTransformations.Section3.Values.Gamma), r < s → L c s) → L c r) →
+                    ∃ c r,
+                      SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase B c ∧
+                        SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase B r ∧ L c r
+== SpecialTransformations.Section8.independent_not_isolated explicit-sha256:b18ae368f7bbd286204dc95ae48176119afae15b533b8d3ed719a7ecf9891a8b
+@SpecialTransformations.Section8.independent_not_isolated : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  [inst_2 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+    ∀ {n m : ℕ},
+      CanonicalStructure.IsCanonical →
+        ∀ {S : Set M}
+          {f :
+            (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+              Fin m → SpecialTransformations.Milestone0.Transfer.VFType},
+          S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section8.vfGraph f) →
+            0 < n →
+              ∀ (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                AlgebraicIndependent (↥(SpecialTransformations.Section3.vfParameterField S)) a →
+                  ∀ (t : Fin 2 → M),
+                    SpecialTransformations.Section4.vfValues a ∉
+                      SpecialTransformations.Section8.fixedIsolation (SpecialTransformations.Section8.vfGraph f) t
+== SpecialTransformations.Section8.infinite_definable_contains_small_ball explicit-sha256:7b39618960e29ad8a5653221e585264735574427c5252deb34f47391cffa3f74
+@SpecialTransformations.Section8.infinite_definable_contains_small_ball : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  [inst_2 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+    ∀ {S A : Set M},
+      SpecialTransformations.Section3.DefinableAt S SpecialTransformations.Milestone0.SortTag.vf A →
+        A.Infinite →
+          ∀ {r : M},
+            SpecialTransformations.Milestone0.iVF r →
+              r ≠ SpecialTransformations.Milestone0.Transfer.iVFZero →
+                ∃ a ∈ A,
+                  ∃ s,
+                    SpecialTransformations.Milestone0.iVF s ∧
+                      s ≠ SpecialTransformations.Milestone0.Transfer.iVFZero ∧
+                        SpecialTransformations.Section8.rawOpenBall a s ⊆
+                          A ∩ SpecialTransformations.Section8.rawOpenBall a r
+== SpecialTransformations.Section8.isolatedInputsFamily_definable explicit-sha256:ddf896b7fd4670f43a3923cfc4e0499bbac2d5d7eaec4254ca5a6e58abf19002
+@SpecialTransformations.Section8.isolatedInputsFamily_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {ι : Type} {n m : ℕ} [Finite ι] {S : Set M}
+  {G : Set (ι ⊕ Fin n ⊕ Fin m → M)},
+  S.Definable SpecialTransformations.Milestone0.LRV G →
+    S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section8.isolatedInputsFamily G)
+== SpecialTransformations.Section8.isolatedInputs_gamma_definable explicit-sha256:1aaa73e0491c9b96c13a99c54ff30d3cb49478943797bc17b097ea3a3ca3282b
+@SpecialTransformations.Section8.isolatedInputs_gamma_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ} {B : SpecialTransformations.Section3.GammaParameters.Base} {G : Set (Fin n ⊕ Fin m → M)},
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+      (fun x => SpecialTransformations.Milestone0.SortTag.vf) {z | z ∘ ⇑finSumFinEquiv ∈ G} →
+    SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+      (fun x => SpecialTransformations.Milestone0.SortTag.vf) (SpecialTransformations.Section8.isolatedInputs G)
+== SpecialTransformations.Section8.lemma_8_1 explicit-sha256:f5a697306bec0a6498ca298a1124ee9f8ff976ee01c991abe941bde5441b4e49
+@SpecialTransformations.Section8.lemma_8_1 : ∀ {M : Type} [sM : SpecialTransformations.Milestone0.LRV.Structure M]
+  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M} {n : ℕ} (A : Set (Fin n → M)),
+  SpecialTransformations.Section3.DefinableOver S (fun x => SpecialTransformations.Milestone0.SortTag.vf) A →
+    (∃ r,
+        SpecialTransformations.Milestone0.iVF r ∧
+          r ≠ SpecialTransformations.Milestone0.Transfer.iVFZero ∧
+            A.Pairwise fun a b =>
+              Disjoint (SpecialTransformations.Section8.uniformBall a r)
+                (SpecialTransformations.Section8.uniformBall b r)) →
+      A.Finite
+== SpecialTransformations.Section8.lemma_8_1_gamma explicit-sha256:b3345e90fccdc1f249b1d2d4bec3e1135d7b2a7ee276c5390032055f74ee3e15
+@SpecialTransformations.Section8.lemma_8_1_gamma : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : SpecialTransformations.Section3.GammaParameters.Base} {n : ℕ} (A : Set (Fin n → M)),
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+      (fun x => SpecialTransformations.Milestone0.SortTag.vf) A →
+    (∃ γ,
+        A.Pairwise fun a b =>
+          Disjoint (SpecialTransformations.Section8.gammaUniformBall a γ)
+            (SpecialTransformations.Section8.gammaUniformBall b γ)) →
+      A.Finite
+== SpecialTransformations.Section8.lemma_8_2 explicit-sha256:778452281cd9c551132d995b8fa9469dd46e599baa62d078afe070c4a228d7ff
+@SpecialTransformations.Section8.lemma_8_2 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  {n m : ℕ} [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      SpecialTransformations.Section3.Saturated M κ →
+        ∀ {S : Set M},
+          Cardinal.mk ↑S < κ →
+            ∀ (Δ : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M),
+              Δ.RVCoded →
+                0 < n →
+                  ∀
+                    (f :
+                      (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                        Fin m → SpecialTransformations.Milestone0.Transfer.VFType)
+                    (hf :
+                      S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section8.vfGraph f)),
+                    SpecialTransformations.Section4.vfDim Δ (SpecialTransformations.Section8.isolatedInputsObject hf) <
+                      n
+== SpecialTransformations.Section8.lemma_8_2_actual_gamma explicit-sha256:a0e708bce35371ac022f4cc9d57311e7b6ae7a75049f906a9b177f55ccce95dd
+@SpecialTransformations.Section8.lemma_8_2_actual_gamma : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ} {κ : Cardinal.{0}},
+  SpecialTransformations.Section3.Saturated M κ →
+    ∀ {S : Set M},
+      Cardinal.mk ↑S < κ →
+        0 < n →
+          ∀
+            (f :
+              (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                Fin m → SpecialTransformations.Milestone0.Transfer.VFType)
+            (hf :
+              SpecialTransformations.Section3.DefinableOver S (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                {z | z ∘ ⇑finSumFinEquiv ∈ SpecialTransformations.Section8.vfGraph f}),
+            let N := CanonicalStructure.normalize;
+            have Δ := SpecialTransformations.Section4.gammaSpace;
+            have hN := ⋯;
+            SpecialTransformations.Section4.vfDim Δ (SpecialTransformations.Section8.isolatedInputsObject ⋯) < n
+== SpecialTransformations.Section8.lemma_8_2_gamma_base explicit-sha256:4a847984b5cf9aeb4d1d9b2b646a68bf918d6d449b1c4184686c5a3a602b3e6c
+@SpecialTransformations.Section8.lemma_8_2_gamma_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ} {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      ∀ {B : SpecialTransformations.Section3.GammaParameters.Base},
+        Cardinal.mk ↑B.real < κ →
+          0 < n →
+            ∀
+              (f :
+                (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                  Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+              SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                  (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                  {z | z ∘ ⇑finSumFinEquiv ∈ SpecialTransformations.Section8.vfGraph f} →
+                SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                    (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                    (SpecialTransformations.Section8.isolatedInputs (SpecialTransformations.Section8.vfGraph f)) ∧
+                  ∃ k t,
+                    ∃ (hG :
+                      SpecialTransformations.Section3.DefinableOver
+                        (B.real ∪ Set.range (SpecialTransformations.Section3.GammaParameters.rawTuple t))
+                        (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                        {z | z ∘ ⇑finSumFinEquiv ∈ SpecialTransformations.Section8.vfGraph f}),
+                      let N := CanonicalStructure.normalize;
+                      have Δ := SpecialTransformations.Section4.gammaSpace;
+                      have hN := ⋯;
+                      SpecialTransformations.Section4.vfDim Δ (SpecialTransformations.Section8.isolatedInputsObject ⋯) <
+                        n
+== SpecialTransformations.Section8.lemma_8_3_canonical explicit-sha256:0f8e0eeef048d18f07609ec1e33d5d933e661bb252a4468c9c2605088f8c05e1
+@SpecialTransformations.Section8.lemma_8_3_canonical : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {k m : ℕ},
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    CanonicalStructure.IsCanonical →
+      ∀ {κ : Cardinal.{0}},
+        Cardinal.aleph0 ≤ κ →
+          SpecialTransformations.Section3.Saturated M κ →
+            ∀ {S : Set M},
+              Cardinal.mk ↑S < κ →
+                ∀
+                  (f :
+                    (Fin k → SpecialTransformations.Milestone0.Transfer.VFType) →
+                      (Fin 1 → SpecialTransformations.Milestone0.Transfer.VFType) →
+                        Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                  S.Definable SpecialTransformations.Milestone0.LRV
+                      (SpecialTransformations.Section8.unaryFamilyGraph f) →
+                    ∃ U,
+                      S.Definable SpecialTransformations.Milestone0.LRV U ∧
+                        (∀ z ∈ U, ∀ (i : Fin k ⊕ Fin 1), SpecialTransformations.Milestone0.iVF (z i)) ∧
+                          (∀ (b : Fin k → SpecialTransformations.Milestone0.Transfer.VFType),
+                              {a |
+                                  Sum.elim (SpecialTransformations.Section4.vfValues b)
+                                      (SpecialTransformations.Section4.vfValues ![a]) ∉
+                                    U}.Finite) ∧
+                            ∃ R,
+                              (∀ s ∈ R, 0 < s) ∧
+                                ∀ (b : Fin k → SpecialTransformations.Milestone0.Transfer.VFType)
+                                  (a : SpecialTransformations.Milestone0.Transfer.VFType),
+                                  Sum.elim (SpecialTransformations.Section4.vfValues b)
+                                        (SpecialTransformations.Section4.vfValues ![a]) ∈
+                                      U →
+                                    SpecialTransformations.Section8.unaryLocalSlope
+                                      (Insert.insert (↑a) (S ∪ Set.range (SpecialTransformations.Section4.vfValues b)))
+                                      R a fun x => f b ![x]
+== SpecialTransformations.Section8.lemma_8_3_gamma_base explicit-sha256:73b09058e83abfb873978198c327e5ba625cdcda042e76de742d91f8bc9f31b7
+@SpecialTransformations.Section8.lemma_8_3_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {k m : ℕ},
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    CanonicalStructure.IsCanonical →
+      ∀ {κ : Cardinal.{0}},
+        Cardinal.aleph0 ≤ κ →
+          SpecialTransformations.Section3.Saturated M κ →
+            ∀ {B : SpecialTransformations.Section3.GammaParameters.Base},
+              Cardinal.mk ↑B.real < κ →
+                ∀
+                  (f :
+                    (Fin k → SpecialTransformations.Milestone0.Transfer.VFType) →
+                      (Fin 1 → SpecialTransformations.Milestone0.Transfer.VFType) →
+                        Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                      (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                      {z |
+                        z ∘ ⇑(SpecialTransformations.Section8.vfFamilyIndexEquiv k 1 m) ∈
+                          SpecialTransformations.Section8.vfFamilyGraph f} →
+                    ∃ U,
+                      SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                          (fun x => SpecialTransformations.Milestone0.SortTag.vf) U ∧
+                        (∀ (b : Fin k → SpecialTransformations.Milestone0.Transfer.VFType),
+                            {a |
+                                Sum.elim (SpecialTransformations.Section4.vfValues b)
+                                      (SpecialTransformations.Section4.vfValues ![a]) ∘
+                                    ⇑finSumFinEquiv.symm ∉
+                                  U}.Finite) ∧
+                          ∃ R,
+                            (∀ s ∈ R, 0 < s) ∧
+                              ∀ (b : Fin k → SpecialTransformations.Milestone0.Transfer.VFType)
+                                (a : SpecialTransformations.Milestone0.Transfer.VFType),
+                                Sum.elim (SpecialTransformations.Section4.vfValues b)
+                                        (SpecialTransformations.Section4.vfValues ![a]) ∘
+                                      ⇑finSumFinEquiv.symm ∈
+                                    U →
+                                  SpecialTransformations.Section8.unaryLocalSlopeAtBase
+                                    (SpecialTransformations.Section8.powerEstimatePointBase B b ![a]) R a fun x =>
+                                    f b ![x]
+== SpecialTransformations.Section8.lemma_8_4_named_gamma_base explicit-sha256:cf4395895de8dcd652e5c07095ef5d088c3a2b9ef71284b104323699ae7d879b
+@SpecialTransformations.Section8.lemma_8_4_named_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    CanonicalStructure.IsCanonical →
+      ∀ {κ : Cardinal.{0}},
+        Cardinal.aleph0 ≤ κ →
+          SpecialTransformations.Section3.Saturated M κ →
+            ∀ {B : SpecialTransformations.Section3.GammaParameters.Base},
+              Cardinal.mk ↑B.real < κ →
+                ∀ {Γ : Type} [inst_3 : LinearOrderedCommGroupWithZero Γ]
+                  [inst_4 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+                  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                      SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                    (∀ (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType),
+                        ∃ H, E ≤ H ∧ SpecialTransformations.Section8.ImmediateHenselianExtension Valued.v E H) →
+                      ∀
+                        (f :
+                          SpecialTransformations.Milestone0.Transfer.VFType →
+                            SpecialTransformations.Milestone0.Transfer.VFType)
+                        (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+                        b ≠ 0 →
+                          SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                              (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                              (SpecialTransformations.Section8.partialUnaryGraph
+                                ((fun x => ↑x) '' SpecialTransformations.Section8.centeredBall Valued.v a) f) →
+                            Set.BijOn f (SpecialTransformations.Section8.centeredBall Valued.v a)
+                                (SpecialTransformations.Section8.centeredBall Valued.v b) →
+                              (∀ (r : SpecialTransformations.Milestone0.Transfer.VFType),
+                                  r ≠ 0 →
+                                    ∃ s,
+                                      s ≠ 0 ∧
+                                        f ''
+                                            (SpecialTransformations.Section8.centeredBall Valued.v a ∩
+                                              SpecialTransformations.Section8.centeredBall Valued.v r) =
+                                          SpecialTransformations.Section8.centeredBall Valued.v b ∩
+                                            SpecialTransformations.Section8.centeredBall Valued.v s) →
+                                ∃ c r,
+                                  SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase B c ∧
+                                    SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase B r ∧
+                                      SpecialTransformations.Section8.centeredGammaSlope
+                                        ((fun x => ↑x) '' SpecialTransformations.Section8.centeredBall Valued.v a) f c r
+== SpecialTransformations.Section8.lemma_8_4_partial explicit-sha256:5f915f05b25d550b7f0805c293e587c2334d9aab6373982d3265983ea0af5c8c
+@SpecialTransformations.Section8.lemma_8_4_partial : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {Γ : Type} [inst_2 : LinearOrderedCommGroupWithZero Γ]
+  [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ]
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {S : Set M},
+            Cardinal.mk ↑S < κ →
+              (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                (∀ (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType),
+                    ∃ H, E ≤ H ∧ SpecialTransformations.Section8.ImmediateHenselianExtension Valued.v E H) →
+                  ∀
+                    (f :
+                      SpecialTransformations.Milestone0.Transfer.VFType →
+                        SpecialTransformations.Milestone0.Transfer.VFType)
+                    (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+                    b ≠ 0 →
+                      S.Definable SpecialTransformations.Milestone0.LRV
+                          (SpecialTransformations.Section8.partialUnaryGraph
+                            ((fun x => ↑x) '' SpecialTransformations.Section8.centeredBall Valued.v a) f) →
+                        Set.BijOn f (SpecialTransformations.Section8.centeredBall Valued.v a)
+                            (SpecialTransformations.Section8.centeredBall Valued.v b) →
+                          (∀ (r : SpecialTransformations.Milestone0.Transfer.VFType),
+                              r ≠ 0 →
+                                ∃ s,
+                                  s ≠ 0 ∧
+                                    f ''
+                                        (SpecialTransformations.Section8.centeredBall Valued.v a ∩
+                                          SpecialTransformations.Section8.centeredBall Valued.v r) =
+                                      SpecialTransformations.Section8.centeredBall Valued.v b ∩
+                                        SpecialTransformations.Section8.centeredBall Valued.v s) →
+                            ∃ c r,
+                              c ≠ 0 ∧
+                                r ≠ 0 ∧
+                                  SpecialTransformations.Section8.centeredBall Valued.v r ⊆
+                                      SpecialTransformations.Section8.centeredBall Valued.v a ∧
+                                    ∀ x ∈ SpecialTransformations.Section8.centeredBall Valued.v r,
+                                      Valued.v (f x) = Valued.v c * Valued.v x
+== SpecialTransformations.Section8.lemma_8_4_partial_gamma_base explicit-sha256:583e02daab654242b43cf097b80563d5b7fdf2badd88f25f839db7e79636537f
+@SpecialTransformations.Section8.lemma_8_4_partial_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {Γ : Type} [inst_2 : LinearOrderedCommGroupWithZero Γ]
+  [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ]
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {B : SpecialTransformations.Section3.GammaParameters.Base},
+            Cardinal.mk ↑B.real < κ →
+              (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                (∀ (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType),
+                    ∃ H, E ≤ H ∧ SpecialTransformations.Section8.ImmediateHenselianExtension Valued.v E H) →
+                  ∀
+                    (f :
+                      SpecialTransformations.Milestone0.Transfer.VFType →
+                        SpecialTransformations.Milestone0.Transfer.VFType)
+                    (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+                    b ≠ 0 →
+                      SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                          (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                          (SpecialTransformations.Section8.partialUnaryGraph
+                            ((fun x => ↑x) '' SpecialTransformations.Section8.centeredBall Valued.v a) f) →
+                        Set.BijOn f (SpecialTransformations.Section8.centeredBall Valued.v a)
+                            (SpecialTransformations.Section8.centeredBall Valued.v b) →
+                          (∀ (r : SpecialTransformations.Milestone0.Transfer.VFType),
+                              r ≠ 0 →
+                                ∃ s,
+                                  s ≠ 0 ∧
+                                    f ''
+                                        (SpecialTransformations.Section8.centeredBall Valued.v a ∩
+                                          SpecialTransformations.Section8.centeredBall Valued.v r) =
+                                      SpecialTransformations.Section8.centeredBall Valued.v b ∩
+                                        SpecialTransformations.Section8.centeredBall Valued.v s) →
+                            ∃ c r,
+                              c ≠ 0 ∧
+                                r ≠ 0 ∧
+                                  SpecialTransformations.Section8.centeredBall Valued.v r ⊆
+                                      SpecialTransformations.Section8.centeredBall Valued.v a ∧
+                                    ∀ x ∈ SpecialTransformations.Section8.centeredBall Valued.v r,
+                                      Valued.v (f x) = Valued.v c * Valued.v x
+== SpecialTransformations.Section8.lemma_8_5_partial explicit-sha256:ab48e30835ddb7789d906c8d2ce32de4527c6c57c2265f5b5c40fb0d3c5d9d23
+@SpecialTransformations.Section8.lemma_8_5_partial : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {Γ : Type} [inst_2 : LinearOrderedCommGroupWithZero Γ]
+  [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ]
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    CanonicalStructure.IsCanonical →
+      ∀ {κ : Cardinal.{0}},
+        Cardinal.aleph0 ≤ κ →
+          SpecialTransformations.Section3.Saturated M κ →
+            ∀ {S : Set M},
+              Cardinal.mk ↑S < κ →
+                (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                    SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                  (∀ (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType),
+                      ∃ H, E ≤ H ∧ SpecialTransformations.Section8.ImmediateHenselianExtension Valued.v E H) →
+                    ∀
+                      (f :
+                        SpecialTransformations.Milestone0.Transfer.VFType →
+                          SpecialTransformations.Milestone0.Transfer.VFType)
+                      (A B : Set M),
+                      A ⊆ {x | SpecialTransformations.Milestone0.iVF x} →
+                        B ⊆ {x | SpecialTransformations.Milestone0.iVF x} →
+                          S.Definable SpecialTransformations.Milestone0.LRV
+                              (SpecialTransformations.Section8.partialUnaryGraph A f) →
+                            Set.BijOn f {x | ↑x ∈ A} {y | ↑y ∈ B} →
+                              ∃ U,
+                                S.Definable SpecialTransformations.Milestone0.LRV U ∧
+                                  U ⊆ {z | z 0 ∈ A} ∧
+                                    ({z | z 0 ∈ A} \ U).Finite ∧
+                                      ∀ (a : SpecialTransformations.Milestone0.Transfer.VFType),
+                                        SpecialTransformations.Section4.vfValues ![a] ∈ U →
+                                          ∃ r t,
+                                            t ≠ 0 ∧
+                                              SpecialTransformations.Section3.Values.GammaDefinable
+                                                  (Insert.insert (↑a) S) {r} ∧
+                                                SpecialTransformations.Section3.DefinableClosureAt
+                                                    (Insert.insert (↑a) S) SpecialTransformations.Milestone0.SortTag.rv
+                                                    ↑t ∧
+                                                  SpecialTransformations.Section8.rvPairwiseGammaLaw A f a t r
+== SpecialTransformations.Section8.lemma_8_5_partial_gamma_base explicit-sha256:eb255d22807ad4488923fdc8e7147524d75387c501fca5a095a343913ab66a2e
+@SpecialTransformations.Section8.lemma_8_5_partial_gamma_base : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {Γ : Type} [inst_2 : LinearOrderedCommGroupWithZero Γ]
+  [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ]
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    CanonicalStructure.IsCanonical →
+      ∀ {κ : Cardinal.{0}},
+        Cardinal.aleph0 ≤ κ →
+          SpecialTransformations.Section3.Saturated M κ →
+            ∀ {B : SpecialTransformations.Section3.GammaParameters.Base},
+              Cardinal.mk ↑B.real < κ →
+                (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                    SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                  (∀ (E : Subfield SpecialTransformations.Milestone0.Transfer.VFType),
+                      ∃ H, E ≤ H ∧ SpecialTransformations.Section8.ImmediateHenselianExtension Valued.v E H) →
+                    ∀
+                      (f :
+                        SpecialTransformations.Milestone0.Transfer.VFType →
+                          SpecialTransformations.Milestone0.Transfer.VFType)
+                      (A C : Set M),
+                      A ⊆ {x | SpecialTransformations.Milestone0.iVF x} →
+                        C ⊆ {x | SpecialTransformations.Milestone0.iVF x} →
+                          SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                              (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                              (SpecialTransformations.Section8.partialUnaryGraph A f) →
+                            Set.BijOn f {x | ↑x ∈ A} {y | ↑y ∈ C} →
+                              SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                                  (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                                  (SpecialTransformations.Section8.rvPairwiseGood A f) ∧
+                                ({z | z 0 ∈ A} \ SpecialTransformations.Section8.rvPairwiseGood A f).Finite ∧
+                                  ∀ (a : SpecialTransformations.Milestone0.Transfer.VFType),
+                                    SpecialTransformations.Section4.vfValues ![a] ∈
+                                        SpecialTransformations.Section8.rvPairwiseGood A f →
+                                      ∃ r t,
+                                        t ≠ 0 ∧
+                                          SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase
+                                              (SpecialTransformations.Section8.pairwisePointBase B a) r ∧
+                                            SpecialTransformations.Section3.GammaParameters.DefinableClosureAtBase
+                                                (SpecialTransformations.Section8.pairwisePointBase B a)
+                                                SpecialTransformations.Milestone0.SortTag.rv ↑t ∧
+                                              SpecialTransformations.Section8.rvPairwiseGammaLaw A f a t r
+== SpecialTransformations.Section8.lemma_8_6_canonical explicit-sha256:0baec87183320cb38f595ed28a6ca2beb6a554f81b7c8d536fa00926940dfcb8
+@SpecialTransformations.Section8.lemma_8_6_canonical : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {k n m : ℕ},
+  CanonicalStructure.IsCanonical →
+    M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+      ∀ {κ : Cardinal.{0}},
+        Cardinal.aleph0 ≤ κ →
+          SpecialTransformations.Section3.Saturated M κ →
+            ∀ {S : Set M},
+              Cardinal.mk ↑S < κ →
+                ∀ (δ : SpecialTransformations.Section3.Values.Gamma),
+                  SpecialTransformations.Section3.Values.GammaDefinable S {δ} →
+                    1 < δ →
+                      0 < n →
+                        ∀
+                          (f :
+                            (Fin k → SpecialTransformations.Milestone0.Transfer.VFType) →
+                              (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                                Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                          S.Definable SpecialTransformations.Milestone0.LRV
+                              (SpecialTransformations.Section8.vfFamilyGraph f) →
+                            ∃ Q,
+                              0 < Q ∧
+                                ∃ U,
+                                  S.Definable SpecialTransformations.Milestone0.LRV U ∧
+                                    ∀ (t : Fin k → SpecialTransformations.Milestone0.Transfer.VFType),
+                                      (∃ (hE :
+                                          (S ∪ Set.range (SpecialTransformations.Section4.vfValues t)).Definable
+                                            SpecialTransformations.Milestone0.LRV
+                                            {a |
+                                              a ∈ SpecialTransformations.Section8.vfRawUniverse n ∧
+                                                Sum.elim (SpecialTransformations.Section4.vfValues t) a ∉ U}),
+                                          SpecialTransformations.Section4.vfDim
+                                              (SpecialTransformations.Section4.rawRVSpace 1)
+                                              (SpecialTransformations.Section8.vfObjectOfRaw hE) <
+                                            n) ∧
+                                        ∀ (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                                          Sum.elim (SpecialTransformations.Section4.vfValues t)
+                                                (SpecialTransformations.Section4.vfValues a) ∈
+                                              U →
+                                            ∃ c r,
+                                              SpecialTransformations.Section3.Values.GammaDefinable
+                                                  (S ∪ Set.range (SpecialTransformations.Section4.vfValues t) ∪
+                                                    Set.range (SpecialTransformations.Section4.vfValues a))
+                                                  {c} ∧
+                                                SpecialTransformations.Section3.Values.GammaDefinable
+                                                    (S ∪ Set.range (SpecialTransformations.Section4.vfValues t) ∪
+                                                      Set.range (SpecialTransformations.Section4.vfValues a))
+                                                    {r} ∧
+                                                  SpecialTransformations.Section8.vfPositivePowerEstimate (f t) a 1 Q c
+                                                    r
+== SpecialTransformations.Section8.lemma_8_6_gamma_base explicit-sha256:b80eb33c8864a6480e65d99fdbb187a3d1e7dfcc06ad382d28d153b89b5a2c6b
+@SpecialTransformations.Section8.lemma_8_6_gamma_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {k n m : ℕ},
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (hc : CanonicalStructure.IsCanonical) {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {B : SpecialTransformations.Section3.GammaParameters.Base},
+            Cardinal.mk ↑B.real < κ →
+              ∀ (δ : SpecialTransformations.Section3.Values.Gamma),
+                SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase B δ →
+                  1 < δ →
+                    0 < n →
+                      ∀
+                        (f :
+                          (Fin k → SpecialTransformations.Milestone0.Transfer.VFType) →
+                            (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                              Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                        SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                            (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                            {z |
+                              z ∘ ⇑(SpecialTransformations.Section8.vfFamilyIndexEquiv k n m) ∈
+                                SpecialTransformations.Section8.vfFamilyGraph f} →
+                          ∃ Q,
+                            0 < Q ∧
+                              ∃ U,
+                                SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                                    (fun x => SpecialTransformations.Milestone0.SortTag.vf) U ∧
+                                  ∃ g d,
+                                    ∀ (t : Fin k → SpecialTransformations.Milestone0.Transfer.VFType),
+                                      (∃ (hE :
+                                          (B.real ∪
+                                                  Set.range
+                                                    (SpecialTransformations.Section3.GammaParameters.rawTuple d) ∪
+                                                Set.range (SpecialTransformations.Section4.vfValues t)).Definable
+                                            SpecialTransformations.Milestone0.LRV
+                                            {a |
+                                              a ∈ SpecialTransformations.Section8.vfRawUniverse n ∧
+                                                SpecialTransformations.Section8.flattenFamilyCentre
+                                                    (SpecialTransformations.Section4.vfValues t) a ∉
+                                                  U}),
+                                          SpecialTransformations.Section4.vfDim
+                                              (SpecialTransformations.Section8.canonicalGammaSpace hc)
+                                              (SpecialTransformations.Section8.vfObjectOfRaw hE) <
+                                            n) ∧
+                                        ∀ (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                                          SpecialTransformations.Section8.flattenFamilyCentre
+                                                (SpecialTransformations.Section4.vfValues t)
+                                                (SpecialTransformations.Section4.vfValues a) ∈
+                                              U →
+                                            ∃ c r,
+                                              SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase
+                                                  (SpecialTransformations.Section8.powerEstimatePointBase B t a) c ∧
+                                                SpecialTransformations.Section3.GammaParameters.GammaDefinableClosureAtBase
+                                                    (SpecialTransformations.Section8.powerEstimatePointBase B t a) r ∧
+                                                  SpecialTransformations.Section8.vfPositivePowerEstimate (f t) a 1 Q c
+                                                    r
+== SpecialTransformations.Section8.lemma_8_7_canonical explicit-sha256:e12dd0dbba58a5b01d66d191a56f0f6d92f2ba4c3ed65339463db0f3745d24ae
+@SpecialTransformations.Section8.lemma_8_7_canonical : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n m : ℕ} {Γ : Type}
+  [inst_2 : LinearOrderedCommGroupWithZero Γ] [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {S : Set M},
+            Cardinal.mk ↑S < κ →
+              0 < n →
+                (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                    SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                  ∀
+                    (f :
+                      (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                        Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                    S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section8.vfGraph f) →
+                      ∃ B,
+                        ∃ (hB : S.Definable SpecialTransformations.Milestone0.LRV B),
+                          B ⊆ SpecialTransformations.Section8.vfRawUniverse n ∧
+                            IsClosed {a | SpecialTransformations.Section4.vfValues a ∈ B} ∧
+                              SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1)
+                                    (SpecialTransformations.Section8.vfObjectOfRaw hB) <
+                                  n ∧
+                                ContinuousOn f {a | SpecialTransformations.Section4.vfValues a ∉ B}
+== SpecialTransformations.Section8.lemma_8_7_gamma_base explicit-sha256:d92c582b01d4d06911d2f1140cede637c135db47664a4e177de3c20a5cedd79a
+@SpecialTransformations.Section8.lemma_8_7_gamma_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ} {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      ∀ {B : SpecialTransformations.Section3.GammaParameters.Base},
+        Cardinal.mk ↑B.real < κ →
+          0 < n →
+            ∀
+              (f :
+                (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                  Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+              SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                  (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                  {z | z ∘ ⇑finSumFinEquiv ∈ SpecialTransformations.Section8.vfGraph f} →
+                SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                    (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                    (SpecialTransformations.Section8.normalizedContinuityException
+                      (SpecialTransformations.Section8.vfGraph f)) ∧
+                  ∃ k t,
+                    ∃ (hG :
+                      SpecialTransformations.Section3.DefinableOver
+                        (B.real ∪ Set.range (SpecialTransformations.Section3.GammaParameters.rawTuple t))
+                        (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                        {z | z ∘ ⇑finSumFinEquiv ∈ SpecialTransformations.Section8.vfGraph f}),
+                      let N := CanonicalStructure.normalize;
+                      have Δ := SpecialTransformations.Section4.gammaSpace;
+                      have hN := ⋯;
+                      SpecialTransformations.Section4.vfDim Δ (SpecialTransformations.Section8.vfObjectOfRaw ⋯) < n ∧
+                        IsClosed
+                            {a |
+                              SpecialTransformations.Section4.vfValues a ∈
+                                SpecialTransformations.Section8.continuityExceptionRaw
+                                  (SpecialTransformations.Section8.vfGraph f)} ∧
+                          ContinuousOn
+                            (have this := f;
+                            this)
+                            {a |
+                              SpecialTransformations.Section4.vfValues a ∉
+                                SpecialTransformations.Section8.continuityExceptionRaw
+                                  (SpecialTransformations.Section8.vfGraph f)}
+== SpecialTransformations.Section8.lemma_8_9_canonical explicit-sha256:b47f0bceb60fd0da6ab8b700a5b4ee9d2a1fc2ad6f00d525de1dccd8845d4f53
+@SpecialTransformations.Section8.lemma_8_9_canonical : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ} {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  [inst_2 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      SpecialTransformations.Section3.Saturated M κ →
+        ∀ {S : Set M},
+          Cardinal.mk ↑S < κ →
+            0 < n →
+              (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                ∀ {G : Set (Fin n ⊕ Fin m → M)},
+                  S.Definable SpecialTransformations.Milestone0.LRV G →
+                    ∃ U,
+                      ∃ (hU : S.Definable SpecialTransformations.Milestone0.LRV U),
+                        U ⊆ SpecialTransformations.Section8.vfRawUniverse n ∧
+                          SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1)
+                                (SpecialTransformations.Section8.vfObjectOfRaw ⋯) <
+                              n ∧
+                            SpecialTransformations.Section8.rvLocallyConstantOn
+                              (SpecialTransformations.Section8.rvFibre G)
+                              {a | SpecialTransformations.Section4.vfValues a ∈ U}
+== SpecialTransformations.Section8.lemma_8_9_gamma_base explicit-sha256:fe409eb5d53f0a7afad65bb1140c294ec51beba966f6ef06e1dc686218d1b79d
+@SpecialTransformations.Section8.lemma_8_9_gamma_base : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ} {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      ∀ {B : SpecialTransformations.Section3.GammaParameters.Base},
+        Cardinal.mk ↑B.real < κ →
+          0 < n →
+            ∀ {Γ : Type} [inst : LinearOrderedCommGroupWithZero Γ]
+              [inst_1 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+              (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                ∀ {G : Set (Fin n ⊕ Fin m → M)},
+                  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                      (SpecialTransformations.Section8.MixedLocal.tupleSort n m) {z | z ∘ ⇑finSumFinEquiv ∈ G} →
+                    SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                        (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+                        (SpecialTransformations.Section8.rvConstantRaw G) ∧
+                      SpecialTransformations.Section8.rvLocallyConstantOn (SpecialTransformations.Section8.rvFibre G)
+                          {a |
+                            SpecialTransformations.Section4.vfValues a ∈
+                              SpecialTransformations.Section8.rvConstantRaw G} ∧
+                        ∃ k t,
+                          ∃ (hR :
+                            SpecialTransformations.Section3.DefinableOver
+                              (B.real ∪ Set.range (SpecialTransformations.Section3.GammaParameters.rawTuple t))
+                              (SpecialTransformations.Section8.MixedLocal.tupleSort n m) {z | z ∘ ⇑finSumFinEquiv ∈ G}),
+                            let N := CanonicalStructure.normalize;
+                            have Δ := SpecialTransformations.Section4.gammaSpace;
+                            have hN := ⋯;
+                            SpecialTransformations.Section4.vfDim Δ
+                                (SpecialTransformations.Section8.rvFibreBadObject ⋯) <
+                              n
+== SpecialTransformations.Section8.mem_isolatedInputs_iff explicit-sha256:9a97eed66853601a6f807d04deb531009048bb81467e6ea591669b331caa51d4
+@SpecialTransformations.Section8.mem_isolatedInputs_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n m : ℕ}
+  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (f :
+    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+      Fin m → SpecialTransformations.Milestone0.Transfer.VFType)
+  (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section4.vfValues a ∈
+      SpecialTransformations.Section8.isolatedInputs (SpecialTransformations.Section8.vfGraph f) ↔
+    ∃ r s,
+      r ≠ 0 ∧
+        s ≠ 0 ∧
+          ∀ (b : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+            SpecialTransformations.Section4.vfValues b ∈
+                SpecialTransformations.Section8.uniformBall (SpecialTransformations.Section4.vfValues a) ↑r →
+              SpecialTransformations.Section4.vfValues (f b) ∈
+                  SpecialTransformations.Section8.uniformBall (SpecialTransformations.Section4.vfValues (f a)) ↑s →
+                b = a
+== SpecialTransformations.Section8.mem_isolatedInputs_iff_gamma explicit-sha256:215c7d2bc3b1988b98f4d5846523c603f4edacdf84a5cfd12daf9e7be7c584fa
+@SpecialTransformations.Section8.mem_isolatedInputs_iff_gamma : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ}
+  (f :
+    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+      Fin m → SpecialTransformations.Milestone0.Transfer.VFType)
+  (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+  SpecialTransformations.Section4.vfValues a ∈
+      SpecialTransformations.Section8.isolatedInputs (SpecialTransformations.Section8.vfGraph f) ↔
+    ∃ δ ε,
+      {b |
+          SpecialTransformations.Section4.vfValues b ∈
+              SpecialTransformations.Section8.gammaUniformBall (SpecialTransformations.Section4.vfValues a) δ ∧
+            SpecialTransformations.Section4.vfValues (f b) ∈
+              SpecialTransformations.Section8.gammaUniformBall (SpecialTransformations.Section4.vfValues (f a)) ε} =
+        {a}
+== SpecialTransformations.Section8.mem_uniformBall_iff explicit-sha256:6b18575efeddf728ee961e170549a17fa4ca7696dc958d1a6c388bbcdb62f02f
+@SpecialTransformations.Section8.mem_uniformBall_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+    ∀ {n : ℕ} (a x : Fin n → SpecialTransformations.Milestone0.Transfer.VFType)
+      (r : SpecialTransformations.Milestone0.Transfer.VFType) (hr : r ≠ 0),
+      SpecialTransformations.Section4.vfValues x ∈
+          SpecialTransformations.Section8.uniformBall (SpecialTransformations.Section4.vfValues a) ↑r ↔
+        x ∈ { centre := a, step := fun x => r, step_ne_zero := ⋯ }.carrier
+== SpecialTransformations.Section8.mem_vfRawClosure_iff explicit-sha256:648d7a03448cfb2eb0a62f63d91cb7f6be53389943349e21f76b454cf4063969
+@SpecialTransformations.Section8.mem_vfRawClosure_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ}
+  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  [inst_2 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+    ∀ (A : Set (Fin n → M)) (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Section4.vfValues a ∈ SpecialTransformations.Section8.vfRawClosure A ↔
+        a ∈ closure {x | SpecialTransformations.Section4.vfValues x ∈ A}
+== SpecialTransformations.Section8.normalizedContinuityException_gamma_definable explicit-sha256:8f73bc354bb4458d18017a3749bf71a37ee0a378744444320ee607bf60ae9da7
+@SpecialTransformations.Section8.normalizedContinuityException_gamma_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ} {B : SpecialTransformations.Section3.GammaParameters.Base} {G : Set (Fin n ⊕ Fin m → M)},
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+      (fun x => SpecialTransformations.Milestone0.SortTag.vf) {z | z ∘ ⇑finSumFinEquiv ∈ G} →
+    SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+      (fun x => SpecialTransformations.Milestone0.SortTag.vf)
+      (SpecialTransformations.Section8.normalizedContinuityException G)
+== SpecialTransformations.Section8.rvConstantRaw_gamma_definable explicit-sha256:68414b707d0235b764172cf787ba3452242e875ae9f5424885809fc8f61449f1
+@SpecialTransformations.Section8.rvConstantRaw_gamma_definable : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ} {B : SpecialTransformations.Section3.GammaParameters.Base} {G : Set (Fin n ⊕ Fin m → M)},
+  SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+      (SpecialTransformations.Section8.MixedLocal.tupleSort n m) {z | z ∘ ⇑finSumFinEquiv ∈ G} →
+    SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+      (fun x => SpecialTransformations.Milestone0.SortTag.vf) (SpecialTransformations.Section8.rvConstantRaw G)
+== SpecialTransformations.Section8.rvFibre_locallyConstant_of_independent explicit-sha256:7360b94cbfdc940ae931f3fc5117a44ad47a14abe5db2759834a9e7c4f708e71
+@SpecialTransformations.Section8.rvFibre_locallyConstant_of_independent : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n m : ℕ} {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  [inst_2 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  CanonicalStructure.IsCanonical →
+    (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+        SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+      ∀ {S : Set M} {G : Set (Fin n ⊕ Fin m → M)},
+        S.Definable SpecialTransformations.Milestone0.LRV G →
+          ∀ (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+            AlgebraicIndependent (↥(SpecialTransformations.Section3.vfParameterField S)) a →
+              SpecialTransformations.Section8.rvLocallyConstantAt (SpecialTransformations.Section8.rvFibre G) a
+== SpecialTransformations.Section8.rvLocallyConstantAt explicit-sha256:afcdc46b94c6713e6625d0f3f54049dc15e393e5ab9b5cb796b628549cdf8bce
+@SpecialTransformations.Section8.rvLocallyConstantAt : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {n m : ℕ} →
+        {Γ : Type} →
+          [inst_2 : LinearOrderedCommGroupWithZero Γ] →
+            [Valued SpecialTransformations.Milestone0.Transfer.VFType Γ] →
+              ((Fin n → SpecialTransformations.Milestone0.Transfer.VFType) → Set (Fin m → CanonicalRV.RVSort M)) →
+                (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) → Prop
+== SpecialTransformations.Section8.rvLocallyConstantAt_iff_uniformBall explicit-sha256:6e8a0697b1f1ecccde276a48862d8224fcd2025c4c182e9977417b6e06c028e2
+@SpecialTransformations.Section8.rvLocallyConstantAt_iff_uniformBall : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n m : ℕ} {Γ : Type}
+  [inst_2 : LinearOrderedCommGroupWithZero Γ] [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+    ∀ (F : (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) → Set (Fin m → CanonicalRV.RVSort M))
+      (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Section8.rvLocallyConstantAt F a ↔
+        ∃ r,
+          r ≠ 0 ∧
+            ∀ (b : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+              SpecialTransformations.Section4.vfValues b ∈
+                  SpecialTransformations.Section8.uniformBall (SpecialTransformations.Section4.vfValues a) ↑r →
+                F b = F a
+== SpecialTransformations.Section8.rvLocallyConstantOn explicit-sha256:86c0af6054a0051820eb2ee4917898c0aa7aff6b476d5a7ff02839c3bd10254f
+@SpecialTransformations.Section8.rvLocallyConstantOn : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {n m : ℕ} →
+        {Γ : Type} →
+          [inst_2 : LinearOrderedCommGroupWithZero Γ] →
+            [Valued SpecialTransformations.Milestone0.Transfer.VFType Γ] →
+              ((Fin n → SpecialTransformations.Milestone0.Transfer.VFType) → Set (Fin m → CanonicalRV.RVSort M)) →
+                Set (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) → Prop
+== SpecialTransformations.Section8.rvPairwiseWitnesses_gamma_definable explicit-sha256:d7b93eb3bdd71918240745f37d70435a99490a8f32ee93e5638fb330bc44dcc6
+@SpecialTransformations.Section8.rvPairwiseWitnesses_gamma_definable : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  CanonicalStructure.IsCanonical →
+    ∀ {B : SpecialTransformations.Section3.GammaParameters.Base} {G : Set (Fin 2 → M)} {A : Set M},
+      SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+          (fun x => SpecialTransformations.Milestone0.SortTag.vf) G →
+        SpecialTransformations.Section3.GammaParameters.DefinableAtBase B SpecialTransformations.Milestone0.SortTag.vf
+            A →
+          SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+            SpecialTransformations.Section8.rvWitnessSort
+            {z |
+              z ∈
+                  SpecialTransformations.Section3.GammaParameters.sortedUniverse
+                    SpecialTransformations.Section8.rvWitnessSort ∧
+                SpecialTransformations.Section8.rvWitnessUnpack z ∈
+                  SpecialTransformations.Section8.rvPairwiseWitnesses A G}
+== SpecialTransformations.Section8.unaryGoodLocus_finite_exception explicit-sha256:c9814c809fc159a21c5c4fdabe9177a12e3a433e8b9c5cb9505cfe1ae0452260
+@SpecialTransformations.Section8.unaryGoodLocus_finite_exception : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {k m : ℕ}
+  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {S : Set M},
+            Cardinal.mk ↑S < κ →
+              ∀ (Δ : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M),
+                Δ.RVCoded →
+                  ∀
+                    {f :
+                      (Fin k → SpecialTransformations.Milestone0.Transfer.VFType) →
+                        (Fin 1 → SpecialTransformations.Milestone0.Transfer.VFType) →
+                          Fin m → SpecialTransformations.Milestone0.Transfer.VFType},
+                    S.Definable SpecialTransformations.Milestone0.LRV
+                        (SpecialTransformations.Section8.unaryFamilyGraph f) →
+                      ∀ (b : Fin k → SpecialTransformations.Milestone0.Transfer.VFType),
+                        {a |
+                            Sum.elim (SpecialTransformations.Section4.vfValues b)
+                                (SpecialTransformations.Section4.vfValues a) ∉
+                              SpecialTransformations.Section8.unaryGoodLocus f}.Finite
+== SpecialTransformations.Section8.unaryLocalSlope explicit-sha256:f0d605b3dfd06af718c05743d950c367e985852b207e43b4b08869a7e95a5e4b
+@SpecialTransformations.Section8.unaryLocalSlope : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {m : ℕ} →
+        Set M →
+          Finset ℚ →
+            SpecialTransformations.Milestone0.Transfer.VFType →
+              (SpecialTransformations.Milestone0.Transfer.VFType →
+                  Fin m → SpecialTransformations.Milestone0.Transfer.VFType) →
+                Prop
+== SpecialTransformations.Section8.unaryLocalSlopeAtBase explicit-sha256:fa4b37ac9a89ebae027845486d54982cf9dcb7f17f82a80032f388cd0d3a2e70
+@SpecialTransformations.Section8.unaryLocalSlopeAtBase : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {m : ℕ} →
+        SpecialTransformations.Section3.GammaParameters.Base →
+          Finset ℚ →
+            SpecialTransformations.Milestone0.Transfer.VFType →
+              (SpecialTransformations.Milestone0.Transfer.VFType →
+                  Fin m → SpecialTransformations.Milestone0.Transfer.VFType) →
+                Prop
+== SpecialTransformations.Section8.unary_family_uniform_positive_power_germ explicit-sha256:d5f7af31738590a1b1fe97857abe37b542ac0d67fa5ecf6605192fdf05a97721
+@SpecialTransformations.Section8.unary_family_uniform_positive_power_germ : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {k m : ℕ} {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  [inst_2 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {S : Set M},
+            Cardinal.mk ↑S < κ →
+              (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                ∀ (hm : 0 < m)
+                  (f :
+                    (Fin k → SpecialTransformations.Milestone0.Transfer.VFType) →
+                      (Fin 1 → SpecialTransformations.Milestone0.Transfer.VFType) →
+                        Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                  S.Definable SpecialTransformations.Milestone0.LRV
+                      (SpecialTransformations.Section8.unaryFamilyGraph f) →
+                    ∃ N D,
+                      ∀ (b : Fin k → SpecialTransformations.Milestone0.Transfer.VFType)
+                        (a : SpecialTransformations.Milestone0.Transfer.VFType),
+                        Sum.elim (SpecialTransformations.Section4.vfValues b)
+                              (SpecialTransformations.Section4.vfValues ![a]) ∈
+                            SpecialTransformations.Section8.unaryGoodLocus f →
+                          (∀ᶠ (x : SpecialTransformations.Milestone0.Transfer.VFType) in nhds a, f b ![x] = f b ![a]) ∨
+                            ∃ p q,
+                              0 < p ∧
+                                p ≤ N ∧
+                                  0 < q ∧
+                                    q ≤ D ∧
+                                      ∃ s,
+                                        s ≠ 0 ∧
+                                          have g :=
+                                            SpecialTransformations.Section8.centeredUnaryFamily Valued.v hm f
+                                              (Fin.snoc b a);
+                                          ∀ᶠ (x : SpecialTransformations.Milestone0.Transfer.VFType) in nhds a,
+                                            x ≠ a → g x ≠ 0 ∧ Valued.v (g x) ^ q = Valued.v s * Valued.v (x - a) ^ p
+== SpecialTransformations.Section8.uniform_power_estimate_of_independent explicit-sha256:bb40e5c0eae16ce72b129afbd30eee3dfe91e80007e42a553378f90b03deadd5
+@SpecialTransformations.Section8.uniform_power_estimate_of_independent : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {k n m : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {S : Set M},
+            Cardinal.mk ↑S < κ →
+              0 < n →
+                ∀
+                  (f :
+                    (Fin k → SpecialTransformations.Milestone0.Transfer.VFType) →
+                      (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                        Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                  S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section8.vfFamilyGraph f) →
+                    ∃ Q,
+                      0 < Q ∧
+                        ∀ (t : Fin k → SpecialTransformations.Milestone0.Transfer.VFType)
+                          (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                          AlgebraicIndependent
+                              (↥(SpecialTransformations.Section3.vfParameterField
+                                  (S ∪ Set.range (SpecialTransformations.Section4.vfValues t))))
+                              a →
+                            ∃ c r, SpecialTransformations.Section8.vfPositivePowerEstimate (f t) a 1 Q c r
+== SpecialTransformations.Section8.vfRawClosure_dim_lt_arity explicit-sha256:3501a8389cb812df5c22f7ce3fa3e6233b620e8e6dc68cfc845e2fe79f01a064
+@SpecialTransformations.Section8.vfRawClosure_dim_lt_arity : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ}
+  [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {Γ : Type} [inst_1 : LinearOrderedCommGroupWithZero Γ]
+  [inst_2 : Valued SpecialTransformations.Milestone0.Transfer.VFType Γ],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      SpecialTransformations.Section3.Saturated M κ →
+        ∀ {S : Set M},
+          Cardinal.mk ↑S < κ →
+            ∀ (Δ : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M),
+              Δ.RVCoded →
+                0 < n →
+                  (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                      SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                    ∀ {A : Set (Fin n → M)} (hA : S.Definable SpecialTransformations.Milestone0.LRV A),
+                      SpecialTransformations.Section4.vfDim Δ (SpecialTransformations.Section8.vfObjectOfRaw hA) < n →
+                        SpecialTransformations.Section4.vfDim Δ (SpecialTransformations.Section8.vfObjectOfRaw ⋯) < n

@@ -188,5 +188,7 @@ write_json(BUILD / 'certificate.json', dict(lean=version, pins=pin_rows,
     integration=dict(command=integration_command, exit_code=integration_exit,
         source_sha256=sha(integration_source), log_sha256=sha(integration_log)),
     verifier_sha256=sha(Path(__file__))))
+import headline_baseline
+headline_baseline.check('section7', expected_headlines, ['Section7.Library'], env=env, scratch=BUILD)
 STATUS.write_text('PASS\n')
 print(f'PASS: {len(rows)} fresh modules, {len(expected_headlines)} headline audits, combined ACVF-QE import; inspect full types in Section7.Library.log', flush=True)

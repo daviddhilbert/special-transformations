@@ -1,0 +1,25 @@
+== JohnsonACF.hasQEb explicit-sha256:abcfa12e5d877b0d6a981d6544b176643f7c7cf96d176db5ddd9fa03558d8e89
+JohnsonACF.hasQEb : QECriterion.HasQEb ACFValidation.acf
+== SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination explicit-sha256:aa59108cc6902944d23425cbc52d0f7ca937742e39cd6490b59a7d62c793b36b
+SpecialTransformations.Milestone0.theorem_2_3_quantifier_elimination : SpecialTransformations.Milestone0.HasQE
+  SpecialTransformations.Milestone0.Axioms.ACVF
+== SpecialTransformations.TrivialRV.canonical_trivial_rv_qe explicit-sha256:59ff0eb3b0f7e47c91745e76a9e4b3d540559c9f60d42c7195fd09efddd1c61f
+SpecialTransformations.TrivialRV.canonical_trivial_rv_qe : ∀ (α : Type)
+  (sα : α → SpecialTransformations.Milestone0.SortTag) (n : ℕ) (sn : Fin n → SpecialTransformations.Milestone0.SortTag)
+  (φ : SpecialTransformations.Milestone0.LRV.BoundedFormula α n),
+  ∃ ψ,
+    ψ.IsQF ∧
+      SpecialTransformations.Milestone0.LRV.WellSorted sα sn ψ ∧
+        ∀ (K : Type) [inst : Field K] [IsAlgClosed K] (v : α → K ⊕ K) (a : Fin n → K ⊕ K),
+          (∀ (i : α), SpecialTransformations.Milestone0.sortEval (sα i) (v i)) →
+            (∀ (i : Fin n), SpecialTransformations.Milestone0.sortEval (sn i) (a i)) → (φ.Realize v a ↔ ψ.Realize v a)
+== SpecialTransformations.TrivialRV.hasQE explicit-sha256:1c01ca3595e9023db8d5b0f62ee525154cdc8a316d72451b77b6dc5c9227bdce
+SpecialTransformations.TrivialRV.hasQE : SpecialTransformations.Milestone0.HasQE SpecialTransformations.TrivialRV.theory
+== ValPM.hasQE_ACVF_trivial_val explicit-sha256:33f0a1bd60e18fe33e67e014a20b8bc9b0737ae18ada0d0c2610b5c5a84ad2ac
+ValPM.hasQE_ACVF_trivial_val : QECriterion.HasQE ValPM.ACVFTrivial_val
+== ValPM.hasQEb_ACVF_trivial_val explicit-sha256:886c6f5da8fb883a875f09713780e2c2e68c2ada833846a670117cba95dd4e5d
+ValPM.hasQEb_ACVF_trivial_val : QECriterion.HasQEb ValPM.ACVFTrivial_val
+== hasQE_ACVF_val explicit-sha256:e83842abfd3f39c33c62ec6998e2fe47ca67d7e5399cc12a9b4d544bdf15901f
+hasQE_ACVF_val : QECriterion.HasQE ValPM.ACVF_val
+== hasQEb_ACVF_val explicit-sha256:435824a27c21a57ec1d251c4ee015793ed631980fc5b5b7ae36ef56a72063633
+hasQEb_ACVF_val : QECriterion.HasQEb ValPM.ACVF_val

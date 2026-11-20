@@ -1,0 +1,719 @@
+== SpecialTransformations.Section10.EssentialVFMap.exists_restriction_preserving_jacobian explicit-sha256:c4352bdb8735a1e051513f9571b5cdf56521af0e919c87ba6ab0e5cb89aaf4d8
+@SpecialTransformations.Section10.EssentialVFMap.exists_restriction_preserving_jacobian : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M} {n r s : ℕ}
+  {A : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n r) S}
+  {B : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n s) S},
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      SpecialTransformations.Section3.Saturated M κ →
+        Cardinal.mk ↑S < κ →
+          0 < n →
+            ∀ (f : SpecialTransformations.DefinableGeometry.Map A B),
+              Function.Bijective f.toFun →
+                ∀
+                  (Z :
+                    SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n r)
+                      S),
+                  SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1) Z < n →
+                    ∃ g,
+                      ∀ (p : ↑g.source.carrier),
+                        have q := ⟨↑p, ⋯⟩;
+                        ↑q ∉ Z.carrier ∧
+                          ↑(g.map.toFun p) = ↑(f.toFun q) ∧
+                            ∀ (J : SpecialTransformations.Milestone0.Transfer.VFType),
+                              SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun q J →
+                                SpecialTransformations.Section9.HasMixedVFJacobianAt g.map.toFun p J
+== SpecialTransformations.Section10.MeasuredRV.lift_scissor explicit-sha256:c9dfbb1fc8b80657f758b15f1b9d565d1dbda94b7fdce697ef5cbbed5e028da8
+@SpecialTransformations.Section10.MeasuredRV.lift_scissor : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G]
+  {C : SpecialTransformations.Section3.BaseContext M} {d : SpecialTransformations.Section10.VolumeScale M G} {k : ℕ}
+  (hc : CanonicalStructure.IsCanonical) {A B D E : SpecialTransformations.Section10.MeasuredRV C d k},
+  A.Scissor B D E →
+    (SpecialTransformations.Section10.MeasuredRV.lift hc A).Scissor
+      (SpecialTransformations.Section10.MeasuredRV.lift hc B) (SpecialTransformations.Section10.MeasuredRV.lift hc D)
+      (SpecialTransformations.Section10.MeasuredRV.lift hc E)
+== SpecialTransformations.Section10.MeasuredRVZero explicit-sha256:a64eabdf10977a9723c21079086708951180b7c047a04174e09dab7e6bbd8c06
+@SpecialTransformations.Section10.MeasuredRVZero : {M G : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      [inst_2 : CommMonoidWithZero G] → Set M → SpecialTransformations.Section10.VolumeScale M G → Type
+== SpecialTransformations.Section10.MeasuredRVZero.corollary_10_6_weighted_zero explicit-sha256:f06a43d444feb6dbb52511beb75325d33acd4e772637d53dcd7b6a717c8b40d5
+@SpecialTransformations.Section10.MeasuredRVZero.corollary_10_6_weighted_zero : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G] {S : Set M}
+  {d : SpecialTransformations.Section10.VolumeScale M G} (hc : CanonicalStructure.IsCanonical) {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        Cardinal.mk ↑S < κ → Function.Surjective ⇑(SpecialTransformations.Section10.MeasuredRVZero.liftHom hc)
+== SpecialTransformations.Section10.MeasuredRVZero.liftHom_generator explicit-sha256:bc808f3f5885d53a56676e76cd2bf0cd06cd7c678c0781092971d2aa7ca0395b
+@SpecialTransformations.Section10.MeasuredRVZero.liftHom_generator : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G] {S : Set M}
+  {d : SpecialTransformations.Section10.VolumeScale M G} (hc : CanonicalStructure.IsCanonical)
+  (U : SpecialTransformations.Section10.MeasuredRVZero S d),
+  (SpecialTransformations.Section10.MeasuredRVZero.liftHom hc)
+      (SpecialTransformations.Section4.PositiveAdditiveGrothendieck.of
+        SpecialTransformations.Section10.MeasuredRVZero.presentation U) =
+    SpecialTransformations.Section4.PositiveAdditiveGrothendieck.of
+      SpecialTransformations.Section10.MeasuredVFZero.presentation
+      (SpecialTransformations.Section10.MeasuredRVZero.lift hc U)
+== SpecialTransformations.Section10.MeasuredRVZero.liftMap_labels explicit-sha256:6efc26146f0a199d181003b2b6ad944dbadd2643b85314cd017e665eb7982be4
+@SpecialTransformations.Section10.MeasuredRVZero.liftMap_labels : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G] {S : Set M}
+  {d : SpecialTransformations.Section10.VolumeScale M G} (hc : CanonicalStructure.IsCanonical)
+  {U V : SpecialTransformations.Section10.MeasuredRVZero S d} (f : U ⟶ V)
+  (p : ↑(SpecialTransformations.Section4.rvLift U.underlying.obj).carrier),
+  (SpecialTransformations.Section9.liftLabelMap V.underlying.obj).toFun
+      ((SpecialTransformations.Section10.MeasuredRVZero.liftMap hc f).map.toFun p) =
+    f.map.toFun ((SpecialTransformations.Section9.liftLabelMap U.underlying.obj).toFun p)
+== SpecialTransformations.Section10.MeasuredRVZero.liftMap_measure explicit-sha256:dbfbffc26809c05297cf44e8059876ad73db5da5c5704c14eada58d9cb322242
+@SpecialTransformations.Section10.MeasuredRVZero.liftMap_measure : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G] {S : Set M}
+  {d : SpecialTransformations.Section10.VolumeScale M G} (hc : CanonicalStructure.IsCanonical)
+  {U V : SpecialTransformations.Section10.MeasuredRVZero S d} (f : U ⟶ V)
+  (p : ↑(SpecialTransformations.Section4.rvLift U.underlying.obj).carrier),
+  SpecialTransformations.Section9.HasMixedVFJacobianAt
+      (SpecialTransformations.Section10.MeasuredRVZero.liftMap hc f).map.toFun p 1 ∧
+    SpecialTransformations.Section10.WeightedZero.weight (SpecialTransformations.Section10.MeasuredRVZero.lift hc U) p =
+      SpecialTransformations.Section10.WeightedZero.weight (SpecialTransformations.Section10.MeasuredRVZero.lift hc V)
+          ((SpecialTransformations.Section10.MeasuredRVZero.liftMap hc f).map.toFun p) *
+        d.determinant 1
+== SpecialTransformations.Section10.MeasuredRVZero.lift_scissor explicit-sha256:3b7262cd4ed343278ed47ab1f85c3edc9d1a5a5e6b2787026ddd8972344a1c89
+@SpecialTransformations.Section10.MeasuredRVZero.lift_scissor : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G] {S : Set M}
+  {d : SpecialTransformations.Section10.VolumeScale M G} (hc : CanonicalStructure.IsCanonical)
+  {A B D E : SpecialTransformations.Section10.MeasuredRVZero S d},
+  A.Scissor B D E →
+    (SpecialTransformations.Section10.MeasuredRVZero.lift hc A).Scissor
+      (SpecialTransformations.Section10.MeasuredRVZero.lift hc B)
+      (SpecialTransformations.Section10.MeasuredRVZero.lift hc D)
+      (SpecialTransformations.Section10.MeasuredRVZero.lift hc E)
+== SpecialTransformations.Section10.MeasuredRVZero.lift_weight explicit-sha256:3b953c22b3b1d1d4d3c784715d6adeaadbe2b4bb2333509eaabb35da683cb887
+@SpecialTransformations.Section10.MeasuredRVZero.lift_weight : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G] {S : Set M}
+  {d : SpecialTransformations.Section10.VolumeScale M G} (hc : CanonicalStructure.IsCanonical)
+  (U : SpecialTransformations.Section10.MeasuredRVZero S d)
+  (p : ↑(SpecialTransformations.Section4.rvLift U.underlying.obj).carrier),
+  SpecialTransformations.Section10.WeightedZero.weight (SpecialTransformations.Section10.MeasuredRVZero.lift hc U) p =
+    SpecialTransformations.Section10.WeightedZero.weight U
+      ((SpecialTransformations.Section9.liftLabelMap U.underlying.obj).toFun p)
+== SpecialTransformations.Section10.MeasuredRVZero.theorem_10_5_weighted_zero explicit-sha256:0d8881e4db433e43c710ea8283facda4aca898c8f436d878cd661e971103f5fc
+@SpecialTransformations.Section10.MeasuredRVZero.theorem_10_5_weighted_zero : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G] {S : Set M}
+  {d : SpecialTransformations.Section10.VolumeScale M G} (hc : CanonicalStructure.IsCanonical)
+  {U V : SpecialTransformations.Section10.MeasuredRVZero S d} (e : U ≅ V),
+  Nonempty
+    (SpecialTransformations.Section10.MeasuredRVZero.lift hc U ≅
+      SpecialTransformations.Section10.MeasuredRVZero.lift hc V)
+== SpecialTransformations.Section10.MeasuredVF.ae_iff_agreement explicit-sha256:1dd368f2a1024a82bcf6ce4143593aefd207d2eebd7acb880a87ba43e3a843b8
+@SpecialTransformations.Section10.MeasuredVF.ae_iff_agreement : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {G : Type} [inst_2 : CommMonoidWithZero G]
+  {C : SpecialTransformations.Section3.BaseContext M} {hc : CanonicalStructure.IsCanonical}
+  {d : SpecialTransformations.Section10.VolumeScale M G} {k : ℕ}
+  {A B : SpecialTransformations.Section10.MeasuredVF C hc d k} (f g : A.Representative B),
+  (A.aeSetoid B) f g ↔
+    ∃ E,
+      SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1) (A.domain.sdiff E) < k + 1 ∧
+        ∀ x ∈ E.carrier, ∃ p q, ↑p = x ∧ ↑q = x ∧ ↑((↑f).map.toFun p) = ↑((↑g).map.toFun q)
+== SpecialTransformations.Section10.MeasuredVF.isoOfRepresentative explicit-sha256:3f87fe4742556db6fda3a65186308db022d63634cd1b8a1a6ffd17121593aa85
+@SpecialTransformations.Section10.MeasuredVF.isoOfRepresentative : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {G : Type} →
+        [inst_2 : CommMonoidWithZero G] →
+          {C : SpecialTransformations.Section3.BaseContext M} →
+            {hc : CanonicalStructure.IsCanonical} →
+              {d : SpecialTransformations.Section10.VolumeScale M G} →
+                {k : ℕ} →
+                  [inst_3 : CharZero SpecialTransformations.Milestone0.Transfer.VFType] →
+                    {A B : SpecialTransformations.Section10.MeasuredVF C hc d k} → A.Representative B → (A ≅ B)
+== SpecialTransformations.Section10.MeasuredVF.quotientEquiv explicit-sha256:9f7e4ca185def95a5d12506cba9385a3bad21247e5224e391f415d3b3e9d5a78
+@SpecialTransformations.Section10.MeasuredVF.quotientEquiv : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {G : Type} →
+        [inst_2 : CommMonoidWithZero G] →
+          {C : SpecialTransformations.Section3.BaseContext M} →
+            {hc : CanonicalStructure.IsCanonical} →
+              {d : SpecialTransformations.Section10.VolumeScale M G} →
+                {k : ℕ} →
+                  (A B : SpecialTransformations.Section10.MeasuredVF C hc d k) → Quotient (A.aeSetoid B) ≃ A.Germ B
+== SpecialTransformations.Section10.MeasuredVFZero explicit-sha256:7dd509ed5d001dda828e2dff022cb074d8c9d00e07573dd3bd7f0071956201fd
+@SpecialTransformations.Section10.MeasuredVFZero : {M G : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      [inst_2 : CommMonoidWithZero G] →
+        CanonicalStructure.IsCanonical → Set M → SpecialTransformations.Section10.VolumeScale M G → Type
+== SpecialTransformations.Section10.WeightedZero.asUnit_forgetUnit explicit-sha256:39ccddfd2351fcc71fc82e0c2cd3174d3052f358f003572dee37bf9f382cf77b
+@SpecialTransformations.Section10.WeightedZero.asUnit_forgetUnit : ∀ {M G : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  [inst : CommMonoidWithZero G] {S : Set M} {d : SpecialTransformations.Section10.VolumeScale M G} {Obj : Type}
+  {Q : Obj → SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M}
+  {D : (X : Obj) → SpecialTransformations.DefinableGeometry.DefSet (Q X) S}
+  (A : SpecialTransformations.Section10.WeightedZero d Q D) (hA : ∀ (a : ↑A.domain.carrier), A.weight a = 1),
+  (A.asUnit hA).forgetUnit = A
+== SpecialTransformations.Section10.WeightedZero.iso_iff explicit-sha256:95dded6642c5ce7d47809f37898268873e5600615f663902c93bbc09a7cebcab
+@SpecialTransformations.Section10.WeightedZero.iso_iff : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G]
+  {d : SpecialTransformations.Section10.VolumeScale M G} {Obj : Type}
+  {P : Obj → SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} {S : Set M}
+  {D : (X : Obj) → SpecialTransformations.DefinableGeometry.DefSet (P X) S}
+  {A B : SpecialTransformations.Section10.WeightedZero d P D},
+  Nonempty (A ≅ B) ↔ ∃ f, Function.Bijective f.toFun ∧ ∀ (a : ↑A.domain.carrier), A.weight a = B.weight (f.toFun a)
+== SpecialTransformations.Section10.ZeroForm explicit-sha256:58f898d682e752d325e685dd4383bc50c27fab7a7601709db4afbeab972bc770
+@SpecialTransformations.Section10.ZeroForm : {M G : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      [inst_2 : CommMonoidWithZero G] →
+        SpecialTransformations.Section10.VolumeScale M G →
+          {P : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} →
+            {S : Set M} → SpecialTransformations.DefinableGeometry.DefSet P S → Type
+== SpecialTransformations.Section10.ZeroForm.gammaProduct_weight explicit-sha256:9c77ce89a3c9be5747e7314a5bde24d051119a96f561c6386266021fbd0575d9
+@SpecialTransformations.Section10.ZeroForm.gammaProduct_weight : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {P Q : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} {S : Set M}
+  {A : SpecialTransformations.DefinableGeometry.DefSet P S} {B : SpecialTransformations.DefinableGeometry.DefSet Q S}
+  {hc : CanonicalStructure.IsCanonical}
+  (ω : SpecialTransformations.Section10.ZeroForm (SpecialTransformations.Section10.gammaVolumeScale hc) A)
+  (η : SpecialTransformations.Section10.ZeroForm (SpecialTransformations.Section10.gammaVolumeScale hc) B)
+  (a : ↑(A.prod B).carrier), (ω.gammaProduct η).weight a = ω.weight ⟨(↑a).1, ⋯⟩ * η.weight ⟨(↑a).2, ⋯⟩
+== SpecialTransformations.Section10.ZeroForm.pullback_weight explicit-sha256:c401d71c2fd131400be8ca7527f82e922fc1d70afce4a189f16f51c7396e76e8
+@SpecialTransformations.Section10.ZeroForm.pullback_weight : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G]
+  {d : SpecialTransformations.Section10.VolumeScale M G}
+  {P Q : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} {S : Set M}
+  {A : SpecialTransformations.DefinableGeometry.DefSet P S} {B : SpecialTransformations.DefinableGeometry.DefSet Q S}
+  (ω : SpecialTransformations.Section10.ZeroForm d B) (f : SpecialTransformations.DefinableGeometry.Map A B)
+  (a : ↑A.carrier), (ω.pullback f).weight a = ω.weight (f.toFun a)
+== SpecialTransformations.Section10.ZeroForm.restrict_weight explicit-sha256:6d89583dacd9c81da2e672a4101cea855fecae4dedeb284297afe5dc5a3395e9
+@SpecialTransformations.Section10.ZeroForm.restrict_weight : ∀ {M G : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : CommMonoidWithZero G]
+  {d : SpecialTransformations.Section10.VolumeScale M G}
+  {P : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} {S : Set M}
+  {A : SpecialTransformations.DefinableGeometry.DefSet P S} (ω : SpecialTransformations.Section10.ZeroForm d A)
+  (E : SpecialTransformations.DefinableGeometry.DefSet P S) (hE : E.carrier ⊆ A.carrier) (a : ↑E.carrier),
+  (ω.restrict E hE).weight a = ω.weight ⟨↑a, ⋯⟩
+== SpecialTransformations.Section10.ZeroForm.rvProduct_weight explicit-sha256:4fae334186a3c6f457b506831244c495d097dacd2bba7a0f2bd10bc609763e56
+@SpecialTransformations.Section10.ZeroForm.rvProduct_weight : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {P Q : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} {S : Set M}
+  {A : SpecialTransformations.DefinableGeometry.DefSet P S} {B : SpecialTransformations.DefinableGeometry.DefSet Q S}
+  (ω : SpecialTransformations.Section10.ZeroForm SpecialTransformations.Section10.rvVolumeScale A)
+  (η : SpecialTransformations.Section10.ZeroForm SpecialTransformations.Section10.rvVolumeScale B)
+  (a : ↑(A.prod B).carrier), (ω.rvProduct η).weight a = ω.weight ⟨(↑a).1, ⋯⟩ * η.weight ⟨(↑a).2, ⋯⟩
+== SpecialTransformations.Section10.corollary_10_6_gamma explicit-sha256:81b65d72128779666d1affe35c4c9c86a4d19d050eb1810bb7034d08822d5b76
+@SpecialTransformations.Section10.corollary_10_6_gamma : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma)
+  (hB : SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ }) {k : ℕ}
+  [inst_2 : CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  Function.Surjective ⇑(SpecialTransformations.Section10.gammaMeasuredPositiveLift hc C Ξ hB)
+== SpecialTransformations.Section10.corollary_10_6_gamma_unit explicit-sha256:f36b019f35efe77abac47c53b187293fb1fadeba260b642e8a1de14093b00f22
+@SpecialTransformations.Section10.corollary_10_6_gamma_unit : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {k : ℕ} (hc : CanonicalStructure.IsCanonical) (C : SpecialTransformations.Section3.BaseContext M)
+  (Ξ : Set SpecialTransformations.Section3.Values.Gamma)
+  (hB : SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ })
+  [inst : CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  Function.Surjective
+    ⇑(SpecialTransformations.Section10.MeasuredRV.liftHom hc (SpecialTransformations.Section10.gammaUnitIso hc C) ⋯)
+== SpecialTransformations.Section10.corollary_10_6_gamma_zero explicit-sha256:db227aa14431740fc1ee259f1d95ecf954414a117e9b43b0bed5256f1920f373
+@SpecialTransformations.Section10.corollary_10_6_gamma_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M),
+  Function.Surjective ⇑(SpecialTransformations.Section10.MeasuredRVZero.liftHom hc)
+== SpecialTransformations.Section10.corollary_10_6_rv explicit-sha256:2d034d077b5279b4388274da4a277d6aa8dd431f132cbbd9811b2492862d929e
+@SpecialTransformations.Section10.corollary_10_6_rv : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma)
+  (hB : SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ }) {k : ℕ}
+  [inst_2 : CharZero SpecialTransformations.Milestone0.Transfer.VFType]
+  (hfinite : SpecialTransformations.Section9.FiniteHenselianExtensionReference),
+  Function.Surjective ⇑(SpecialTransformations.Section10.rvMeasuredPositiveLift hc C Ξ hB hfinite)
+== SpecialTransformations.Section10.corollary_10_6_rv_unit explicit-sha256:ab2a96a89d9f8d65b55315b7f1e2955f376275e31f5321097c75c7475dc29814
+@SpecialTransformations.Section10.corollary_10_6_rv_unit : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {k : ℕ} (hc : CanonicalStructure.IsCanonical) (C : SpecialTransformations.Section3.BaseContext M)
+  (Ξ : Set SpecialTransformations.Section3.Values.Gamma)
+  (hB : SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ })
+  [inst : CharZero SpecialTransformations.Milestone0.Transfer.VFType]
+  (hfinite : SpecialTransformations.Section9.FiniteHenselianExtensionReference),
+  Function.Surjective
+    ⇑(SpecialTransformations.Section10.MeasuredRV.liftHom hc (SpecialTransformations.Section10.rvUnitIso C) ⋯)
+== SpecialTransformations.Section10.corollary_10_6_rv_zero explicit-sha256:9d3b428c75ede0d4d7364102a21308763361fe6c1bc6add8bedab50efca63ba3
+@SpecialTransformations.Section10.corollary_10_6_rv_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M),
+  Function.Surjective ⇑(SpecialTransformations.Section10.MeasuredRVZero.liftHom hc)
+== SpecialTransformations.Section10.corollary_10_6_zero explicit-sha256:841bb0be1700f4d54230fd631d598ff6f64b5ddc131d209d59226eff967f8ca8
+@SpecialTransformations.Section10.corollary_10_6_zero : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    ∀ (hs : SpecialTransformations.Section3.Saturated M κ),
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (B : SpecialTransformations.Section3.GammaParameters.Base) (hsmall : Cardinal.mk ↑B.real < κ),
+          SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+            have hΔ := ⋯;
+            have hsN := ⋯;
+            have hcan := ⋯;
+            ∃ L,
+              Function.Surjective ⇑L ∧
+                ∀ (U : SpecialTransformations.Section4.RVFiniteObject B.real 0),
+                  L (SpecialTransformations.Section4.rvFiniteClass U) =
+                    SpecialTransformations.Section4.vfFiniteBoundedClass hcan hsN hsmall
+                      SpecialTransformations.Section5.liftGammaSpace hΔ
+                      (SpecialTransformations.Section4.rvLiftFiniteObject SpecialTransformations.Section5.liftGammaSpace
+                        U)
+== SpecialTransformations.Section10.exists_weightedJacobian_exception explicit-sha256:9af0ce566e25c4436fbab7d25c93da160abcbb68214cb03079ec322cf6f4238a
+@SpecialTransformations.Section10.exists_weightedJacobian_exception : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M} {n r s : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          Cardinal.mk ↑S < κ →
+            0 < n →
+              ∀
+                {A :
+                  SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n r) S}
+                {B :
+                  SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n s) S}
+                (f : SpecialTransformations.DefinableGeometry.Map A B),
+                (∀ (p : ↑A.carrier),
+                    AlgebraicIndependent (↥(SpecialTransformations.Section3.vfParameterField S)) (↑p).1 →
+                      ∃ J,
+                        SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun p J ∧
+                          SpecialTransformations.Section3.Values.vfValueHom (J * ∏ i, (↑p).1 i) =
+                            SpecialTransformations.Section3.Values.vfValueHom (∏ i, (↑(f.toFun p)).1 i)) →
+                  ∃ Z,
+                    SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1) Z < n ∧
+                      ∀ (p : ↑A.carrier),
+                        ↑p ∉ Z.carrier →
+                          ∃ J,
+                            SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun p J ∧
+                              SpecialTransformations.Section3.Values.vfValueHom (J * ∏ i, (↑p).1 i) =
+                                SpecialTransformations.Section3.Values.vfValueHom (∏ i, (↑(f.toFun p)).1 i)
+== SpecialTransformations.Section10.gammaMeasuredPositiveLift_generator explicit-sha256:25013b74b0c97f48546c0d5b56715f8e0ff5db84364f74eaf4c0a840ec20d22b
+@SpecialTransformations.Section10.gammaMeasuredPositiveLift_generator : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma)
+  (hB : SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ }) {k : ℕ}
+  [inst_2 : CharZero SpecialTransformations.Milestone0.Transfer.VFType]
+  (U : SpecialTransformations.Section10.MeasuredRV C (SpecialTransformations.Section10.gammaVolumeScale hc) k),
+  (SpecialTransformations.Section10.gammaMeasuredPositiveLift hc C Ξ hB)
+      (SpecialTransformations.Section4.PositiveAdditiveGrothendieck.of
+        (SpecialTransformations.Section10.MeasuredRV.presentation
+          (SpecialTransformations.Section10.gammaMeasuredIso hc C))
+        U) =
+    SpecialTransformations.Section4.PositiveAdditiveGrothendieck.of
+      SpecialTransformations.Section10.MeasuredVF.presentation (SpecialTransformations.Section10.MeasuredRV.lift hc U)
+== SpecialTransformations.Section10.gammaUnitVolumeDegreeCoproductCategory explicit-sha256:bbd356756243ce10b646497d0a0ccba5f9e9e08c244864d723a616e6b1cd8c4f
+@SpecialTransformations.Section10.gammaUnitVolumeDegreeCoproductCategory : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {I : Type} →
+        (degree : I → ℕ) →
+          (hc : CanonicalStructure.IsCanonical) →
+            (S : Set M) →
+              CategoryTheory.Category.{0, 0}
+                (SpecialTransformations.Section10.RVDegreeCoproduct degree
+                  (SpecialTransformations.Section10.MeasuredRVZero S
+                    (SpecialTransformations.Section10.gammaVolumeScale hc).unit)
+                  (SpecialTransformations.Section10.GammaUnitVolumeObject hc S))
+== SpecialTransformations.Section10.gammaVolumeDegreeCoproductCategory explicit-sha256:9f59e502ba7b996d7757443aab1e6756e080d9188c4778e978b7503b917dd02b
+@SpecialTransformations.Section10.gammaVolumeDegreeCoproductCategory : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {I : Type} →
+        (degree : I → ℕ) →
+          (hc : CanonicalStructure.IsCanonical) →
+            (S : Set M) →
+              CategoryTheory.Category.{0, 0}
+                (SpecialTransformations.Section10.RVDegreeCoproduct degree
+                  (SpecialTransformations.Section10.MeasuredRVZero S
+                    (SpecialTransformations.Section10.gammaVolumeScale hc))
+                  (SpecialTransformations.Section10.GammaVolumeObject hc S))
+== SpecialTransformations.Section10.gammaVolumeGroupoid explicit-sha256:d28bfedd1350fc863d2704fba180a4cae23acbe52494f1ff41a83413ca5843b2
+@SpecialTransformations.Section10.gammaVolumeGroupoid : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {k : ℕ} →
+        {S : Set M} →
+          (hc : CanonicalStructure.IsCanonical) →
+            CategoryTheory.Groupoid (SpecialTransformations.Section10.GammaVolumeObject hc S k)
+== SpecialTransformations.Section10.gammaZeroForm_weight_eq_iff explicit-sha256:5c1d5897ede2225b8a58a515dbfe197b04ed56254606193a23acc43c1ad1fbd0
+@SpecialTransformations.Section10.gammaZeroForm_weight_eq_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {hc : CanonicalStructure.IsCanonical}
+  {P Q : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} {S : Set M}
+  {A : SpecialTransformations.DefinableGeometry.DefSet P S} {B : SpecialTransformations.DefinableGeometry.DefSet Q S}
+  (ω : SpecialTransformations.Section10.ZeroForm (SpecialTransformations.Section10.gammaVolumeScale hc) A)
+  (η : SpecialTransformations.Section10.ZeroForm (SpecialTransformations.Section10.gammaVolumeScale hc) B)
+  (a : ↑A.carrier) (b : ↑B.carrier),
+  ω.weight a = η.weight b ↔
+    SpecialTransformations.Section10.gammaFormValue ω.map a = SpecialTransformations.Section10.gammaFormValue η.map b
+== SpecialTransformations.Section10.gammaZeroNeutralForm_weight explicit-sha256:d1fb815430ed644862f7c8720e89ab64e361f4d5977abe2ea46b08bc75457aff
+@SpecialTransformations.Section10.gammaZeroNeutralForm_weight : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {P : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} {S : Set M}
+  (hc : CanonicalStructure.IsCanonical) (A : SpecialTransformations.DefinableGeometry.DefSet P S) (a : ↑A.carrier),
+  (SpecialTransformations.Section10.gammaZeroNeutralForm hc A).weight a = 1
+== SpecialTransformations.Section10.gammaZeroNeutral_complete explicit-sha256:4295ed8b7934eb1b206bc22f3f8daab110ad35c17c1abe989f764ffe6862bf72
+@SpecialTransformations.Section10.gammaZeroNeutral_complete : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (hc : CanonicalStructure.IsCanonical)
+  (U : SpecialTransformations.Section10.MeasuredRVZero S (SpecialTransformations.Section10.gammaVolumeScale hc)),
+  (∀ (u : ↑(SpecialTransformations.Section10.WeightedZero.domain U).carrier),
+      SpecialTransformations.Section10.WeightedZero.weight U u = 1) →
+    Nonempty (U ≅ SpecialTransformations.Section10.gammaZeroNeutral hc U.underlying)
+== SpecialTransformations.Section10.gammaZeroNeutral_iso_iff explicit-sha256:57649435f4f98cb2b16f615da788935a8e5b1db0c6f49345623f8b5f51167b91
+@SpecialTransformations.Section10.gammaZeroNeutral_iso_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (hc : CanonicalStructure.IsCanonical) (U V : SpecialTransformations.Section4.RVFiniteObject S 0),
+  Nonempty
+      (SpecialTransformations.Section10.gammaZeroNeutral hc U ≅
+        SpecialTransformations.Section10.gammaZeroNeutral hc V) ↔
+    Nonempty (U ≅ V)
+== SpecialTransformations.Section10.liftLabelMap_zero_bijective explicit-sha256:7ce88fedf2cedaa72cd8e1da54879dacd75e8467cc1ecc02dd70ba5734213375
+@SpecialTransformations.Section10.liftLabelMap_zero_bijective : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M}
+  (U : SpecialTransformations.Section4.RVFiniteObject S 0),
+  Function.Bijective (SpecialTransformations.Section9.liftLabelMap U.obj).toFun
+== SpecialTransformations.Section10.rvMeasuredPositiveLift_generator explicit-sha256:e86ec2001f65bc5ce1e5253fcd8b98b0850965c2ac52113daae72bdd94b928c7
+@SpecialTransformations.Section10.rvMeasuredPositiveLift_generator : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma)
+  (hB : SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ }) {k : ℕ}
+  [inst_2 : CharZero SpecialTransformations.Milestone0.Transfer.VFType]
+  (hfinite : SpecialTransformations.Section9.FiniteHenselianExtensionReference)
+  (U : SpecialTransformations.Section10.MeasuredRV C SpecialTransformations.Section10.rvVolumeScale k),
+  (SpecialTransformations.Section10.rvMeasuredPositiveLift hc C Ξ hB hfinite)
+      (SpecialTransformations.Section4.PositiveAdditiveGrothendieck.of
+        (SpecialTransformations.Section10.MeasuredRV.presentation (SpecialTransformations.Section10.rvMeasuredIso C))
+        U) =
+    SpecialTransformations.Section4.PositiveAdditiveGrothendieck.of
+      SpecialTransformations.Section10.MeasuredVF.presentation (SpecialTransformations.Section10.MeasuredRV.lift hc U)
+== SpecialTransformations.Section10.rvPositiveDegreeEquiv explicit-sha256:259912cf2e3b11577a43631fabbd644ce4d16098393181dfb22b6e2bbf581275
+SpecialTransformations.Section10.rvPositiveDegreeEquiv : (zero : Type) →
+  (positive : ℕ → Type) → (k : ℕ) → SpecialTransformations.Section10.RVInDegree zero positive (k + 1) ≃ positive k
+== SpecialTransformations.Section10.rvUnitVolumeDegreeCoproductCategory explicit-sha256:f25d1f434a4fff8d8ea3e8d9e9e3353d7ac3b3de5830aa95ed8e6b062621a268
+@SpecialTransformations.Section10.rvUnitVolumeDegreeCoproductCategory : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {I : Type} →
+        (degree : I → ℕ) →
+          (hc : CanonicalStructure.IsCanonical) →
+            (C : SpecialTransformations.Section3.BaseContext M) →
+              CategoryTheory.Category.{0, 0}
+                (SpecialTransformations.Section10.RVDegreeCoproduct degree
+                  (SpecialTransformations.Section10.MeasuredRVZero (↑C.base)
+                    SpecialTransformations.Section10.rvVolumeScale.unit)
+                  (SpecialTransformations.Section10.RVUnitVolumeObject hc C))
+== SpecialTransformations.Section10.rvVolumeDegreeCoproductCategory explicit-sha256:3d0cd497dc2b4d8d3e437721187f5eb283234b1bc055606a751bbc28942539b0
+@SpecialTransformations.Section10.rvVolumeDegreeCoproductCategory : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {I : Type} →
+        (degree : I → ℕ) →
+          CanonicalStructure.IsCanonical →
+            (C : SpecialTransformations.Section3.BaseContext M) →
+              CategoryTheory.Category.{0, 0}
+                (SpecialTransformations.Section10.RVDegreeCoproduct degree
+                  (SpecialTransformations.Section10.MeasuredRVZero (↑C.base)
+                    SpecialTransformations.Section10.rvVolumeScale)
+                  (SpecialTransformations.Section10.RVVolumeObject ↑C.base))
+== SpecialTransformations.Section10.rvVolumeGroupoid explicit-sha256:e9696150afb31fd34bd138215d2f20f02cddcb39f1c30b2fe4fb46083709ce69
+@SpecialTransformations.Section10.rvVolumeGroupoid : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {k : ℕ} →
+        CanonicalStructure.IsCanonical →
+          (C : SpecialTransformations.Section3.BaseContext M) →
+            CategoryTheory.Groupoid (SpecialTransformations.Section10.RVVolumeObject (↑C.base) k)
+== SpecialTransformations.Section10.rvZeroDegreeEquiv explicit-sha256:c4f317311bf75297f1f2d330354d6a88a0058adefb7c1a0ee3d3103e0bcd10f7
+SpecialTransformations.Section10.rvZeroDegreeEquiv : (zero : Type) →
+  (positive : ℕ → Type) → SpecialTransformations.Section10.RVInDegree zero positive 0 ≃ zero
+== SpecialTransformations.Section10.rvZeroNeutralForm_weight explicit-sha256:2ba374f2c2d8bd87103a2edece358885da7d9b0ec39d31f7dafd1d41c2fff8b9
+@SpecialTransformations.Section10.rvZeroNeutralForm_weight : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {P : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M} {S : Set M}
+  (A : SpecialTransformations.DefinableGeometry.DefSet P S) (a : ↑A.carrier),
+  (SpecialTransformations.Section10.rvZeroNeutralForm A).weight a = 1
+== SpecialTransformations.Section10.rvZeroNeutral_complete explicit-sha256:9482e51295a7b66ba74a38ecb67ff63c50b192a1e02de11087b2db7689568942
+@SpecialTransformations.Section10.rvZeroNeutral_complete : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (U : SpecialTransformations.Section10.MeasuredRVZero S SpecialTransformations.Section10.rvVolumeScale),
+  (∀ (u : ↑(SpecialTransformations.Section10.WeightedZero.domain U).carrier),
+      SpecialTransformations.Section10.WeightedZero.weight U u = 1) →
+    Nonempty (U ≅ SpecialTransformations.Section10.rvZeroNeutral U.underlying)
+== SpecialTransformations.Section10.rvZeroNeutral_iso_iff explicit-sha256:64d09d83465e70c89a1fc3cc6cbee2baca4b652fd6b20c84592a4159d77e8a75
+@SpecialTransformations.Section10.rvZeroNeutral_iso_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (U V : SpecialTransformations.Section4.RVFiniteObject S 0),
+  Nonempty (SpecialTransformations.Section10.rvZeroNeutral U ≅ SpecialTransformations.Section10.rvZeroNeutral V) ↔
+    Nonempty (U ≅ V)
+== SpecialTransformations.Section10.theorem_10_4_gamma_unit explicit-sha256:1f63a2068c366ec21e49569e92d325290fb3fa7ef2f3e78937f1055368dc5656
+@SpecialTransformations.Section10.theorem_10_4_gamma_unit : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {k : ℕ} (hc : CanonicalStructure.IsCanonical) (C : SpecialTransformations.Section3.BaseContext M)
+  [inst : CharZero SpecialTransformations.Milestone0.Transfer.VFType]
+  (A : SpecialTransformations.Section10.MeasuredVF C hc (SpecialTransformations.Section10.gammaVolumeScale hc).unit k),
+  ∃ U, Nonempty (A ≅ SpecialTransformations.Section10.MeasuredRV.lift hc U)
+== SpecialTransformations.Section10.theorem_10_4_gamma_volume explicit-sha256:7beecf489c58f0ce8f90f98c99544687d63c20728809984eef51c826be5a1e48
+@SpecialTransformations.Section10.theorem_10_4_gamma_volume : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {r : ℕ} [CharZero SpecialTransformations.Milestone0.Transfer.VFType] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma),
+  SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ } →
+    ∀ {k : ℕ}
+      (A :
+        SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace (k + 1) r)
+          ↑C.base),
+      (∀ (a : (SpecialTransformations.Section4.rawVFSpace (k + 1)).Carrier), {t | (a, t) ∈ A.carrier}.Finite) →
+        ∀ (ω : SpecialTransformations.Section10.GammaVolumeForm hc A),
+          ∃ U g, SpecialTransformations.Section10.GammaMeasurePreserving g ω U.liftForm
+== SpecialTransformations.Section10.theorem_10_4_gamma_zero explicit-sha256:1c92f572cafae1af2e7ac6f3f2107b71ae1bb744a48a65b99747f2a42eb2ec64
+@SpecialTransformations.Section10.theorem_10_4_gamma_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M)
+  (A :
+    SpecialTransformations.Section10.MeasuredVFZero hc (↑C.base)
+      (SpecialTransformations.Section10.gammaVolumeScale hc)),
+  ∃ U, Nonempty (A ≅ SpecialTransformations.Section10.MeasuredRVZero.lift hc U)
+== SpecialTransformations.Section10.theorem_10_4_rv_unit explicit-sha256:aad447275857964322c1b503842aa1880ce0bfb3ba60760d7a77bfc0bbe6444d
+@SpecialTransformations.Section10.theorem_10_4_rv_unit : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {k : ℕ} (hc : CanonicalStructure.IsCanonical) (C : SpecialTransformations.Section3.BaseContext M)
+  [inst : CharZero SpecialTransformations.Milestone0.Transfer.VFType]
+  (A : SpecialTransformations.Section10.MeasuredVF C hc SpecialTransformations.Section10.rvVolumeScale.unit k),
+  ∃ U, Nonempty (A ≅ SpecialTransformations.Section10.MeasuredRV.lift hc U)
+== SpecialTransformations.Section10.theorem_10_4_rv_volume explicit-sha256:212b52f8137561dd088bbb811a016eeae53dcc47d5615c341b917076e3fe2a83
+@SpecialTransformations.Section10.theorem_10_4_rv_volume : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {r : ℕ} [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma),
+      SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ } →
+        ∀ {k : ℕ}
+          (A :
+            SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace (k + 1) r)
+              ↑C.base),
+          (∀ (a : (SpecialTransformations.Section4.rawVFSpace (k + 1)).Carrier), {t | (a, t) ∈ A.carrier}.Finite) →
+            ∀ (ω : SpecialTransformations.Section10.RVVolumeForm A),
+              ∃ U g, SpecialTransformations.Section10.RVMeasurePreserving g ω U.liftForm
+== SpecialTransformations.Section10.theorem_10_4_rv_zero explicit-sha256:273076f2699f87cc66b305d520f9a8769edc963a92706938c2f841f4ec992dc9
+@SpecialTransformations.Section10.theorem_10_4_rv_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M)
+  (A : SpecialTransformations.Section10.MeasuredVFZero hc (↑C.base) SpecialTransformations.Section10.rvVolumeScale),
+  ∃ U, Nonempty (A ≅ SpecialTransformations.Section10.MeasuredRVZero.lift hc U)
+== SpecialTransformations.Section10.theorem_10_4_weighted_zero explicit-sha256:cd0e1da74ec917bbfbf6b580326c010bbf4e00c7707dc9cdfd29a9d5a90c2009
+@SpecialTransformations.Section10.theorem_10_4_weighted_zero : ∀ {M G : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  [inst : CommMonoidWithZero G] (hc : CanonicalStructure.IsCanonical) {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ {S : Set M},
+          Cardinal.mk ↑S < κ →
+            ∀ {d : SpecialTransformations.Section10.VolumeScale M G}
+              (A : SpecialTransformations.Section10.MeasuredVFZero hc S d),
+              ∃ U, Nonempty (A ≅ SpecialTransformations.Section10.MeasuredRVZero.lift hc U)
+== SpecialTransformations.Section10.theorem_10_4_zero explicit-sha256:e06da15d94caab86c45cba3340f401c0b21ae8ed49c62d02556334e36e2db1b1
+@SpecialTransformations.Section10.theorem_10_4_zero : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ {S : Set M},
+          Cardinal.mk ↑S < κ →
+            ∀
+              (A :
+                SpecialTransformations.Section5.normalizedVFFiniteObject SpecialTransformations.Section5.liftGammaSpace
+                  S 0),
+              ∃ U,
+                Nonempty
+                  (A ≅
+                    SpecialTransformations.Section5.normalizedLiftFiniteObject
+                      SpecialTransformations.Section5.liftGammaSpace U)
+== SpecialTransformations.Section10.theorem_10_5_gamma_volume explicit-sha256:e80e571d2dede9f62104cd4bb58addb85bea18ddc9797678c9e2ae9087a88489
+@SpecialTransformations.Section10.theorem_10_5_gamma_volume : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {k : ℕ} [CharZero SpecialTransformations.Milestone0.Transfer.VFType] (hc : CanonicalStructure.IsCanonical)
+  (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma),
+  SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ } →
+    ∀ {U V : SpecialTransformations.Section10.GammaVolumeObject hc (↑C.base) k}
+      (e : SpecialTransformations.Section10.GammaVolumeIso U V),
+      have E := (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e.labels;
+      ∃ g,
+        SpecialTransformations.Section10.GammaMeasurePreserving g U.liftForm V.liftForm ∧
+          ∀ (p : ↑g.source.carrier), E.hom.map.graph (↑p).2 (↑(g.map.toFun p)).2
+== SpecialTransformations.Section10.theorem_10_5_gamma_zero explicit-sha256:8a665640cdcaaed29c7b9b820f74f3c8efeff376b03513da74d9619d0b690fae
+@SpecialTransformations.Section10.theorem_10_5_gamma_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical) {S : Set M}
+  {U V : SpecialTransformations.Section10.MeasuredRVZero S (SpecialTransformations.Section10.gammaVolumeScale hc)}
+  (e : U ≅ V),
+  Nonempty
+    (SpecialTransformations.Section10.MeasuredRVZero.lift hc U ≅
+      SpecialTransformations.Section10.MeasuredRVZero.lift hc V)
+== SpecialTransformations.Section10.theorem_10_5_rv_volume explicit-sha256:efb006df52189268d073d161659c48da54e334bb306217db7f70e66052022f6a
+@SpecialTransformations.Section10.theorem_10_5_rv_volume : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {k : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma),
+      SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ } →
+        SpecialTransformations.Section9.FiniteHenselianExtensionReference →
+          ∀ {U V : SpecialTransformations.Section10.RVVolumeObject (↑C.base) k}
+            (e : SpecialTransformations.Section10.RVVolumeIso U V),
+            have E := (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e.labels;
+            ∃ g,
+              SpecialTransformations.Section10.RVMeasurePreserving g U.liftForm V.liftForm ∧
+                ∀ (p : ↑g.source.carrier), E.hom.map.graph (↑p).2 (↑(g.map.toFun p)).2
+== SpecialTransformations.Section10.theorem_10_5_rv_volume_ae explicit-sha256:024cec2555f486e974c64642ec93ce3bab00b9e573eaef95381f5acbdcc00eef
+@SpecialTransformations.Section10.theorem_10_5_rv_volume_ae : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {k : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma),
+      SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ } →
+        SpecialTransformations.Section9.FiniteHenselianExtensionReference →
+          ∀ {U V : SpecialTransformations.Section10.RVVolumeObject (↑C.base) k}
+            (e : SpecialTransformations.Section10.RVVolumeIso U V),
+            let A := SpecialTransformations.Section4.rvLift U.essential.underlying.obj;
+            let B := SpecialTransformations.Section4.rvLift V.essential.underlying.obj;
+            have E := (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e.labels;
+            ∃ G,
+              Function.Bijective G.toFun ∧
+                (∀ (p : ↑A.carrier), E.hom.map.graph (↑p).2 (↑(G.toFun p)).2) ∧
+                  ∃ Z,
+                    ∃ (hZ : Z.carrier ⊆ A.carrier),
+                      SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1) Z < k + 1 ∧
+                        SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1)
+                              (G.restrict hZ).image <
+                            k + 1 ∧
+                          ∀ (p : ↑A.carrier),
+                            ↑p ∉ Z.carrier →
+                              ∃ J,
+                                SpecialTransformations.Section9.HasMixedVFJacobianAt G.toFun p J ∧
+                                  U.essential.liftForm.value p =
+                                    V.essential.liftForm.value (G.toFun p) * CanonicalRV.encodedRv J
+== SpecialTransformations.Section10.theorem_10_5_rv_zero explicit-sha256:1f4afa36e4a96c3e1ab800a79c22277d716e9392058fe00d54bf704be4c326b5
+@SpecialTransformations.Section10.theorem_10_5_rv_zero : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] (hc : CanonicalStructure.IsCanonical) {S : Set M}
+  {U V : SpecialTransformations.Section10.MeasuredRVZero S SpecialTransformations.Section10.rvVolumeScale} (e : U ≅ V),
+  Nonempty
+    (SpecialTransformations.Section10.MeasuredRVZero.lift hc U ≅
+      SpecialTransformations.Section10.MeasuredRVZero.lift hc V)
+== SpecialTransformations.Section10.theorem_10_5_zero explicit-sha256:ba96a493191ca19bf8edb53bca1a4c8f3708a9ac8669fa781037ddede9298709
+@SpecialTransformations.Section10.theorem_10_5_zero : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+          Cardinal.mk ↑B.real < κ →
+            SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+              ∀ {U V : SpecialTransformations.Section4.RVFiniteObject B.real 0} (a : U ≅ V),
+                Nonempty
+                  (SpecialTransformations.Section4.rvLiftFiniteObject SpecialTransformations.Section5.liftGammaSpace U ≅
+                    SpecialTransformations.Section4.rvLiftFiniteObject SpecialTransformations.Section5.liftGammaSpace V)
+== SpecialTransformations.Section10.vfDegreeCoproductCategory explicit-sha256:89262e00821b5bef45c34f7d88f996b7ce5dbabfeb26edeec639ae58ee0a7fe9
+@SpecialTransformations.Section10.vfDegreeCoproductCategory : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {G : Type} →
+        [inst_2 : CommMonoidWithZero G] →
+          [CharZero SpecialTransformations.Milestone0.Transfer.VFType] →
+            {I : Type} →
+              (degree : I → ℕ) →
+                (hc : CanonicalStructure.IsCanonical) →
+                  (C : SpecialTransformations.Section3.BaseContext M) →
+                    (d : SpecialTransformations.Section10.VolumeScale M G) →
+                      CategoryTheory.Category.{0, 0} (SpecialTransformations.Section10.VFDegreeCoproduct degree hc C d)
+== SpecialTransformations.Section10.vfGammaZeroNeutral_complete explicit-sha256:71cb3c34e1cf63d4d469033e3bf512a2a028320acac91823c63e0d573f0d571a
+@SpecialTransformations.Section10.vfGammaZeroNeutral_complete : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (hc : CanonicalStructure.IsCanonical)
+  (A : SpecialTransformations.Section10.MeasuredVFZero hc S (SpecialTransformations.Section10.gammaVolumeScale hc)),
+  (∀ (a : ↑(SpecialTransformations.Section10.WeightedZero.domain A).carrier),
+      SpecialTransformations.Section10.WeightedZero.weight A a = 1) →
+    Nonempty (A ≅ SpecialTransformations.Section10.vfGammaZeroNeutral hc A.underlying)
+== SpecialTransformations.Section10.vfGammaZeroNeutral_iso_iff explicit-sha256:bf2c266085bf39cad00c4e99496dd0ea1d28d6728765092899826f6495a501a1
+@SpecialTransformations.Section10.vfGammaZeroNeutral_iso_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (hc : CanonicalStructure.IsCanonical)
+  (A B : SpecialTransformations.Section4.VFFiniteObject (SpecialTransformations.Section10.volumeGammaSpace hc) S 0),
+  Nonempty
+      (SpecialTransformations.Section10.vfGammaZeroNeutral hc A ≅
+        SpecialTransformations.Section10.vfGammaZeroNeutral hc B) ↔
+    Nonempty (A ≅ B)
+== SpecialTransformations.Section10.vfPositiveDegreeEquiv explicit-sha256:7d77648bf28e43a692c5f39fcbb26356b1dcfff30359bb55f74bc8165f4a640e
+@SpecialTransformations.Section10.vfPositiveDegreeEquiv : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {G : Type} →
+        [inst_2 : CommMonoidWithZero G] →
+          (hc : CanonicalStructure.IsCanonical) →
+            (C : SpecialTransformations.Section3.BaseContext M) →
+              (d : SpecialTransformations.Section10.VolumeScale M G) →
+                (k : ℕ) →
+                  SpecialTransformations.Section10.VFInDegree hc C d (k + 1) ≃
+                    SpecialTransformations.Section10.MeasuredVF C hc d k
+== SpecialTransformations.Section10.vfRVZeroNeutral_complete explicit-sha256:1dc733bd191c718f4932049792f36466b34f3e6b4769fddfc392e173333d68ca
+@SpecialTransformations.Section10.vfRVZeroNeutral_complete : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (hc : CanonicalStructure.IsCanonical)
+  (A : SpecialTransformations.Section10.MeasuredVFZero hc S SpecialTransformations.Section10.rvVolumeScale),
+  (∀ (a : ↑(SpecialTransformations.Section10.WeightedZero.domain A).carrier),
+      SpecialTransformations.Section10.WeightedZero.weight A a = 1) →
+    Nonempty (A ≅ SpecialTransformations.Section10.vfRVZeroNeutral hc A.underlying)
+== SpecialTransformations.Section10.vfRVZeroNeutral_iso_iff explicit-sha256:4a2b5b5f485515984568e7154ccf85f6fef9798a3b08e916a09ad903f75c31e3
+@SpecialTransformations.Section10.vfRVZeroNeutral_iso_iff : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} (hc : CanonicalStructure.IsCanonical)
+  (A B : SpecialTransformations.Section4.VFFiniteObject (SpecialTransformations.Section10.volumeGammaSpace hc) S 0),
+  Nonempty
+      (SpecialTransformations.Section10.vfRVZeroNeutral hc A ≅ SpecialTransformations.Section10.vfRVZeroNeutral hc B) ↔
+    Nonempty (A ≅ B)
+== SpecialTransformations.Section10.vfZeroDegreeEquiv explicit-sha256:eb9386012ee8546b8241157321bfc2e4cf4a390420d5c0571da970398de8b21f
+@SpecialTransformations.Section10.vfZeroDegreeEquiv : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] →
+      {G : Type} →
+        [inst_2 : CommMonoidWithZero G] →
+          (hc : CanonicalStructure.IsCanonical) →
+            (C : SpecialTransformations.Section3.BaseContext M) →
+              (d : SpecialTransformations.Section10.VolumeScale M G) →
+                SpecialTransformations.Section10.VFInDegree hc C d 0 ≃
+                  SpecialTransformations.Section10.MeasuredVFZero hc (↑C.base) d

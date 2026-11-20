@@ -1,0 +1,1502 @@
+== SpecialTransformations.Section3.RawClosure.Tuple.definable_choice_graph explicit-sha256:e5ec330bb6f4f7b37e520330db3a5850f25ae1ec0db0a40732a3bc3657451a1e
+@SpecialTransformations.Section3.RawClosure.Tuple.definable_choice_graph : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} {κ : Cardinal.{0}},
+  SpecialTransformations.Section3.Saturated M κ →
+    ∀ (S : Set M),
+      Cardinal.mk ↑S < κ →
+        ∀ (A : Set (Fin n → M)),
+          S.Definable SpecialTransformations.Milestone0.LRV A →
+            ∀ (P : Set ((Fin n → M) × M)),
+              SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S P →
+                (∀ a ∈ A, ∃ b, (a, b) ∈ P ∧ (S ∪ Set.range a).Definable₁ SpecialTransformations.Milestone0.LRV {b}) →
+                  ∃ U,
+                    SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S U ∧
+                      SpecialTransformations.Section3.RawClosure.Tuple.SingleValued U ∧ U ⊆ P ∧ ∀ a ∈ A, ∃ b, (a, b) ∈ U
+== SpecialTransformations.Section3.RawClosure.Tuple.definable_choice_graph_over explicit-sha256:f85243ea62b6ac5f1427b8a9eaa991b5d5f9ea9eab6684d67d2ba309ab2f329f
+@SpecialTransformations.Section3.RawClosure.Tuple.definable_choice_graph_over : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {n : ℕ} {κ : Cardinal.{0}},
+  SpecialTransformations.Section3.Saturated M κ →
+    ∀ (S T : Set M),
+      S ⊆ T →
+        Cardinal.mk ↑T < κ →
+          ∀ (A : Set (Fin n → M)),
+            T.Definable SpecialTransformations.Milestone0.LRV A →
+              ∀ (P : Set ((Fin n → M) × M)),
+                SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S P →
+                  (∀ a ∈ A, ∃ b, (a, b) ∈ P ∧ (S ∪ Set.range a).Definable₁ SpecialTransformations.Milestone0.LRV {b}) →
+                    ∃ U,
+                      SpecialTransformations.Section3.RawClosure.Tuple.RelationDefinable S U ∧
+                        SpecialTransformations.Section3.RawClosure.Tuple.SingleValued U ∧
+                          U ⊆ P ∧ ∀ a ∈ A, ∃ b, (a, b) ∈ U
+== SpecialTransformations.Section7.definable_rv_representative_of_algebraic_lift explicit-sha256:759092128899541345d1c8c140be64381552419e4ffb4564b9da0be1b1f7c5df
+@SpecialTransformations.Section7.definable_rv_representative_of_algebraic_lift : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+    ∀ (S : Set M) (t : CanonicalRV.RVSort M),
+      ↑t ∈ S →
+        t ≠ 0 →
+          ∀ (a : SpecialTransformations.Milestone0.Transfer.VFType),
+            CanonicalRV.encodedRv a = t →
+              SpecialTransformations.Section3.AlgebraicAt S SpecialTransformations.Milestone0.SortTag.vf ↑a →
+                ∃ x,
+                  SpecialTransformations.Section3.DefinableClosureAt S SpecialTransformations.Milestone0.SortTag.vf ↑x ∧
+                    CanonicalRV.encodedRv x = t
+== SpecialTransformations.Section7.exists_correspondence_local_polynomials explicit-sha256:b184fb510140bc0dfb5c09e39b93302ae2b919856bccb7f43075ca262e329c1e
+@SpecialTransformations.Section7.exists_correspondence_local_polynomials : ∀ {M Γ : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+          Cardinal.mk ↑B.real < κ →
+            SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+              ∀ (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ)
+                (hv :
+                  ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                    SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y)
+                {n : ℕ} (C : Set (Fin (n + n) → M)),
+                SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                    (fun x => SpecialTransformations.Milestone0.SortTag.rv) C →
+                  ∀ (t s : Fin n → RVCalc.RV v),
+                    (∀ (i : Fin n), t i ≠ Option.none) →
+                      (∀ (i : Fin n), s i ≠ Option.none) →
+                        have raw := fun u => ↑((CanonicalRV.equiv v hv) u);
+                        SpecialTransformations.Section7.productTuple (raw ∘ t) (raw ∘ s) ∈ C →
+                          {b | SpecialTransformations.Section7.productTuple (raw ∘ t) b ∈ C}.Finite →
+                            {a | SpecialTransformations.Section7.productTuple a (raw ∘ s) ∈ C}.Finite →
+                              have E := SpecialTransformations.Section3.GammaParameters.vfDefinableClosureFieldBase B;
+                              ∃ H,
+                                SpecialTransformations.Section7.FibreBijection v
+                                  {p |
+                                    ∀ (i : Fin n),
+                                      (MvPolynomial.eval (SpecialTransformations.Section7.productTuple p.1 p.2))
+                                          ((MvPolynomial.map E.subtype) (H i)) =
+                                        0}
+                                  t s
+== SpecialTransformations.Section7.exists_correspondence_weighted_local_polynomials explicit-sha256:2131e638ea2d098797cbd76974be248d48a8acbc48b9bb3b65b8e5f33deb80ea
+@SpecialTransformations.Section7.exists_correspondence_weighted_local_polynomials : ∀ {M Γ : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+          Cardinal.mk ↑B.real < κ →
+            SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+              ∀ (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ)
+                (hv :
+                  ∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                    SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y)
+                {n : ℕ} (C : Set (Fin (n + n) → M)),
+                SpecialTransformations.Section3.GammaParameters.DefinableOverBase B
+                    (fun x => SpecialTransformations.Milestone0.SortTag.rv) C →
+                  ∀ (t s : Fin n → RVCalc.RV v),
+                    (∀ (i : Fin n), t i ≠ Option.none) →
+                      (∀ (i : Fin n), s i ≠ Option.none) →
+                        have raw := fun u => ↑((CanonicalRV.equiv v hv) u);
+                        SpecialTransformations.Section7.productTuple (raw ∘ t) (raw ∘ s) ∈ C →
+                          {b | SpecialTransformations.Section7.productTuple (raw ∘ t) b ∈ C}.Finite →
+                            {a | SpecialTransformations.Section7.productTuple a (raw ∘ s) ∈ C}.Finite →
+                              have E := SpecialTransformations.Section3.GammaParameters.vfDefinableClosureFieldBase B;
+                              ∃ H w,
+                                have u := SpecialTransformations.Section7.productTuple t s;
+                                have Z := fun i => (MvPolynomial.map E.subtype) (H i);
+                                (∀ (i : Fin n),
+                                    SpecialTransformations.Section7.IsGammaPolynomial v (fun j => RVCalc.vrv v (u j))
+                                      (w i) (Z i)) ∧
+                                  ¬SpecialTransformations.Section7.IsResidueRoot v u
+                                        (SpecialTransformations.Section7.jacobianValue (fun j => RVCalc.vrv v (t j)) w)
+                                        (SpecialTransformations.Section7.partialJacobianPolynomial
+                                          (SpecialTransformations.Section7.productLeft n n) Z) ∧
+                                    ¬SpecialTransformations.Section7.IsResidueRoot v u
+                                          (SpecialTransformations.Section7.jacobianValue (fun j => RVCalc.vrv v (s j))
+                                            w)
+                                          (SpecialTransformations.Section7.partialJacobianPolynomial
+                                            (SpecialTransformations.Section7.productRight n n) Z) ∧
+                                      SpecialTransformations.Section7.FibreBijection v
+                                        {p |
+                                          ∀ (i : Fin n),
+                                            (MvPolynomial.eval (SpecialTransformations.Section7.productTuple p.1 p.2))
+                                                (Z i) =
+                                              0}
+                                        t s
+== SpecialTransformations.Section7.exists_liftMap_of_volume_lift explicit-sha256:de2cd046853adb55480eab38a85ec676506a45f34805d66bc1486dea11b8fce2
+@SpecialTransformations.Section7.exists_liftMap_of_volume_lift : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k : ℕ} {U V : SpecialTransformations.Section4.RVObject S k} (e : U ≅ V) (A : Set (Fin (k + k) → M)),
+  S.Definable SpecialTransformations.Milestone0.LRV A →
+    SpecialTransformations.Section7.rawVolumeCorrespondence e.hom.map ⊆
+        SpecialTransformations.Section7.rawLiftDomain A →
+      ∃ f,
+        Function.Bijective f.toFun ∧
+          ∀ (p : ↑(SpecialTransformations.Section4.rvLift U).carrier),
+            SpecialTransformations.Section7.liftedGraph e.hom.map A ↑p ↑(f.toFun p)
+== SpecialTransformations.Section7.exists_localPolynomialSystem explicit-sha256:dae334c8128a8009ba0f94977cbf23e2750df3e6afe389723947359b86601db5
+@SpecialTransformations.Section7.exists_localPolynomialSystem : ∀ {K : Type u_1} {Γ : Type u_2} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] [IsAlgClosed K] (v : Valuation K Γ)
+  [CharZero (IsLocalRing.ResidueField ↥v.valuationSubring)] (E : Subfield K) {n : ℕ} (t s : Fin n → RVCalc.RV v),
+  (∀ (i : Fin n), t i ≠ Option.none) →
+    (∀ (i : Fin n), s i ≠ Option.none) →
+      ∀ (α β : Fin n → Γ) (F G : Fin n → MvPolynomial (Fin (n + n)) ↥E),
+        have u := SpecialTransformations.Section7.productTuple t s;
+        have γ := fun j => RVCalc.vrv v (u j);
+        have f := fun i => (MvPolynomial.map E.subtype) (F i);
+        have g := fun i => (MvPolynomial.map E.subtype) (G i);
+        (∀ (i : Fin n), SpecialTransformations.Section7.IsGammaPolynomial v γ (α i) (f i)) →
+          (∀ (i : Fin n), SpecialTransformations.Section7.IsGammaPolynomial v γ (β i) (g i)) →
+            (∀ (i : Fin n), SpecialTransformations.Section7.IsResidueRoot v u (α i) (f i)) →
+              (∀ (i : Fin n), SpecialTransformations.Section7.IsResidueRoot v u (β i) (g i)) →
+                (∀ (i : Fin n),
+                    ¬SpecialTransformations.Section7.IsResidueRoot v u
+                        (α i / γ ((SpecialTransformations.Section7.productRight n n) i))
+                        ((MvPolynomial.pderiv ((SpecialTransformations.Section7.productRight n n) i)) (f i))) →
+                  (∀ (i : Fin n),
+                      ¬SpecialTransformations.Section7.IsResidueRoot v u
+                          (β i / γ ((SpecialTransformations.Section7.productLeft n n) i))
+                          ((MvPolynomial.pderiv ((SpecialTransformations.Section7.productLeft n n) i)) (g i))) →
+                    (∀ (i j : Fin n),
+                        i ≠ j →
+                          (MvPolynomial.pderiv ((SpecialTransformations.Section7.productRight n n) j)) (f i) = 0) →
+                      (∀ (i j : Fin n),
+                          i ≠ j →
+                            (MvPolynomial.pderiv ((SpecialTransformations.Section7.productLeft n n) j)) (g i) = 0) →
+                        ∃ H,
+                          SpecialTransformations.Section7.FibreBijection v
+                            {p |
+                              ∀ (i : Fin n),
+                                (MvPolynomial.eval (SpecialTransformations.Section7.productTuple p.1 p.2))
+                                    ((MvPolynomial.map E.subtype) (H i)) =
+                                  0}
+                            t s
+== SpecialTransformations.Section7.exists_weightedLocalPolynomialSystem explicit-sha256:fa8aabbd21eb517287d5dae62fcc0cab194edae8d2c43c116a998f37d6ebb758
+@SpecialTransformations.Section7.exists_weightedLocalPolynomialSystem : ∀ {K : Type u_1} {Γ : Type u_2} [inst : Field K]
+  [inst_1 : LinearOrderedCommGroupWithZero Γ] [IsAlgClosed K] (v : Valuation K Γ)
+  [CharZero (IsLocalRing.ResidueField ↥v.valuationSubring)] (E : Subfield K) {n : ℕ} (t s : Fin n → RVCalc.RV v),
+  (∀ (i : Fin n), t i ≠ Option.none) →
+    (∀ (i : Fin n), s i ≠ Option.none) →
+      ∀ (α β : Fin n → Γ) (F G : Fin n → MvPolynomial (Fin (n + n)) ↥E),
+        have u := SpecialTransformations.Section7.productTuple t s;
+        have γ := fun j => RVCalc.vrv v (u j);
+        have f := fun i => (MvPolynomial.map E.subtype) (F i);
+        have g := fun i => (MvPolynomial.map E.subtype) (G i);
+        (∀ (i : Fin n), SpecialTransformations.Section7.IsGammaPolynomial v γ (α i) (f i)) →
+          (∀ (i : Fin n), SpecialTransformations.Section7.IsGammaPolynomial v γ (β i) (g i)) →
+            (∀ (i : Fin n), SpecialTransformations.Section7.IsResidueRoot v u (α i) (f i)) →
+              (∀ (i : Fin n), SpecialTransformations.Section7.IsResidueRoot v u (β i) (g i)) →
+                (∀ (i : Fin n),
+                    ¬SpecialTransformations.Section7.IsResidueRoot v u
+                        (α i / γ ((SpecialTransformations.Section7.productRight n n) i))
+                        ((MvPolynomial.pderiv ((SpecialTransformations.Section7.productRight n n) i)) (f i))) →
+                  (∀ (i : Fin n),
+                      ¬SpecialTransformations.Section7.IsResidueRoot v u
+                          (β i / γ ((SpecialTransformations.Section7.productLeft n n) i))
+                          ((MvPolynomial.pderiv ((SpecialTransformations.Section7.productLeft n n) i)) (g i))) →
+                    (∀ (i j : Fin n),
+                        i ≠ j →
+                          (MvPolynomial.pderiv ((SpecialTransformations.Section7.productRight n n) j)) (f i) = 0) →
+                      (∀ (i j : Fin n),
+                          i ≠ j →
+                            (MvPolynomial.pderiv ((SpecialTransformations.Section7.productLeft n n) j)) (g i) = 0) →
+                        ∃ H w,
+                          have Z := fun i => (MvPolynomial.map E.subtype) (H i);
+                          (∀ (i : Fin n), SpecialTransformations.Section7.IsGammaPolynomial v γ (w i) (Z i)) ∧
+                            ¬SpecialTransformations.Section7.IsResidueRoot v u
+                                  (SpecialTransformations.Section7.jacobianValue
+                                    (fun j => γ ((SpecialTransformations.Section7.productLeft n n) j)) w)
+                                  (SpecialTransformations.Section7.partialJacobianPolynomial
+                                    (SpecialTransformations.Section7.productLeft n n) Z) ∧
+                              ¬SpecialTransformations.Section7.IsResidueRoot v u
+                                    (SpecialTransformations.Section7.jacobianValue
+                                      (fun j => γ ((SpecialTransformations.Section7.productRight n n) j)) w)
+                                    (SpecialTransformations.Section7.partialJacobianPolynomial
+                                      (SpecialTransformations.Section7.productRight n n) Z) ∧
+                                SpecialTransformations.Section7.FibreBijection v
+                                  {p |
+                                    ∀ (i : Fin n),
+                                      (MvPolynomial.eval (SpecialTransformations.Section7.productTuple p.1 p.2)) (Z i) =
+                                        0}
+                                  t s
+== SpecialTransformations.Section7.generatedBase_rv_representative explicit-sha256:5a7e35ce9865104c4285afe97513608a69d9e71714b8baad25f6028555b455d8
+@SpecialTransformations.Section7.generatedBase_rv_representative : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+        ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+          Cardinal.mk ↑B.real < κ →
+            SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+              ∀ (t : CanonicalRV.RVSort M), ↑t ∈ B.real → t ≠ 0 → ∃ x, ↑x ∈ B.real ∧ CanonicalRV.encodedRv x = t
+== SpecialTransformations.Section7.rvLift_isomorphic_of_volume_lift explicit-sha256:a8ac7a0ab5ee1d3764f65ae435ffbda7333b3592f78057d16207bdf7e3a4351f
+@SpecialTransformations.Section7.rvLift_isomorphic_of_volume_lift : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {S : Set M} {k : ℕ} {U V : SpecialTransformations.Section4.RVObject S k} (e : U ≅ V) (A : Set (Fin (k + k) → M)),
+  S.Definable SpecialTransformations.Milestone0.LRV A →
+    SpecialTransformations.Section7.rawVolumeCorrespondence e.hom.map ⊆
+        SpecialTransformations.Section7.rawLiftDomain A →
+      ∀ (Δ : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M),
+        Nonempty
+          ((SpecialTransformations.Section4.rvLiftObject Δ U).obj ≅
+            (SpecialTransformations.Section4.rvLiftObject Δ V).obj)
+== SpecialTransformations.Section9.FibreMatch.derivative_iff explicit-sha256:d71c830d6bcd6759ca295ab113d8cef8fa875c6dd326b0e12bfd6be22bddd0bf
+@SpecialTransformations.Section9.FibreMatch.derivative_iff : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n r s r' s' : ℕ}
+  {A : Set ((Fin n → SpecialTransformations.Milestone0.Transfer.VFType) × (Fin r → CanonicalRV.RVSort M))}
+  {B : Set ((Fin n → SpecialTransformations.Milestone0.Transfer.VFType) × (Fin s → CanonicalRV.RVSort M))}
+  {A' : Set ((Fin n → SpecialTransformations.Milestone0.Transfer.VFType) × (Fin r' → CanonicalRV.RVSort M))}
+  {B' : Set ((Fin n → SpecialTransformations.Milestone0.Transfer.VFType) × (Fin s' → CanonicalRV.RVSort M))}
+  {f : ↑A → ↑B} {f' : ↑A' → ↑B'} {p : ↑A} {p' : ↑A'},
+  SpecialTransformations.Section9.FibreMatch f f' p p' →
+    ∀
+      (L :
+        (Fin n →
+            SpecialTransformations.Milestone0.Transfer.VFType) →ₗ[SpecialTransformations.Milestone0.Transfer.VFType]
+          Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+      SpecialTransformations.Section9.HasMixedVFDerivativeAt f p L ↔
+        SpecialTransformations.Section9.HasMixedVFDerivativeAt f' p' L
+== SpecialTransformations.Section9.GammaLift.gamma_affineLift_of_headLift explicit-sha256:8635b134c67e4c2cb06d93358d7526de1aec1f24c8a20680756c0fcd0fc4ea24
+@SpecialTransformations.Section9.GammaLift.gamma_affineLift_of_headLift : ∀ {M Γ : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {B : SpecialTransformations.Section3.GammaParameters.Base} [inst_2 : LinearOrderedCommGroupWithZero Γ] {m k : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+      (∀ (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+          SpecialTransformations.Milestone0.VFValued.predV a b ↔ v a ≤ v b) →
+        ∀ {S : Set M} (U V : SpecialTransformations.Section4.RVFiniteObject S (k + m))
+          (hU :
+            (SpecialTransformations.Section9.rvHeadVolume U.obj
+                ⇑(SpecialTransformations.Section7.productLeft k m)).FiniteFibres)
+          (hV :
+            (SpecialTransformations.Section9.rvHeadVolume V.obj
+                ⇑(SpecialTransformations.Section7.productLeft k m)).FiniteFibres),
+          SpecialTransformations.Section9.GammaLift.RVMapGamma U.obj.volume B →
+            ∀
+              (F :
+                SpecialTransformations.DefinableGeometry.Map
+                  (SpecialTransformations.Section4.rvLift
+                    (SpecialTransformations.Section9.rvFiniteHead U (⇑(SpecialTransformations.Section7.productLeft k m))
+                        hU).obj)
+                  (SpecialTransformations.Section4.rvLift
+                    (SpecialTransformations.Section9.rvFiniteHead V (⇑(SpecialTransformations.Section7.productLeft k m))
+                        hV).obj)),
+              Function.Bijective F.toFun →
+                SpecialTransformations.Section9.GammaLift.MixedMapGamma F B →
+                  ∀
+                    (a b :
+                      SpecialTransformations.DefinableGeometry.Map
+                        (SpecialTransformations.Section4.rvLift
+                          (SpecialTransformations.Section9.rvFiniteHead U
+                              (⇑(SpecialTransformations.Section7.productLeft k m)) hU).obj)
+                        (SpecialTransformations.DefinableGeometry.DefSet.univ
+                          (SpecialTransformations.Section4.rawVFSpace m) S))
+                    (D c :
+                      SpecialTransformations.DefinableGeometry.Map
+                        (SpecialTransformations.Section4.rvLift
+                          (SpecialTransformations.Section9.rvFiniteHead U
+                              (⇑(SpecialTransformations.Section7.productLeft k m)) hU).obj)
+                        (SpecialTransformations.DefinableGeometry.DefSet.univ
+                          (SpecialTransformations.Section4.rawVFSpace 1) S))
+                    (j : Fin m),
+                    SpecialTransformations.Section9.GammaLift.VFMapGamma a B →
+                      SpecialTransformations.Section9.GammaLift.VFMapGamma b B →
+                        SpecialTransformations.Section9.GammaLift.VFMapGamma D B →
+                          SpecialTransformations.Section9.GammaLift.VFMapGamma c B →
+                            (∀
+                                (p :
+                                  ↑(SpecialTransformations.Section4.rvLift
+                                        (SpecialTransformations.Section9.rvFiniteHead U
+                                            (⇑(SpecialTransformations.Section7.productLeft k m)) hU).obj).carrier)
+                                (i : Fin m), ↑(a.toFun p) i ≠ 0) →
+                              (∀
+                                  (p :
+                                    ↑(SpecialTransformations.Section4.rvLift
+                                          (SpecialTransformations.Section9.rvFiniteHead U
+                                              (⇑(SpecialTransformations.Section7.productLeft k m)) hU).obj).carrier)
+                                  (i : Fin m), ↑(b.toFun p) i ≠ 0) →
+                                (∀
+                                    (p :
+                                      ↑(SpecialTransformations.Section4.rvLift
+                                            (SpecialTransformations.Section9.rvFiniteHead U
+                                                (⇑(SpecialTransformations.Section7.productLeft k m)) hU).obj).carrier),
+                                    SpecialTransformations.Section4.tupleRV ↑(a.toFun p) =
+                                      U.obj.value
+                                          ((SpecialTransformations.Section9.liftLabelMap
+                                                (SpecialTransformations.Section9.rvFiniteHead U
+                                                    (⇑(SpecialTransformations.Section7.productLeft k m)) hU).obj).toFun
+                                            p) ∘
+                                        ⇑(SpecialTransformations.Section7.productRight k m)) →
+                                  (∀
+                                      (p :
+                                        ↑(SpecialTransformations.Section4.rvLift
+                                              (SpecialTransformations.Section9.rvFiniteHead U
+                                                  (⇑(SpecialTransformations.Section7.productLeft k m))
+                                                  hU).obj).carrier),
+                                      SpecialTransformations.Section4.tupleRV ↑(b.toFun p) =
+                                        V.obj.value
+                                            ((SpecialTransformations.Section9.liftLabelMap
+                                                  (SpecialTransformations.Section9.rvFiniteHead V
+                                                      (⇑(SpecialTransformations.Section7.productLeft k m))
+                                                      hV).obj).toFun
+                                              (F.toFun p)) ∘
+                                          ⇑(SpecialTransformations.Section7.productRight k m)) →
+                                    ∃ G,
+                                      Function.Bijective G.toFun ∧
+                                        SpecialTransformations.Section9.GammaLift.MixedMapGamma G B ∧
+                                          ∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                            have x :=
+                                              (SpecialTransformations.Section9.rvLiftHeadSelect U
+                                                    (⇑(SpecialTransformations.Section7.productLeft k m)) hU).toFun
+                                                p;
+                                            ↑(G.toFun p) =
+                                              (SpecialTransformations.Section7.productTuple (↑(F.toFun x)).1
+                                                  (SpecialTransformations.Section9.affineTail (↑(a.toFun x))
+                                                    (↑(b.toFun x))
+                                                    (SpecialTransformations.Section9.affineTailSlopesForHead v
+                                                      (↑(a.toFun x)) (↑(b.toFun x)) j (↑(D.toFun x) 0) (↑(c.toFun x) 0))
+                                                    ((↑p).1 ∘ ⇑(SpecialTransformations.Section7.productRight k m))),
+                                                (↑(F.toFun x)).2)
+== SpecialTransformations.Section9.GammaLift.gamma_exists_disjoint_definable_refinement explicit-sha256:aab8201d01ffbe9e76b03298a7af23070e27e4de24cfa136490d11d9f564e816
+@SpecialTransformations.Section9.GammaLift.gamma_exists_disjoint_definable_refinement : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M}
+  {B : SpecialTransformations.Section3.GammaParameters.Base} {ι : Type} [Finite ι] {a : ℕ}
+  (D : ι → SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawRVSpace a) S),
+  (∀ (i : ι), SpecialTransformations.Section9.GammaLift.RVSetGamma (D i) B) →
+    ∃ E,
+      (∀ (i : ι), (E i).carrier ⊆ (D i).carrier) ∧
+        (∀ (i : ι), SpecialTransformations.Section9.GammaLift.RVSetGamma (E i) B) ∧
+          (∀ (x : (SpecialTransformations.Section4.rawRVSpace a).Carrier),
+              (∃ i, x ∈ (D i).carrier) → ∃ i, x ∈ (E i).carrier) ∧
+            ∀ (i j : ι), ∀ x ∈ (E i).carrier, x ∈ (E j).carrier → i = j
+== SpecialTransformations.Section9.GammaLift.gamma_exists_finite_head_cover explicit-sha256:62b1cbee09c0ebc0dbe9c4ae14c47378bcda677664ea0eeab2101f7718e8f167
+@SpecialTransformations.Section9.GammaLift.gamma_exists_finite_head_cover : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M) (B : SpecialTransformations.Section3.GammaParameters.Base),
+      B.real ⊆ ↑C.base →
+        ∀ {n k : ℕ},
+          k ≤ n →
+            ∀
+              (A :
+                SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawRVSpace n) ↑C.base),
+              SpecialTransformations.Section9.GammaLift.RVSetGamma A B →
+                SpecialTransformations.Section4.rvDim A ≤ k →
+                  ∃ m P v,
+                    (∀ (i : Fin m),
+                        (P i).carrier ⊆ A.carrier ∧
+                          SpecialTransformations.Section9.GammaLift.RVSetGamma (P i) B ∧
+                            (SpecialTransformations.Section9.rvHeadSelect (⇑(v i)) (P i)).FiniteFibres) ∧
+                      ∀ (a : ↑A.carrier), ∃ i, ↑a ∈ (P i).carrier
+== SpecialTransformations.Section9.GammaLift.gamma_exists_liftLabelRepresentative explicit-sha256:ad07a3fd03e26c799bab7066c7e7e7de0ab6431b0799bd9c2c772a22ef312672
+@SpecialTransformations.Section9.GammaLift.gamma_exists_liftLabelRepresentative : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {k : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+            ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+              Cardinal.mk ↑B.real < κ →
+                SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+                  ∀ {S : Set M},
+                    B.real ⊆ S →
+                      ∀ (U : SpecialTransformations.Section4.RVFiniteObject S k),
+                        SpecialTransformations.Section9.GammaLift.RVMapGamma U.obj.volume B →
+                          ∀
+                            (τ :
+                              SpecialTransformations.DefinableGeometry.Map U.obj.domain
+                                (SpecialTransformations.DefinableGeometry.DefSet.univ
+                                  (SpecialTransformations.Section4.rawRVSpace 1) S)),
+                            SpecialTransformations.Section9.GammaLift.RVMapGamma τ B →
+                              (∀ (u : ↑U.obj.domain.carrier),
+                                  ↑(↑(τ.toFun u) 0) ≠ SpecialTransformations.Milestone0.iRVZero) →
+                                ∃ c,
+                                  (SpecialTransformations.Section5.GammaGraphDefinable B fun p z =>
+                                      ∃ x, ↑x = p ∧ ↑(c.toFun x) = z.1) ∧
+                                    ∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                      CanonicalRV.encodedRv (↑(c.toFun p) 0) =
+                                        ↑(τ.toFun ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun p)) 0
+== SpecialTransformations.Section9.GammaLift.gamma_exists_simultaneous_finite_head_cover explicit-sha256:b1a6dc2a00bd79500976bd65bc1a5c3ebf48e0620157b7bdb8b4987c7d8fe7d6
+@SpecialTransformations.Section9.GammaLift.gamma_exists_simultaneous_finite_head_cover : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {k n : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M) (B : SpecialTransformations.Section3.GammaParameters.Base),
+      B.real ⊆ ↑C.base →
+        k ≤ n →
+          ∀ {U V : SpecialTransformations.Section4.RVFiniteObject (↑C.base) n} (F : U ≅ V),
+            SpecialTransformations.Section9.GammaLift.RVMapGamma U.obj.volume B →
+              SpecialTransformations.Section9.GammaLift.RVMapGamma V.obj.volume B →
+                SpecialTransformations.Section9.GammaLift.RVMapGamma
+                    ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) n).ι.mapIso F).hom.map B →
+                  SpecialTransformations.Section4.rvDim U.obj.volume.image ≤ k →
+                    SpecialTransformations.Section4.rvDim V.obj.volume.image ≤ k →
+                      have f := ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) n).ι.mapIso F).hom.map;
+                      ∃ a b P v w,
+                        (∀ (i : Fin a × Fin b),
+                            (P i).carrier ⊆ U.obj.domain.carrier ∧
+                              SpecialTransformations.Section9.GammaLift.RVSetGamma (P i) B) ∧
+                          (∀ (u : ↑U.obj.domain.carrier), ∃ i, ↑u ∈ (P i).carrier) ∧
+                            ∀ (i : Fin a × Fin b) (x : Fin k → CanonicalRV.RVSort M),
+                              {u | ↑u ∈ (P i).carrier ∧ U.obj.value u ∘ ⇑(v i) = x}.Finite ∧
+                                {u | ↑u ∈ (P i).carrier ∧ V.obj.value (f.toFun u) ∘ ⇑(w i) = x}.Finite
+== SpecialTransformations.Section9.GammaLift.gamma_exists_weighted_liftMap_of_rvIso explicit-sha256:9e8e0f0d89e035b57c08854d02f1d0ba9f018218f77d6ed102bca5291c9beaac
+@SpecialTransformations.Section9.GammaLift.gamma_exists_weighted_liftMap_of_rvIso : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+            ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+              Cardinal.mk ↑B.real < κ →
+                SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+                  ∀ {S : Set M},
+                    B.real ⊆ S →
+                      Cardinal.mk ↑S < κ →
+                        ∀ {G : Type} [inst_3 : LinearOrderedCommGroupWithZero G]
+                          (w : Valuation SpecialTransformations.Milestone0.Transfer.VFType G),
+                          (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                              SpecialTransformations.Milestone0.VFValued.predV x y ↔ w x ≤ w y) →
+                            ∀ {U U' : SpecialTransformations.Section4.RVObject S n} (e : U ≅ U'),
+                              (∀ (u : ↑U.domain.carrier) (i : Fin n),
+                                  ↑(U.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+                                (∀ (u : ↑U'.domain.carrier) (i : Fin n),
+                                    ↑(U'.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+                                  SpecialTransformations.Section9.GammaLift.RVMapGamma U.volume B →
+                                    SpecialTransformations.Section9.GammaLift.RVMapGamma U'.volume B →
+                                      SpecialTransformations.Section9.GammaLift.RVMapGamma e.hom.map B →
+                                        ∃ f,
+                                          Function.Bijective f.toFun ∧
+                                            SpecialTransformations.Section9.GammaLift.MixedMapGamma f B ∧
+                                              (∀ (p : ↑(SpecialTransformations.Section4.rvLift U).carrier),
+                                                  e.hom.map.graph (↑p).2 (↑(f.toFun p)).2) ∧
+                                                ∀ (p : ↑(SpecialTransformations.Section4.rvLift U).carrier),
+                                                  AlgebraicIndependent
+                                                      (↥(SpecialTransformations.Section3.vfParameterField S)) (↑p).1 →
+                                                    ∃ J,
+                                                      SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun p J ∧
+                                                        w J = (∏ i, w ((↑(f.toFun p)).1 i)) / ∏ i, w ((↑p).1 i)
+== SpecialTransformations.Section9.GammaLift.gamma_glued_label_lift explicit-sha256:810b24c4058ee4ecbd542506097aeb63d900628ed273cd040644df4be61ffafc
+@SpecialTransformations.Section9.GammaLift.gamma_glued_label_lift : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M}
+  {B : SpecialTransformations.Section3.GammaParameters.Base} {n : ℕ}
+  {U V : SpecialTransformations.Section4.RVObject S n} {I : Type} [Finite I] (e : U ≅ V)
+  (P : I → SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawRVSpace U.arity) S)
+  (hP : ∀ (i : I), (P i).carrier ⊆ U.domain.carrier),
+  (∀ (u : ↑U.domain.carrier), ∃ i, ↑u ∈ (P i).carrier) →
+    (∀ (i j : I), ∀ z ∈ (P i).carrier, z ∈ (P j).carrier → i = j) →
+      ∀
+        (F :
+          (i : I) →
+            SpecialTransformations.DefinableGeometry.Map (SpecialTransformations.Section4.rvLift (U.restrict (P i) ⋯))
+              (SpecialTransformations.Section4.rvLift (V.restrict (e.hom.map.restrict ⋯).image ⋯))),
+        (∀ (i : I), Function.Bijective (F i).toFun) →
+          (∀ (i : I), SpecialTransformations.Section9.GammaLift.MixedMapGamma (F i) B) →
+            (∀ (i : I) (p : ↑(SpecialTransformations.Section4.rvLift (U.restrict (P i) ⋯)).carrier),
+                e.hom.map.graph (↑p).2 (↑((F i).toFun p)).2) →
+              ∃ G,
+                Function.Bijective G.toFun ∧
+                  SpecialTransformations.Section9.GammaLift.MixedMapGamma G B ∧
+                    (∀ (p : ↑(SpecialTransformations.Section4.rvLift U).carrier),
+                        e.hom.map.graph (↑p).2 (↑(G.toFun p)).2) ∧
+                      ∀ (i : I) (p : ↑(SpecialTransformations.Section4.rvLift (U.restrict (P i) ⋯)).carrier)
+                        (q : ↑(SpecialTransformations.Section4.rvLift U).carrier),
+                        ↑p = ↑q → ↑((F i).toFun p) = ↑(G.toFun q)
+== SpecialTransformations.Section9.GammaLift.gamma_liftJacobian_discrepancy explicit-sha256:a3f13670b4cb8155fa1089b92a7a6b7907b6340a523e29e539c11f506fd5dc82
+@SpecialTransformations.Section9.GammaLift.gamma_liftJacobian_discrepancy : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n : ℕ} {S : Set M},
+  CanonicalStructure.IsCanonical →
+    ∀ {B : SpecialTransformations.Section3.GammaParameters.Base},
+      0 < n →
+        ∀ (U V : SpecialTransformations.Section4.RVObject S n)
+          (f :
+            SpecialTransformations.DefinableGeometry.Map (SpecialTransformations.Section4.rvLift U)
+              (SpecialTransformations.Section4.rvLift V)),
+          (SpecialTransformations.Section5.GammaGraphDefinable B fun p q => ∃ a, ↑a = p ∧ ↑(f.toFun a) = q) →
+            ∀
+              (ω :
+                SpecialTransformations.DefinableGeometry.Map U.domain
+                  (SpecialTransformations.DefinableGeometry.DefSet.univ (SpecialTransformations.Section4.rawRVSpace 1)
+                    S)),
+              (SpecialTransformations.Section5.GammaGraphDefinable B fun p q => ∃ u, ↑u = p.2 ∧ ↑(ω.toFun u) = q.2) →
+                (∀ (u : ↑U.domain.carrier), ↑(ω.toFun u) 0 ≠ 0) →
+                  ∃ E,
+                    E.carrier ⊆ U.domain.carrier ∧
+                      SpecialTransformations.Section5.GammaSetDefinable B {p | p.2 ∈ E.carrier} ∧
+                        ∀ (u : ↑U.domain.carrier),
+                          ↑u ∈ E.carrier ↔
+                            ∃ p,
+                              (SpecialTransformations.Section9.liftLabelMap U).toFun p = u ∧
+                                ¬∃ L,
+                                    SpecialTransformations.Section9.HasMixedVFDerivativeAt f.toFun p L ∧
+                                      CanonicalRV.encodedRv (LinearMap.toMatrix' L).det = ↑(ω.toFun u) 0
+== SpecialTransformations.Section9.GammaLift.gamma_prescribed_lift_of_finite_heads explicit-sha256:55576a54906470aa890e920b066ee4d0f89da3f7fb81c406ab018587a978fe4b
+@SpecialTransformations.Section9.GammaLift.gamma_prescribed_lift_of_finite_heads : ∀ {M Γ : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : LinearOrderedCommGroupWithZero Γ] {k m : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+            ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+              Cardinal.mk ↑B.real < κ →
+                SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+                  ∀ {S : Set M},
+                    B.real ⊆ S →
+                      Cardinal.mk ↑S < κ →
+                        ∀ (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+                          (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                              SpecialTransformations.Milestone0.VFValued.predV x y ↔ v x ≤ v y) →
+                            ∀ {U V : SpecialTransformations.Section4.RVFiniteObject S (k + m)} (e : U ≅ V),
+                              (∀ (u : ↑U.obj.domain.carrier) (i : Fin (k + m)),
+                                  ↑(U.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+                                (∀ (u : ↑V.obj.domain.carrier) (i : Fin (k + m)),
+                                    ↑(V.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+                                  (SpecialTransformations.Section9.rvHeadVolume U.obj
+                                        ⇑(SpecialTransformations.Section7.productLeft k m)).FiniteFibres →
+                                    (SpecialTransformations.Section9.rvHeadVolume V.obj
+                                          ⇑(SpecialTransformations.Section7.productLeft k m)).FiniteFibres →
+                                      SpecialTransformations.Section9.GammaLift.RVMapGamma U.obj.volume B →
+                                        SpecialTransformations.Section9.GammaLift.RVMapGamma V.obj.volume B →
+                                          SpecialTransformations.Section9.GammaLift.RVMapGamma
+                                              ((SpecialTransformations.Section4.finiteVolumeProperty S (k + m)).ι.mapIso
+                                                    e).hom.map
+                                              B →
+                                            ∀ (j : Fin m)
+                                              (ω :
+                                                SpecialTransformations.DefinableGeometry.Map U.obj.domain
+                                                  (SpecialTransformations.DefinableGeometry.DefSet.univ
+                                                    (SpecialTransformations.Section4.rawRVSpace 1) S)),
+                                              SpecialTransformations.Section9.GammaLift.RVMapGamma ω B →
+                                                (∀ (u : ↑U.obj.domain.carrier),
+                                                    ↑(↑(ω.toFun u) 0) ≠ SpecialTransformations.Milestone0.iRVZero) →
+                                                  (have e₀ :=
+                                                      (SpecialTransformations.Section4.finiteVolumeProperty S
+                                                              (k + m)).ι.mapIso
+                                                        e;
+                                                    ∀ (u : ↑U.obj.domain.carrier)
+                                                      (x y :
+                                                        Fin (k + m) → SpecialTransformations.Milestone0.Transfer.VFType)
+                                                      (c : SpecialTransformations.Milestone0.Transfer.VFType),
+                                                      SpecialTransformations.Section4.tupleRV x = U.obj.value u →
+                                                        SpecialTransformations.Section4.tupleRV y =
+                                                            V.obj.value (e₀.hom.map.toFun u) →
+                                                          CanonicalRV.encodedRv c = ↑(ω.toFun u) 0 →
+                                                            v c = (∏ i, v (y i)) / ∏ i, v (x i)) →
+                                                    ∃ G,
+                                                      Function.Bijective G.toFun ∧
+                                                        SpecialTransformations.Section9.GammaLift.MixedMapGamma G B ∧
+                                                          (∀
+                                                              (p :
+                                                                ↑(SpecialTransformations.Section4.rvLift
+                                                                      U.obj).carrier),
+                                                              ((SpecialTransformations.Section4.finiteVolumeProperty S
+                                                                              (k + m)).ι.mapIso
+                                                                        e).hom.map.graph
+                                                                (↑p).2 (↑(G.toFun p)).2) ∧
+                                                            ∀
+                                                              (p :
+                                                                ↑(SpecialTransformations.Section4.rvLift
+                                                                      U.obj).carrier),
+                                                              AlgebraicIndependent
+                                                                  (↥(SpecialTransformations.Section3.vfParameterField
+                                                                      S))
+                                                                  (↑p).1 →
+                                                                ∃ J,
+                                                                  SpecialTransformations.Section9.HasMixedVFJacobianAt
+                                                                      G.toFun p J ∧
+                                                                    CanonicalRV.encodedRv J =
+                                                                      ↑(ω.toFun
+                                                                            ((SpecialTransformations.Section9.liftLabelMap
+                                                                                  U.obj).toFun
+                                                                              p))
+                                                                        0
+== SpecialTransformations.Section9.GammaLift.gamma_prescribed_lift_of_lower_rvDim explicit-sha256:3492642addaa529c1bb0a881e87b83d5ac8e4058242e8f818e0122ce947628cb
+@SpecialTransformations.Section9.GammaLift.gamma_prescribed_lift_of_lower_rvDim : ∀ {M Γ : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : LinearOrderedCommGroupWithZero Γ] {k m : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M) (B : SpecialTransformations.Section3.GammaParameters.Base),
+      SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+        B.real ⊆ ↑C.base →
+          ∀ (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+            (∀ (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+                SpecialTransformations.Milestone0.VFValued.predV a b ↔ v a ≤ v b) →
+              ∀ {U V : SpecialTransformations.Section4.RVFiniteObject (↑C.base) (k + m)} (e : U ≅ V)
+                (hU :
+                  ∀ (u : ↑U.obj.domain.carrier) (i : Fin (k + m)),
+                    ↑(U.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero)
+                (hV :
+                  ∀ (u : ↑V.obj.domain.carrier) (i : Fin (k + m)),
+                    ↑(V.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero),
+                SpecialTransformations.Section4.rvDim U.obj.volume.image ≤ k →
+                  SpecialTransformations.Section4.rvDim V.obj.volume.image ≤ k →
+                    SpecialTransformations.Section9.GammaLift.RVMapGamma U.obj.volume B →
+                      SpecialTransformations.Section9.GammaLift.RVMapGamma V.obj.volume B →
+                        SpecialTransformations.Section9.GammaLift.RVMapGamma
+                            ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + m)).ι.mapIso
+                                  e).hom.map
+                            B →
+                          ∀ (j : Fin m)
+                            (ω :
+                              SpecialTransformations.DefinableGeometry.Map U.obj.domain
+                                (SpecialTransformations.DefinableGeometry.DefSet.univ
+                                  (SpecialTransformations.Section4.rawRVSpace 1) ↑C.base)),
+                            SpecialTransformations.Section9.GammaLift.RVMapGamma ω B →
+                              (have E :=
+                                  (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + m)).ι.mapIso e;
+                                ∀ (u : ↑U.obj.domain.carrier),
+                                  SpecialTransformations.Section3.Values.vrv (↑(ω.toFun u) 0) =
+                                    ↑(SpecialTransformations.Section9.rvGammaJacobian (U.obj.value u)
+                                        (V.obj.value (E.hom.map.toFun u)) ⋯ ⋯)) →
+                                ∃ G,
+                                  Function.Bijective G.toFun ∧
+                                    SpecialTransformations.Section9.GammaLift.MixedMapGamma G B ∧
+                                      (∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                          ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base)
+                                                          (k + m)).ι.mapIso
+                                                    e).hom.map.graph
+                                            (↑p).2 (↑(G.toFun p)).2) ∧
+                                        ∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                          AlgebraicIndependent
+                                              (↥(SpecialTransformations.Section3.vfParameterField ↑C.base)) (↑p).1 →
+                                            ∃ J,
+                                              SpecialTransformations.Section9.HasMixedVFJacobianAt G.toFun p J ∧
+                                                CanonicalRV.encodedRv J =
+                                                  ↑(ω.toFun
+                                                        ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun p))
+                                                    0
+== SpecialTransformations.Section9.GammaLift.gamma_prescribed_lift_with_reindexed_heads explicit-sha256:e7ef53fd08a1416eb535aed15c5912bd7e1ede504f1d60a47abc4723d7de6674
+@SpecialTransformations.Section9.GammaLift.gamma_prescribed_lift_with_reindexed_heads : ∀ {M Γ : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : LinearOrderedCommGroupWithZero Γ] {k m : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+            ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+              Cardinal.mk ↑B.real < κ →
+                SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+                  ∀ {S : Set M},
+                    B.real ⊆ S →
+                      Cardinal.mk ↑S < κ →
+                        ∀ (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+                          (∀ (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+                              SpecialTransformations.Milestone0.VFValued.predV a b ↔ v a ≤ v b) →
+                            ∀ {U V : SpecialTransformations.Section4.RVFiniteObject S (k + m)} (e : U ≅ V)
+                              (hU :
+                                ∀ (u : ↑U.obj.domain.carrier) (i : Fin (k + m)),
+                                  ↑(U.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero)
+                              (hV :
+                                ∀ (u : ↑V.obj.domain.carrier) (i : Fin (k + m)),
+                                  ↑(V.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero)
+                              (a b : Fin k ↪ Fin (k + m)),
+                              (SpecialTransformations.Section9.rvHeadVolume U.obj ⇑a).FiniteFibres →
+                                (SpecialTransformations.Section9.rvHeadVolume V.obj ⇑b).FiniteFibres →
+                                  SpecialTransformations.Section9.GammaLift.RVMapGamma U.obj.volume B →
+                                    SpecialTransformations.Section9.GammaLift.RVMapGamma V.obj.volume B →
+                                      SpecialTransformations.Section9.GammaLift.RVMapGamma
+                                          ((SpecialTransformations.Section4.finiteVolumeProperty S (k + m)).ι.mapIso
+                                                e).hom.map
+                                          B →
+                                        ∀ (j : Fin m)
+                                          (ω :
+                                            SpecialTransformations.DefinableGeometry.Map U.obj.domain
+                                              (SpecialTransformations.DefinableGeometry.DefSet.univ
+                                                (SpecialTransformations.Section4.rawRVSpace 1) S)),
+                                          SpecialTransformations.Section9.GammaLift.RVMapGamma ω B →
+                                            (have E :=
+                                                (SpecialTransformations.Section4.finiteVolumeProperty S
+                                                        (k + m)).ι.mapIso
+                                                  e;
+                                              ∀ (u : ↑U.obj.domain.carrier),
+                                                SpecialTransformations.Section3.Values.vrv (↑(ω.toFun u) 0) =
+                                                  ↑(SpecialTransformations.Section9.rvGammaJacobian (U.obj.value u)
+                                                      (V.obj.value (E.hom.map.toFun u)) ⋯ ⋯)) →
+                                              ∃ G,
+                                                Function.Bijective G.toFun ∧
+                                                  SpecialTransformations.Section9.GammaLift.MixedMapGamma G B ∧
+                                                    (∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                                        ((SpecialTransformations.Section4.finiteVolumeProperty S
+                                                                        (k + m)).ι.mapIso
+                                                                  e).hom.map.graph
+                                                          (↑p).2 (↑(G.toFun p)).2) ∧
+                                                      ∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                                        AlgebraicIndependent
+                                                            (↥(SpecialTransformations.Section3.vfParameterField S))
+                                                            (↑p).1 →
+                                                          ∃ J,
+                                                            SpecialTransformations.Section9.HasMixedVFJacobianAt G.toFun
+                                                                p J ∧
+                                                              CanonicalRV.encodedRv J =
+                                                                ↑(ω.toFun
+                                                                      ((SpecialTransformations.Section9.liftLabelMap
+                                                                            U.obj).toFun
+                                                                        p))
+                                                                  0
+== SpecialTransformations.Section9.GammaLift.gamma_rank_le_rvDim explicit-sha256:f5116ee85bc0d0aa8570b46787b7c4f86e11fa36184ac01a70dfa285f8c61db4
+@SpecialTransformations.Section9.GammaLift.gamma_rank_le_rvDim : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (hcan : CanonicalStructure.IsCanonical) (C : SpecialTransformations.Section3.BaseContext M)
+  (B : SpecialTransformations.Section3.GammaParameters.Base),
+  B.real ⊆ ↑C.base →
+    ∀ {n : ℕ}
+      (A : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawRVSpace n) ↑C.base),
+      SpecialTransformations.Section9.GammaLift.RVSetGamma A B →
+        ∀ (a : ↑A.carrier),
+          SpecialTransformations.Section4.rvTupleRank hcan ⋯ B.real ↑a ≤ SpecialTransformations.Section4.rvDim A
+== SpecialTransformations.Section9.GammaLift.gamma_repaired_lift_on_small_labels explicit-sha256:79a19f057098a54a1f15bcc18a9e829d545836b12e90d37692990e19653cbe78
+@SpecialTransformations.Section9.GammaLift.gamma_repaired_lift_on_small_labels : ∀ {M Γ : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : LinearOrderedCommGroupWithZero Γ] {k : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M) (B : SpecialTransformations.Section3.GammaParameters.Base),
+      SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+        B.real ⊆ ↑C.base →
+          ∀ (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+            (∀ (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+                SpecialTransformations.Milestone0.VFValued.predV a b ↔ v a ≤ v b) →
+              ∀ {U V : SpecialTransformations.Section4.RVFiniteObject (↑C.base) (k + 1)} (e : U ≅ V)
+                (hU :
+                  ∀ (u : ↑U.obj.domain.carrier) (i : Fin (k + 1)),
+                    ↑(U.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero)
+                (hV :
+                  ∀ (u : ↑V.obj.domain.carrier) (i : Fin (k + 1)),
+                    ↑(V.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero),
+                SpecialTransformations.Section9.GammaLift.RVMapGamma U.obj.volume B →
+                  SpecialTransformations.Section9.GammaLift.RVMapGamma V.obj.volume B →
+                    SpecialTransformations.Section9.GammaLift.RVMapGamma
+                        ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e).hom.map
+                        B →
+                      ∀
+                        (ω :
+                          SpecialTransformations.DefinableGeometry.Map U.obj.domain
+                            (SpecialTransformations.DefinableGeometry.DefSet.univ
+                              (SpecialTransformations.Section4.rawRVSpace 1) ↑C.base)),
+                        SpecialTransformations.Section9.GammaLift.RVMapGamma ω B →
+                          (have E :=
+                              (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e;
+                            ∀ (u : ↑U.obj.domain.carrier),
+                              SpecialTransformations.Section3.Values.vrv (↑(ω.toFun u) 0) =
+                                ↑(SpecialTransformations.Section9.rvGammaJacobian (U.obj.value u)
+                                    (V.obj.value (E.hom.map.toFun u)) ⋯ ⋯)) →
+                            ∀
+                              (f :
+                                SpecialTransformations.DefinableGeometry.Map
+                                  (SpecialTransformations.Section4.rvLift U.obj)
+                                  (SpecialTransformations.Section4.rvLift V.obj)),
+                              Function.Bijective f.toFun →
+                                SpecialTransformations.Section9.GammaLift.MixedMapGamma f B →
+                                  (∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                      ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso
+                                                e).hom.map.graph
+                                        (↑p).2 (↑(f.toFun p)).2) →
+                                    ∀
+                                      (D :
+                                        SpecialTransformations.DefinableGeometry.DefSet
+                                          (SpecialTransformations.Section4.rawRVSpace U.obj.arity) ↑C.base),
+                                      D.carrier ⊆ U.obj.domain.carrier →
+                                        SpecialTransformations.Section9.GammaLift.RVSetGamma D B →
+                                          SpecialTransformations.Section4.rvDim D < k + 1 →
+                                            (∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                                (↑p).2 ∉ D.carrier →
+                                                  AlgebraicIndependent
+                                                      (↥(SpecialTransformations.Section3.vfParameterField ↑C.base))
+                                                      (↑p).1 →
+                                                    ∃ J,
+                                                      SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun p J ∧
+                                                        CanonicalRV.encodedRv J =
+                                                          ↑(ω.toFun
+                                                                ((SpecialTransformations.Section9.liftLabelMap
+                                                                      U.obj).toFun
+                                                                  p))
+                                                            0) →
+                                              ∃ G,
+                                                Function.Bijective G.toFun ∧
+                                                  SpecialTransformations.Section9.GammaLift.MixedMapGamma G B ∧
+                                                    (∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                                        ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base)
+                                                                        (k + 1)).ι.mapIso
+                                                                  e).hom.map.graph
+                                                          (↑p).2 (↑(G.toFun p)).2) ∧
+                                                      ∃ Z,
+                                                        Z.carrier ⊆
+                                                            (SpecialTransformations.Section4.rvLift U.obj).carrier ∧
+                                                          SpecialTransformations.Section4.vfDim
+                                                                (SpecialTransformations.Section4.rawRVSpace 1) Z <
+                                                              k + 1 ∧
+                                                            ∀
+                                                              (p :
+                                                                ↑(SpecialTransformations.Section4.rvLift
+                                                                      U.obj).carrier),
+                                                              ↑p ∉ Z.carrier →
+                                                                ∃ J,
+                                                                  SpecialTransformations.Section9.HasMixedVFJacobianAt
+                                                                      G.toFun p J ∧
+                                                                    CanonicalRV.encodedRv J =
+                                                                      ↑(ω.toFun
+                                                                            ((SpecialTransformations.Section9.liftLabelMap
+                                                                                  U.obj).toFun
+                                                                              p))
+                                                                        0
+== SpecialTransformations.Section9.GammaLift.gamma_restricted_actual_lift explicit-sha256:ab2571c11f075e35915c68db68cb2df4886e523d749cd8cf73ef4322bc85187d
+@SpecialTransformations.Section9.GammaLift.gamma_restricted_actual_lift : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M}
+  {B : SpecialTransformations.Section3.GammaParameters.Base} {n : ℕ}
+  {U V : SpecialTransformations.Section4.RVObject S n} (e : U ≅ V)
+  (A : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawRVSpace U.arity) S)
+  (hA : A.carrier ⊆ U.domain.carrier),
+  SpecialTransformations.Section9.GammaLift.RVSetGamma A B →
+    ∀
+      (f :
+        SpecialTransformations.DefinableGeometry.Map (SpecialTransformations.Section4.rvLift U)
+          (SpecialTransformations.Section4.rvLift V)),
+      Function.Bijective f.toFun →
+        SpecialTransformations.Section9.GammaLift.MixedMapGamma f B →
+          (∀ (p : ↑(SpecialTransformations.Section4.rvLift U).carrier), e.hom.map.graph (↑p).2 (↑(f.toFun p)).2) →
+            let B' := (e.hom.map.restrict hA).image;
+            have hB' := ⋯;
+            ∃ g,
+              Function.Bijective g.toFun ∧
+                SpecialTransformations.Section9.GammaLift.MixedMapGamma g B ∧
+                  ∀ (p : ↑(SpecialTransformations.Section4.rvLift (U.restrict A hA)).carrier)
+                    (q : ↑(SpecialTransformations.Section4.rvLift U).carrier), ↑p = ↑q → ↑(g.toFun p) = ↑(f.toFun q)
+== SpecialTransformations.Section9.GammaLift.gamma_theorem_9_16_finite_volume explicit-sha256:12d6bdcc898cb91fc913b79bed99fe7df66ae5c410f9f764c02ff373fe7d4507
+@SpecialTransformations.Section9.GammaLift.gamma_theorem_9_16_finite_volume : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {k : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M) (B : SpecialTransformations.Section3.GammaParameters.Base),
+      SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+        B.real ⊆ ↑C.base →
+          ∀ {U V : SpecialTransformations.Section4.RVFiniteObject (↑C.base) (k + 1)} (e : U ≅ V)
+            (hU :
+              ∀ (u : ↑U.obj.domain.carrier) (i : Fin (k + 1)),
+                ↑(U.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero)
+            (hV :
+              ∀ (u : ↑V.obj.domain.carrier) (i : Fin (k + 1)),
+                ↑(V.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero),
+            SpecialTransformations.Section9.GammaLift.RVMapGamma U.obj.volume B →
+              SpecialTransformations.Section9.GammaLift.RVMapGamma V.obj.volume B →
+                SpecialTransformations.Section9.GammaLift.RVMapGamma
+                    ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e).hom.map B →
+                  ∀
+                    (ω :
+                      SpecialTransformations.DefinableGeometry.Map U.obj.domain
+                        (SpecialTransformations.DefinableGeometry.DefSet.univ
+                          (SpecialTransformations.Section4.rawRVSpace 1) ↑C.base)),
+                    SpecialTransformations.Section9.GammaLift.RVMapGamma ω B →
+                      (have E := (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e;
+                        ∀ (u : ↑U.obj.domain.carrier),
+                          SpecialTransformations.Section3.Values.vrv (↑(ω.toFun u) 0) =
+                            ↑(SpecialTransformations.Section9.rvGammaJacobian (U.obj.value u)
+                                (V.obj.value (E.hom.map.toFun u)) ⋯ ⋯)) →
+                        (have E := (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e;
+                          ∃ X,
+                            SpecialTransformations.Section4.rvDim X < k + 1 ∧
+                              ∀ (u : ↑U.obj.domain.carrier),
+                                ↑u ∉ X.carrier →
+                                  SpecialTransformations.Section9.IsRVJacobianAt
+                                    (SpecialTransformations.Section9.volumeCorrespondence E.hom.map).carrier
+                                    (U.obj.value u) (V.obj.value (E.hom.map.toFun u)) (↑(ω.toFun u) 0)) →
+                          SpecialTransformations.Section9.HenselizedGaussGraphInput
+                              SpecialTransformations.Milestone0.Transfer.VFType →
+                            ∃ G,
+                              Function.Bijective G.toFun ∧
+                                SpecialTransformations.Section9.GammaLift.MixedMapGamma G B ∧
+                                  (∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                      ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso
+                                                e).hom.map.graph
+                                        (↑p).2 (↑(G.toFun p)).2) ∧
+                                    ∃ Z,
+                                      Z.carrier ⊆ (SpecialTransformations.Section4.rvLift U.obj).carrier ∧
+                                        SpecialTransformations.Section4.vfDim
+                                              (SpecialTransformations.Section4.rawRVSpace 1) Z <
+                                            k + 1 ∧
+                                          ∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                                            ↑p ∉ Z.carrier →
+                                              ∃ J,
+                                                SpecialTransformations.Section9.HasMixedVFJacobianAt G.toFun p J ∧
+                                                  CanonicalRV.encodedRv J =
+                                                    ↑(ω.toFun
+                                                          ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun
+                                                            p))
+                                                      0
+== SpecialTransformations.Section9.HasVFDerivativeAt.comp explicit-sha256:6e1fd351bd54fe881c05da469dab2697aaa7c131a9b4505ce9c6017bc7207500
+@SpecialTransformations.Section9.HasVFDerivativeAt.comp : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n m l : ℕ}
+  {f :
+    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+      Fin m → SpecialTransformations.Milestone0.Transfer.VFType}
+  {g :
+    (Fin m → SpecialTransformations.Milestone0.Transfer.VFType) →
+      Fin l → SpecialTransformations.Milestone0.Transfer.VFType}
+  {a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType}
+  {L :
+    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →ₗ[SpecialTransformations.Milestone0.Transfer.VFType]
+      Fin m → SpecialTransformations.Milestone0.Transfer.VFType}
+  {D :
+    (Fin m → SpecialTransformations.Milestone0.Transfer.VFType) →ₗ[SpecialTransformations.Milestone0.Transfer.VFType]
+      Fin l → SpecialTransformations.Milestone0.Transfer.VFType},
+  SpecialTransformations.Section9.HasVFDerivativeAt g (f a) D →
+    SpecialTransformations.Section9.HasVFDerivativeAt f a L →
+      SpecialTransformations.Section9.HasVFDerivativeAt (g ∘ f) a (D ∘ₗ L)
+== SpecialTransformations.Section9.IsRVJacobianAt.gamma_eq explicit-sha256:a85ad33fecf28b17886df90610e5f247bef2e2bb7c2274246a5222a8dbf85d82
+@SpecialTransformations.Section9.IsRVJacobianAt.gamma_eq : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n : ℕ} {C : Set (Fin (n + n) → CanonicalRV.RVSort M)}
+  {t s : Fin n → CanonicalRV.RVSort M} {ω : CanonicalRV.RVSort M},
+  SpecialTransformations.Section9.IsRVJacobianAt C t s ω →
+    ∀ (ht : ∀ (i : Fin n), ↑(t i) ≠ SpecialTransformations.Milestone0.iRVZero)
+      (hs : ∀ (i : Fin n), ↑(s i) ≠ SpecialTransformations.Milestone0.iRVZero),
+      SpecialTransformations.Section3.Values.vrv ω = ↑(SpecialTransformations.Section9.rvGammaJacobian t s ht hs)
+== SpecialTransformations.Section9.acvf_henselizedGaussGraphInput_of_finite_extension_reference explicit-sha256:d95aa5dcf877c111ea1b27b9f4d5eeac729760be8b18673938191fa85b714fc2
+@SpecialTransformations.Section9.acvf_henselizedGaussGraphInput_of_finite_extension_reference : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF],
+  SpecialTransformations.Section9.FiniteHenselianExtensionReference →
+    SpecialTransformations.Section9.HenselizedGaussGraphInput SpecialTransformations.Milestone0.Transfer.VFType
+== SpecialTransformations.Section9.corollary_9_9 explicit-sha256:b1f81bfc17fd407365df14575c499cb0d368f9ffe8209430a8dfc28fe1046347
+@SpecialTransformations.Section9.corollary_9_9 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n m : ℕ} {G : Type}
+  [inst_2 : LinearOrderedCommGroupWithZero G] [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType G]
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {S : Set M},
+            Cardinal.mk ↑S < κ →
+              (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                ∀
+                  (f :
+                    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                      Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                  S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section8.vfGraph f) →
+                    ∀ (j : Fin n) (i : Fin m),
+                      ∃ B,
+                        ∃ (hB : S.Definable SpecialTransformations.Milestone0.LRV B),
+                          SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1)
+                                (SpecialTransformations.Section8.vfObjectOfRaw hB) <
+                              n ∧
+                            ∃ d,
+                              (∀ (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                                  SpecialTransformations.Section4.vfValues a ∉ B →
+                                    SpecialTransformations.Section9.HasVFPartialAt f a j i (d a)) ∧
+                                ContinuousOn d {a | SpecialTransformations.Section4.vfValues a ∉ B}
+== SpecialTransformations.Section9.exists_definable_generic_RVJacobian explicit-sha256:df64564204901e68087b3ece5fb41e2798fcc245c78f62769740dd78ffc67cb1
+@SpecialTransformations.Section9.exists_definable_generic_RVJacobian : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ (B : SpecialTransformations.Section3.BaseContext M),
+      0 < n →
+        ∀ {U V : SpecialTransformations.Section4.RVFiniteObject (↑B.base) n} (e : U ≅ V),
+          (∀ (u : ↑U.obj.domain.carrier) (i : Fin n), ↑(U.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+            (∀ (u : ↑V.obj.domain.carrier) (i : Fin n),
+                ↑(V.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+              have E := (SpecialTransformations.Section4.finiteVolumeProperty (↑B.base) n).ι.mapIso e;
+              ∃ ω X,
+                X.carrier ⊆ U.obj.domain.carrier ∧
+                  SpecialTransformations.Section4.rvDim X < n ∧
+                    ∀ (u : ↑U.obj.domain.carrier),
+                      ↑u ∉ X.carrier →
+                        SpecialTransformations.Section9.IsRVJacobianAt
+                          (SpecialTransformations.Section9.volumeCorrespondence E.hom.map).carrier (U.obj.value u)
+                          (V.obj.value (E.hom.map.toFun u)) (↑(ω.toFun u) 0)
+== SpecialTransformations.Section9.exists_prescribed_lift_zero_arity explicit-sha256:75d193059fc3b7d8a81580b621053a57a722dee5e1250c695409e4464527f2e5
+@SpecialTransformations.Section9.exists_prescribed_lift_zero_arity : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+            ∀ (B : SpecialTransformations.Section3.GammaParameters.Base),
+              Cardinal.mk ↑B.real < κ →
+                SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase B →
+                  ∀ {U V : SpecialTransformations.Section4.RVFiniteObject B.real 0} (e : U ≅ V)
+                    (ω :
+                      SpecialTransformations.DefinableGeometry.Map U.obj.domain
+                        (SpecialTransformations.DefinableGeometry.DefSet.univ
+                          (SpecialTransformations.Section4.rawRVSpace 1) B.real)),
+                    (have E := (SpecialTransformations.Section4.finiteVolumeProperty B.real 0).ι.mapIso e;
+                      ∀ (u : ↑U.obj.domain.carrier),
+                        SpecialTransformations.Section9.IsRVJacobianAt
+                          (SpecialTransformations.Section9.volumeCorrespondence E.hom.map).carrier (U.obj.value u)
+                          (V.obj.value (E.hom.map.toFun u)) (↑(ω.toFun u) 0)) →
+                      ∃ G,
+                        Function.Bijective G.toFun ∧
+                          (∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                              ((SpecialTransformations.Section4.finiteVolumeProperty B.real 0).ι.mapIso e).hom.map.graph
+                                (↑p).2 (↑(G.toFun p)).2) ∧
+                            ∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                              SpecialTransformations.Section9.HasMixedVFJacobianAt G.toFun p 1 ∧
+                                CanonicalRV.encodedRv 1 =
+                                  ↑(ω.toFun ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun p)) 0
+== SpecialTransformations.Section9.gammaDescent_polydiscs_of_vfSmall_exception explicit-sha256:c45be3efa265f90ba3029c5482261c9c6b957f36fc3d0c4239185f9df2a5e8a9
+@SpecialTransformations.Section9.gammaDescent_polydiscs_of_vfSmall_exception : ∀ {M Γ : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] [inst_2 : LinearOrderedCommGroupWithZero Γ] {n r s : ℕ}
+  {S : Set M} [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 < κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF00 →
+            Cardinal.mk ↑S < κ →
+              ∀ (v : Valuation SpecialTransformations.Milestone0.Transfer.VFType Γ),
+                (∀ (a b : SpecialTransformations.Milestone0.Transfer.VFType),
+                    SpecialTransformations.Milestone0.VFValued.predV a b ↔ v a ≤ v b) →
+                  ∀
+                    {A :
+                      SpecialTransformations.DefinableGeometry.DefSet
+                        (SpecialTransformations.Section4.rawMixedSpace n r) S}
+                    {B :
+                      SpecialTransformations.DefinableGeometry.DefSet
+                        (SpecialTransformations.Section4.rawMixedSpace n s) S}
+                    (f : SpecialTransformations.DefinableGeometry.Map A B),
+                    Function.Bijective f.toFun →
+                      ∀ (a b : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                        (∀ (i : Fin n), a i ≠ 0) →
+                          (∀ (i : Fin n), b i ≠ 0) →
+                            (∀ (x : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                                (∃ p, (↑p).1 = x) ↔
+                                  x ∈ SpecialTransformations.Section7.RVFibre v fun i => RVCalc.rv v (a i)) →
+                              (∀ (x : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                                  (∃ p, (↑p).1 = x) ↔
+                                    x ∈ SpecialTransformations.Section7.RVFibre v fun i => RVCalc.rv v (b i)) →
+                                ∀ (c : SpecialTransformations.Milestone0.Transfer.VFType),
+                                  c ≠ 0 →
+                                    ∀
+                                      (Z :
+                                        SpecialTransformations.DefinableGeometry.DefSet
+                                          (SpecialTransformations.Section4.rawMixedSpace n r) S),
+                                      SpecialTransformations.Section4.vfDim
+                                            (SpecialTransformations.Section4.rawRVSpace 1) Z <
+                                          n →
+                                        (∀ (p : ↑A.carrier),
+                                            ↑p ∉ Z.carrier →
+                                              ∃ J,
+                                                SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun p J ∧
+                                                  v J = v c) →
+                                          SpecialTransformations.Section9.HenselizedGaussGraphInput
+                                              SpecialTransformations.Milestone0.Transfer.VFType →
+                                            v c = (∏ i, v (b i)) / ∏ i, v (a i)
+== SpecialTransformations.Section9.gamma_exists_totalMixedJacobianMap explicit-sha256:775959898c8a020a79543d37a5f2b91198c97c55a79a950be2427d1ba3bbcba9
+@SpecialTransformations.Section9.gamma_exists_totalMixedJacobianMap : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n r s : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ {B : SpecialTransformations.Section3.GammaParameters.Base} {S : Set M},
+      0 < n →
+        ∀ {A : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n r) S}
+          {D : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n s) S}
+          (f : SpecialTransformations.DefinableGeometry.Map A D),
+          (SpecialTransformations.Section5.GammaGraphDefinable B fun p q => ∃ a, ↑a = p ∧ ↑(f.toFun a) = q) →
+            ∃ j,
+              (SpecialTransformations.Section5.GammaGraphDefinable B fun p z => ∃ a, ↑a = p ∧ ↑(j.toFun a) = z.1) ∧
+                ∀ (p : ↑A.carrier)
+                  (L :
+                    (Fin n →
+                        SpecialTransformations.Milestone0.Transfer.VFType) →ₗ[SpecialTransformations.Milestone0.Transfer.VFType]
+                      Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Section9.HasMixedVFDerivativeAt f.toFun p L →
+                    ↑(j.toFun p) 0 = (LinearMap.toMatrix' L).det
+== SpecialTransformations.Section9.gamma_total_mixed_jacobian_graph explicit-sha256:b5aeeabc764f0c15ab3d36ba1500545f18ccdc35a4c79bc7cdbb88f987e1d914
+@SpecialTransformations.Section9.gamma_total_mixed_jacobian_graph : ∀ {M : Type}
+  [sM : SpecialTransformations.Milestone0.LRV.Structure M] [hM : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  {n r s : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ {B : SpecialTransformations.Section3.GammaParameters.Base} {S : Set M},
+      0 < n →
+        ∀ {A : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n r) S}
+          {D : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n s) S}
+          (f : SpecialTransformations.DefinableGeometry.Map A D),
+          (SpecialTransformations.Section5.GammaGraphDefinable B fun p q => ∃ a, ↑a = p ∧ ↑(f.toFun a) = q) →
+            SpecialTransformations.Section5.GammaGraphDefinable B fun p z =>
+              ∃ (_ : p ∈ A.carrier),
+                (Sum.elim (SpecialTransformations.Section4.mixedValues p) fun x =>
+                    ↑(SpecialTransformations.Section5.vfAt z 0)) ∈
+                  SpecialTransformations.Section9.totalMixedJacobianCodes f
+== SpecialTransformations.Section9.lemma_9_11_ae explicit-sha256:d3a817bc3900e04074a4a98349565fc061b84962ceb3050561fcda364f58b04c
+@SpecialTransformations.Section9.lemma_9_11_ae : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M} {n r s : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType] (hc : CanonicalStructure.IsCanonical) {κ : Cardinal.{0}},
+  Cardinal.aleph0 ≤ κ →
+    SpecialTransformations.Section3.Saturated M κ →
+      Cardinal.mk ↑S < κ →
+        0 < n →
+          ∀ {A : SpecialTransformations.Section5.DefSet S n r} {B : SpecialTransformations.Section5.DefSet S n s}
+            (T : SpecialTransformations.Section5.SpecialBijection A B),
+            ∃ E D,
+              E.carrier ⊆ (SpecialTransformations.Section9.rawSpecialSet hc A).carrier ∧
+                D.carrier ⊆ (SpecialTransformations.Section9.rawSpecialSet hc B).carrier ∧
+                  SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1) E < n ∧
+                    SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1) D < n ∧
+                      (∀ (p : ↑A.carrier),
+                          ↑p ∉ E.carrier → SpecialTransformations.Section9.HasMixedVFJacobianAt T.toMap.toFun p 1) ∧
+                        ∀ (p : ↑B.carrier),
+                          ↑p ∉ D.carrier → SpecialTransformations.Section9.HasMixedVFJacobianAt T.inverseMap.toFun p 1
+== SpecialTransformations.Section9.lemma_9_11_zero_arity explicit-sha256:09a9130715a805d85976887c243ac1fa9dc76a00e1241a0b252d1eaf9c0429cb
+@SpecialTransformations.Section9.lemma_9_11_zero_arity : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M} {r s : ℕ}
+  {A : SpecialTransformations.Section5.DefSet S 0 r} {B : SpecialTransformations.Section5.DefSet S 0 s}
+  (T : SpecialTransformations.Section5.SpecialBijection A B),
+  (∀ (p : ↑A.carrier), SpecialTransformations.Section9.HasMixedVFJacobianAt T.toMap.toFun p 1) ∧
+    ∀ (p : ↑B.carrier), SpecialTransformations.Section9.HasMixedVFJacobianAt T.inverseMap.toFun p 1
+== SpecialTransformations.Section9.lemma_9_12_ae explicit-sha256:0f65474d6e64b2ee21b220faed884c2c073ce9555d24794a467053188a18c9f9
+@SpecialTransformations.Section9.lemma_9_12_ae : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n r s t : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {S : Set M},
+            Cardinal.mk ↑S < κ →
+              0 < n →
+                ∀
+                  {A :
+                    SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n r)
+                      S}
+                  {B :
+                    SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n s)
+                      S}
+                  {C :
+                    SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace n t)
+                      S}
+                  (f : SpecialTransformations.DefinableGeometry.Map A B)
+                  (g : SpecialTransformations.DefinableGeometry.Map B C),
+                  f.FiniteFibres →
+                    ∃ E,
+                      E.carrier ⊆ A.carrier ∧
+                        SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1) E < n ∧
+                          ∀ (p : ↑A.carrier),
+                            ↑p ∉ E.carrier →
+                              ∃ J K,
+                                SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun p J ∧
+                                  SpecialTransformations.Section9.HasMixedVFJacobianAt g.toFun (f.toFun p) K ∧
+                                    SpecialTransformations.Section9.HasMixedVFJacobianAt (g.toFun ∘ f.toFun) p (K * J)
+== SpecialTransformations.Section9.lemma_9_12_zero_arity explicit-sha256:213b2dd44edfb844ed34344fa88cae6af8a1583c978c073b88747368d3e6e209
+@SpecialTransformations.Section9.lemma_9_12_zero_arity : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {r s t : ℕ} {S : Set M}
+  {A : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace 0 r) S}
+  {B : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace 0 s) S}
+  {C : SpecialTransformations.DefinableGeometry.DefSet (SpecialTransformations.Section4.rawMixedSpace 0 t) S}
+  (f : SpecialTransformations.DefinableGeometry.Map A B) (g : SpecialTransformations.DefinableGeometry.Map B C)
+  (p : ↑A.carrier),
+  SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun p 1 ∧
+    SpecialTransformations.Section9.HasMixedVFJacobianAt g.toFun (f.toFun p) 1 ∧
+      SpecialTransformations.Section9.HasMixedVFJacobianAt (g.toFun ∘ f.toFun) p (1 * 1)
+== SpecialTransformations.Section9.lemma_9_15_finite_volume_of_reference_input explicit-sha256:601f47856bb1d85fdf60992062a069989bece8c4fa16d1897f7a03f915d64cbc
+@SpecialTransformations.Section9.lemma_9_15_finite_volume_of_reference_input : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M),
+      0 < n →
+        ∀ {U V : SpecialTransformations.Section4.RVFiniteObject (↑C.base) n} (e : U ≅ V),
+          (∀ (u : ↑U.obj.domain.carrier) (i : Fin n), ↑(U.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+            (∀ (u : ↑V.obj.domain.carrier) (i : Fin n),
+                ↑(V.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+              ∀
+                (f :
+                  SpecialTransformations.DefinableGeometry.Map (SpecialTransformations.Section4.rvLift U.obj)
+                    (SpecialTransformations.Section4.rvLift V.obj)),
+                Function.Bijective f.toFun →
+                  (∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                      ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) n).ι.mapIso e).hom.map.graph
+                        (↑p).2 (↑(f.toFun p)).2) →
+                    SpecialTransformations.Section9.HenselizedGaussGraphInput
+                        SpecialTransformations.Milestone0.Transfer.VFType →
+                      have E := (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) n).ι.mapIso e;
+                      ∃ D,
+                        D.carrier ⊆ U.obj.volume.image.carrier ∧
+                          SpecialTransformations.Section4.rvDim D < n ∧
+                            ∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                              U.obj.value ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun p) ∉ D.carrier →
+                                ∃ J,
+                                  SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun p J ∧
+                                    SpecialTransformations.Section9.IsRVJacobianAt
+                                      (SpecialTransformations.Section9.volumeCorrespondence E.hom.map).carrier
+                                      (U.obj.value ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun p))
+                                      (V.obj.value
+                                        (E.hom.map.toFun
+                                          ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun p)))
+                                      (CanonicalRV.encodedRv J)
+== SpecialTransformations.Section9.lemma_9_15_zero_arity explicit-sha256:a7d2643571f9706dd12790a1b3c8f75812a2621a4e1fde839fbc862282e51b0d
+@SpecialTransformations.Section9.lemma_9_15_zero_arity : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M}
+  {U V : SpecialTransformations.Section4.RVFiniteObject S 0} (e : U ≅ V)
+  (f :
+    SpecialTransformations.DefinableGeometry.Map (SpecialTransformations.Section4.rvLift U.obj)
+      (SpecialTransformations.Section4.rvLift V.obj))
+  (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+  have E := (SpecialTransformations.Section4.finiteVolumeProperty S 0).ι.mapIso e;
+  SpecialTransformations.Section9.HasMixedVFJacobianAt f.toFun p 1 ∧
+    SpecialTransformations.Section9.IsRVJacobianAt
+      (SpecialTransformations.Section9.volumeCorrespondence E.hom.map).carrier
+      (U.obj.value ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun p))
+      (V.obj.value (E.hom.map.toFun ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun p)))
+      (CanonicalRV.encodedRv 1)
+== SpecialTransformations.Section9.lemma_9_2 explicit-sha256:14dcbbb99a81dd727c156bbf9bb900c874c1a8bf892dea7ba5f9761533f69c42
+@SpecialTransformations.Section9.lemma_9_2 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n m : ℕ}
+  {A : Set (Fin n → SpecialTransformations.Milestone0.Transfer.VFType)}
+  {a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType}
+  {f :
+    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+      Set (Fin m → SpecialTransformations.Milestone0.Transfer.VFType)}
+  {L₁ L₂ : Set (Fin m → SpecialTransformations.Milestone0.Transfer.VFType)},
+  SpecialTransformations.Section9.IsMinimalVFLimitSet A a f L₁ →
+    SpecialTransformations.Section9.IsMinimalVFLimitSet A a f L₂ →
+      SpecialTransformations.Section9.vfClosure L₁ = SpecialTransformations.Section9.vfClosure L₂
+== SpecialTransformations.Section9.lemma_9_3 explicit-sha256:c1852c7458a1e6e16ff9a48f7f0a42a7586419a1c1f0b9c6e0348b84d8820eb4
+@SpecialTransformations.Section9.lemma_9_3 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n m : ℕ}
+  {A : Set (Fin n → SpecialTransformations.Milestone0.Transfer.VFType)}
+  {a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType}
+  {f₁ f₂ :
+    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+      Set (Fin m → SpecialTransformations.Milestone0.Transfer.VFType)}
+  {L₁ L₂ : Set (Fin m → SpecialTransformations.Milestone0.Transfer.VFType)},
+  SpecialTransformations.Section9.IsVFLimit A a f₁ L₁ →
+    SpecialTransformations.Section9.IsVFLimit A a f₂ L₂ →
+      SpecialTransformations.Section9.IsVFLimit A a (fun x => f₁ x ∪ f₂ x) (L₁ ∪ L₂)
+== SpecialTransformations.Section9.lemma_9_4 explicit-sha256:880461f6c0ba2c17a077e3b58a4d40853ac97b46632023099a9b0e9beef70a8b
+@SpecialTransformations.Section9.lemma_9_4 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {m k : ℕ}
+  {A : Set (Fin 1 → SpecialTransformations.Milestone0.Transfer.VFType)}
+  {a : Fin 1 → SpecialTransformations.Milestone0.Transfer.VFType}
+  {f :
+    (Fin 1 → SpecialTransformations.Milestone0.Transfer.VFType) →
+      Set (Fin m → SpecialTransformations.Milestone0.Transfer.VFType)}
+  {L : Set (Fin m → SpecialTransformations.Section9.LimitPoint M)},
+  Set.univ.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section9.unaryLimitGraph A f) →
+    (∀ x ∈ A, (f x).Finite) →
+      (∀ x ∈ A, (f x).ncard ≤ k) → SpecialTransformations.Section9.IsMinimalLimitSet A a f L → L.Finite → L.ncard ≤ k
+== SpecialTransformations.Section9.lemma_9_5 explicit-sha256:47410d2487b315a72a98c7b5e52332681786fcd557bd9410987854ff2496d251
+@SpecialTransformations.Section9.lemma_9_5 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {m : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      SpecialTransformations.Section3.Saturated M κ →
+        ∀ {S : Set M},
+          Cardinal.mk ↑S < κ →
+            ∀ (A : Set (Fin 1 → SpecialTransformations.Milestone0.Transfer.VFType))
+              (f :
+                (Fin 1 → SpecialTransformations.Milestone0.Transfer.VFType) →
+                  Set (Fin m → SpecialTransformations.Milestone0.Transfer.VFType)),
+              S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section9.unaryLimitGraph A f) →
+                (∀ x ∈ A, (f x).Finite) →
+                  ∃ L,
+                    L.Finite ∧
+                      SpecialTransformations.Section9.IsMinimalLimitSet A 0 f L ∧
+                        SpecialTransformations.Section9.LimitSetDefinable S L
+== SpecialTransformations.Section9.lemma_9_8 explicit-sha256:31569dcb0a593e9301ce1a28dbc76031baa6b76808ecdd617b796981a74e49c2
+@SpecialTransformations.Section9.lemma_9_8 : ∀ {M : Type} [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n m : ℕ} {G : Type}
+  [inst_2 : LinearOrderedCommGroupWithZero G] [inst_3 : Valued SpecialTransformations.Milestone0.Transfer.VFType G]
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ {κ : Cardinal.{0}},
+      Cardinal.aleph0 ≤ κ →
+        SpecialTransformations.Section3.Saturated M κ →
+          ∀ {S : Set M},
+            Cardinal.mk ↑S < κ →
+              (∀ (x y : SpecialTransformations.Milestone0.Transfer.VFType),
+                  SpecialTransformations.Milestone0.VFValued.predV x y ↔ Valued.v x ≤ Valued.v y) →
+                ∀
+                  (f :
+                    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →
+                      Fin m → SpecialTransformations.Milestone0.Transfer.VFType),
+                  S.Definable SpecialTransformations.Milestone0.LRV (SpecialTransformations.Section8.vfGraph f) →
+                    ∀ (j : Fin n) (i : Fin m),
+                      ∃ B,
+                        ∃ (hB : S.Definable SpecialTransformations.Milestone0.LRV B),
+                          SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1)
+                                (SpecialTransformations.Section8.vfObjectOfRaw hB) <
+                              n ∧
+                            ∀ (a : Fin n → SpecialTransformations.Milestone0.Transfer.VFType),
+                              SpecialTransformations.Section4.vfValues a ∉ B →
+                                ∃ d, SpecialTransformations.Section9.HasVFPartialAt f a j i d
+== SpecialTransformations.Section9.mixedVFJacobian_comp_of_full_derivative explicit-sha256:8f063e469d4276fe724b04cfc44b2cf4ec2757c7bf8855eef8cbf2ed983cb958
+@SpecialTransformations.Section9.mixedVFJacobian_comp_of_full_derivative : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n r s t : ℕ}
+  {A : Set ((Fin n → SpecialTransformations.Milestone0.Transfer.VFType) × (Fin r → CanonicalRV.RVSort M))}
+  {B : Set ((Fin n → SpecialTransformations.Milestone0.Transfer.VFType) × (Fin s → CanonicalRV.RVSort M))}
+  {C : Set ((Fin n → SpecialTransformations.Milestone0.Transfer.VFType) × (Fin t → CanonicalRV.RVSort M))} {f : ↑A → ↑B}
+  {g : ↑B → ↑C} {p : ↑A}
+  {L D :
+    (Fin n → SpecialTransformations.Milestone0.Transfer.VFType) →ₗ[SpecialTransformations.Milestone0.Transfer.VFType]
+      Fin n → SpecialTransformations.Milestone0.Transfer.VFType},
+  SpecialTransformations.Section9.HasMixedVFDerivativeAt f p L →
+    SpecialTransformations.Section9.HasMixedVFDerivativeAt g (f p) D →
+      SpecialTransformations.Section9.HasMixedVFJacobianAt f p (LinearMap.toMatrix' L).det ∧
+        SpecialTransformations.Section9.HasMixedVFJacobianAt g (f p) (LinearMap.toMatrix' D).det ∧
+          SpecialTransformations.Section9.HasMixedVFJacobianAt (g ∘ f) p
+            ((LinearMap.toMatrix' D).det * (LinearMap.toMatrix' L).det)
+== SpecialTransformations.Section9.monomialPermutation_bijOn_and_changes_sum explicit-sha256:96e24ea620e5a09ce8da080d3496e5db75bc400f8cae6dde5015e295ae3c4717
+@SpecialTransformations.Section9.monomialPermutation_bijOn_and_changes_sum : ∀ {G : Type u_1} {Γ : Type u_2}
+  [inst : CommGroup G] [inst_1 : AddCommGroup Γ] [inst_2 : LinearOrder Γ] [IsOrderedAddMonoid Γ]
+  (v : G →* Multiplicative Γ),
+  Set.BijOn (SpecialTransformations.Section9.monomialPermutation v) (SpecialTransformations.Section9.PositivePair v)
+      (SpecialTransformations.Section9.PositivePair v) ∧
+    ∀ (p : G × G),
+      SpecialTransformations.Section9.PositivePair v p →
+        Multiplicative.toAdd (v (SpecialTransformations.Section9.monomialPermutation v p).1) +
+            Multiplicative.toAdd (v (SpecialTransformations.Section9.monomialPermutation v p).2) ≠
+          Multiplicative.toAdd (v p.1) + Multiplicative.toAdd (v p.2)
+== SpecialTransformations.Section9.rvEssentialIso explicit-sha256:c36f6d84fdd24240d5d4cde13b2379b3febcb03a306abcebe1013e3511a89d17
+@SpecialTransformations.Section9.rvEssentialIso : {M : Type} →
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] →
+    {S : Set M} →
+      {k : ℕ} →
+        {U V : SpecialTransformations.Section4.RVObject S (k + 1)} →
+          (U ≅ V) → (SpecialTransformations.Section9.rvEssential U ≅ SpecialTransformations.Section9.rvEssential V)
+== SpecialTransformations.Section9.rvEssentialLift_complement_dim_lt explicit-sha256:fc64ebe58bb7228012cdf7b2486700890db6af8061dfa6f34c23c026f7108edf
+@SpecialTransformations.Section9.rvEssentialLift_complement_dim_lt : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M] {S : Set M} {k : ℕ}
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF]
+  (Δ : SpecialTransformations.DefinableGeometry.Space SpecialTransformations.Milestone0.LRV M)
+  (U : SpecialTransformations.Section4.RVObject S (k + 1)),
+  SpecialTransformations.Section4.vfDim Δ
+      ((SpecialTransformations.Section4.rvLift U).sdiff
+        (SpecialTransformations.Section4.rvLift (SpecialTransformations.Section9.rvEssential U))) <
+    k + 1
+== SpecialTransformations.Section9.rvGammaJacobian_comp explicit-sha256:6fe42fab60e6734e457f954bff6d2ccc1a880a4f55a5a174bdf0da4705b35970
+@SpecialTransformations.Section9.rvGammaJacobian_comp : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n : ℕ} (t s u : Fin n → CanonicalRV.RVSort M)
+  (ht : ∀ (i : Fin n), ↑(t i) ≠ SpecialTransformations.Milestone0.iRVZero)
+  (hs : ∀ (i : Fin n), ↑(s i) ≠ SpecialTransformations.Milestone0.iRVZero)
+  (hu : ∀ (i : Fin n), ↑(u i) ≠ SpecialTransformations.Milestone0.iRVZero),
+  SpecialTransformations.Section9.rvGammaJacobian t u ht hu =
+    SpecialTransformations.Section9.rvGammaJacobian s u hs hu *
+      SpecialTransformations.Section9.rvGammaJacobian t s ht hs
+== SpecialTransformations.Section9.rvJacobian_chain_ae_finite_volume explicit-sha256:0d2c1357c86cb6095ca1e17d313a6f9d3368cb171ff506e3aea8bad778835f33
+@SpecialTransformations.Section9.rvJacobian_chain_ae_finite_volume : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {n : ℕ},
+  CanonicalStructure.IsCanonical →
+    ∀ (B : SpecialTransformations.Section3.BaseContext M),
+      0 < n →
+        ∀ {U V W : SpecialTransformations.Section4.RVFiniteObject (↑B.base) n} (f : U ≅ V) (g : V ≅ W),
+          (∀ (u : ↑U.obj.domain.carrier) (i : Fin n), ↑(U.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+            (∀ (u : ↑V.obj.domain.carrier) (i : Fin n),
+                ↑(V.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+              (∀ (u : ↑W.obj.domain.carrier) (i : Fin n),
+                  ↑(W.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero) →
+                have F := (SpecialTransformations.Section4.finiteVolumeProperty (↑B.base) n).ι.mapIso f;
+                have G := (SpecialTransformations.Section4.finiteVolumeProperty (↑B.base) n).ι.mapIso g;
+                ∃ Z,
+                  ∃ (hZ : Z.carrier ⊆ U.obj.domain.carrier),
+                    SpecialTransformations.Section4.rvDim Z < n ∧
+                      SpecialTransformations.Section4.rvDim (U.obj.volume.restrict hZ).image < n ∧
+                        ∀ (u : ↑U.obj.domain.carrier),
+                          ↑u ∉ Z.carrier →
+                            ∃ ω η,
+                              SpecialTransformations.Section9.IsRVJacobianAt
+                                  (SpecialTransformations.Section9.volumeCorrespondence F.hom.map).carrier
+                                  (U.obj.value u) (V.obj.value (F.hom.map.toFun u)) ω ∧
+                                SpecialTransformations.Section9.IsRVJacobianAt
+                                    (SpecialTransformations.Section9.volumeCorrespondence G.hom.map).carrier
+                                    (V.obj.value (F.hom.map.toFun u))
+                                    (W.obj.value (G.hom.map.toFun (F.hom.map.toFun u))) η ∧
+                                  SpecialTransformations.Section9.IsRVJacobianAt
+                                    (SpecialTransformations.Section9.volumeCorrespondence (F ≪≫ G).hom.map).carrier
+                                    (U.obj.value u) (W.obj.value (G.hom.map.toFun (F.hom.map.toFun u))) (η * ω)
+== SpecialTransformations.Section9.rvJacobian_chain_zero_arity explicit-sha256:90927a25732a0044877937ac38ab340f66383e9264a3a29861209aab2d1e5e15
+@SpecialTransformations.Section9.rvJacobian_chain_zero_arity : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {S : Set M}
+  {U V W : SpecialTransformations.Section4.RVFiniteObject S 0} (f : U ≅ V) (g : V ≅ W) (u : ↑U.obj.domain.carrier),
+  have F := (SpecialTransformations.Section4.finiteVolumeProperty S 0).ι.mapIso f;
+  have G := (SpecialTransformations.Section4.finiteVolumeProperty S 0).ι.mapIso g;
+  SpecialTransformations.Section9.IsRVJacobianAt
+      (SpecialTransformations.Section9.volumeCorrespondence F.hom.map).carrier (U.obj.value u)
+      (V.obj.value (F.hom.map.toFun u)) 1 ∧
+    SpecialTransformations.Section9.IsRVJacobianAt
+        (SpecialTransformations.Section9.volumeCorrespondence G.hom.map).carrier (V.obj.value (F.hom.map.toFun u))
+        (W.obj.value (G.hom.map.toFun (F.hom.map.toFun u))) 1 ∧
+      SpecialTransformations.Section9.IsRVJacobianAt
+        (SpecialTransformations.Section9.volumeCorrespondence (F ≪≫ G).hom.map).carrier (U.obj.value u)
+        (W.obj.value (G.hom.map.toFun (F.hom.map.toFun u))) (1 * 1)
+== SpecialTransformations.Section9.theorem_9_16_finite_volume_of_reference_input explicit-sha256:0804e9d78d110bf84d53a02aa67547cfb3fc1d132ea4e6bb9b7904ec3e5c45eb
+@SpecialTransformations.Section9.theorem_9_16_finite_volume_of_reference_input : ∀ {M : Type}
+  [inst : SpecialTransformations.Milestone0.LRV.Structure M]
+  [inst_1 : M ⊨ SpecialTransformations.Milestone0.Axioms.ACVF] {k : ℕ}
+  [CharZero SpecialTransformations.Milestone0.Transfer.VFType],
+  CanonicalStructure.IsCanonical →
+    ∀ (C : SpecialTransformations.Section3.BaseContext M) (Ξ : Set SpecialTransformations.Section3.Values.Gamma),
+      SpecialTransformations.Section3.GammaParameters.VFGammaGeneratedBase { real := ↑C.base, gamma := Ξ } →
+        ∀ {U V : SpecialTransformations.Section4.RVFiniteObject (↑C.base) (k + 1)} (e : U ≅ V)
+          (hU :
+            ∀ (u : ↑U.obj.domain.carrier) (i : Fin (k + 1)),
+              ↑(U.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero)
+          (hV :
+            ∀ (u : ↑V.obj.domain.carrier) (i : Fin (k + 1)),
+              ↑(V.obj.value u i) ≠ SpecialTransformations.Milestone0.iRVZero)
+          (ω :
+            SpecialTransformations.DefinableGeometry.Map U.obj.domain
+              (SpecialTransformations.DefinableGeometry.DefSet.univ (SpecialTransformations.Section4.rawRVSpace 1)
+                ↑C.base)),
+          (have E := (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e;
+            ∀ (u : ↑U.obj.domain.carrier),
+              SpecialTransformations.Section3.Values.vrv (↑(ω.toFun u) 0) =
+                ↑(SpecialTransformations.Section9.rvGammaJacobian (U.obj.value u) (V.obj.value (E.hom.map.toFun u)) ⋯
+                    ⋯)) →
+            (have E := (SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso e;
+              ∃ X,
+                SpecialTransformations.Section4.rvDim X < k + 1 ∧
+                  ∀ (u : ↑U.obj.domain.carrier),
+                    ↑u ∉ X.carrier →
+                      SpecialTransformations.Section9.IsRVJacobianAt
+                        (SpecialTransformations.Section9.volumeCorrespondence E.hom.map).carrier (U.obj.value u)
+                        (V.obj.value (E.hom.map.toFun u)) (↑(ω.toFun u) 0)) →
+              SpecialTransformations.Section9.HenselizedGaussGraphInput
+                  SpecialTransformations.Milestone0.Transfer.VFType →
+                ∃ G,
+                  Function.Bijective G.toFun ∧
+                    (∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                        ((SpecialTransformations.Section4.finiteVolumeProperty (↑C.base) (k + 1)).ι.mapIso
+                                  e).hom.map.graph
+                          (↑p).2 (↑(G.toFun p)).2) ∧
+                      ∃ Z,
+                        Z.carrier ⊆ (SpecialTransformations.Section4.rvLift U.obj).carrier ∧
+                          SpecialTransformations.Section4.vfDim (SpecialTransformations.Section4.rawRVSpace 1) Z <
+                              k + 1 ∧
+                            ∀ (p : ↑(SpecialTransformations.Section4.rvLift U.obj).carrier),
+                              ↑p ∉ Z.carrier →
+                                ∃ J,
+                                  SpecialTransformations.Section9.HasMixedVFJacobianAt G.toFun p J ∧
+                                    CanonicalRV.encodedRv J =
+                                      ↑(ω.toFun ((SpecialTransformations.Section9.liftLabelMap U.obj).toFun p)) 0

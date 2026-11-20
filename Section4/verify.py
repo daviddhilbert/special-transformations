@@ -1165,6 +1165,8 @@ for name, expected in scanned_sources.items():
      for name, block in audits], indent=2) + '\n')
 if not audit_built and resolve_given('ImportProviders.after') != given_providers:
     raise RuntimeError('Resolved compiled providers changed during verification')
+import headline_baseline
+headline_baseline.check('section4', headlines, ['Section4.Library'], env=env, scratch=BUILD)
 (BUILD / 'status.txt').write_text('PASS\n')
 if audit_built:
     print('PASS: Section 4 headline types and allowed axioms from the Lake build.')

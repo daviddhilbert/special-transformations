@@ -12,6 +12,8 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / 'scripts'))
+import headline_baseline  # noqa: E402
 QE_HEADLINES = [
     'JohnsonACF.hasQEb',
     'hasQE_ACVF_val',
@@ -213,8 +215,12 @@ def main():
                 raise RuntimeError('Unexpected axioms for ' + name + ': ' + str(axioms - ALLOWED))
             records.append({'name': name, 'axioms': sorted(axioms)})
         (out / 'headlines.json').write_text(json.dumps(records, indent=2) + '\n', encoding='utf-8')
+        # Compare full statements with the committed baseline, not only axioms.
+        suite = 'foundation' if args.scope == 'qe' else args.scope
+        imports = [f'Section{section}.Library'] if section else ['SpecialTransformations']
+        headline_baseline.check(suite, headlines, imports, scratch=out)
         status.write_text('PASS\n', encoding='utf-8')
-        print(f'PASS: {label} headline types and allowed axioms.')
+        print(f'PASS: {label} headline types, reviewed statement baseline and allowed axioms.')
     except Exception:
         status.write_text('FAIL\n', encoding='utf-8')
         raise
