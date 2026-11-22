@@ -193,7 +193,8 @@ their obsolete QE files are not part of the current source tree.
 
 ## License
 
-Project code retains the MIT license declared by the original project.
+Project code retains the MIT license declared by the original project; see
+[LICENSE](LICENSE).
 External code retains its own notices; ACVF-QE includes an attributed
 Apache-2.0 ultrapower adaptation. Preserve those notices when reusing it.
 
