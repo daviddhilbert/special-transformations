@@ -8,8 +8,8 @@ throughout give the detailed coverage and hypotheses.
 
 The Lean source links are pinned to checked proof commit
 `097b3c13a82e0b0a1af3f782e6a16b4216d36616` with Lean 4.35.0, ACVF-QE
-`173708265d7959e031bf9552ee884501fc21f2cb` and hilbert-mathlib
-`88bb3386f616779bfd87eb453d8a7c899ad63961`. A declaration whose
+`1018f7a36f0c2435e9146915ef7a0f60ba19dbd4` and hilbert-mathlib
+`3f3efa86f6dd85c00db1cb9a7ad242b1e0a49ecf`. A declaration whose
 implementation moved to hilbert-mathlib keeps its name and links to that
 provider. The blueprint contains 63 nodes and links 159 distinct Lean
 declarations. Each linked declaration passes a fresh type/axiom audit; its

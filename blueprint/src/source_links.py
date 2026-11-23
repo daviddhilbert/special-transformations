@@ -4,8 +4,8 @@ from pathlib import Path
 
 
 PAPER = "https://github.com/daviddhilbert/special-transformations/blob/097b3c13a82e0b0a1af3f782e6a16b4216d36616/"
-QE = "https://github.com/daviddhilbert/ACVF-QE/blob/173708265d7959e031bf9552ee884501fc21f2cb/"
-HILBERT = "https://github.com/daviddhilbert/hilbert-mathlib/blob/88bb3386f616779bfd87eb453d8a7c899ad63961/"
+QE = "https://github.com/daviddhilbert/ACVF-QE/blob/1018f7a36f0c2435e9146915ef7a0f60ba19dbd4/"
+HILBERT = "https://github.com/daviddhilbert/hilbert-mathlib/blob/3f3efa86f6dd85c00db1cb9a7ad242b1e0a49ecf/"
 
 
 def ProcessOptions(options, document):
