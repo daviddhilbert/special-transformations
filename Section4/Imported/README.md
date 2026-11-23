@@ -20,17 +20,15 @@ group completion, without a cancellation hypothesis. It does not construct
 the positive scissor quotient of definable sets. See `../REUSE-SURVEY.md` for
 the comparison with Mathlib PR 28468 and the categorical group presentations.
 
-The initial whole-file port candidate `PolynomialPrimeTrdegHeight.lean` came from
+`PolynomialCoordinateBasis.lean` is an excerpt from
 [the fixed upstream source](https://github.com/DongzheZheng/Kiraly-Tanigawa-Body-Pin-Rigidity-Conjecture/blob/e457fde9100c9b7226bd4d81af6860f210a531ab/RB31EndToEnd/Algebra/PolynomialPrimeTrdegHeight.lean).
 The source belongs to the upstream formalization's contributors and is
 Apache-2.0 licensed; `BodyPin-LICENSE` retains that license. The original
-file has no separate author header. Its body and `RB31E2E` namespace were
-initially copied unchanged, with an added provenance notice. The upstream
-Lean version is 4.29.0 and its Mathlib pin is recorded in `../REUSE-SURVEY.md`.
-The fresh whole-file compilation exited 1 because of changed polynomial
-splitting APIs and related type conversions. That failed candidate is not
-included in this publication. The proof of 4.8 uses the smaller
-`PolynomialCoordinateBasis.lean` excerpt: the coordinate definition,
+file has no separate author header. The upstream Lean version is 4.29.0 and
+its Mathlib pin is recorded in `../REUSE-SURVEY.md`. A whole-file port of
+that source did not compile at this project's pin, because of changed
+polynomial splitting APIs and related type conversions, and has been
+removed. The proof of 4.8 uses only the excerpt: the coordinate definition,
 generation lemma, and two coordinate-basis proofs are retained unchanged,
 with narrowed imports and the same namespace and license. That excerpt
 passed its separate compiler run and all four full headline and axiom

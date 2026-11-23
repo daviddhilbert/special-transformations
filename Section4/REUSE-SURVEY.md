@@ -446,5 +446,5 @@ decisions. Their pending-build and draft labels are superseded by
 [STATUS.md](STATUS.md): the coordinate-basis and integral-dimension ports,
 normalization and residue comparison, both VF semirings, graded RV
 constructions and their completions are integrated in `Library.lean`.
-The failed whole-file `PolynomialPrimeTrdegHeight.lean` port is excluded
-from publication; its attributed coordinate-basis excerpt is included.
+The failed whole-file `PolynomialPrimeTrdegHeight.lean` port has been
+removed; its attributed coordinate-basis excerpt is included.
